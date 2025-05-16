@@ -91,5 +91,50 @@ export const hiraganaData: HiraganaCharacter[] = [
   { character: 'ぴ', romaji: 'pi', type: 'dakuten' },
   { character: 'ぷ', romaji: 'pu', type: 'dakuten' },
   { character: 'ぺ', romaji: 'pe', type: 'dakuten' },
-  { character: 'ぽ', romaji: 'po', type: 'dakuten' }
+  { character: 'ぽ', romaji: 'po', type: 'dakuten' },
+  
+  // Combination Hiragana
+  { character: 'きゃ', romaji: 'kya', type: 'combination' },
+  { character: 'きゅ', romaji: 'kyu', type: 'combination' },
+  { character: 'きょ', romaji: 'kyo', type: 'combination' },
+  
+  { character: 'しゃ', romaji: 'sha', type: 'combination' },
+  { character: 'しゅ', romaji: 'shu', type: 'combination' },
+  { character: 'しょ', romaji: 'sho', type: 'combination' },
+  
+  { character: 'ちゃ', romaji: 'cha', type: 'combination' },
+  { character: 'ちゅ', romaji: 'chu', type: 'combination' },
+  { character: 'ちょ', romaji: 'cho', type: 'combination' },
+  
+  { character: 'にゃ', romaji: 'nya', type: 'combination' },
+  { character: 'にゅ', romaji: 'nyu', type: 'combination' },
+  { character: 'にょ', romaji: 'nyo', type: 'combination' },
+  
+  { character: 'ひゃ', romaji: 'hya', type: 'combination' },
+  { character: 'ひゅ', romaji: 'hyu', type: 'combination' },
+  { character: 'ひょ', romaji: 'hyo', type: 'combination' },
+  
+  { character: 'みゃ', romaji: 'mya', type: 'combination' },
+  { character: 'みゅ', romaji: 'myu', type: 'combination' },
+  { character: 'みょ', romaji: 'myo', type: 'combination' },
+  
+  { character: 'りゃ', romaji: 'rya', type: 'combination' },
+  { character: 'りゅ', romaji: 'ryu', type: 'combination' },
+  { character: 'りょ', romaji: 'ryo', type: 'combination' },
+  
+  { character: 'ぎゃ', romaji: 'gya', type: 'combination' },
+  { character: 'ぎゅ', romaji: 'gyu', type: 'combination' },
+  { character: 'ぎょ', romaji: 'gyo', type: 'combination' },
+  
+  { character: 'じゃ', romaji: 'ja', type: 'combination' },
+  { character: 'じゅ', romaji: 'ju', type: 'combination' },
+  { character: 'じょ', romaji: 'jo', type: 'combination' },
+  
+  { character: 'びゃ', romaji: 'bya', type: 'combination' },
+  { character: 'びゅ', romaji: 'byu', type: 'combination' },
+  { character: 'びょ', romaji: 'byo', type: 'combination' },
+  
+  { character: 'ぴゃ', romaji: 'pya', type: 'combination' },
+  { character: 'ぴゅ', romaji: 'pyu', type: 'combination' },
+  { character: 'ぴょ', romaji: 'pyo', type: 'combination' }
 ];

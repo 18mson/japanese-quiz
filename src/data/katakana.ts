@@ -91,5 +91,50 @@ export const katakanaData: KatakanaCharacter[] = [
   { character: 'ピ', romaji: 'pi', type: 'dakuten' },
   { character: 'プ', romaji: 'pu', type: 'dakuten' },
   { character: 'ペ', romaji: 'pe', type: 'dakuten' },
-  { character: 'ポ', romaji: 'po', type: 'dakuten' }
+  { character: 'ポ', romaji: 'po', type: 'dakuten' },
+
+  // Combination Katakana
+  { character: 'キャ', romaji: 'kya', type: 'combination' },
+  { character: 'キュ', romaji: 'kyu', type: 'combination' },
+  { character: 'キョ', romaji: 'kyo', type: 'combination' },
+  
+  { character: 'シャ', romaji: 'sha', type: 'combination' },
+  { character: 'シュ', romaji: 'shu', type: 'combination' },
+  { character: 'ショ', romaji: 'sho', type: 'combination' },
+  
+  { character: 'チャ', romaji: 'cha', type: 'combination' },
+  { character: 'チュ', romaji: 'chu', type: 'combination' },
+  { character: 'チョ', romaji: 'cho', type: 'combination' },
+  
+  { character: 'ニャ', romaji: 'nya', type: 'combination' },
+  { character: 'ニュ', romaji: 'nyu', type: 'combination' },
+  { character: 'ニョ', romaji: 'nyo', type: 'combination' },
+  
+  { character: 'ヒャ', romaji: 'hya', type: 'combination' },
+  { character: 'ヒュ', romaji: 'hyu', type: 'combination' },
+  { character: 'ヒョ', romaji: 'hyo', type: 'combination' },
+  
+  { character: 'ミャ', romaji: 'mya', type: 'combination' },
+  { character: 'ミュ', romaji: 'myu', type: 'combination' },
+  { character: 'ミョ', romaji: 'myo', type: 'combination' },
+  
+  { character: 'リャ', romaji: 'rya', type: 'combination' },
+  { character: 'リュ', romaji: 'ryu', type: 'combination' },
+  { character: 'リョ', romaji: 'ryo', type: 'combination' },
+  
+  { character: 'ギャ', romaji: 'gya', type: 'combination' },
+  { character: 'ギュ', romaji: 'gyu', type: 'combination' },
+  { character: 'ギョ', romaji: 'gyo', type: 'combination' },
+  
+  { character: 'ジャ', romaji: 'ja', type: 'combination' },
+  { character: 'ジュ', romaji: 'ju', type: 'combination' },
+  { character: 'ジョ', romaji: 'jo', type: 'combination' },
+  
+  { character: 'ビャ', romaji: 'bya', type: 'combination' },
+  { character: 'ビュ', romaji: 'byu', type: 'combination' },
+  { character: 'ビョ', romaji: 'byo', type: 'combination' },
+  
+  { character: 'ピャ', romaji: 'pya', type: 'combination' },
+  { character: 'ピュ', romaji: 'pyu', type: 'combination' },
+  { character: 'ピョ', romaji: 'pyo', type: 'combination' }
 ];
