@@ -11,157 +11,41 @@ const getOptionClass = (option: string) => {
   if (quizStore.selectedAnswer === null) return '';
   
   if (option === quizStore.currentQuestion?.romaji) {
-    return 'option-correct';
+    return 'border-green-500 bg-green-100 text-green-800';
   }
   
   if (option === quizStore.selectedAnswer && option !== quizStore.currentQuestion?.romaji) {
-    return 'option-incorrect';
+    return 'border-red-500 bg-red-100 text-red-800';
   }
   
-  return 'option-inactive';
+  return 'opacity-60 cursor-not-allowed';
 };
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-4">
-    <div class="feedback-message" v-if="quizStore.selectedAnswer !== null"> 
-      <div v-if="quizStore.isAnswerCorrect" class="correct-message">
-        <span>Correct! 🎉</span>
-      </div>
-      <div v-else class="incorrect-message">
-        <span>Incorrect. The correct answer is "{{ quizStore.currentQuestion?.romaji }}"</span>
-      </div>
-    </div>
+  <div class="grid grid-cols-3 gap-4 mb-4">
     <button 
       v-for="option in quizStore.options" 
       :key="option"
-      class="option-button"
+      class="p-4 text-lg bg-white border-2 border-gray-300 rounded-lg cursor-pointer transition-all flex justify-center items-center min-h-16 hover:border-indigo-500 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-300"
       :class="getOptionClass(option)"
       @click="submitOption(option)"
       :disabled="quizStore.selectedAnswer !== null"
     >
       {{ option }}
     </button>
-    
-    <div class="feedback-message" v-if="quizStore.selectedAnswer !== null">
-      <button class="next-button w-full" @click="quizStore.nextQuestion">
+  </div>
+  <div class="flex flex-col items-center " v-if="quizStore.selectedAnswer !== null">
+      <div class="pb-4">
+        <div v-if="quizStore.isAnswerCorrect" class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-green-100 text-green-800">
+          <span>Correct! 🎉</span>
+        </div>
+        <div v-else class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-red-100 text-red-800">
+          <span>Incorrect. The correct answer is "{{ quizStore.currentQuestion?.romaji }}"</span>
+        </div>
+      </div>
+      <button class="w-56 bg-indigo-500 text-white rounded-lg p-3 text-base font-semibold cursor-pointer transition hover:bg-indigo-600" @click="quizStore.nextQuestion">
         {{ quizStore.currentQuestionIndex < quizStore.questions.length - 1 ? 'Next' : 'See Results' }}
       </button>
     </div>
-  </div>
 </template>
-
-<style scoped>
-.options-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  /* margin: 1.5rem 0; */
-  max-width: 600px;
-  width: 100%;
-}
-
-.option-button {
-  padding: 1rem;
-  font-size: 1.125rem;
-  background-color: white;
-  border: 2px solid #D1D5DB;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 64px;
-}
-
-.option-button:hover:not(:disabled):not(.option-correct):not(.option-incorrect):not(.option-inactive) {
-  border-color: #4F46E5;
-  background-color: #EEF2FF;
-}
-
-.option-button:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
-}
-
-.option-correct {
-  border-color: #10B981;
-  background-color: #ECFDF5;
-  color: #065F46;
-}
-
-.option-incorrect {
-  border-color: #EF4444;
-  background-color: #FEF2F2;
-  color: #991B1B;
-}
-
-.option-inactive {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.feedback-message {
-  grid-column: span 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.correct-message, .incorrect-message {
-  font-size: 1.125rem;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
-}
-
-.correct-message {
-  background-color: #ECFDF5;
-  color: #065F46;
-}
-
-.incorrect-message {
-  background-color: #FEF2F2;
-  color: #991B1B;
-}
-
-.next-button {
-  background-color: #4F46E5;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.next-button:hover {
-  background-color: #4338CA;
-}
-
-@media (max-width: 768px) {
-  .options-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .feedback-message {
-    grid-column: span 1;
-  }
-  
-  .option-button {
-    font-size: 1rem;
-    min-height: 56px;
-  }
-}
-</style>

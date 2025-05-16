@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
+import { katakanaData } from '../data/katakana';
 
 export const useQuizStore = defineStore('quiz', () => {
   // State
+  const questionType = ref('hiragana'); // 'hiragana' or 'katakana'
   const currentQuestionIndex = ref(0);
   const score = ref(0);
   const questions = ref<HiraganaCharacter[]>([]);
@@ -18,14 +20,20 @@ export const useQuizStore = defineStore('quiz', () => {
   }[]>([]);
   
   // Get a random set of Hiragana characters for the quiz
-  const getRandomHiraganaSet = (count: number = 10) => {
-    const shuffled = [...hiraganaData].sort(() => 0.5 - Math.random());
+  const getRandomHiraganaSet = (count: number = 10, type: string = 'hiragana') => {
+    const shuffled = [];
+    if (type === 'hiragana') {
+      shuffled.push(...[...hiraganaData].sort(() => 0.5 - Math.random()));
+    } else if (type === 'katakana') {
+      shuffled.push(...[...katakanaData].sort(() => 0.5 - Math.random()));
+    }
     return shuffled.slice(0, count);
   };
   
   // Start a new quiz
-  const startQuiz = (questionCount: number = 10) => {
-    questions.value = getRandomHiraganaSet(questionCount);
+  const startQuiz = (questionCount: number = 10, type: string = 'hiragana') => {
+    questions.value = getRandomHiraganaSet(questionCount, type);
+    questionType.value = type;
     currentQuestionIndex.value = 0;
     score.value = 0;
     quizCompleted.value = false;
@@ -44,12 +52,11 @@ export const useQuizStore = defineStore('quiz', () => {
     if (!currentQuestion.value) return [];
     
     const correctRomaji = currentQuestion.value.romaji;
-    const incorrectOptions = hiraganaData
+    const incorrectOptions = (questionType.value === 'hiragana' ? hiraganaData : katakanaData)
       .filter(h => h.romaji !== correctRomaji)
       .sort(() => 0.5 - Math.random())
       .slice(0, 5)
       .map(h => h.romaji);
-    
     const allOptions = [...incorrectOptions, correctRomaji];
     return allOptions.sort(() => 0.5 - Math.random());
   });
@@ -89,12 +96,12 @@ export const useQuizStore = defineStore('quiz', () => {
   
   // Restart the quiz
   const restartQuiz = () => {
-    startQuiz(questions.value.length);
+    startQuiz(questions.value.length, questionType.value);
   };
   
   // Calculate progress as percentage
   const progress = computed(() => {
-    return (currentQuestionIndex.value / questions.value.length) * 100;
+    return ((currentQuestionIndex.value + 1) / questions.value.length) * 100;
   });
   
   // Final score as percentage

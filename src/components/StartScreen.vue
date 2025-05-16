@@ -1,34 +1,47 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
+import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
+import { katakanaData } from '../data/katakana';
 
 const quizStore = useQuizStore();
 const questionCount = ref(10);
+const characterTypes = ref('hiragana');
+const showAllHiragana = ref(false);
+const showAllKatakana = ref(false);
 
 const emit = defineEmits(['start']);
 
 const startQuiz = () => {
-  quizStore.startQuiz(questionCount.value);
+  quizStore.startQuiz(questionCount.value, characterTypes.value);
   emit('start');
 };
 </script>
 
 <template>
-  <div class="start-screen">
-    <h1 class="title">Hiragana Quiz</h1>
-    <p class="description">
-      Test your knowledge of Japanese Hiragana characters. 
-      Match each Hiragana to its correct romaji (alphabetic) equivalent.
+  <div class="max-w-4xl mx-auto p-8 flex flex-col items-center text-center animate-fadeIn">
+    <h1 class="text-4xl text-indigo-600 mb-4 font-bold">Japanese Quiz</h1>
+    <p class="text-lg text-gray-600 mb-10 max-w-2xl">
+      Test your knowledge of Japanese Hiragana and Katakana characters. 
+      Match each Hiragana or Katakana to its correct romaji (alphabetic) equivalent.
     </p>
-    
-    <div class="question-count">
-      <label for="question-count">Number of questions:</label>
-      <div class="count-selector">
+    <div class="flex justify-center gap-2 flex-wrap mb-6">
+      <button 
+        v-for="type in ['hiragana', 'katakana']"
+        :key="type" 
+        :class="['capitalize px-4 py-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-base cursor-pointer transition-all', characterTypes === type ? 'bg-indigo-600 text-white border-indigo-600' : 'hover:bg-gray-200']"
+        @click="characterTypes = type"
+      >
+        {{ type }}
+      </button>
+    </div>
+    <div class="mb-10 w-full max-w-lg">
+      <label for="question-count" class="block mb-3 text-lg text-gray-700">Number of questions:</label>
+      <div class="grid grid-cols-3 gap-4">
         <button 
           v-for="count in [5, 10, 15, 20, 25, 50]" 
           :key="count"
-          :class="{ active: questionCount === count }"
-          class="count-button"
+          :class="['px-4 py-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-base cursor-pointer transition-all', questionCount === count ? 'bg-indigo-600 text-white border-indigo-600' : 'hover:bg-gray-200']"
           @click="questionCount = count"
         >
           {{ count }}
@@ -36,152 +49,71 @@ const startQuiz = () => {
       </div>
     </div>
     
-    <button class="start-button" @click="startQuiz">
+    <button 
+      class="px-10 py-4 bg-indigo-600 text-white border-none rounded-lg text-lg font-semibold cursor-pointer transition-transform hover:bg-indigo-700 hover:-translate-y-1 mb-12" 
+      @click="startQuiz"
+    >
       Start Quiz
     </button>
     
-    <div class="info-section">
-      <h2 class="info-title">About Hiragana</h2>
-      <p class="info-text">
+    <div class="bg-gray-100 rounded-xl p-6 w-full max-w-2xl">
+      <h2 class="text-xl text-gray-800 mb-3">About Hiragana</h2>
+      <p class="text-gray-600 leading-relaxed">
         Hiragana is one of the Japanese writing systems. It's a phonetic alphabet where each character represents a syllable. 
         Learning Hiragana is the first step to reading and writing Japanese.
       </p>
+      <div class="mt-6">
+        <h2 class="text-xl text-gray-800 mb-3">Hiragana Chart</h2>
+        <div class="grid grid-cols-5 gap-4">
+          <div 
+            v-for="(char, index) in (showAllHiragana ? hiraganaData : hiraganaData.slice(0, 5))" 
+            :key="index" 
+            class="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-lg shadow-sm"
+              >
+            <span class="text-2xl font-bold text-gray-800">{{ char.character }}</span>
+            <span class="text-sm text-gray-600">{{ char.romaji }}</span>
+          </div>
+        </div>
+        <button 
+          class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium cursor-pointer transition-transform hover:bg-indigo-700"
+          @click="showAllHiragana = !showAllHiragana"
+        >
+          {{ showAllHiragana ? 'Show Less' : 'Show All' }}
+        </button>
+      </div>
+    </div>
+    <div class="bg-gray-100 rounded-xl p-6 w-full max-w-2xl mt-6">
+      <h2 class="text-xl text-gray-800 mb-3">About Katakana</h2>
+      <p class="text-gray-600 leading-relaxed">
+        Katakana is another Japanese writing system, primarily used for foreign words and names. 
+        It consists of characters that are angular and sharp, making it visually distinct from Hiragana.
+      </p>
+      <div class="mt-6">
+        <h2 class="text-xl text-gray-800 mb-3">Katakana Chart</h2>
+        <div class="grid grid-cols-5 gap-4">
+          <div 
+            v-for="(char, index) in (showAllKatakana ? katakanaData : katakanaData.slice(0, 5))" 
+            :key="index" 
+            class="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-lg shadow-sm"
+          >
+            <span class="text-2xl font-bold text-gray-800">{{ char.character }}</span>
+            <span class="text-sm text-gray-600">{{ char.romaji }}</span>
+          </div>
+        </div>
+        <button 
+          class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium cursor-pointer transition-transform hover:bg-indigo-700"
+          @click="showAllKatakana = !showAllKatakana"
+        >
+          {{ showAllKatakana ? 'Show Less' : 'Show All' }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.start-screen {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  animation: fadeIn 0.5s ease-out;
-}
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
-}
-
-.title {
-  font-size: 3rem;
-  color: #4F46E5;
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.description {
-  font-size: 1.25rem;
-  color: #4B5563;
-  margin-bottom: 2.5rem;
-  max-width: 600px;
-}
-
-.question-count {
-  margin-bottom: 2.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-
-.question-count label {
-  display: block;
-  margin-bottom: 0.75rem;
-  font-size: 1.125rem;
-  color: #374151;
-}
-
-.count-selector {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.count-button {
-  padding: 0.5rem 1rem;
-  background-color: #F3F4F6;
-  border: 2px solid #E5E7EB;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.count-button.active {
-  background-color: #4F46E5;
-  color: white;
-  border-color: #4F46E5;
-}
-
-.count-button:hover:not(.active) {
-  background-color: #E5E7EB;
-}
-
-.start-button {
-  padding: 1rem 2.5rem;
-  background-color: #4F46E5;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-  margin-bottom: 3rem;
-}
-
-.start-button:hover {
-  background-color: #4338CA;
-  transform: translateY(-2px);
-}
-
-.info-section {
-  background-color: #F3F4F6;
-  border-radius: 12px;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 600px;
-}
-
-.info-title {
-  font-size: 1.5rem;
-  color: #1F2937;
-  margin-bottom: 0.75rem;
-}
-
-.info-text {
-  color: #4B5563;
-  line-height: 1.6;
-}
-
-@media (max-width: 768px) {
-  .start-screen {
-    padding: 1.5rem;
-  }
-  
-  .title {
-    font-size: 2.25rem;
-  }
-  
-  .description {
-    font-size: 1rem;
-  }
-  
-  .count-button {
-    padding: 0.375rem 0.75rem;
-  }
-  
-  .start-button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1.125rem;
-  }
-  
-  .info-title {
-    font-size: 1.25rem;
-  }
 }
 </style>

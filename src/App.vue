@@ -18,87 +18,32 @@ onMounted(() => {
 const startQuiz = () => {
   quizStarted.value = true;
 };
+
+const goToHome = () => {
+  quizStarted.value = false;
+};
 </script>
 
 <template>
-  <div class="app-container">
+  <div class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
     <StartScreen v-if="!quizStarted" @start="startQuiz" />
-    
-    <div v-else class="quiz-container">
+    <div v-else class="max-w-4xl mx-auto p-4 flex flex-col">
       <QuizHeader />
       
-      <main class="quiz-main" v-if="!quizStore.quizCompleted">
+      <main class="bg-white rounded-lg shadow-md p-8 mb-8 flex flex-col items-center" v-if="!quizStore.quizCompleted">
         <QuizQuestion />
         <QuizOptions />
       </main>
       
       <QuizResults v-else />
+      <footer v-if="quizStarted && quizStore.quizCompleted" class="py-4 text-center h-full">
+        <button 
+          class="px-6 py-3 bg-indigo-600 text-white rounded-lg text-lg font-semibold cursor-pointer transition-transform hover:bg-indigo-700"
+          @click="goToHome"
+        >
+          Go to Home
+        </button>
+      </footer>
     </div>
   </div>
 </template>
-
-<style>
-:root {
-  --primary-color: #4F46E5;
-  --secondary-color: #F9A8D4;
-  --accent-color: #0D9488;
-  --success-color: #10B981;
-  --warning-color: #F59E0B;
-  --error-color: #EF4444;
-  --background-color: #F9FAFB;
-  --card-background: #FFFFFF;
-  --text-primary: #1F2937;
-  --text-secondary: #4B5563;
-  --text-tertiary: #6B7280;
-  --border-color: #E5E7EB;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-primary);
-  line-height: 1.5;
-}
-
-.app-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.quiz-container {
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.quiz-main {
-  background-color: var(--card-background);
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 2rem;
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-button {
-  font-family: inherit;
-}
-
-@media (max-width: 768px) {
-  .quiz-main {
-    padding: 1.25rem;
-  }
-}
-</style>

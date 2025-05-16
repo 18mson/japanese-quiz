@@ -11,11 +11,12 @@ const questionNumber = computed(() => {
 const totalQuestions = computed(() => {
   return quizStore.questions.length;
 });
+
 </script>
 
 <template>
   <header class="quiz-header">
-    <h1 class="quiz-title">Hiragana Quiz</h1>
+    <h1 class="quiz-title">Japanese Quiz</h1>
     <div class="quiz-stats">
       <span class="quiz-progress">Question {{ questionNumber }} of {{ totalQuestions }}</span>
       <span class="quiz-score">Score: {{ quizStore.score }}</span>
