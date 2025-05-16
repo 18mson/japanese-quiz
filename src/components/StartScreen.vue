@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
+import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 
 const quizStore = useQuizStore();
