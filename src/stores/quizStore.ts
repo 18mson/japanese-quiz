@@ -23,7 +23,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const getRandomHiraganaSet = (count: number = 10, type: string = 'hiragana') => {
     const shuffled = [];
     if (type === 'hiragana') {
-      shuffled.push(...[...hiraganaData].sort(() => 0.5 - Math.random()));
+      shuffled.push(...[...hiraganaData].filter(h => h.type === 'combination').sort(() => 0.5 - Math.random()));
     } else if (type === 'katakana') {
       shuffled.push(...[...katakanaData].sort(() => 0.5 - Math.random()));
     }

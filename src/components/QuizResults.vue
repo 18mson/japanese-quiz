@@ -14,29 +14,33 @@ const getScoreMessage = () => {
 </script>
 
 <template>
-  <div class="results-container" v-if="quizStore.quizCompleted">
-    <h2 class="results-title">Quiz Results</h2>
+  <div class="p-8 max-w-3xl mx-auto animate-slide-up" v-if="quizStore.quizCompleted">
+    <h2 class="text-2xl text-gray-800 text-center mb-8">Quiz Results</h2>
     
-    <div class="score-display">
-      <div class="score-circle">
-        <span class="score-number">{{ Math.round(quizStore.finalScore) }}%</span>
+    <div class="flex flex-col items-center mb-12">
+      <div class="w-36 h-36 rounded-full bg-gradient-to-br from-indigo-600 to-pink-300 flex items-center justify-center mb-4 shadow-lg">
+        <span class="text-4xl font-bold text-white">{{ Math.round(quizStore.finalScore) }}%</span>
       </div>
-      <p class="score-message">{{ getScoreMessage() }}</p>
+      <p class="text-lg text-gray-600 text-center max-w-lg">{{ getScoreMessage() }}</p>
     </div>
     
-    <div class="answers-summary">
-      <h3 class="summary-title">Question Summary</h3>
-      <ul class="answers-list">
+    <div class="bg-gray-100 rounded-lg p-6 mb-8">
+      <h3 class="text-lg text-gray-800 mb-4 pb-2 border-b border-gray-300">Question Summary</h3>
+      <ul class="space-y-3">
         <li 
           v-for="(answer, index) in quizStore.userAnswers" 
           :key="index"
-          class="answer-item"
-          :class="{ 'correct': answer.isCorrect, 'incorrect': !answer.isCorrect }"
+          class="flex items-center p-4 rounded-lg bg-white shadow-sm"
+          :class="{ 'border-l-4 border-green-500': answer.isCorrect, 'border-l-4 border-red-500': !answer.isCorrect }"
         >
-          <div class="character">{{ answer.character }}</div>
-          <div class="answer-details">
-            <span class="answer-status">{{ answer.isCorrect ? 'Correct' : 'Incorrect' }}</span>
-            <span class="romaji-info">
+          <div class="text-2xl w-16 h-16 flex items-center justify-center mr-4 bg-gray-200 rounded-lg">
+            {{ answer.character }}
+          </div>
+          <div class="flex-1 flex flex-col">
+            <span class="font-semibold mb-1" :class="{ 'text-green-600': answer.isCorrect, 'text-red-600': !answer.isCorrect }">
+              {{ answer.isCorrect ? 'Correct' : 'Incorrect' }}
+            </span>
+            <span class="text-sm text-gray-500">
               <template v-if="answer.isCorrect">
                 You answered: {{ answer.userRomaji }}
               </template>
@@ -49,188 +53,15 @@ const getScoreMessage = () => {
       </ul>
     </div>
     
-    <button class="restart-button" @click="quizStore.restartQuiz">
+    <button class="block w-full max-w-xs mx-auto py-3 px-6 bg-indigo-600 text-white rounded-lg text-lg font-semibold hover:bg-indigo-700 transition">
       Try Again
     </button>
   </div>
 </template>
 
-<style scoped>
-.results-container {
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  animation: slideUp 0.5s ease-out;
-}
-
-@keyframes slideUp {
+<style>
+@keyframes slide-up {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-.results-title {
-  font-size: 2rem;
-  color: #1F2937;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.score-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 3rem;
-}
-
-.score-circle {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #4F46E5, #F9A8D4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.5);
-}
-
-.score-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: white;
-}
-
-.score-message {
-  font-size: 1.25rem;
-  color: #4B5563;
-  text-align: center;
-  max-width: 500px;
-}
-
-.answers-summary {
-  background-color: #F9FAFB;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.summary-title {
-  font-size: 1.25rem;
-  color: #1F2937;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #E5E7EB;
-}
-
-.answers-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.answer-item {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.answer-item.correct {
-  border-left: 4px solid #10B981;
-}
-
-.answer-item.incorrect {
-  border-left: 4px solid #EF4444;
-}
-
-.character {
-  font-size: 2rem;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1rem;
-  background-color: #F3F4F6;
-  border-radius: 8px;
-}
-
-.answer-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.answer-status {
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-}
-
-.answer-item.correct .answer-status {
-  color: #059669;
-}
-
-.answer-item.incorrect .answer-status {
-  color: #DC2626;
-}
-
-.romaji-info {
-  font-size: 0.875rem;
-  color: #6B7280;
-}
-
-.restart-button {
-  display: block;
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 0.875rem 1.5rem;
-  background-color: #4F46E5;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.125rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  text-align: center;
-}
-
-.restart-button:hover {
-  background-color: #4338CA;
-}
-
-@media (max-width: 768px) {
-  .results-container {
-    padding: 1rem;
-  }
-  
-  .results-title {
-    font-size: 1.5rem;
-  }
-  
-  .score-circle {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .score-number {
-    font-size: 2rem;
-  }
-  
-  .score-message {
-    font-size: 1rem;
-  }
-  
-  .character {
-    font-size: 1.5rem;
-    width: 50px;
-    height: 50px;
-  }
 }
 </style>

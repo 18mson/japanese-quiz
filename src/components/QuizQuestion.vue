@@ -10,65 +10,14 @@ const character = computed(() => {
 </script>
 
 <template>
-  <div class="question-container">
-    <div class="hiragana-display">
-      <span class="hiragana-character">{{ character }}</span>
+  <div class="flex flex-col items-center my-4">
+    <div
+      class="w-40 h-40 flex items-center justify-center bg-gray-100 rounded-lg mb-6 shadow-md transition-transform duration-300 ease-in-out hover:translate-y-[-4px] hover:shadow-lg sm:w-30 sm:h-30"
+    >
+      <span class="text-5xl text-gray-800 font-medium">{{ character }}</span>
     </div>
-    <p class="question-prompt">What is the romaji (alphabetic) equivalent?</p>
+    <p class="text-lg text-gray-600 m-0 text-center sm:text-base">
+      What is the romaji (alphabetic) equivalent?
+    </p>
   </div>
 </template>
-
-<style scoped>
-.question-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 1rem 0;
-}
-
-.hiragana-display {
-  width: 160px;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #F3F4F6;
-  border-radius: 16px;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hiragana-display:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-.hiragana-character {
-  font-size: 6rem;
-  color: #1F2937;
-  font-weight: 500;
-}
-
-.question-prompt {
-  font-size: 1.25rem;
-  color: #4B5563;
-  margin: 0;
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .hiragana-display {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .hiragana-character {
-    font-size: 4rem;
-  }
-  
-  .question-prompt {
-    font-size: 1rem;
-  }
-}
-</style>
