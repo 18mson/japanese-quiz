@@ -64,13 +64,13 @@ const startQuiz = () => {
       </p>
       <div class="mt-6">
         <h2 class="text-xl text-gray-800 mb-3">Hiragana Chart</h2>
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-5 md:gap-4 gap-2">
           <div 
             v-for="(char, index) in (showAllHiragana ? hiraganaData : hiraganaData.slice(0, 5))" 
             :key="index" 
-            class="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-lg shadow-sm"
+            class="flex flex-col items-center py-4 bg-white border border-gray-300 rounded-lg shadow-sm"
               >
-            <span class="text-2xl font-bold text-gray-800">{{ char.character }}</span>
+            <span class="md:text-2xl text-base font-bold text-gray-800">{{ char.character }}</span>
             <span class="text-sm text-gray-600">{{ char.romaji }}</span>
           </div>
         </div>
@@ -90,13 +90,13 @@ const startQuiz = () => {
       </p>
       <div class="mt-6">
         <h2 class="text-xl text-gray-800 mb-3">Katakana Chart</h2>
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-5 md:gap-4 gap-2">
           <div 
             v-for="(char, index) in (showAllKatakana ? katakanaData : katakanaData.slice(0, 5))" 
             :key="index" 
-            class="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-lg shadow-sm"
+            class="flex flex-col items-center py-4 bg-white border border-gray-300 rounded-lg shadow-sm"
           >
-            <span class="text-2xl font-bold text-gray-800">{{ char.character }}</span>
+            <span class="md:text-2xl text-base font-bold text-gray-800">{{ char.character }}</span>
             <span class="text-sm text-gray-600">{{ char.romaji }}</span>
           </div>
         </div>
