@@ -53,7 +53,10 @@ const getScoreMessage = () => {
       </ul>
     </div>
     
-    <button class="block w-full max-w-xs mx-auto py-3 px-6 bg-indigo-600 text-white rounded-lg text-lg font-semibold hover:bg-indigo-700 transition">
+    <button 
+      class="block w-full max-w-xs mx-auto py-3 px-6 bg-indigo-600 text-white rounded-lg text-lg font-semibold hover:bg-indigo-700 transition"
+      @click="quizStore.restartQuiz"
+    >
       Try Again
     </button>
   </div>
