@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
-import incorrect from '../../public/sound/incorrect.wav';
-import correct from '../../public/sound/correct.wav';
+import incorrect from '../assets/sound/incorrect.wav';
+import correct from '../assets/sound/correct.wav';
 
 export const useQuizStore = defineStore('quiz', () => {
   // State
