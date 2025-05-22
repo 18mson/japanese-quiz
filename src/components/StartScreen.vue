@@ -39,7 +39,7 @@ const startQuiz = () => {
       <label for="question-count" class="block mb-3 text-lg text-gray-700">Number of questions:</label>
       <div class="grid grid-cols-3 gap-4">
         <button 
-          v-for="count in [5, 10, 15, 20, 25, 50]" 
+          v-for="count in [5, 10, 20, 30, 60, 100]" 
           :key="count"
           :class="['px-4 py-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-base cursor-pointer transition-all', questionCount === count ? 'bg-indigo-600 text-white border-indigo-600' : 'hover:bg-gray-200']"
           @click="questionCount = count"
