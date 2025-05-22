@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
+import incorrect from '../../public/sound/incorrect.wav';
+import correct from '../../public/sound/correct.wav';
 
 export const useQuizStore = defineStore('quiz', () => {
   // State
@@ -18,6 +20,12 @@ export const useQuizStore = defineStore('quiz', () => {
     userRomaji: string | null; 
     isCorrect: boolean; 
   }[]>([]);
+
+  const correctSound = new Audio(correct);
+  correctSound.preload = 'auto';
+  const incorrectSound = new Audio(incorrect);
+  correctSound.preload = 'auto';
+  incorrectSound.preload = 'auto';
   
   // Get a random set of Hiragana characters for the quiz
   const getRandomHiraganaSet = (count: number = 10, type: string = 'hiragana') => {
@@ -71,6 +79,9 @@ export const useQuizStore = defineStore('quiz', () => {
     
     if (correct) {
       score.value++;
+      correctSound.play();
+    } else {
+      incorrectSound.play();
     }
     
     // Record user's answer
