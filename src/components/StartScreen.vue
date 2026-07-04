@@ -22,17 +22,16 @@ const startQuiz = () => {
   <div class="max-w-4xl mx-auto p-8 flex flex-col items-center text-center animate-fadeIn">
     <h1 class="text-4xl text-indigo-600 mb-4 font-bold">Japanese Quiz</h1>
     <p class="text-lg text-gray-600 mb-10 max-w-2xl">
-      Test your knowledge of Japanese Hiragana and Katakana characters. 
-      Match each Hiragana or Katakana to its correct romaji (alphabetic) equivalent.
+      Test your knowledge of Japanese Hiragana and Katakana characters, or practice typing everyday Japanese vocabulary words (Kanji & Kana) in Romaji using your keyboard.
     </p>
-    <div class="flex justify-center gap-2 flex-wrap mb-6">
+    <div class="flex justify-center gap-3 flex-wrap mb-8">
       <button 
-        v-for="type in ['hiragana', 'katakana']"
+        v-for="type in ['hiragana', 'katakana', 'words']"
         :key="type" 
-        :class="['capitalize px-4 py-2 bg-gray-100 border-2 border-gray-300 rounded-lg text-base cursor-pointer transition-all', characterTypes === type ? 'bg-indigo-600 text-white border-indigo-600' : 'hover:bg-gray-200']"
+        :class="['capitalize px-5 py-3 border-2 rounded-xl text-base font-semibold cursor-pointer transition-all duration-200 shadow-sm hover:-translate-y-0.5 hover:shadow', characterTypes === type ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-gray-100 border-gray-300 hover:bg-gray-200 text-gray-700']"
         @click="characterTypes = type"
       >
-        {{ type }}
+        {{ type === 'words' ? 'Everyday Words (Keyboard Typing)' : type }}
       </button>
     </div>
     <div class="mb-10 w-full max-w-lg">

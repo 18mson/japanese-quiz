@@ -4,6 +4,7 @@ import { useQuizStore } from './stores/quizStore';
 import QuizHeader from './components/QuizHeader.vue';
 import QuizQuestion from './components/QuizQuestion.vue';
 import QuizOptions from './components/QuizOptions.vue';
+import QuizWordInput from './components/QuizWordInput.vue';
 import QuizResults from './components/QuizResults.vue';
 import StartScreen from './components/StartScreen.vue';
 
@@ -27,12 +28,13 @@ const goToHome = () => {
 <template>
   <div class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
     <StartScreen v-if="!quizStarted" @start="startQuiz" />
-    <div v-else class="max-w-4xl mx-auto p-4 flex flex-col">
+    <div v-else class="max-w-4xl mx-auto p-4 flex flex-col w-full">
       <QuizHeader />
       
-      <main class="bg-white rounded-lg shadow-md p-8 mb-8 flex flex-col items-center" v-if="!quizStore.quizCompleted">
+      <main class="bg-white rounded-2xl shadow-md p-8 mb-8 flex flex-col items-center w-full max-w-2xl mx-auto border border-gray-100" v-if="!quizStore.quizCompleted">
         <QuizQuestion />
-        <QuizOptions />
+        <QuizWordInput v-if="quizStore.questionType === 'words'" />
+        <QuizOptions v-else />
       </main>
       
       <QuizResults v-else />
