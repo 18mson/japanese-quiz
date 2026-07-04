@@ -10,11 +10,16 @@ const submitOption = (option: string) => {
 const getOptionClass = (option: string) => {
   if (quizStore.selectedAnswer === null) return '';
   
-  if (option === quizStore.currentQuestion?.romaji) {
+  const correctRomaji = quizStore.currentQuestion?.romaji;
+  const isCorrect = Array.isArray(correctRomaji)
+    ? correctRomaji.includes(option)
+    : correctRomaji === option;
+  
+  if (isCorrect) {
     return 'border-green-500 bg-green-100 text-green-800';
   }
   
-  if (option === quizStore.selectedAnswer && option !== quizStore.currentQuestion?.romaji) {
+  if (option === quizStore.selectedAnswer && !isCorrect) {
     return 'border-red-500 bg-red-100 text-red-800';
   }
   
@@ -35,17 +40,15 @@ const getOptionClass = (option: string) => {
       {{ option }}
     </button>
   </div>
-  <div class="flex flex-col items-center " v-if="quizStore.selectedAnswer !== null">
-      <div class="pb-4">
-        <div v-if="quizStore.isAnswerCorrect" class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-green-100 text-green-800">
-          <span>Correct! 🎉</span>
-        </div>
-        <div v-else class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-red-100 text-red-800">
-          <span>Incorrect. The correct answer is "{{ quizStore.currentQuestion?.romaji }}"</span>
-        </div>
+  <div class="w-full" v-if="quizStore.selectedAnswer !== null">
+    <div class="pb-4">
+      <div v-if="quizStore.isAnswerCorrect" class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-green-100 text-green-800 animate-fadeIn">
+        <span>Correct! 🎉</span>
       </div>
-      <button class="w-56 bg-indigo-500 text-white rounded-lg p-3 text-base font-semibold cursor-pointer transition hover:bg-indigo-600" @click="quizStore.nextQuestion">
-        {{ quizStore.currentQuestionIndex < quizStore.questions.length - 1 ? 'Next' : 'See Results' }}
-      </button>
+      <div v-else class="text-lg font-semibold p-3 rounded-lg w-full text-center bg-red-100 text-red-800 animate-fadeIn">
+        <span>Incorrect. The correct answer is "{{ Array.isArray(quizStore.currentQuestion?.romaji) ? quizStore.currentQuestion?.romaji.join(' or ') : quizStore.currentQuestion?.romaji }}"</span>
+      </div>
     </div>
+  </div>
+  <!-- Next button is rendered globally in bottom navbar -->
 </template>

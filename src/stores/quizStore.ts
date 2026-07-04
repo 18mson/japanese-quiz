@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { hiraganaData, type HiraganaCharacter } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData, type JapaneseWord } from '../data/words';
+import { supabase } from '../lib/supabaseClient';
 import incorrect from '../assets/sound/incorrect.wav';
 import correct from '../assets/sound/correct.wav';
 
@@ -25,7 +26,13 @@ const normalizeRomajiForComparison = (str: string): string => {
 
 export const useQuizStore = defineStore('quiz', () => {
   // State
+  const isLoading = ref(false);
+  const quizLevel = ref<'basic' | 'n5'>('basic');
   const questionType = ref('hiragana'); // 'hiragana', 'katakana', or 'words'
+  const isTypingMode = computed(() => {
+    return quizLevel.value === 'n5' || questionType.value === 'words';
+  });
+  const userInput = ref('');
   const currentQuestionIndex = ref(0);
   const score = ref(0);
   const questions = ref<(HiraganaCharacter | JapaneseWord)[]>([]);
@@ -48,28 +55,92 @@ export const useQuizStore = defineStore('quiz', () => {
   incorrectSound.preload = 'auto';
   
   // Get a random set of characters/words for the quiz
-  const getRandomQuestionSet = (count: number = 10, type: string = 'hiragana') => {
+  const getRandomQuestionSet = (count: number = 10, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
     const shuffled = [];
     if (type === 'hiragana') {
-      shuffled.push(...[...hiraganaData].sort(() => 0.5 - Math.random()));
+      let pool = [...hiraganaData];
+      if (level === 'basic') {
+        pool = pool.filter(c => c.type === 'basic');
+      }
+      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     } else if (type === 'katakana') {
-      shuffled.push(...[...katakanaData].sort(() => 0.5 - Math.random()));
+      let pool = [...katakanaData];
+      if (level === 'basic') {
+        pool = pool.filter(c => c.type === 'basic');
+      }
+      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     } else if (type === 'words') {
-      shuffled.push(...[...wordsData].sort(() => 0.5 - Math.random()));
+      let pool = [...wordsData];
+      if (level === 'basic') {
+        pool = pool.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character));
+      }
+      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     }
     return shuffled.slice(0, count);
   };
   
   // Start a new quiz
-  const startQuiz = (questionCount: number = 10, type: string = 'hiragana') => {
-    questions.value = getRandomQuestionSet(questionCount, type);
+  const startQuiz = async (questionCount: number = 10, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
+    isLoading.value = true;
     questionType.value = type;
+    quizLevel.value = level;
     currentQuestionIndex.value = 0;
     score.value = 0;
     quizCompleted.value = false;
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
     userAnswers.value = [];
+    userInput.value = '';
+
+    try {
+      let query = supabase
+        .from('quiz_items')
+        .select('*')
+        .eq('category', type);
+      
+      if (type === 'hiragana' || type === 'katakana') {
+        if (level === 'basic') {
+          query = query.eq('type', 'basic');
+        }
+      } else if (type === 'words') {
+        if (level === 'basic') {
+          query = query.eq('has_kanji', false);
+        }
+      }
+
+      const { data, error } = await query;
+      
+      if (error) throw error;
+      if (!data || data.length === 0) throw new Error('No quiz data returned from Supabase.');
+
+      const mappedData = data.map(item => {
+        if (type === 'words') {
+          return {
+            character: item.character,
+            romaji: item.romaji,
+            kana: item.kana,
+            meaning: item.meaning,
+            type: 'word' as const
+          };
+        } else {
+          return {
+            character: item.character,
+            romaji: item.romaji[0],
+            type: item.type as 'basic' | 'dakuten' | 'combination'
+          };
+        }
+      });
+
+      questions.value = [...mappedData]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, questionCount);
+
+    } catch (err) {
+      console.warn('Failed to fetch questions from Supabase. Falling back to local dataset.', err);
+      questions.value = getRandomQuestionSet(questionCount, type, level);
+    } finally {
+      isLoading.value = false;
+    }
   };
   
   // Current question
@@ -79,16 +150,36 @@ export const useQuizStore = defineStore('quiz', () => {
   
   // Generate options including the correct one and 5 random incorrect ones (for multiple choice)
   const options = computed(() => {
-    if (!currentQuestion.value || questionType.value === 'words') return [];
+    if (!currentQuestion.value || isTypingMode.value) return [];
     
-    const correctRomaji = currentQuestion.value.romaji as string;
-    const pool = questionType.value === 'hiragana' ? hiraganaData : katakanaData;
+    const correctRomaji = currentQuestion.value.romaji;
+    const correctRomajis = Array.isArray(correctRomaji) ? correctRomaji : [correctRomaji];
+    const correctStr = correctRomajis[0];
+    
+    let pool: string[] = [];
+    if (questionType.value === 'hiragana') {
+      const charPool = quizLevel.value === 'basic' 
+        ? hiraganaData.filter(h => h.type === 'basic') 
+        : hiraganaData;
+      pool = charPool.map(h => h.romaji);
+    } else if (questionType.value === 'katakana') {
+      const charPool = quizLevel.value === 'basic' 
+        ? katakanaData.filter(k => k.type === 'basic') 
+        : katakanaData;
+      pool = charPool.map(k => k.romaji);
+    } else if (questionType.value === 'words') {
+      const wordPool = quizLevel.value === 'basic'
+        ? wordsData.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character))
+        : wordsData;
+      pool = wordPool.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
+    }
+    
     const incorrectOptions = pool
-      .filter(h => h.romaji !== correctRomaji)
+      .filter(r => !correctRomajis.includes(r))
       .sort(() => 0.5 - Math.random())
-      .slice(0, 5)
-      .map(h => h.romaji);
-    const allOptions = [...incorrectOptions, correctRomaji];
+      .slice(0, 5);
+      
+    const allOptions = [...incorrectOptions, correctStr];
     return allOptions.sort(() => 0.5 - Math.random());
   });
   
@@ -136,6 +227,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const nextQuestion = () => {
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
+    userInput.value = '';
     
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
@@ -145,8 +237,8 @@ export const useQuizStore = defineStore('quiz', () => {
   };
   
   // Restart the quiz
-  const restartQuiz = () => {
-    startQuiz(questions.value.length, questionType.value);
+  const restartQuiz = async () => {
+    await startQuiz(questions.value.length, questionType.value, quizLevel.value);
   };
   
   // Calculate progress as percentage
@@ -160,7 +252,11 @@ export const useQuizStore = defineStore('quiz', () => {
   });
   
   return {
+    isLoading,
+    quizLevel,
     questionType,
+    isTypingMode,
+    userInput,
     currentQuestionIndex,
     score,
     questions,

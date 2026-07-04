@@ -3,7 +3,10 @@ import { ref, onMounted, watch, nextTick, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 
 const quizStore = useQuizStore();
-const userInput = ref('');
+const userInput = computed({
+  get: () => quizStore.userInput,
+  set: (val) => quizStore.userInput = val
+});
 const inputRef = ref<HTMLInputElement | null>(null);
 
 const focusInput = () => {
@@ -36,8 +39,6 @@ const handleEnter = () => {
     } else {
       quizStore.submitAnswer(''); // Skip if empty on Enter
     }
-  } else {
-    quizStore.nextQuestion();
   }
 };
 
@@ -68,7 +69,7 @@ const correctRomajiDisplay = computed(() => {
           'border-red-500 bg-red-50/30 focus:ring-red-100/50': isAnswered && !quizStore.isAnswerCorrect
         }"
         :disabled="isAnswered"
-        @keydown.enter="handleEnter"
+        @keydown.enter.stop="handleEnter"
         autocomplete="off"
         autocorrect="off"
         autocapitalize="off"
@@ -79,25 +80,10 @@ const correctRomajiDisplay = computed(() => {
       </div>
     </div>
 
-    <!-- Actions (Pre-Answer) -->
-    <div v-if="!isAnswered" class="flex gap-4 w-full justify-center">
-      <button 
-        class="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl transition duration-200 hover:bg-gray-300 cursor-pointer shadow-sm"
-        @click="quizStore.submitAnswer('')"
-      >
-        Skip
-      </button>
-      <button 
-        class="px-8 py-3 bg-indigo-600 text-white font-semibold rounded-xl transition duration-200 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg hover:-translate-y-0.5"
-        :disabled="userInput.trim() === ''"
-        @click="submitAnswer"
-      >
-        Submit
-      </button>
-    </div>
+    <!-- Actions are rendered globally in bottom navbar -->
 
     <!-- Post-Answer Detailed Feedback (Animate Slide Up) -->
-    <div v-else class="w-full flex flex-col items-center animate-slideUp">
+    <div v-if="isAnswered" class="w-full flex flex-col items-center animate-slideUp">
       <!-- Status Card -->
       <div 
         class="w-full rounded-2xl p-6 mb-6 text-center border shadow-sm transition-all duration-300 animate-pulse-subtle"
@@ -144,14 +130,7 @@ const correctRomajiDisplay = computed(() => {
         </div>
       </div>
 
-      <!-- Action: Next -->
-      <button 
-        class="w-full sm:w-56 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl p-3.5 shadow-md hover:shadow-lg transition duration-200 hover:-translate-y-0.5 flex justify-center items-center gap-2 cursor-pointer"
-        @click="quizStore.nextQuestion"
-      >
-        <span>{{ quizStore.currentQuestionIndex < quizStore.questions.length - 1 ? 'Next Question' : 'See Results' }}</span>
-        <span class="text-xs bg-indigo-500/50 px-2 py-0.5 rounded border border-indigo-400/30 font-mono">Enter</span>
-      </button>
+      <!-- Next button is rendered globally in bottom navbar -->
     </div>
   </div>
 </template>

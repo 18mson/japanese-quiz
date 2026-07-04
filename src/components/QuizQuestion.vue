@@ -28,15 +28,25 @@ const currentKana = computed(() => {
 const currentMeaning = computed(() => {
   return (quizStore.currentQuestion as any)?.meaning || '';
 });
+
+const instructionText = computed(() => {
+  if (quizStore.isTypingMode) {
+    return isWord.value 
+      ? 'Type the romaji equivalent of this word!' 
+      : 'Type the romaji equivalent of this character!';
+  } else {
+    return 'Select the correct romaji equivalent of this character!';
+  }
+});
 </script>
 
 <template>
-  <div class="flex flex-col items-center my-4 w-full">
+  <div class="flex flex-col items-center my-2 w-full flex-shrink-0">
     <!-- Big Question Card -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 border border-indigo-100/50 rounded-2xl mb-6 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md',
-        isWord ? 'w-full max-w-md min-h-44 p-6' : 'w-40 h-40'
+        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 border border-indigo-100/50 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md',
+        isWord ? 'w-full max-w-md min-h-24 py-3 px-4' : 'w-28 h-28'
       ]"
     >
       <div class="flex flex-col items-center text-center w-full">
@@ -45,44 +55,44 @@ const currentMeaning = computed(() => {
           :class="[
             'text-gray-800 font-bold tracking-wide transition-all duration-300 leading-none',
             isWord 
-              ? (character.length > 6 ? 'text-3xl sm:text-2xl' : 'text-5xl sm:text-4xl')
-              : 'text-6xl sm:text-5xl font-semibold'
+              ? (character.length > 6 ? 'text-2xl' : 'text-3xl')
+              : 'text-4xl font-bold'
           ]"
         >
           {{ character }}
         </span>
         
         <!-- Interactive Hints (Only for Words Quiz when not answered yet) -->
-        <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-5 flex gap-2.5 flex-wrap justify-center animate-fadeIn">
+        <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-2.5 flex gap-2 flex-wrap justify-center animate-fadeIn">
           <!-- Reading Hint Button/Pill -->
           <button 
             v-if="!showReadingHint"
-            class="text-xs px-3 py-1.5 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
+            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
             @click="showReadingHint = true"
           >
             💡 Reading Hint
           </button>
-          <span v-else class="text-sm font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full animate-hintPop shadow-sm">
+          <span v-else class="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
             Reading: {{ currentKana }}
           </span>
 
           <!-- Meaning Hint Button/Pill -->
           <button 
             v-if="!showMeaningHint"
-            class="text-xs px-3 py-1.5 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
+            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
             @click="showMeaningHint = true"
           >
             📝 Meaning Hint
           </button>
-          <span v-else class="text-sm font-medium text-teal-700 bg-teal-50 border border-teal-100 px-3 py-1 rounded-full animate-hintPop shadow-sm">
+          <span v-else class="text-xs font-medium text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
             Meaning: {{ currentMeaning }}
           </span>
         </div>
       </div>
     </div>
     
-    <p class="text-base text-gray-500 m-0 text-center font-medium">
-      {{ isWord ? 'Type the romaji equivalent of this word!' : 'What is the romaji (alphabetic) equivalent?' }}
+    <p class="text-sm text-gray-500 m-0 text-center font-medium">
+      {{ instructionText }}
     </p>
   </div>
 </template>
