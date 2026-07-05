@@ -9,6 +9,7 @@ const quizStore = useQuizStore();
 const questionCount = ref(10);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5'>('basic');
+const selectedLesson = ref<string>('all');
 const showAllHiragana = ref(false);
 const showAllKatakana = ref(false);
 const showCharts = ref(false);
@@ -16,7 +17,7 @@ const showCharts = ref(false);
 const emit = defineEmits(['start']);
 
 const startQuiz = async () => {
-  await quizStore.startQuiz(questionCount.value, characterTypes.value, selectedLevel.value);
+  await quizStore.startQuiz(questionCount.value, characterTypes.value, selectedLevel.value, selectedLesson.value);
   emit('start');
 };
 </script>
@@ -129,6 +130,33 @@ const startQuiz = async () => {
             {{ type === 'words' ? 'Everyday Words' : type }}
           </span>
           <span v-if="type === 'words'" class="text-xs bg-amber-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">New</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2.5: Choose Lesson (Only for Everyday Words) -->
+    <div v-if="characterTypes === 'words'" class="w-full max-w-3xl mb-6 flex-shrink-0 animate-fadeIn">
+      <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center justify-center gap-2">
+        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">2.5</span>
+        Choose Lesson
+      </h2>
+      <div class="grid grid-cols-3 gap-3 max-w-xl mx-auto">
+        <button 
+          v-for="opt in [
+            { value: 'all', label: 'All Lessons' },
+            { value: 'Pelajaran 1', label: 'Lesson 1' },
+            { value: 'Pelajaran 2', label: 'Lesson 2' }
+          ]" 
+          :key="opt.value"
+          :class="[
+            'px-4 py-2.5 border-2 rounded-2xl text-xs sm:text-sm font-bold cursor-pointer transition-all duration-200 shadow-sm text-center',
+            selectedLesson === opt.value 
+              ? (selectedLevel === 'n5' ? 'bg-violet-600 text-white border-violet-600 shadow-lg shadow-violet-200' : 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-200') 
+              : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:border-gray-300'
+          ]"
+          @click="selectedLesson = opt.value"
+        >
+          {{ opt.label }}
         </button>
       </div>
     </div>

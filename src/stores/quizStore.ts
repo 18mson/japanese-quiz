@@ -111,6 +111,7 @@ export const useQuizStore = defineStore('quiz', () => {
   };
 
   const quizLevel = ref<'basic' | 'n5'>('basic');
+  const quizLesson = ref<string>('all');
   const questionType = ref('hiragana'); // 'hiragana', 'katakana', or 'words'
   const isTypingMode = computed(() => {
     return quizLevel.value === 'n5' || questionType.value === 'words';
@@ -147,7 +148,12 @@ export const useQuizStore = defineStore('quiz', () => {
   incorrectSound.preload = 'auto';
   
   // Get a random set of characters/words for the quiz
-  const getRandomQuestionSet = (count: number = 10, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
+  const getRandomQuestionSet = (
+    count: number = 10, 
+    type: string = 'hiragana', 
+    level: 'basic' | 'n5' = 'basic',
+    lesson: string = 'all'
+  ) => {
     let pool: any[] = [];
     if (type === 'hiragana') {
       pool = [...hiraganaData];
@@ -163,6 +169,9 @@ export const useQuizStore = defineStore('quiz', () => {
       pool = [...wordsData];
       if (level === 'basic') {
         pool = pool.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character));
+      }
+      if (lesson !== 'all') {
+        pool = pool.filter(w => w.lesson === lesson);
       }
     }
     
@@ -181,10 +190,16 @@ export const useQuizStore = defineStore('quiz', () => {
   };
   
   // Start a new quiz
-  const startQuiz = async (questionCount: number = 10, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
+  const startQuiz = async (
+    questionCount: number = 10, 
+    type: string = 'hiragana', 
+    level: 'basic' | 'n5' = 'basic',
+    lesson: string = 'all'
+  ) => {
     isLoading.value = true;
     questionType.value = type;
     quizLevel.value = level;
+    quizLesson.value = lesson;
     currentQuestionIndex.value = 0;
     score.value = 0;
     quizCompleted.value = false;
@@ -213,6 +228,9 @@ export const useQuizStore = defineStore('quiz', () => {
       } else if (type === 'words') {
         if (level === 'basic') {
           query = query.eq('has_kanji', false);
+        }
+        if (lesson !== 'all') {
+          query = query.eq('lesson', lesson);
         }
       }
 
@@ -257,7 +275,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     } catch (err) {
       console.warn('Failed to fetch questions from Supabase. Falling back to local dataset.', err);
-      questions.value = getRandomQuestionSet(questionCount, type, level);
+      questions.value = getRandomQuestionSet(questionCount, type, level, lesson);
     } finally {
       isLoading.value = false;
     }
@@ -493,7 +511,7 @@ export const useQuizStore = defineStore('quiz', () => {
   
   // Restart the quiz
   const restartQuiz = async () => {
-    await startQuiz(questions.value.length, questionType.value, quizLevel.value);
+    await startQuiz(questions.value.length, questionType.value, quizLevel.value, quizLesson.value);
   };
   
   // Calculate progress as percentage
@@ -510,6 +528,7 @@ export const useQuizStore = defineStore('quiz', () => {
   return {
     isLoading,
     quizLevel,
+    quizLesson,
     questionType,
     isTypingMode,
     userInput,
