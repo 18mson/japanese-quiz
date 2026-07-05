@@ -10,6 +10,7 @@ import QuizResults from './components/QuizResults.vue';
 import StartScreen from './components/StartScreen.vue';
 import AuthModal from './components/AuthModal.vue';
 import LeaderboardModal from './components/LeaderboardModal.vue';
+import { User, KeyRound, Trophy, LogOut } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -76,11 +77,11 @@ const handleLogout = async () => {
       <div class="relative">
         <button 
           @click="toggleUserMenu"
-          class="w-10 h-10 rounded-full bg-white border border-gray-200/80 shadow-md hover:shadow-lg hover:border-indigo-400 transition-all flex items-center justify-center cursor-pointer select-none text-lg"
+          class="w-10 h-10 rounded-full bg-white border border-gray-200/80 shadow-md hover:shadow-lg hover:border-indigo-400 transition-all flex items-center justify-center cursor-pointer select-none"
           title="User Account"
         >
-          <span v-if="authStore.user">👤</span>
-          <span v-else>🔑</span>
+          <User v-if="authStore.user" class="w-5 h-5 text-indigo-600" />
+          <KeyRound v-else class="w-5 h-5 text-gray-500" />
         </button>
         
         <!-- Dropdown Menu (only if logged in) -->
@@ -93,15 +94,17 @@ const handleLogout = async () => {
           </div>
           <button 
             @click="openLeaderboard"
-            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold cursor-pointer"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold cursor-pointer flex items-center gap-2"
           >
-            🏆 Leaderboard
+            <Trophy class="w-4 h-4 text-amber-500" />
+            <span>Leaderboard</span>
           </button>
           <button 
             @click="handleLogout"
-            class="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition border-t border-gray-50 font-semibold cursor-pointer"
+            class="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition border-t border-gray-50 font-semibold cursor-pointer flex items-center gap-2"
           >
-            🚪 Logout
+            <LogOut class="w-4 h-4 text-rose-500" />
+            <span>Logout</span>
           </button>
         </div>
       </div>

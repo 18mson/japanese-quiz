@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
+import { Zap, BookOpen, ChevronDown, ChevronUp } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const questionCount = ref(10);
@@ -170,7 +171,7 @@ const startQuiz = async () => {
       </span>
       <template v-else>
         <span>Start Quiz</span>
-        <span class="text-lg">⚡</span>
+        <Zap class="w-5 h-5 text-amber-300" />
       </template>
     </button>
     
@@ -180,8 +181,12 @@ const startQuiz = async () => {
         @click="showCharts = !showCharts" 
         class="w-full py-3 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 rounded-xl font-bold transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-sm"
       >
-        <span>{{ showCharts ? 'Hide Reference Charts' : '📖 Show Reference Charts' }}</span>
-        <span class="text-xs">{{ showCharts ? '▲' : '▼' }}</span>
+        <span class="flex items-center gap-2">
+          <BookOpen class="w-4 h-4 text-gray-600" />
+          <span>{{ showCharts ? 'Hide Reference Charts' : 'Show Reference Charts' }}</span>
+        </span>
+        <ChevronUp v-if="showCharts" class="w-4 h-4 text-gray-500" />
+        <ChevronDown v-else class="w-4 h-4 text-gray-500" />
       </button>
       
       <div v-if="showCharts" class="mt-4 space-y-6 animate-fadeIn text-left">

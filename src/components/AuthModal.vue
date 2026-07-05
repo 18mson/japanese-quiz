@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
+import { AlertCircle, Sparkles } from '@lucide/vue';
 
 defineProps<{
   isOpen: boolean;
@@ -95,7 +96,7 @@ const handleSubmit = async () => {
           v-if="authStore.errorMsg" 
           class="mb-4 p-3 bg-rose-50 border border-rose-100 text-rose-700 text-xs rounded-xl flex items-center gap-2 animate-shake"
         >
-          <span class="text-base">⚠️</span>
+          <AlertCircle class="w-4 h-4 text-rose-600 flex-shrink-0" />
           <span>{{ authStore.errorMsg }}</span>
         </div>
 
@@ -103,7 +104,7 @@ const handleSubmit = async () => {
           v-if="registerSuccess" 
           class="mb-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs rounded-xl flex items-center gap-2"
         >
-          <span class="text-base">🎉</span>
+          <Sparkles class="w-4 h-4 text-emerald-600 flex-shrink-0" />
           <span>Registration successful! Please Sign In.</span>
         </div>
 

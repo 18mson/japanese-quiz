@@ -24,48 +24,48 @@ export const wordsData: JapaneseWord[] = [
   { character: '学校', kana: 'がっこう', romaji: 'gakkou', meaning: 'School', type: 'word' },
   { character: '駅', kana: 'えき', romaji: 'eki', meaning: 'Station', type: 'word' },
   { character: '家', kana: 'いえ', romaji: 'ie', meaning: 'House / Home', type: 'word' },
-  { character: '部屋', kana: 'heya', romaji: 'heya', meaning: 'Room', type: 'word' },
-  { character: '車', kana: 'kuruma', romaji: 'kuruma', meaning: 'Car', type: 'word' },
+  { character: '部屋', kana: 'へや', romaji: 'heya', meaning: 'Room', type: 'word' },
+  { character: '車', kana: 'くるま', romaji: 'kuruma', meaning: 'Car', type: 'word' },
   { character: '本', kana: 'ほん', romaji: 'hon', meaning: 'Book', type: 'word' },
-  { character: '携帯', kana: 'keitai', romaji: 'keitai', meaning: 'Mobile phone', type: 'word' },
-  { character: '電話', kana: 'denwa', romaji: 'denwa', meaning: 'Telephone', type: 'word' },
-  { character: 'お金', kana: 'okane', romaji: 'okane', meaning: 'Money', type: 'word' },
-  { character: '時間', kana: 'jikan', romaji: 'jikan', meaning: 'Time', type: 'word' },
-  { character: '家族', kana: 'kazoku', romaji: 'kazoku', meaning: 'Family', type: 'word' },
-  { character: '傘', kana: 'kasa', romaji: 'kasa', meaning: 'Umbrella', type: 'word' },
-  { character: '服', kana: 'fuku', romaji: 'fuku', meaning: 'Clothes', type: 'word' },
-
+  { character: '携帯', kana: 'けいたい', romaji: 'keitai', meaning: 'Mobile phone', type: 'word' },
+  { character: '電話', kana: 'でんわ', romaji: 'denwa', meaning: 'Telephone', type: 'word' },
+  { character: 'お金', kana: 'おかね', romaji: 'okane', meaning: 'Money', type: 'word' },
+  { character: '時間', kana: 'じかん', romaji: 'jikan', meaning: 'Time', type: 'word' },
+  { character: '家族', kana: 'かぞく', romaji: 'kazoku', meaning: 'Family', type: 'word' },
+  { character: '傘', kana: 'かさ', romaji: 'kasa', meaning: 'Umbrella', type: 'word' },
+  { character: '服', kana: 'ふく', romaji: 'fuku', meaning: 'Clothes', type: 'word' },
+ 
   // Food & Drink
-  { character: '水', kana: 'mizu', romaji: 'mizu', meaning: 'Water', type: 'word' },
+  { character: '水', kana: 'みず', romaji: 'mizu', meaning: 'Water', type: 'word' },
   { character: 'お茶', kana: 'おちゃ', romaji: 'ocha', meaning: 'Green tea', type: 'word' },
   { character: '寿司', kana: 'すし', romaji: 'sushi', meaning: 'Sushi', type: 'word' },
   { character: 'ラーメン', kana: 'らーめん', romaji: ['raamen', 'ramen'], meaning: 'Ramen', type: 'word' },
   { character: 'コーヒー', kana: 'こーひー', romaji: ['koohii', 'kohi'], meaning: 'Coffee', type: 'word' },
   { character: 'パン', kana: 'ぱん', romaji: 'pan', meaning: 'Bread', type: 'word' },
-
+ 
   // Nature & Environment
-  { character: '猫', kana: 'neko', romaji: 'neko', meaning: 'Cat', type: 'word' },
-  { character: '犬', kana: 'inu', romaji: 'inu', meaning: 'Dog', type: 'word' },
-  { character: '桜', kana: 'sakura', romaji: 'sakura', meaning: 'Cherry blossom', type: 'word' },
-  { character: '空', kana: 'sora', romaji: 'sora', meaning: 'Sky', type: 'word' },
-  { character: '海', kana: 'umi', romaji: 'umi', meaning: 'Sea / Ocean', type: 'word' },
-  { character: '山', kana: 'yama', romaji: 'yama', meaning: 'Mountain', type: 'word' },
-  { character: '川', kana: 'kawa', romaji: 'kawa', meaning: 'River', type: 'word' },
-  { character: '花', kana: 'hana', romaji: 'hana', meaning: 'Flower', type: 'word' },
-  { character: '雨', kana: 'ame', romaji: 'ame', meaning: 'Rain', type: 'word' },
+  { character: '猫', kana: 'ねこ', romaji: 'neko', meaning: 'Cat', type: 'word' },
+  { character: '犬', kana: 'いぬ', romaji: 'inu', meaning: 'Dog', type: 'word' },
+  { character: '桜', kana: 'さくら', romaji: 'sakura', meaning: 'Cherry blossom', type: 'word' },
+  { character: '空', kana: 'そら', romaji: 'sora', meaning: 'Sky', type: 'word' },
+  { character: '海', kana: 'うみ', romaji: 'umi', meaning: 'Sea / Ocean', type: 'word' },
+  { character: '山', kana: 'やま', romaji: 'yama', meaning: 'Mountain', type: 'word' },
+  { character: '川', kana: 'かわ', romaji: 'kawa', meaning: 'River', type: 'word' },
+  { character: '花', kana: 'はな', romaji: 'hana', meaning: 'Flower', type: 'word' },
+  { character: '雨', kana: 'あめ', romaji: 'ame', meaning: 'Rain', type: 'word' },
 
   // Time Words
   { character: '今日', kana: 'きょう', romaji: ['kyou', 'kyo'], meaning: 'Today', type: 'word' },
   { character: '明日', kana: 'あした', romaji: 'ashita', meaning: 'Tomorrow', type: 'word' },
   { character: '昨日', kana: 'きのう', romaji: ['kinou', 'kino'], meaning: 'Yesterday', type: 'word' },
   { character: '今', kana: 'いま', romaji: 'ima', meaning: 'Now', type: 'word' },
-
+ 
   // Katakana Loanwords & Countries
   { character: 'アニメ', kana: 'あにめ', romaji: 'anime', meaning: 'Anime', type: 'word' },
   { character: 'コンビニ', kana: 'こんびに', romaji: 'konbini', meaning: 'Convenience store', type: 'word' },
   { character: 'パソコン', kana: 'ぱそこん', romaji: 'pasokon', meaning: 'Personal computer', type: 'word' },
   { character: 'テレビ', kana: 'てれび', romaji: 'terebi', meaning: 'TV', type: 'word' },
-  { character: 'カメラ', kana: 'kameら', romaji: 'kamera', meaning: 'Camera', type: 'word' },
+  { character: 'カメラ', kana: 'かめら', romaji: 'kamera', meaning: 'Camera', type: 'word' },
   { character: 'ホテル', kana: 'ほてる', romaji: 'hoteru', meaning: 'Hotel', type: 'word' },
   { character: 'アメリカ', kana: 'アメリカ', romaji: 'amerika', meaning: 'Amerika Serikat', type: 'word', lesson: 'Pelajaran 1' },
   { character: 'イギリス', kana: 'イギリス', romaji: 'igirisu', meaning: 'Inggris', type: 'word', lesson: 'Pelajaran 1' },
@@ -74,11 +74,11 @@ export const wordsData: JapaneseWord[] = [
   { character: 'タイ', kana: 'タイ', romaji: 'tai', meaning: 'Thailan (Thailand)', type: 'word', lesson: 'Pelajaran 1' },
   { character: 'ドイツ', kana: 'ドイツ', romaji: 'doitsu', meaning: 'Jerman', type: 'word', lesson: 'Pelajaran 1' },
   { character: 'ブラジル', kana: 'ブラジル', romaji: 'burajiru', meaning: 'Brasil', type: 'word', lesson: 'Pelajaran 1' },
-
+ 
   // Common Adjectives & Verbs
   { character: '美味しい', kana: 'おいしい', romaji: 'oishii', meaning: 'Delicious', type: 'word' },
-  { character: '食べる', kana: 'taberu', romaji: 'taberu', meaning: 'To eat', type: 'word' },
-  { character: '飲む', kana: 'nomu', romaji: 'nomu', meaning: 'To drink', type: 'word' },
+  { character: '食べる', kana: 'たべる', romaji: 'taberu', meaning: 'To eat', type: 'word' },
+  { character: '飲む', kana: 'のむ', romaji: 'nomu', meaning: 'To drink', type: 'word' },
   { character: '可愛い', kana: 'かわいい', romaji: 'kawaii', meaning: 'Cute', type: 'word' },
 
   // --- NEW MINNA NO NIHONGO LESSON 1 WORDS ---

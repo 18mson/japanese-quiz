@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { supabase } from '../lib/supabaseClient';
+import { Trophy, Medal, Zap } from '@lucide/vue';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -76,7 +77,7 @@ watch(activeTab, () => {
       <!-- Header -->
       <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between flex-shrink-0">
         <h3 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
-          🏆 <span>Leaderboard</span>
+          <Trophy class="w-5 h-5 text-amber-500" /> <span>Leaderboard</span>
         </h3>
         <button 
           @click="emit('close')"
@@ -133,10 +134,12 @@ watch(activeTab, () => {
                 class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
               >
                 <td class="py-3.5 font-extrabold text-sm text-gray-500">
-                  <span v-if="idx === 0" class="text-lg">🥇</span>
-                  <span v-else-if="idx === 1" class="text-lg">🥈</span>
-                  <span v-else-if="idx === 2" class="text-lg">🥉</span>
-                  <span v-else>#{{ idx + 1 }}</span>
+                  <div class="flex items-center">
+                    <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
+                    <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
+                    <Medal v-else-if="idx === 2" class="w-5 h-5 text-amber-700 fill-amber-700/20" />
+                    <span v-else>#{{ idx + 1 }}</span>
+                  </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800">
                   {{ row.username }}
@@ -174,10 +177,10 @@ watch(activeTab, () => {
                 class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
               >
                 <td class="py-3.5 font-extrabold text-sm text-gray-500">
-                  <span v-if="idx === 0" class="text-lg">⚡</span>
-                  <span v-else-if="idx === 1" class="text-md font-extrabold text-gray-700">#2</span>
-                  <span v-else-if="idx === 2" class="text-md font-extrabold text-gray-700">#3</span>
-                  <span v-else>#{{ idx + 1 }}</span>
+                  <div class="flex items-center">
+                    <Zap v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
+                    <span v-else>#{{ idx + 1 }}</span>
+                  </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800">
                   {{ row.username }}

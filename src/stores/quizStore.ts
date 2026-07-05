@@ -319,7 +319,7 @@ export const useQuizStore = defineStore('quiz', () => {
         isCorrectVal = true;
         isTypo = false;
       } else if (isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji)) {
-        isCorrectVal = true;
+        isCorrectVal = false; // Typo gets marked as INCORRECT response!
         isTypo = true;
       }
     }
@@ -336,12 +336,7 @@ export const useQuizStore = defineStore('quiz', () => {
         } else if (hintsUsed === 2) {
           basePoints = 2;
         }
-        
-        if (isTypo) {
-          pointsEarned = Math.max(1, basePoints - 1);
-        } else {
-          pointsEarned = basePoints;
-        }
+        pointsEarned = basePoints;
       } else {
         // Multiple choice always gets 4 points
         pointsEarned = 4;
@@ -350,6 +345,10 @@ export const useQuizStore = defineStore('quiz', () => {
       score.value += pointsEarned;
       correctSound.play().catch(err => console.log('Audio playback prevented:', err));
     } else {
+      if (isTypo) {
+        pointsEarned = 1; // Typo still gets 1 point
+        score.value += pointsEarned;
+      }
       incorrectSound.play().catch(err => console.log('Audio playback prevented:', err));
     }
     

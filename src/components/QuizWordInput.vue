@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, nextTick, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
+import { Check, X, AlertTriangle } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const userInput = computed({
@@ -52,6 +53,11 @@ const correctRomajiDisplay = computed(() => {
     ? currentWord.value.romaji.join(' or ') 
     : currentWord.value.romaji;
 });
+
+const isTypo = computed(() => {
+  const lastAns = quizStore.userAnswers[quizStore.userAnswers.length - 1];
+  return lastAns && lastAns.character === currentWord.value?.character && lastAns.isTypo;
+});
 </script>
 
 <template>
@@ -90,25 +96,31 @@ const correctRomajiDisplay = computed(() => {
         :class="[
           quizStore.isAnswerCorrect 
             ? 'bg-emerald-50 border-emerald-200 text-emerald-900 shadow-emerald-100/50' 
-            : 'bg-rose-50 border-rose-200 text-rose-900 shadow-rose-100/50'
+            : (isTypo 
+              ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-amber-100/50' 
+              : 'bg-rose-50 border-rose-200 text-rose-900 shadow-rose-100/50')
         ]"
       >
         <div class="flex flex-col items-center gap-2">
           <!-- Checkmark/cross icon -->
           <div 
             class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-2 shadow-md transition-transform scale-100 duration-500 animate-icon-pop"
-            :class="quizStore.isAnswerCorrect ? 'bg-emerald-500' : 'bg-rose-500'"
+            :class="quizStore.isAnswerCorrect ? 'bg-emerald-500' : (isTypo ? 'bg-amber-500' : 'bg-rose-500')"
           >
-            <span class="text-2xl font-bold">{{ quizStore.isAnswerCorrect ? '✓' : '✗' }}</span>
+            <Check v-if="quizStore.isAnswerCorrect" class="w-6 h-6 stroke-[3px]" />
+            <AlertTriangle v-else-if="isTypo" class="w-6 h-6 stroke-[2.5px]" />
+            <X v-else class="w-6 h-6 stroke-[3px]" />
           </div>
 
           <h3 class="text-2xl font-bold tracking-tight">
-            {{ quizStore.isAnswerCorrect ? 'Correct! True' : 'Incorrect. False' }}
+            <template v-if="quizStore.isAnswerCorrect">Correct! True</template>
+            <template v-else-if="isTypo">Almost! Typo (+1 Pt)</template>
+            <template v-else>Incorrect. False</template>
           </h3>
           
           <div class="mt-2 space-y-1">
             <p v-if="!quizStore.isAnswerCorrect" class="text-sm">
-              Your answer: <span class="font-mono bg-rose-100 px-2 py-0.5 rounded text-rose-800">{{ userInput || '(skipped)' }}</span>
+              Your answer: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'">{{ userInput || '(skipped)' }}</span>
             </p>
             <p class="text-base font-semibold">
               Correct Romaji: <span class="font-mono bg-white border border-gray-200 px-2 py-0.5 rounded text-indigo-700 shadow-sm">{{ correctRomajiDisplay }}</span>

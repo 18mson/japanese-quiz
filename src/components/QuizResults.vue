@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useQuizStore } from '../stores/quizStore';
+import { Home, Trophy, Lightbulb } from '@lucide/vue';
 
 const emit = defineEmits<{
   (e: 'home'): void;
@@ -104,8 +105,9 @@ const getScoreMessage = () => {
               </span>
 
               <!-- Hints badge -->
-              <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.5 rounded">
-                💡 {{ answer.hintsUsed }} Hint{{ answer.hintsUsed > 1 ? 's' : '' }}
+              <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.5 rounded flex items-center gap-1">
+                <Lightbulb class="w-2.5 h-2.5 text-violet-800" />
+                <span>{{ answer.hintsUsed }} Hint{{ answer.hintsUsed > 1 ? 's' : '' }}</span>
               </span>
 
               <!-- Kana reading badge -->
@@ -118,7 +120,7 @@ const getScoreMessage = () => {
                 {{ quizStore.isTypingMode ? 'You typed:' : 'You chose:' }} <code class="font-mono bg-gray-100 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'You typed:' : 'You chose:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> | Correct: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'You typed:' : 'You chose:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> <span v-if="answer.isTypo" class="text-[9px] font-bold bg-amber-100 text-amber-800 px-1 py-0.5 rounded ml-1">Typo</span> | Correct: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
               </template>
             </span>
             <span v-if="answer.meaning" class="text-[10px] text-gray-500 italic mt-0.5">
@@ -136,7 +138,7 @@ const getScoreMessage = () => {
         @click="emit('home')"
         title="Go to Home"
       >
-        🏠
+        <Home class="w-5 h-5 text-gray-600" />
       </button>
       
       <!-- Try Again Button (center/main) -->
@@ -153,7 +155,7 @@ const getScoreMessage = () => {
         @click="emit('leaderboard')"
         title="View Leaderboard"
       >
-        🏆
+        <Trophy class="w-5 h-5 text-amber-600" />
       </button>
     </div>
   </div>

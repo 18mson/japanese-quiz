@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
+import { Lightbulb, BookOpen } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 
@@ -23,6 +24,13 @@ const isWord = computed(() => {
 
 const currentKana = computed(() => {
   return (quizStore.currentQuestion as any)?.kana || '';
+});
+
+const hasValidReadingHint = computed(() => {
+  const kana = currentKana.value.trim();
+  if (!kana) return false;
+  // Hide hint if it contains any Latin characters (Romaji)
+  return !/[a-zA-Z]/.test(kana);
 });
 
 const currentMeaning = computed(() => {
@@ -65,24 +73,28 @@ const instructionText = computed(() => {
         <!-- Interactive Hints (Only for Words Quiz when not answered yet) -->
         <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-2.5 flex gap-2 flex-wrap justify-center animate-fadeIn">
           <!-- Reading Hint Button/Pill -->
-          <button 
-            v-if="!showReadingHint"
-            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
-            @click="showReadingHint = true"
-          >
-            💡 Reading Hint
-          </button>
-          <span v-else class="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-            Reading: {{ currentKana }}
-          </span>
+          <template v-if="hasValidReadingHint">
+            <button 
+              v-if="!showReadingHint"
+              class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+              @click="showReadingHint = true"
+            >
+              <Lightbulb class="w-3 h-3 text-indigo-600" />
+              <span>Reading Hint</span>
+            </button>
+            <span v-else class="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+              Reading: {{ currentKana }}
+            </span>
+          </template>
 
           <!-- Meaning Hint Button/Pill -->
           <button 
             v-if="!showMeaningHint"
-            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none"
+            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
             @click="showMeaningHint = true"
           >
-            📝 Meaning Hint
+            <BookOpen class="w-3 h-3 text-indigo-600" />
+            <span>Meaning Hint</span>
           </button>
           <span v-else class="text-xs font-medium text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
             Meaning: {{ currentMeaning }}
