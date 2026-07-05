@@ -84,7 +84,7 @@ const startQuiz = async () => {
           <div v-if="selectedLevel === 'n5'" class="absolute top-0 right-0 w-24 h-24 bg-violet-500/10 rounded-full blur-xl -mr-6 -mt-6"></div>
           <div>
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xl font-bold text-gray-900">JLPT N5 Level</h3>
+              <h3 class="text-xl font-bold text-gray-900">Road to N5</h3>
               <span 
                 :class="[
                   'text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider',

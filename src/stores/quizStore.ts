@@ -126,6 +126,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const quizCompleted = ref(false);
   const startTime = ref(0);
   const endTime = ref(0);
+  const newRecordAchieved = ref(false);
   const userAnswers = ref<{ 
     character: string; 
     correctRomaji: string; 
@@ -193,6 +194,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userInput.value = '';
     showReadingHint.value = false;
     showMeaningHint.value = false;
+    newRecordAchieved.value = false;
 
     // Load mastery streaks from server/local
     await loadStreaksFromServer();
@@ -408,6 +410,52 @@ export const useQuizStore = defineStore('quiz', () => {
     const usernameVal = authStore.displayUsername || 'Anonymous';
     
     try {
+      // Check if this attempt breaks any record BEFORE inserting
+      // 1. Check speed leaderboard
+      const { data: topSpeed } = await supabase
+        .from('leaderboard_speed')
+        .select('duration_seconds')
+        .limit(10);
+        
+      let isSpeedRecord = false;
+      if (!topSpeed || topSpeed.length < 10) {
+        isSpeedRecord = true;
+      } else {
+        const slowestTopTime = Math.max(...topSpeed.map(r => r.duration_seconds));
+        if (durationSeconds < slowestTopTime) {
+          isSpeedRecord = true;
+        }
+      }
+      
+      // 2. Check cumulative leaderboard
+      const { data: topCumulative } = await supabase
+        .from('leaderboard_cumulative')
+        .select('total_score')
+        .limit(10);
+        
+      // Fetch user's previous total score
+      const { data: userPrev } = await supabase
+        .from('leaderboard_cumulative')
+        .select('total_score')
+        .eq('username', usernameVal)
+        .maybeSingle();
+        
+      const newTotalScore = (userPrev?.total_score || 0) + score.value;
+      
+      let isCumulativeRecord = false;
+      if (!topCumulative || topCumulative.length < 10) {
+        isCumulativeRecord = true;
+      } else {
+        const lowestTopScore = Math.min(...topCumulative.map(r => r.total_score));
+        if (newTotalScore > lowestTopScore) {
+          isCumulativeRecord = true;
+        }
+      }
+
+      if (isSpeedRecord || isCumulativeRecord) {
+        newRecordAchieved.value = true;
+      }
+
       const { error } = await supabase
         .from('leaderboard')
         .insert({
@@ -475,6 +523,7 @@ export const useQuizStore = defineStore('quiz', () => {
     quizCompleted,
     startTime,
     endTime,
+    newRecordAchieved,
     userAnswers,
     currentQuestion,
     options,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import QuizHeader from './components/QuizHeader.vue';
@@ -19,6 +19,14 @@ const quizStarted = ref(false);
 const showDropdown = ref(false);
 const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
+
+watch(() => quizStore.newRecordAchieved, (newVal) => {
+  if (newVal) {
+    setTimeout(() => {
+      showLeaderboardModal.value = true;
+    }, 2000);
+  }
+});
 
 const handleGlobalKeydown = (event: KeyboardEvent) => {
   if (!quizStarted.value || quizStore.quizCompleted) return;

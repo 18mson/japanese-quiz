@@ -31,6 +31,25 @@ const getScoreMessage = () => {
 <template>
   <div class="p-4 md:p-6 max-w-3xl mx-auto animate-slide-up w-full h-full flex flex-col overflow-hidden" v-if="quizStore.quizCompleted">
     <h2 class="text-xl text-gray-800 text-center mb-4 font-bold flex-shrink-0">Quiz Results</h2>
+
+    <!-- New Record Celebration Banner -->
+    <div 
+      v-if="quizStore.newRecordAchieved" 
+      class="mb-4 p-4 bg-gradient-to-r from-amber-500/10 via-yellow-500/20 to-amber-500/10 border border-amber-300 rounded-2xl text-center shadow-lg relative overflow-hidden animate-pulse-border flex-shrink-0"
+    >
+      <div class="absolute inset-0 pointer-events-none opacity-45">
+        <div class="sparkle s1">✨</div>
+        <div class="sparkle s2">⭐</div>
+        <div class="sparkle s3">✨</div>
+        <div class="sparkle s4">⭐</div>
+      </div>
+      
+      <div class="flex flex-col items-center gap-1.5 relative z-10 animate-bounce-slow">
+        <Trophy class="w-10 h-10 text-amber-500 fill-amber-500/20 drop-shadow animate-spin-slow" />
+        <h3 class="text-md font-black text-amber-900 uppercase tracking-wider">New Leaderboard Record!</h3>
+        <p class="text-xs text-amber-800 font-semibold leading-relaxed">You successfully broke into the top 10 rankings! Opening leaderboard shortly...</p>
+      </div>
+    </div>
     
     <div class="flex flex-col items-center mb-6 flex-shrink-0">
       <div class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex items-center justify-center mb-2 shadow-lg border-4 border-white">
@@ -166,4 +185,43 @@ const getScoreMessage = () => {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.1), 0 2px 4px -1px rgba(245, 158, 11, 0.06); border-color: rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3), 0 4px 6px -2px rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.8); }
+}
+.animate-pulse-border {
+  animation: pulse-border 2s infinite ease-in-out;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
+
+@keyframes float-sparkle {
+  0% { transform: translateY(10px) scale(0.6); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-20px) scale(1); opacity: 0; }
+}
+.sparkle {
+  position: absolute;
+  font-size: 14px;
+  animation: float-sparkle 2.5s infinite linear;
+}
+.s1 { top: 10%; left: 15%; animation-delay: 0s; }
+.s2 { top: 40%; left: 80%; animation-delay: 0.6s; }
+.s3 { top: 70%; left: 25%; animation-delay: 1.2s; }
+.s4 { top: 20%; left: 70%; animation-delay: 1.8s; }
 </style>
