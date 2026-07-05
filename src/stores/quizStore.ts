@@ -24,21 +24,108 @@ const normalizeRomajiForComparison = (str: string): string => {
     .replace(/j/g, 'zy');   // normalize ja/jo/ju
 };
 
+const getLevenshteinDistance = (a: string, b: string): number => {
+  const tmp = [];
+  let i, j;
+  for (i = 0; i <= a.length; i++) {
+    tmp[i] = [i];
+  }
+  for (j = 0; j <= b.length; j++) {
+    tmp[0][j] = j;
+  }
+  for (i = 1; i <= a.length; i++) {
+    for (j = 1; j <= b.length; j++) {
+      tmp[i][j] = Math.min(
+        tmp[i - 1][j] + 1, // deletion
+        tmp[i][j - 1] + 1, // insertion
+        tmp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1) // substitution
+      );
+    }
+  }
+  return tmp[a.length][b.length];
+};
+
+const checkIsCorrect = (userInputClean: string, targetRomaji: string | string[]): boolean => {
+  const targets = Array.isArray(targetRomaji) ? targetRomaji : [targetRomaji];
+  return targets.some(t => {
+    return normalizeRomajiForComparison(userInputClean) === normalizeRomajiForComparison(t);
+  });
+};
+
+const checkIsTypo = (userInputClean: string, targetRomaji: string | string[]): boolean => {
+  const targets = Array.isArray(targetRomaji) ? targetRomaji : [targetRomaji];
+  return targets.some(t => {
+    const normUser = normalizeRomajiForComparison(userInputClean);
+    const normTarget = normalizeRomajiForComparison(t);
+    if (normUser === normTarget) return false;
+    const dist = getLevenshteinDistance(normUser, normTarget);
+    return dist === 1;
+  });
+};
+
 export const useQuizStore = defineStore('quiz', () => {
   // State
   const isLoading = ref(false);
+  const userStreaks = ref<Record<string, number>>({});
+
+  const getOrCreateUserId = (): string => {
+    let userId = localStorage.getItem('japanese-quiz-user-id');
+    if (!userId) {
+      userId = crypto.randomUUID();
+      localStorage.setItem('japanese-quiz-user-id', userId);
+    }
+    return userId;
+  };
+
+  const loadStreaksFromServer = async () => {
+    const userId = getOrCreateUserId();
+    try {
+      const { data, error } = await supabase
+        .from('user_streaks')
+        .select('character, streak')
+        .eq('user_id', userId);
+      
+      if (error) throw error;
+      
+      const newStreaks: Record<string, number> = {};
+      if (data) {
+        data.forEach(item => {
+          newStreaks[item.character] = item.streak;
+        });
+      }
+      userStreaks.value = newStreaks;
+      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(newStreaks));
+    } catch (e) {
+      console.error('Failed to load streaks from server, using local fallback:', e);
+      try {
+        const stored = localStorage.getItem('japanese-quiz-streaks');
+        if (stored) userStreaks.value = JSON.parse(stored);
+      } catch (localErr) {
+        console.error('Failed to read local streaks:', localErr);
+      }
+    }
+  };
+
+  const getMasteryStreak = (character: string): number => {
+    return userStreaks.value[character] || 0;
+  };
+
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const questionType = ref('hiragana'); // 'hiragana', 'katakana', or 'words'
   const isTypingMode = computed(() => {
     return quizLevel.value === 'n5' || questionType.value === 'words';
   });
   const userInput = ref('');
+  const showReadingHint = ref(false);
+  const showMeaningHint = ref(false);
   const currentQuestionIndex = ref(0);
   const score = ref(0);
   const questions = ref<(HiraganaCharacter | JapaneseWord)[]>([]);
   const selectedAnswer = ref<string | null>(null);
   const isAnswerCorrect = ref<boolean | null>(null);
   const quizCompleted = ref(false);
+  const startTime = ref(0);
+  const endTime = ref(0);
   const userAnswers = ref<{ 
     character: string; 
     correctRomaji: string; 
@@ -46,6 +133,10 @@ export const useQuizStore = defineStore('quiz', () => {
     isCorrect: boolean; 
     kana?: string;
     meaning?: string;
+    pointsEarned: number;
+    maxPoints: number;
+    isTypo: boolean;
+    hintsUsed: number;
   }[]>([]);
 
   const correctSound = new Audio(correct);
@@ -56,26 +147,35 @@ export const useQuizStore = defineStore('quiz', () => {
   
   // Get a random set of characters/words for the quiz
   const getRandomQuestionSet = (count: number = 10, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
-    const shuffled = [];
+    let pool: any[] = [];
     if (type === 'hiragana') {
-      let pool = [...hiraganaData];
+      pool = [...hiraganaData];
       if (level === 'basic') {
         pool = pool.filter(c => c.type === 'basic');
       }
-      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     } else if (type === 'katakana') {
-      let pool = [...katakanaData];
+      pool = [...katakanaData];
       if (level === 'basic') {
         pool = pool.filter(c => c.type === 'basic');
       }
-      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     } else if (type === 'words') {
-      let pool = [...wordsData];
+      pool = [...wordsData];
       if (level === 'basic') {
         pool = pool.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character));
       }
-      shuffled.push(...pool.sort(() => 0.5 - Math.random()));
     }
+    
+    // Apply spaced repetition streaks filter
+    let filteredPool = pool.filter(item => {
+      const streak = getMasteryStreak(item.character);
+      return streak < 3 || Math.random() > 0.85;
+    });
+    
+    if (filteredPool.length < count) {
+      filteredPool = [...pool];
+    }
+    
+    const shuffled = [...filteredPool].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   };
   
@@ -91,6 +191,12 @@ export const useQuizStore = defineStore('quiz', () => {
     isAnswerCorrect.value = null;
     userAnswers.value = [];
     userInput.value = '';
+    showReadingHint.value = false;
+    showMeaningHint.value = false;
+
+    // Load mastery streaks from server/local
+    await loadStreaksFromServer();
+    startTime.value = Date.now();
 
     try {
       let query = supabase
@@ -120,18 +226,30 @@ export const useQuizStore = defineStore('quiz', () => {
             romaji: item.romaji,
             kana: item.kana,
             meaning: item.meaning,
-            type: 'word' as const
+            type: 'word' as const,
+            lesson: item.lesson
           };
         } else {
           return {
             character: item.character,
             romaji: item.romaji[0],
-            type: item.type as 'basic' | 'dakuten' | 'combination'
+            type: item.type as 'basic' | 'dakuten' | 'combination',
+            lesson: item.lesson
           };
         }
       });
 
-      questions.value = [...mappedData]
+      // Apply spaced repetition filter to pool
+      let filteredData = mappedData.filter(item => {
+        const streak = getMasteryStreak(item.character);
+        return streak < 3 || Math.random() > 0.85;
+      });
+
+      if (filteredData.length < questionCount) {
+        filteredData = [...mappedData];
+      }
+
+      questions.value = [...filteredData]
         .sort(() => 0.5 - Math.random())
         .slice(0, questionCount);
 
@@ -189,25 +307,79 @@ export const useQuizStore = defineStore('quiz', () => {
     
     const userAnswerClean = romaji.trim().toLowerCase();
     const current = currentQuestion.value;
-    let correct = false;
+    
+    let isCorrectVal = false;
+    let isTypo = false;
+    let hintsUsed = 0;
+    if (showReadingHint.value) hintsUsed++;
+    if (showMeaningHint.value) hintsUsed++;
     
     if (current) {
-      const target = current.romaji;
-      if (Array.isArray(target)) {
-        correct = target.some(t => normalizeRomajiForComparison(t) === normalizeRomajiForComparison(userAnswerClean));
-      } else {
-        correct = normalizeRomajiForComparison(target) === normalizeRomajiForComparison(userAnswerClean);
+      if (checkIsCorrect(userAnswerClean, current.romaji)) {
+        isCorrectVal = true;
+        isTypo = false;
+      } else if (isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji)) {
+        isCorrectVal = true;
+        isTypo = true;
       }
     }
     
     selectedAnswer.value = romaji;
-    isAnswerCorrect.value = correct;
+    isAnswerCorrect.value = isCorrectVal;
     
-    if (correct) {
-      score.value++;
+    let pointsEarned = 0;
+    if (isCorrectVal) {
+      if (isTypingMode.value) {
+        let basePoints = 4;
+        if (hintsUsed === 1) {
+          basePoints = 3;
+        } else if (hintsUsed === 2) {
+          basePoints = 2;
+        }
+        
+        if (isTypo) {
+          pointsEarned = Math.max(1, basePoints - 1);
+        } else {
+          pointsEarned = basePoints;
+        }
+      } else {
+        // Multiple choice always gets 4 points
+        pointsEarned = 4;
+      }
+      
+      score.value += pointsEarned;
       correctSound.play().catch(err => console.log('Audio playback prevented:', err));
     } else {
       incorrectSound.play().catch(err => console.log('Audio playback prevented:', err));
+    }
+    
+    // Update mastery streaks in Supabase and locally
+    if (current) {
+      const charKey = current.character;
+      const isFullScore = pointsEarned === 4;
+      const newStreak = isFullScore ? (userStreaks.value[charKey] || 0) + 1 : 0;
+      
+      // Update local cache immediately
+      userStreaks.value[charKey] = newStreak;
+      try {
+        localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value));
+      } catch (e) {
+        console.error('Failed to save streaks locally:', e);
+      }
+      
+      // Sync to Supabase asynchronously
+      const userId = getOrCreateUserId();
+      supabase
+        .from('user_streaks')
+        .upsert(
+          { user_id: userId, character: charKey, streak: newStreak },
+          { onConflict: 'user_id,character' }
+        )
+        .then(({ error }) => {
+          if (error) {
+            console.error('Failed to sync streak to Supabase:', error);
+          }
+        });
     }
     
     // Record user's answer
@@ -216,23 +388,59 @@ export const useQuizStore = defineStore('quiz', () => {
         character: current.character,
         correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
         userRomaji: romaji || '(skipped)',
-        isCorrect: correct,
+        isCorrect: isCorrectVal,
         kana: (current as any).kana,
-        meaning: (current as any).meaning
+        meaning: (current as any).meaning,
+        pointsEarned: pointsEarned,
+        maxPoints: 4,
+        isTypo: isTypo,
+        hintsUsed: hintsUsed
       });
     }
   };
   
+  const submitToLeaderboard = async () => {
+    const { useAuthStore } = await import('./authStore');
+    const authStore = useAuthStore();
+    
+    if (!authStore.user) return; // Only submit if logged in
+    
+    const durationSeconds = (endTime.value - startTime.value) / 1000;
+    const usernameVal = authStore.displayUsername || 'Anonymous';
+    
+    try {
+      const { error } = await supabase
+        .from('leaderboard')
+        .insert({
+          user_id: authStore.user.id,
+          username: usernameVal,
+          score: score.value,
+          duration_seconds: durationSeconds,
+          quiz_type: questionType.value,
+          quiz_level: quizLevel.value
+        });
+        
+      if (error) throw error;
+      console.log('Successfully submitted score to leaderboard!');
+    } catch (err) {
+      console.error('Failed to submit to leaderboard:', err);
+    }
+  };
+
   // Move to next question
   const nextQuestion = () => {
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
     userInput.value = '';
+    showReadingHint.value = false;
+    showMeaningHint.value = false;
     
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
     } else {
       quizCompleted.value = true;
+      endTime.value = Date.now();
+      submitToLeaderboard();
     }
   };
   
@@ -246,9 +454,10 @@ export const useQuizStore = defineStore('quiz', () => {
     return ((currentQuestionIndex.value + 1) / questions.value.length) * 100;
   });
   
-  // Final score as percentage
+  // Final score as percentage (based on max possible points)
   const finalScore = computed(() => {
-    return (score.value / questions.value.length) * 100;
+    if (questions.value.length === 0) return 0;
+    return (score.value / (questions.value.length * 4)) * 100;
   });
   
   return {
@@ -257,20 +466,27 @@ export const useQuizStore = defineStore('quiz', () => {
     questionType,
     isTypingMode,
     userInput,
+    showReadingHint,
+    showMeaningHint,
     currentQuestionIndex,
     score,
     questions,
     selectedAnswer,
     isAnswerCorrect,
     quizCompleted,
+    startTime,
+    endTime,
     userAnswers,
     currentQuestion,
     options,
     progress,
     finalScore,
+    userStreaks,
+    loadStreaksFromServer,
     startQuiz,
     submitAnswer,
     nextQuestion,
-    restartQuiz
+    restartQuiz,
+    submitToLeaderboard
   };
 });

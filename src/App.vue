@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from './stores/quizStore';
+import { useAuthStore } from './stores/authStore';
 import QuizHeader from './components/QuizHeader.vue';
 import QuizQuestion from './components/QuizQuestion.vue';
 import QuizOptions from './components/QuizOptions.vue';
 import QuizWordInput from './components/QuizWordInput.vue';
 import QuizResults from './components/QuizResults.vue';
 import StartScreen from './components/StartScreen.vue';
+import AuthModal from './components/AuthModal.vue';
+import LeaderboardModal from './components/LeaderboardModal.vue';
 
 const quizStore = useQuizStore();
+const authStore = useAuthStore();
 const quizStarted = ref(false);
+
+const showDropdown = ref(false);
+const showAuthModal = ref(false);
+const showLeaderboardModal = ref(false);
 
 const handleGlobalKeydown = (event: KeyboardEvent) => {
   if (!quizStarted.value || quizStore.quizCompleted) return;
@@ -22,8 +30,10 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   window.addEventListener('keydown', handleGlobalKeydown);
+  // Check user auth session
+  await authStore.checkSession();
   // Initialize the quiz but don't start it yet
   quizStore.startQuiz(10);
 });
@@ -39,10 +49,68 @@ const startQuiz = () => {
 const goToHome = () => {
   quizStarted.value = false;
 };
+
+const toggleUserMenu = () => {
+  if (authStore.user) {
+    showDropdown.value = !showDropdown.value;
+  } else {
+    showAuthModal.value = true;
+  }
+};
+
+const openLeaderboard = () => {
+  showDropdown.value = false;
+  showLeaderboardModal.value = true;
+};
+
+const handleLogout = async () => {
+  showDropdown.value = false;
+  await authStore.logout();
+};
 </script>
 
 <template>
-  <div class="h-screen max-h-screen overflow-hidden flex flex-col bg-gray-50 text-gray-800">
+  <div class="h-screen max-h-screen overflow-hidden flex flex-col bg-gray-50 text-gray-800 relative">
+    <!-- Top-Right User Menu -->
+    <div class="absolute top-4 right-4 z-40">
+      <div class="relative">
+        <button 
+          @click="toggleUserMenu"
+          class="w-10 h-10 rounded-full bg-white border border-gray-200/80 shadow-md hover:shadow-lg hover:border-indigo-400 transition-all flex items-center justify-center cursor-pointer select-none text-lg"
+          title="User Account"
+        >
+          <span v-if="authStore.user">👤</span>
+          <span v-else>🔑</span>
+        </button>
+        
+        <!-- Dropdown Menu (only if logged in) -->
+        <div 
+          v-if="showDropdown && authStore.user"
+          class="absolute right-0 mt-2 w-48 bg-white border border-gray-150 rounded-2xl shadow-xl py-2 z-50 animate-slide-down"
+        >
+          <div class="px-4 py-2 border-b border-gray-100 text-xs font-bold text-gray-400 truncate">
+            Hi, {{ authStore.displayUsername }}!
+          </div>
+          <button 
+            @click="openLeaderboard"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold cursor-pointer"
+          >
+            🏆 Leaderboard
+          </button>
+          <button 
+            @click="handleLogout"
+            class="w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition border-t border-gray-50 font-semibold cursor-pointer"
+          >
+            🚪 Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <AuthModal :is-open="showAuthModal" @close="showAuthModal = false" />
+    <LeaderboardModal :is-open="showLeaderboardModal" @close="showLeaderboardModal = false" />
+
     <StartScreen v-if="!quizStarted" @start="startQuiz" />
     <div v-else class="max-w-2xl w-full mx-auto p-4 flex flex-col h-full overflow-hidden relative" :class="{ 'pb-20': quizStore.isTypingMode || quizStore.selectedAnswer !== null }">
       <QuizHeader class="flex-shrink-0" />
@@ -55,7 +123,7 @@ const goToHome = () => {
         </div>
       </main>
       
-      <QuizResults v-else class="flex-1 overflow-hidden" />
+      <QuizResults v-else class="flex-1 overflow-hidden" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       
       <!-- Fixed/Pinned Bottom Action Navbar (Full Viewport Width) -->
       <div 
@@ -95,14 +163,24 @@ const goToHome = () => {
         </div>
       </div>
 
-      <footer v-if="quizStarted && quizStore.quizCompleted" class="py-2 text-center flex-shrink-0">
-        <button 
-          class="px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-base font-semibold cursor-pointer transition-transform hover:bg-indigo-700"
-          @click="goToHome"
-        >
-          Go to Home
-        </button>
-      </footer>
     </div>
   </div>
 </template>
+
+<style>
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-down {
+  animation: slide-down 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+</style>

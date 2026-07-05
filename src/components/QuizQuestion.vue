@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 
 const quizStore = useQuizStore();
 
-const showReadingHint = ref(false);
-const showMeaningHint = ref(false);
-
-// Reset hints on next question
-watch(() => quizStore.currentQuestionIndex, () => {
-  showReadingHint.value = false;
-  showMeaningHint.value = false;
+const showReadingHint = computed({
+  get: () => quizStore.showReadingHint,
+  set: (val) => quizStore.showReadingHint = val
+});
+const showMeaningHint = computed({
+  get: () => quizStore.showMeaningHint,
+  set: (val) => quizStore.showMeaningHint = val
 });
 
 const character = computed(() => {
