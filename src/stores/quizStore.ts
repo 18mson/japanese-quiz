@@ -208,13 +208,11 @@ export const useQuizStore = defineStore('quiz', () => {
   const startQuiz = async (
     questionCount: number = 10, 
     type: string = 'hiragana', 
-    level: 'basic' | 'n5' = 'basic',
-    lesson: string = 'all'
+    level: 'basic' | 'n5' = 'basic'
   ) => {
     isLoading.value = true;
     questionType.value = type;
     quizLevel.value = level;
-    quizLesson.value = lesson;
     currentQuestionIndex.value = 0;
     score.value = 0;
     quizCompleted.value = false;
@@ -230,8 +228,9 @@ export const useQuizStore = defineStore('quiz', () => {
     // Load mastery streaks from server/local
     await loadStreaksFromServer();
     
-    // Set levelBeforeQuiz after streaks are loaded!
+    // Set levelBeforeQuiz and quizLesson after streaks are loaded!
     levelBeforeQuiz.value = currentUserLevel.value;
+    quizLesson.value = `Pelajaran ${currentUserLevel.value}`;
     startTime.value = Date.now();
 
     try {
@@ -247,9 +246,6 @@ export const useQuizStore = defineStore('quiz', () => {
       } else if (type === 'words') {
         if (level === 'basic') {
           query = query.eq('has_kanji', false);
-        }
-        if (lesson !== 'all') {
-          query = query.eq('lesson', lesson);
         }
       }
 
@@ -281,7 +277,7 @@ export const useQuizStore = defineStore('quiz', () => {
       let finalPool = [...mappedData];
       
       // Unified progression logic for everyday words quiz
-      if (type === 'words' && lesson === 'all') {
+      if (type === 'words') {
         const level1Words = mappedData.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
         const level2Words = mappedData.filter(w => w.lesson === 'Pelajaran 2');
         
@@ -315,7 +311,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     } catch (err) {
       console.warn('Failed to fetch questions from Supabase. Falling back to local dataset.', err);
-      questions.value = getRandomQuestionSet(questionCount, type, level, lesson);
+      questions.value = getRandomQuestionSet(questionCount, type, level);
     } finally {
       isLoading.value = false;
     }
@@ -557,7 +553,7 @@ export const useQuizStore = defineStore('quiz', () => {
   
   // Restart the quiz
   const restartQuiz = async () => {
-    await startQuiz(questions.value.length, questionType.value, quizLevel.value, quizLesson.value);
+    await startQuiz(questions.value.length, questionType.value, quizLevel.value);
   };
   
   // Calculate progress as percentage

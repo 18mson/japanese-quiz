@@ -10,7 +10,7 @@ import QuizResults from './components/QuizResults.vue';
 import StartScreen from './components/StartScreen.vue';
 import AuthModal from './components/AuthModal.vue';
 import LeaderboardModal from './components/LeaderboardModal.vue';
-import { User, KeyRound, Trophy, LogOut } from '@lucide/vue';
+import { User, KeyRound, Trophy, LogOut, Home } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -64,6 +64,11 @@ const goToHome = () => {
   quizStarted.value = false;
 };
 
+const handleGoHome = () => {
+  goToHome();
+  showDropdown.value = false;
+};
+
 const toggleUserMenu = () => {
   if (authStore.user) {
     showDropdown.value = !showDropdown.value;
@@ -109,6 +114,13 @@ const handleLogout = async () => {
               <span class="text-[9px] font-black uppercase tracking-wider">Level {{ quizStore.currentUserLevel }}</span>
             </div>
           </div>
+          <button 
+            @click="handleGoHome"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold cursor-pointer flex items-center gap-2"
+          >
+            <Home class="w-4 h-4 text-gray-500" />
+            <span>Home</span>
+          </button>
           <button 
             @click="openLeaderboard"
             class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition font-semibold cursor-pointer flex items-center gap-2"
