@@ -112,6 +112,19 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const quizLesson = ref<string>('all');
+  const currentUserLevel = computed(() => {
+    // Level 1 words are all words in wordsData that do not have lesson label or have lesson === 'Pelajaran 1'
+    const level1Words = wordsData.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
+    if (level1Words.length === 0) return 1;
+    
+    // Check if every word in level1Words has a streak >= 3
+    const allLevel1Mastered = level1Words.every(w => {
+      const streak = userStreaks.value[w.character] || 0;
+      return streak >= 3;
+    });
+    
+    return allLevel1Mastered ? 2 : 1;
+  });
   const questionType = ref('hiragana'); // 'hiragana', 'katakana', or 'words'
   const isTypingMode = computed(() => {
     return quizLevel.value === 'n5' || questionType.value === 'words';
@@ -128,6 +141,8 @@ export const useQuizStore = defineStore('quiz', () => {
   const startTime = ref(0);
   const endTime = ref(0);
   const newRecordAchieved = ref(false);
+  const levelBeforeQuiz = ref(1);
+  const showLevelUpScreen = ref(false);
   const userAnswers = ref<{ 
     character: string; 
     correctRomaji: string; 
@@ -210,9 +225,13 @@ export const useQuizStore = defineStore('quiz', () => {
     showReadingHint.value = false;
     showMeaningHint.value = false;
     newRecordAchieved.value = false;
+    showLevelUpScreen.value = false;
 
     // Load mastery streaks from server/local
     await loadStreaksFromServer();
+    
+    // Set levelBeforeQuiz after streaks are loaded!
+    levelBeforeQuiz.value = currentUserLevel.value;
     startTime.value = Date.now();
 
     try {
@@ -259,14 +278,35 @@ export const useQuizStore = defineStore('quiz', () => {
         }
       });
 
+      let finalPool = [...mappedData];
+      
+      // Unified progression logic for everyday words quiz
+      if (type === 'words' && lesson === 'all') {
+        const level1Words = mappedData.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
+        const level2Words = mappedData.filter(w => w.lesson === 'Pelajaran 2');
+        
+        const unmasteredLevel1 = level1Words.filter(w => {
+          const streak = userStreaks.value[w.character] || 0;
+          return streak < 3;
+        });
+        
+        if (unmasteredLevel1.length === 0) {
+          // Level 1 is fully mastered! Active pool includes Level 1 + Level 2
+          finalPool = [...level1Words, ...level2Words];
+        } else {
+          // Level 1 has unmastered words! Active pool is ONLY Level 1
+          finalPool = [...level1Words];
+        }
+      }
+
       // Apply spaced repetition filter to pool
-      let filteredData = mappedData.filter(item => {
+      let filteredData = finalPool.filter(item => {
         const streak = getMasteryStreak(item.character);
         return streak < 3 || Math.random() > 0.85;
       });
 
       if (filteredData.length < questionCount) {
-        filteredData = [...mappedData];
+        filteredData = [...finalPool];
       }
 
       questions.value = [...filteredData]
@@ -503,9 +543,15 @@ export const useQuizStore = defineStore('quiz', () => {
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
     } else {
-      quizCompleted.value = true;
       endTime.value = Date.now();
       submitToLeaderboard();
+      
+      const levelAfter = currentUserLevel.value;
+      if (levelAfter > levelBeforeQuiz.value) {
+        showLevelUpScreen.value = true;
+      } else {
+        quizCompleted.value = true;
+      }
     }
   };
   
@@ -543,6 +589,8 @@ export const useQuizStore = defineStore('quiz', () => {
     startTime,
     endTime,
     newRecordAchieved,
+    currentUserLevel,
+    showLevelUpScreen,
     userAnswers,
     currentQuestion,
     options,

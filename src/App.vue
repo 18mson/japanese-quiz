@@ -55,6 +55,11 @@ const startQuiz = () => {
   quizStarted.value = true;
 };
 
+const claimLevelUp = () => {
+  quizStore.showLevelUpScreen = false;
+  quizStore.quizCompleted = true;
+};
+
 const goToHome = () => {
   quizStarted.value = false;
 };
@@ -97,8 +102,12 @@ const handleLogout = async () => {
           v-if="showDropdown && authStore.user"
           class="absolute right-0 mt-2 w-48 bg-white border border-gray-150 rounded-2xl shadow-xl py-2 z-50 animate-slide-down"
         >
-          <div class="px-4 py-2 border-b border-gray-100 text-xs font-bold text-gray-400 truncate">
-            Hi, {{ authStore.displayUsername }}!
+          <div class="px-4 py-2 border-b border-gray-100 flex flex-col gap-1">
+            <span class="text-xs font-bold text-gray-400 truncate">Hi, {{ authStore.displayUsername }}!</span>
+            <div class="flex items-center gap-1.5 mt-0.5 bg-indigo-50 border border-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full w-fit">
+              <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
+              <span class="text-[9px] font-black uppercase tracking-wider">Level {{ quizStore.currentUserLevel }}</span>
+            </div>
           </div>
           <button 
             @click="openLeaderboard"
@@ -121,6 +130,60 @@ const handleLogout = async () => {
     <!-- Modals -->
     <AuthModal :is-open="showAuthModal" @close="showAuthModal = false" />
     <LeaderboardModal :is-open="showLeaderboardModal" @close="showLeaderboardModal = false" />
+
+    <!-- Level Up Screen Overlay -->
+    <div 
+      v-if="quizStore.showLevelUpScreen" 
+      class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-6 z-50 animate-fadeIn"
+    >
+      <div class="max-w-md w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden animate-scaleUp">
+        <!-- Golden particles backdrop -->
+        <div class="absolute inset-0 pointer-events-none opacity-30">
+          <div class="sparkle s1 text-xl">✨</div>
+          <div class="sparkle s2 text-xl">⭐</div>
+          <div class="sparkle s3 text-xl">✨</div>
+          <div class="sparkle s4 text-xl">⭐</div>
+        </div>
+        
+        <div class="flex flex-col items-center gap-4 relative z-10">
+          <!-- Glowing animated trophy -->
+          <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center shadow-lg shadow-yellow-500/30 animate-pulse">
+            <Trophy class="w-10 h-10 text-white drop-shadow-md" />
+          </div>
+          
+          <h2 class="text-3xl font-black bg-gradient-to-r from-amber-400 to-yellow-200 bg-clip-text text-transparent uppercase tracking-wider">
+            LEVEL UP!
+          </h2>
+          
+          <p class="text-sm text-gray-200 font-medium max-w-xs mx-auto">
+            Amazing job! You have fully mastered all Everyday Words in Lesson 1!
+          </p>
+          
+          <div class="flex items-center justify-center gap-6 my-4 w-full bg-white/5 py-4 rounded-2xl border border-white/10">
+            <div class="flex flex-col">
+              <span class="text-xs text-gray-400 uppercase font-bold">Previous</span>
+              <span class="text-2xl font-black text-gray-300">Level 1</span>
+            </div>
+            <div class="text-xl text-amber-400 animate-pulse">➔</div>
+            <div class="flex flex-col">
+              <span class="text-xs text-amber-400 uppercase font-bold">Current</span>
+              <span class="text-2xl font-black text-amber-300">Level 2</span>
+            </div>
+          </div>
+          
+          <p class="text-xs text-teal-300 font-bold mb-2">
+            🔓 Unlocked: Minna no Nihongo Lesson 2 Vocabulary
+          </p>
+          
+          <button 
+            @click="claimLevelUp"
+            class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-white rounded-2xl font-black text-sm uppercase tracking-wider transition shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5 cursor-pointer"
+          >
+            Claim & View Results
+          </button>
+        </div>
+      </div>
+    </div>
 
     <StartScreen v-if="!quizStarted" @start="startQuiz" />
     <div v-else class="max-w-2xl w-full mx-auto p-4 flex flex-col h-full overflow-hidden relative" :class="{ 'pb-20': quizStore.isTypingMode || quizStore.selectedAnswer !== null }">
@@ -194,4 +257,27 @@ const handleLogout = async () => {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
 }
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-scaleUp {
+  animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes float-sparkle {
+  0% { transform: translateY(10px) scale(0.6); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-30px) scale(1.1); opacity: 0; }
+}
+.sparkle {
+  position: absolute;
+  font-size: 16px;
+  animation: float-sparkle 3s infinite linear;
+}
+.s1 { top: 15%; left: 10%; animation-delay: 0s; }
+.s2 { top: 50%; left: 85%; animation-delay: 0.7s; }
+.s3 { top: 75%; left: 20%; animation-delay: 1.4s; }
+.s4 { top: 25%; left: 75%; animation-delay: 2.1s; }
 </style>
