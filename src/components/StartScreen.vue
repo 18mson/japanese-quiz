@@ -1,22 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { hiraganaData } from '../data/hiragana';
-import { katakanaData } from '../data/katakana';
-import { Zap, BookOpen, ChevronDown, ChevronUp } from '@lucide/vue';
+import { Zap, Award, Target } from '@lucide/vue';
 
 const quizStore = useQuizStore();
-const questionCount = ref(10);
+const targetDurationMinutes = ref<number>(1);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5'>('basic');
-const showAllHiragana = ref(false);
-const showAllKatakana = ref(false);
-const showCharts = ref(false);
 
-const emit = defineEmits(['start']);
+const selectLevel = (level: 'basic' | 'n5') => {
+  selectedLevel.value = level;
+  if (level === 'basic' && characterTypes.value === 'words') {
+    characterTypes.value = 'hiragana';
+  }
+};
+
+const selectContent = (type: string) => {
+  if (type === 'words' && selectedLevel.value === 'basic') return;
+  characterTypes.value = type;
+};
+
+const emit = defineEmits(['start', 'openMasteryGrid']);
 
 const startQuiz = async () => {
-  await quizStore.startQuiz(questionCount.value, characterTypes.value, selectedLevel.value);
+  await quizStore.startQuiz(targetDurationMinutes.value, characterTypes.value, selectedLevel.value);
   emit('start');
 };
 </script>
@@ -26,20 +33,55 @@ const startQuiz = async () => {
     <h1 class="text-3xl md:text-4xl bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent mb-2 font-extrabold tracking-tight flex-shrink-0">
       Japanese Kana & Vocab Quiz
     </h1>
-    <p class="text-sm md:text-base text-gray-600 mb-6 max-w-2xl font-medium leading-relaxed flex-shrink-0">
+    <p class="text-sm md:text-base text-gray-600 mb-5 max-w-2xl font-medium leading-relaxed flex-shrink-0">
       Learn and master Japanese Hiragana and Katakana characters, or level up your N5 vocabulary with interactive keyboard typing challenges.
     </p>
 
-    <!-- Step 1: Choose Difficulty Level -->
+    <!-- Overall Mastery Hero Card -->
+    <div 
+      @click="emit('openMasteryGrid')"
+      class="w-full max-w-3xl mb-6 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 rounded-3xl p-5 text-white shadow-xl hover:shadow-2xl transition-all cursor-pointer border border-indigo-400/20 relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-4 text-left flex-shrink-0"
+    >
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-500/30 rounded-full blur-3xl group-hover:scale-125 transition-all"></div>
+      
+      <div class="flex items-center gap-4 relative z-10">
+        <div class="w-13 h-13 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
+          <Award class="w-7 h-7" />
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider bg-amber-400 text-indigo-950 px-2 py-0.5 rounded-full">Progress</span>
+            <span class="text-xs text-indigo-200 font-semibold">{{ quizStore.overallMasteryStats.mastered }} / {{ quizStore.overallMasteryStats.total }} Total Dikuasai</span>
+          </div>
+          <h3 class="text-lg font-black text-white mt-1">Peta Penguasaan Huruf</h3>
+          <p class="text-xs text-indigo-200">Hiragana: <strong class="text-white">{{ quizStore.hiraganaMasteryStats.percentage }}%</strong> | Katakana: <strong class="text-white">{{ quizStore.katakanaMasteryStats.percentage }}%</strong> | Words: <strong class="text-white">{{ quizStore.wordsMasteryStats.percentage }}%</strong></p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 relative z-10 w-full md:w-auto justify-between md:justify-end">
+        <div class="flex flex-col text-right">
+          <span class="text-2xl font-black text-amber-300">{{ quizStore.overallMasteryStats.percentage }}%</span>
+          <span class="text-[10px] text-indigo-200 uppercase font-bold tracking-wider">Overall Mastered</span>
+        </div>
+        <button 
+          class="px-4 py-2.5 bg-white text-indigo-900 group-hover:bg-amber-400 group-hover:text-indigo-950 rounded-xl font-extrabold text-xs uppercase tracking-wider transition shadow-md flex items-center gap-1.5 cursor-pointer flex-shrink-0"
+        >
+          <span>Lihat Grid</span>
+          <Target class="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 1: Choose Quiz Mode -->
     <div class="w-full max-w-3xl mb-6 flex-shrink-0">
       <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center justify-center gap-2">
         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">1</span>
-        Choose Your Difficulty Level
+        Choose Your Game Mode
       </h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Basic Level Card -->
+        <!-- Multiple Choice Card -->
         <div 
-          @click="selectedLevel = 'basic'"
+          @click="selectLevel('basic')"
           :class="[
             'border-2 rounded-2xl p-4 text-left cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between h-full relative overflow-hidden',
             selectedLevel === 'basic' 
@@ -50,30 +92,26 @@ const startQuiz = async () => {
           <div v-if="selectedLevel === 'basic'" class="absolute top-0 right-0 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl -mr-6 -mt-6"></div>
           <div>
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xl font-bold text-gray-900">Basic Level</h3>
+              <h3 class="text-xl font-bold text-gray-900">Multiple Choice</h3>
               <span 
                 :class="[
                   'text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider',
                   selectedLevel === 'basic' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600'
                 ]"
               >
-                Multiple Choice
+                Basic Level
               </span>
             </div>
-            <p class="text-sm text-gray-600 leading-relaxed mb-2">
-              Practice reading phonetic characters (Hiragana & Katakana) and everyday vocabulary by matching them with standard multiple-choice Romaji options.
-            </p>
           </div>
           <div class="flex items-center gap-2 text-xs font-bold text-gray-500 flex-wrap">
             <span class="bg-gray-100 px-2.5 py-1 rounded-md">Hiragana</span>
             <span class="bg-gray-100 px-2.5 py-1 rounded-md">Katakana</span>
-            <span class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-md">Everyday Words</span>
           </div>
         </div>
 
-        <!-- N5 Level Card -->
+        <!-- Keyboard Typing Card -->
         <div 
-          @click="selectedLevel = 'n5'"
+          @click="selectLevel('n5')"
           :class="[
             'border-2 rounded-2xl p-4 text-left cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between h-full relative overflow-hidden',
             selectedLevel === 'n5' 
@@ -84,19 +122,16 @@ const startQuiz = async () => {
           <div v-if="selectedLevel === 'n5'" class="absolute top-0 right-0 w-24 h-24 bg-violet-500/10 rounded-full blur-xl -mr-6 -mt-6"></div>
           <div>
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-xl font-bold text-gray-900">Road to N5</h3>
+              <h3 class="text-xl font-bold text-gray-900">Keyboard Typing</h3>
               <span 
                 :class="[
                   'text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider',
                   selectedLevel === 'n5' ? 'bg-violet-100 text-violet-700' : 'bg-gray-100 text-gray-600'
                 ]"
               >
-                Keyboard Typing
+                Road to N5
               </span>
             </div>
-            <p class="text-sm text-gray-600 leading-relaxed mb-2">
-              Challenge yourself by typing characters or everyday vocabulary. No multiple-choice options, answers are input directly in Romaji.
-            </p>
           </div>
           <div class="flex items-center gap-2 text-xs font-bold text-gray-500 flex-wrap">
             <span class="bg-gray-100 px-2.5 py-1 rounded-md">Hiragana</span>
@@ -117,41 +152,51 @@ const startQuiz = async () => {
         <button 
           v-for="type in ['hiragana', 'katakana', 'words']"
           :key="type" 
+          :disabled="type === 'words' && selectedLevel === 'basic'"
+          :title="type === 'words' && selectedLevel === 'basic' ? 'Everyday Words is only available in Keyboard Typing mode' : ''"
           :class="[
-            'capitalize px-4 py-2.5 border-2 rounded-2xl text-base font-bold cursor-pointer transition-all duration-200 shadow-sm hover:-translate-y-0.5 hover:shadow-md flex items-center gap-2',
-            characterTypes === type 
-              ? (selectedLevel === 'n5' ? 'bg-violet-600 text-white border-violet-600 shadow-lg shadow-violet-200' : 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-200')
-              : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:border-gray-300'
+            'capitalize px-4 py-2.5 border-2 rounded-2xl text-base font-bold transition-all duration-200 shadow-sm flex items-center gap-2',
+            type === 'words' && selectedLevel === 'basic'
+              ? 'bg-gray-100 border-gray-200 text-gray-400 opacity-50 cursor-not-allowed shadow-none'
+              : characterTypes === type 
+                ? (selectedLevel === 'n5' ? 'bg-violet-600 text-white border-violet-600 shadow-lg shadow-violet-200 cursor-pointer hover:-translate-y-0.5' : 'bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-200 cursor-pointer hover:-translate-y-0.5')
+                : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:border-gray-300 cursor-pointer hover:-translate-y-0.5'
           ]"
-          @click="characterTypes = type"
+          @click="selectContent(type)"
         >
           <span>
             {{ type === 'words' ? 'Everyday Words' : type }}
           </span>
-          <span v-if="type === 'words'" class="text-xs bg-amber-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">New</span>
+          <span v-if="type === 'words' && selectedLevel === 'n5'" class="text-xs bg-amber-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">New</span>
+          <span v-if="type === 'words' && selectedLevel === 'basic'" class="text-[10px] bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded font-semibold">Typing Only</span>
         </button>
       </div>
     </div>
 
-    <!-- Step 3: Select Question Count -->
-    <div class="w-full max-w-lg mb-6 flex-shrink-0">
+    <!-- Step 3: Select Target Duration -->
+    <div class="w-full max-w-xl mb-6 flex-shrink-0">
       <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center justify-center gap-2">
         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">3</span>
-        Number of Questions
+        Target Session Duration
       </h2>
-      <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <button 
-          v-for="count in [5, 10, 20, 30, 60, 100]" 
-          :key="count"
+          v-for="d in [
+            { min: 1, label: '1 Menit', desc: '⚡ Kilat (~8 soal)' },
+            { min: 3, label: '3 Menit', desc: '🔥 Fokus (~22 soal)' },
+            { min: 5, label: '5 Menit', desc: '🏆 Maraton (~35 soal)' }
+          ]" 
+          :key="d.min"
           :class="[
-            'px-3 py-2 border-2 rounded-xl text-base font-bold cursor-pointer transition-all duration-200 shadow-sm',
-            questionCount === count 
-              ? (selectedLevel === 'n5' ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-100' : 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100') 
-              : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-600 hover:border-gray-300'
+            'p-3 border-2 rounded-2xl cursor-pointer transition-all duration-200 shadow-sm flex flex-col items-center justify-center text-center',
+            targetDurationMinutes === d.min 
+              ? (selectedLevel === 'n5' ? 'bg-violet-600 text-white border-violet-600 shadow-md shadow-violet-100 ring-2 ring-violet-400/30' : 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100 ring-2 ring-indigo-400/30') 
+              : 'bg-white border-gray-200 hover:bg-gray-50 text-gray-700 hover:border-gray-300'
           ]"
-          @click="questionCount = count"
+          @click="targetDurationMinutes = d.min"
         >
-          {{ count }}
+          <span class="text-base font-black">{{ d.label }}</span>
+          <span :class="['text-[11px] font-semibold mt-0.5', targetDurationMinutes === d.min ? 'text-indigo-100' : 'text-gray-500']">{{ d.desc }}</span>
         </button>
       </div>
     </div>
@@ -174,79 +219,6 @@ const startQuiz = async () => {
         <Zap class="w-5 h-5 text-amber-300" />
       </template>
     </button>
-    
-    <!-- Collapsible Reference Section -->
-    <div class="w-full max-w-2xl mt-4 flex-shrink-0">
-      <button 
-        @click="showCharts = !showCharts" 
-        class="w-full py-3 bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 rounded-xl font-bold transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 shadow-sm"
-      >
-        <span class="flex items-center gap-2">
-          <BookOpen class="w-4 h-4 text-gray-600" />
-          <span>{{ showCharts ? 'Hide Reference Charts' : 'Show Reference Charts' }}</span>
-        </span>
-        <ChevronUp v-if="showCharts" class="w-4 h-4 text-gray-500" />
-        <ChevronDown v-else class="w-4 h-4 text-gray-500" />
-      </button>
-      
-      <div v-if="showCharts" class="mt-4 space-y-6 animate-fadeIn text-left">
-        <!-- Hiragana Chart Card -->
-        <div class="bg-gray-100 rounded-xl p-6 w-full">
-          <h2 class="text-xl text-gray-800 mb-3 font-semibold">About Hiragana</h2>
-          <p class="text-gray-600 leading-relaxed text-sm">
-            Hiragana is one of the Japanese writing systems. It's a phonetic alphabet where each character represents a syllable. 
-            Learning Hiragana is the first step to reading and writing Japanese.
-          </p>
-          <div class="mt-6">
-            <h2 class="text-lg text-gray-800 mb-3 font-semibold">Hiragana Chart</h2>
-            <div class="grid grid-cols-5 md:gap-4 gap-2">
-              <div 
-                v-for="(char, index) in (showAllHiragana ? hiraganaData : hiraganaData.slice(0, 5))" 
-                :key="index" 
-                class="flex flex-col items-center py-3 bg-white border border-gray-300 rounded-lg shadow-sm"
-              >
-                <span class="md:text-xl text-base font-bold text-gray-800">{{ char.character }}</span>
-                <span class="text-xs text-gray-500">{{ char.romaji }}</span>
-              </div>
-            </div>
-            <button 
-              class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold cursor-pointer transition-transform hover:bg-indigo-700"
-              @click="showAllHiragana = !showAllHiragana"
-            >
-              {{ showAllHiragana ? 'Show Less' : 'Show All' }}
-            </button>
-          </div>
-        </div>
-
-        <!-- Katakana Chart Card -->
-        <div class="bg-gray-100 rounded-xl p-6 w-full mt-6">
-          <h2 class="text-xl text-gray-800 mb-3 font-semibold">About Katakana</h2>
-          <p class="text-gray-600 leading-relaxed text-sm">
-            Katakana is another Japanese writing system, primarily used for foreign words and names. 
-            It consists of characters that are angular and sharp, making it visually distinct from Hiragana.
-          </p>
-          <div class="mt-6">
-            <h2 class="text-lg text-gray-800 mb-3 font-semibold">Katakana Chart</h2>
-            <div class="grid grid-cols-5 md:gap-4 gap-2">
-              <div 
-                v-for="(char, index) in (showAllKatakana ? katakanaData : katakanaData.slice(0, 5))" 
-                :key="index" 
-                class="flex flex-col items-center py-3 bg-white border border-gray-300 rounded-lg shadow-sm"
-              >
-                <span class="md:text-xl text-base font-bold text-gray-800">{{ char.character }}</span>
-                <span class="text-xs text-gray-500">{{ char.romaji }}</span>
-              </div>
-            </div>
-            <button 
-              class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold cursor-pointer transition-transform hover:bg-indigo-700"
-              @click="showAllKatakana = !showAllKatakana"
-            >
-              {{ showAllKatakana ? 'Show Less' : 'Show All' }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

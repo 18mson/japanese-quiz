@@ -92,7 +92,7 @@ const isTypo = computed(() => {
     <div v-if="isAnswered" class="w-full flex flex-col items-center animate-slideUp">
       <!-- Status Card -->
       <div 
-        class="w-full rounded-2xl p-6 mb-6 text-center border shadow-sm transition-all duration-300 animate-pulse-subtle"
+        class="w-full rounded-2xl p-4 sm:p-5 mb-4 text-center border shadow-sm transition-all duration-300 animate-pulse-subtle"
         :class="[
           quizStore.isAnswerCorrect 
             ? 'bg-emerald-50 border-emerald-200 text-emerald-900 shadow-emerald-100/50' 

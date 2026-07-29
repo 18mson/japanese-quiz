@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuizStore } from '../stores/quizStore';
-import { Home, Trophy, Lightbulb } from '@lucide/vue';
+import { Home, Trophy, Lightbulb, Zap } from '@lucide/vue';
 
 const emit = defineEmits<{
   (e: 'home'): void;
@@ -8,6 +8,13 @@ const emit = defineEmits<{
 }>();
 
 const quizStore = useQuizStore();
+
+const formatTimeSaved = (seconds: number) => {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  if (m > 0) return `${m} Menit ${s} Detik`;
+  return `${s} Detik`;
+};
 
 const getProgressColor = (answer: any) => {
   const points = answer.pointsEarned || 0;
@@ -29,42 +36,68 @@ const getScoreMessage = () => {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 max-w-3xl mx-auto animate-slide-up w-full h-full flex flex-col overflow-hidden" v-if="quizStore.quizCompleted">
-    <h2 class="text-xl text-gray-800 text-center mb-4 font-bold flex-shrink-0">Quiz Results</h2>
+  <div class="p-2 sm:p-4 max-w-3xl mx-auto animate-slide-up w-full h-full flex flex-col overflow-hidden min-h-0" v-if="quizStore.quizCompleted">
+    <h2 class="text-xl text-gray-800 text-center mb-2 font-black flex-shrink-0">Quiz Results</h2>
+
+    <!-- Speed Achievement Celebration Banner -->
+    <div 
+      v-if="quizStore.speedAchievement && quizStore.speedAchievement.isFaster" 
+      class="mb-2 p-3 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 border border-indigo-400/30 rounded-2xl text-white shadow-md relative overflow-hidden flex-shrink-0 animate-fadeIn"
+    >
+      <div class="flex items-center gap-3 relative z-10">
+        <div class="w-9 h-9 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
+          <Zap class="w-5 h-5 animate-pulse" />
+        </div>
+        <div class="text-left flex-1">
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-indigo-950 px-2 py-0.5 rounded-full">
+              {{ quizStore.speedAchievement.rankText }}
+            </span>
+            <span class="text-xs text-indigo-200 font-bold">
+              +{{ quizStore.speedAchievement.bonusPoints }} Bonus Poin Kecepatan!
+            </span>
+          </div>
+          <h4 class="text-xs font-black text-white mt-0.5">
+            Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat Dari Estimasi Target! 🚀
+          </h4>
+        </div>
+      </div>
+    </div>
 
     <!-- New Record Celebration Banner -->
     <div 
       v-if="quizStore.newRecordAchieved" 
-      class="mb-4 p-4 bg-gradient-to-r from-amber-500/10 via-yellow-500/20 to-amber-500/10 border border-amber-300 rounded-2xl text-center shadow-lg relative overflow-hidden animate-pulse-border flex-shrink-0"
+      class="mb-2 p-3 bg-gradient-to-r from-amber-500/10 via-yellow-500/20 to-amber-500/10 border border-amber-300 rounded-2xl text-center shadow-md relative overflow-hidden animate-pulse-border flex-shrink-0"
     >
-      <div class="absolute inset-0 pointer-events-none opacity-45">
-        <div class="sparkle s1">✨</div>
-        <div class="sparkle s2">⭐</div>
-        <div class="sparkle s3">✨</div>
-        <div class="sparkle s4">⭐</div>
-      </div>
-      
-      <div class="flex flex-col items-center gap-1.5 relative z-10 animate-bounce-slow">
-        <Trophy class="w-10 h-10 text-amber-500 fill-amber-500/20 drop-shadow animate-spin-slow" />
-        <h3 class="text-md font-black text-amber-900 uppercase tracking-wider">New Leaderboard Record!</h3>
-        <p class="text-xs text-amber-800 font-semibold leading-relaxed">You successfully broke into the top 10 rankings! Opening leaderboard shortly...</p>
+      <div class="flex items-center justify-center gap-2 relative z-10">
+        <Trophy class="w-6 h-6 text-amber-500 fill-amber-500/20 drop-shadow" />
+        <span class="text-xs font-black text-amber-900 uppercase tracking-wider">New Leaderboard Record!</span>
       </div>
     </div>
     
-    <div class="flex flex-col items-center mb-6 flex-shrink-0">
-      <div class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex items-center justify-center mb-2 shadow-lg border-4 border-white">
-        <span class="text-2xl font-bold text-white">{{ Math.round(quizStore.finalScore) }}%</span>
+    <!-- Score Circle & Message Header -->
+    <div class="flex items-center justify-center gap-4 mb-3 flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex flex-col items-center justify-center shadow-md border-2 border-white flex-shrink-0">
+        <span class="text-lg font-black text-white leading-none">{{ Math.min(100, Math.round(quizStore.finalScore)) }}%</span>
       </div>
-      <p class="text-base text-gray-600 text-center max-w-lg font-medium">{{ getScoreMessage() }}</p>
+      <div class="text-left flex-1 min-w-0">
+        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Akurasi Jawaban</h3>
+        <p class="text-xs sm:text-sm text-gray-700 font-bold leading-tight mt-0.5 truncate">{{ getScoreMessage() }}</p>
+      </div>
     </div>
     
-    <div class="bg-gray-100 rounded-2xl p-4 mb-4 border border-gray-200 flex-1 flex flex-col overflow-hidden">
-      <h3 class="text-md text-gray-800 mb-2 pb-2 border-b border-gray-300/70 font-semibold flex-shrink-0">Question Summary</h3>
-      <ul class="space-y-2 flex-1 overflow-y-auto pr-1">
+    <!-- Question Summary List Box (Flex-1 for maximum scrolling area) -->
+    <div class="bg-white rounded-2xl p-3 border border-gray-200 flex-1 flex flex-col overflow-hidden min-h-0 shadow-sm">
+      <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-100 flex-shrink-0">
+        <h3 class="text-xs font-black text-gray-800 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
+        <span class="text-[10px] font-bold text-gray-400">{{ quizStore.userAnswers.length }} Soal Selesai</span>
+      </div>
+
+      <ul class="space-y-2 flex-1 overflow-y-auto pr-1 min-h-0 pb-20">
         <li 
           v-for="(answer, index) in quizStore.userAnswers" 
           :key="index"
-          class="flex items-center p-3 rounded-xl bg-white shadow-sm transition-all duration-200 hover:shadow"
+          class="flex items-center p-2.5 rounded-xl bg-gray-50/70 border border-gray-150 transition-all duration-200 hover:bg-white hover:shadow-sm"
           :class="{ 
             'border-l-4 border-emerald-500': answer.pointsEarned === 4, 
             'border-l-4 border-indigo-500': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
@@ -73,34 +106,25 @@ const getScoreMessage = () => {
           }"
         >
           <!-- SVG Circular Progress around Character -->
-          <div class="relative w-12 h-12 flex items-center justify-center mr-3 flex-shrink-0 bg-gray-50/50 rounded-full border border-gray-100 shadow-inner">
+          <div class="relative w-10 h-10 flex items-center justify-center mr-3 flex-shrink-0 bg-white rounded-full border border-gray-150 shadow-inner">
             <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-              <!-- Background track circle -->
+              <circle cx="20" cy="20" r="17" stroke="#f3f4f6" stroke-width="3" fill="transparent" />
               <circle 
-                cx="24" 
-                cy="24" 
-                r="20" 
-                stroke="#f3f4f6" 
-                stroke-width="3" 
-                fill="transparent" 
-              />
-              <!-- Progress indicator circle -->
-              <circle 
-                cx="24" 
-                cy="24" 
-                r="20" 
+                cx="20" 
+                cy="20" 
+                r="17" 
                 :stroke="getProgressColor(answer)" 
                 stroke-width="3" 
                 fill="transparent" 
-                :stroke-dasharray="2 * Math.PI * 20" 
-                :stroke-dashoffset="2 * Math.PI * 20 * (1 - (answer.pointsEarned || 0) / 4)" 
+                :stroke-dasharray="2 * Math.PI * 17" 
+                :stroke-dashoffset="2 * Math.PI * 17 * (1 - (answer.pointsEarned || 0) / 4)" 
                 stroke-linecap="round"
                 class="transition-all duration-500 ease-out"
               />
             </svg>
             <span 
-              class="font-extrabold text-gray-800 z-10 select-none text-center" 
-              :class="answer.character.length > 4 ? 'text-[9px] leading-tight max-w-[34px] truncate' : 'text-sm'"
+              class="font-black text-gray-800 z-10 select-none text-center" 
+              :class="answer.character.length > 4 ? 'text-[8px] leading-tight max-w-[28px] truncate' : 'text-xs'"
             >
               {{ answer.character }}
             </span>
@@ -109,40 +133,41 @@ const getScoreMessage = () => {
           <div class="flex-1 flex flex-col min-w-0">
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Correct/Incorrect badge -->
-              <span class="font-bold text-xs" :class="{ 'text-emerald-600': answer.pointsEarned === 4, 'text-indigo-600': answer.pointsEarned >= 1 && answer.pointsEarned < 4, 'text-rose-600': answer.pointsEarned === 0 }">
+              <span class="font-extrabold text-[11px]" :class="{ 'text-emerald-600': answer.pointsEarned === 4, 'text-indigo-600': answer.pointsEarned >= 1 && answer.pointsEarned < 4, 'text-rose-600': answer.pointsEarned === 0 }">
                 {{ answer.pointsEarned === 4 ? 'Mastered' : (answer.pointsEarned > 0 ? 'Correct' : 'Incorrect') }}
               </span>
               
               <!-- Points score badge -->
-              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded" :class="{ 'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 'bg-amber-100 text-amber-800': answer.pointsEarned === 1, 'bg-rose-100 text-rose-800': answer.pointsEarned === 0 }">
+              <span class="text-[9px] font-bold px-1.5 py-0.2 rounded" :class="{ 'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 'bg-amber-100 text-amber-800': answer.pointsEarned === 1, 'bg-rose-100 text-rose-800': answer.pointsEarned === 0 }">
                 {{ answer.pointsEarned }}/4 pts
               </span>
 
               <!-- Typo badge -->
-              <span v-if="answer.isTypo" class="text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.5 rounded">
+              <span v-if="answer.isTypo" class="text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.2 rounded">
                 Typo
               </span>
 
               <!-- Hints badge -->
-              <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.5 rounded flex items-center gap-1">
+              <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.2 rounded flex items-center gap-1">
                 <Lightbulb class="w-2.5 h-2.5 text-violet-800" />
-                <span>{{ answer.hintsUsed }} Hint{{ answer.hintsUsed > 1 ? 's' : '' }}</span>
+                <span>{{ answer.hintsUsed }} Hint</span>
               </span>
 
               <!-- Kana reading badge -->
-              <span v-if="answer.kana" class="text-[10px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100/50">
+              <span v-if="answer.kana" class="text-[9px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.2 rounded-full border border-indigo-100/50">
                 {{ answer.kana }}
               </span>
             </div>
-            <span class="text-xs text-gray-600 mt-0.5 truncate">
+
+            <span class="text-[11px] text-gray-600 mt-0.5 truncate">
               <template v-if="answer.isCorrect">
-                {{ quizStore.isTypingMode ? 'You typed:' : 'You chose:' }} <code class="font-mono bg-gray-100 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Typed:' : 'Chose:' }} <code class="font-mono bg-gray-200/70 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'You typed:' : 'You chose:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> <span v-if="answer.isTypo" class="text-[9px] font-bold bg-amber-100 text-amber-800 px-1 py-0.5 rounded ml-1">Typo</span> | Correct: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Typed:' : 'Chose:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> | Correct: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
               </template>
             </span>
-            <span v-if="answer.meaning" class="text-[10px] text-gray-500 italic mt-0.5">
+            <span v-if="answer.meaning" class="text-[9px] text-gray-400 italic truncate">
               Meaning: {{ answer.meaning }}
             </span>
           </div>
@@ -150,32 +175,32 @@ const getScoreMessage = () => {
       </ul>
     </div>
     
-    <div class="flex items-center justify-center gap-3 w-full max-w-sm mx-auto mt-2 flex-shrink-0">
-      <!-- Home Icon Button -->
-      <button 
-        class="p-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-12 h-12"
-        @click="emit('home')"
-        title="Go to Home"
-      >
-        <Home class="w-5 h-5 text-gray-600" />
-      </button>
-      
-      <!-- Try Again Button (center/main) -->
-      <button 
-        class="flex-1 py-3 px-6 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center"
-        @click="quizStore.restartQuiz"
-      >
-        Try Again
-      </button>
+    <!-- Fixed/Pinned Bottom Action Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn">
+      <div class="max-w-xs sm:max-w-sm w-full flex items-center justify-center gap-3">
+        <button 
+          class="p-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-11 h-11 flex-shrink-0"
+          @click="emit('home')"
+          title="Go to Home"
+        >
+          <Home class="w-5 h-5 text-gray-600" />
+        </button>
+        
+        <button 
+          class="flex-1 py-2.5 px-6 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center"
+          @click="quizStore.restartQuiz"
+        >
+          Try Again
+        </button>
 
-      <!-- Leaderboard Icon Button -->
-      <button 
-        class="p-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-xl transition shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-12 h-12"
-        @click="emit('leaderboard')"
-        title="View Leaderboard"
-      >
-        <Trophy class="w-5 h-5 text-amber-600" />
-      </button>
+        <button 
+          class="p-2.5 bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-xl transition shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-11 h-11 flex-shrink-0"
+          @click="emit('leaderboard')"
+          title="View Leaderboard"
+        >
+          <Trophy class="w-5 h-5 text-amber-600" />
+        </button>
+      </div>
     </div>
   </div>
 </template>

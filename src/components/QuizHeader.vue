@@ -8,9 +8,7 @@ const questionNumber = computed(() => {
   return quizStore.currentQuestionIndex + 1;
 });
 
-const totalQuestions = computed(() => {
-  return quizStore.questions.length;
-});
+
 
 </script>
 
@@ -18,7 +16,10 @@ const totalQuestions = computed(() => {
   <header class="quiz-header">
     <h1 class="quiz-title">Japanese Quiz</h1>
     <div class="quiz-stats">
-      <span class="quiz-progress">Question {{ questionNumber }} of {{ totalQuestions }}</span>
+      <span class="quiz-progress">
+        Soal {{ questionNumber }} (Selesai: {{ quizStore.masteredCount }}/{{ quizStore.initialQuestionCount }})
+        <span v-if="quizStore.isMistakeRound" class="text-rose-600 font-bold ml-1">🎯 (Babak Perbaikan)</span>
+      </span>
       <span class="quiz-score">Score: {{ quizStore.score }}</span>
     </div>
     <div class="progress-container">

@@ -37,6 +37,14 @@ const currentMeaning = computed(() => {
   return (quizStore.currentQuestion as any)?.meaning || '';
 });
 
+const reasonLabel = computed(() => {
+  return (quizStore.currentQuestion as any)?.reasonLabel || '';
+});
+
+const questionReason = computed(() => {
+  return (quizStore.currentQuestion as any)?.questionReason || 'weak';
+});
+
 const instructionText = computed(() => {
   if (quizStore.isTypingMode) {
     return isWord.value 
@@ -50,6 +58,21 @@ const instructionText = computed(() => {
 
 <template>
   <div class="flex flex-col items-center my-2 w-full flex-shrink-0">
+    <!-- Reason Badge (Why this question was picked) -->
+    <div 
+      v-if="reasonLabel" 
+      class="mb-2 px-3.5 py-1 rounded-full text-xs font-bold tracking-tight shadow-sm flex items-center gap-1.5 border"
+      :class="[
+        questionReason === 'all_mastered' ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-indigo-950 border-amber-300 animate-pulse' :
+        questionReason === 'repeat' ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold shadow-md animate-pulse' :
+        questionReason === 'weak' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+        questionReason === 'review' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+        'bg-emerald-50 text-emerald-700 border-emerald-200'
+      ]"
+    >
+      <span>{{ reasonLabel }}</span>
+    </div>
+
     <!-- Big Question Card -->
     <div
       :class="[
