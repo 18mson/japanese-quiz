@@ -164,8 +164,8 @@ export const useQuizStore = defineStore('quiz', () => {
         });
         const level1Words = wordPool.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
         const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
-        const unmasteredLevel1 = level1Words.filter(w => (userStreaks.value[w.character] || 0) < 3);
-        finalPool = unmasteredLevel1.length === 0 ? [...level1Words, ...level2Words] : [...level1Words];
+        const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
+        finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
       }
 
       questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
