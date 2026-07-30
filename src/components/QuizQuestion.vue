@@ -58,17 +58,10 @@ const instructionText = computed(() => {
 
 <template>
   <div class="flex flex-col items-center my-2 w-full flex-shrink-0">
-    <!-- Reason Badge (Why this question was picked) -->
+    <!-- Reason Badge (Only shown for retry/perbaikan questions) -->
     <div 
-      v-if="reasonLabel" 
-      class="mb-2 px-3.5 py-1 rounded-full text-xs font-bold tracking-tight shadow-sm flex items-center gap-1.5 border"
-      :class="[
-        questionReason === 'all_mastered' ? 'bg-gradient-to-r from-amber-400 to-yellow-300 text-indigo-950 border-amber-300 animate-pulse' :
-        questionReason === 'repeat' ? 'bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold shadow-md animate-pulse' :
-        questionReason === 'weak' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-        questionReason === 'review' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-        'bg-emerald-50 text-emerald-700 border-emerald-200'
-      ]"
+      v-if="questionReason === 'repeat' && reasonLabel" 
+      class="mb-2 px-3.5 py-1 rounded-full text-xs tracking-tight shadow-sm flex items-center gap-1.5 border bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold animate-pulse"
     >
       <span>{{ reasonLabel }}</span>
     </div>
@@ -117,10 +110,10 @@ const instructionText = computed(() => {
             @click="showMeaningHint = true"
           >
             <BookOpen class="w-3 h-3 text-indigo-600" />
-            <span>Meaning Hint</span>
+            <span>Petunjuk Arti</span>
           </button>
           <span v-else class="text-xs font-medium text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-            Meaning: {{ currentMeaning }}
+            Arti: {{ currentMeaning }}
           </span>
         </div>
       </div>

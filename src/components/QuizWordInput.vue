@@ -113,17 +113,17 @@ const isTypo = computed(() => {
           </div>
 
           <h3 class="text-2xl font-bold tracking-tight">
-            <template v-if="quizStore.isAnswerCorrect">Correct! True</template>
-            <template v-else-if="isTypo">Almost! Typo (+1 Pt)</template>
-            <template v-else>Incorrect. False</template>
+            <template v-if="quizStore.isAnswerCorrect">Benar!</template>
+            <template v-else-if="isTypo">Hampir! Salah ketik (+1 Poin)</template>
+            <template v-else>Salah</template>
           </h3>
           
           <div class="mt-2 space-y-1">
             <p v-if="!quizStore.isAnswerCorrect" class="text-sm">
-              Your answer: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'">{{ userInput || '(skipped)' }}</span>
+              Jawabanmu: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'">{{ userInput || '(dilewati)' }}</span>
             </p>
             <p class="text-base font-semibold">
-              Correct Romaji: <span class="font-mono bg-white border border-gray-200 px-2 py-0.5 rounded text-indigo-700 shadow-sm">{{ correctRomajiDisplay }}</span>
+              Romaji yang benar: <span class="font-mono bg-white border border-gray-200 px-2 py-0.5 rounded text-indigo-700 shadow-sm">{{ correctRomajiDisplay }}</span>
             </p>
           </div>
         </div>
@@ -137,7 +137,7 @@ const isTypo = computed(() => {
             </span>
           </div>
           <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 italic">
-            Meaning: {{ (currentWord as any)?.meaning }}
+            Arti: {{ (currentWord as any)?.meaning }}
           </p>
         </div>
       </div>

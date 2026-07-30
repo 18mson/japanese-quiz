@@ -187,9 +187,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
     if (weakPool.length === 0) weakPool = [...pool];
-    weakPool.sort((a, b) => getMasteryStreak(a.character) - getMasteryStreak(b.character));
-    const selected = weakPool.slice(0, Math.max(questionCount, weakPool.length)).sort(() => 0.5 - Math.random());
-    questions.value = selected.slice(0, questionCount).map(item => ({ ...item, questionReason: 'weak', reasonLabel: '🔴 Fokus Latihan (Belum Dipelajari / Sering Salah)' }));
+    questions.value = buildSmartAdaptiveQuestions(weakPool, questionCount, getMasteryStreak);
     initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
   };

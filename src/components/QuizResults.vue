@@ -134,23 +134,23 @@ const getScoreMessage = () => {
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Correct/Incorrect badge -->
               <span class="font-extrabold text-[11px]" :class="{ 'text-emerald-600': answer.pointsEarned === 4, 'text-indigo-600': answer.pointsEarned >= 1 && answer.pointsEarned < 4, 'text-rose-600': answer.pointsEarned === 0 }">
-                {{ answer.pointsEarned === 4 ? 'Mastered' : (answer.pointsEarned > 0 ? 'Correct' : 'Incorrect') }}
+                {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah') }}
               </span>
               
               <!-- Points score badge -->
               <span class="text-[9px] font-bold px-1.5 py-0.2 rounded" :class="{ 'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 'bg-amber-100 text-amber-800': answer.pointsEarned === 1, 'bg-rose-100 text-rose-800': answer.pointsEarned === 0 }">
-                {{ answer.pointsEarned }}/4 pts
+                {{ answer.pointsEarned }}/4 poin
               </span>
 
               <!-- Typo badge -->
               <span v-if="answer.isTypo" class="text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.2 rounded">
-                Typo
+                Salah Ketik
               </span>
 
               <!-- Hints badge -->
               <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.2 rounded flex items-center gap-1">
                 <Lightbulb class="w-2.5 h-2.5 text-violet-800" />
-                <span>{{ answer.hintsUsed }} Hint</span>
+                <span>{{ answer.hintsUsed }} Petunjuk</span>
               </span>
 
               <!-- Kana reading badge -->
@@ -161,14 +161,14 @@ const getScoreMessage = () => {
 
             <span class="text-[11px] text-gray-600 mt-0.5 truncate">
               <template v-if="answer.isCorrect">
-                {{ quizStore.isTypingMode ? 'Typed:' : 'Chose:' }} <code class="font-mono bg-gray-200/70 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-gray-200/70 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'Typed:' : 'Chose:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> | Correct: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
               </template>
             </span>
             <span v-if="answer.meaning" class="text-[9px] text-gray-400 italic truncate">
-              Meaning: {{ answer.meaning }}
+              Arti: {{ answer.meaning }}
             </span>
           </div>
         </li>

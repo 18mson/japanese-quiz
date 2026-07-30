@@ -82,82 +82,109 @@ export const getFallbackLocalPool = (type: string, level: string): any[] => {
   return [];
 };
 
+export type MasteryTierKey = 'new' | 'learning' | 'mastered' | 'crown';
+
+export const getTierFromStreak = (streak: number): MasteryTierKey => {
+  if (streak >= 5) return 'crown';
+  if (streak >= 3) return 'mastered';
+  if (streak >= 1) return 'learning';
+  return 'new';
+};
+
+const TIER_WEIGHTS: Record<MasteryTierKey, number> = {
+  new: 45,       // Belum (45%)
+  learning: 45,  // Proses (45%)
+  mastered: 9,   // Hafalan (9%)
+  crown: 1       // Crown (1% - Sangat jarang)
+};
+
+const TIER_METADATA: Record<MasteryTierKey, { questionReason: string; reasonLabel: string }> = {
+  new: {
+    questionReason: 'weak',
+    reasonLabel: '🔴 Belum Terhitung / Belum Benar (Probabilitas 45%)'
+  },
+  learning: {
+    questionReason: 'review',
+    reasonLabel: '🟡 Dalam Proses (Probabilitas 45%)'
+  },
+  mastered: {
+    questionReason: 'retention',
+    reasonLabel: '🟢 Hafalan (Probabilitas 9%)'
+  },
+  crown: {
+    questionReason: 'crown',
+    reasonLabel: '👑 Crown / Mahkota (Sangat Jarang - Probabilitas 1%)'
+  }
+};
+
 export const buildSmartAdaptiveQuestions = (
   pool: any[],
   count: number,
   getMasteryStreak: (character: string) => number
 ): any[] => {
-  if (pool.length === 0) return [];
+  if (!pool || pool.length === 0) return [];
 
-  const weakPool = pool.filter(item => getMasteryStreak(item.character) === 0);
-  const learningPool = pool.filter(item => {
-    const s = getMasteryStreak(item.character);
-    return s >= 1 && s < 3;
-  });
-  const masteredPool = pool.filter(item => getMasteryStreak(item.character) >= 3);
+  const questions: any[] = [];
+  let candidatePool = [...pool];
 
-  // If ALL characters in pool are Mastered (streak >= 3)
-  if (masteredPool.length === pool.length) {
-    const shuffled = [...pool].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count).map(item => ({
-      ...item,
-      questionReason: 'all_mastered',
-      reasonLabel: '👑 ALL MASTERED — Mode Pengulangan Acak'
-    }));
-  }
+  while (questions.length < count) {
+    if (candidatePool.length === 0) {
+      candidatePool = [...pool];
+    }
 
-  // Weighted Adaptive Blend: ~60% Weak, ~30% Learning, ~10% Mastered Retention
-  const targetWeak = Math.max(1, Math.round(count * 0.6));
-  const targetLearning = Math.max(1, Math.round(count * 0.3));
-  const targetMastered = Math.max(1, count - targetWeak - targetLearning);
-
-  const pickedWeak = [...weakPool]
-    .sort(() => 0.5 - Math.random())
-    .slice(0, targetWeak)
-    .map(item => ({
-      ...item,
-      questionReason: 'weak',
-      reasonLabel: '🔴 Fokus Latihan (Belum Dipelajari / Sering Salah)'
-    }));
-
-  const pickedLearning = [...learningPool]
-    .sort(() => 0.5 - Math.random())
-    .slice(0, targetLearning)
-    .map(item => ({
-      ...item,
-      questionReason: 'review',
-      reasonLabel: '🟡 Penguatan Memori (Dalam Proses)'
-    }));
-
-  const pickedMastered = [...masteredPool]
-    .sort(() => 0.5 - Math.random())
-    .slice(0, targetMastered)
-    .map(item => ({
-      ...item,
-      questionReason: 'retention',
-      reasonLabel: '🟢 Uji Retensi (Sudah Hafal)'
-    }));
-
-  let combined = [...pickedWeak, ...pickedLearning, ...pickedMastered];
-
-  if (combined.length < count) {
-    const pickedChars = new Set(combined.map(c => c.character));
-    const remaining = pool
-      .filter(c => !pickedChars.has(c.character))
-      .sort((a, b) => getMasteryStreak(a.character) - getMasteryStreak(b.character));
-
-    const filled = remaining.slice(0, count - combined.length).map(item => {
-      const s = getMasteryStreak(item.character);
-      let reason = 'weak';
-      let label = '🔴 Fokus Latihan (Belum Dipelajari)';
-      if (s >= 3) { reason = 'retention'; label = '🟢 Uji Retensi (Sudah Hafal)'; }
-      else if (s >= 1) { reason = 'review'; label = '🟡 Penguatan Memori (Dalam Proses)'; }
-
-      return { ...item, questionReason: reason, reasonLabel: label };
+    // Count items in each tier within current candidatePool
+    const tierCounts: Record<MasteryTierKey, number> = { new: 0, learning: 0, mastered: 0, crown: 0 };
+    candidatePool.forEach(item => {
+      const streak = getMasteryStreak(item.character);
+      const tier = getTierFromStreak(streak);
+      tierCounts[tier]++;
     });
 
-    combined = [...combined, ...filled];
+    // Compute item weights: w_i = TIER_WEIGHTS[tier] / tierCounts[tier]
+    const itemWeights = candidatePool.map(item => {
+      const streak = getMasteryStreak(item.character);
+      const tier = getTierFromStreak(streak);
+      const countInTier = tierCounts[tier];
+      return countInTier > 0 ? TIER_WEIGHTS[tier] / countInTier : 0;
+    });
+
+    const totalWeight = itemWeights.reduce((acc, w) => acc + w, 0);
+
+    if (totalWeight <= 0) {
+      const index = Math.floor(Math.random() * candidatePool.length);
+      const picked = candidatePool.splice(index, 1)[0];
+      const streak = getMasteryStreak(picked.character);
+      const tier = getTierFromStreak(streak);
+      questions.push({
+        ...picked,
+        questionReason: TIER_METADATA[tier].questionReason,
+        reasonLabel: TIER_METADATA[tier].reasonLabel
+      });
+      continue;
+    }
+
+    // Weighted random selection
+    const randomVal = Math.random() * totalWeight;
+    let cumulative = 0;
+    let selectedIndex = 0;
+
+    for (let i = 0; i < itemWeights.length; i++) {
+      cumulative += itemWeights[i];
+      if (randomVal <= cumulative) {
+        selectedIndex = i;
+        break;
+      }
+    }
+
+    const picked = candidatePool.splice(selectedIndex, 1)[0];
+    const streak = getMasteryStreak(picked.character);
+    const tier = getTierFromStreak(streak);
+    questions.push({
+      ...picked,
+      questionReason: TIER_METADATA[tier].questionReason,
+      reasonLabel: TIER_METADATA[tier].reasonLabel
+    });
   }
 
-  return combined.sort(() => 0.5 - Math.random()).slice(0, count);
+  return questions;
 };
