@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Home, Trophy, Lightbulb, Zap } from '@lucide/vue';
 
@@ -24,8 +25,21 @@ const getProgressColor = (answer: any) => {
   return '#ef4444'; // Red
 };
 
+const displayAccuracy = computed(() => {
+  if (quizStore.sentenceStats) {
+    return Math.round(quizStore.sentenceStats.accuracy);
+  }
+  return Math.min(100, Math.round(quizStore.finalScore));
+});
+
 const getScoreMessage = () => {
-  const score = quizStore.finalScore;
+  const score = displayAccuracy.value;
+  if (quizStore.questionType === 'sentences' || quizStore.sentenceStats) {
+    if (score >= 90) return 'Luar biasa! Pengetikan kalimat Bahasa Jepang sangat akurat!';
+    if (score >= 70) return 'Bagus sekali! Pengetikan kalimat makin lancar!';
+    if (score >= 50) return 'Cukup baik! Tingkatkan lagi keakuratan pengetikan.';
+    return 'Tetap semangat! Teruskan latihan mengetik kalimat Bahasa Jepang.';
+  }
   const isWords = quizStore.questionType === 'words';
   
   if (score >= 90) return isWords ? 'Outstanding! You\'re an everyday Japanese vocabulary master!' : 'Outstanding! You\'re a Japanese character master!';
@@ -75,10 +89,32 @@ const getScoreMessage = () => {
       </div>
     </div>
     
+    <!-- Sentence Typing Custom Stats Banner -->
+    <div 
+      v-if="quizStore.sentenceStats"
+      class="mb-3 grid grid-cols-3 gap-2 bg-slate-900 text-white rounded-2xl p-4 shadow-sm flex-shrink-0 text-center"
+    >
+      <div class="flex flex-col">
+        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kecepatan (WPM)</span>
+        <span class="text-2xl font-black text-amber-400">{{ quizStore.sentenceStats.wpm }}</span>
+        <span class="text-[10px] text-slate-400">{{ quizStore.sentenceStats.cpm }} CPM</span>
+      </div>
+      <div class="flex flex-col border-x border-slate-800">
+        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
+        <span class="text-2xl font-black text-emerald-400">{{ quizStore.sentenceStats.accuracy }}%</span>
+        <span class="text-[10px] text-slate-400">{{ quizStore.sentenceStats.errorCount }} Salah Ketik</span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Ketikan</span>
+        <span class="text-2xl font-black text-indigo-300">{{ quizStore.sentenceStats.totalKeystrokes }}</span>
+        <span class="text-[10px] text-slate-400">Karakter</span>
+      </div>
+    </div>
+    
     <!-- Score Circle & Message Header -->
     <div class="flex items-center justify-center gap-4 mb-3 flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
       <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex flex-col items-center justify-center shadow-md border-2 border-white flex-shrink-0">
-        <span class="text-lg font-black text-white leading-none">{{ Math.min(100, Math.round(quizStore.finalScore)) }}%</span>
+        <span class="text-lg font-black text-white leading-none">{{ displayAccuracy }}%</span>
       </div>
       <div class="text-left flex-1 min-w-0">
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Akurasi Jawaban</h3>
@@ -117,7 +153,7 @@ const getScoreMessage = () => {
                 stroke-width="3" 
                 fill="transparent" 
                 :stroke-dasharray="2 * Math.PI * 17" 
-                :stroke-dashoffset="2 * Math.PI * 17 * (1 - (answer.pointsEarned || 0) / 4)" 
+                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 17) : (2 * Math.PI * 17 * (1 - (answer.pointsEarned || 0) / 4))" 
                 stroke-linecap="round"
                 class="transition-all duration-500 ease-out"
               />
@@ -133,12 +169,33 @@ const getScoreMessage = () => {
           <div class="flex-1 flex flex-col min-w-0">
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Correct/Incorrect badge -->
-              <span class="font-extrabold text-[11px]" :class="{ 'text-emerald-600': answer.pointsEarned === 4, 'text-indigo-600': answer.pointsEarned >= 1 && answer.pointsEarned < 4, 'text-rose-600': answer.pointsEarned === 0 }">
-                {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah') }}
+              <span 
+                class="font-extrabold text-[11px]" 
+                :class="[
+                  (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
+                    ? (answer.isCorrect ? 'text-emerald-600' : 'text-rose-600')
+                    : (answer.pointsEarned === 4 ? 'text-emerald-600' : (answer.pointsEarned >= 1 ? 'text-indigo-600' : 'text-rose-600'))
+                ]"
+              >
+                <template v-if="quizStore.questionType === 'sentences' || quizStore.sentenceStats">
+                  {{ answer.isCorrect ? (answer.isTypo ? 'Selesai (Typo)' : 'Selesai') : 'Belum Tepat' }}
+                </template>
+                <template v-else>
+                  {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah') }}
+                </template>
               </span>
               
-              <!-- Points score badge -->
-              <span class="text-[9px] font-bold px-1.5 py-0.2 rounded" :class="{ 'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 'bg-amber-100 text-amber-800': answer.pointsEarned === 1, 'bg-rose-100 text-rose-800': answer.pointsEarned === 0 }">
+              <!-- Points score badge (Only for Non-Sentence modes) -->
+              <span 
+                v-if="quizStore.questionType !== 'sentences' && !quizStore.sentenceStats"
+                class="text-[9px] font-bold px-1.5 py-0.2 rounded" 
+                :class="{ 
+                  'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 
+                  'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
+                  'bg-amber-100 text-amber-800': answer.pointsEarned === 1, 
+                  'bg-rose-100 text-rose-800': answer.pointsEarned === 0 
+                }"
+              >
                 {{ answer.pointsEarned }}/4 poin
               </span>
 

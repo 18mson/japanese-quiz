@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
+import { sentencesData } from '../data/sentences';
 import { supabase } from '../lib/supabaseClient';
 import incorrect from '../assets/sound/incorrect.wav';
 import correct from '../assets/sound/correct.wav';
@@ -19,6 +20,7 @@ import { submitLeaderboardScore } from '../services/leaderboardService';
 export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
   const userStreaks = ref<Record<string, number>>({});
+  const sentenceStats = ref<{ wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number } | null>(null);
 
   const getLocalStreaks = (): Record<string, number> => {
     try {
@@ -99,7 +101,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const questionType = ref('hiragana');
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
-  const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words');
+  const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences');
 
   const userInput = ref('');
   const showReadingHint = ref(false);
@@ -135,6 +137,7 @@ export const useQuizStore = defineStore('quiz', () => {
     currentQuestionIndex.value = 0; score.value = 0; quizCompleted.value = false; selectedAnswer.value = null; isAnswerCorrect.value = null;
     userAnswers.value = []; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
     newRecordAchieved.value = false; showLevelUpScreen.value = false; speedAchievement.value = null;
+    sentenceStats.value = null;
     masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
 
     await loadStreaksFromServer();
@@ -145,6 +148,23 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const startQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
     await resetQuizSessionState(targetDuration, type, level);
+
+    if (type === 'sentences') {
+      const sentenceCount = targetDuration === 1 ? 5 : targetDuration === 3 ? 12 : 20;
+      const shuffled = [...sentencesData].sort(() => 0.5 - Math.random()).slice(0, sentenceCount);
+      questions.value = shuffled.map(s => ({
+        id: s.id,
+        character: s.japanese,
+        japanese: s.japanese,
+        romaji_variants: s.romaji_variants,
+        meaning: s.meaning_id,
+        romaji: s.romaji_variants.map(v => v[0]).join('')
+      }));
+      initialQuestionCount.value = questions.value.length;
+      isLoading.value = false;
+      return;
+    }
+
     const questionCount = getQuestionCountFromDuration(targetDuration);
 
     try {
@@ -330,6 +350,13 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const isMistakeRound = computed(() => currentQuestionIndex.value >= initialQuestionCount.value);
 
+  const finishSentenceQuiz = (stats: { wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number }) => {
+    sentenceStats.value = stats;
+    firstTryCorrectCount.value = Math.round((stats.accuracy / 100) * (initialQuestionCount.value || 1));
+    score.value = Math.round(stats.accuracy);
+    finishQuiz();
+  };
+
   return {
     isLoading, quizLevel, questionType, isTypingMode, userInput, showReadingHint, showMeaningHint,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
@@ -337,7 +364,9 @@ export const useQuizStore = defineStore('quiz', () => {
     speedAchievement, userAnswers, userStreaks, currentQuestion, options, progress, finalScore,
     hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
+    sentenceStats,
     getMasteryStreak, getMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
+    finishSentenceQuiz,
     nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
     getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks
   };

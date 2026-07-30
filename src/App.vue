@@ -4,6 +4,7 @@ import QuizHeader from './components/QuizHeader.vue';
 import QuizQuestion from './components/QuizQuestion.vue';
 import QuizOptions from './components/QuizOptions.vue';
 import QuizWordInput from './components/QuizWordInput.vue';
+import QuizSentenceTyping from './components/QuizSentenceTyping.vue';
 import QuizResults from './components/QuizResults.vue';
 import StartScreen from './components/StartScreen.vue';
 import AuthModal from './components/AuthModal.vue';
@@ -141,11 +142,14 @@ const goToHome = () => {
           <span class="text-sm font-bold text-gray-600">Memuat Soal Kuis...</span>
         </div>
         <template v-else>
-          <QuizQuestion class="flex-shrink-0" />
-          <div class="w-full flex flex-col justify-start items-center py-2">
-            <QuizWordInput v-if="quizStore.isTypingMode" />
-            <QuizOptions v-else />
-          </div>
+          <QuizSentenceTyping v-if="quizStore.questionType === 'sentences'" />
+          <template v-else>
+            <QuizQuestion class="flex-shrink-0" />
+            <div class="w-full flex flex-col justify-start items-center py-2">
+              <QuizWordInput v-if="quizStore.isTypingMode" />
+              <QuizOptions v-else />
+            </div>
+          </template>
         </template>
       </main>
       
