@@ -92,85 +92,90 @@ const getScoreMessage = () => {
     <!-- Sentence Typing Custom Stats Banner -->
     <div 
       v-if="quizStore.sentenceStats"
-      class="mb-3 grid grid-cols-3 gap-2 bg-slate-900 text-white rounded-2xl p-4 shadow-sm flex-shrink-0 text-center"
+      class="mb-3 grid grid-cols-3 gap-1.5 sm:gap-3 bg-slate-900 text-white rounded-2xl p-3 sm:p-4 shadow-sm flex-shrink-0 text-center"
     >
-      <div class="flex flex-col">
-        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Kecepatan (WPM)</span>
-        <span class="text-2xl font-black text-amber-400">{{ quizStore.sentenceStats.wpm }}</span>
-        <span class="text-[10px] text-slate-400">{{ quizStore.sentenceStats.cpm }} CPM</span>
+      <div class="flex flex-col justify-center">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
+        <span class="text-xl sm:text-2xl font-black text-amber-400 my-0.5">{{ quizStore.sentenceStats.cpm }} <span class="text-xs font-normal text-slate-300">CPM</span></span>
+        <span class="text-[11px] sm:text-xs text-slate-400">{{ quizStore.sentenceStats.wpm }} WPM</span>
       </div>
-      <div class="flex flex-col border-x border-slate-800">
-        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
-        <span class="text-2xl font-black text-emerald-400">{{ quizStore.sentenceStats.accuracy }}%</span>
-        <span class="text-[10px] text-slate-400">{{ quizStore.sentenceStats.errorCount }} Salah Ketik</span>
+      <div class="flex flex-col justify-center border-x border-slate-800">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
+        <span class="text-xl sm:text-2xl font-black text-emerald-400 my-0.5">{{ quizStore.sentenceStats.accuracy }}%</span>
+        <span class="text-[11px] sm:text-xs text-slate-400">{{ quizStore.sentenceStats.errorCount }} Salah Ketik</span>
       </div>
-      <div class="flex flex-col">
-        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Ketikan</span>
-        <span class="text-2xl font-black text-indigo-300">{{ quizStore.sentenceStats.totalKeystrokes }}</span>
-        <span class="text-[10px] text-slate-400">Karakter</span>
+      <div class="flex flex-col justify-center">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Total Ketikan</span>
+        <span class="text-xl sm:text-2xl font-black text-indigo-300 my-0.5">{{ quizStore.sentenceStats.totalKeystrokes }}</span>
+        <span class="text-[11px] sm:text-xs text-slate-400">Karakter</span>
       </div>
     </div>
     
     <!-- Score Circle & Message Header -->
-    <div class="flex items-center justify-center gap-4 mb-3 flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
-      <div class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex flex-col items-center justify-center shadow-md border-2 border-white flex-shrink-0">
-        <span class="text-lg font-black text-white leading-none">{{ displayAccuracy }}%</span>
+    <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3 flex-shrink-0 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm">
+      <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-indigo-600 to-teal-400 flex flex-col items-center justify-center shadow-md border-2 border-white flex-shrink-0">
+        <span class="text-base sm:text-lg font-black text-white leading-none">{{ displayAccuracy }}%</span>
       </div>
       <div class="text-left flex-1 min-w-0">
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Akurasi Jawaban</h3>
-        <p class="text-xs sm:text-sm text-gray-700 font-bold leading-tight mt-0.5 truncate">{{ getScoreMessage() }}</p>
+        <p class="text-xs sm:text-sm text-gray-800 font-bold leading-snug mt-0.5 break-words">{{ getScoreMessage() }}</p>
       </div>
     </div>
     
     <!-- Question Summary List Box (Flex-1 for maximum scrolling area) -->
     <div class="bg-white rounded-2xl p-3 border border-gray-200 flex-1 flex flex-col overflow-hidden min-h-0 shadow-sm">
       <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-100 flex-shrink-0">
-        <h3 class="text-xs font-black text-gray-800 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
-        <span class="text-[10px] font-bold text-gray-400">{{ quizStore.userAnswers.length }} Soal Selesai</span>
+        <h3 class="text-xs sm:text-xs font-black text-gray-800 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
+        <span class="text-xs font-bold text-gray-400">{{ quizStore.userAnswers.length }} Soal Selesai</span>
       </div>
 
-      <ul class="space-y-2 flex-1 overflow-y-auto pr-1 min-h-0 pb-20">
+      <ul class="space-y-2 flex-1 overflow-y-auto pr-1 min-h-0">
         <li 
           v-for="(answer, index) in quizStore.userAnswers" 
           :key="index"
-          class="flex items-center p-2.5 rounded-xl bg-gray-50/70 border border-gray-150 transition-all duration-200 hover:bg-white hover:shadow-sm"
+          class="flex items-start p-3 sm:p-3.5 rounded-xl bg-gray-50/70 border border-gray-150 transition-all duration-200 hover:bg-white hover:shadow-sm"
           :class="{ 
-            'border-l-4 border-emerald-500': answer.pointsEarned === 4, 
+            'border-l-4 border-emerald-500': answer.pointsEarned === 4 || answer.isCorrect, 
             'border-l-4 border-indigo-500': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
             'border-l-4 border-amber-500': answer.pointsEarned === 1,
-            'border-l-4 border-rose-500': answer.pointsEarned === 0 
+            'border-l-4 border-rose-500': !answer.isCorrect && (answer.pointsEarned === 0 || !answer.pointsEarned)
           }"
         >
-          <!-- SVG Circular Progress around Character -->
-          <div class="relative w-10 h-10 flex items-center justify-center mr-3 flex-shrink-0 bg-white rounded-full border border-gray-150 shadow-inner">
+          <!-- SVG Circular Progress around Character / Index Number -->
+          <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center mr-3 flex-shrink-0 bg-white rounded-full border border-gray-150 shadow-inner mt-0.5">
             <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-              <circle cx="20" cy="20" r="17" stroke="#f3f4f6" stroke-width="3" fill="transparent" />
+              <circle cx="18" cy="18" r="15" stroke="#f3f4f6" stroke-width="3" fill="transparent" />
               <circle 
-                cx="20" 
-                cy="20" 
-                r="17" 
+                cx="18" 
+                cy="18" 
+                r="15" 
                 :stroke="getProgressColor(answer)" 
                 stroke-width="3" 
                 fill="transparent" 
-                :stroke-dasharray="2 * Math.PI * 17" 
-                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 17) : (2 * Math.PI * 17 * (1 - (answer.pointsEarned || 0) / 4))" 
+                :stroke-dasharray="2 * Math.PI * 15" 
+                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 15) : (2 * Math.PI * 15 * (1 - (answer.pointsEarned || 0) / 4))" 
                 stroke-linecap="round"
                 class="transition-all duration-500 ease-out"
               />
             </svg>
             <span 
               class="font-black text-gray-800 z-10 select-none text-center" 
-              :class="answer.character.length > 4 ? 'text-[8px] leading-tight max-w-[28px] truncate' : 'text-xs'"
+              :class="answer.character.length > 4 ? 'text-xs font-bold text-gray-600' : 'text-xs sm:text-sm font-bold'"
             >
-              {{ answer.character }}
+              {{ answer.character.length > 4 ? `#${index + 1}` : answer.character }}
             </span>
           </div>
 
           <div class="flex-1 flex flex-col min-w-0">
+            <!-- Full Japanese sentence title if character is long -->
+            <h4 v-if="answer.character.length > 4" class="text-sm sm:text-base font-bold text-gray-900 leading-snug font-japanese mb-1 break-words">
+              {{ answer.character }}
+            </h4>
+
             <div class="flex items-center gap-1.5 flex-wrap">
               <!-- Correct/Incorrect badge -->
               <span 
-                class="font-extrabold text-[11px]" 
+                class="font-extrabold text-xs sm:text-xs" 
                 :class="[
                   (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
                     ? (answer.isCorrect ? 'text-emerald-600' : 'text-rose-600')
@@ -188,7 +193,7 @@ const getScoreMessage = () => {
               <!-- Points score badge (Only for Non-Sentence modes) -->
               <span 
                 v-if="quizStore.questionType !== 'sentences' && !quizStore.sentenceStats"
-                class="text-[9px] font-bold px-1.5 py-0.2 rounded" 
+                class="text-xs font-bold px-1.5 py-0.5 rounded" 
                 :class="{ 
                   'bg-emerald-100 text-emerald-800': answer.pointsEarned === 4, 
                   'bg-indigo-100 text-indigo-800': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
@@ -200,31 +205,31 @@ const getScoreMessage = () => {
               </span>
 
               <!-- Typo badge -->
-              <span v-if="answer.isTypo" class="text-[9px] font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.2 rounded">
+              <span v-if="answer.isTypo" class="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.5 rounded">
                 Salah Ketik
               </span>
 
               <!-- Hints badge -->
-              <span v-if="answer.hintsUsed > 0" class="text-[9px] font-bold bg-violet-100 text-violet-800 px-1.5 py-0.2 rounded flex items-center gap-1">
-                <Lightbulb class="w-2.5 h-2.5 text-violet-800" />
+              <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-100 text-violet-800 px-1.5 py-0.5 rounded flex items-center gap-1">
+                <Lightbulb class="w-3 h-3 text-violet-800" />
                 <span>{{ answer.hintsUsed }} Petunjuk</span>
               </span>
 
               <!-- Kana reading badge -->
-              <span v-if="answer.kana" class="text-[9px] font-semibold text-indigo-600 bg-indigo-50 px-1.5 py-0.2 rounded-full border border-indigo-100/50">
+              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100/50">
                 {{ answer.kana }}
               </span>
             </div>
 
-            <span class="text-[11px] text-gray-600 mt-0.5 truncate">
+            <span class="text-xs text-gray-700 mt-1 leading-normal break-words">
               <template v-if="answer.isCorrect">
-                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-gray-200/70 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-gray-200/70 px-1.5 py-0.5 rounded text-xs text-gray-900 font-medium">{{ answer.userRomaji }}</code>
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1 py-0.5 rounded text-[10px]">{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 text-emerald-700 px-1 py-0.5 rounded text-[10px] font-semibold">{{ answer.correctRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-rose-50 text-rose-700 px-1.5 py-0.5 rounded text-xs font-medium">{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded text-xs font-semibold">{{ answer.correctRomaji }}</code>
               </template>
             </span>
-            <span v-if="answer.meaning" class="text-[9px] text-gray-400 italic truncate">
+            <span v-if="answer.meaning" class="text-xs text-gray-500 italic mt-0.5 leading-snug break-words">
               Arti: {{ answer.meaning }}
             </span>
           </div>

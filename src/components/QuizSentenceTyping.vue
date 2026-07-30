@@ -417,37 +417,30 @@ const handleKeyDown = (e: KeyboardEvent) => {
 <template>
   <div class="w-full max-w-2xl mx-auto flex flex-col items-center p-2 sm:p-4">
     <!-- Live Header Stats Bar -->
-    <div class="w-full bg-slate-900 text-white rounded-2xl p-4 mb-5 shadow-lg flex items-center justify-between gap-4">
-      <div class="flex items-center gap-4">
-        <div class="flex flex-col">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Progress</span>
-          <span class="text-sm font-extrabold text-amber-400">
-            {{ currentSentenceIndex + 1 }} / {{ totalSentences }} Kalimat
-          </span>
-        </div>
-        <div class="h-8 w-px bg-slate-800"></div>
-        <div class="flex flex-col">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Speed (WPM)</span>
-          <span class="text-sm font-extrabold text-indigo-300">
-            {{ wpm }} <span class="text-xs text-slate-400 font-normal">WPM</span>
-          </span>
-        </div>
+    <div class="w-full bg-slate-900 text-white rounded-2xl p-3 sm:p-4 mb-5 shadow-lg grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-center items-center">
+      <div class="flex flex-col">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Progress</span>
+        <span class="text-sm sm:text-base font-extrabold text-amber-400">
+          {{ currentSentenceIndex + 1 }} / {{ totalSentences }} Kalimat
+        </span>
       </div>
-
-      <div class="flex items-center gap-4">
-        <div class="flex flex-col text-right">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
-          <span class="text-sm font-extrabold" :class="accuracy >= 90 ? 'text-emerald-400' : 'text-amber-300'">
-            {{ accuracy }}%
-          </span>
-        </div>
-        <div class="h-8 w-px bg-slate-800"></div>
-        <div class="flex flex-col text-right">
-          <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Waktu</span>
-          <span class="text-sm font-extrabold text-slate-200">
-            {{ elapsedTimeSeconds }}s
-          </span>
-        </div>
+      <div class="flex flex-col border-l sm:border-l-0 sm:border-x border-slate-800">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
+        <span class="text-sm sm:text-base font-extrabold text-indigo-300">
+          {{ cpm }} <span class="text-xs text-slate-400 font-normal">CPM</span>
+        </span>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
+        <span class="text-sm sm:text-base font-extrabold" :class="accuracy >= 90 ? 'text-emerald-400' : 'text-amber-300'">
+          {{ accuracy }}%
+        </span>
+      </div>
+      <div class="flex flex-col border-l border-slate-800">
+        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Waktu</span>
+        <span class="text-sm sm:text-base font-extrabold text-slate-200">
+          {{ elapsedTimeSeconds }}s
+        </span>
       </div>
     </div>
 

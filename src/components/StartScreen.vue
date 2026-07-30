@@ -27,7 +27,7 @@ const startQuiz = async () => {
       Japanese Kana & Vocab Quiz
     </h1>
     <p class="text-sm md:text-base text-gray-600 mb-5 max-w-2xl font-medium leading-relaxed flex-shrink-0 text-center">
-      Learn and master Japanese Hiragana and Katakana characters, or level up your N5 vocabulary with interactive keyboard typing challenges.
+      Pelajari dan kuasai karakter Hiragana & Katakana Jepang, serta tingkatkan kosakata dan pengetikan kalimat N5 melalui tantangan interaktif.
     </p>
 
     <!-- Progress Header (1 Line) -->
