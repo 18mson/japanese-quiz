@@ -59,10 +59,20 @@ export const checkIsTypo = (userInputClean: string, targetRomaji: string | strin
   });
 };
 
-export const getQuestionCountFromDuration = (targetDurationMinutes: number): number => {
-  if (targetDurationMinutes <= 1) return 8;  // ~1 minute session
-  if (targetDurationMinutes <= 3) return 22; // ~3 minute session
-  return 35;                                 // ~5 minute session
+export const getQuestionCountFromDuration = (targetDurationMinutes: number, type: string = 'hiragana'): number => {
+  if (type === 'sentences') {
+    if (targetDurationMinutes <= 1) return 4;
+    if (targetDurationMinutes <= 3) return 10;
+    return 16;
+  }
+  if (type === 'words') {
+    if (targetDurationMinutes <= 1) return 8;
+    if (targetDurationMinutes <= 3) return 24;
+    return 40;
+  }
+  if (targetDurationMinutes <= 1) return 16;
+  if (targetDurationMinutes <= 3) return 48;
+  return 78;
 };
 
 export const getFallbackLocalPool = (type: string, level: string): any[] => {

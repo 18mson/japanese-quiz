@@ -150,7 +150,7 @@ export const useQuizStore = defineStore('quiz', () => {
     await resetQuizSessionState(targetDuration, type, level);
 
     if (type === 'sentences') {
-      const sentenceCount = targetDuration === 1 ? 5 : targetDuration === 3 ? 12 : 20;
+      const sentenceCount = getQuestionCountFromDuration(targetDuration, type);
       const shuffled = [...sentencesData].sort(() => 0.5 - Math.random()).slice(0, sentenceCount);
       questions.value = shuffled.map(s => ({
         id: s.id,
@@ -165,7 +165,7 @@ export const useQuizStore = defineStore('quiz', () => {
       return;
     }
 
-    const questionCount = getQuestionCountFromDuration(targetDuration);
+    const questionCount = getQuestionCountFromDuration(targetDuration, type);
 
     try {
       const { data, error } = await supabase.from('characters').select('*').eq('quiz_type', type);
@@ -202,7 +202,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const startWeakItemsQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
     await resetQuizSessionState(targetDuration, type, level);
-    const questionCount = getQuestionCountFromDuration(targetDuration);
+    const questionCount = getQuestionCountFromDuration(targetDuration, type);
     const pool = getFallbackLocalPool(type, level);
 
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);

@@ -103,9 +103,13 @@ const units = computed(() => {
         const opts = varOptions.length > 0 ? varOptions : [toRomaji(kana)];
         for (const c of combinations) {
           for (const opt of opts) {
-            if (opt === 'ー') {
+            if (['ー', '-', '_'].includes(opt)) {
+              const lastChar = c.slice(-1);
+              if (['a', 'i', 'u', 'e', 'o'].includes(lastChar)) {
+                nextCombos.push(c + lastChar);
+              }
+              nextCombos.push(c);
               nextCombos.push(c + '-');
-              nextCombos.push(c + 'ー');
               nextCombos.push(c + '_');
             } else {
               nextCombos.push(c + opt);
@@ -115,7 +119,13 @@ const units = computed(() => {
         combinations = nextCombos;
       }
 
-      const acceptedRomaji = Array.from(new Set(combinations));
+      const acceptedRomaji = Array.from(new Set(combinations)).sort((a, b) => {
+        const aHasHyphen = a.includes('-') || a.includes('_');
+        const bHasHyphen = b.includes('-') || b.includes('_');
+        if (aHasHyphen && !bHasHyphen) return 1;
+        if (!aHasHyphen && bHasHyphen) return -1;
+        return b.length - a.length;
+      });
 
       result.push({
         kana,
@@ -282,7 +292,7 @@ const evaluateInput = () => {
   if (units.value.length === 0) return;
 
   const rawInput = userInput.value;
-  const cleanInput = rawInput.toLowerCase();
+  const cleanInput = rawInput.toLowerCase().replace(/\s+/g, '');
   
   let inputOffset = 0;
   let newActiveIdx = 0;

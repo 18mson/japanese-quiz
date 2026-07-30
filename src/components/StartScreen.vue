@@ -13,6 +13,23 @@ const selectModeAndContent = (level: 'basic' | 'n5', type: string) => {
   characterTypes.value = type;
 };
 
+const getDurationDesc = (minutes: number) => {
+  if (characterTypes.value === 'sentences') {
+    if (minutes === 1) return '⚡ Kilat (4 kalimat)';
+    if (minutes === 3) return '🔥 Fokus (10 kalimat)';
+    if (minutes === 5) return '🏆 Maraton (16 kalimat)';
+  } else if (characterTypes.value === 'words') {
+    if (minutes === 1) return '⚡ Kilat (8 kata)';
+    if (minutes === 3) return '🔥 Fokus (24 kata)';
+    if (minutes === 5) return '🏆 Maraton (40 kata)';
+  } else {
+    if (minutes === 1) return '⚡ Kilat (16 soal)';
+    if (minutes === 3) return '🔥 Fokus (48 soal)';
+    if (minutes === 5) return '🏆 Maraton (78 soal)';
+  }
+  return '';
+};
+
 const emit = defineEmits(['start', 'openMasteryGrid']);
 
 const startQuiz = async () => {
@@ -183,23 +200,19 @@ const startQuiz = async () => {
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <button 
-          v-for="d in [
-            { min: 1, label: '1 Menit', desc: '⚡ Kilat (~8 soal)' },
-            { min: 3, label: '3 Menit', desc: '🔥 Fokus (~22 soal)' },
-            { min: 5, label: '5 Menit', desc: '🏆 Maraton (~35 soal)' }
-          ]" 
-          :key="d.min"
+          v-for="min in [1, 3, 5]" 
+          :key="min"
           type="button"
           :class="[
             'p-3.5 rounded-2xl cursor-pointer transition-all duration-200 flex flex-col items-center justify-center text-center',
-            targetDurationMinutes === d.min 
+            targetDurationMinutes === min 
               ? 'border-2 border-indigo-600 bg-indigo-50/40 text-indigo-950 shadow-sm' 
               : 'border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:border-gray-300'
           ]"
-          @click="targetDurationMinutes = d.min"
+          @click="targetDurationMinutes = min"
         >
-          <span class="text-base font-extrabold" :class="targetDurationMinutes === d.min ? 'text-indigo-700' : 'text-gray-900'">{{ d.label }}</span>
-          <span class="text-xs font-medium mt-0.5" :class="targetDurationMinutes === d.min ? 'text-indigo-600' : 'text-gray-500'">{{ d.desc }}</span>
+          <span class="text-base font-extrabold" :class="targetDurationMinutes === min ? 'text-indigo-700' : 'text-gray-900'">{{ min }} Menit</span>
+          <span class="text-xs font-medium mt-0.5" :class="targetDurationMinutes === min ? 'text-indigo-600' : 'text-gray-500'">{{ getDurationDesc(min) }}</span>
         </button>
       </div>
     </div>
