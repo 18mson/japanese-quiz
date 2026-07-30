@@ -2,11 +2,20 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { supabase } from '../lib/supabaseClient';
 import type { User } from '@supabase/supabase-js';
+import { useQuizStore } from './quizStore';
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null);
   const loading = ref(false);
   const errorMsg = ref<string | null>(null);
+
+  // Sync Conflict State
+  const showSyncConflictModal = ref(false);
+  const syncConflictLoading = ref(false);
+  const pendingLocalCount = ref(0);
+  const pendingServerCount = ref(0);
+  const pendingServerStreaks = ref<Record<string, number>>({});
+  const pendingUserId = ref<string>('');
 
   // Helper to extract username for Leaderboard display (returns null if email was used)
   const getDisplayName = (emailOrUsername: string): string | null => {
@@ -30,10 +39,70 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       user.value = session?.user ?? null;
+      if (user.value) {
+        const quizStore = useQuizStore();
+        await quizStore.loadStreaksFromStorage();
+      }
     } catch (err: any) {
       console.error('Error fetching session:', err);
     } finally {
       loading.value = false;
+    }
+  };
+
+  const checkAndHandleStreakSyncOnLogin = async (userId: string) => {
+    const quizStore = useQuizStore();
+    try {
+      const serverStreaks = await quizStore.fetchServerStreaks(userId);
+      const localStreaks = quizStore.getLocalStreaks();
+
+      const localCount = Object.values(localStreaks).filter(s => s > 0).length;
+      const serverCount = Object.values(serverStreaks).filter(s => s > 0).length;
+
+      if (localCount > 0 && serverCount > 0) {
+        const isDifferent = Object.keys(localStreaks).some(k => localStreaks[k] !== serverStreaks[k]) ||
+          Object.keys(serverStreaks).some(k => serverStreaks[k] !== localStreaks[k]);
+
+        if (isDifferent) {
+          pendingLocalCount.value = localCount;
+          pendingServerCount.value = serverCount;
+          pendingServerStreaks.value = serverStreaks;
+          pendingUserId.value = userId;
+          showSyncConflictModal.value = true;
+          return;
+        }
+      }
+
+      if (serverCount > 0 && localCount === 0) {
+        quizStore.applyServerStreaks(serverStreaks);
+      } else if (localCount > 0 && serverCount === 0) {
+        await quizStore.syncLocalToServer(userId);
+      } else if (serverCount > 0) {
+        quizStore.applyServerStreaks(serverStreaks);
+      }
+    } catch (err) {
+      console.error('Error during streak sync check:', err);
+    }
+  };
+
+  const resolveSyncConflict = async (keepServer: boolean) => {
+    syncConflictLoading.value = true;
+    const quizStore = useQuizStore();
+    try {
+      if (keepServer) {
+        // User selected YES: Server data overwrites local data
+        quizStore.applyServerStreaks(pendingServerStreaks.value);
+      } else {
+        // User selected NO: Local data overwrites server data
+        await quizStore.syncLocalToServer(pendingUserId.value);
+      }
+    } catch (e) {
+      console.error('Failed to resolve sync conflict:', e);
+    } finally {
+      syncConflictLoading.value = false;
+      showSyncConflictModal.value = false;
+      pendingServerStreaks.value = {};
+      pendingUserId.value = '';
     }
   };
 
@@ -50,6 +119,11 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (error) throw error;
       user.value = data.user;
+
+      if (data.user) {
+        await checkAndHandleStreakSyncOnLogin(data.user.id);
+      }
+
       return true;
     } catch (err: any) {
       errorMsg.value = err.message || 'Login failed';
@@ -78,11 +152,9 @@ export const useAuthStore = defineStore('auth', () => {
 
       if (error) throw error;
       
-      // Auto login after sign up if user is already returned (e.g. no email confirmation required)
       if (data.user) {
         user.value = data.user;
         
-        // Insert into public.users table to maintain public user records
         const { error: insertError } = await supabase
           .from('users')
           .insert({
@@ -94,6 +166,10 @@ export const useAuthStore = defineStore('auth', () => {
         if (insertError) {
           console.error('Failed to create public user record:', insertError);
         }
+
+        // Automatically sync local data to server on registration
+        const quizStore = useQuizStore();
+        await quizStore.syncLocalToServer(data.user.id);
       }
       return true;
     } catch (err: any) {
@@ -109,6 +185,8 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await supabase.auth.signOut();
       user.value = null;
+      const quizStore = useQuizStore();
+      quizStore.userStreaks = quizStore.getLocalStreaks();
     } catch (err: any) {
       console.error('Error signing out:', err);
     } finally {
@@ -116,10 +194,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  // Reactive username getter based on metadata or email
   const displayUsername = ref('');
   
-  // Set user value and reactively update displayUsername
   const setUser = (val: User | null) => {
     user.value = val;
     if (val) {
@@ -129,7 +205,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  // Monitor auth state changes
   supabase.auth.onAuthStateChange((_event, session) => {
     setUser(session?.user ?? null);
   });
@@ -139,9 +214,14 @@ export const useAuthStore = defineStore('auth', () => {
     loading,
     errorMsg,
     displayUsername,
+    showSyncConflictModal,
+    syncConflictLoading,
+    pendingLocalCount,
+    pendingServerCount,
     checkSession,
     login,
     register,
-    logout
+    logout,
+    resolveSyncConflict
   };
 });

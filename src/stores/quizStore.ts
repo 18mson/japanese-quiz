@@ -20,31 +20,62 @@ export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
   const userStreaks = ref<Record<string, number>>({});
 
-  const getOrCreateUserId = (): string => {
-    let userId = localStorage.getItem('japanese-quiz-user-id');
-    if (!userId) {
-      userId = crypto.randomUUID();
-      localStorage.setItem('japanese-quiz-user-id', userId);
-    }
-    return userId;
+  const getLocalStreaks = (): Record<string, number> => {
+    try {
+      const stored = localStorage.getItem('japanese-quiz-streaks');
+      if (stored) return JSON.parse(stored);
+    } catch (e) {}
+    return {};
   };
 
-  const loadStreaksFromServer = async () => {
-    const userId = getOrCreateUserId();
+  const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
+    const { data, error } = await supabase.from('user_streaks').select('character, streak').eq('user_id', userId);
+    if (error) throw error;
+    const streaks: Record<string, number> = {};
+    if (data) data.forEach(item => { streaks[item.character] = item.streak; });
+    return streaks;
+  };
+
+  const syncLocalToServer = async (userId: string) => {
+    const current = getLocalStreaks();
+    const entries = Object.entries(current).filter(([_, streak]) => streak > 0);
+    if (entries.length === 0) return;
+
+    const rows = entries.map(([character, streak]) => ({
+      user_id: userId,
+      character,
+      streak
+    }));
+
+    const { error } = await supabase.from('user_streaks').upsert(rows, { onConflict: 'user_id,character' });
+    if (error) console.error('Failed to sync local streaks to server:', error);
+  };
+
+  const applyServerStreaks = (serverStreaks: Record<string, number>) => {
+    userStreaks.value = serverStreaks;
     try {
-      const { data, error } = await supabase.from('user_streaks').select('character, streak').eq('user_id', userId);
-      if (error) throw error;
-      const newStreaks: Record<string, number> = {};
-      if (data) data.forEach(item => { newStreaks[item.character] = item.streak; });
-      userStreaks.value = newStreaks;
-      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(newStreaks));
-    } catch (e) {
+      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
+    } catch (e) {}
+  };
+
+  const loadStreaksFromStorage = async () => {
+    userStreaks.value = getLocalStreaks();
+    const { useAuthStore } = await import('./authStore');
+    const authStore = useAuthStore();
+    if (authStore.user) {
       try {
-        const stored = localStorage.getItem('japanese-quiz-streaks');
-        if (stored) userStreaks.value = JSON.parse(stored);
-      } catch (localErr) {}
+        const serverStreaks = await fetchServerStreaks(authStore.user.id);
+        if (Object.keys(serverStreaks).length > 0) {
+          userStreaks.value = serverStreaks;
+          localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
+        }
+      } catch (e) {
+        console.error('Error fetching server streaks:', e);
+      }
     }
   };
+
+  const loadStreaksFromServer = loadStreaksFromStorage;
 
   const getMasteryStreak = (character: string): number => userStreaks.value[character] || 0;
   const getMasteryTier = (character: string) => getMasteryTierFromStreak(getMasteryStreak(character));
@@ -121,14 +152,18 @@ export const useQuizStore = defineStore('quiz', () => {
       if (error || !data || data.length === 0) throw error || new Error('No data');
 
       const mappedData = data.map(item => ({
-        character: item.character, romaji: Array.isArray(item.romaji) ? item.romaji[0] : item.romaji,
+        character: item.character, romaji: item.romaji,
         kana: item.kana, meaning: item.meaning, type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'), lesson: item.lesson
       }));
 
       let finalPool = [...mappedData];
       if (type === 'words') {
-        const level1Words = mappedData.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
-        const level2Words = mappedData.filter(w => w.lesson === 'Pelajaran 2');
+        const wordPool = mappedData.filter(w => {
+          const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
+          return cleanKana.length > 1;
+        });
+        const level1Words = wordPool.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
+        const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
         const unmasteredLevel1 = level1Words.filter(w => (userStreaks.value[w.character] || 0) < 3);
         finalPool = unmasteredLevel1.length === 0 ? [...level1Words, ...level2Words] : [...level1Words];
       }
@@ -210,7 +245,17 @@ export const useQuizStore = defineStore('quiz', () => {
       const newStreak = pointsEarned === 4 ? (userStreaks.value[charKey] || 0) + 1 : 0;
       userStreaks.value[charKey] = newStreak;
       try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) {}
-      supabase.from('user_streaks').upsert({ user_id: getOrCreateUserId(), character: charKey, streak: newStreak }, { onConflict: 'user_id,character' }).then();
+      
+      import('./authStore').then(({ useAuthStore }) => {
+        const authStore = useAuthStore();
+        if (authStore.user) {
+          supabase.from('user_streaks').upsert({
+            user_id: authStore.user.id,
+            character: charKey,
+            streak: newStreak
+          }, { onConflict: 'user_id,character' }).then();
+        }
+      });
         
       userAnswers.value.push({
         character: current.character, correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
@@ -295,6 +340,7 @@ export const useQuizStore = defineStore('quiz', () => {
     hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
     getMasteryStreak, getMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
-    nextQuestion, restartQuiz, loadStreaksFromServer
+    nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
+    getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks
   };
 });

@@ -14,7 +14,6 @@ const questionNumber = computed(() => {
 
 <template>
   <header class="quiz-header">
-    <h1 class="quiz-title">Japanese Quiz</h1>
     <div class="quiz-stats">
       <span class="quiz-progress">
         Soal {{ questionNumber }} (Selesai: {{ quizStore.masteredCount }}/{{ quizStore.initialQuestionCount }})

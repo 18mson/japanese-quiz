@@ -7,6 +7,7 @@ export const normalizeRomajiForComparison = (str: string): string => {
   return str
     .toLowerCase()
     .trim()
+    .replace(/[^a-z0-9]/g, '') // ignore all spaces, punctuation, symbols, and hyphens
     .replace(/nn/g, 'n')  // normalize double n to single n
     .replace(/tsu/g, 'tu') // normalize tsu/tu
     .replace(/shi/g, 'si') // normalize shi/si
@@ -72,7 +73,11 @@ export const getFallbackLocalPool = (type: string, level: string): any[] => {
     return level === 'basic' ? katakanaData.filter(k => k.type === 'basic') : katakanaData;
   }
   if (type === 'words') {
-    return level === 'basic' ? wordsData.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character)) : wordsData;
+    const multiCharWords = wordsData.filter(w => {
+      const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
+      return cleanKana.length > 1;
+    });
+    return level === 'basic' ? multiCharWords.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character)) : multiCharWords;
   }
   return [];
 };

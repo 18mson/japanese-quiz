@@ -157,7 +157,6 @@ export const wordsData: JapaneseWord[] = [
   { character: 'どうもありがとうございます', kana: 'どうもありがとうございます', romaji: ['doumo arigatou gozaimasu', 'arigatou gozaimasu', 'arigatou', 'doumo'], meaning: 'Terima kasih [banyak]', type: 'word', lesson: 'Pelajaran 2' },
   { character: 'そうですか', kana: 'そうですか', romaji: 'sou desu ka', meaning: 'O, begitu / O, ya', type: 'word', lesson: 'Pelajaran 2' },
   { character: '違います', kana: 'ちがいます', romaji: ['chigaimasu', 'tigaimasu'], meaning: 'Bukan / Tidak / Salah', type: 'word', lesson: 'Pelajaran 2' },
-  { character: 'あ', kana: 'あ', romaji: 'a', meaning: 'O, Eh (dipakai ketika tersadar akan sesuatu)', type: 'word', lesson: 'Pelajaran 2' },
   { character: 'これからお世話になります', kana: 'これからおせわになります', romaji: ['korekara osewa ni narimasu', 'korekara osewani narimasu'], meaning: 'Mulai sekarang, saya akan meminta bantuannya', type: 'word', lesson: 'Pelajaran 2' },
   { character: 'こちらこそよろしくおねがいします', kana: 'こちらこそよろしくおねがいします', romaji: ['kochirakoso yoroshiku onegaishimasu', 'kochirakoso douzo yoroshiku onegaishimasu', 'kotirakoso yoroshiku onegaisimasu'], meaning: 'Ya, sama-sama (sebagai jawaban dari salam kenal)', type: 'word', lesson: 'Pelajaran 2' }
 ];

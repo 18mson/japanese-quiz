@@ -10,6 +10,7 @@ import AuthModal from './components/AuthModal.vue';
 import LeaderboardModal from './components/LeaderboardModal.vue';
 import MasteryGridModal from './components/MasteryGridModal.vue';
 import LevelUpModal from './components/LevelUpModal.vue';
+import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 
 import { useQuizStore } from './stores/quizStore';
@@ -62,7 +63,7 @@ const goToHome = () => {
 </script>
 
 <template>
-  <div class="h-screen w-screen bg-slate-50 font-sans flex flex-col overflow-hidden select-none">
+  <div class="h-full w-screen bg-slate-50 font-sans flex flex-col overflow-hidden select-none">
     <!-- Top Global App Bar -->
     <header class="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
@@ -74,10 +75,10 @@ const goToHome = () => {
         <button 
           @click="showLeaderboardModal = true"
           class="p-2 text-amber-600 hover:bg-amber-50 rounded-xl transition flex items-center gap-1.5 text-xs font-bold border border-amber-200 cursor-pointer"
-          title="View Leaderboard"
+          title="Lihat Papan Peringkat"
         >
           <Trophy class="w-4 h-4 text-amber-500" />
-          <span class="hidden sm:inline">Leaderboard</span>
+          <span class="hidden sm:inline">Papan Peringkat</span>
         </button>
 
         <template v-if="authStore.user">
@@ -90,7 +91,7 @@ const goToHome = () => {
           <button 
             @click="authStore.logout"
             class="p-2 text-gray-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition cursor-pointer"
-            title="Sign Out"
+            title="Keluar"
           >
             <LogOut class="w-4 h-4" />
           </button>
@@ -100,7 +101,7 @@ const goToHome = () => {
             @click="showAuthModal = true"
             class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
           >
-            Login / Signup
+            Masuk / Daftar
           </button>
         </template>
       </div>
@@ -121,6 +122,13 @@ const goToHome = () => {
       @start-weak-quiz="handleStartWeakQuiz"
     />
     <LevelUpModal />
+    <SyncConflictModal
+      :is-open="authStore.showSyncConflictModal"
+      :local-count="authStore.pendingLocalCount"
+      :server-count="authStore.pendingServerCount"
+      :loading="authStore.syncConflictLoading"
+      @resolve="authStore.resolveSyncConflict"
+    />
 
     <!-- Main Screens -->
     <StartScreen v-if="!quizStarted" @start="startQuiz" @open-mastery-grid="showMasteryGridModal = true" />

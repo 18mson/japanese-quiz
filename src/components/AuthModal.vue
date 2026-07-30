@@ -32,7 +32,7 @@ const handleClose = () => {
 
 const handleSubmit = async () => {
   if (!emailOrUsername.value || !password.value) {
-    authStore.errorMsg = 'Please fill in all fields.';
+    authStore.errorMsg = 'Harap isi semua kolom.';
     return;
   }
 
@@ -46,7 +46,7 @@ const handleSubmit = async () => {
     if (success) {
       registerSuccess.value = true;
       isLoginTab.value = true;
-      password.value = ''; // keep username for login
+      password.value = ''; // simpan username untuk login
     }
   }
 };
@@ -69,14 +69,14 @@ const handleSubmit = async () => {
           :class="isLoginTab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="isLoginTab = true"
         >
-          Sign In
+          Masuk
         </button>
         <button 
           class="flex-1 py-4 text-center text-sm font-bold border-b-2 transition-all cursor-pointer"
           :class="!isLoginTab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
           @click="isLoginTab = false"
         >
-          Create Account
+          Buat Akun
         </button>
       </div>
 
@@ -84,10 +84,10 @@ const handleSubmit = async () => {
       <div class="p-6">
         <div class="text-center mb-6">
           <h3 class="text-xl font-extrabold text-gray-800">
-            {{ isLoginTab ? 'Welcome Back!' : 'Join the Japanese Quiz' }}
+            {{ isLoginTab ? 'Selamat Datang Kembali!' : 'Bergabung Kuis Bahasa Jepang' }}
           </h3>
           <p class="text-xs text-gray-500 mt-1">
-            {{ isLoginTab ? 'Sign in to sync your score and view the leaderboard.' : 'Create an account to track your mastery progress.' }}
+            {{ isLoginTab ? 'Masuk untuk menyinkronkan skor dan melihat papan peringkat.' : 'Buat akun untuk memantau perkembangan penguasaan Anda.' }}
           </p>
         </div>
 
@@ -105,26 +105,26 @@ const handleSubmit = async () => {
           class="mb-4 p-3 bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs rounded-xl flex items-center gap-2"
         >
           <Sparkles class="w-4 h-4 text-emerald-600 flex-shrink-0" />
-          <span>Registration successful! Please Sign In.</span>
+          <span>Pendaftaran berhasil! Silakan Masuk.</span>
         </div>
 
         <!-- Form Fields -->
         <div class="space-y-4">
           <div>
             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-              Username or Email
+              Nama Pengguna atau Email
             </label>
             <input 
               v-model="emailOrUsername" 
               type="text" 
-              placeholder="e.g. joshua or josh@email.com"
+              placeholder="contoh: joshua atau josh@email.com"
               class="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800"
             />
           </div>
 
           <div>
             <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
-              Password
+              Kata Sandi
             </label>
             <input 
               v-model="password" 
@@ -140,7 +140,7 @@ const handleSubmit = async () => {
             class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:shadow-indigo-500/20 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
           >
             <span v-if="authStore.loading" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-            <span>{{ isLoginTab ? 'Sign In' : 'Register' }}</span>
+            <span>{{ isLoginTab ? 'Masuk' : 'Daftar' }}</span>
           </button>
         </div>
       </div>
@@ -151,7 +151,7 @@ const handleSubmit = async () => {
           @click="handleClose"
           class="px-4 py-2 text-xs font-bold text-gray-400 hover:text-gray-600 transition cursor-pointer"
         >
-          Cancel
+          Batal
         </button>
       </div>
     </div>
