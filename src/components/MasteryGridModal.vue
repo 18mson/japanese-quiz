@@ -96,7 +96,7 @@ const handleStartWeakQuiz = () => {
         <!-- Filter & Navigation Bar -->
         <div class="p-3 sm:p-4 bg-white border-b border-gray-200/80 flex flex-col gap-2.5 flex-shrink-0">
           <!-- Category Switcher Tabs (Row 1) -->
-          <div class="flex items-center bg-gray-100 p-1 rounded-2xl border border-gray-200 w-fit">
+          <div class="flex items-center bg-gray-100 p-1 rounded-2xl border border-gray-200 w-full justify-center md:w-fit md:justify-start">
             <button 
               v-for="cat in ['hiragana', 'katakana', 'words']" 
               :key="cat"
@@ -136,7 +136,7 @@ const handleStartWeakQuiz = () => {
           <!-- Subtype Filter Row (Row 2) -->
           <div class="flex items-center gap-2 text-xs min-w-0">
             <span class="text-xs font-bold text-gray-400 flex-shrink-0">Kelompok:</span>
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs no-scrollbar flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar flex-1 min-w-0">
               <button 
                 @click="activeSubtype = 'all'"
                 :class="[
@@ -179,7 +179,7 @@ const handleStartWeakQuiz = () => {
           <!-- Status Filter Row (Row 3) -->
           <div class="flex items-center gap-2 text-xs min-w-0">
             <span class="text-xs font-bold text-gray-400 flex-shrink-0">Status:</span>
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 text-xs no-scrollbar flex-1 min-w-0">
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar flex-1 min-w-0">
               <button 
                 v-for="st in [
                   { key: 'all', label: 'Semua Status', style: 'bg-gray-800 text-white font-bold', inactive: 'bg-gray-100 text-gray-600' },
