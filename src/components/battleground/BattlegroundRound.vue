@@ -189,6 +189,7 @@ function updatePrepCountdown() {
 const powerUpUnitIndex = ref(0);
 const powerUpType = ref<'freeze' | 'backward' | 'storm'>('freeze');
 const failedPowerUpUnits = ref<Set<number>>(new Set());
+const claimedPowerUpUnits = ref<Set<number>>(new Set());
 
 // Sender Animation State
 const senderPowerUpNotice = ref<string | null>(null);
@@ -209,6 +210,7 @@ const isRewindingGlitch = ref(false);
 
 function initSentencePowerUp() {
   failedPowerUpUnits.value.clear();
+  claimedPowerUpUnits.value.clear();
   const unitCount = units.value.length;
   if (unitCount > 0) {
     powerUpUnitIndex.value = Math.floor(Math.random() * unitCount);
@@ -408,7 +410,8 @@ function advanceChar(char: string) {
     lockedAccepted.value = null;
 
     if (justCompletedUnitIndex === powerUpUnitIndex.value) {
-      if (!failedPowerUpUnits.value.has(justCompletedUnitIndex)) {
+      if (!failedPowerUpUnits.value.has(justCompletedUnitIndex) && !claimedPowerUpUnits.value.has(justCompletedUnitIndex)) {
+        claimedPowerUpUnits.value.add(justCompletedUnitIndex);
         store.triggerPowerUp(powerUpType.value);
       }
     }
@@ -586,20 +589,14 @@ function preventPaste(e: ClipboardEvent) {
           <template v-for="(unit, idx) in units" :key="idx">
             <div class="relative inline-flex flex-col items-center">
 
-              <!-- Power-Up Badge Icon above target word unit -->
+              <!-- Power-Up Badge Icon above target word unit (Hidden once claimed or hangus) -->
               <div
-                v-if="idx === powerUpUnitIndex"
-                class="absolute -top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20"
-                :class="failedPowerUpUnits.has(idx) ? 'bg-slate-800 text-slate-500 border border-slate-700' : 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce'"
+                v-if="idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce"
               >
-                <template v-if="failedPowerUpUnits.has(idx)">
-                  <span>💔 HANGUS</span>
-                </template>
-                <template v-else>
-                  <span v-if="powerUpType === 'freeze'">❄️ FREEZE</span>
-                  <span v-else-if="powerUpType === 'backward'">⏪ REWIND</span>
-                  <span v-else>⚡ STORM</span>
-                </template>
+                <span v-if="powerUpType === 'freeze'">❄️ FREEZE</span>
+                <span v-else-if="powerUpType === 'backward'">⏪ REWIND</span>
+                <span v-else>⚡ STORM</span>
               </div>
 
               <!-- Completed Japanese character/word -->
