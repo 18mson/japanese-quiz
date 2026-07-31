@@ -442,7 +442,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       .single();
 
     const usedIds: string[] = roomData?.used_sentence_ids ?? [];
-    const sentences = pickMultipleRandomSentences(usedIds, 3);
+    const sentences = pickMultipleRandomSentences(usedIds, 5);
     const primarySentence = sentences[0];
 
     if (!primarySentence || sentences.length === 0) {
@@ -472,7 +472,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         sentence_meaning: primarySentence.meaning_id,
         status: 'active',
         start_at: startAt,
-        duration_seconds: 45,
+        duration_seconds: 75,
       }, { onConflict: 'room_id,round_number' })
       .select()
       .single();
@@ -501,7 +501,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         sentences: formattedSentences,
         status: 'active',
         roundStartAt: startAt,
-        duration_seconds: 45,
+        duration_seconds: 75,
         start_at: startAt,
       },
     });

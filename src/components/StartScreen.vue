@@ -218,7 +218,7 @@ const handleStart = async () => {
               </h3>
               <span class="text-[10px] font-extrabold bg-rose-600 text-white px-1.5 py-0.5 rounded-md tracking-wide">MULTI</span>
             </div>
-            <p class="text-xs text-gray-500 mb-4">Battle royale mengetik kalimat. Typo = gugur!</p>
+            <p class="text-xs text-gray-500 mb-4">Battle Royale Mengetik (2–8 Pemain). Typo = Penalti 1s Cooldown. Target match ~5 menit menuju Babak Final.</p>
           </div>
           <div class="relative flex items-center gap-2 pt-2 border-t border-gray-100/80">
             <button
