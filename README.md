@@ -1,64 +1,64 @@
 # 🇯🇵 Japanese Kana & Vocab Quiz App
 
-A modern, interactive, and intelligent web application designed to help learners master **Japanese Hiragana**, **Katakana**, and **N5 Everyday Vocabulary** through adaptive spaced repetition, visual mastery tracking, and time-targeted practice sessions.
+A modern, interactive, and intelligent web application designed to help learners master **Japanese Hiragana**, **Katakana**, and **N5 Everyday Vocabulary** through adaptive spaced repetition, visual mastery tracking, multiplayer battle royale games, and time-targeted practice sessions.
 
 ---
 
 ## ✨ Features & Highlights
 
-### 📊 1. Visual Character Mastery Grid (Peta Penguasaan Huruf)
+### 📊 1. Visual Character Mastery Grid
 - **Interactive Matrix**: View all 46+ Hiragana, Katakana, and N5 Vocabulary items in a visual grid map with color-coded mastery tiers:
-  - 🔴 **Belum Dipelajari (Streak 0)**: Unlearned or new characters.
-  - 🟡 **Sedang Dipelajari (Streak 1–2)**: In-progress items needing practice.
-  - 🟢 **Sudah Dikuasai (Streak 3–4)**: Mastered items (unlocks new lessons).
+  - 🔴 **Unlearned (Streak 0)**: Unlearned or brand new items.
+  - 🟡 **Learning (Streak 1–2)**: In-progress items needing practice.
+  - 🟢 **Mastered (Streak 3–4)**: Mastered items (unlocking new lesson tiers).
   - 💎 **Crown Mastered (Streak 5+)**: Perfect recall status.
 - **Filter & Quick Review**: Filter by character sub-type (*Basic, Dakuten, Combination, Lesson 1 & 2*) or status, and launch **Weak Items Practice** instantly with one click.
 
-### 🧠 2. Smart Adaptive Engine (Algoritma Kuis Cerdas Terbobot)
+### 🧠 2. Smart Adaptive Engine
 - **Dynamic Question Balancing**: Questions are no longer purely random. The algorithm dynamically composes each session:
   - 🔴 **~60% Weak & New Items**: Focuses on characters with lowest streaks or recent errors.
   - 🟡 **~30% Memory Reinforcement**: Reviews items currently in progress.
   - 🟢 **~10% Retention Check**: Tests mastered items for long-term memory.
-  - 🔁 **Missed Item Retry Stack**: Answers marked incorrect are automatically pushed to the end of the session queue so learners review and correct every single mistake before finishing!
-- **Question Reason Badges**: Transparency badges on every question card explaining *why* the item was selected (e.g. `🔴 Fokus Latihan`, `🟡 Penguatan Memori`, `🟢 Uji Retensi`, `🔁 Ulang (Jawaban Salah Sebelumnya)`).
+  - 🔁 **Missed Item Retry Stack**: Incorrectly answered items are automatically pushed to the end of the session queue so learners review and correct every single mistake before completing the quiz!
+- **Question Context Badges**: Transparency badges on every question card explaining *why* the item was selected (e.g., `🔴 Practice Focus`, `🟡 Memory Reinforcement`, `🟢 Retention Test`, `🔁 Retry Incorrect`).
 
 ### 👑 3. All-Mastered Maintenance Mode
 - Automatically detects when **100% of characters** in a category reach Mastered status (`Streak >= 3`).
-- Switches seamlessly to **Random Polish Mode** with a special visual banner: `👑 ALL MASTERED — Mode Pengulangan Acak`.
+- Switches seamlessly to **Random Polish Mode** with a special visual banner: `👑 ALL MASTERED — Random Polish Mode`.
 
 ### ⏱️ 4. Silent Time-Targeted Sessions (Zero-Stress UX)
 - Select target session durations:
-  - ⚡ **1 Minute (Sesi Kilat)** ~ 8 Questions
-  - 🔥 **3 Minutes (Sesi Fokus)** ~ 22 Questions
-  - 🏆 **5 Minutes (Sesi Maraton)** ~ 35 Questions
+  - ⚡ **1 Minute (Speed Session)** ~ 8 Questions
+  - 🔥 **3 Minutes (Focus Session)** ~ 22 Questions
+  - 🏆 **5 Minutes (Marathon Session)** ~ 35 Questions
 - **Zero Timer Anxiety**: Timers are hidden during the quiz so users can focus on learning calmly.
-- **Speed Achievement Surprise**: Complete a session faster than estimated target to earn bonus speed points and unlock achievement ranks (`⚡ Lightning Fast!`, `🚀 Speed Demon!`).
+- **Speed Achievement Bonus**: Complete a session faster than the estimated target to earn bonus speed points and unlock achievement badges (`⚡ Lightning Fast!`, `🚀 Speed Demon!`).
 
 ### ⚔️ 5. Typing Battleground (Multiplayer Battle Royale Mode)
-- **Realtime Multiplayer Rooms (2–8 Pemain)**: Mainkan kuis mengetik kalimat Jepang secara multiplayer hingga **maksimal 8 pemain dalam 1 room** berbasis Supabase Realtime broadcast.
+- **Realtime Multiplayer Rooms (2–8 Players)**: Compete against other learners in a Japanese sentence typing Battle Royale with up to **8 players per room**, powered by Supabase Realtime broadcast.
 - **Public & Private Room System**:
-  - **Public Room**: Ditampilkan pada daftar *Public Rooms* yang dapat langsung di-join oleh pemain lain dengan 1-klik.
-  - **Private Room**: Memerlukan 6-digit Kode Room rahasia untuk bergabung.
-  - **Host Controls**: Host dapat mengubah status Private/Public kapan saja serta me-reset room untuk **Mulai Game Lagi** (dengan popup konfirmasi re-join ke seluruh peserta).
+  - **Public Rooms**: Displayed on the live *Public Rooms* directory for instant 1-click joining.
+  - **Private Rooms**: Accessible only via a secret 6-character Room Code.
+  - **Host Controls**: Host can toggle privacy settings anytime and reset rooms to **Play Again** (triggering interactive re-join prompts for all participants).
 - **Progressive Tournament Elimination Bracket**:
-  - Sistem eliminasi bertahap otomatis hingga menyisakan **Babak Final 2 Pemain**:
-    - **8 Pemain**: Ronde 1 (8 $\rightarrow$ 4) $\rightarrow$ Ronde 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 3 (2 $\rightarrow$ 1 Juara).
-    - **7 Pemain**: Ronde 1 (7 $\rightarrow$ 4) $\rightarrow$ Ronde 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 3 (2 $\rightarrow$ 1 Juara).
-    - **3 Pemain**: Ronde 1 (3 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 2 (2 $\rightarrow$ 1 Juara).
-    - **2 Pemain**: Ronde 1 (2 $\rightarrow$ 1 Juara).
+  - Automatic elimination system that scales down dynamically to a **2-Player Final Battle**:
+    - **8 Players**: Round 1 (8 $\rightarrow$ 4) $\rightarrow$ Round 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Round 3 (2 $\rightarrow$ 1 Champion).
+    - **7 Players**: Round 1 (7 $\rightarrow$ 4) $\rightarrow$ Round 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Round 3 (2 $\rightarrow$ 1 Champion).
+    - **3 Players**: Round 1 (3 $\rightarrow$ 2 Final) $\rightarrow$ Round 2 (2 $\rightarrow$ 1 Champion).
+    - **2 Players**: Round 1 (2 $\rightarrow$ 1 Champion).
 - **Pro Typing Engine & Fluid UX**:
-  - 🎯 **Single Upcoming Character Prompt**: Hanya 1 huruf romaji berikutnya yang akan ditampilkan (mencegah distrasi visual).
-  - 🇯🇵 **Japanese Character Pointer**: Highlight huruf Jepang per-karakter secara *real-time* (Hijau = Selesai, Emas Berkedip = Sedang Diketik, Abu-abu = Belum Diketik).
-  - ⚠️ **1-Second Typo Penalty Cooldown**: Jika terjadi kesalahan ketik (*typo*), layar akan menampilkan *overlay* penalti transparan `1.0s` dan tidak langsung membuat pemain gugur.
-  - ⏩ **Auto-Skip Hyphen (`"-"`) & Space Tolerance**: Tanda hubung otomatis dilompati dan spasi tidak akan memicu error typo secara tidak sengaja.
-- **Spectator Mode (Layar Penonton)**: Pemain yang telah tereliminasi tetap berada di dalam room dan dapat menyaksikan pertandingan pemain lain secara *live*.
+  - 🎯 **Single Upcoming Character Prompt**: Displays only 1 upcoming Romaji letter at a time to prevent screen clutter.
+  - 🇯🇵 **Japanese Character Pointer**: Live character-by-character highlighting on the Japanese text (Green = Completed, Pulsing Gold = Active, Slate = Pending).
+  - ⚠️ **1-Second Typo Penalty Cooldown**: Typos trigger a full-screen transparent `1.0s` penalty cooldown overlay instead of instant elimination, giving players a chance to recover.
+  - ⏩ **Auto-Skip Hyphens (`"-"`) & Space Tolerance**: Hyphens are automatically skipped, and accidental spacebar presses do not trigger typo penalties.
+- **Spectator Mode**: Eliminated players seamlessly remain in the room to watch the remaining competitors race to victory live.
 
 ### 🎮 6. Flexible Single Player Game Modes
 - **Multiple Choice (Basic Level)**: Practice reading Hiragana and Katakana by choosing from standard multiple-choice Romaji options.
 - **Keyboard Typing (Road to N5)**: Direct keyboard input for Hiragana, Katakana, and **Everyday Words**. *(Everyday Words mode is exclusive to Keyboard Typing mode to encourage direct recall).*
 
 ### 🏆 7. Global Leaderboard & User Authentication
-- **Supabase Integration**: Synchronizes user streaks and leaderboard rankings online.
+- **Supabase Integration**: Synchronizes user streaks, match records, and leaderboard rankings online.
 - **Speed & Cumulative Leaderboards**: Track top-performing speed runs and total cumulative scores.
 
 ---
