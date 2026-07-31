@@ -179,7 +179,38 @@ function autoSkipHyphens() {
   }
 }
 
+const prepCountdownSeconds = ref(5);
+let prepTimer: ReturnType<typeof setInterval> | null = null;
+
+function updatePrepCountdown() {
+  const startAt = store.activeRound?.start_at;
+  if (!startAt) {
+    prepCountdownSeconds.value = 5;
+    return;
+  }
+  const startMs = new Date(startAt).getTime();
+  const remainingMs = startMs - Date.now();
+  prepCountdownSeconds.value = Math.max(0, Math.ceil(remainingMs / 1000));
+}
+
 watch(() => store.phase, (p) => {
+  if (p === 'round_preparing') {
+    updatePrepCountdown();
+    if (prepTimer) clearInterval(prepTimer);
+    prepTimer = setInterval(() => {
+      updatePrepCountdown();
+      if (prepCountdownSeconds.value <= 0 && prepTimer) {
+        clearInterval(prepTimer);
+        prepTimer = null;
+      }
+    }, 100);
+  } else {
+    if (prepTimer) {
+      clearInterval(prepTimer);
+      prepTimer = null;
+    }
+  }
+
   if (p === 'round_active') {
     currentSentenceIndex.value = 0;
     activeUnitIndex.value = 0;
@@ -192,7 +223,7 @@ watch(() => store.phase, (p) => {
     autoSkipHyphens();
     focusInput();
   }
-});
+}, { immediate: true });
 
 onMounted(() => {
   autoSkipHyphens();
@@ -201,6 +232,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (progressThrottle) clearTimeout(progressThrottle);
   if (penaltyInterval) clearInterval(penaltyInterval);
+  if (prepTimer) clearInterval(prepTimer);
 });
 
 function handleInput(event: Event) {
@@ -369,8 +401,8 @@ function preventPaste(e: ClipboardEvent) {
       <!-- Readiness Status Badge -->
       <div class="flex items-center gap-2">
         <div v-if="store.phase === 'round_preparing'" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold flex items-center gap-1.5 animate-pulse">
-          <Lock class="w-3.5 h-3.5 text-amber-400" />
-          Menunggu Start...
+          <Loader2 class="w-3.5 h-3.5 text-amber-400 animate-spin" />
+          <span>Menunggu Ronde Dimulai...</span>
         </div>
         <div v-else-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted" class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
           <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -378,14 +410,18 @@ function preventPaste(e: ClipboardEvent) {
         </div>
       </div>
 
-      <div class="flex items-center gap-1.5 text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
+      <!-- Header Timer (Only shown when active) -->
+      <div v-if="store.phase === 'round_active'" class="flex items-center gap-1.5 text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
         <Clock class="w-4 h-4" />
         {{ String(store.countdownSeconds).padStart(2, '0') }}s
       </div>
+      <div v-else class="flex items-center gap-1 text-xs text-amber-400 font-bold animate-pulse">
+        <Loader2 class="w-4 h-4 animate-spin" />
+      </div>
     </div>
 
-    <!-- Timer Bar -->
-    <div class="h-1.5 bg-white/10 flex-shrink-0 z-10">
+    <!-- Timer Bar (Only shown when active) -->
+    <div v-if="store.phase === 'round_active'" class="h-1.5 bg-white/10 flex-shrink-0 z-10">
       <div
         class="h-full transition-all duration-500"
         :class="timerColor"
@@ -568,10 +604,12 @@ function preventPaste(e: ClipboardEvent) {
       <h2 class="text-2xl font-black text-white mb-2">Persiapkan Diri! 🚀</h2>
       <p class="text-slate-400 text-sm mb-6 max-w-sm">Ronde akan dimulai. Ketik kalimat romaji begitu countdown selesai!</p>
       
-      <div class="text-6xl font-black font-mono text-amber-400 mb-2 animate-bounce">
-        {{ store.countdownSeconds }}
+      <div class="text-7xl font-black font-mono text-amber-400 mb-2 animate-bounce">
+        {{ prepCountdownSeconds > 0 ? prepCountdownSeconds : 'SIAP!' }}
       </div>
-      <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">Detik Lagi...</span>
+      <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">
+        {{ prepCountdownSeconds > 0 ? 'Detik Lagi...' : 'Mulai Mengetik Sekarang! ⚡' }}
+      </span>
     </div>
 
     <!-- TYPO PENALTY 1-SECOND COOLDOWN OVERLAY (isPenaltyActive === true) -->

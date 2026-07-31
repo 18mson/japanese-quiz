@@ -518,7 +518,13 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     }
   }
 
-  async function submitRound(typedInput: string) {
+  async function submitRound(inputOrOptions: string | {
+    typedInput?: string;
+    isValid?: boolean;
+    completedSentences?: number;
+    totalSentences?: number;
+    progressPercentage?: number;
+  }) {
     if (!roomId.value || !activeRound.value) return;
     if (mySubmissionStatus.value !== null && mySubmissionStatus.value !== 'timeout') return;
 
@@ -527,10 +533,26 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const startMs = round.start_at ? new Date(round.start_at).getTime() : Date.now();
     const completionTimeMs = Date.now() - startMs;
 
-    const isValid = typedInput.length > 0
-      && validateRomaji(typedInput.trim().toLowerCase(), round.sentence_romaji_variants);
+    let typedInput = 'COMPLETE';
+    let isValid = true;
+    let completedSentences = round.sentences?.length ?? 5;
+    let totalSentences = round.sentences?.length ?? 5;
+    let progressPercentage = 100;
 
-    const resultStatus: SubmissionStatus = isValid ? 'success' : 'typo';
+    if (typeof inputOrOptions === 'object') {
+      typedInput = inputOrOptions.typedInput ?? 'COMPLETE';
+      isValid = inputOrOptions.isValid ?? true;
+      completedSentences = inputOrOptions.completedSentences ?? totalSentences;
+      totalSentences = inputOrOptions.totalSentences ?? totalSentences;
+      progressPercentage = inputOrOptions.progressPercentage ?? Math.round((completedSentences / Math.max(1, totalSentences)) * 100);
+    } else {
+      typedInput = inputOrOptions;
+      isValid = validateRomaji(inputOrOptions.trim().toLowerCase(), round.sentence_romaji_variants);
+      completedSentences = totalSentences;
+      progressPercentage = 100;
+    }
+
+    const resultStatus: SubmissionStatus = isValid ? 'success' : 'timeout';
     mySubmissionStatus.value = resultStatus;
     myCompletionTimeMs.value = completionTimeMs;
 
@@ -540,13 +562,20 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       payload: { playerId: pid },
     });
 
+    const payloadMeta = JSON.stringify({
+      completed: completedSentences,
+      total: totalSentences,
+      pct: progressPercentage,
+      input: typedInput,
+    });
+
     const { error: subErr } = await supabase
       .from('round_submissions')
       .upsert({
         round_id: round.id,
         room_id: roomId.value,
         player_id: pid,
-        typed_input: typedInput,
+        typed_input: payloadMeta,
         is_valid: isValid,
         completion_time_ms: completionTimeMs,
         status: resultStatus,

@@ -46,8 +46,8 @@ function avatarColor(name: string): string {
 function reasonLabel(reason: string | null): string {
   if (!reason) return '🏆 Pemenang';
   switch (reason) {
-    case 'typo': return 'Typo';
-    case 'too_slow': return 'Terlambat';
+    case 'typo': return 'Salah Ketik';
+    case 'too_slow': return 'Time Out / Terlambat';
     case 'too_fast': return 'Anti-cheat';
     case 'disconnect': return 'Disconnect';
     default: return 'Gugur';
