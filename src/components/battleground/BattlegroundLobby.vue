@@ -34,34 +34,35 @@ const canStart = computed(() =>
   store.isHost && store.alivePlayers.length >= 2 && !store.isLoading
 );
 
-const playerNameError = computed(() =>
-  inputPlayerName.value.trim().length > 0 && inputPlayerName.value.trim().length < 2
-    ? 'Nama minimal 2 karakter'
-    : null
-);
+const nameError = ref<string | null>(null);
+const nameInputRef = ref<HTMLInputElement | null>(null);
+
+function validateName(): boolean {
+  nameError.value = null;
+  store.error = null;
+  const trimmed = inputPlayerName.value.trim();
+  if (trimmed.length < 2) {
+    nameError.value = 'Harap isi nama kamu (minimal 2 karakter) sebelum bergabung!';
+    nameInputRef.value?.focus();
+    return false;
+  }
+  return true;
+}
 
 // ── Actions ──────────────────────────────────────────────────
 async function handleCreate() {
-  let name = inputPlayerName.value.trim();
-  if (!name || name.length < 2) {
-    name = store.myPlayerName || `Pengetik #${Math.floor(1000 + Math.random() * 9000)}`;
-    inputPlayerName.value = name;
-  }
-  await store.createRoom(name, isPublicRoom.value);
+  if (!validateName()) return;
+  await store.createRoom(inputPlayerName.value.trim(), isPublicRoom.value);
 }
 
 async function handleJoin(targetCode?: string) {
-  let name = inputPlayerName.value.trim();
-  if (!name || name.length < 2) {
-    name = store.myPlayerName || `Pengetik #${Math.floor(1000 + Math.random() * 9000)}`;
-    inputPlayerName.value = name;
-  }
+  if (!validateName()) return;
   const codeToJoin = targetCode ?? inputRoomCode.value.trim();
   if (codeToJoin.length !== 6) {
     store.error = 'Masukkan 6 karakter kode room!';
     return;
   }
-  await store.joinRoom(codeToJoin, name);
+  await store.joinRoom(codeToJoin, inputPlayerName.value.trim());
 }
 
 async function copyCode() {
@@ -104,15 +105,25 @@ const emit = defineEmits<{ exit: [] }>();
 
         <!-- Player Name Input -->
         <div class="mb-6">
-          <label class="block text-sm font-bold text-slate-300 mb-2">Nama Pemain</label>
+          <label class="block text-sm font-bold text-slate-300 mb-2">Nama Pemain <span class="text-rose-400">*</span></label>
           <input
+            ref="nameInputRef"
             v-model="inputPlayerName"
             type="text"
             maxlength="30"
             placeholder="Masukkan nama kamu..."
-            class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30 transition text-sm"
+            :class="[
+              'w-full bg-white/10 border rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none transition text-sm',
+              nameError
+                ? 'border-rose-500 ring-2 ring-rose-500/40 bg-rose-500/10'
+                : 'border-white/20 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-400/30'
+            ]"
+            @input="nameError = null"
           />
-          <p v-if="playerNameError" class="text-rose-400 text-xs mt-1">{{ playerNameError }}</p>
+          <p v-if="nameError" class="text-rose-400 text-xs mt-1.5 font-bold flex items-center gap-1">
+            <AlertCircle class="w-3.5 h-3.5 flex-shrink-0" />
+            <span>{{ nameError }}</span>
+          </p>
         </div>
 
         <!-- Create / Join Grid -->
