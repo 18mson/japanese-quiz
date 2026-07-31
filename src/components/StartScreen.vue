@@ -218,7 +218,7 @@ const handleStart = async () => {
               </h3>
               <span class="text-[10px] font-extrabold bg-rose-600 text-white px-1.5 py-0.5 rounded-md tracking-wide">MULTI</span>
             </div>
-            <p class="text-xs text-gray-500 mb-4">Battle Royale Mengetik (2–8 Pemain). Typo = Penalti 1s Cooldown. Target match ~5 menit menuju Babak Final.</p>
+            <p class="text-xs text-gray-500 mb-4">Battle Royale Mengetik (2–8 Pemain). Adu cepat & ketepatan mengetik secara realtime.</p>
           </div>
           <div class="relative flex items-center gap-2 pt-2 border-t border-gray-100/80">
             <button
@@ -254,7 +254,7 @@ const handleStart = async () => {
           </div>
           <div>
             <div class="text-sm font-bold text-gray-900">Battle Royale Realtime</div>
-            <div class="text-xs text-gray-600">Hingga 8 pemain per room • Eliminasi otomatis jika salah ketik (typo) • Ronde bertahap</div>
+            <div class="text-xs text-gray-600">Hingga 8 pemain per room • Penalti 1s Cooldown jika typo • Eliminasi bertahap (Target Match ~5 Menit)</div>
           </div>
         </div>
       </div>

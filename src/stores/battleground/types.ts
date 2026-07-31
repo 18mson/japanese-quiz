@@ -60,6 +60,9 @@ export interface RoundStanding {
   playerId: string;
   completionTimeMs: number;
   status: string;
+  completedSentences?: number;
+  totalSentences?: number;
+  progressPercentage?: number;
 }
 
 export interface RoundResultPayload {

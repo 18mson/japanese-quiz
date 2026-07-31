@@ -29,7 +29,17 @@ const myResult = computed(() => {
 
 const sortedStandings = computed(() => {
   if (!result.value) return [];
-  return [...result.value.roundStandings].sort((a, b) => a.completionTimeMs - b.completionTimeMs);
+  return [...result.value.roundStandings].sort((a, b) => {
+    if (a.status === 'success' && b.status !== 'success') return -1;
+    if (a.status !== 'success' && b.status === 'success') return 1;
+    if (a.status === 'success' && b.status === 'success') {
+      return a.completionTimeMs - b.completionTimeMs;
+    }
+    const pctA = a.progressPercentage ?? (a.completedSentences ? a.completedSentences * 20 : 0);
+    const pctB = b.progressPercentage ?? (b.completedSentences ? b.completedSentences * 20 : 0);
+    if (pctA !== pctB) return pctB - pctA;
+    return a.completionTimeMs - b.completionTimeMs;
+  });
 });
 
 function reasonLabel(reason: string): string {
@@ -144,15 +154,15 @@ function getPlayerName(playerId: string): string {
     <div class="w-full max-w-lg mb-6">
       <h3 class="text-sm font-bold text-slate-400 mb-3 flex items-center gap-1.5">
         <Timer class="w-4 h-4" />
-        Waktu Penyelesaian Ronde Ini
+        Detail Hasil & Progress Ronde Ini
       </h3>
       <div class="space-y-1.5">
         <div
           v-for="(standing, idx) in sortedStandings"
           :key="standing.playerId"
           :class="[
-            'rounded-xl px-3 py-2.5 flex items-center gap-3 text-sm',
-            standing.status === 'success' ? 'bg-white/5 border border-white/10' : 'bg-white/[0.02] border border-white/5 opacity-60'
+            'rounded-xl px-3.5 py-2.5 flex items-center gap-3 text-sm border',
+            standing.status === 'success' ? 'bg-white/5 border-white/10' : 'bg-white/[0.02] border-white/5 opacity-70'
           ]"
         >
           <span class="text-slate-500 font-mono text-xs w-5 text-center">{{ idx + 1 }}</span>
@@ -160,14 +170,22 @@ function getPlayerName(playerId: string): string {
             class="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0"
             :style="`background: ${avatarColor(getPlayerName(standing.playerId))}`"
           >{{ getPlayerName(standing.playerId).slice(0, 2).toUpperCase() }}</div>
-          <span class="flex-1 font-semibold truncate">
-            {{ getPlayerName(standing.playerId) }}
-            <span v-if="standing.playerId === store.myPlayerId" class="text-indigo-400 text-xs font-normal ml-1">(Kamu)</span>
-          </span>
-          <span class="font-mono text-xs text-slate-400">{{ msToStr(standing.completionTimeMs) }}</span>
-          <span class="text-xs" :class="standing.status === 'success' ? 'text-emerald-400' : 'text-rose-400'">
-            {{ standing.status === 'success' ? '✓' : '✗' }}
-          </span>
+          <div class="flex-1 min-w-0">
+            <div class="font-semibold truncate text-white">
+              {{ getPlayerName(standing.playerId) }}
+              <span v-if="standing.playerId === store.myPlayerId" class="text-indigo-400 text-xs font-normal ml-1">(Kamu)</span>
+            </div>
+            <div class="text-[11px] text-slate-400 flex items-center gap-2">
+              <span>{{ standing.completedSentences ?? (standing.status === 'success' ? 5 : 0) }}/{{ standing.totalSentences ?? 5 }} Kalimat Selesai</span>
+              <span>•</span>
+              <span class="font-mono text-slate-300">{{ msToStr(standing.completionTimeMs) }}</span>
+            </div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <span class="px-2 py-0.5 rounded text-xs font-bold" :class="standing.status === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'">
+              {{ standing.status === 'success' ? '✓ Lolos' : (standing.completedSentences && standing.completedSentences > 0 ? `⏱ Time Out (${standing.progressPercentage ?? 0}%)` : '⏱ Idle (0%)') }}
+            </span>
+          </div>
         </div>
       </div>
     </div>

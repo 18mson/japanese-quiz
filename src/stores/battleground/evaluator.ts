@@ -37,7 +37,8 @@ export async function forceEvaluateWithTimeouts(
   roomId: string,
   activeRound: ActiveRound,
   alivePlayers: RoomPlayer[],
-  realtimeChannel: any
+  realtimeChannel: any,
+  playerProgressMap?: Map<string, { progressPercentage: number }>
 ): Promise<void> {
   const aliveIds = alivePlayers.map(p => p.player_id);
 
@@ -50,15 +51,26 @@ export async function forceEvaluateWithTimeouts(
   const notSubmitted = aliveIds.filter(id => !submittedIds.has(id));
 
   for (const pid of notSubmitted) {
+    const pProgress = playerProgressMap?.get(pid)?.progressPercentage ?? 0;
+    const totalSentences = activeRound.sentences?.length ?? 1;
+    const completedSentences = Math.floor((pProgress / 100) * totalSentences);
+
+    const payloadMeta = JSON.stringify({
+      completed: completedSentences,
+      total: totalSentences,
+      pct: pProgress,
+      input: 'TIMEOUT',
+    });
+
     await supabase
       .from('round_submissions')
       .upsert({
         round_id: activeRound.id,
         room_id: roomId,
         player_id: pid,
-        typed_input: '',
+        typed_input: payloadMeta,
         is_valid: false,
-        completion_time_ms: (activeRound.duration_seconds ?? 30) * 1000,
+        completion_time_ms: (activeRound.duration_seconds ?? 75) * 1000,
         status: 'timeout',
       }, { onConflict: 'round_id,player_id' });
   }
@@ -76,11 +88,8 @@ async function runElimination(
   const roundNum = activeRound.round_number;
   const aliveIds = alivePlayers.map(p => p.player_id);
   const N = aliveIds.length;
+  const totalSentencesInRound = activeRound.sentences?.length ?? 1;
 
-  // Determine target survivors based on current alive player count N:
-  // - If N > 4: eliminate down to 4 survivors
-  // - If N === 4 or N === 3: eliminate down to 2 survivors (Final!)
-  // - If N <= 2: eliminate down to 1 winner
   let targetSurvivors = 1;
   if (N > 4) {
     targetSurvivors = 4;
@@ -92,34 +101,59 @@ async function runElimination(
 
   const numToEliminate = Math.max(1, N - targetSurvivors);
 
+  const parseMeta = (sub: any) => {
+    let completed = sub.is_valid ? totalSentencesInRound : 0;
+    let total = totalSentencesInRound;
+    let pct = sub.is_valid ? 100 : 0;
+    try {
+      if (sub.typed_input && sub.typed_input.startsWith('{')) {
+        const parsed = JSON.parse(sub.typed_input);
+        if (parsed.completed !== undefined) completed = parsed.completed;
+        if (parsed.total !== undefined) total = parsed.total;
+        if (parsed.pct !== undefined) pct = parsed.pct;
+      }
+    } catch {}
+    return { completed, total, pct };
+  };
+
   const successSubs = subs
     .filter((s: any) => s.is_valid && aliveIds.includes(s.player_id))
     .sort((a: any, b: any) => a.completion_time_ms - b.completion_time_ms);
 
   const failSubs = subs
-    .filter((s: any) => !s.is_valid && aliveIds.includes(s.player_id));
+    .filter((s: any) => !s.is_valid && aliveIds.includes(s.player_id))
+    .sort((a: any, b: any) => {
+      const metaA = parseMeta(a);
+      const metaB = parseMeta(b);
+      if (metaA.pct !== metaB.pct) return metaB.pct - metaA.pct;
+      return a.completion_time_ms - b.completion_time_ms;
+    });
 
-  // Build full ranking for this round:
-  // 1. Success submissions (fastest to slowest)
-  // 2. Failed / timeout submissions
-  const rankedPlayers: Array<{ playerId: string; status: string; timeMs: number }> = [
-    ...successSubs.map((s: any) => ({ playerId: s.player_id, status: 'success', timeMs: s.completion_time_ms })),
-    ...failSubs.map((s: any) => ({ playerId: s.player_id, status: s.status || 'timeout', timeMs: s.completion_time_ms })),
+  const rankedPlayers: Array<{ playerId: string; status: string; timeMs: number; completedSentences: number; totalSentences: number; pct: number }> = [
+    ...successSubs.map((s: any) => {
+      const meta = parseMeta(s);
+      return { playerId: s.player_id, status: 'success', timeMs: s.completion_time_ms, completedSentences: meta.completed, totalSentences: meta.total, pct: meta.pct };
+    }),
+    ...failSubs.map((s: any) => {
+      const meta = parseMeta(s);
+      return { playerId: s.player_id, status: s.status || 'timeout', timeMs: s.completion_time_ms, completedSentences: meta.completed, totalSentences: meta.total, pct: meta.pct };
+    }),
   ];
 
-  // Include any alive player without submission as timeout
   const recordedIds = new Set(rankedPlayers.map(p => p.playerId));
   for (const id of aliveIds) {
     if (!recordedIds.has(id)) {
       rankedPlayers.push({
         playerId: id,
         status: 'timeout',
-        timeMs: (activeRound.duration_seconds ?? 30) * 1000,
+        timeMs: (activeRound.duration_seconds ?? 75) * 1000,
+        completedSentences: 0,
+        totalSentences: totalSentencesInRound,
+        pct: 0,
       });
     }
   }
 
-  // Pick the bottom `numToEliminate` players from the rankings
   const playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
 
   const eliminatedThisRound: Array<{ playerId: string; reason: string }> = playersToEliminate.map(p => ({
@@ -161,14 +195,14 @@ async function runElimination(
       .eq('id', roomId);
   }
 
-  const allSubs = subs.filter((s: any) => aliveIds.includes(s.player_id));
-  const standings: RoundStanding[] = allSubs
-    .map((s: any) => ({
-      playerId: s.player_id,
-      completionTimeMs: s.completion_time_ms,
-      status: s.is_valid ? 'success' : 'failed',
-    }))
-    .sort((a: RoundStanding, b: RoundStanding) => a.completionTimeMs - b.completionTimeMs);
+  const standings: RoundStanding[] = rankedPlayers.map(p => ({
+    playerId: p.playerId,
+    completionTimeMs: p.timeMs,
+    status: p.status,
+    completedSentences: p.completedSentences,
+    totalSentences: p.totalSentences,
+    progressPercentage: p.pct,
+  }));
 
   const resultPayload: RoundResultPayload = {
     roundNumber: roundNum,
