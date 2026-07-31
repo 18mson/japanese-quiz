@@ -19,8 +19,6 @@ import type {
   PowerUpBroadcastPayload,
 } from './battleground/types';
 import {
-  generateRoomCode,
-  pickMultipleRandomSentences,
   getGuestId,
   getGuestName,
 } from './battleground/helpers';
@@ -28,6 +26,18 @@ import {
   evaluateRoundForHost,
   forceEvaluateWithTimeouts,
 } from './battleground/evaluator';
+import {
+  fetchPublicRoomsApi,
+  createRoomApi,
+  joinRoomByCodeApi,
+  togglePublicApi,
+  leaveRoomApi,
+} from './battleground/roomService';
+import {
+  submitRoundApi,
+  startNextRoundApi,
+  resetRoomApi,
+} from './battleground/roundService';
 
 export const useBattlegroundStore = defineStore('battleground', () => {
   const authStore = useAuthStore();
@@ -73,8 +83,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   );
   const iAmAlive = computed<boolean>(() => myPlayer.value?.status === 'alive');
 
-  // ── Realtime Subscription ───────────────────────────────────
-
+  // ── Realtime Subscription & Power-Up Events ───────────────
   const latestPowerUpEvent = ref<PowerUpBroadcastPayload | null>(null);
   const activePowerUpEvents = ref<Map<string, { type: PowerUpType; expiresAt: number }>>(new Map());
 
@@ -115,15 +124,11 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         activePowerUpEvents.value.delete(payload.senderId);
       }, durationMs);
     });
+
     realtimeChannel.on('presence', { event: 'join' }, async () => {
       await refreshPlayers();
     });
     realtimeChannel.on('presence', { event: 'leave' }, async () => {
-      await refreshPlayers();
-    });
-
-    // Broadcast listeners
-    realtimeChannel.on('broadcast', { event: 'player_joined' }, async () => {
       await refreshPlayers();
     });
 
@@ -219,7 +224,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   // ── Timer Handlers ──────────────────────────────────────────
-
   function startCountdownFromServerTime(roundStartAt: string) {
     clearCountdown();
     const startMs = new Date(roundStartAt).getTime();
@@ -281,7 +285,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   // ── Actions ─────────────────────────────────────────────────
-
   async function refreshPlayers() {
     if (!roomId.value) return;
     const { data } = await supabase
@@ -295,47 +298,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   async function fetchPublicRooms() {
     isLoadingPublicRooms.value = true;
     try {
-      const { data: roomRows, error: fetchErr } = await supabase
-        .from('rooms')
-        .select('id, code, host_player_id, max_players, created_at, room_players(player_name, player_id, status)')
-        .eq('is_public', true)
-        .eq('status', 'waiting')
-        .order('created_at', { ascending: false })
-        .limit(30);
-
-      if (fetchErr) throw fetchErr;
-
-      if (roomRows) {
-        const validRooms: PublicRoomItem[] = [];
-        const emptyRoomIds: string[] = [];
-
-        for (const r of roomRows) {
-          const activePlayers = (r.room_players ?? []).filter((p: any) => p.status !== 'eliminated');
-          if (activePlayers.length === 0) {
-            emptyRoomIds.push(r.id);
-            continue;
-          }
-          const hostPlayer = activePlayers.find((p: any) => p.player_id === r.host_player_id) ?? activePlayers[0];
-          validRooms.push({
-            id: r.id,
-            code: r.code,
-            host_player_id: r.host_player_id,
-            host_name: hostPlayer?.player_name ?? 'Host',
-            max_players: r.max_players ?? 8,
-            player_count: activePlayers.length,
-            created_at: r.created_at,
-          });
-        }
-
-        publicRooms.value = validRooms;
-
-        if (emptyRoomIds.length > 0) {
-          await supabase
-            .from('rooms')
-            .update({ status: 'finished' })
-            .in('id', emptyRoomIds);
-        }
-      }
+      publicRooms.value = await fetchPublicRoomsApi();
     } catch (err: any) {
       console.error('[Battleground] Failed to fetch public rooms:', err);
     } finally {
@@ -348,7 +311,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     error.value = null;
 
     try {
-      const code = generateRoomCode();
       const pid = myPlayerId.value;
       const pname = playerName || myPlayerName.value;
 
@@ -356,30 +318,15 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         localStorage.setItem('battleground_guest_name', playerName);
       }
 
-      const { data: roomData, error: roomErr } = await supabase
-        .from('rooms')
-        .insert({
-          code,
-          host_player_id: pid,
-          status: 'waiting',
-          max_players: 8,
-          elimination_rate: 0.30,
-          min_ms_per_char: 40,
-          is_public: isPublic,
-        })
-        .select()
-        .single();
+      const room = await createRoomApi(pid, pname, isPublic);
 
-      if (roomErr || !roomData) throw roomErr ?? new Error('Failed to create room');
-
-      roomId.value = roomData.id;
-      roomCode.value = code;
+      roomId.value = room.id;
+      roomCode.value = room.code;
       hostPlayerId.value = pid;
 
-      await joinRoomAsPlayer(roomData.id, pid, pname);
-      subscribeToRoom(roomData.id);
+      subscribeToRoom(room.id);
+      await refreshPlayers();
       phase.value = 'lobby';
-
     } catch (err: any) {
       error.value = err?.message ?? 'Failed to create room';
     } finally {
@@ -392,7 +339,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     error.value = null;
 
     try {
-      const upperCode = code.toUpperCase().trim();
       const pid = myPlayerId.value;
       const pname = playerName || myPlayerName.value;
 
@@ -400,38 +346,13 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         localStorage.setItem('battleground_guest_name', playerName);
       }
 
-      const { data: roomData, error: roomErr } = await supabase
-        .from('rooms')
-        .select('*')
-        .eq('code', upperCode)
-        .single();
+      const room = await joinRoomByCodeApi(code, pid, pname);
 
-      if (roomErr || !roomData) {
-        error.value = 'Kode room tidak ditemukan.';
-        return;
-      }
+      roomId.value = room.id;
+      roomCode.value = room.code;
+      hostPlayerId.value = room.host_player_id;
 
-      if (roomData.status !== 'waiting') {
-        error.value = 'Game sudah berjalan atau selesai.';
-        return;
-      }
-
-      const { data: existingPlayers } = await supabase
-        .from('room_players')
-        .select('player_id')
-        .eq('room_id', roomData.id);
-
-      if ((existingPlayers?.length ?? 0) >= roomData.max_players) {
-        error.value = 'Room sudah penuh (maks. 8 pemain).';
-        return;
-      }
-
-      roomId.value = roomData.id;
-      roomCode.value = roomData.code;
-      hostPlayerId.value = roomData.host_player_id;
-
-      await joinRoomAsPlayer(roomData.id, pid, pname);
-      subscribeToRoom(roomData.id);
+      subscribeToRoom(room.id);
       await refreshPlayers();
 
       await realtimeChannel?.send({
@@ -441,7 +362,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       });
 
       phase.value = 'lobby';
-
     } catch (err: any) {
       error.value = err?.message ?? 'Gagal join room.';
     } finally {
@@ -449,19 +369,17 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     }
   }
 
-  async function joinRoomAsPlayer(rId: string, pid: string, pname: string) {
-    const { error: insertErr } = await supabase
-      .from('room_players')
-      .upsert({
-        room_id: rId,
-        player_id: pid,
-        player_name: pname,
-        avatar_seed: pid,
-        status: 'alive',
-      }, { onConflict: 'room_id,player_id' });
-
-    if (insertErr) throw insertErr;
-    await refreshPlayers();
+  async function togglePublic() {
+    if (!isHost.value || !roomId.value) return;
+    const currentPublic = myPlayer.value?.status === 'alive';
+    isLoading.value = true;
+    try {
+      await togglePublicApi(roomId.value, currentPublic);
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal mengubah status room.';
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   async function startGame() {
@@ -474,7 +392,6 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     isLoading.value = true;
     error.value = null;
     try {
-      // Clear leftover submissions & rounds for this room before starting round 1
       await supabase.from('round_submissions').delete().eq('room_id', roomId.value);
       await supabase.from('rounds').delete().eq('room_id', roomId.value);
 
@@ -494,83 +411,26 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   async function startNextRound(roundNum: number) {
     if (!roomId.value) return;
 
-    const { data: roomData } = await supabase
-      .from('rooms')
-      .select('used_sentence_ids')
-      .eq('id', roomId.value)
-      .single();
-
-    const usedIds: string[] = roomData?.used_sentence_ids ?? [];
-    
-    const numP = alivePlayers.value.length;
-    let sentenceCount = 7;
-    let durationSeconds = 90;
-    if (numP >= 5) {
-      sentenceCount = 10;
-      durationSeconds = 150;
-    } else if (numP >= 3) {
-      sentenceCount = 8;
-      durationSeconds = 120;
-    }
-
-    const sentences = pickMultipleRandomSentences(usedIds, sentenceCount);
-    const primarySentence = sentences[0];
-
-    if (!primarySentence || sentences.length === 0) {
-      error.value = 'Kalimat habis! Game selesai.';
-      return;
-    }
-
-    const startAt = new Date(Date.now() + 5000).toISOString();
-
-    const formattedSentences = sentences.map(s => ({
-      id: s.id,
-      japanese: s.japanese,
-      romaji_variants: s.romaji_variants,
-      word_spans: s.word_spans ?? null,
-      meaning: s.meaning_id,
-    }));
-
-    const { data: roundData, error: roundErr } = await supabase
-      .from('rounds')
-      .upsert({
-        room_id: roomId.value,
-        round_number: roundNum,
-        sentence_id: primarySentence.id,
-        sentence_japanese: primarySentence.japanese,
-        sentence_romaji_variants: primarySentence.romaji_variants,
-        sentence_word_spans: primarySentence.word_spans ?? null,
-        sentence_meaning: primarySentence.meaning_id,
-        status: 'active',
-        start_at: startAt,
-        duration_seconds: durationSeconds,
-      }, { onConflict: 'room_id,round_number' })
-      .select()
-      .single();
-
-    if (roundErr || !roundData) throw roundErr ?? new Error('Failed to create round');
-
-    const newUsedIds = [...usedIds, ...sentences.map(s => s.id)];
-
-    await supabase
-      .from('rooms')
-      .update({ used_sentence_ids: newUsedIds, current_round_num: roundNum })
-      .eq('id', roomId.value);
+    const res = await startNextRoundApi({
+      roomId: roomId.value,
+      roundNum,
+      aliveCount: alivePlayers.value.length,
+    });
 
     const payloadData = {
-      id: roundData.id,
+      id: res.roundData.id,
       room_id: roomId.value,
       round_number: roundNum,
-      sentence_id: primarySentence.id,
-      sentence_japanese: primarySentence.japanese,
-      sentence_romaji_variants: primarySentence.romaji_variants,
-      sentence_word_spans: primarySentence.word_spans ?? null,
-      sentence_meaning: primarySentence.meaning_id,
-      sentences: formattedSentences,
+      sentence_id: res.primarySentence.id,
+      sentence_japanese: res.primarySentence.japanese,
+      sentence_romaji_variants: res.primarySentence.romaji_variants,
+      sentence_word_spans: res.primarySentence.word_spans ?? null,
+      sentence_meaning: res.primarySentence.meaning_id,
+      sentences: res.formattedSentences,
       status: 'active' as const,
-      roundStartAt: startAt,
-      duration_seconds: durationSeconds,
-      start_at: startAt,
+      roundStartAt: res.startAt,
+      duration_seconds: res.durationSeconds,
+      start_at: res.startAt,
     };
 
     activeRound.value = payloadData;
@@ -578,7 +438,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     myCompletionTimeMs.value = null;
     playersWhoSubmitted.value.clear();
     phase.value = 'round_preparing';
-    startCountdownFromServerTime(startAt);
+    startCountdownFromServerTime(res.startAt);
 
     await realtimeChannel?.send({
       type: 'broadcast',
@@ -598,147 +458,73 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     }
   }
 
-  async function submitRound(inputOrOptions: string | {
-    typedInput?: string;
-    isValid?: boolean;
+  async function submitRound(payload: {
+    typedInput: string;
+    isValid: boolean;
     completedSentences?: number;
     totalSentences?: number;
     progressPercentage?: number;
   }) {
-    if (!roomId.value || !activeRound.value) return;
-    if (mySubmissionStatus.value !== null && mySubmissionStatus.value !== 'timeout') return;
+    if (!activeRound.value || mySubmissionStatus.value !== null) return;
 
-    const pid = myPlayerId.value;
-    const round = activeRound.value;
-    const startMs = round.start_at ? new Date(round.start_at).getTime() : Date.now();
-    const completionTimeMs = Date.now() - startMs;
+    const completedSentences = payload.completedSentences ?? 0;
+    const totalSentences = payload.totalSentences ?? 5;
+    const progressPercentage = payload.progressPercentage ?? 0;
 
-    let typedInput = 'TIMEOUT';
-    let isValid = false;
-    let completedSentences = 0;
-    let totalSentences = round.sentences?.length ?? 5;
-    let progressPercentage = 0;
+    mySubmissionStatus.value = payload.isValid ? 'success' : 'typo';
 
-    if (typeof inputOrOptions === 'object') {
-      typedInput = inputOrOptions.typedInput ?? 'TIMEOUT';
-      isValid = inputOrOptions.isValid ?? false;
-      completedSentences = inputOrOptions.completedSentences ?? 0;
-      totalSentences = inputOrOptions.totalSentences ?? totalSentences;
-      progressPercentage = inputOrOptions.progressPercentage ?? (isValid ? 100 : Math.round((completedSentences / Math.max(1, totalSentences)) * 100));
-    } else {
-      typedInput = inputOrOptions;
-      isValid = inputOrOptions === 'COMPLETE';
-      completedSentences = isValid ? totalSentences : 0;
-      progressPercentage = isValid ? 100 : 0;
-    }
+    try {
+      const res = await submitRoundApi({
+        activeRound: activeRound.value,
+        myPlayerId: myPlayerId.value,
+        typedInput: payload.typedInput,
+        isValid: payload.isValid,
+        completedSentences,
+        totalSentences,
+        progressPercentage,
+      });
 
-    const resultStatus: SubmissionStatus = isValid ? 'success' : 'timeout';
-    mySubmissionStatus.value = resultStatus;
-    myCompletionTimeMs.value = completionTimeMs;
+      myCompletionTimeMs.value = res.completionTimeMs;
 
-    await realtimeChannel?.send({
-      type: 'broadcast',
-      event: 'player_submitted',
-      payload: { playerId: pid },
-    });
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'player_submitted',
+        payload: { playerId: myPlayerId.value },
+      });
 
-    const payloadMeta = JSON.stringify({
-      completed: completedSentences,
-      total: totalSentences,
-      pct: progressPercentage,
-      input: typedInput,
-    });
+      if (isHost.value && activeRound.value) {
+        await evaluateRoundForHost(roomId.value!, activeRound.value, alivePlayers.value, realtimeChannel);
+      }
 
-    const { error: subErr } = await supabase
-      .from('round_submissions')
-      .upsert({
-        round_id: round.id,
-        room_id: roomId.value,
-        player_id: pid,
-        typed_input: payloadMeta,
-        is_valid: isValid,
-        completion_time_ms: completionTimeMs,
-        status: resultStatus,
-      }, { onConflict: 'round_id,player_id' });
-
-    if (subErr) {
-      console.error('[Battleground] Failed to save submission:', subErr);
-    }
-
-    if (isHost.value) {
-      setTimeout(() => {
-        if (roomId.value && activeRound.value) {
-          evaluateRoundForHost(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel);
-        }
-      }, 300);
+    } catch (err: any) {
+      console.error('[Battleground] Submit error:', err);
     }
   }
 
-  function broadcastProgress(progressInfo: number | { completedSentences: number; totalSentences: number; progressPercentage: number }, totalChars?: number) {
+  function broadcastProgress(progress: { completedSentences: number; totalSentences: number; progressPercentage: number }) {
     if (!realtimeChannel || !iAmAlive.value) return;
-
-    let payload: PlayerProgress;
-    if (typeof progressInfo === 'object') {
-      payload = {
-        playerId: myPlayerId.value,
-        completedSentences: progressInfo.completedSentences,
-        totalSentences: progressInfo.totalSentences,
-        progressPercentage: progressInfo.progressPercentage,
-      };
-    } else {
-      payload = {
-        playerId: myPlayerId.value,
-        charIndex: progressInfo,
-        totalChars: totalChars ?? 1,
-        progressPercentage: totalChars && totalChars > 0 ? Math.round((progressInfo / totalChars) * 100) : 0,
-      };
-    }
-
-    playerProgress.value.set(myPlayerId.value, payload);
 
     realtimeChannel.send({
       type: 'broadcast',
       event: 'typing_progress',
-      payload,
+      payload: {
+        playerId: myPlayerId.value,
+        ...progress,
+      },
     });
   }
 
   async function resetRoomForNextGame() {
     if (!isHost.value || !roomId.value) return;
     isLoading.value = true;
-    error.value = null;
-
     try {
-      // 1. Delete previous round_submissions & rounds to prevent unique key constraint violations
-      await supabase
-        .from('round_submissions')
-        .delete()
-        .eq('room_id', roomId.value);
+      await resetRoomApi(roomId.value);
 
-      await supabase
-        .from('rounds')
-        .delete()
-        .eq('room_id', roomId.value);
-
-      // 2. Reset rooms table status & used sentences
-      await supabase
-        .from('rooms')
-        .update({
-          status: 'waiting',
-          current_round_num: 0,
-          used_sentence_ids: [],
-        })
-        .eq('id', roomId.value);
-
-      await supabase
-        .from('room_players')
-        .update({
-          status: 'alive',
-          eliminated_in_round: null,
-          elimination_reason: null,
-          final_rank: null,
-        })
-        .eq('room_id', roomId.value);
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'room_reset_play_again',
+        payload: { roomId: roomId.value },
+      });
 
       activeRound.value = null;
       lastRoundResult.value = null;
@@ -750,24 +536,15 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       showPlayAgainPrompt.value = false;
 
       await refreshPlayers();
-
-      await realtimeChannel?.send({
-        type: 'broadcast',
-        event: 'room_reset_play_again',
-        payload: {},
-      });
-
       phase.value = 'lobby';
-    } catch (err: any) {
-      error.value = err?.message ?? 'Gagal reset game.';
     } finally {
       isLoading.value = false;
     }
   }
 
   async function acceptPlayAgain() {
+    showPlayAgainPrompt.value = false;
     if (!roomId.value) return;
-    isLoading.value = true;
     try {
       await supabase
         .from('room_players')
@@ -811,31 +588,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     unsubscribeFromRoom();
 
     if (rId) {
-      if (isLobby) {
-        await supabase
-          .from('room_players')
-          .delete()
-          .eq('room_id', rId)
-          .eq('player_id', pid);
-
-        const { data: remaining } = await supabase
-          .from('room_players')
-          .select('player_id')
-          .eq('room_id', rId);
-
-        if (!remaining || remaining.length === 0 || amHost) {
-          await supabase
-            .from('rooms')
-            .update({ status: 'finished' })
-            .eq('id', rId);
-        }
-      } else if (iAmAlive.value) {
-        await supabase
-          .from('room_players')
-          .update({ status: 'eliminated', elimination_reason: 'disconnect' })
-          .eq('room_id', rId)
-          .eq('player_id', pid);
-      }
+      await leaveRoomApi(rId, pid, isLobby, amHost, iAmAlive.value);
     }
 
     phase.value = 'idle';
@@ -884,18 +637,18 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     latestPowerUpEvent,
     activePowerUpEvents,
     triggerPowerUp,
+    fetchPublicRooms,
     createRoom,
     joinRoom,
+    togglePublic,
     startGame,
     startNextRound,
     startNextRoundFromResult,
     submitRound,
     broadcastProgress,
-    leaveRoom,
-    refreshPlayers,
-    fetchPublicRooms,
     resetRoomForNextGame,
     acceptPlayAgain,
     declinePlayAgain,
+    leaveRoom,
   };
 });

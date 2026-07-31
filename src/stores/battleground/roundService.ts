@@ -1,0 +1,159 @@
+// src/stores/battleground/roundService.ts
+import { supabase } from '../../lib/supabaseClient';
+import type { ActiveRound } from './types';
+import { pickMultipleRandomSentences } from './helpers';
+
+export async function submitRoundApi(params: {
+  activeRound: ActiveRound;
+  myPlayerId: string;
+  typedInput: string;
+  isValid: boolean;
+  completedSentences: number;
+  totalSentences: number;
+  progressPercentage: number;
+}) {
+  const {
+    activeRound,
+    myPlayerId,
+    typedInput,
+    isValid,
+    completedSentences,
+    totalSentences,
+    progressPercentage,
+  } = params;
+
+  let completionTimeMs = activeRound.start_at ? Date.now() - new Date(activeRound.start_at).getTime() : 0;
+  if (completionTimeMs < 0) completionTimeMs = 0;
+
+  const response = await fetch('/api/battleground-submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      roundId: activeRound.id,
+      roomId: activeRound.room_id,
+      playerId: myPlayerId,
+      typedInput,
+      completionTimeMs,
+      isValid,
+      completedSentences,
+      totalSentences,
+      progressPercentage,
+    }),
+  });
+
+  if (!response.ok) {
+    // Fallback: direct Supabase insert if edge function is unavailable
+    await supabase
+      .from('round_submissions')
+      .upsert(
+        {
+          round_id: activeRound.id,
+          room_id: activeRound.room_id,
+          player_id: myPlayerId,
+          typed_input: typedInput,
+          completion_time_ms: completionTimeMs,
+          is_valid: isValid,
+          status: isValid ? 'success' : 'typo',
+          completed_sentences: completedSentences,
+          total_sentences: totalSentences,
+          progress_percentage: progressPercentage,
+        },
+        { onConflict: 'round_id,player_id' }
+      );
+  }
+
+  return { completionTimeMs, status: isValid ? 'success' as const : 'typo' as const };
+}
+
+export async function startNextRoundApi(params: {
+  roomId: string;
+  roundNum: number;
+  aliveCount: number;
+}) {
+  const { roomId, roundNum, aliveCount } = params;
+
+  const { data: roomData } = await supabase
+    .from('rooms')
+    .select('used_sentence_ids')
+    .eq('id', roomId)
+    .single();
+
+  const usedIds: string[] = roomData?.used_sentence_ids ?? [];
+  
+  let targetCount = 7;
+  let durationSeconds = 90;
+  if (aliveCount >= 5) {
+    targetCount = 10;
+    durationSeconds = 150;
+  } else if (aliveCount >= 3) {
+    targetCount = 8;
+    durationSeconds = 120;
+  }
+
+  const sentences = pickMultipleRandomSentences(usedIds, targetCount);
+  const primarySentence = sentences[0];
+
+  const formattedSentences = sentences.map(s => ({
+    id: s.id,
+    japanese: s.japanese,
+    romaji_variants: s.romaji_variants,
+    word_spans: s.word_spans ?? null,
+    meaning: s.meaning_id,
+  }));
+
+  const startAt = new Date(Date.now() + 5000).toISOString();
+
+  const { data: roundData, error: roundErr } = await supabase
+    .from('rounds')
+    .upsert({
+      room_id: roomId,
+      round_number: roundNum,
+      sentence_id: primarySentence.id,
+      sentence_japanese: primarySentence.japanese,
+      sentence_romaji_variants: primarySentence.romaji_variants,
+      sentence_word_spans: primarySentence.word_spans ?? null,
+      sentence_meaning: primarySentence.meaning_id,
+      status: 'active',
+      start_at: startAt,
+      duration_seconds: durationSeconds,
+    }, { onConflict: 'room_id,round_number' })
+    .select()
+    .single();
+
+  if (roundErr || !roundData) throw roundErr ?? new Error('Gagal membuat ronde baru.');
+
+  const newUsedIds = [...usedIds, ...sentences.map(s => s.id)];
+
+  await supabase
+    .from('rooms')
+    .update({ used_sentence_ids: newUsedIds, current_round_num: roundNum })
+    .eq('id', roomId);
+
+  return {
+    roundData,
+    primarySentence,
+    formattedSentences,
+    startAt,
+    durationSeconds,
+  };
+}
+
+export async function resetRoomApi(roomId: string) {
+  await supabase.from('round_submissions').delete().eq('room_id', roomId);
+  await supabase.from('rounds').delete().eq('room_id', roomId);
+
+  await supabase
+    .from('rooms')
+    .update({ status: 'waiting', current_round_num: 1, used_sentence_ids: [] })
+    .eq('id', roomId);
+
+  await supabase
+    .from('room_players')
+    .update({
+      status: 'alive',
+      eliminated_in_round: null,
+      elimination_reason: null,
+      final_rank: null,
+    })
+    .eq('room_id', roomId);
+}
