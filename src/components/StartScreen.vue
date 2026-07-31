@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Zap, Target } from '@lucide/vue';
+import { Zap, Target, Swords, Users } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const targetDurationMinutes = ref<number>(1);
 const characterTypes = ref('hiragana');
-const selectedLevel = ref<'basic' | 'n5'>('basic');
+const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
 
 const selectModeAndContent = (level: 'basic' | 'n5', type: string) => {
   selectedLevel.value = level;
   characterTypes.value = type;
+};
+
+const selectBattleground = () => {
+  selectedLevel.value = 'battleground';
 };
 
 const getDurationDesc = (minutes: number) => {
@@ -30,11 +34,15 @@ const getDurationDesc = (minutes: number) => {
   return '';
 };
 
-const emit = defineEmits(['start', 'openMasteryGrid']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground']);
 
-const startQuiz = async () => {
-  await quizStore.startQuiz(targetDurationMinutes.value, characterTypes.value, selectedLevel.value);
-  emit('start');
+const handleStart = async () => {
+  if (selectedLevel.value === 'battleground') {
+    emit('openBattleground');
+  } else {
+    await quizStore.startQuiz(targetDurationMinutes.value, characterTypes.value, selectedLevel.value);
+    emit('start');
+  }
 };
 </script>
 
@@ -78,7 +86,7 @@ const startQuiz = async () => {
         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">1</span>
         Pilih Mode & Konten Quiz
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Multiple Choice Card -->
         <div 
           @click="selectModeAndContent('basic', 'hiragana')"
@@ -159,7 +167,7 @@ const startQuiz = async () => {
           @click="selectModeAndContent('n5', 'sentences')"
           :class="[
             'rounded-2xl p-4 text-left transition-all duration-200 flex flex-col justify-between cursor-pointer',
-            characterTypes === 'sentences' 
+            selectedLevel === 'n5' && characterTypes === 'sentences' 
               ? 'border-2 border-indigo-600 bg-indigo-50/30 shadow-sm' 
               : 'border border-gray-200 bg-white hover:border-gray-300'
           ]"
@@ -179,7 +187,7 @@ const startQuiz = async () => {
               @click.stop="selectModeAndContent('n5', 'sentences')"
               :class="[
                 'capitalize px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
-                characterTypes === 'sentences'
+                selectedLevel === 'n5' && characterTypes === 'sentences'
                   ? 'bg-indigo-600 text-white border-2 border-indigo-600 shadow-sm'
                   : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
               ]"
@@ -189,16 +197,70 @@ const startQuiz = async () => {
             </button>
           </div>
         </div>
+
+        <!-- Typing Battleground Card -->
+        <div 
+          @click="selectBattleground"
+          :class="[
+            'rounded-2xl p-4 text-left transition-all duration-200 flex flex-col justify-between cursor-pointer relative overflow-hidden group',
+            selectedLevel === 'battleground'
+              ? 'border-2 border-rose-600 bg-rose-50/40 shadow-sm'
+              : 'border border-gray-200 bg-white hover:border-gray-300'
+          ]"
+        >
+          <!-- Background glow -->
+          <div class="absolute inset-0 bg-gradient-to-br from-rose-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="relative">
+            <div class="flex items-baseline justify-between mb-1">
+              <h3 class="text-lg font-bold text-gray-900 flex items-center gap-1.5">
+                <Swords class="w-4 h-4 text-rose-600" />
+                Battle
+              </h3>
+              <span class="text-[10px] font-extrabold bg-rose-600 text-white px-1.5 py-0.5 rounded-md tracking-wide">MULTI</span>
+            </div>
+            <p class="text-xs text-gray-500 mb-4">Battle royale mengetik kalimat. Typo = gugur!</p>
+          </div>
+          <div class="relative flex items-center gap-2 pt-2 border-t border-gray-100/80">
+            <button
+              type="button"
+              @click.stop="selectBattleground"
+              :class="[
+                'capitalize px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
+                selectedLevel === 'battleground'
+                  ? 'bg-gradient-to-r from-rose-600 to-orange-600 text-white border-2 border-rose-600 shadow-sm'
+                  : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
+              ]"
+            >
+              <span>Multiplayer Room</span>
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- Step 2: Select Target Duration -->
+    <!-- Step 2: Select Target Duration or Battleground Info -->
     <div class="w-full max-w-3xl mb-6 flex-shrink-0">
       <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
         <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">2</span>
-        Pilih Durasi Sesi
+        {{ selectedLevel === 'battleground' ? 'Informasi Mode Battle' : 'Pilih Durasi Sesi' }}
       </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+
+      <!-- Battleground Mode Info Banner -->
+      <div v-if="selectedLevel === 'battleground'" class="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 border border-rose-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-sm">
+            <Users class="w-5 h-5" />
+          </div>
+          <div>
+            <div class="text-sm font-bold text-gray-900">Battle Royale Realtime</div>
+            <div class="text-xs text-gray-600">Hingga 8 pemain per room • Eliminasi otomatis jika salah ketik (typo) • Ronde bertahap</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Normal Duration Options -->
+      <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <button 
           v-for="min in [1, 3, 5]" 
           :key="min"
@@ -217,12 +279,17 @@ const startQuiz = async () => {
       </div>
     </div>
     
-    <!-- Full-Width Start Quiz Button -->
+    <!-- Full-Width Start Quiz / Start Battle Button -->
     <div class="w-full max-w-3xl mb-6 flex-shrink-0">
       <button 
         type="button"
-        class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-base font-bold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-        @click="startQuiz"
+        :class="[
+          'w-full py-3.5 text-white rounded-2xl text-base font-bold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed',
+          selectedLevel === 'battleground'
+            ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/20'
+            : 'bg-indigo-600 hover:bg-indigo-700'
+        ]"
+        @click="handleStart"
         :disabled="quizStore.isLoading"
       >
         <span v-if="quizStore.isLoading" class="flex items-center gap-2">
@@ -232,8 +299,12 @@ const startQuiz = async () => {
           </svg>
           Loading Questions...
         </span>
+        <template v-else-if="selectedLevel === 'battleground'">
+          <span>Masuk Arena Battleground</span>
+          <Swords class="w-5 h-5 text-white" />
+        </template>
         <template v-else>
-          <span>Start Quiz</span>
+          <span>Start Quiz ({{ targetDurationMinutes }} Menit)</span>
           <Zap class="w-5 h-5 text-amber-300 fill-amber-300" />
         </template>
       </button>
@@ -247,4 +318,5 @@ const startQuiz = async () => {
   to { opacity: 1; }
 }
 </style>
+
 

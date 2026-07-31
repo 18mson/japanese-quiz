@@ -13,6 +13,7 @@ import MasteryGridModal from './components/MasteryGridModal.vue';
 import LevelUpModal from './components/LevelUpModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
+import BattlegroundMode from './components/BattlegroundMode.vue';
 
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
@@ -25,6 +26,7 @@ const quizStarted = ref(false);
 const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
 const showMasteryGridModal = ref(false);
+const showBattleground = ref(false);
 
 const handleGlobalKeydown = (event: KeyboardEvent) => {
   if (!quizStarted.value || quizStore.quizCompleted) return;
@@ -55,6 +57,10 @@ const handleStartWeakQuiz = async ({ type }: { type: string }) => {
   showMasteryGridModal.value = false;
   await quizStore.startWeakItemsQuiz(1, type);
   quizStarted.value = true;
+};
+
+const openBattleground = () => {
+  showBattleground.value = true;
 };
 
 const goToHome = () => {
@@ -132,7 +138,7 @@ const goToHome = () => {
     />
 
     <!-- Main Screens -->
-    <StartScreen v-if="!quizStarted" @start="startQuiz" @open-mastery-grid="showMasteryGridModal = true" />
+    <StartScreen v-if="!quizStarted" @start="startQuiz" @open-mastery-grid="showMasteryGridModal = true" @open-battleground="openBattleground" />
     <div v-else class="max-w-2xl w-full mx-auto p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
       
@@ -156,6 +162,12 @@ const goToHome = () => {
       <QuizResults v-else class="flex-1 overflow-hidden" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       <QuizBottomNav :quiz-started="quizStarted" />
     </div>
+
+    <!-- Battleground Mode (full-screen overlay) -->
+    <BattlegroundMode
+      v-if="showBattleground"
+      @exit="showBattleground = false"
+    />
   </div>
 </template>
 
