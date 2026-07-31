@@ -78,14 +78,6 @@ const units = computed<Unit[]>(() => {
 
     for (const span of wordSpans) {
       if (vIdx >= variants.length) break;
-      const firstChar = japanese[charIdx];
-      if (['、','。','？','?','！','!',' '].includes(firstChar)) {
-        result.push({
-          kana: firstChar,
-          acceptedRomaji: firstChar === '、' ? [',',' ',''] : (firstChar === '。' ? ['.','']: [firstChar])
-        });
-        charIdx++;
-      }
       const wordVariants = variants.slice(vIdx, vIdx + span);
       let wordCharCount = 0;
       for (let i = 0; i < wordVariants.length; i++) {

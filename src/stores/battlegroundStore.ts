@@ -97,7 +97,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     if (realtimeChannel) unsubscribeFromRoom();
 
     realtimeChannel = supabase.channel(`room:${rId}`, {
-      config: { broadcast: { self: false } },
+      config: { broadcast: { self: true } },
     });
 
     realtimeChannel.on('broadcast', { event: 'player_joined' }, async () => {
@@ -540,24 +540,33 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       .update({ used_sentence_ids: newUsedIds, current_round_num: roundNum })
       .eq('id', roomId.value);
 
+    const payloadData = {
+      id: roundData.id,
+      room_id: roomId.value,
+      round_number: roundNum,
+      sentence_id: primarySentence.id,
+      sentence_japanese: primarySentence.japanese,
+      sentence_romaji_variants: primarySentence.romaji_variants,
+      sentence_word_spans: primarySentence.word_spans ?? null,
+      sentence_meaning: primarySentence.meaning_id,
+      sentences: formattedSentences,
+      status: 'active' as const,
+      roundStartAt: startAt,
+      duration_seconds: durationSeconds,
+      start_at: startAt,
+    };
+
+    activeRound.value = payloadData;
+    mySubmissionStatus.value = null;
+    myCompletionTimeMs.value = null;
+    playersWhoSubmitted.value.clear();
+    phase.value = 'round_preparing';
+    startCountdownFromServerTime(startAt);
+
     await realtimeChannel?.send({
       type: 'broadcast',
       event: 'round_preparing',
-      payload: {
-        id: roundData.id,
-        room_id: roomId.value,
-        round_number: roundNum,
-        sentence_id: primarySentence.id,
-        sentence_japanese: primarySentence.japanese,
-        sentence_romaji_variants: primarySentence.romaji_variants,
-        sentence_word_spans: primarySentence.word_spans ?? null,
-        sentence_meaning: primarySentence.meaning_id,
-        sentences: formattedSentences,
-        status: 'active',
-        roundStartAt: startAt,
-        duration_seconds: 75,
-        start_at: startAt,
-      },
+      payload: payloadData,
     });
   }
 
