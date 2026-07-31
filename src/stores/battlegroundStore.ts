@@ -502,6 +502,11 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   function broadcastProgress(progress: { completedSentences: number; totalSentences: number; progressPercentage: number }) {
+    playerProgress.value.set(myPlayerId.value, {
+      playerId: myPlayerId.value,
+      ...progress,
+    });
+
     if (!realtimeChannel || !iAmAlive.value) return;
 
     realtimeChannel.send({

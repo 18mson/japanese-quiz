@@ -485,7 +485,7 @@ function throttledProgressBroadcast() {
     const totalCount = totalSentencesCount.value;
     const sentProgress = currentSentenceIndex.value;
     const unitProgress = activeUnitIndex.value / Math.max(1, units.value.length);
-    const overallPct = Math.round(((sentProgress + unitProgress) / totalCount) * 100);
+    const overallPct = +(Math.min(100, ((sentProgress + unitProgress) / totalCount) * 100)).toFixed(2);
 
     store.broadcastProgress({
       completedSentences: currentSentenceIndex.value,
