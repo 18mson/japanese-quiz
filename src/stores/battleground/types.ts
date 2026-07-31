@@ -87,8 +87,10 @@ export interface GameOverPayload {
 
 export interface PlayerProgress {
   playerId: string;
-  charIndex: number;
-  totalChars: number;
+  charIndex?: number;
+  totalChars?: number;
+  completedSentences?: number;
+  totalSentences?: number;
   progressPercentage: number;
 }
 

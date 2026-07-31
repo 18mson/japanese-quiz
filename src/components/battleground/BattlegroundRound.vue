@@ -353,8 +353,13 @@ function triggerError() {
 
 async function handleComplete() {
   isSubmitted.value = true;
-  const fullInput = units.value.map(u => u.acceptedRomaji[0]).join('');
-  await store.submitRound(fullInput);
+  await store.submitRound({
+    typedInput: 'COMPLETE',
+    isValid: true,
+    completedSentences: totalSentencesCount.value,
+    totalSentences: totalSentencesCount.value,
+    progressPercentage: 100,
+  });
 }
 
 function throttledProgressBroadcast() {
@@ -365,7 +370,11 @@ function throttledProgressBroadcast() {
     const unitProgress = activeUnitIndex.value / Math.max(1, units.value.length);
     const overallPct = Math.round(((sentProgress + unitProgress) / totalCount) * 100);
 
-    store.broadcastProgress(overallPct, 100);
+    store.broadcastProgress({
+      completedSentences: currentSentenceIndex.value,
+      totalSentences: totalCount,
+      progressPercentage: overallPct,
+    });
     progressThrottle = null;
   }, 100);
 }

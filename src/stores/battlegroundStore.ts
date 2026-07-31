@@ -21,7 +21,6 @@ import {
   pickMultipleRandomSentences,
   getGuestId,
   getGuestName,
-  validateRomaji,
 } from './battleground/helpers';
 import {
   evaluateRoundForHost,
@@ -235,7 +234,19 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     if (!roomId.value || !activeRound.value) return;
     if (mySubmissionStatus.value !== null) return;
     mySubmissionStatus.value = 'timeout';
-    await submitRound('');
+
+    const pProg = playerProgress.value.get(myPlayerId.value);
+    const totalSentences = activeRound.value.sentences?.length ?? 5;
+    const completedSentences = pProg?.completedSentences ?? 0;
+    const progressPercentage = pProg?.progressPercentage ?? 0;
+
+    await submitRound({
+      typedInput: 'TIMEOUT',
+      isValid: false,
+      completedSentences,
+      totalSentences,
+      progressPercentage,
+    });
   }
 
   // ── Actions ─────────────────────────────────────────────────
@@ -547,9 +558,9 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       progressPercentage = inputOrOptions.progressPercentage ?? Math.round((completedSentences / Math.max(1, totalSentences)) * 100);
     } else {
       typedInput = inputOrOptions;
-      isValid = validateRomaji(inputOrOptions.trim().toLowerCase(), round.sentence_romaji_variants);
-      completedSentences = totalSentences;
-      progressPercentage = 100;
+      isValid = inputOrOptions === 'COMPLETE' || inputOrOptions.length > 0;
+      completedSentences = isValid ? totalSentences : 0;
+      progressPercentage = isValid ? 100 : 0;
     }
 
     const resultStatus: SubmissionStatus = isValid ? 'success' : 'timeout';
@@ -594,17 +605,32 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     }
   }
 
-  function broadcastProgress(charIndex: number, totalChars: number) {
+  function broadcastProgress(progressInfo: number | { completedSentences: number; totalSentences: number; progressPercentage: number }, totalChars?: number) {
     if (!realtimeChannel || !iAmAlive.value) return;
+
+    let payload: PlayerProgress;
+    if (typeof progressInfo === 'object') {
+      payload = {
+        playerId: myPlayerId.value,
+        completedSentences: progressInfo.completedSentences,
+        totalSentences: progressInfo.totalSentences,
+        progressPercentage: progressInfo.progressPercentage,
+      };
+    } else {
+      payload = {
+        playerId: myPlayerId.value,
+        charIndex: progressInfo,
+        totalChars: totalChars ?? 1,
+        progressPercentage: totalChars && totalChars > 0 ? Math.round((progressInfo / totalChars) * 100) : 0,
+      };
+    }
+
+    playerProgress.value.set(myPlayerId.value, payload);
+
     realtimeChannel.send({
       type: 'broadcast',
       event: 'typing_progress',
-      payload: {
-        playerId: myPlayerId.value,
-        charIndex,
-        totalChars,
-        progressPercentage: totalChars > 0 ? Math.round((charIndex / totalChars) * 100) : 0,
-      },
+      payload,
     });
   }
 
