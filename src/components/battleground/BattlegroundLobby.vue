@@ -42,15 +42,26 @@ const playerNameError = computed(() =>
 
 // ── Actions ──────────────────────────────────────────────────
 async function handleCreate() {
-  if (inputPlayerName.value.trim().length < 2) return;
-  await store.createRoom(inputPlayerName.value.trim(), isPublicRoom.value);
+  let name = inputPlayerName.value.trim();
+  if (!name || name.length < 2) {
+    name = store.myPlayerName || `Pengetik #${Math.floor(1000 + Math.random() * 9000)}`;
+    inputPlayerName.value = name;
+  }
+  await store.createRoom(name, isPublicRoom.value);
 }
 
 async function handleJoin(targetCode?: string) {
-  if (inputPlayerName.value.trim().length < 2) return;
+  let name = inputPlayerName.value.trim();
+  if (!name || name.length < 2) {
+    name = store.myPlayerName || `Pengetik #${Math.floor(1000 + Math.random() * 9000)}`;
+    inputPlayerName.value = name;
+  }
   const codeToJoin = targetCode ?? inputRoomCode.value.trim();
-  if (codeToJoin.length !== 6) return;
-  await store.joinRoom(codeToJoin, inputPlayerName.value.trim());
+  if (codeToJoin.length !== 6) {
+    store.error = 'Masukkan 6 karakter kode room!';
+    return;
+  }
+  await store.joinRoom(codeToJoin, name);
 }
 
 async function copyCode() {
@@ -228,10 +239,11 @@ const emit = defineEmits<{ exit: [] }>();
 
                 <button
                   @click="handleJoin(room.code)"
-                  :disabled="store.isLoading || inputPlayerName.trim().length < 2 || room.player_count >= room.max_players"
-                  class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg font-bold text-xs transition cursor-pointer flex-shrink-0"
+                  :disabled="store.isLoading || room.player_count >= room.max_players"
+                  class="px-3 py-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg font-bold text-xs transition cursor-pointer flex-shrink-0 flex items-center gap-1.5"
                 >
-                  Gabung
+                  <Loader2 v-if="store.isLoading" class="w-3.5 h-3.5 animate-spin" />
+                  <span v-else>Gabung</span>
                 </button>
               </div>
             </div>
@@ -254,7 +266,7 @@ const emit = defineEmits<{ exit: [] }>();
               />
               <button
                 @click="handleJoin()"
-                :disabled="store.isLoading || inputPlayerName.trim().length < 2 || inputRoomCode.trim().length !== 6"
+                :disabled="store.isLoading || inputRoomCode.trim().length !== 6"
                 class="px-4 py-2.5 bg-gradient-to-r from-violet-600 to-rose-600 hover:from-violet-500 hover:to-rose-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white text-xs transition cursor-pointer flex items-center gap-1.5"
               >
                 <Loader2 v-if="store.isLoading" class="w-4 h-4 animate-spin" />
@@ -270,7 +282,7 @@ const emit = defineEmits<{ exit: [] }>();
         <button
           v-if="mode === 'create'"
           @click="handleCreate"
-          :disabled="store.isLoading || inputPlayerName.trim().length < 2"
+          :disabled="store.isLoading"
           class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/30 cursor-pointer"
         >
           <Loader2 v-if="store.isLoading" class="w-4 h-4 animate-spin" />
