@@ -297,27 +297,44 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     try {
       const { data: roomRows, error: fetchErr } = await supabase
         .from('rooms')
-        .select('id, code, host_player_id, max_players, created_at, room_players(player_name, player_id)')
+        .select('id, code, host_player_id, max_players, created_at, room_players(player_name, player_id, status)')
         .eq('is_public', true)
         .eq('status', 'waiting')
         .order('created_at', { ascending: false })
-        .limit(20);
+        .limit(30);
 
       if (fetchErr) throw fetchErr;
 
       if (roomRows) {
-        publicRooms.value = roomRows.map((r: any) => {
-          const hostPlayer = r.room_players?.find((p: any) => p.player_id === r.host_player_id);
-          return {
+        const validRooms: PublicRoomItem[] = [];
+        const emptyRoomIds: string[] = [];
+
+        for (const r of roomRows) {
+          const activePlayers = (r.room_players ?? []).filter((p: any) => p.status !== 'eliminated');
+          if (activePlayers.length === 0) {
+            emptyRoomIds.push(r.id);
+            continue;
+          }
+          const hostPlayer = activePlayers.find((p: any) => p.player_id === r.host_player_id) ?? activePlayers[0];
+          validRooms.push({
             id: r.id,
             code: r.code,
             host_player_id: r.host_player_id,
             host_name: hostPlayer?.player_name ?? 'Host',
             max_players: r.max_players ?? 8,
-            player_count: r.room_players?.length ?? 1,
+            player_count: activePlayers.length,
             created_at: r.created_at,
-          };
-        });
+          });
+        }
+
+        publicRooms.value = validRooms;
+
+        if (emptyRoomIds.length > 0) {
+          await supabase
+            .from('rooms')
+            .update({ status: 'finished' })
+            .in('id', emptyRoomIds);
+        }
       }
     } catch (err: any) {
       console.error('[Battleground] Failed to fetch public rooms:', err);
@@ -786,14 +803,39 @@ export const useBattlegroundStore = defineStore('battleground', () => {
 
   async function leaveRoom() {
     clearCountdown();
+    const rId = roomId.value;
+    const pid = myPlayerId.value;
+    const isLobby = phase.value === 'idle' || phase.value === 'lobby';
+    const amHost = isHost.value;
+
     unsubscribeFromRoom();
 
-    if (roomId.value && iAmAlive.value) {
-      await supabase
-        .from('room_players')
-        .update({ status: 'eliminated', elimination_reason: 'disconnect' })
-        .eq('room_id', roomId.value)
-        .eq('player_id', myPlayerId.value);
+    if (rId) {
+      if (isLobby) {
+        await supabase
+          .from('room_players')
+          .delete()
+          .eq('room_id', rId)
+          .eq('player_id', pid);
+
+        const { data: remaining } = await supabase
+          .from('room_players')
+          .select('player_id')
+          .eq('room_id', rId);
+
+        if (!remaining || remaining.length === 0 || amHost) {
+          await supabase
+            .from('rooms')
+            .update({ status: 'finished' })
+            .eq('id', rId);
+        }
+      } else if (iAmAlive.value) {
+        await supabase
+          .from('room_players')
+          .update({ status: 'eliminated', elimination_reason: 'disconnect' })
+          .eq('room_id', rId)
+          .eq('player_id', pid);
+      }
     }
 
     phase.value = 'idle';
