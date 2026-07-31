@@ -1,4 +1,4 @@
-# 🇯🇵 Japanese Kana & Vocab Quiz App
+# 🇯🇵 Nihongo Master: Typing & Vocab Battleground
 
 A modern, interactive, and intelligent web application designed to help learners master **Japanese Hiragana**, **Katakana**, and **N5 Everyday Vocabulary** through adaptive spaced repetition, visual mastery tracking, multiplayer battle royale games, and time-targeted practice sessions.
 

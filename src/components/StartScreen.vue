@@ -48,11 +48,11 @@ const handleStart = async () => {
 
 <template>
   <div class="max-w-4xl mx-auto p-4 md:p-6 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full">
-    <h1 class="text-3xl md:text-4xl bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent mb-2 font-extrabold tracking-tight flex-shrink-0 text-center">
-      Japanese Kana & Vocab Quiz
+    <h1 class="text-3xl md:text-5xl bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-600 bg-clip-text text-transparent mb-2 font-extrabold tracking-tight flex-shrink-0 text-center">
+      Nihongo Master
     </h1>
     <p class="text-sm md:text-base text-gray-600 mb-5 max-w-2xl font-medium leading-relaxed flex-shrink-0 text-center">
-      Pelajari dan kuasai karakter Hiragana & Katakana Jepang, serta tingkatkan kosakata dan pengetikan kalimat N5 melalui tantangan interaktif.
+      Master Hiragana, Katakana, N5 Vocabulary, and Sentence Typing through adaptive practice & Realtime Multiplayer Battleground!
     </p>
 
     <!-- Progress Header (1 Line) -->

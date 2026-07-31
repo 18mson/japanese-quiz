@@ -8,9 +8,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'Hiragana Quiz',
-        short_name: 'HiraganaQuiz',
-        description: 'Learn Japanese Hiragana characters',
+        name: 'Nihongo Master: Typing & Vocab Battleground',
+        short_name: 'NihongoMaster',
+        description: 'Master Japanese Kana, N5 Vocab & Realtime Typing Battleground',
         theme_color: '#4F46E5',
         icons: [
           {

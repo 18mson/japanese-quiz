@@ -1,11 +1,11 @@
 ---
 name: japanese-quiz-architecture
-description: Comprehensive architecture, directory layout, state management, module flow, and Supabase integration reference for the Japanese Quiz codebase.
+description: Comprehensive architecture, directory layout, state management, module flow, and Supabase integration reference for the Nihongo Master codebase.
 ---
 
-# 🇯🇵 Japanese Quiz Repository Architecture & Context Guide
+# 🇯🇵 Nihongo Master Repository Architecture & Context Guide
 
-This skill provides an authoritative, complete technical overview of the **Japanese Kana & Vocab Quiz** codebase. Use this document to understand the codebase layout, state management, core algorithms, typing engines, multiplayer Battleground flow, and Supabase database schemas.
+This skill provides an authoritative, complete technical overview of the **Nihongo Master: Typing & Vocab Battleground** codebase. Use this document to understand the codebase layout, state management, core algorithms, typing engines, multiplayer Battleground flow, and Supabase database schemas.
 
 ---
 
