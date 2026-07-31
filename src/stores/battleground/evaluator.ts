@@ -7,6 +7,7 @@ import type {
   RoundStanding,
   RoundResultPayload,
   GameOverPayload,
+  PlayerProgress,
 } from './types';
 
 export async function evaluateRoundForHost(
@@ -14,7 +15,8 @@ export async function evaluateRoundForHost(
   activeRound: ActiveRound,
   alivePlayers: RoomPlayer[],
   realtimeChannel: any,
-  force: boolean = false
+  force: boolean = false,
+  playerProgressMap?: Map<string, PlayerProgress>
 ): Promise<void> {
   const roundId = activeRound.id;
   const aliveIds = alivePlayers.map(p => p.player_id);
@@ -31,7 +33,7 @@ export async function evaluateRoundForHost(
 
   if (!allSubmitted && !force) return;
 
-  await runElimination(roomId, activeRound, alivePlayers, submissionList, realtimeChannel);
+  await runElimination(roomId, activeRound, alivePlayers, submissionList, realtimeChannel, playerProgressMap);
 }
 
 export async function forceEvaluateWithTimeouts(
@@ -39,7 +41,7 @@ export async function forceEvaluateWithTimeouts(
   activeRound: ActiveRound,
   alivePlayers: RoomPlayer[],
   realtimeChannel: any,
-  playerProgressMap?: Map<string, { progressPercentage: number }>
+  playerProgressMap?: Map<string, PlayerProgress>
 ): Promise<void> {
   const aliveIds = alivePlayers.map(p => p.player_id);
 
@@ -52,7 +54,11 @@ export async function forceEvaluateWithTimeouts(
   const notSubmitted = aliveIds.filter(id => !submittedIds.has(id));
 
   for (const pid of notSubmitted) {
-    const pProgress = playerProgressMap?.get(pid)?.progressPercentage ?? 0;
+    const pProg = playerProgressMap?.get(pid);
+    const pProgress = pProg?.progressPercentage ?? 0;
+    const correctChars = pProg?.correctChars ?? 0;
+    const wrongChars = pProg?.wrongChars ?? 0;
+    const score = Math.max(0, correctChars - wrongChars);
     const totalSentences = activeRound.sentences?.length ?? 1;
     const completedSentences = Math.floor((pProgress / 100) * totalSentences);
 
@@ -76,10 +82,13 @@ export async function forceEvaluateWithTimeouts(
         completed_sentences: completedSentences,
         total_sentences: totalSentences,
         progress_percentage: pProgress,
+        correct_chars: correctChars,
+        wrong_chars: wrongChars,
+        score: score,
       }, { onConflict: 'round_id,player_id' });
   }
 
-  await evaluateRoundForHost(roomId, activeRound, alivePlayers, realtimeChannel, true);
+  await evaluateRoundForHost(roomId, activeRound, alivePlayers, realtimeChannel, true, playerProgressMap);
 }
 
 async function runElimination(
@@ -87,7 +96,8 @@ async function runElimination(
   activeRound: ActiveRound,
   alivePlayers: RoomPlayer[],
   subs: any[],
-  realtimeChannel: any
+  realtimeChannel: any,
+  playerProgressMap?: Map<string, PlayerProgress>
 ): Promise<void> {
   const roundNum = activeRound.round_number;
   const aliveIds = alivePlayers.map(p => p.player_id);
@@ -131,65 +141,59 @@ async function runElimination(
     return { completed, total, pct };
   };
 
-  const successSubs = subs
-    .filter((s: any) => s.is_valid && aliveIds.includes(s.player_id))
-    .sort((a: any, b: any) => a.completion_time_ms - b.completion_time_ms);
+  // ── Rank semua pemain (Gabungkan DB submissions & Realtime memory progressMap) ───
+  const allSubs = aliveIds.map(pid => {
+    const s = subs.find((sub: any) => sub.player_id === pid);
+    const pProg = playerProgressMap?.get(pid);
+    const meta = s ? parseMeta(s) : { completed: pProg?.completedSentences ?? 0, total: totalSentencesInRound, pct: pProg?.progressPercentage ?? 0 };
 
-  const failSubs = subs
-    .filter((s: any) => !s.is_valid && aliveIds.includes(s.player_id))
-    .sort((a: any, b: any) => {
-      const metaA = parseMeta(a);
-      const metaB = parseMeta(b);
-      if (metaA.pct !== metaB.pct) return metaB.pct - metaA.pct;
-      return a.completion_time_ms - b.completion_time_ms;
-    });
+    const dbCorrect = typeof s?.correct_chars === 'number' ? s.correct_chars : 0;
+    const dbWrong = typeof s?.wrong_chars === 'number' ? s.wrong_chars : 0;
+    const progCorrect = pProg?.correctChars ?? 0;
+    const progWrong = pProg?.wrongChars ?? 0;
 
-  const rankedPlayers: Array<{ playerId: string; status: string; timeMs: number; completedSentences: number; totalSentences: number; pct: number }> = [
-    ...successSubs.map((s: any) => {
-      const meta = parseMeta(s);
-      return { playerId: s.player_id, status: 'success', timeMs: s.completion_time_ms, completedSentences: meta.completed, totalSentences: meta.total, pct: meta.pct };
-    }),
-    ...failSubs.map((s: any) => {
-      const meta = parseMeta(s);
-      return { playerId: s.player_id, status: s.status || 'timeout', timeMs: s.completion_time_ms, completedSentences: meta.completed, totalSentences: meta.total, pct: meta.pct };
-    }),
-  ];
+    const correctChars = Math.max(dbCorrect, progCorrect);
+    const wrongChars = Math.max(dbWrong, progWrong);
 
-  const recordedIds = new Set(rankedPlayers.map(p => p.playerId));
-  for (const id of aliveIds) {
-    if (!recordedIds.has(id)) {
-      rankedPlayers.push({
-        playerId: id,
-        status: 'timeout',
-        timeMs: (activeRound.duration_seconds ?? 75) * 1000,
-        completedSentences: 0,
-        totalSentences: totalSentencesInRound,
-        pct: 0,
-      });
+    let score = typeof s?.score === 'number' ? s.score : 0;
+    if (score === 0 && (correctChars > 0 || s?.is_valid)) {
+      const baseScore = Math.max(0, correctChars - wrongChars);
+      const totalDurationMs = (activeRound.duration_seconds ?? 90) * 1000;
+      const completionTimeMs = s?.completion_time_ms ?? totalDurationMs;
+      const remainingMs = Math.max(0, totalDurationMs - completionTimeMs);
+      const timeBonus = s?.is_valid ? Math.floor(remainingMs / 1000) * 10 : 0;
+      score = baseScore + timeBonus;
     }
-  }
 
-  const allIdle = rankedPlayers.every(p => p.pct === 0);
+    return {
+      playerId: pid,
+      status: s?.status || (s?.is_valid ? 'success' : 'timeout'),
+      timeMs: s?.completion_time_ms ?? (activeRound.duration_seconds ?? 90) * 1000,
+      completedSentences: meta.completed,
+      totalSentences: meta.total,
+      pct: meta.pct,
+      score,
+      correctChars,
+      wrongChars,
+    };
+  })
+  .sort((a, b) => {
+    // 1. Skor tertinggi (score DESC)
+    if (b.score !== a.score) return b.score - a.score;
+    // 2. Huruf benar terbanyak (correctChars DESC)
+    if (b.correctChars !== a.correctChars) return b.correctChars - a.correctChars;
+    // 3. Waktu selesai lebih cepat (completionTimeMs ASC)
+    if (a.timeMs !== b.timeMs) return a.timeMs - b.timeMs;
+    // 4. Tiebreaker deterministik ID (alphabetical ASC)
+    return a.playerId.localeCompare(b.playerId);
+  });
 
-  let isDraw = false;
-  let drawReason = '';
+  const rankedPlayers = [...allSubs];
 
-  if (allIdle) {
-    isDraw = true;
-    drawReason = 'Semua pemain idle (0% progress)';
-  } else if (N === 2 && rankedPlayers.length >= 2) {
-    const p1 = rankedPlayers[0];
-    const p2 = rankedPlayers[1];
-    if (p1.pct === p2.pct && p1.timeMs === p2.timeMs) {
-      isDraw = true;
-      drawReason = 'Skor & Waktu Sama (Juara Bersama)';
-    }
-  }
+  const isDraw = false;
+  const drawReason = '';
 
-  let playersToEliminate: typeof rankedPlayers = [];
-  if (!isDraw) {
-    playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
-  }
+  const playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
 
   const eliminatedThisRound: Array<{ playerId: string; reason: string }> = playersToEliminate.map(p => ({
     playerId: p.playerId,
@@ -237,6 +241,9 @@ async function runElimination(
     completedSentences: p.completedSentences,
     totalSentences: p.totalSentences,
     progressPercentage: p.pct,
+    score: p.score,
+    correctChars: p.correctChars,
+    wrongChars: p.wrongChars,
   }));
 
   const resultPayload: RoundResultPayload = {

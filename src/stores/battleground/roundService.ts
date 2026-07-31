@@ -11,6 +11,8 @@ export async function submitRoundApi(params: {
   completedSentences: number;
   totalSentences: number;
   progressPercentage: number;
+  correctChars: number;
+  wrongChars: number;
 }) {
   const {
     activeRound,
@@ -20,10 +22,21 @@ export async function submitRoundApi(params: {
     completedSentences,
     totalSentences,
     progressPercentage,
+    correctChars,
+    wrongChars,
   } = params;
 
   let completionTimeMs = activeRound.start_at ? Date.now() - new Date(activeRound.start_at).getTime() : 0;
   if (completionTimeMs < 0) completionTimeMs = 0;
+
+  // ── Hitung Skor ──────────────────────────────────────────
+  // Base score: tiap huruf benar +1, tiap salah -1, minimum 0
+  const baseScore = Math.max(0, correctChars - wrongChars);
+  // Time bonus: hanya jika selesai (is_valid=true), +10 poin per detik sisa waktu
+  const totalDurationMs = (activeRound.duration_seconds ?? 90) * 1000;
+  const remainingMs = Math.max(0, totalDurationMs - completionTimeMs);
+  const timeBonus = isValid ? Math.floor(remainingMs / 1000) * 10 : 0;
+  const score = baseScore + timeBonus;
 
   const response = await fetch('/api/battleground-submit', {
     method: 'POST',
@@ -38,6 +51,9 @@ export async function submitRoundApi(params: {
       completedSentences,
       totalSentences,
       progressPercentage,
+      correctChars,
+      wrongChars,
+      score,
     }),
   });
 
@@ -57,12 +73,15 @@ export async function submitRoundApi(params: {
           completed_sentences: completedSentences,
           total_sentences: totalSentences,
           progress_percentage: progressPercentage,
+          correct_chars: correctChars,
+          wrong_chars: wrongChars,
+          score,
         },
         { onConflict: 'round_id,player_id' }
       );
   }
 
-  return { completionTimeMs, status: isValid ? 'success' as const : 'typo' as const };
+  return { completionTimeMs, score, status: isValid ? 'success' as const : 'typo' as const };
 }
 
 export async function startNextRoundApi(params: {

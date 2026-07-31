@@ -140,12 +140,18 @@ export async function leaveRoomApi(rId: string, pid: string, isLobby: boolean, i
     const { data: remaining } = await supabase
       .from('room_players')
       .select('player_id')
-      .eq('room_id', rId);
+      .eq('room_id', rId)
+      .order('joined_at', { ascending: true });
 
-    if (!remaining || remaining.length === 0 || isHost) {
+    if (!remaining || remaining.length === 0) {
       await supabase
         .from('rooms')
         .update({ status: 'finished' })
+        .eq('id', rId);
+    } else if (isHost) {
+      await supabase
+        .from('rooms')
+        .update({ host_player_id: remaining[0].player_id })
         .eq('id', rId);
     }
   } else if (iAmAlive) {

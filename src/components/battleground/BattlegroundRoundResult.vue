@@ -30,14 +30,11 @@ const myResult = computed(() => {
 const sortedStandings = computed(() => {
   if (!result.value) return [];
   return [...result.value.roundStandings].sort((a, b) => {
-    if (a.status === 'success' && b.status !== 'success') return -1;
-    if (a.status !== 'success' && b.status === 'success') return 1;
-    if (a.status === 'success' && b.status === 'success') {
-      return a.completionTimeMs - b.completionTimeMs;
-    }
-    const pctA = a.progressPercentage ?? (a.completedSentences ? a.completedSentences * 20 : 0);
-    const pctB = b.progressPercentage ?? (b.completedSentences ? b.completedSentences * 20 : 0);
-    if (pctA !== pctB) return pctB - pctA;
+    // Urutkan berdasarkan skor tertinggi
+    const scoreA = a.score ?? 0;
+    const scoreB = b.score ?? 0;
+    if (scoreB !== scoreA) return scoreB - scoreA;
+    // Tiebreaker: waktu selesai lebih cepat
     return a.completionTimeMs - b.completionTimeMs;
   });
 });
@@ -184,15 +181,19 @@ function getPlayerName(playerId: string): string {
               {{ getPlayerName(standing.playerId) }}
               <span v-if="standing.playerId === store.myPlayerId" class="text-indigo-400 text-xs font-normal ml-1">(Kamu)</span>
             </div>
-            <div class="text-[11px] text-slate-400 flex items-center gap-2">
-              <span>{{ standing.completedSentences ?? (standing.status === 'success' ? 5 : 0) }}/{{ standing.totalSentences ?? 5 }} Kalimat Selesai</span>
-              <span>•</span>
-              <span class="font-mono text-slate-300">{{ msToStr(standing.completionTimeMs) }}</span>
+            <div class="text-[11px] text-slate-400 flex items-center gap-2 flex-wrap">
+              <span class="text-emerald-400 font-mono">✓{{ standing.correctChars ?? 0 }}</span>
+              <span class="text-rose-400 font-mono">✗{{ standing.wrongChars ?? 0 }}</span>
+              <span v-if="standing.status === 'success'" class="text-amber-300 font-mono">+⏱{{ msToStr(standing.completionTimeMs) }}</span>
+              <span v-else class="font-mono text-slate-300">{{ msToStr(standing.completionTimeMs) }}</span>
             </div>
           </div>
-          <div class="text-right flex-shrink-0">
-            <span class="px-2 py-0.5 rounded text-xs font-bold" :class="standing.status === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'">
-              {{ standing.status === 'success' ? '✓ Lolos' : (standing.completedSentences && standing.completedSentences > 0 ? `⏱ Time Out (${standing.progressPercentage ?? 0}%)` : '⏱ Idle (0%)') }}
+          <div class="text-right flex-shrink-0 flex flex-col items-end gap-1">
+            <span class="text-base font-black" :class="standing.status === 'success' ? 'text-emerald-400' : 'text-slate-400'">
+              {{ standing.score ?? 0 }} <span class="text-xs font-normal">pts</span>
+            </span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold" :class="standing.status === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'">
+              {{ standing.status === 'success' ? '✓ Selesai' : (((standing.progressPercentage ?? 0) > 0 || (standing.correctChars ?? 0) > 0) ? `⏱ ${standing.progressPercentage ?? 0}%` : '⏱ Idle') }}
             </span>
           </div>
         </div>

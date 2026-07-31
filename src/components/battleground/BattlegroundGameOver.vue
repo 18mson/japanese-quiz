@@ -169,17 +169,25 @@ function msToStr(ms: number): string {
                 <span v-if="player.player_id === store.myPlayerId" class="text-indigo-400 text-xs font-normal ml-1">(Kamu)</span>
               </div>
               <div class="text-xs text-slate-400 flex items-center gap-2 flex-wrap mt-0.5">
-                <span v-if="getStanding(player.player_id)" class="text-indigo-300 font-medium">
-                  {{ getStanding(player.player_id)?.completedSentences ?? 0 }}/{{ getStanding(player.player_id)?.totalSentences ?? 5 }} Kalimat
-                </span>
-                <span v-if="getStanding(player.player_id)">•</span>
-                <span v-if="getStanding(player.player_id)" class="font-mono text-slate-300">
-                  {{ msToStr(getStanding(player.player_id)!.completionTimeMs) }}
-                </span>
-                <span>•</span>
+                <template v-if="getStanding(player.player_id)">
+                  <span class="text-emerald-400 font-mono">✓{{ getStanding(player.player_id)?.correctChars ?? 0 }}</span>
+                  <span class="text-rose-400 font-mono">✗{{ getStanding(player.player_id)?.wrongChars ?? 0 }}</span>
+                  <span>•</span>
+                  <span class="font-mono text-slate-300">{{ msToStr(getStanding(player.player_id)!.completionTimeMs) }}</span>
+                  <span>•</span>
+                </template>
                 <span v-if="player.eliminated_in_round" class="text-rose-400">Gugur R{{ player.eliminated_in_round }} ({{ reasonLabel(player.elimination_reason) }})</span>
                 <span v-else class="text-amber-400 font-bold">Survivor 🏆</span>
               </div>
+            </div>
+            <div class="flex-shrink-0 flex flex-col items-end gap-1">
+              <span
+                class="text-base font-black"
+                :class="player.final_rank === 1 ? 'text-amber-400' : (getStanding(player.player_id)?.score ? 'text-emerald-400' : 'text-slate-500')"
+              >
+                {{ getStanding(player.player_id)?.score ?? 0 }}
+                <span class="text-xs font-normal text-slate-400">pts</span>
+              </span>
             </div>
           </div>
         </div>

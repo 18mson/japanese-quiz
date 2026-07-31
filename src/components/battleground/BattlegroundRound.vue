@@ -17,6 +17,24 @@ const userInput = ref('');
 const hasError = ref(false);
 const isSubmitted = ref(false);
 
+// ── Scoring Counters ──────────────────────────────────────────
+const correctCharsCount = ref(0);
+const wrongCharsCount = ref(0);
+
+// ── Mobile Keyboard Handling ────────────────────────────────
+// Gunakan visualViewport API untuk mendeteksi munculnya keyboard on-screen.
+// Saat keyboard muncul, viewport height mengecil. Selisihnya = tinggi keyboard.
+// Kita pakai selisih ini sebagai padding-bottom agar konten tidak tertutup.
+const keyboardHeight = ref(0);
+
+function onViewportResize() {
+  if (!window.visualViewport) return;
+  const vv = window.visualViewport;
+  // offsetTop: berapa piksel viewport telah di-scroll (e.g. browser chrome yang hilang)
+  const keyboard = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+  keyboardHeight.value = keyboard;
+}
+
 // ── Typo Penalty State (1 Second Cooldown) ────────────────────
 const isPenaltyActive = ref(false);
 const penaltyTimeLeft = ref('1.0');
@@ -243,7 +261,39 @@ function triggerSenderBeamAnimation(type: 'freeze' | 'backward' | 'storm') {
     senderPowerUpNotice.value = null;
   }, 2500);
 }
+function getRainStyle(n: number) {
+  const left = (n * 2.5) % 100;
+  const delay = (n * 0.08) % 1.0;
+  const duration = 0.3 + (n % 4) * 0.1;
+  const height = 50 + (n % 5) * 25;
+  return {
+    left: `${left}%`,
+    animationDelay: `${delay}s`,
+    animationDuration: `${duration}s`,
+    height: `${height}px`,
+  };
+}
 
+function getSnowStyle(n: number) {
+  const angleRad = (n * 137.5 * Math.PI) / 180;
+  const distanceVw = 32 + (n % 6) * 7.5;
+  const distanceVh = 32 + (n % 6) * 7.5;
+  const dx = Math.cos(angleRad) * distanceVw;
+  const dy = Math.sin(angleRad) * distanceVh;
+
+  const size = 3.5 + (n % 4) * 1.5;
+  const duration = 1.5 + (n % 5) * 0.3;
+  const delay = (n % 8) * 0.2;
+
+  return {
+    '--dx': `${dx.toFixed(1)}vw`,
+    '--dy': `${dy.toFixed(1)}vh`,
+    width: `${size}px`,
+    height: `${size}px`,
+    animationDuration: `${duration}s`,
+    animationDelay: `${delay}s`,
+  };
+}
 const victimPowerUpAttacker = ref('');
 
 function applyVictimPowerUp(type: 'freeze' | 'backward' | 'storm', senderName: string) {
@@ -323,6 +373,8 @@ watch(() => store.phase, (p) => {
     isFrozen.value = false;
     isStormActive.value = false;
     lockedAccepted.value = null;
+    correctCharsCount.value = 0;
+    wrongCharsCount.value = 0;
     initSentencePowerUp();
     autoSkipHyphens();
     focusInput();
@@ -333,6 +385,8 @@ onMounted(() => {
   initSentencePowerUp();
   autoSkipHyphens();
   focusInput();
+  window.visualViewport?.addEventListener('resize', onViewportResize);
+  window.visualViewport?.addEventListener('scroll', onViewportResize);
 });
 onUnmounted(() => {
   if (progressThrottle) clearTimeout(progressThrottle);
@@ -341,6 +395,8 @@ onUnmounted(() => {
   if (freezeTimer) clearInterval(freezeTimer);
   if (stormTimer) clearInterval(stormTimer);
   if (lightningInterval) clearInterval(lightningInterval);
+  window.visualViewport?.removeEventListener('resize', onViewportResize);
+  window.visualViewport?.removeEventListener('scroll', onViewportResize);
 });
 
 function handleInput(event: Event) {
@@ -402,6 +458,8 @@ function advanceChar(char: string) {
   }
 
   activeSubIndex.value++;
+  correctCharsCount.value++;
+  throttledProgressBroadcast();
 
   if (activeSubIndex.value >= lockedAccepted.value!.length) {
     const justCompletedUnitIndex = activeUnitIndex.value;
@@ -443,6 +501,8 @@ function triggerError() {
   hasError.value = true;
   isPenaltyActive.value = true;
   penaltyTimeLeft.value = '1.0';
+  wrongCharsCount.value++;
+  throttledProgressBroadcast();
 
   // Flash current unit & reset candidate lock so player can retry
   lockedAccepted.value = null;
@@ -476,6 +536,8 @@ async function handleComplete() {
     completedSentences: totalSentencesCount.value,
     totalSentences: totalSentencesCount.value,
     progressPercentage: 100,
+    correctChars: correctCharsCount.value,
+    wrongChars: wrongCharsCount.value,
   });
 }
 
@@ -491,6 +553,8 @@ function throttledProgressBroadcast() {
       completedSentences: currentSentenceIndex.value,
       totalSentences: totalCount,
       progressPercentage: overallPct,
+      correctChars: correctCharsCount.value,
+      wrongChars: wrongCharsCount.value,
     });
     progressThrottle = null;
   }, 100);
@@ -523,8 +587,11 @@ function preventPaste(e: ClipboardEvent) {
 
     <!-- Sender Beam Animation FX -->
     <div v-if="isShootingBeam" class="fixed inset-0 pointer-events-none z-40 overflow-hidden">
-      <div class="absolute inset-0 bg-amber-400/10 animate-ping"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-amber-400/20 via-rose-500/20 to-violet-500/20 blur-3xl animate-pulse"></div>
+      <!-- Glow burst ring -->
+      <img src="/battle/circle_rings_b.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] opacity-60 mix-blend-screen animate-beam-ring" style="filter: hue-rotate(45deg) brightness(2);" />
+      <!-- Core glow pulse -->
+      <img src="/battle/circle_b_noise.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-50 mix-blend-screen animate-pulse" style="filter: hue-rotate(30deg) brightness(3) saturate(2);" />
+      <div class="absolute inset-0 bg-amber-400/8 animate-ping"></div>
     </div>
 
     <!-- Round Header Bar -->
@@ -613,7 +680,8 @@ function preventPaste(e: ClipboardEvent) {
       <!-- CENTER: Typing area (clicking anywhere focuses input) -->
       <div
         @click="focusInput"
-        class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 overflow-y-auto cursor-pointer relative"
+        class="flex-1 flex flex-col items-center justify-start md:justify-center p-3 pt-4 sm:p-6 overflow-y-auto cursor-pointer relative"
+        :style="keyboardHeight > 0 ? { paddingBottom: keyboardHeight + 'px' } : { paddingBottom: '1.5rem' }"
       >
 
         <!-- Sentence (Japanese) display with active character pointer & Power-Up Badge -->
@@ -794,34 +862,69 @@ function preventPaste(e: ClipboardEvent) {
     </div>
 
     <!-- VICTIM FREEZE OVERLAY ❄️ -->
-    <div v-if="isFrozen" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-cyan-950/70 backdrop-blur-md border-4 sm:border-8 border-cyan-400/40 animate-fadeIn">
-      <div class="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl sm:rounded-3xl bg-cyan-500/30 border border-cyan-300/50 flex items-center justify-center shadow-2xl shadow-cyan-500/50 mb-3 sm:mb-4 animate-bounce">
-        <span class="text-4xl sm:text-5xl">❄️</span>
+    <div v-if="isFrozen" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-cyan-950/75 border-4 sm:border-8 border-cyan-400/40 animate-fadeIn overflow-hidden">
+      <!-- Ice caustics texture background -->
+      <img src="/battle/water_caustics_a.png" class="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-screen" style="filter: hue-rotate(180deg) brightness(2) saturate(3);" />
+      
+      <!-- Snow particles bursting/floating outwards from center to all sides -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div v-for="n in 45" :key="n" class="snow-particle" :style="getSnowStyle(n)"></div>
       </div>
-      <div class="text-center px-4">
-        <div class="text-[10px] sm:text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
-        <h2 class="text-2xl sm:text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
-        <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-lg sm:text-xl shadow-xl">
-          <Clock class="w-4 sm:w-5 h-4 sm:h-5 animate-spin text-cyan-300" />
-          <span>{{ freezeCountdown.toFixed(1) }}s</span>
+
+      <!-- Content -->
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="text-center px-4">
+          <div class="text-[10px] sm:text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
+          <h2 class="text-2xl sm:text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
+          <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-lg sm:text-xl shadow-xl">
+            <Clock class="w-4 sm:w-5 h-4 sm:h-5 animate-spin text-cyan-300" />
+            <span>{{ freezeCountdown.toFixed(1) }}s</span>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- VICTIM BACKWARD REWIND OVERLAY ⏪ -->
-    <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/70 backdrop-blur-md animate-pulse">
-      <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-spin">
-        ⏪
+    <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/80 overflow-hidden">
+      <!-- Right-to-Left sweeping laser/light beams -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
+        <!-- Wide gradient light beam sweeping right to left -->
+        <div class="absolute inset-y-0 w-[120vw] bg-gradient-to-l from-transparent via-rose-500/50 to-transparent mix-blend-screen animate-rewind-sweep-1"></div>
+        <div class="absolute inset-y-0 w-[80vw] bg-gradient-to-l from-transparent via-red-400/60 to-transparent mix-blend-screen animate-rewind-sweep-2"></div>
+        
+        <!-- Horizontal Cone Beams moving right to left -->
+        <img src="/battle/cone_c_blur.png" class="absolute top-1/2 right-0 -translate-y-1/2 w-[120vh] h-[220vw] object-fill opacity-50 mix-blend-screen -rotate-90 animate-rewind-cone-1" style="filter: hue-rotate(320deg) brightness(3.5) saturate(3);" />
+        <img src="/battle/cone_c_blur.png" class="absolute top-1/2 right-0 -translate-y-1/2 w-[90vh] h-[180vw] object-fill opacity-35 mix-blend-screen -rotate-90 animate-rewind-cone-2" style="filter: hue-rotate(330deg) brightness(4) saturate(3);" />
       </div>
-      <div class="text-center">
-        <div class="text-[10px] sm:text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
-        <h2 class="text-xl sm:text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
+
+      <!-- Content -->
+      <div class="relative z-10 flex flex-col items-center">
+        <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-spin">
+          ⏪
+        </div>
+        <div class="text-center">
+          <div class="text-[10px] sm:text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
+          <h2 class="text-xl sm:text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
+        </div>
       </div>
     </div>
 
     <!-- VICTIM STORM OVERLAY ⚡ -->
-    <div v-if="isStormActive" class="fixed inset-0 pointer-events-none z-40 bg-slate-950/85 flex flex-col items-center justify-start pt-12 sm:pt-16">
-      <div v-if="lightningFlashActive" class="absolute inset-0 bg-amber-300/30 backdrop-brightness-200 transition-opacity"></div>
+    <div v-if="isStormActive" class="fixed inset-0 pointer-events-none z-40 bg-slate-950/75 overflow-hidden flex flex-col items-center justify-start pt-12 sm:pt-16">
+      <!-- CSS Rain Drops Overlay (Dense vertical falling lines) -->
+      <div class="absolute inset-0 w-full h-full pointer-events-none opacity-90">
+        <div class="rain-drop-container">
+          <div v-for="n in 40" :key="n" class="rain-line" :style="getRainStyle(n)"></div>
+        </div>
+      </div>
+
+      <!-- Lightning streaks -->
+      <img src="/battle/streaks_composed_b.png" class="absolute inset-0 w-full h-full object-cover mix-blend-screen animate-lightning-streak" style="filter: hue-rotate(40deg) brightness(5) saturate(3);" />
+
+      <!-- Lightning flash -->
+      <div v-if="lightningFlashActive" class="absolute inset-0 bg-amber-200/35 mix-blend-screen transition-opacity duration-75"></div>
+
+      <!-- Content -->
       <div class="relative z-10 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-900/90 border border-amber-400/50 text-amber-300 font-extrabold text-xs sm:text-sm shadow-xl">
         <span class="text-base sm:text-lg">⚡</span>
         <span>BADAI PETIR • HINT TERANG SAAT PETIR!</span>
@@ -867,3 +970,134 @@ function preventPaste(e: ClipboardEvent) {
 
   </div>
 </template>
+
+<style scoped>
+/* Snow Burst Radial Particles from Center (Freeze Effect) */
+@keyframes snow-burst-outward {
+  0% {
+    transform: translate(-50%, -50%) translate(0, 0) scale(0.2);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(1.3);
+    opacity: 0;
+  }
+}
+
+.snow-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, rgba(186, 230, 253, 0.95) 50%, rgba(56, 189, 248, 0) 100%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 10px rgba(56, 189, 248, 0.7);
+  animation: snow-burst-outward linear infinite;
+  pointer-events: none;
+}
+
+/* Right-to-Left Rewind Sweeps (Rewind Effect) */
+@keyframes rewind-sweep-rtl-1 {
+  0%   { transform: translateX(100vw); opacity: 0; }
+  25%  { opacity: 0.85; }
+  75%  { opacity: 0.85; }
+  100% { transform: translateX(-100vw); opacity: 0; }
+}
+@keyframes rewind-sweep-rtl-2 {
+  0%   { transform: translateX(120vw); opacity: 0; }
+  20%  { opacity: 0.9; }
+  80%  { opacity: 0.9; }
+  100% { transform: translateX(-120vw); opacity: 0; }
+}
+.animate-rewind-sweep-1 {
+  animation: rewind-sweep-rtl-1 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-rewind-sweep-2 {
+  animation: rewind-sweep-rtl-2 0.45s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+.animate-rewind-cone-1 {
+  animation: rewind-sweep-rtl-1 0.6s linear infinite;
+}
+.animate-rewind-cone-2 {
+  animation: rewind-sweep-rtl-2 0.38s linear infinite;
+}
+
+/* Individual falling rain drops (Storm Effect) */
+.rain-drop-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.rain-line {
+  position: absolute;
+  top: -100px;
+  width: 1.5px;
+  background: linear-gradient(to bottom, transparent, rgba(251, 191, 36, 0.8), rgba(255, 255, 255, 0.95));
+  animation: drop-fall linear infinite;
+  box-shadow: 0 0 4px rgba(251, 191, 36, 0.7);
+}
+@keyframes drop-fall {
+  0% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@keyframes lightning-flicker {
+  0%, 85%, 100% { opacity: 0; }
+  86%            { opacity: 0.55; }
+  87%            { opacity: 0.1; }
+  88%            { opacity: 0.6; }
+  89%            { opacity: 0.05; }
+}
+.animate-lightning-streak {
+  animation: lightning-flicker 3.5s steps(1, end) infinite;
+}
+
+/* Beam ring burst untuk Sender powerup */
+@keyframes beam-ring-expand {
+  0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0.9; }
+  100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+}
+.animate-beam-ring {
+  animation: beam-ring-expand 0.7s ease-out forwards;
+}
+
+/* Slow spin */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
+
+/* Fade in untuk overlay */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* No scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>

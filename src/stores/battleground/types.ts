@@ -73,6 +73,9 @@ export interface RoundStanding {
   completedSentences?: number;
   totalSentences?: number;
   progressPercentage?: number;
+  score?: number;
+  correctChars?: number;
+  wrongChars?: number;
 }
 
 export interface RoundResultPayload {
@@ -102,6 +105,8 @@ export interface PlayerProgress {
   completedSentences?: number;
   totalSentences?: number;
   progressPercentage: number;
+  correctChars?: number;
+  wrongChars?: number;
 }
 
 export interface PublicRoomItem {

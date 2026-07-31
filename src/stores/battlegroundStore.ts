@@ -61,6 +61,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   // ── Submissions & Timer ─────────────────────────────────────
   const mySubmissionStatus = ref<SubmissionStatus | null>(null);
   const myCompletionTimeMs = ref<number | null>(null);
+  const myCorrectChars = ref(0);
+  const myWrongChars = ref(0);
   const playersWhoSubmitted = ref<Set<string>>(new Set());
 
   const countdownSeconds = ref<number>(0);
@@ -102,6 +104,76 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     });
   }
 
+  let unloadListener: (() => void) | null = null;
+
+  async function handlePresenceUpdate() {
+    if (!realtimeChannel || !roomId.value) return;
+
+    await refreshPlayers();
+
+    const state = realtimeChannel.presenceState();
+    const onlinePlayerIds = new Set<string>();
+    for (const key in state) {
+      const presences = state[key] as any[];
+      for (const p of presences) {
+        if (p?.player_id) onlinePlayerIds.add(p.player_id);
+      }
+    }
+
+    const now = Date.now();
+    const disconnectedPlayers = players.value.filter(p => {
+      const joinedMs = new Date(p.joined_at).getTime();
+      return !onlinePlayerIds.has(p.player_id) && (now - joinedMs > 3000);
+    });
+
+    if (disconnectedPlayers.length === 0) return;
+
+    const onlinePlayers = players.value.filter(p => onlinePlayerIds.has(p.player_id));
+    const oldestOnlinePlayerId = onlinePlayers[0]?.player_id;
+    const iAmManager = isHost.value || (oldestOnlinePlayerId === myPlayerId.value);
+
+    if (iAmManager) {
+      for (const dPlayer of disconnectedPlayers) {
+        if (phase.value === 'idle' || phase.value === 'lobby') {
+          await supabase
+            .from('room_players')
+            .delete()
+            .eq('room_id', roomId.value)
+            .eq('player_id', dPlayer.player_id);
+        } else if (dPlayer.status === 'alive') {
+          await supabase
+            .from('room_players')
+            .update({ status: 'eliminated', elimination_reason: 'disconnect' })
+            .eq('room_id', roomId.value)
+            .eq('player_id', dPlayer.player_id);
+        }
+      }
+
+      const hostDisconnected = disconnectedPlayers.some(p => p.player_id === hostPlayerId.value);
+      if (hostDisconnected && (phase.value === 'idle' || phase.value === 'lobby')) {
+        if (onlinePlayers.length > 0) {
+          const newHostId = onlinePlayers[0].player_id;
+          hostPlayerId.value = newHostId;
+          await supabase
+            .from('rooms')
+            .update({ host_player_id: newHostId })
+            .eq('id', roomId.value);
+        } else {
+          await supabase
+            .from('rooms')
+            .update({ status: 'finished' })
+            .eq('id', roomId.value);
+        }
+      }
+
+      await refreshPlayers();
+
+      if (isHost.value && activeRound.value && phase.value === 'round_active') {
+        await evaluateRoundForHost(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel, false, playerProgress.value);
+      }
+    }
+  }
+
   function subscribeToRoom(rId: string) {
     if (realtimeChannel) unsubscribeFromRoom();
 
@@ -129,8 +201,24 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       await refreshPlayers();
     });
     realtimeChannel.on('presence', { event: 'leave' }, async () => {
-      await refreshPlayers();
+      await handlePresenceUpdate();
     });
+    realtimeChannel.on('presence', { event: 'sync' }, async () => {
+      await handlePresenceUpdate();
+    });
+
+    realtimeChannel.on(
+      'postgres_changes',
+      { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${rId}` },
+      (payload: any) => {
+        if (payload.new?.host_player_id) {
+          hostPlayerId.value = payload.new.host_player_id;
+        }
+        if (payload.new?.status === 'finished' && phase.value !== 'game_over') {
+          leaveRoom();
+        }
+      }
+    );
 
     realtimeChannel.on('broadcast', { event: 'round_preparing' }, ({ payload }: { payload: ActiveRound & { roundStartAt: string } }) => {
       activeRound.value = {
@@ -200,7 +288,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       { event: 'INSERT', schema: 'public', table: 'round_submissions', filter: `room_id=eq.${rId}` },
       async () => {
         if (isHost.value && activeRound.value && phase.value === 'round_active') {
-          await evaluateRoundForHost(rId, activeRound.value, alivePlayers.value, realtimeChannel);
+          await evaluateRoundForHost(rId, activeRound.value, alivePlayers.value, realtimeChannel, false, playerProgress.value);
         }
       }
     );
@@ -214,9 +302,23 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         });
       }
     });
+
+    unloadListener = () => {
+      if (roomId.value && myPlayerId.value) {
+        const isLobby = phase.value === 'idle' || phase.value === 'lobby';
+        leaveRoomApi(roomId.value, myPlayerId.value, isLobby, isHost.value, iAmAlive.value);
+      }
+    };
+    window.addEventListener('beforeunload', unloadListener);
+    window.addEventListener('pagehide', unloadListener);
   }
 
   function unsubscribeFromRoom() {
+    if (unloadListener) {
+      window.removeEventListener('beforeunload', unloadListener);
+      window.removeEventListener('pagehide', unloadListener);
+      unloadListener = null;
+    }
     if (realtimeChannel) {
       supabase.removeChannel(realtimeChannel);
       realtimeChannel = null;
@@ -274,6 +376,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const totalSentences = activeRound.value.sentences?.length ?? 5;
     const completedSentences = pProg?.completedSentences ?? 0;
     const progressPercentage = pProg?.progressPercentage ?? 0;
+    const correctChars = myCorrectChars.value || (pProg?.correctChars ?? 0);
+    const wrongChars = myWrongChars.value || (pProg?.wrongChars ?? 0);
 
     const payloadMeta = JSON.stringify({
       completed: completedSentences,
@@ -288,6 +392,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       completedSentences,
       totalSentences,
       progressPercentage,
+      correctChars,
+      wrongChars,
     });
   }
 
@@ -471,12 +577,16 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     completedSentences?: number;
     totalSentences?: number;
     progressPercentage?: number;
+    correctChars?: number;
+    wrongChars?: number;
   }) {
     if (!activeRound.value || mySubmissionStatus.value !== null) return;
 
     const completedSentences = payload.completedSentences ?? 0;
     const totalSentences = payload.totalSentences ?? 5;
     const progressPercentage = payload.progressPercentage ?? 0;
+    const correctChars = payload.correctChars ?? 0;
+    const wrongChars = payload.wrongChars ?? 0;
 
     mySubmissionStatus.value = payload.isValid ? 'success' : 'typo';
 
@@ -489,6 +599,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         completedSentences,
         totalSentences,
         progressPercentage,
+        correctChars,
+        wrongChars,
       });
 
       myCompletionTimeMs.value = res.completionTimeMs;
@@ -500,7 +612,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       });
 
       if (isHost.value && activeRound.value) {
-        await evaluateRoundForHost(roomId.value!, activeRound.value, alivePlayers.value, realtimeChannel);
+        await evaluateRoundForHost(roomId.value!, activeRound.value, alivePlayers.value, realtimeChannel, false, playerProgress.value);
       }
 
     } catch (err: any) {
@@ -508,7 +620,16 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     }
   }
 
-  function broadcastProgress(progress: { completedSentences: number; totalSentences: number; progressPercentage: number }) {
+  function broadcastProgress(progress: {
+    completedSentences: number;
+    totalSentences: number;
+    progressPercentage: number;
+    correctChars?: number;
+    wrongChars?: number;
+  }) {
+    if (typeof progress.correctChars === 'number') myCorrectChars.value = progress.correctChars;
+    if (typeof progress.wrongChars === 'number') myWrongChars.value = progress.wrongChars;
+
     playerProgress.value.set(myPlayerId.value, {
       playerId: myPlayerId.value,
       ...progress,
@@ -597,11 +718,11 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const isLobby = phase.value === 'idle' || phase.value === 'lobby';
     const amHost = isHost.value;
 
-    unsubscribeFromRoom();
-
     if (rId) {
       await leaveRoomApi(rId, pid, isLobby, amHost, iAmAlive.value);
     }
+
+    unsubscribeFromRoom();
 
     phase.value = 'idle';
     roomId.value = null;
