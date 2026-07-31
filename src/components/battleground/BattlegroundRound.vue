@@ -513,11 +513,11 @@ function preventPaste(e: ClipboardEvent) {
 </script>
 
 <template>
-  <div class="flex flex-col h-full bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white overflow-hidden relative">
+  <div class="flex flex-col h-full bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white overflow-hidden relative select-none">
 
     <!-- Sender Notice Banner -->
-    <div v-if="senderPowerUpNotice" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 font-black text-xs px-5 py-2.5 rounded-full shadow-2xl shadow-orange-500/50 animate-bounce flex items-center gap-2 border border-amber-300">
-      <Zap class="w-4 h-4 animate-spin text-slate-950" />
+    <div v-if="senderPowerUpNotice" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 font-black text-[11px] sm:text-xs px-4 sm:px-5 py-2 rounded-full shadow-2xl shadow-orange-500/50 animate-bounce flex items-center gap-1.5 border border-amber-300">
+      <Zap class="w-3.5 h-3.5 animate-spin text-slate-950" />
       <span>{{ senderPowerUpNotice }}</span>
     </div>
 
@@ -528,38 +528,38 @@ function preventPaste(e: ClipboardEvent) {
     </div>
 
     <!-- Round Header Bar -->
-    <div class="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10 flex-shrink-0 z-10">
-      <div class="flex items-center gap-2">
-        <div class="w-7 h-7 rounded-lg bg-rose-500/30 flex items-center justify-center">
-          <Zap class="w-3.5 h-3.5 text-rose-400" />
+    <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white/5 border-b border-white/10 flex-shrink-0 z-10">
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <div class="w-6 sm:w-7 h-6 sm:h-7 rounded-lg bg-rose-500/30 flex items-center justify-center">
+          <Zap class="w-3 sm:w-3.5 h-3 sm:h-3.5 text-rose-400" />
         </div>
-        <span class="font-extrabold text-sm">Ronde {{ store.activeRound?.round_number ?? '?' }}</span>
+        <span class="font-extrabold text-xs sm:text-sm">Ronde {{ store.activeRound?.round_number ?? '?' }}</span>
       </div>
       
       <!-- Readiness Status Badge -->
       <div class="flex items-center gap-2">
-        <div v-if="store.phase === 'round_preparing'" class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold flex items-center gap-1.5 animate-pulse">
-          <Loader2 class="w-3.5 h-3.5 text-amber-400 animate-spin" />
-          <span>Menunggu Ronde Dimulai...</span>
+        <div v-if="store.phase === 'round_preparing'" class="px-2.5 sm:px-3 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 animate-pulse">
+          <Loader2 class="w-3 h-3 text-amber-400 animate-spin" />
+          <span>Menunggu Ronde...</span>
         </div>
-        <div v-else-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted" class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          🟢 SIAP MENGETIK — KETIK SEKARANG!
+        <div v-else-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted" class="px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+          <span class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>🟢 SIAP MENGETIK!</span>
         </div>
       </div>
 
       <!-- Header Timer (Only shown when active) -->
-      <div v-if="store.phase === 'round_active'" class="flex items-center gap-1.5 text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
-        <Clock class="w-4 h-4" />
+      <div v-if="store.phase === 'round_active'" class="flex items-center gap-1 text-xs sm:text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
+        <Clock class="w-3.5 h-3.5" />
         {{ String(store.countdownSeconds).padStart(2, '0') }}s
       </div>
       <div v-else class="flex items-center gap-1 text-xs text-amber-400 font-bold animate-pulse">
-        <Loader2 class="w-4 h-4 animate-spin" />
+        <Loader2 class="w-3.5 h-3.5 animate-spin" />
       </div>
     </div>
 
     <!-- Timer Bar (Only shown when active) -->
-    <div v-if="store.phase === 'round_active'" class="h-1.5 bg-white/10 flex-shrink-0 z-10">
+    <div v-if="store.phase === 'round_active'" class="h-1 sm:h-1.5 bg-white/10 flex-shrink-0 z-10">
       <div
         class="h-full transition-all duration-500"
         :class="timerColor"
@@ -567,12 +567,44 @@ function preventPaste(e: ClipboardEvent) {
       ></div>
     </div>
 
+    <!-- MOBILE ONLY: Compact Horizontal Player Avatar Bar (No vertical dividing line) -->
+    <div class="md:hidden flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border-b border-white/10 overflow-x-auto flex-shrink-0 z-10 no-scrollbar">
+      <div
+        v-for="player in store.alivePlayers"
+        :key="player.player_id"
+        class="flex items-center gap-1.5 bg-white/5 rounded-full px-2 py-0.5 border border-white/10 flex-shrink-0 text-[10px]"
+      >
+        <div
+          class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white"
+          :style="`background: ${avatarColor(player.player_name)}`"
+        >{{ player.player_name.slice(0, 1).toUpperCase() }}</div>
+        <span class="font-bold max-w-[60px] truncate" :class="player.player_id === store.myPlayerId ? 'text-amber-300' : 'text-slate-300'">
+          {{ player.player_id === store.myPlayerId ? 'Kamu' : player.player_name }}
+        </span>
+
+        <!-- Active Powerup Badge on Enemy Avatar -->
+        <span v-if="store.activePowerUpEvents.has(player.player_id)" class="text-[8px] font-black">
+          <span v-if="store.activePowerUpEvents.get(player.player_id)?.type === 'freeze'">❄️</span>
+          <span v-else-if="store.activePowerUpEvents.get(player.player_id)?.type === 'storm'">⚡</span>
+          <span v-else>⏪</span>
+        </span>
+
+        <!-- Mini Progress -->
+        <span class="font-mono text-[9px] text-indigo-300 font-bold ml-0.5">
+          {{ player.player_id === store.myPlayerId
+            ? `${Math.round((activeUnitIndex / Math.max(1, units.length)) * 100)}%`
+            : `${getProgress(player.player_id)}%`
+          }}
+        </span>
+      </div>
+    </div>
+
     <!-- Sentence Counter & Meaning Hint -->
-    <div class="px-4 pt-3 pb-1 text-center flex-shrink-0 z-10 flex flex-col items-center gap-1">
-      <div v-if="totalSentencesCount > 1" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs font-extrabold shadow-sm">
+    <div class="px-3 pt-2 pb-1 text-center flex-shrink-0 z-10 flex flex-col items-center gap-0.5">
+      <div v-if="totalSentencesCount > 1" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-[11px] font-extrabold shadow-sm">
         <span>Kalimat {{ currentSentenceIndex + 1 }} dari {{ totalSentencesCount }}</span>
       </div>
-      <span class="text-xs text-slate-400 font-medium">{{ activeSentence?.meaning ?? '' }}</span>
+      <span class="text-[11px] sm:text-xs text-slate-400 font-medium truncate max-w-xs sm:max-w-md">{{ activeSentence?.meaning ?? '' }}</span>
     </div>
 
     <!-- Main Content: Sentence + Input + Players Panel -->
@@ -581,18 +613,18 @@ function preventPaste(e: ClipboardEvent) {
       <!-- CENTER: Typing area (clicking anywhere focuses input) -->
       <div
         @click="focusInput"
-        class="flex-1 flex flex-col items-center justify-center px-4 md:px-8 overflow-auto cursor-pointer relative"
+        class="flex-1 flex flex-col items-center justify-center p-3 sm:p-6 overflow-y-auto cursor-pointer relative"
       >
 
         <!-- Sentence (Japanese) display with active character pointer & Power-Up Badge -->
-        <div class="mb-6 text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-6 min-h-[70px]">
+        <div class="mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-3 sm:gap-y-6 min-h-[50px] sm:min-h-[70px] w-full max-w-xl">
           <template v-for="(unit, idx) in units" :key="idx">
             <div class="relative inline-flex flex-col items-center">
 
               <!-- Power-Up Badge Icon above target word unit (Hidden once claimed or hangus) -->
               <div
                 v-if="idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)"
-                class="absolute -top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce"
+                class="absolute -top-5 sm:-top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce"
               >
                 <span v-if="powerUpType === 'freeze'">❄️ FREEZE</span>
                 <span v-else-if="powerUpType === 'backward'">⏪ REWIND</span>
@@ -603,7 +635,7 @@ function preventPaste(e: ClipboardEvent) {
               <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold">{{ unit.kana }}</span>
 
               <!-- Current active Japanese character/word pointer -->
-              <span v-else-if="idx === activeUnitIndex" class="text-amber-300 font-black bg-amber-400/25 px-2 py-0.5 rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-8 decoration-amber-400">
+              <span v-else-if="idx === activeUnitIndex" class="text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400">
                 {{ unit.kana }}
               </span>
 
@@ -616,7 +648,7 @@ function preventPaste(e: ClipboardEvent) {
         <!-- Typed romaji display (shows completed characters + ONLY 1 upcoming character) -->
         <div
           :class="[
-            'w-full max-w-lg mb-5 bg-white/5 rounded-2xl p-5 min-h-[70px] flex flex-wrap items-center justify-center gap-x-0.5 gap-y-1 font-mono text-2xl md:text-3xl transition-all duration-200 relative tracking-wider',
+            'w-full max-w-lg mb-3 sm:mb-5 bg-white/5 rounded-xl sm:rounded-2xl p-3 sm:p-5 min-h-[50px] sm:min-h-[70px] flex flex-wrap items-center justify-center gap-x-0.5 gap-y-1 font-mono text-xl sm:text-2xl md:text-3xl transition-all duration-200 relative tracking-wider',
             isStormActive && !lightningFlashActive ? 'brightness-[0.05] opacity-10' : '',
             store.phase === 'round_active' && !isPenaltyActive && !isSubmitted
               ? 'border-2 border-emerald-500/80 bg-emerald-950/10 shadow-xl shadow-emerald-500/20 ring-4 ring-emerald-500/10'
@@ -632,7 +664,7 @@ function preventPaste(e: ClipboardEvent) {
               <!-- Typed portion of current unit -->
               <span class="text-white font-bold">{{ (lockedAccepted ?? '').slice(0, activeSubIndex) }}</span>
               <!-- ONLY 1 next upcoming character to type -->
-              <span class="text-amber-300 underline underline-offset-4 bg-amber-400/25 px-1.5 py-0.5 rounded-lg font-black animate-pulse text-3xl shadow-sm shadow-amber-400/30">
+              <span class="text-amber-300 underline underline-offset-4 bg-amber-400/25 px-1 sm:px-1.5 py-0.5 rounded-lg font-black animate-pulse text-xl sm:text-2xl md:text-3xl shadow-sm shadow-amber-400/30">
                 {{ (lockedAccepted ?? unit.acceptedRomaji[0])[activeSubIndex] ?? '' }}
               </span>
             </span>
@@ -657,25 +689,25 @@ function preventPaste(e: ClipboardEvent) {
         />
 
         <!-- Typing status button indicator -->
-        <div class="mt-2">
+        <div class="mt-1 sm:mt-2">
           <button
             v-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted && !isFrozen"
             @click.stop="focusInput"
-            class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/50 rounded-xl text-sm font-extrabold text-white transition shadow-lg shadow-emerald-600/30 flex items-center gap-2 cursor-pointer animate-pulse"
+            class="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/50 rounded-xl text-xs sm:text-sm font-extrabold text-white transition shadow-lg shadow-emerald-600/30 flex items-center gap-2 cursor-pointer animate-pulse"
           >
-            <PlayCircle class="w-4 h-4" />
+            <PlayCircle class="w-3.5 sm:w-4 h-3.5 sm:h-4" />
             <span>Ketik Sekarang! (Keyboard Aktif)</span>
           </button>
         </div>
 
         <!-- Submission feedback -->
-        <div v-if="isSubmitted && store.mySubmissionStatus" class="mt-4 flex items-center gap-2 text-sm font-bold">
+        <div v-if="isSubmitted && store.mySubmissionStatus" class="mt-3 flex items-center gap-2 text-xs sm:text-sm font-bold">
           <template v-if="store.mySubmissionStatus === 'success'">
-            <CheckCircle2 class="w-5 h-5 text-emerald-400" />
+            <CheckCircle2 class="w-4 sm:w-5 h-4 sm:h-5 text-emerald-400" />
             <span class="text-emerald-400">Berhasil! {{ store.myCompletionTimeMs ? (store.myCompletionTimeMs / 1000).toFixed(2) + 's' : '' }}</span>
           </template>
           <template v-else-if="store.mySubmissionStatus === 'typo'">
-            <ShieldX class="w-5 h-5 text-rose-400" />
+            <ShieldX class="w-4 sm:w-5 h-4 sm:h-5 text-rose-400" />
             <span class="text-rose-400">Waktu habis sebelum selesai!</span>
           </template>
           <template v-else>
@@ -684,14 +716,14 @@ function preventPaste(e: ClipboardEvent) {
         </div>
 
         <!-- Spectator notice -->
-        <div v-if="!store.iAmAlive" class="mt-4 px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-400 text-sm font-bold flex items-center gap-2">
-          <ShieldX class="w-4 h-4" />
+        <div v-if="!store.iAmAlive" class="mt-3 px-3 sm:px-4 py-1.5 sm:py-2 bg-slate-800/50 border border-slate-700 rounded-xl text-slate-400 text-xs sm:text-sm font-bold flex items-center gap-2">
+          <ShieldX class="w-3.5 sm:w-4 h-3.5 sm:h-4" />
           Kamu sedang spectating. Tidak bisa mengetik.
         </div>
       </div>
 
-      <!-- RIGHT PANEL: Players progress & Power-Up Attack Status Badges -->
-      <div class="w-40 md:w-48 flex-shrink-0 border-l border-white/10 overflow-y-auto p-3 flex flex-col gap-2">
+      <!-- DESKTOP ONLY: Players progress Sidebar Panel -->
+      <div class="hidden md:flex w-48 flex-shrink-0 border-l border-white/10 overflow-y-auto p-3 flex-col gap-2">
         <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Pemain</div>
 
         <div
@@ -762,15 +794,15 @@ function preventPaste(e: ClipboardEvent) {
     </div>
 
     <!-- VICTIM FREEZE OVERLAY ❄️ -->
-    <div v-if="isFrozen" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-cyan-950/70 backdrop-blur-md border-8 border-cyan-400/40 animate-fadeIn">
-      <div class="w-24 h-24 rounded-3xl bg-cyan-500/30 border border-cyan-300/50 flex items-center justify-center shadow-2xl shadow-cyan-500/50 mb-4 animate-bounce">
-        <span class="text-5xl">❄️</span>
+    <div v-if="isFrozen" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-cyan-950/70 backdrop-blur-md border-4 sm:border-8 border-cyan-400/40 animate-fadeIn">
+      <div class="w-20 sm:w-24 h-20 sm:h-24 rounded-2xl sm:rounded-3xl bg-cyan-500/30 border border-cyan-300/50 flex items-center justify-center shadow-2xl shadow-cyan-500/50 mb-3 sm:mb-4 animate-bounce">
+        <span class="text-4xl sm:text-5xl">❄️</span>
       </div>
       <div class="text-center px-4">
-        <div class="text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
-        <h2 class="text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
-        <div class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-xl shadow-xl">
-          <Clock class="w-5 h-5 animate-spin text-cyan-300" />
+        <div class="text-[10px] sm:text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
+        <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-lg sm:text-xl shadow-xl">
+          <Clock class="w-4 sm:w-5 h-4 sm:h-5 animate-spin text-cyan-300" />
           <span>{{ freezeCountdown.toFixed(1) }}s</span>
         </div>
       </div>
@@ -778,22 +810,22 @@ function preventPaste(e: ClipboardEvent) {
 
     <!-- VICTIM BACKWARD REWIND OVERLAY ⏪ -->
     <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/70 backdrop-blur-md animate-pulse">
-      <div class="w-20 h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-4xl mb-3 animate-spin">
+      <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-spin">
         ⏪
       </div>
       <div class="text-center">
-        <div class="text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
-        <h2 class="text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
+        <div class="text-[10px] sm:text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
+        <h2 class="text-xl sm:text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
       </div>
     </div>
 
     <!-- VICTIM STORM OVERLAY ⚡ -->
-    <div v-if="isStormActive" class="fixed inset-0 pointer-events-none z-40 bg-slate-950/85 flex flex-col items-center justify-start pt-16">
+    <div v-if="isStormActive" class="fixed inset-0 pointer-events-none z-40 bg-slate-950/85 flex flex-col items-center justify-start pt-12 sm:pt-16">
       <div v-if="lightningFlashActive" class="absolute inset-0 bg-amber-300/30 backdrop-brightness-200 transition-opacity"></div>
-      <div class="relative z-10 flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-amber-400/50 text-amber-300 font-extrabold text-sm shadow-xl">
-        <span class="text-lg">⚡</span>
-        <span>BADAI PETIR • HINT HANYA TERANG SAAT PETIR!</span>
-        <span class="font-mono text-white bg-amber-500/30 px-2 py-0.5 rounded text-xs ml-1">{{ stormCountdown.toFixed(1) }}s</span>
+      <div class="relative z-10 flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-slate-900/90 border border-amber-400/50 text-amber-300 font-extrabold text-xs sm:text-sm shadow-xl">
+        <span class="text-base sm:text-lg">⚡</span>
+        <span>BADAI PETIR • HINT TERANG SAAT PETIR!</span>
+        <span class="font-mono text-white bg-amber-500/30 px-1.5 sm:px-2 py-0.5 rounded text-[11px] sm:text-xs ml-1">{{ stormCountdown.toFixed(1) }}s</span>
       </div>
     </div>
 
@@ -802,16 +834,16 @@ function preventPaste(e: ClipboardEvent) {
       v-if="store.phase === 'round_preparing'"
       class="absolute inset-0 z-40 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn"
     >
-      <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center mb-4 text-amber-300 shadow-xl shadow-amber-500/20">
-        <Lock class="w-8 h-8 text-amber-400" />
+      <div class="w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center mb-3 sm:mb-4 text-amber-300 shadow-xl shadow-amber-500/20">
+        <Lock class="w-7 sm:w-8 h-7 sm:h-8 text-amber-400" />
       </div>
-      <h2 class="text-2xl font-black text-white mb-2">Persiapkan Diri! 🚀</h2>
-      <p class="text-slate-400 text-sm mb-6 max-w-sm">Ronde akan dimulai. Ketik kalimat romaji begitu countdown selesai!</p>
+      <h2 class="text-xl sm:text-2xl font-black text-white mb-2">Persiapkan Diri! 🚀</h2>
+      <p class="text-slate-400 text-xs sm:text-sm mb-6 max-w-sm">Ronde akan dimulai. Ketik kalimat romaji begitu countdown selesai!</p>
       
-      <div class="text-7xl font-black font-mono text-amber-400 mb-2 animate-bounce">
+      <div class="text-6xl sm:text-7xl font-black font-mono text-amber-400 mb-2 animate-bounce">
         {{ prepCountdownSeconds > 0 ? prepCountdownSeconds : 'SIAP!' }}
       </div>
-      <span class="text-xs text-slate-500 font-bold uppercase tracking-widest">
+      <span class="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest">
         {{ prepCountdownSeconds > 0 ? 'Detik Lagi...' : 'Mulai Mengetik Sekarang! ⚡' }}
       </span>
     </div>
@@ -821,16 +853,16 @@ function preventPaste(e: ClipboardEvent) {
       v-if="isPenaltyActive"
       class="absolute inset-0 z-50 bg-rose-950/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn"
     >
-      <div class="w-20 h-20 rounded-3xl bg-rose-500/30 border-2 border-rose-500/60 flex items-center justify-center mb-4 text-rose-300 shadow-2xl shadow-rose-600/40 animate-pulse">
-        <AlertTriangle class="w-10 h-10 text-rose-400" />
+      <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl sm:rounded-3xl bg-rose-500/30 border-2 border-rose-500/60 flex items-center justify-center mb-3 sm:mb-4 text-rose-300 shadow-2xl shadow-rose-600/40 animate-pulse">
+        <AlertTriangle class="w-8 sm:w-10 h-8 sm:h-10 text-rose-400" />
       </div>
-      <h2 class="text-3xl font-black text-white mb-1">TYPO DETECTED! ⚠️</h2>
-      <p class="text-rose-200 text-sm mb-6 font-bold">Penalti 1 Detik Cooldown — Dilarang Mengetik!</p>
+      <h2 class="text-2xl sm:text-3xl font-black text-white mb-1">TYPO DETECTED! ⚠️</h2>
+      <p class="text-rose-200 text-xs sm:text-sm mb-6 font-bold">Penalti 1 Detik Cooldown — Dilarang Mengetik!</p>
       
-      <div class="text-7xl font-black font-mono text-white mb-2 tracking-tight">
+      <div class="text-6xl sm:text-7xl font-black font-mono text-white mb-2 tracking-tight">
         {{ penaltyTimeLeft }}s
       </div>
-      <span class="text-xs text-rose-300/80 font-bold uppercase tracking-widest">Tunggu Cooldown Selesai...</span>
+      <span class="text-[10px] sm:text-xs text-rose-300/80 font-bold uppercase tracking-widest">Tunggu Cooldown Selesai...</span>
     </div>
 
   </div>
