@@ -15,6 +15,8 @@ import type {
   PlayerProgress,
   SubmissionStatus,
   PublicRoomItem,
+  PowerUpType,
+  PowerUpBroadcastPayload,
 } from './battleground/types';
 import {
   generateRoomCode,
@@ -73,16 +75,45 @@ export const useBattlegroundStore = defineStore('battleground', () => {
 
   // ── Realtime Subscription ───────────────────────────────────
 
+  const latestPowerUpEvent = ref<PowerUpBroadcastPayload | null>(null);
+  const activePowerUpEvents = ref<Map<string, { type: PowerUpType; expiresAt: number }>>(new Map());
+
+  function triggerPowerUp(type: PowerUpType) {
+    if (!realtimeChannel || !iAmAlive.value) return;
+    const payload: PowerUpBroadcastPayload = {
+      senderId: myPlayerId.value,
+      senderName: myPlayerName.value,
+      type,
+      sentAt: Date.now(),
+    };
+    realtimeChannel.send({
+      type: 'broadcast',
+      event: 'power_up_triggered',
+      payload,
+    });
+  }
+
   function subscribeToRoom(rId: string) {
-    unsubscribeFromRoom();
+    if (realtimeChannel) unsubscribeFromRoom();
 
     realtimeChannel = supabase.channel(`room:${rId}`, {
-      config: { broadcast: { self: true }, presence: { key: myPlayerId.value } },
+      config: { broadcast: { self: false } },
     });
 
-    // Presence listeners
-    realtimeChannel.on('presence', { event: 'sync' }, async () => {
+    realtimeChannel.on('broadcast', { event: 'player_joined' }, async () => {
       await refreshPlayers();
+    });
+
+    realtimeChannel.on('broadcast', { event: 'power_up_triggered' }, ({ payload }: { payload: PowerUpBroadcastPayload }) => {
+      latestPowerUpEvent.value = payload;
+      const durationMs = payload.type === 'freeze' ? 3000 : (payload.type === 'storm' ? 5000 : 1500);
+      activePowerUpEvents.value.set(payload.senderId, {
+        type: payload.type,
+        expiresAt: Date.now() + durationMs,
+      });
+      setTimeout(() => {
+        activePowerUpEvents.value.delete(payload.senderId);
+      }, durationMs);
     });
     realtimeChannel.on('presence', { event: 'join' }, async () => {
       await refreshPlayers();
@@ -453,7 +484,19 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       .single();
 
     const usedIds: string[] = roomData?.used_sentence_ids ?? [];
-    const sentences = pickMultipleRandomSentences(usedIds, 5);
+    
+    const numP = alivePlayers.value.length;
+    let sentenceCount = 7;
+    let durationSeconds = 90;
+    if (numP >= 5) {
+      sentenceCount = 10;
+      durationSeconds = 150;
+    } else if (numP >= 3) {
+      sentenceCount = 8;
+      durationSeconds = 120;
+    }
+
+    const sentences = pickMultipleRandomSentences(usedIds, sentenceCount);
     const primarySentence = sentences[0];
 
     if (!primarySentence || sentences.length === 0) {
@@ -483,7 +526,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         sentence_meaning: primarySentence.meaning_id,
         status: 'active',
         start_at: startAt,
-        duration_seconds: 75,
+        duration_seconds: durationSeconds,
       }, { onConflict: 'room_id,round_number' })
       .select()
       .single();
@@ -787,6 +830,9 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     eliminatedPlayers,
     myPlayer,
     iAmAlive,
+    latestPowerUpEvent,
+    activePowerUpEvents,
+    triggerPowerUp,
     createRoom,
     joinRoom,
     startGame,

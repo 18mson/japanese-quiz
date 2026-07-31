@@ -24,7 +24,7 @@ const result = computed(() => store.lastRoundResult);
 
 const myResult = computed(() => {
   if (!result.value) return null;
-  return result.value.roundStandings.find(s => s.playerId === store.myPlayerId) ?? null;
+  return result.value.roundStandings.find((s: any) => s.playerId === store.myPlayerId) ?? null;
 });
 
 const sortedStandings = computed(() => {
@@ -80,7 +80,7 @@ function avatarColor(name: string): string {
 }
 
 function getPlayerName(playerId: string): string {
-  return store.players.find(p => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
+  return store.players.find((p: any) => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
 }
 </script>
 

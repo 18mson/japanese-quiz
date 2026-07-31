@@ -13,6 +13,16 @@ export type GamePhase =
   | 'round_result'
   | 'game_over';
 
+export type PowerUpType = 'freeze' | 'backward' | 'storm';
+
+export interface PowerUpBroadcastPayload {
+  senderId: string;
+  senderName: string;
+  type: PowerUpType;
+  targetPlayerIds?: string[];
+  sentAt?: number;
+}
+
 export interface RoomPlayer {
   id: string;
   room_id: string;

@@ -193,6 +193,113 @@ function updatePrepCountdown() {
   prepCountdownSeconds.value = Math.max(0, Math.ceil(remainingMs / 1000));
 }
 
+// ── Power-Up System State ──────────────────────────────────────
+const powerUpUnitIndex = ref(0);
+const powerUpType = ref<'freeze' | 'backward' | 'storm'>('freeze');
+const failedPowerUpUnits = ref<Set<number>>(new Set());
+
+// Sender Animation State
+const senderPowerUpNotice = ref<string | null>(null);
+const isShootingBeam = ref(false);
+
+// Victim Power-Up Effects State
+const isFrozen = ref(false);
+const freezeCountdown = ref(3.0);
+let freezeTimer: ReturnType<typeof setInterval> | null = null;
+
+const isStormActive = ref(false);
+const stormCountdown = ref(5.0);
+const lightningFlashActive = ref(false);
+let stormTimer: ReturnType<typeof setInterval> | null = null;
+let lightningInterval: ReturnType<typeof setInterval> | null = null;
+
+const isRewindingGlitch = ref(false);
+
+function initSentencePowerUp() {
+  failedPowerUpUnits.value.clear();
+  const unitCount = units.value.length;
+  if (unitCount > 0) {
+    powerUpUnitIndex.value = Math.floor(Math.random() * unitCount);
+    const types: Array<'freeze' | 'backward' | 'storm'> = ['freeze', 'backward', 'storm'];
+    powerUpType.value = types[Math.floor(Math.random() * types.length)];
+  }
+}
+
+watch(currentSentenceIndex, () => {
+  initSentencePowerUp();
+});
+
+watch(() => store.latestPowerUpEvent, (evt) => {
+  if (!evt) return;
+  if (evt.senderId !== store.myPlayerId) {
+    applyVictimPowerUp(evt.type, evt.senderName);
+  } else {
+    triggerSenderBeamAnimation(evt.type);
+  }
+});
+
+function triggerSenderBeamAnimation(type: 'freeze' | 'backward' | 'storm') {
+  isShootingBeam.value = true;
+  const nameMap = { freeze: 'FREEZE ❄️', backward: 'BACKWARD ⏪', storm: 'STORM ⚡' };
+  senderPowerUpNotice.value = `SERANGAN ${nameMap[type]} BERHASIL DILUNCURKAN!`;
+  setTimeout(() => {
+    isShootingBeam.value = false;
+  }, 1200);
+  setTimeout(() => {
+    senderPowerUpNotice.value = null;
+  }, 2500);
+}
+
+const victimPowerUpAttacker = ref('');
+
+function applyVictimPowerUp(type: 'freeze' | 'backward' | 'storm', senderName: string) {
+  victimPowerUpAttacker.value = senderName;
+  if (type === 'freeze') {
+    isFrozen.value = true;
+    freezeCountdown.value = 3.0;
+    if (freezeTimer) clearInterval(freezeTimer);
+    freezeTimer = setInterval(() => {
+      freezeCountdown.value = Math.max(0, +(freezeCountdown.value - 0.1).toFixed(1));
+      if (freezeCountdown.value <= 0) {
+        if (freezeTimer) clearInterval(freezeTimer);
+        freezeTimer = null;
+        isFrozen.value = false;
+        focusInput();
+      }
+    }, 100);
+  } else if (type === 'backward') {
+    isRewindingGlitch.value = true;
+    setTimeout(() => (isRewindingGlitch.value = false), 1000);
+    activeUnitIndex.value = Math.max(0, activeUnitIndex.value - 3);
+    activeSubIndex.value = 0;
+    lockedAccepted.value = null;
+  } else if (type === 'storm') {
+    isStormActive.value = true;
+    stormCountdown.value = 5.0;
+    if (stormTimer) clearInterval(stormTimer);
+    if (lightningInterval) clearInterval(lightningInterval);
+
+    stormTimer = setInterval(() => {
+      stormCountdown.value = Math.max(0, +(stormCountdown.value - 0.1).toFixed(1));
+      if (stormCountdown.value <= 0) {
+        if (stormTimer) clearInterval(stormTimer);
+        stormTimer = null;
+        if (lightningInterval) clearInterval(lightningInterval);
+        lightningInterval = null;
+        isStormActive.value = false;
+        lightningFlashActive.value = false;
+      }
+    }, 100);
+
+    lightningInterval = setInterval(() => {
+      lightningFlashActive.value = true;
+      setTimeout(() => {
+        lightningFlashActive.value = false;
+      }, 350);
+    }, 1400);
+  }
+}
+
 watch(() => store.phase, (p) => {
   if (p === 'round_preparing') {
     updatePrepCountdown();
@@ -219,13 +326,17 @@ watch(() => store.phase, (p) => {
     hasError.value = false;
     isSubmitted.value = false;
     isPenaltyActive.value = false;
+    isFrozen.value = false;
+    isStormActive.value = false;
     lockedAccepted.value = null;
+    initSentencePowerUp();
     autoSkipHyphens();
     focusInput();
   }
 }, { immediate: true });
 
 onMounted(() => {
+  initSentencePowerUp();
   autoSkipHyphens();
   focusInput();
 });
@@ -233,10 +344,13 @@ onUnmounted(() => {
   if (progressThrottle) clearTimeout(progressThrottle);
   if (penaltyInterval) clearInterval(penaltyInterval);
   if (prepTimer) clearInterval(prepTimer);
+  if (freezeTimer) clearInterval(freezeTimer);
+  if (stormTimer) clearInterval(stormTimer);
+  if (lightningInterval) clearInterval(lightningInterval);
 });
 
 function handleInput(event: Event) {
-  if (isSubmitted.value || !store.iAmAlive || isPenaltyActive.value || store.phase !== 'round_active') return;
+  if (isSubmitted.value || !store.iAmAlive || isPenaltyActive.value || isFrozen.value || store.phase !== 'round_active') return;
   const input = event.target as HTMLInputElement;
   const typed = input.value;
   processTyped(typed);
@@ -244,12 +358,12 @@ function handleInput(event: Event) {
 }
 
 function processTyped(typed: string) {
-  if (!currentUnit.value || !store.activeRound || isPenaltyActive.value) return;
+  if (!currentUnit.value || !store.activeRound || isPenaltyActive.value || isFrozen.value) return;
 
   autoSkipHyphens();
 
   for (const char of typed) {
-    if (!currentUnit.value || isPenaltyActive.value) return;
+    if (!currentUnit.value || isPenaltyActive.value || isFrozen.value) return;
 
     if (char === ' ') {
       const unit = currentUnit.value;
@@ -262,13 +376,13 @@ function processTyped(typed: string) {
     advanceChar(char);
     autoSkipHyphens();
 
-    if (hasError.value || isPenaltyActive.value) return;
+    if (hasError.value || isPenaltyActive.value || isFrozen.value) return;
   }
 }
 
 function advanceChar(char: string) {
   const unit = currentUnit.value;
-  if (!unit) return;
+  if (!unit || isFrozen.value) return;
 
   const lc = char.toLowerCase();
 
@@ -296,9 +410,16 @@ function advanceChar(char: string) {
   activeSubIndex.value++;
 
   if (activeSubIndex.value >= lockedAccepted.value!.length) {
+    const justCompletedUnitIndex = activeUnitIndex.value;
     activeUnitIndex.value++;
     activeSubIndex.value = 0;
     lockedAccepted.value = null;
+
+    if (justCompletedUnitIndex === powerUpUnitIndex.value) {
+      if (!failedPowerUpUnits.value.has(justCompletedUnitIndex)) {
+        store.triggerPowerUp(powerUpType.value);
+      }
+    }
 
     throttledProgressBroadcast();
 
@@ -323,6 +444,7 @@ function advanceChar(char: string) {
 function triggerError() {
   if (isPenaltyActive.value || isSubmitted.value || !store.iAmAlive) return;
 
+  failedPowerUpUnits.value.add(activeUnitIndex.value);
   hasError.value = true;
   isPenaltyActive.value = true;
   penaltyTimeLeft.value = '1.0';
@@ -398,6 +520,18 @@ function preventPaste(e: ClipboardEvent) {
 <template>
   <div class="flex flex-col h-full bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white overflow-hidden relative">
 
+    <!-- Sender Notice Banner -->
+    <div v-if="senderPowerUpNotice" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 font-black text-xs px-5 py-2.5 rounded-full shadow-2xl shadow-orange-500/50 animate-bounce flex items-center gap-2 border border-amber-300">
+      <Zap class="w-4 h-4 animate-spin text-slate-950" />
+      <span>{{ senderPowerUpNotice }}</span>
+    </div>
+
+    <!-- Sender Beam Animation FX -->
+    <div v-if="isShootingBeam" class="fixed inset-0 pointer-events-none z-40 overflow-hidden">
+      <div class="absolute inset-0 bg-amber-400/10 animate-ping"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-r from-amber-400/20 via-rose-500/20 to-violet-500/20 blur-3xl animate-pulse"></div>
+    </div>
+
     <!-- Round Header Bar -->
     <div class="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/10 flex-shrink-0 z-10">
       <div class="flex items-center gap-2">
@@ -455,19 +589,38 @@ function preventPaste(e: ClipboardEvent) {
         class="flex-1 flex flex-col items-center justify-center px-4 md:px-8 overflow-auto cursor-pointer relative"
       >
 
-        <!-- Sentence (Japanese) display with active character pointer -->
-        <div class="mb-6 text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-1 min-h-[60px]">
+        <!-- Sentence (Japanese) display with active character pointer & Power-Up Badge -->
+        <div class="mb-6 text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-2 gap-y-6 min-h-[70px]">
           <template v-for="(unit, idx) in units" :key="idx">
-            <!-- Completed Japanese character/word -->
-            <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold">{{ unit.kana }}</span>
+            <div class="relative inline-flex flex-col items-center">
 
-            <!-- Current active Japanese character/word pointer -->
-            <span v-else-if="idx === activeUnitIndex" class="text-amber-300 font-black bg-amber-400/25 px-2 py-0.5 rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-8 decoration-amber-400">
-              {{ unit.kana }}
-            </span>
+              <!-- Power-Up Badge Icon above target word unit -->
+              <div
+                v-if="idx === powerUpUnitIndex"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20"
+                :class="failedPowerUpUnits.has(idx) ? 'bg-slate-800 text-slate-500 border border-slate-700' : 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce'"
+              >
+                <template v-if="failedPowerUpUnits.has(idx)">
+                  <span>💔 HANGUS</span>
+                </template>
+                <template v-else>
+                  <span v-if="powerUpType === 'freeze'">❄️ FREEZE</span>
+                  <span v-else-if="powerUpType === 'backward'">⏪ REWIND</span>
+                  <span v-else>⚡ STORM</span>
+                </template>
+              </div>
 
-            <!-- Upcoming Japanese character/word -->
-            <span v-else class="text-slate-400/70 font-medium">{{ unit.kana }}</span>
+              <!-- Completed Japanese character/word -->
+              <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold">{{ unit.kana }}</span>
+
+              <!-- Current active Japanese character/word pointer -->
+              <span v-else-if="idx === activeUnitIndex" class="text-amber-300 font-black bg-amber-400/25 px-2 py-0.5 rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-8 decoration-amber-400">
+                {{ unit.kana }}
+              </span>
+
+              <!-- Upcoming Japanese character/word -->
+              <span v-else class="text-slate-400/70 font-medium">{{ unit.kana }}</span>
+            </div>
           </template>
         </div>
 
@@ -475,6 +628,7 @@ function preventPaste(e: ClipboardEvent) {
         <div
           :class="[
             'w-full max-w-lg mb-5 bg-white/5 rounded-2xl p-5 min-h-[70px] flex flex-wrap items-center justify-center gap-x-0.5 gap-y-1 font-mono text-2xl md:text-3xl transition-all duration-200 relative tracking-wider',
+            isStormActive && !lightningFlashActive ? 'brightness-[0.05] opacity-10' : '',
             store.phase === 'round_active' && !isPenaltyActive && !isSubmitted
               ? 'border-2 border-emerald-500/80 bg-emerald-950/10 shadow-xl shadow-emerald-500/20 ring-4 ring-emerald-500/10'
               : 'border border-white/10'
@@ -507,7 +661,7 @@ function preventPaste(e: ClipboardEvent) {
           autocorrect="off"
           autocapitalize="none"
           spellcheck="false"
-          :disabled="isSubmitted || !store.iAmAlive || store.phase !== 'round_active' || isPenaltyActive"
+          :disabled="isSubmitted || !store.iAmAlive || store.phase !== 'round_active' || isPenaltyActive || isFrozen"
           @input="handleInput"
           @paste.prevent="preventPaste"
           @keydown.prevent.space=""
@@ -516,7 +670,7 @@ function preventPaste(e: ClipboardEvent) {
         <!-- Typing status button indicator -->
         <div class="mt-2">
           <button
-            v-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted"
+            v-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted && !isFrozen"
             @click.stop="focusInput"
             class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/50 rounded-xl text-sm font-extrabold text-white transition shadow-lg shadow-emerald-600/30 flex items-center gap-2 cursor-pointer animate-pulse"
           >
@@ -547,16 +701,16 @@ function preventPaste(e: ClipboardEvent) {
         </div>
       </div>
 
-      <!-- RIGHT PANEL: Players progress -->
+      <!-- RIGHT PANEL: Players progress & Power-Up Attack Status Badges -->
       <div class="w-40 md:w-48 flex-shrink-0 border-l border-white/10 overflow-y-auto p-3 flex flex-col gap-2">
         <div class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">Pemain</div>
 
         <div
           v-for="player in store.alivePlayers"
           :key="player.player_id"
-          class="bg-white/5 rounded-xl p-2.5"
+          class="bg-white/5 rounded-xl p-2.5 relative"
         >
-          <div class="flex items-center gap-1.5 mb-1.5">
+          <div class="flex items-center gap-1.5 mb-1">
             <div
               class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0"
               :style="`background: ${avatarColor(player.player_name)}`"
@@ -569,6 +723,22 @@ function preventPaste(e: ClipboardEvent) {
               class="w-3 h-3 text-emerald-400 flex-shrink-0"
             />
           </div>
+
+          <!-- Active Powerup Badge on Enemy Avatar -->
+          <div
+            v-if="store.activePowerUpEvents.has(player.player_id)"
+            class="mb-1 text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center justify-center gap-1 animate-pulse"
+            :class="store.activePowerUpEvents.get(player.player_id)?.type === 'freeze'
+              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+              : (store.activePowerUpEvents.get(player.player_id)?.type === 'storm'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                : 'bg-rose-500/20 text-rose-300 border border-rose-500/40')"
+          >
+            <span v-if="store.activePowerUpEvents.get(player.player_id)?.type === 'freeze'">❄️ BEKU</span>
+            <span v-else-if="store.activePowerUpEvents.get(player.player_id)?.type === 'storm'">⚡ BADAI</span>
+            <span v-else>⏪ REWIND</span>
+          </div>
+
           <!-- Progress bar -->
           <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
             <div
@@ -600,6 +770,42 @@ function preventPaste(e: ClipboardEvent) {
         </div>
       </div>
 
+    </div>
+
+    <!-- VICTIM FREEZE OVERLAY ❄️ -->
+    <div v-if="isFrozen" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-cyan-950/70 backdrop-blur-md border-8 border-cyan-400/40 animate-fadeIn">
+      <div class="w-24 h-24 rounded-3xl bg-cyan-500/30 border border-cyan-300/50 flex items-center justify-center shadow-2xl shadow-cyan-500/50 mb-4 animate-bounce">
+        <span class="text-5xl">❄️</span>
+      </div>
+      <div class="text-center px-4">
+        <div class="text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
+        <h2 class="text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
+        <div class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-xl shadow-xl">
+          <Clock class="w-5 h-5 animate-spin text-cyan-300" />
+          <span>{{ freezeCountdown.toFixed(1) }}s</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VICTIM BACKWARD REWIND OVERLAY ⏪ -->
+    <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/70 backdrop-blur-md animate-pulse">
+      <div class="w-20 h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-4xl mb-3 animate-spin">
+        ⏪
+      </div>
+      <div class="text-center">
+        <div class="text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
+        <h2 class="text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
+      </div>
+    </div>
+
+    <!-- VICTIM STORM OVERLAY ⚡ -->
+    <div v-if="isStormActive" class="fixed inset-0 pointer-events-none z-40 bg-slate-950/85 flex flex-col items-center justify-start pt-16">
+      <div v-if="lightningFlashActive" class="absolute inset-0 bg-amber-300/30 backdrop-brightness-200 transition-opacity"></div>
+      <div class="relative z-10 flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900/90 border border-amber-400/50 text-amber-300 font-extrabold text-sm shadow-xl">
+        <span class="text-lg">⚡</span>
+        <span>BADAI PETIR • HINT HANYA TERANG SAAT PETIR!</span>
+        <span class="font-mono text-white bg-amber-500/30 px-2 py-0.5 rounded text-xs ml-1">{{ stormCountdown.toFixed(1) }}s</span>
+      </div>
     </div>
 
     <!-- PRE-ROUND COUNTDOWN OVERLAY (phase === 'round_preparing') -->

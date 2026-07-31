@@ -22,7 +22,7 @@ onMounted(() => {
 const data = computed(() => store.gameOverData);
 const winner = computed(() => {
   const wId = data.value?.winnerPlayerId;
-  return store.players.find(p => p.player_id === wId) ?? null;
+  return store.players.find((p: any) => p.player_id === wId) ?? null;
 });
 
 // Build full final rankings from room_players
@@ -32,7 +32,7 @@ const finalRankings = computed(() => {
 });
 
 function getPlayerName(playerId: string): string {
-  return store.players.find(p => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
+  return store.players.find((p: any) => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
 }
 
 const winnerName = computed(() =>
@@ -61,7 +61,7 @@ function rankEmoji(rank: number | null): string {
   return `#${rank ?? '?'}`;
 }
 function getStanding(playerId: string) {
-  return data.value?.roundStandings?.find(s => s.playerId === playerId) ?? null;
+  return data.value?.roundStandings?.find((s: any) => s.playerId === playerId) ?? null;
 }
 
 function msToStr(ms: number): string {
