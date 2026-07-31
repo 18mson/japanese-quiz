@@ -13,6 +13,15 @@ export function pickRandomSentence(usedIds: string[]): SentenceItem | null {
   return available[Math.floor(Math.random() * available.length)];
 }
 
+export function pickMultipleRandomSentences(usedIds: string[], count: number = 3): SentenceItem[] {
+  let available = sentencesData.filter(s => !usedIds.includes(s.id));
+  if (available.length < count) {
+    available = [...sentencesData];
+  }
+  const shuffled = [...available].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
 export function getGuestId(): string {
   let id = localStorage.getItem('battleground_guest_id');
   if (!id) {

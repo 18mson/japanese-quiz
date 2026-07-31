@@ -18,7 +18,7 @@ import type {
 } from './battleground/types';
 import {
   generateRoomCode,
-  pickRandomSentence,
+  pickMultipleRandomSentences,
   getGuestId,
   getGuestName,
   validateRomaji,
@@ -442,37 +442,48 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       .single();
 
     const usedIds: string[] = roomData?.used_sentence_ids ?? [];
-    const sentence = pickRandomSentence(usedIds);
+    const sentences = pickMultipleRandomSentences(usedIds, 3);
+    const primarySentence = sentences[0];
 
-    if (!sentence) {
+    if (!primarySentence || sentences.length === 0) {
       error.value = 'Kalimat habis! Game selesai.';
       return;
     }
 
     const startAt = new Date(Date.now() + 5000).toISOString();
 
+    const formattedSentences = sentences.map(s => ({
+      id: s.id,
+      japanese: s.japanese,
+      romaji_variants: s.romaji_variants,
+      word_spans: s.word_spans ?? null,
+      meaning: s.meaning_id,
+    }));
+
     const { data: roundData, error: roundErr } = await supabase
       .from('rounds')
       .upsert({
         room_id: roomId.value,
         round_number: roundNum,
-        sentence_id: sentence.id,
-        sentence_japanese: sentence.japanese,
-        sentence_romaji_variants: sentence.romaji_variants,
-        sentence_word_spans: sentence.word_spans ?? null,
-        sentence_meaning: sentence.meaning_id,
+        sentence_id: primarySentence.id,
+        sentence_japanese: primarySentence.japanese,
+        sentence_romaji_variants: primarySentence.romaji_variants,
+        sentence_word_spans: primarySentence.word_spans ?? null,
+        sentence_meaning: primarySentence.meaning_id,
         status: 'active',
         start_at: startAt,
-        duration_seconds: 30,
+        duration_seconds: 45,
       }, { onConflict: 'room_id,round_number' })
       .select()
       .single();
 
     if (roundErr || !roundData) throw roundErr ?? new Error('Failed to create round');
 
+    const newUsedIds = [...usedIds, ...sentences.map(s => s.id)];
+
     await supabase
       .from('rooms')
-      .update({ used_sentence_ids: [...usedIds, sentence.id], current_round_num: roundNum })
+      .update({ used_sentence_ids: newUsedIds, current_round_num: roundNum })
       .eq('id', roomId.value);
 
     await realtimeChannel?.send({
@@ -482,14 +493,15 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         id: roundData.id,
         room_id: roomId.value,
         round_number: roundNum,
-        sentence_id: sentence.id,
-        sentence_japanese: sentence.japanese,
-        sentence_romaji_variants: sentence.romaji_variants,
-        sentence_word_spans: sentence.word_spans ?? null,
-        sentence_meaning: sentence.meaning_id,
+        sentence_id: primarySentence.id,
+        sentence_japanese: primarySentence.japanese,
+        sentence_romaji_variants: primarySentence.romaji_variants,
+        sentence_word_spans: primarySentence.word_spans ?? null,
+        sentence_meaning: primarySentence.meaning_id,
+        sentences: formattedSentences,
         status: 'active',
         roundStartAt: startAt,
-        duration_seconds: 30,
+        duration_seconds: 45,
         start_at: startAt,
       },
     });

@@ -197,7 +197,7 @@ export const sentencesData: SentenceItem[] = [
     japanese: 'デパートでおみやげをかいました',
     meaning_id: 'Membeli oleh-oleh di department store',
     difficulty: 'n5',
-    romaji_variants: [['de'], ['pa'], ['ー', '-'], ['to'], ['de'], ['o'], ['mi'], ['ya'], ['ge'], ['wo', 'o'], ['ka'], ['i'], ['ma'], ['shi', 'si'], ['ta']],
+    romaji_variants: [['de'], ['pa'], ['a', ''], ['to'], ['de'], ['o'], ['mi'], ['ya'], ['ge'], ['wo', 'o'], ['ka'], ['i'], ['ma'], ['shi', 'si'], ['ta']],
     word_spans: [4, 1, 4, 1, 5]
   },
   {
@@ -205,7 +205,7 @@ export const sentencesData: SentenceItem[] = [
     japanese: 'おとうとうはカフェでコーヒーをのみます',
     meaning_id: 'Adik laki-laki minum kopi di kafe',
     difficulty: 'n5',
-    romaji_variants: [['o'], ['to'], ['u'], ['to'], ['u'], ['wa', 'ha'], ['ka'], ['fe'], ['de'], ['ko'], ['ー', '-'], ['hi'], ['ー', '-'], ['wo', 'o'], ['no'], ['mi'], ['ma'], ['su']],
+    romaji_variants: [['o'], ['to'], ['u'], ['to'], ['u'], ['wa', 'ha'], ['ka'], ['fe'], ['de'], ['ko'], ['o', 'u', ''], ['hi'], ['i', ''], ['wo', 'o'], ['no'], ['mi'], ['ma'], ['su']],
     word_spans: [5, 1, 2, 1, 4, 1, 4]
   },
   {

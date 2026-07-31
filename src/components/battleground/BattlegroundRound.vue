@@ -38,20 +38,38 @@ const timerColor = computed(() => {
   return 'bg-emerald-500';
 });
 
-// ── Sentence Unit Parsing ─────────────────────────────────────
-
+// ── Sentence Parsing & Multi-Sentence Support ──────────────────
 interface Unit { kana: string; acceptedRomaji: string[] }
+
+const currentSentenceIndex = ref(0);
+
+const activeSentence = computed(() => {
+  const r = store.activeRound;
+  if (!r) return null;
+  if (r.sentences && r.sentences.length > 0) {
+    return r.sentences[currentSentenceIndex.value] ?? r.sentences[0];
+  }
+  return {
+    id: r.sentence_id,
+    japanese: r.sentence_japanese,
+    romaji_variants: r.sentence_romaji_variants,
+    word_spans: r.sentence_word_spans,
+    meaning: r.sentence_meaning ?? '',
+  };
+});
+
+const totalSentencesCount = computed(() => store.activeRound?.sentences?.length ?? 1);
 
 const yoonSmallKana = ['ゃ','ゅ','ょ','ぁ','ぃ','ぅ','ぇ','ぉ','ャ','ュ','ョ','ァ','ィ','ゥ','ェ','ォ'];
 const isSokuon = (c: string) => c === 'っ' || c === 'ッ';
 
 const units = computed<Unit[]>(() => {
-  const r = store.activeRound;
-  if (!r) return [];
+  const s = activeSentence.value;
+  if (!s) return [];
 
-  const japanese = r.sentence_japanese;
-  const variants: string[][] = r.sentence_romaji_variants;
-  const wordSpans: number[] | null = r.sentence_word_spans;
+  const japanese = s.japanese;
+  const variants: string[][] = s.romaji_variants;
+  const wordSpans: number[] | null = s.word_spans ?? null;
   const result: Unit[] = [];
 
   if (wordSpans && wordSpans.length > 0) {
@@ -95,29 +113,37 @@ const units = computed<Unit[]>(() => {
       }
       result.push({ kana, acceptedRomaji: Array.from(new Set(combos)) });
     }
-    return result;
+  } else {
+    // Fallback: simple unit-per-variant
+    let charIdx2 = 0;
+    for (let vIdx = 0; vIdx < variants.length; vIdx++) {
+      const v = variants[vIdx];
+      if (charIdx2 >= japanese.length) break;
+      const remaining = japanese.slice(charIdx2);
+      let matchedLen = 1;
+      const nextVar = variants[vIdx + 1];
+      const isNextU = nextVar && nextVar.some((r: string) => r === 'u');
+      if (isSokuon(remaining[0])) {
+        matchedLen = (remaining.length >= 3 && yoonSmallKana.includes(remaining[2])) ? 3 : 2;
+      } else if (remaining.length >= 2 && yoonSmallKana.includes(remaining[1])) {
+        if ((remaining[2] === 'う' || remaining[2] === 'ウ') && !isNextU) matchedLen = 3;
+        else matchedLen = 2;
+      }
+      const kana = remaining.slice(0, matchedLen);
+      charIdx2 += matchedLen;
+      const rawAccepted = v && v.length > 0 ? [...v] : [toRomaji(kana)];
+      result.push({ kana, acceptedRomaji: rawAccepted });
+    }
   }
 
-  // Fallback: simple unit-per-variant
-  let charIdx2 = 0;
-  for (let vIdx = 0; vIdx < variants.length; vIdx++) {
-    const v = variants[vIdx];
-    if (charIdx2 >= japanese.length) break;
-    const remaining = japanese.slice(charIdx2);
-    let matchedLen = 1;
-    const nextVar = variants[vIdx + 1];
-    const isNextU = nextVar && nextVar.some((r: string) => r === 'u');
-    if (isSokuon(remaining[0])) {
-      matchedLen = (remaining.length >= 3 && yoonSmallKana.includes(remaining[2])) ? 3 : 2;
-    } else if (remaining.length >= 2 && yoonSmallKana.includes(remaining[1])) {
-      if ((remaining[2] === 'う' || remaining[2] === 'ウ') && !isNextU) matchedLen = 3;
-      else matchedLen = 2;
-    }
-    const kana = remaining.slice(0, matchedLen);
-    charIdx2 += matchedLen;
-    const rawAccepted = v && v.length > 0 ? [...v] : [toRomaji(kana)];
-    result.push({ kana, acceptedRomaji: rawAccepted });
-  }
+  // Sanitize acceptedRomaji: remove stray '-' or 'ー' so dash never shows up in romaji display
+  result.forEach(u => {
+    u.acceptedRomaji = u.acceptedRomaji
+      .map(r => r.replace(/[-ー]/g, ''))
+      .filter(r => r.length > 0);
+    if (u.acceptedRomaji.length === 0) u.acceptedRomaji = [''];
+  });
+
   return result;
 });
 
@@ -137,7 +163,7 @@ function autoSkipHyphens() {
   while (currentUnit.value) {
     const unit = currentUnit.value;
     const currentExpected = (lockedAccepted.value ?? unit.acceptedRomaji[0])[activeSubIndex.value];
-    if (currentExpected === '-') {
+    if (currentExpected === '-' || currentExpected === 'ー') {
       if (lockedAccepted.value === null) {
         lockedAccepted.value = unit.acceptedRomaji[0];
       }
@@ -155,6 +181,7 @@ function autoSkipHyphens() {
 
 watch(() => store.phase, (p) => {
   if (p === 'round_active') {
+    currentSentenceIndex.value = 0;
     activeUnitIndex.value = 0;
     activeSubIndex.value = 0;
     userInput.value = '';
@@ -192,12 +219,11 @@ function processTyped(typed: string) {
   for (const char of typed) {
     if (!currentUnit.value || isPenaltyActive.value) return;
 
-    // Space tolerance: if user typed space (' '), check if space is expected. If not, IGNORE space cleanly without typo error!
     if (char === ' ') {
       const unit = currentUnit.value;
       const expected = (lockedAccepted.value ?? unit.acceptedRomaji[0])[activeSubIndex.value];
       if (expected !== ' ') {
-        continue; // ignore space tolerance
+        continue;
       }
     }
 
@@ -245,7 +271,17 @@ function advanceChar(char: string) {
     throttledProgressBroadcast();
 
     if (activeUnitIndex.value >= units.value.length) {
-      handleComplete();
+      // Current sentence complete! Check if more sentences remain in this round
+      if (currentSentenceIndex.value < totalSentencesCount.value - 1) {
+        currentSentenceIndex.value++;
+        activeUnitIndex.value = 0;
+        activeSubIndex.value = 0;
+        lockedAccepted.value = null;
+        autoSkipHyphens();
+        focusInput();
+      } else {
+        handleComplete();
+      }
     }
   } else {
     throttledProgressBroadcast();
@@ -292,7 +328,12 @@ async function handleComplete() {
 function throttledProgressBroadcast() {
   if (progressThrottle) return;
   progressThrottle = setTimeout(() => {
-    store.broadcastProgress(activeUnitIndex.value, units.value.length);
+    const totalCount = totalSentencesCount.value;
+    const sentProgress = currentSentenceIndex.value;
+    const unitProgress = activeUnitIndex.value / Math.max(1, units.value.length);
+    const overallPct = Math.round(((sentProgress + unitProgress) / totalCount) * 100);
+
+    store.broadcastProgress(overallPct, 100);
     progressThrottle = null;
   }, 100);
 }
@@ -352,9 +393,12 @@ function preventPaste(e: ClipboardEvent) {
       ></div>
     </div>
 
-    <!-- Meaning hint -->
-    <div class="px-4 pt-3 pb-1 text-center flex-shrink-0 z-10">
-      <span class="text-xs text-slate-400 font-medium">{{ store.activeRound?.sentence_meaning ?? '' }}</span>
+    <!-- Sentence Counter & Meaning Hint -->
+    <div class="px-4 pt-3 pb-1 text-center flex-shrink-0 z-10 flex flex-col items-center gap-1">
+      <div v-if="totalSentencesCount > 1" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs font-extrabold shadow-sm">
+        <span>Kalimat {{ currentSentenceIndex + 1 }} dari {{ totalSentencesCount }}</span>
+      </div>
+      <span class="text-xs text-slate-400 font-medium">{{ activeSentence?.meaning ?? '' }}</span>
     </div>
 
     <!-- Main Content: Sentence + Input + Players Panel -->

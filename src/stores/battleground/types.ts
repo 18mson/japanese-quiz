@@ -26,6 +26,14 @@ export interface RoomPlayer {
   joined_at: string;
 }
 
+export interface RoundSentenceItem {
+  id: string;
+  japanese: string;
+  romaji_variants: string[][];
+  word_spans?: number[] | null;
+  meaning: string;
+}
+
 export interface ActiveRound {
   id: string;
   room_id: string;
@@ -38,6 +46,7 @@ export interface ActiveRound {
   status: RoundStatus;
   start_at: string | null;
   duration_seconds: number;
+  sentences?: RoundSentenceItem[];
 }
 
 export interface EliminatedPlayerInfo {
