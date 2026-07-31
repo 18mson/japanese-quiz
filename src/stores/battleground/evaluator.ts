@@ -72,6 +72,9 @@ export async function forceEvaluateWithTimeouts(
         is_valid: false,
         completion_time_ms: (activeRound.duration_seconds ?? 75) * 1000,
         status: 'timeout',
+        completed_sentences: completedSentences,
+        total_sentences: totalSentences,
+        progress_percentage: pProgress,
       }, { onConflict: 'round_id,player_id' });
   }
 
@@ -105,6 +108,14 @@ async function runElimination(
     let completed = sub.is_valid ? totalSentencesInRound : 0;
     let total = totalSentencesInRound;
     let pct = sub.is_valid ? 100 : 0;
+
+    if (typeof sub.progress_percentage === 'number' && sub.progress_percentage > 0) {
+      pct = sub.progress_percentage;
+    }
+    if (typeof sub.completed_sentences === 'number' && sub.completed_sentences > 0) {
+      completed = sub.completed_sentences;
+    }
+
     try {
       if (sub.typed_input && typeof sub.typed_input === 'string' && sub.typed_input.startsWith('{')) {
         const parsed = JSON.parse(sub.typed_input);

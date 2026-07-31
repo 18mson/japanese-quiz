@@ -247,7 +247,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         if (isHost.value && phase.value === 'round_active') {
           setTimeout(async () => {
             if (phase.value === 'round_active' && roomId.value && activeRound.value) {
-              await forceEvaluateWithTimeouts(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel);
+              await forceEvaluateWithTimeouts(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel, playerProgress.value);
             }
           }, 2000);
         }
@@ -275,8 +275,15 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const completedSentences = pProg?.completedSentences ?? 0;
     const progressPercentage = pProg?.progressPercentage ?? 0;
 
+    const payloadMeta = JSON.stringify({
+      completed: completedSentences,
+      total: totalSentences,
+      pct: progressPercentage,
+      input: 'TIMEOUT',
+    });
+
     await submitRound({
-      typedInput: 'TIMEOUT',
+      typedInput: payloadMeta,
       isValid: false,
       completedSentences,
       totalSentences,
