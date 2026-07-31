@@ -106,13 +106,16 @@ async function runElimination(
     let total = totalSentencesInRound;
     let pct = sub.is_valid ? 100 : 0;
     try {
-      if (sub.typed_input && sub.typed_input.startsWith('{')) {
+      if (sub.typed_input && typeof sub.typed_input === 'string' && sub.typed_input.startsWith('{')) {
         const parsed = JSON.parse(sub.typed_input);
-        if (parsed.completed !== undefined) completed = parsed.completed;
-        if (parsed.total !== undefined) total = parsed.total;
-        if (parsed.pct !== undefined) pct = parsed.pct;
+        if (typeof parsed.completed === 'number') completed = parsed.completed;
+        if (typeof parsed.total === 'number') total = parsed.total;
+        if (typeof parsed.pct === 'number') pct = parsed.pct;
       }
     } catch {}
+    if (!sub.is_valid && completed >= totalSentencesInRound) {
+      completed = Math.max(0, totalSentencesInRound - 1);
+    }
     return { completed, total, pct };
   };
 

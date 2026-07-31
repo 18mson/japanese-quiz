@@ -544,21 +544,21 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const startMs = round.start_at ? new Date(round.start_at).getTime() : Date.now();
     const completionTimeMs = Date.now() - startMs;
 
-    let typedInput = 'COMPLETE';
-    let isValid = true;
-    let completedSentences = round.sentences?.length ?? 5;
+    let typedInput = 'TIMEOUT';
+    let isValid = false;
+    let completedSentences = 0;
     let totalSentences = round.sentences?.length ?? 5;
-    let progressPercentage = 100;
+    let progressPercentage = 0;
 
     if (typeof inputOrOptions === 'object') {
-      typedInput = inputOrOptions.typedInput ?? 'COMPLETE';
-      isValid = inputOrOptions.isValid ?? true;
-      completedSentences = inputOrOptions.completedSentences ?? totalSentences;
+      typedInput = inputOrOptions.typedInput ?? 'TIMEOUT';
+      isValid = inputOrOptions.isValid ?? false;
+      completedSentences = inputOrOptions.completedSentences ?? 0;
       totalSentences = inputOrOptions.totalSentences ?? totalSentences;
-      progressPercentage = inputOrOptions.progressPercentage ?? Math.round((completedSentences / Math.max(1, totalSentences)) * 100);
+      progressPercentage = inputOrOptions.progressPercentage ?? (isValid ? 100 : Math.round((completedSentences / Math.max(1, totalSentences)) * 100));
     } else {
       typedInput = inputOrOptions;
-      isValid = inputOrOptions === 'COMPLETE' || inputOrOptions.length > 0;
+      isValid = inputOrOptions === 'COMPLETE';
       completedSentences = isValid ? totalSentences : 0;
       progressPercentage = isValid ? 100 : 0;
     }
