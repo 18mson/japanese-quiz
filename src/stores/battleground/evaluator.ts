@@ -75,6 +75,22 @@ async function runElimination(
 ): Promise<void> {
   const roundNum = activeRound.round_number;
   const aliveIds = alivePlayers.map(p => p.player_id);
+  const N = aliveIds.length;
+
+  // Determine target survivors based on current alive player count N:
+  // - If N > 4: eliminate down to 4 survivors
+  // - If N === 4 or N === 3: eliminate down to 2 survivors (Final!)
+  // - If N <= 2: eliminate down to 1 winner
+  let targetSurvivors = 1;
+  if (N > 4) {
+    targetSurvivors = 4;
+  } else if (N >= 3) {
+    targetSurvivors = 2;
+  } else {
+    targetSurvivors = 1;
+  }
+
+  const numToEliminate = Math.max(1, N - targetSurvivors);
 
   const successSubs = subs
     .filter((s: any) => s.is_valid && aliveIds.includes(s.player_id))
@@ -83,29 +99,33 @@ async function runElimination(
   const failSubs = subs
     .filter((s: any) => !s.is_valid && aliveIds.includes(s.player_id));
 
-  const eliminatedThisRound: Array<{ playerId: string; reason: string }> = [];
+  // Build full ranking for this round:
+  // 1. Success submissions (fastest to slowest)
+  // 2. Failed / timeout submissions
+  const rankedPlayers: Array<{ playerId: string; status: string; timeMs: number }> = [
+    ...successSubs.map((s: any) => ({ playerId: s.player_id, status: 'success', timeMs: s.completion_time_ms })),
+    ...failSubs.map((s: any) => ({ playerId: s.player_id, status: s.status || 'timeout', timeMs: s.completion_time_ms })),
+  ];
 
-  for (const s of failSubs) {
-    eliminatedThisRound.push({
-      playerId: s.player_id,
-      reason: s.status === 'timeout' ? 'too_slow' : 'typo',
-    });
-  }
-
-  if (failSubs.length === 0 && successSubs.length >= 2) {
-    const { data: roomData } = await supabase
-      .from('rooms')
-      .select('elimination_rate')
-      .eq('id', roomId)
-      .single();
-
-    const rate = roomData?.elimination_rate ?? 0.3;
-    const numToElim = Math.max(1, Math.floor(successSubs.length * rate));
-    const slowest = successSubs.slice(successSubs.length - numToElim);
-    for (const s of slowest) {
-      eliminatedThisRound.push({ playerId: s.player_id, reason: 'too_slow' });
+  // Include any alive player without submission as timeout
+  const recordedIds = new Set(rankedPlayers.map(p => p.playerId));
+  for (const id of aliveIds) {
+    if (!recordedIds.has(id)) {
+      rankedPlayers.push({
+        playerId: id,
+        status: 'timeout',
+        timeMs: (activeRound.duration_seconds ?? 30) * 1000,
+      });
     }
   }
+
+  // Pick the bottom `numToEliminate` players from the rankings
+  const playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
+
+  const eliminatedThisRound: Array<{ playerId: string; reason: string }> = playersToEliminate.map(p => ({
+    playerId: p.playerId,
+    reason: p.status === 'typo' ? 'typo' : 'too_slow',
+  }));
 
   const eliminatedIds = new Set(eliminatedThisRound.map(e => e.playerId));
   const survivors = aliveIds.filter(id => !eliminatedIds.has(id));

@@ -34,11 +34,30 @@ A modern, interactive, and intelligent web application designed to help learners
 - **Zero Timer Anxiety**: Timers are hidden during the quiz so users can focus on learning calmly.
 - **Speed Achievement Surprise**: Complete a session faster than estimated target to earn bonus speed points and unlock achievement ranks (`⚡ Lightning Fast!`, `🚀 Speed Demon!`).
 
-### 🎮 5. Flexible Game Modes
+### ⚔️ 5. Typing Battleground (Multiplayer Battle Royale Mode)
+- **Realtime Multiplayer Rooms (2–8 Pemain)**: Mainkan kuis mengetik kalimat Jepang secara multiplayer hingga **maksimal 8 pemain dalam 1 room** berbasis Supabase Realtime broadcast.
+- **Public & Private Room System**:
+  - **Public Room**: Ditampilkan pada daftar *Public Rooms* yang dapat langsung di-join oleh pemain lain dengan 1-klik.
+  - **Private Room**: Memerlukan 6-digit Kode Room rahasia untuk bergabung.
+  - **Host Controls**: Host dapat mengubah status Private/Public kapan saja serta me-reset room untuk **Mulai Game Lagi** (dengan popup konfirmasi re-join ke seluruh peserta).
+- **Progressive Tournament Elimination Bracket**:
+  - Sistem eliminasi bertahap otomatis hingga menyisakan **Babak Final 2 Pemain**:
+    - **8 Pemain**: Ronde 1 (8 $\rightarrow$ 4) $\rightarrow$ Ronde 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 3 (2 $\rightarrow$ 1 Juara).
+    - **7 Pemain**: Ronde 1 (7 $\rightarrow$ 4) $\rightarrow$ Ronde 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 3 (2 $\rightarrow$ 1 Juara).
+    - **3 Pemain**: Ronde 1 (3 $\rightarrow$ 2 Final) $\rightarrow$ Ronde 2 (2 $\rightarrow$ 1 Juara).
+    - **2 Pemain**: Ronde 1 (2 $\rightarrow$ 1 Juara).
+- **Pro Typing Engine & Fluid UX**:
+  - 🎯 **Single Upcoming Character Prompt**: Hanya 1 huruf romaji berikutnya yang akan ditampilkan (mencegah distrasi visual).
+  - 🇯🇵 **Japanese Character Pointer**: Highlight huruf Jepang per-karakter secara *real-time* (Hijau = Selesai, Emas Berkedip = Sedang Diketik, Abu-abu = Belum Diketik).
+  - ⚠️ **1-Second Typo Penalty Cooldown**: Jika terjadi kesalahan ketik (*typo*), layar akan menampilkan *overlay* penalti transparan `1.0s` dan tidak langsung membuat pemain gugur.
+  - ⏩ **Auto-Skip Hyphen (`"-"`) & Space Tolerance**: Tanda hubung otomatis dilompati dan spasi tidak akan memicu error typo secara tidak sengaja.
+- **Spectator Mode (Layar Penonton)**: Pemain yang telah tereliminasi tetap berada di dalam room dan dapat menyaksikan pertandingan pemain lain secara *live*.
+
+### 🎮 6. Flexible Single Player Game Modes
 - **Multiple Choice (Basic Level)**: Practice reading Hiragana and Katakana by choosing from standard multiple-choice Romaji options.
 - **Keyboard Typing (Road to N5)**: Direct keyboard input for Hiragana, Katakana, and **Everyday Words**. *(Everyday Words mode is exclusive to Keyboard Typing mode to encourage direct recall).*
 
-### 🏆 6. Global Leaderboard & User Authentication
+### 🏆 7. Global Leaderboard & User Authentication
 - **Supabase Integration**: Synchronizes user streaks and leaderboard rankings online.
 - **Speed & Cumulative Leaderboards**: Track top-performing speed runs and total cumulative scores.
 
@@ -50,7 +69,7 @@ A modern, interactive, and intelligent web application designed to help learners
 - **Build Tool**: [Vite](https://vitejs.dev/) + PWA support (`vite-plugin-pwa`)
 - **State Management**: [Pinia](https://pinia.vuejs.org/)
 - **Styling & Icons**: [Tailwind CSS](https://tailwindcss.com/) + [@lucide/vue](https://lucide.dev/)
-- **Database & Auth**: [Supabase](https://supabase.com/)
+- **Database, Auth & Realtime**: [Supabase](https://supabase.com/) (PostgreSQL + Realtime Broadcast & Presence + Edge Functions)
 
 ---
 
@@ -63,7 +82,7 @@ A modern, interactive, and intelligent web application designed to help learners
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/japanese-quiz.git
+git clone https://github.com/18mson/japanese-quiz.git
 cd japanese-quiz
 
 # Install dependencies
