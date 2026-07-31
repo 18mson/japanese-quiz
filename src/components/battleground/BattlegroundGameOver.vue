@@ -60,6 +60,14 @@ function rankEmoji(rank: number | null): string {
   if (rank === 3) return '🥉';
   return `#${rank ?? '?'}`;
 }
+function getStanding(playerId: string) {
+  return data.value?.roundStandings?.find(s => s.playerId === playerId) ?? null;
+}
+
+function msToStr(ms: number): string {
+  if (!ms || ms >= 75000) return 'Time Out';
+  return (ms / 1000).toFixed(2) + 's';
+}
 </script>
 
 <template>
@@ -90,14 +98,32 @@ function rankEmoji(rank: number | null): string {
       </div>
 
       <!-- Game Over Title -->
-      <h1 class="text-3xl font-extrabold tracking-tight mb-2 text-center">Game Over!</h1>
+      <h1 class="text-3xl font-extrabold tracking-tight mb-2 text-center">
+        {{ data?.isDraw ? 'Match Seri / Draw!' : 'Game Over!' }}
+      </h1>
       <p class="text-slate-400 text-sm mb-8 text-center">
-        Pemenang: <strong class="text-amber-400">{{ winnerName }}</strong>
+        <template v-if="data?.isDraw">
+          <strong class="text-amber-400">{{ data.drawReason || 'Juara Bersama' }}</strong>
+        </template>
+        <template v-else>
+          Pemenang: <strong class="text-amber-400">{{ winnerName }}</strong>
+        </template>
         &nbsp;·&nbsp; Ronde {{ data?.finalRoundNumber ?? '?' }} · {{ store.players.length }} pemain
       </p>
 
-      <!-- Winner Card -->
-      <div v-if="winner" class="w-full mb-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl p-5 flex items-center gap-4 shadow-lg shadow-amber-500/10 animate-pop">
+      <!-- Draw Banner / Winner Card -->
+      <div v-if="data?.isDraw" class="w-full mb-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl p-5 flex items-center gap-4 shadow-lg shadow-amber-500/10 animate-pop">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/30 text-amber-300 flex items-center justify-center text-2xl font-black flex-shrink-0 shadow-inner">
+          🤝
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs text-amber-400 font-bold uppercase tracking-widest mb-0.5">HASIL SERI / DRAW 🤝</div>
+          <div class="text-lg font-extrabold truncate text-white">
+            {{ data.drawReason || 'Juara Bersama!' }}
+          </div>
+        </div>
+      </div>
+      <div v-else-if="winner" class="w-full mb-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl p-5 flex items-center gap-4 shadow-lg shadow-amber-500/10 animate-pop">
         <div
           class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 shadow-inner"
           :style="`background: ${avatarColor(winner.player_name)}`"
@@ -117,7 +143,7 @@ function rankEmoji(rank: number | null): string {
       <div class="w-full mb-8">
         <h2 class="text-sm font-bold text-slate-400 mb-3 flex items-center gap-1.5">
           <Swords class="w-4 h-4" />
-          Ranking Akhir
+          Ranking Akhir & Detail Hasil
         </h2>
         <div class="space-y-2">
           <div
@@ -138,12 +164,20 @@ function rankEmoji(rank: number | null): string {
               :style="`background: ${avatarColor(player.player_name)}`"
             >{{ player.player_name.slice(0, 2).toUpperCase() }}</div>
             <div class="flex-1 min-w-0">
-              <div class="font-bold text-sm truncate">
+              <div class="font-bold text-sm truncate text-white">
                 {{ player.player_name }}
                 <span v-if="player.player_id === store.myPlayerId" class="text-indigo-400 text-xs font-normal ml-1">(Kamu)</span>
               </div>
-              <div class="text-xs text-slate-500">
-                <span v-if="player.eliminated_in_round">Gugur ronde {{ player.eliminated_in_round }} · {{ reasonLabel(player.elimination_reason) }}</span>
+              <div class="text-xs text-slate-400 flex items-center gap-2 flex-wrap mt-0.5">
+                <span v-if="getStanding(player.player_id)" class="text-indigo-300 font-medium">
+                  {{ getStanding(player.player_id)?.completedSentences ?? 0 }}/{{ getStanding(player.player_id)?.totalSentences ?? 5 }} Kalimat
+                </span>
+                <span v-if="getStanding(player.player_id)">•</span>
+                <span v-if="getStanding(player.player_id)" class="font-mono text-slate-300">
+                  {{ msToStr(getStanding(player.player_id)!.completionTimeMs) }}
+                </span>
+                <span>•</span>
+                <span v-if="player.eliminated_in_round" class="text-rose-400">Gugur R{{ player.eliminated_in_round }} ({{ reasonLabel(player.elimination_reason) }})</span>
                 <span v-else class="text-amber-400 font-bold">Survivor 🏆</span>
               </div>
             </div>

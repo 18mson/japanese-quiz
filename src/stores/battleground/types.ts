@@ -72,6 +72,8 @@ export interface RoundResultPayload {
   roundStandings: RoundStanding[];
   isGameOver: boolean;
   nextRoundInSeconds: number;
+  isDraw?: boolean;
+  drawReason?: string;
 }
 
 export interface GameOverPayload {
@@ -79,6 +81,8 @@ export interface GameOverPayload {
   finalRoundNumber: number;
   eliminatedPlayers: EliminatedPlayerInfo[];
   roundStandings: RoundStanding[];
+  isDraw?: boolean;
+  drawReason?: string;
 }
 
 export interface PlayerProgress {

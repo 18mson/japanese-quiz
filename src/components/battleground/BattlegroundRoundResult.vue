@@ -95,6 +95,15 @@ function getPlayerName(playerId: string): string {
       <h2 class="text-2xl font-extrabold">Hasil Ronde</h2>
     </div>
 
+    <!-- Draw Banner -->
+    <div v-if="result?.isDraw" class="w-full max-w-lg mb-5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl p-4 flex items-center gap-3">
+      <div class="text-2xl">🤝</div>
+      <div>
+        <div class="font-extrabold text-amber-300">RONDE SERI / DRAW!</div>
+        <div class="text-xs text-slate-300">{{ result.drawReason || 'Tidak ada pemain yang gugur ronde ini.' }}</div>
+      </div>
+    </div>
+
     <!-- My Result -->
     <div v-if="myResult" class="w-full max-w-lg mb-5">
       <div

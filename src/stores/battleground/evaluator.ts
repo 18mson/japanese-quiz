@@ -154,7 +154,27 @@ async function runElimination(
     }
   }
 
-  const playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
+  const allIdle = rankedPlayers.every(p => p.pct === 0);
+
+  let isDraw = false;
+  let drawReason = '';
+
+  if (allIdle) {
+    isDraw = true;
+    drawReason = 'Semua pemain idle (0% progress)';
+  } else if (N === 2 && rankedPlayers.length >= 2) {
+    const p1 = rankedPlayers[0];
+    const p2 = rankedPlayers[1];
+    if (p1.pct === p2.pct && p1.timeMs === p2.timeMs) {
+      isDraw = true;
+      drawReason = 'Skor & Waktu Sama (Juara Bersama)';
+    }
+  }
+
+  let playersToEliminate: typeof rankedPlayers = [];
+  if (!isDraw) {
+    playersToEliminate = rankedPlayers.slice(rankedPlayers.length - numToEliminate);
+  }
 
   const eliminatedThisRound: Array<{ playerId: string; reason: string }> = playersToEliminate.map(p => ({
     playerId: p.playerId,
@@ -180,7 +200,7 @@ async function runElimination(
       .eq('player_id', elim.playerId);
   }
 
-  const isGameOver = survivors.length <= 1;
+  const isGameOver = !isDraw && survivors.length <= 1;
 
   if (isGameOver && survivors.length === 1) {
     await supabase
@@ -215,6 +235,8 @@ async function runElimination(
     roundStandings: standings,
     isGameOver,
     nextRoundInSeconds: 5,
+    isDraw,
+    drawReason,
   };
 
   if (isGameOver) {
@@ -223,6 +245,8 @@ async function runElimination(
       finalRoundNumber: roundNum,
       eliminatedPlayers: resultPayload.eliminatedPlayers,
       roundStandings: standings,
+      isDraw,
+      drawReason,
     };
     await realtimeChannel?.send({
       type: 'broadcast',
