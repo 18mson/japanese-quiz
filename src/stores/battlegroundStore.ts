@@ -244,12 +244,12 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         if (iAmAlive.value && mySubmissionStatus.value === null) {
           handleTimeout();
         }
-        if (isHost.value && phase.value === 'round_active') {
+        if (isHost.value && (phase.value === 'round_active' || phase.value === 'round_preparing')) {
           setTimeout(async () => {
-            if (phase.value === 'round_active' && roomId.value && activeRound.value) {
+            if (roomId.value && activeRound.value) {
               await forceEvaluateWithTimeouts(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel, playerProgress.value);
             }
-          }, 2000);
+          }, 800);
         }
       }
     };

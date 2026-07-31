@@ -13,7 +13,8 @@ export async function evaluateRoundForHost(
   roomId: string,
   activeRound: ActiveRound,
   alivePlayers: RoomPlayer[],
-  realtimeChannel: any
+  realtimeChannel: any,
+  force: boolean = false
 ): Promise<void> {
   const roundId = activeRound.id;
   const aliveIds = alivePlayers.map(p => p.player_id);
@@ -24,13 +25,13 @@ export async function evaluateRoundForHost(
     .select('*')
     .eq('round_id', roundId);
 
-  if (!subs) return;
-
-  const submittedIds = new Set(subs.map((s: any) => s.player_id));
+  const submissionList = subs ?? [];
+  const submittedIds = new Set(submissionList.map((s: any) => s.player_id));
   const allSubmitted = aliveIds.every(id => submittedIds.has(id));
-  if (!allSubmitted) return;
 
-  await runElimination(roomId, activeRound, alivePlayers, subs, realtimeChannel);
+  if (!allSubmitted && !force) return;
+
+  await runElimination(roomId, activeRound, alivePlayers, submissionList, realtimeChannel);
 }
 
 export async function forceEvaluateWithTimeouts(
@@ -78,7 +79,7 @@ export async function forceEvaluateWithTimeouts(
       }, { onConflict: 'round_id,player_id' });
   }
 
-  await evaluateRoundForHost(roomId, activeRound, alivePlayers, realtimeChannel);
+  await evaluateRoundForHost(roomId, activeRound, alivePlayers, realtimeChannel, true);
 }
 
 async function runElimination(
