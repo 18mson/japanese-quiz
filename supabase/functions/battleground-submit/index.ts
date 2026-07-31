@@ -20,6 +20,9 @@ interface SubmitPayload {
   roundId: string;
   playerId: string;
   typedInput: string;
+  completedSentences?: number;
+  totalSentences?: number;
+  progressPercentage?: number;
 }
 
 interface RomajiUnit {
@@ -167,7 +170,7 @@ Deno.serve(async (req: Request) => {
     const supabase = createClient(supabaseUrl, serviceRoleKey);
 
     const body: SubmitPayload = await req.json();
-    const { roomId, roundId, playerId, typedInput } = body;
+    const { roomId, roundId, playerId, typedInput, completedSentences, totalSentences, progressPercentage } = body;
 
     if (!roomId || !roundId || !playerId || typedInput === undefined) {
       return new Response(JSON.stringify({ error: 'Missing required fields' }), {
@@ -254,6 +257,9 @@ Deno.serve(async (req: Request) => {
         is_valid: isValid,
         completion_time_ms: completionTimeMs,
         status: submissionStatus,
+        completed_sentences: completedSentences ?? 0,
+        total_sentences: totalSentences ?? 5,
+        progress_percentage: progressPercentage ?? 0,
         submitted_at: new Date().toISOString(),
       }, { onConflict: 'round_id,player_id' });
 

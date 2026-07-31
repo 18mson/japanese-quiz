@@ -110,10 +110,10 @@ async function runElimination(
     let total = totalSentencesInRound;
     let pct = sub.is_valid ? 100 : 0;
 
-    if (typeof sub.progress_percentage === 'number' && sub.progress_percentage > 0) {
+    if (typeof sub.progress_percentage === 'number') {
       pct = sub.progress_percentage;
     }
-    if (typeof sub.completed_sentences === 'number' && sub.completed_sentences > 0) {
+    if (typeof sub.completed_sentences === 'number') {
       completed = sub.completed_sentences;
     }
 
