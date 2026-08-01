@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers } from '@lucide/vue';
 
@@ -90,6 +90,8 @@ const modesList: QuizModeDef[] = [
 
 const activeModeIndex = ref(0);
 
+const activeMode = computed(() => modesList[activeModeIndex.value]);
+
 function selectMode(index: number) {
   if (index < 0 || index >= modesList.length) return;
   activeModeIndex.value = index;
@@ -102,6 +104,53 @@ function selectMode(index: number) {
 
 function selectSubType(type: string) {
   characterTypes.value = type;
+}
+
+// Mouse Wheel Scroll & Touch Drag Gesture Support for Mode Wheel
+let isWheelCooldown = false;
+
+function handleWheel(e: WheelEvent) {
+  if (Math.abs(e.deltaY) < 15 || isWheelCooldown) return;
+
+  if (e.deltaY > 0) {
+    if (activeModeIndex.value < modesList.length - 1) {
+      selectMode(activeModeIndex.value + 1);
+      isWheelCooldown = true;
+      setTimeout(() => { isWheelCooldown = false; }, 250);
+    }
+  } else if (e.deltaY < 0) {
+    if (activeModeIndex.value > 0) {
+      selectMode(activeModeIndex.value - 1);
+      isWheelCooldown = true;
+      setTimeout(() => { isWheelCooldown = false; }, 250);
+    }
+  }
+}
+
+let touchStartY = 0;
+
+function handleTouchStart(e: TouchEvent) {
+  if (e.touches && e.touches.length > 0) {
+    touchStartY = e.touches[0].clientY;
+  }
+}
+
+function handleTouchEnd(e: TouchEvent) {
+  if (!e.changedTouches || e.changedTouches.length === 0) return;
+  const touchEndY = e.changedTouches[0].clientY;
+  const deltaY = touchStartY - touchEndY;
+
+  if (Math.abs(deltaY) > 30) {
+    if (deltaY > 0) {
+      if (activeModeIndex.value < modesList.length - 1) {
+        selectMode(activeModeIndex.value + 1);
+      }
+    } else {
+      if (activeModeIndex.value > 0) {
+        selectMode(activeModeIndex.value - 1);
+      }
+    }
+  }
 }
 
 // Position cards along an arc trajectory hugging the red semi-circle
@@ -214,19 +263,28 @@ const handleStart = async () => {
           Pilih Mode Quiz
         </span>
         <span class="text-xs text-gray-400 font-medium">
-          Klik mode untuk memilih
+          Klik, Scroll, atau Usap untuk memutar mode
         </span>
       </h2>
 
-      <!-- MAIN CONTAINER: LIGHT CLEAN THEME MATCHING REFERENCE SKETCH -->
-      <div class="relative w-full rounded-3xl bg-white border border-gray-200 shadow-sm p-2.5 sm:p-6 md:p-8 overflow-hidden min-h-[460px] sm:min-h-[500px] flex items-center justify-center">
+      <!-- MAIN CONTAINER: LIGHT CLEAN THEME MATCHING REFERENCE SKETCH (SUPPORTS SCROLL & TOUCH SWIPE) -->
+      <div 
+        @wheel.prevent="handleWheel"
+        @touchstart="handleTouchStart"
+        @touchend="handleTouchEnd"
+        class="relative w-full rounded-3xl bg-white border border-gray-200 shadow-sm p-2.5 sm:p-6 md:p-8 overflow-hidden min-h-[460px] sm:min-h-[500px] flex items-center justify-center select-none"
+      >
         
-        <!-- Left Red Semi-Circle (Setengah Lingkaran Protruding from Container Left Edge) -->
+        <!-- Left Red Semi-Circle (Contains Active Mode Icon) -->
         <div class="absolute -left-14 xs:-left-18 sm:-left-36 md:-left-40 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
-          <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] rounded-full bg-gradient-to-br from-red-500 via-rose-500 to-rose-600 flex items-center justify-end pr-6 sm:pr-12 md:pr-16 shadow-lg shadow-rose-500/20 border-2 sm:border-4 border-white">
-            <div class="text-white font-black text-[10px] xs:text-xs sm:text-xl md:text-2xl leading-tight text-center select-none tracking-tight">
-              Pilih<br/>Mode
-            </div>
+          <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] rounded-full bg-gradient-to-br from-red-500 via-rose-500 to-rose-600 flex items-center justify-end pr-5 sm:pr-12 md:pr-16 shadow-lg shadow-rose-500/20 border-2 sm:border-4 border-white overflow-hidden">
+            <Transition name="disc-slide" mode="out-in">
+              <component 
+                :is="activeMode.icon" 
+                :key="activeMode.id"
+                class="w-6 h-6 xs:w-8 xs:h-8 sm:w-16 sm:h-16 text-white drop-shadow-md select-none" 
+              />
+            </Transition>
           </div>
         </div>
 
@@ -246,27 +304,16 @@ const handleStart = async () => {
                 : 'bg-white border-gray-800/90 text-gray-800 p-2.5 sm:p-3 hover:border-gray-900 hover:bg-gray-50'
             ]"
           >
-            <!-- Card Header (Always visible & smoothly transitions) -->
+            <!-- Card Header (Title & optional Badge) -->
             <div class="flex items-center justify-between transition-all duration-500">
-              <div class="flex items-center gap-1.5 sm:gap-2">
-                <component 
-                  :is="mode.icon" 
-                  :class="[
-                    'transition-all duration-500 flex-shrink-0',
-                    index === activeModeIndex
-                      ? (mode.id === 'battleground' ? 'w-4 h-4 sm:w-5 sm:h-5 text-rose-600' : 'w-4 h-4 sm:w-5 sm:h-5 text-indigo-600')
-                      : 'w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600'
-                  ]" 
-                />
-                <h3 
-                  :class="[
-                    'font-extrabold tracking-tight transition-all duration-500 text-gray-900 truncate',
-                    index === activeModeIndex ? 'text-base sm:text-2xl font-black' : 'text-xs sm:text-base font-bold'
-                  ]"
-                >
-                  {{ mode.title }}
-                </h3>
-              </div>
+              <h3 
+                :class="[
+                  'font-extrabold tracking-tight transition-all duration-500 text-gray-900 truncate',
+                  index === activeModeIndex ? 'text-base sm:text-2xl font-black' : 'text-xs sm:text-base font-bold'
+                ]"
+              >
+                {{ mode.title }}
+              </h3>
               <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
                 {{ mode.badge }}
               </span>
@@ -276,37 +323,34 @@ const handleStart = async () => {
             <div 
               class="transition-all duration-500 ease-out overflow-hidden"
               :style="{
-                maxHeight: index === activeModeIndex ? '220px' : '0px',
+                maxHeight: index === activeModeIndex ? '200px' : '0px',
                 opacity: index === activeModeIndex ? '1' : '0',
                 marginTop: index === activeModeIndex ? '8px' : '0px',
                 transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
               }"
             >
-              <!-- 2-Column Content: Description on Left, Vertical SubTypes List on Right -->
-              <div class="flex items-start justify-between gap-2.5 sm:gap-3 pt-2 border-t border-gray-100">
-                <!-- Left: Description -->
-                <p class="text-[11px] sm:text-xs text-gray-600 font-medium leading-relaxed flex-1">
-                  {{ mode.desc }}
-                </p>
+              <!-- Description -->
+              <p class="text-[11px] sm:text-sm text-gray-600 mb-2.5 sm:mb-3 font-medium leading-relaxed">
+                {{ mode.desc }}
+              </p>
 
-                <!-- Right: Vertical SubTypes List -->
-                <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex flex-col gap-1.5 flex-shrink-0 min-w-[95px] sm:min-w-[125px]">
-                  <button
-                    v-for="sub in mode.subTypes"
-                    :key="sub.key"
-                    type="button"
-                    @click.stop="selectSubType(sub.key)"
-                    :class="[
-                      'px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-between gap-1 w-full text-left',
-                      characterTypes === sub.key
-                        ? 'bg-gray-900 text-white shadow-md'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    ]"
-                  >
-                    <span>{{ sub.label }}</span>
-                    <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
-                  </button>
-                </div>
+              <!-- Sub-types buttons (Horizontal list under desc) -->
+              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-gray-100 flex-wrap">
+                <button
+                  v-for="sub in mode.subTypes"
+                  :key="sub.key"
+                  type="button"
+                  @click.stop="selectSubType(sub.key)"
+                  :class="[
+                    'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
+                    characterTypes === sub.key
+                      ? 'bg-gray-900 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ]"
+                >
+                  <span>{{ sub.label }}</span>
+                  <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
+                </button>
               </div>
             </div>
           </div>
@@ -392,5 +436,21 @@ const handleStart = async () => {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Disc Slide Icon Transition (Rolling from Top to Bottom) */
+.disc-slide-enter-active,
+.disc-slide-leave-active {
+  transition: all 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.disc-slide-enter-from {
+  opacity: 0;
+  transform: translateY(-36px) translateX(12px) scale(0.5) rotate(-30deg);
+}
+
+.disc-slide-leave-to {
+  opacity: 0;
+  transform: translateY(36px) translateX(-12px) scale(0.5) rotate(30deg);
 }
 </style>
