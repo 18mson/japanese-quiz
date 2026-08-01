@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = withDefaults(defineProps<{
   theme?: 'light' | 'dark';
   disabled?: boolean;
   showEnter?: boolean;
   enterLabel?: string;
+  enableSound?: boolean;
 }>(), {
   theme: 'light',
   disabled: false,
   showEnter: true,
   enterLabel: 'SUBMIT',
+  enableSound: true,
 });
 
 const emit = defineEmits<{
@@ -23,8 +25,52 @@ const row1 = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
 const row2 = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
 const row3 = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
 
+const activeKey = ref<string | null>(null);
+let activeKeyTimer: ReturnType<typeof setTimeout> | null = null;
+let audioCtx: AudioContext | null = null;
+
+function playClickSound() {
+  if (!props.enableSound) return;
+  try {
+    if (typeof window === 'undefined') return;
+    const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioCtxClass) return;
+    if (!audioCtx) {
+      audioCtx = new AudioCtxClass();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(550, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, audioCtx.currentTime + 0.015);
+
+    gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.015);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.015);
+  } catch {}
+}
+
+function triggerVisualEffect(keyId: string) {
+  activeKey.value = keyId;
+  if (activeKeyTimer) clearTimeout(activeKeyTimer);
+  activeKeyTimer = setTimeout(() => {
+    activeKey.value = null;
+  }, 120);
+}
+
 function handleKeyPress(char: string) {
   if (props.disabled) return;
+  triggerVisualEffect(char);
+  playClickSound();
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     try { navigator.vibrate(10); } catch {}
   }
@@ -33,6 +79,8 @@ function handleKeyPress(char: string) {
 
 function handleBackspace() {
   if (props.disabled) return;
+  triggerVisualEffect('backspace');
+  playClickSound();
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     try { navigator.vibrate(15); } catch {}
   }
@@ -41,6 +89,8 @@ function handleBackspace() {
 
 function handleEnter() {
   if (props.disabled) return;
+  triggerVisualEffect('enter');
+  playClickSound();
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     try { navigator.vibrate(15); } catch {}
   }
@@ -55,18 +105,18 @@ const containerClass = computed(() => isDark.value
 );
 
 const keyBaseClass = computed(() => isDark.value
-  ? 'bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border-slate-700/60 active:bg-indigo-600 active:text-white active:scale-95 active:shadow-indigo-500/50'
-  : 'bg-slate-100 hover:bg-slate-200/80 text-slate-800 border-slate-200/80 active:bg-indigo-600 active:text-white active:scale-95 active:shadow-indigo-500/30 shadow-xs'
+  ? 'bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border-slate-700/60 active:bg-indigo-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(99,102,241,0.6)]'
+  : 'bg-slate-100 hover:bg-slate-200/80 text-slate-800 border-slate-200/80 active:bg-indigo-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(79,70,229,0.5)] shadow-xs'
 );
 
 const backspaceClass = computed(() => isDark.value
-  ? 'bg-slate-800/90 hover:bg-rose-900/60 text-rose-400 border-rose-500/30 active:bg-rose-600 active:text-white active:scale-95'
-  : 'bg-rose-50 hover:bg-rose-100 text-rose-600 border-rose-200 active:bg-rose-600 active:text-white active:scale-95 shadow-xs'
+  ? 'bg-slate-800/90 hover:bg-rose-900/60 text-rose-400 border-rose-500/30 active:bg-rose-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(244,63,94,0.6)]'
+  : 'bg-rose-50 hover:bg-rose-100 text-rose-600 border-rose-200 active:bg-rose-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(225,29,72,0.5)] shadow-xs'
 );
 
 const enterClass = computed(() => isDark.value
-  ? 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-500/50 active:bg-indigo-700 active:scale-95 shadow-md shadow-indigo-600/30 font-bold'
-  : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-600 active:bg-indigo-800 active:scale-95 shadow-md shadow-indigo-600/20 font-bold'
+  ? 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-500/50 active:bg-indigo-700 active:scale-90 shadow-md shadow-indigo-600/30 font-bold'
+  : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-600 active:bg-indigo-800 active:scale-90 shadow-md shadow-indigo-600/20 font-bold'
 );
 </script>
 
@@ -89,8 +139,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
       >
         {{ key }}
       </button>
@@ -105,8 +158,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
       >
         {{ key }}
       </button>
@@ -120,8 +176,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(',')"
         @mousedown.prevent="handleKeyPress(',')"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl border transition-all flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === ',' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
         title="Comma"
       >
         ,
@@ -134,8 +193,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
       >
         {{ key }}
       </button>
@@ -146,8 +208,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleBackspace"
         @mousedown.prevent="handleBackspace"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-base sm:text-lg border transition-all flex items-center justify-center cursor-pointer"
-        :class="backspaceClass"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          backspaceClass,
+          activeKey === 'backspace' ? '!scale-90 !bg-rose-600 !text-white !ring-2 !ring-rose-400 shadow-md' : ''
+        ]"
         title="Backspace"
       >
         ⌫
@@ -161,8 +226,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress('-')"
         @mousedown.prevent="handleKeyPress('-')"
-        class="w-11 sm:w-14 h-11 sm:h-12 rounded-lg font-bold text-xl border flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="w-11 sm:w-14 h-11 sm:h-12 rounded-lg font-bold text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === '-' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
       >
         -
       </button>
@@ -171,8 +239,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(' ')"
         @mousedown.prevent="handleKeyPress(' ')"
-        class="flex-1 h-11 sm:h-12 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border flex items-center justify-center cursor-pointer"
-        :class="keyBaseClass"
+        class="flex-1 h-11 sm:h-12 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        :class="[
+          keyBaseClass,
+          activeKey === ' ' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+        ]"
       >
         SPACE
       </button>
@@ -182,8 +253,11 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleEnter"
         @mousedown.prevent="handleEnter"
-        class="w-20 sm:w-24 h-11 sm:h-12 rounded-lg text-xs sm:text-sm tracking-wider uppercase border flex items-center justify-center gap-1 cursor-pointer"
-        :class="enterClass"
+        class="w-20 sm:w-24 h-11 sm:h-12 rounded-lg text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform"
+        :class="[
+          enterClass,
+          activeKey === 'enter' ? '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg' : ''
+        ]"
       >
         <span>{{ enterLabel }}</span>
         <span class="text-sm font-normal">⏎</span>
