@@ -42,23 +42,30 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
 const openBattleground = () => {
   showBattleground.value = true;
   localStorage.setItem('active_screen', 'battleground');
-  if (!window.location.search.includes('mode=battleground')) {
-    history.pushState(null, '', '?mode=battleground');
+  if (!window.location.pathname.includes('/battleground')) {
+    history.pushState(null, '', '/battleground');
   }
 };
 
 const closeBattleground = () => {
   showBattleground.value = false;
   localStorage.removeItem('active_screen');
-  if (window.location.search.includes('mode=battleground')) {
-    history.pushState(null, '', window.location.pathname);
+  if (window.location.pathname.includes('/battleground') || window.location.search.includes('mode=battleground')) {
+    history.pushState(null, '', '/');
   }
 };
 
 const checkRouteState = () => {
+  const pathname = window.location.pathname;
   const searchParams = new URLSearchParams(window.location.search);
+  const hash = window.location.hash;
   const savedScreen = localStorage.getItem('active_screen');
-  if (searchParams.get('mode') === 'battleground' || savedScreen === 'battleground') {
+  if (
+    pathname.includes('/battleground') ||
+    searchParams.get('mode') === 'battleground' ||
+    hash === '#battleground' ||
+    savedScreen === 'battleground'
+  ) {
     showBattleground.value = true;
   }
 };
@@ -95,8 +102,8 @@ const goToHome = () => {
 
 <template>
   <div class="h-full w-screen bg-slate-50 font-sans flex flex-col overflow-hidden select-none">
-    <!-- Top Global App Bar -->
-    <header class="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <!-- Top Global App Bar (Hidden when Battleground is active) -->
+    <header v-if="!showBattleground" class="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
         <span class="text-xl">🇯🇵</span>
         <span class="font-extrabold text-gray-900 tracking-tight text-sm sm:text-base">Nihongo Master</span>

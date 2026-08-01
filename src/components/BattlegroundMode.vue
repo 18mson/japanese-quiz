@@ -35,7 +35,7 @@ const isSpectating = computed(() =>
 
 <template>
   <div
-    class="w-full h-full min-h-screen flex flex-col bg-slate-950 text-white relative overflow-hidden"
+    class="fixed inset-0 z-50 flex flex-col bg-slate-950 text-white overflow-hidden"
     tabindex="-1"
     @keydown="handleKeydown"
   >
