@@ -210,10 +210,6 @@ const powerUpType = ref<'freeze' | 'backward' | 'storm'>('freeze');
 const failedPowerUpUnits = ref<Set<number>>(new Set());
 const claimedPowerUpUnits = ref<Set<number>>(new Set());
 
-// Sender Animation State
-const senderPowerUpNotice = ref<string | null>(null);
-const isShootingBeam = ref(false);
-
 // Victim Power-Up Effects State
 const isFrozen = ref(false);
 const freezeCountdown = ref(3.0);
@@ -246,22 +242,8 @@ watch(() => store.latestPowerUpEvent, (evt) => {
   if (!evt) return;
   if (evt.senderId !== store.myPlayerId) {
     applyVictimPowerUp(evt.type, evt.senderName);
-  } else {
-    triggerSenderBeamAnimation(evt.type);
   }
 });
-
-function triggerSenderBeamAnimation(type: 'freeze' | 'backward' | 'storm') {
-  isShootingBeam.value = true;
-  const nameMap = { freeze: 'FREEZE ❄️', backward: 'BACKWARD ⏪', storm: 'STORM ⚡' };
-  senderPowerUpNotice.value = `SERANGAN ${nameMap[type]} BERHASIL DILUNCURKAN!`;
-  setTimeout(() => {
-    isShootingBeam.value = false;
-  }, 1200);
-  setTimeout(() => {
-    senderPowerUpNotice.value = null;
-  }, 2500);
-}
 function getRainStyle(n: number) {
   const left = (n * 2.5) % 100;
   const delay = (n * 0.08) % 1.0;
@@ -579,22 +561,6 @@ function preventPaste(e: ClipboardEvent) {
 
 <template>
   <div class="flex flex-col h-full bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white overflow-hidden relative select-none">
-
-    <!-- Sender Notice Banner -->
-    <div v-if="senderPowerUpNotice" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 font-black text-[11px] sm:text-xs px-4 sm:px-5 py-2 rounded-full shadow-2xl shadow-orange-500/50 animate-bounce flex items-center gap-1.5 border border-amber-300">
-      <Zap class="w-3.5 h-3.5 animate-spin text-slate-950" />
-      <span>{{ senderPowerUpNotice }}</span>
-    </div>
-
-    <!-- Sender Beam Animation FX -->
-    <div v-if="isShootingBeam" class="fixed inset-0 pointer-events-none z-40 overflow-hidden">
-      <!-- Glow burst ring -->
-      <img src="/battle/circle_rings_b.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] opacity-60 mix-blend-screen animate-beam-ring" style="filter: hue-rotate(45deg) brightness(2);" />
-      <!-- Core glow pulse -->
-      <img src="/battle/circle_b_noise.png" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-50 mix-blend-screen animate-pulse" style="filter: hue-rotate(30deg) brightness(3) saturate(2);" />
-      <div class="absolute inset-0 bg-amber-400/8 animate-ping"></div>
-    </div>
-
     <!-- Round Header Bar -->
     <div class="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white/5 border-b border-white/10 flex-shrink-0 z-10">
       <div class="flex items-center gap-1.5 sm:gap-2">
@@ -690,14 +656,20 @@ function preventPaste(e: ClipboardEvent) {
           <template v-for="(unit, idx) in units" :key="idx">
             <div class="relative inline-flex flex-col items-center">
 
-              <!-- Power-Up Badge Icon above target word unit (Hidden once claimed or hangus) -->
+              <!-- Power-Up Icon Badge above target word unit (Hidden once claimed or hangus) -->
               <div
                 v-if="idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)"
-                class="absolute -top-5 sm:-top-7 left-1/2 -translate-x-1/2 flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black tracking-wider uppercase shadow-md transition whitespace-nowrap z-20 bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 animate-bounce"
+                class="absolute -top-6 sm:-top-7 left-1/2 -translate-x-1/2 flex items-center justify-center w-6 sm:w-7 h-6 sm:h-7 rounded-full text-xs sm:text-sm font-bold shadow-lg transition-all animate-bounce z-20 backdrop-blur-md"
+                :class="[
+                  powerUpType === 'freeze' ? 'bg-cyan-500/30 border border-cyan-400/60 text-cyan-200 shadow-cyan-500/40 ring-2 ring-cyan-400/20' :
+                  (powerUpType === 'backward' ? 'bg-rose-500/30 border border-rose-400/60 text-rose-200 shadow-rose-500/40 ring-2 ring-rose-400/20' :
+                  'bg-amber-500/30 border border-amber-400/60 text-amber-200 shadow-amber-500/40 ring-2 ring-amber-400/20')
+                ]"
+                :title="powerUpType"
               >
-                <span v-if="powerUpType === 'freeze'">❄️ FREEZE</span>
-                <span v-else-if="powerUpType === 'backward'">⏪ REWIND</span>
-                <span v-else>⚡ STORM</span>
+                <span v-if="powerUpType === 'freeze'">❄️</span>
+                <span v-else-if="powerUpType === 'backward'">⏪</span>
+                <span v-else>⚡</span>
               </div>
 
               <!-- Completed Japanese character/word -->
