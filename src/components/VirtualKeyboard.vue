@@ -112,8 +112,21 @@ const enterClass = computed(() => isDark.value
       </button>
     </div>
 
-    <!-- Row 3 -->
-    <div class="flex justify-center gap-1 w-full">
+    <!-- Row 3: Comma, Z X C V B N M, Backspace -->
+    <div class="flex justify-between gap-1 w-full">
+      <!-- Comma key (flush to the left edge, matching Q on Row 1) -->
+      <button
+        type="button"
+        :disabled="disabled"
+        @touchstart.prevent="handleKeyPress(',')"
+        @mousedown.prevent="handleKeyPress(',')"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl border transition-all flex items-center justify-center cursor-pointer"
+        :class="keyBaseClass"
+        title="Comma"
+      >
+        ,
+      </button>
+
       <button
         v-for="key in row3"
         :key="key"
@@ -127,13 +140,13 @@ const enterClass = computed(() => isDark.value
         {{ key }}
       </button>
 
-      <!-- Backspace key -->
+      <!-- Backspace key (flush to the right edge, matching P on Row 1) -->
       <button
         type="button"
         :disabled="disabled"
         @touchstart.prevent="handleBackspace"
         @mousedown.prevent="handleBackspace"
-        class="flex-1 max-w-[52px] sm:max-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-base sm:text-lg border transition-all flex items-center justify-center cursor-pointer"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-base sm:text-lg border transition-all flex items-center justify-center cursor-pointer"
         :class="backspaceClass"
         title="Backspace"
       >
