@@ -5,10 +5,12 @@ const props = withDefaults(defineProps<{
   theme?: 'light' | 'dark';
   disabled?: boolean;
   showEnter?: boolean;
+  enterLabel?: string;
 }>(), {
   theme: 'light',
   disabled: false,
   showEnter: true,
+  enterLabel: 'SUBMIT',
 });
 
 const emit = defineEmits<{
@@ -48,8 +50,8 @@ function handleEnter() {
 const isDark = computed(() => props.theme === 'dark');
 
 const containerClass = computed(() => isDark.value
-  ? 'bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 text-white shadow-2xl'
-  : 'bg-white/95 backdrop-blur-xl border-t border-slate-200/90 text-slate-900 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]'
+  ? 'bg-slate-950/98 backdrop-blur-xl border-t border-slate-800/90 text-white shadow-2xl'
+  : 'bg-white/98 backdrop-blur-xl border-t border-slate-200/90 text-slate-900 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]'
 );
 
 const keyBaseClass = computed(() => isDark.value
@@ -64,15 +66,20 @@ const backspaceClass = computed(() => isDark.value
 
 const enterClass = computed(() => isDark.value
   ? 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-500/50 active:bg-indigo-700 active:scale-95 shadow-md shadow-indigo-600/30 font-bold'
-  : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-600 active:bg-indigo-800 active:scale-95 shadow-xs font-bold'
+  : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-600 active:bg-indigo-800 active:scale-95 shadow-md shadow-indigo-600/20 font-bold'
 );
 </script>
 
 <template>
   <div
-    class="w-full p-1.5 pb-3 sm:p-2.5 flex flex-col gap-1.5 select-none z-40 touch-none transition-colors duration-200"
+    class="w-full p-1.5 pb-4 sm:p-2.5 flex flex-col gap-1.5 select-none z-40 touch-none transition-colors duration-200"
     :class="[containerClass, { 'opacity-60 pointer-events-none': disabled }]"
   >
+    <!-- Custom Top Content / Action Bar Slot -->
+    <div v-if="$slots.top" class="w-full px-1 pb-1 flex items-center justify-between gap-2 border-b border-slate-200/60 dark:border-slate-800/60 mb-0.5">
+      <slot name="top" />
+    </div>
+
     <!-- Row 1 -->
     <div class="flex justify-center gap-1 w-full">
       <button
@@ -134,7 +141,7 @@ const enterClass = computed(() => isDark.value
       </button>
     </div>
 
-    <!-- Row 4: Hyphen, Space bar & Enter -->
+    <!-- Row 4: Hyphen, Space bar & Enter/Submit -->
     <div class="flex justify-center gap-1.5 w-full px-1">
       <button
         type="button"
@@ -162,10 +169,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleEnter"
         @mousedown.prevent="handleEnter"
-        class="w-16 sm:w-20 h-11 sm:h-12 rounded-lg text-xs sm:text-sm tracking-wider uppercase border flex items-center justify-center gap-1 cursor-pointer"
+        class="w-20 sm:w-24 h-11 sm:h-12 rounded-lg text-xs sm:text-sm tracking-wider uppercase border flex items-center justify-center gap-1 cursor-pointer"
         :class="enterClass"
       >
-        <span>ENTER</span>
+        <span>{{ enterLabel }}</span>
         <span class="text-sm font-normal">⏎</span>
       </button>
     </div>

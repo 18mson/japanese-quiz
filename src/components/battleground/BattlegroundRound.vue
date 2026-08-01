@@ -391,6 +391,7 @@ function handleInput(event: Event) {
 }
 
 function processTyped(typed: string) {
+  focusInput();
   if (!currentUnit.value || !store.activeRound || isPenaltyActive.value || isFrozen.value) return;
 
   autoSkipHyphens();

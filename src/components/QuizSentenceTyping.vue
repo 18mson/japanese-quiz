@@ -421,17 +421,19 @@ const handleVirtualKey = (char: string) => {
   userInput.value += char;
   totalKeystrokes.value++;
   evaluateInput();
+  focusInput();
 };
 
 const handleVirtualBackspace = () => {
   if (userInput.value.length > 0) {
     userInput.value = userInput.value.slice(0, -1);
     evaluateInput();
+    focusInput();
   }
 };
 
 const handleVirtualEnter = () => {
-  // If typed sentence is complete, input advances automatically
+  focusInput();
 };
 
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -515,6 +517,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
           ref="inputRef"
           v-model="userInput"
           type="text"
+          inputmode="none"
           placeholder="Ketik romaji karakter di atas..."
           class="w-full px-5 py-3.5 text-lg font-mono text-center bg-gray-50 border-2 rounded-2xl transition-all duration-200 outline-none focus:bg-white shadow-inner"
           :class="[
@@ -539,13 +542,19 @@ const handleKeyDown = (e: KeyboardEvent) => {
   </div>
 
   <!-- Mobile Virtual Keyboard -->
-  <div class="block sm:hidden fixed bottom-0 left-0 right-0 z-30">
+  <div class="block sm:hidden fixed bottom-0 left-0 right-0 z-40">
     <VirtualKeyboard
       theme="light"
       :show-enter="false"
       @key="handleVirtualKey"
       @backspace="handleVirtualBackspace"
       @enter="handleVirtualEnter"
-    />
+    >
+      <template #top>
+        <span class="text-[11px] font-semibold text-slate-400 mx-auto">
+          Ketik romaji karakter kalimat di atas
+        </span>
+      </template>
+    </VirtualKeyboard>
   </div>
 </template>

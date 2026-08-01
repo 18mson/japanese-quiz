@@ -47,16 +47,19 @@ const handleEnter = () => {
 const handleVirtualKey = (char: string) => {
   if (isAnswered.value) return;
   userInput.value += char;
+  focusInput();
 };
 
 const handleVirtualBackspace = () => {
   if (isAnswered.value) return;
   userInput.value = userInput.value.slice(0, -1);
+  focusInput();
 };
 
 const handleVirtualEnter = () => {
   if (isAnswered.value) return;
   handleEnter();
+  focusInput();
 };
 
 const isAnswered = computed(() => quizStore.selectedAnswer !== null);
@@ -84,6 +87,7 @@ const isTypo = computed(() => {
         ref="inputRef"
         v-model="userInput"
         type="text"
+        inputmode="none"
         placeholder="Type romaji here..."
         class="w-full px-6 py-4 text-xl text-center bg-white border-2 border-gray-300 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100/50 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
         :class="{
@@ -163,14 +167,30 @@ const isTypo = computed(() => {
   </div>
 
   <!-- Mobile Virtual Keyboard -->
-  <div v-if="!isAnswered" class="block sm:hidden fixed bottom-0 left-0 right-0 z-30">
+  <div v-if="!isAnswered" class="block sm:hidden fixed bottom-0 left-0 right-0 z-40">
     <VirtualKeyboard
       theme="light"
+      enter-label="SUBMIT"
       :disabled="isAnswered"
       @key="handleVirtualKey"
       @backspace="handleVirtualBackspace"
       @enter="handleVirtualEnter"
-    />
+    >
+      <template #top>
+        <button
+          type="button"
+          class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-700 font-bold rounded-lg text-xs transition border border-gray-300 flex items-center gap-1 cursor-pointer shadow-xs"
+          @click="quizStore.submitAnswer('')"
+        >
+          <span>Skip</span>
+          <span class="text-[10px]">⏭</span>
+        </button>
+
+        <span class="text-[11px] font-medium text-slate-400">
+          Ketik romaji & tekan Submit ⏎
+        </span>
+      </template>
+    </VirtualKeyboard>
   </div>
 </template>
 
