@@ -89,11 +89,17 @@ const modesList: QuizModeDef[] = [
 ];
 
 const activeModeIndex = ref(0);
+const scrollDirection = ref<'down' | 'up'>('down');
 
 const activeMode = computed(() => modesList[activeModeIndex.value]);
 
 function selectMode(index: number) {
   if (index < 0 || index >= modesList.length) return;
+  if (index > activeModeIndex.value) {
+    scrollDirection.value = 'up';
+  } else if (index < activeModeIndex.value) {
+    scrollDirection.value = 'down';
+  }
   activeModeIndex.value = index;
   const m = modesList[index];
   selectedLevel.value = m.level;
@@ -281,7 +287,7 @@ const handleStart = async () => {
           <!-- Left Red Semi-Circle (Contains Active Mode Icon) -->
           <div class="absolute -left-20 xs:-left-20 sm:-left-28 md:-left-32 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
             <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[230px] sm:h-[230px] md:w-[260px] md:h-[260px] rounded-full bg-gradient-to-br from-red-500 via-rose-500 to-rose-600 flex items-center justify-end pr-8 sm:pr-10 md:pr-14 shadow-lg shadow-rose-500/20 border-2 sm:border-4 border-white overflow-hidden">
-              <Transition name="disc-slide" mode="out-in">
+              <Transition :name="scrollDirection === 'down' ? 'disc-slide-down' : 'disc-slide-up'" mode="out-in">
                 <component 
                   :is="activeMode.icon" 
                   :key="activeMode.id"
@@ -448,19 +454,32 @@ const handleStart = async () => {
   to { opacity: 1; }
 }
 
-/* Disc Slide Icon Transition (Rolling from Top to Bottom) */
-.disc-slide-enter-active,
-.disc-slide-leave-active {
-  transition: all 0.38s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Disc Slide Icon Transition - Selecting card below active (from top down) */
+.disc-slide-down-enter-active,
+.disc-slide-down-leave-active,
+.disc-slide-up-enter-active,
+.disc-slide-up-leave-active {
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.disc-slide-enter-from {
+.disc-slide-down-enter-from {
   opacity: 0;
   transform: translateY(-36px) translateX(12px) scale(0.5) rotate(-30deg);
 }
 
-.disc-slide-leave-to {
+.disc-slide-down-leave-to {
   opacity: 0;
   transform: translateY(36px) translateX(-12px) scale(0.5) rotate(30deg);
+}
+
+/* Disc Slide Icon Transition - Selecting card above active (from bottom up) */
+.disc-slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(36px) translateX(-12px) scale(0.5) rotate(30deg);
+}
+
+.disc-slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-36px) translateX(12px) scale(0.5) rotate(-30deg);
 }
 </style>
