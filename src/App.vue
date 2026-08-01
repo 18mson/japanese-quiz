@@ -39,14 +39,41 @@ const handleGlobalKeydown = (event: KeyboardEvent) => {
   }
 };
 
+const openBattleground = () => {
+  showBattleground.value = true;
+  localStorage.setItem('active_screen', 'battleground');
+  if (!window.location.search.includes('mode=battleground')) {
+    history.pushState(null, '', '?mode=battleground');
+  }
+};
+
+const closeBattleground = () => {
+  showBattleground.value = false;
+  localStorage.removeItem('active_screen');
+  if (window.location.search.includes('mode=battleground')) {
+    history.pushState(null, '', window.location.pathname);
+  }
+};
+
+const checkRouteState = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const savedScreen = localStorage.getItem('active_screen');
+  if (searchParams.get('mode') === 'battleground' || savedScreen === 'battleground') {
+    showBattleground.value = true;
+  }
+};
+
 onMounted(async () => {
   window.addEventListener('keydown', handleGlobalKeydown);
+  window.addEventListener('popstate', checkRouteState);
+  checkRouteState();
   await authStore.checkSession();
   quizStore.startQuiz(1);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleGlobalKeydown);
+  window.removeEventListener('popstate', checkRouteState);
 });
 
 const startQuiz = () => {
@@ -59,13 +86,10 @@ const handleStartWeakQuiz = async ({ type }: { type: string }) => {
   quizStarted.value = true;
 };
 
-const openBattleground = () => {
-  showBattleground.value = true;
-};
-
 const goToHome = () => {
   quizStarted.value = false;
   quizStore.quizCompleted = false;
+  closeBattleground();
 };
 </script>
 
@@ -75,7 +99,7 @@ const goToHome = () => {
     <header class="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
         <span class="text-xl">🇯🇵</span>
-        <span class="font-extrabold text-gray-900 tracking-tight text-sm sm:text-base">Japanese Quiz</span>
+        <span class="font-extrabold text-gray-900 tracking-tight text-sm sm:text-base">Nihongo Master</span>
       </div>
 
       <div class="flex items-center gap-2">
@@ -138,7 +162,17 @@ const goToHome = () => {
     />
 
     <!-- Main Screens -->
-    <StartScreen v-if="!quizStarted" @start="startQuiz" @open-mastery-grid="showMasteryGridModal = true" @open-battleground="openBattleground" />
+    <BattlegroundMode
+      v-if="showBattleground"
+      class="flex-1 w-full h-full z-30"
+      @exit="closeBattleground"
+    />
+    <StartScreen 
+      v-else-if="!quizStarted" 
+      @start="startQuiz" 
+      @open-mastery-grid="showMasteryGridModal = true" 
+      @open-battleground="openBattleground" 
+    />
     <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
       
@@ -162,12 +196,6 @@ const goToHome = () => {
       <QuizResults v-else class="flex-1 overflow-hidden" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       <QuizBottomNav :quiz-started="quizStarted" />
     </div>
-
-    <!-- Battleground Mode (full-screen overlay) -->
-    <BattlegroundMode
-      v-if="showBattleground"
-      @exit="showBattleground = false"
-    />
   </div>
 </template>
 

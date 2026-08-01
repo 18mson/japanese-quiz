@@ -60,14 +60,14 @@ const modesList: QuizModeDef[] = [
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'words', label: 'Everyday Word' },
+      { key: 'words', label: 'Kata' },
     ],
     icon: Keyboard,
   },
   {
     id: 'sentence_typing',
     title: 'Sentence Typing',
-    levelTag: 'Kalimat N5',
+    levelTag: 'Kalimat',
     level: 'n5',
     defaultType: 'sentences',
     desc: 'Latihan mengetik kalimat Jepang lengkap secara real-time dengan romaji.',
@@ -159,9 +159,9 @@ function getCardStyle(index: number) {
   const absDiff = Math.abs(diff);
   const isActive = diff === 0;
 
-  // Responsive vertical spacing for mobile vs desktop
-  const firstStep = isMobile.value ? 95 : 125;
-  const secondStep = isMobile.value ? 45 : 53;
+  // Responsive vertical spacing for mobile vs desktop (compact desktop size)
+  const firstStep = isMobile.value ? 95 : 102;
+  const secondStep = isMobile.value ? 45 : 46;
 
   let translateY = 0;
   if (diff < 0) {
@@ -170,13 +170,19 @@ function getCardStyle(index: number) {
     translateY = firstStep + (diff - 1) * secondStep;
   }
 
-  // Active card shifted further right, non-active cards indented left along semi-circle
-  const activeShift = isMobile.value ? 35 : 105;
-  const nonActiveBase = isMobile.value ? 5 : 40;
-  const stepShift = isMobile.value ? 35 : 55;
-  const translateX = isActive
-    ? activeShift
-    : (absDiff === 1 ? nonActiveBase - stepShift : nonActiveBase - (stepShift * 1.8));
+  // Active card shifted right; cards below active (+1 & +2) shifted progressively further left
+  let translateX = 0;
+  if (isActive) {
+    translateX = isMobile.value ? 35 : 75;
+  } else if (diff === -1) {
+    translateX = isMobile.value ? -25 : -10;
+  } else if (diff <= -2) {
+    translateX = isMobile.value ? -65 : -85;
+  } else if (diff === 1) {
+    translateX = isMobile.value ? -25 : -10;
+  } else {
+    translateX = isMobile.value ? -75 : -85;
+  }
 
   const scale = isActive ? 1.0 : Math.max(0.68, 0.88 - (absDiff - 1) * 0.1);
   const opacity = isActive ? 1.0 : absDiff === 1 ? 0.88 : absDiff === 2 ? 0.5 : 0;
@@ -191,19 +197,19 @@ function getCardStyle(index: number) {
   };
 }
 
-const getDurationDesc = (minutes: number) => {
+const getShortDurationDesc = (minutes: number) => {
   if (characterTypes.value === 'sentences') {
-    if (minutes === 1) return '⚡ Kilat (4 kalimat)';
-    if (minutes === 3) return '🔥 Fokus (10 kalimat)';
-    if (minutes === 5) return '🏆 Maraton (16 kalimat)';
+    if (minutes === 1) return 'Kilat · 4 kalimat';
+    if (minutes === 3) return 'Fokus · 10 kalimat';
+    if (minutes === 5) return 'Maraton · 16 kalimat';
   } else if (characterTypes.value === 'words') {
-    if (minutes === 1) return '⚡ Kilat (8 kata)';
-    if (minutes === 3) return '🔥 Fokus (24 kata)';
-    if (minutes === 5) return '🏆 Maraton (40 kata)';
+    if (minutes === 1) return 'Kilat · 8 kata';
+    if (minutes === 3) return 'Fokus · 24 kata';
+    if (minutes === 5) return 'Maraton · 40 kata';
   } else {
-    if (minutes === 1) return '⚡ Kilat (16 soal)';
-    if (minutes === 3) return '🔥 Fokus (48 soal)';
-    if (minutes === 5) return '🏆 Maraton (78 soal)';
+    if (minutes === 1) return 'Kilat · 16 soal';
+    if (minutes === 3) return 'Fokus · 48 soal';
+    if (minutes === 5) return 'Maraton · 78 soal';
   }
   return '';
 };
@@ -223,9 +229,6 @@ const handleStart = async () => {
 <template>
   <div class="max-w-4xl mx-auto p-4 md:p-6 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full">
     <!-- Header Title -->
-    <h1 class="text-3xl md:text-5xl bg-gradient-to-r from-indigo-600 via-violet-600 to-rose-600 bg-clip-text text-transparent mb-2 font-extrabold tracking-tight flex-shrink-0 text-center">
-      Nihongo Master
-    </h1>
     <p class="text-sm md:text-base text-gray-600 mb-5 max-w-2xl font-medium leading-relaxed flex-shrink-0 text-center">
       Master Hiragana, Katakana, N5 Vocabulary, and Sentence Typing through adaptive practice & Realtime Multiplayer Battleground!
     </p>
@@ -257,177 +260,184 @@ const handleStart = async () => {
 
     <!-- Step 1: Disk Wheel Mode Selection -->
     <div class="w-full max-w-3xl mb-6 flex-shrink-0">
-      <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center justify-between">
-        <span class="flex items-center gap-2">
-          <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">1</span>
-          Pilih Mode Quiz
-        </span>
-        <span class="text-xs text-gray-400 font-medium">
-          Klik, Scroll, atau Usap untuk memutar mode
-        </span>
-      </h2>
 
       <!-- MAIN CONTAINER: LIGHT CLEAN THEME MATCHING REFERENCE SKETCH (SUPPORTS SCROLL & TOUCH SWIPE) -->
       <div 
         @wheel.prevent="handleWheel"
         @touchstart="handleTouchStart"
         @touchend="handleTouchEnd"
-        class="relative w-full rounded-3xl bg-white border border-gray-200 shadow-sm p-2.5 sm:p-6 md:p-8 overflow-hidden min-h-[460px] sm:min-h-[500px] flex items-center justify-center select-none"
+        class="relative w-full rounded-3xl bg-white border border-gray-200 shadow-sm p-3.5 sm:p-5 overflow-hidden min-h-[440px] sm:min-h-[460px] flex flex-col justify-between select-none"
       >
-        
-        <!-- Left Red Semi-Circle (Contains Active Mode Icon) -->
-        <div class="absolute -left-14 xs:-left-18 sm:-left-36 md:-left-40 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
-          <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] rounded-full bg-gradient-to-br from-red-500 via-rose-500 to-rose-600 flex items-center justify-end pr-5 sm:pr-12 md:pr-16 shadow-lg shadow-rose-500/20 border-2 sm:border-4 border-white overflow-hidden">
-            <Transition name="disc-slide" mode="out-in">
-              <component 
-                :is="activeMode.icon" 
-                :key="activeMode.id"
-                class="w-6 h-6 xs:w-8 xs:h-8 sm:w-16 sm:h-16 text-white drop-shadow-md select-none" 
-              />
-            </Transition>
+        <!-- Top Right Inside Badge: "Pilih Mode" -->
+        <div class="absolute top-3.5 right-4 sm:top-4 sm:right-5 z-20 flex items-center gap-2 pointer-events-none">
+          <div class="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-black tracking-tight shadow-sm flex items-center gap-1.5 border border-slate-800">
+            <span>Pilih Mode</span>
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
           </div>
         </div>
 
-        <!-- Mode Cards Orbiting Arc Track -->
-        <div class="w-full pl-8 xs:pl-12 sm:pl-24 md:pl-28 pr-1 sm:pr-3 relative h-[380px] sm:h-[420px] flex items-center justify-center">
-          <div 
-            v-for="(mode, index) in modesList"
-            :key="mode.id"
-            @click="selectMode(index)"
-            :style="getCardStyle(index)"
-            :class="[
-              'absolute left-0 right-0 w-full max-w-[250px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out rounded-2xl cursor-pointer text-left border-2 overflow-hidden',
-              index === activeModeIndex
-                ? mode.id === 'battleground'
-                  ? 'bg-rose-50/70 border-rose-600 text-gray-900 shadow-xl shadow-rose-500/10 p-3 sm:p-5'
-                  : 'bg-white border-gray-900 text-gray-900 shadow-xl p-3 sm:p-5'
-                : 'bg-white border-gray-800/90 text-gray-800 p-2.5 sm:p-3 hover:border-gray-900 hover:bg-gray-50'
-            ]"
-          >
-            <!-- Card Header (Title & optional Badge) -->
-            <div class="flex items-center justify-between transition-all duration-500">
-              <h3 
-                :class="[
-                  'font-extrabold tracking-tight transition-all duration-500 text-gray-900 truncate',
-                  index === activeModeIndex ? 'text-base sm:text-2xl font-black' : 'text-xs sm:text-base font-bold'
-                ]"
-              >
-                {{ mode.title }}
-              </h3>
-              <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
-                {{ mode.badge }}
-              </span>
+        <!-- Top Area: Red Semi-Circle Disk + Mode Orbit Carousel -->
+        <div class="relative w-full flex-1 flex items-center justify-center min-h-[300px] sm:min-h-[320px]">
+          <!-- Left Red Semi-Circle (Contains Active Mode Icon) -->
+          <div class="absolute -left-20 xs:-left-20 sm:-left-28 md:-left-32 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
+            <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[230px] sm:h-[230px] md:w-[260px] md:h-[260px] rounded-full bg-gradient-to-br from-red-500 via-rose-500 to-rose-600 flex items-center justify-end pr-8 sm:pr-10 md:pr-14 shadow-lg shadow-rose-500/20 border-2 sm:border-4 border-white overflow-hidden">
+              <Transition name="disc-slide" mode="out-in">
+                <component 
+                  :is="activeMode.icon" 
+                  :key="activeMode.id"
+                  class="w-6 h-6 xs:w-8 xs:h-8 sm:w-11 sm:h-11 md:w-12 md:h-12 text-white drop-shadow-md select-none" 
+                />
+              </Transition>
             </div>
+          </div>
 
-            <!-- Expandable Content Wrapper (Smoothly animates height, opacity & position on shrink/expand) -->
+          <!-- Mode Cards Orbiting Arc Track -->
+          <div class="w-full pl-8 xs:pl-12 sm:pl-20 md:pl-24 pr-1 sm:pr-3 relative h-[300px] sm:h-[320px] flex items-center justify-center">
             <div 
-              class="transition-all duration-500 ease-out overflow-hidden"
-              :style="{
-                maxHeight: index === activeModeIndex ? '200px' : '0px',
-                opacity: index === activeModeIndex ? '1' : '0',
-                marginTop: index === activeModeIndex ? '8px' : '0px',
-                transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
-              }"
+              v-for="(mode, index) in modesList"
+              :key="mode.id"
+              @click="selectMode(index)"
+              :style="getCardStyle(index)"
+              :class="[
+                'absolute left-0 right-0 w-full max-w-[300px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out rounded-2xl cursor-pointer text-left border-2 overflow-hidden',
+                index === activeModeIndex
+                  ? mode.id === 'battleground'
+                    ? 'bg-rose-50/70 border-rose-600 text-gray-900 shadow-xl shadow-rose-500/10 p-3 sm:p-5'
+                    : 'bg-white border-gray-900 text-gray-900 shadow-xl p-3 sm:p-5'
+                  : 'bg-white border-gray-800/90 text-gray-800 p-2.5 sm:p-3 hover:border-gray-900 hover:bg-gray-50'
+              ]"
             >
-              <!-- Description -->
-              <p class="text-[11px] sm:text-sm text-gray-600 mb-2.5 sm:mb-3 font-medium leading-relaxed">
-                {{ mode.desc }}
-              </p>
-
-              <!-- Sub-types buttons (Horizontal list under desc) -->
-              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-gray-100 flex-wrap">
-                <button
-                  v-for="sub in mode.subTypes"
-                  :key="sub.key"
-                  type="button"
-                  @click.stop="selectSubType(sub.key)"
+              <!-- Card Header (Title & optional Badge) -->
+              <div class="flex items-center justify-between transition-all duration-500">
+                <h3 
                   :class="[
-                    'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
-                    characterTypes === sub.key
-                      ? 'bg-gray-900 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    'font-extrabold tracking-tight transition-all duration-500 text-gray-900 truncate',
+                    index === activeModeIndex ? 'text-base sm:text-2xl font-black' : 'text-xs sm:text-base font-bold'
                   ]"
                 >
-                  <span>{{ sub.label }}</span>
-                  <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
-                </button>
+                  {{ mode.title }}
+                </h3>
+                <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
+                  {{ mode.badge }}
+                </span>
+              </div>
+
+              <!-- Expandable Content Wrapper (Smoothly animates height, opacity & position on shrink/expand) -->
+              <div 
+                class="transition-all duration-500 ease-out overflow-hidden"
+                :style="{
+                  maxHeight: index === activeModeIndex ? '200px' : '0px',
+                  opacity: index === activeModeIndex ? '1' : '0',
+                  marginTop: index === activeModeIndex ? '8px' : '0px',
+                  transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
+                }"
+              >
+                <!-- Description -->
+                <p class="text-[11px] sm:text-sm text-gray-600 mb-2.5 sm:mb-3 font-medium leading-relaxed">
+                  {{ mode.desc }}
+                </p>
+
+                <!-- Sub-types buttons (Horizontal list under desc) -->
+                <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-gray-100 flex-wrap">
+                  <button
+                    v-for="sub in mode.subTypes"
+                    :key="sub.key"
+                    type="button"
+                    @click.stop="selectSubType(sub.key)"
+                    :class="[
+                      'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
+                      characterTypes === sub.key
+                        ? 'bg-gray-900 text-white shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ]"
+                  >
+                    <span>{{ sub.label }}</span>
+                    <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-      </div>
-    </div>
-
-    <!-- Step 2: Select Target Duration or Battleground Info -->
-    <div class="w-full max-w-3xl mb-6 flex-shrink-0">
-      <h2 class="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-        <span class="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 text-xs font-bold">2</span>
-        {{ selectedLevel === 'battleground' ? 'Informasi Mode Battle' : 'Pilih Durasi Sesi' }}
-      </h2>
-
-      <!-- Battleground Mode Info Banner -->
-      <div v-if="selectedLevel === 'battleground'" class="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 border border-rose-200/80 rounded-2xl p-4 flex items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-sm">
-            <Users class="w-5 h-5" />
+        <!-- Bottom Area Inside Mode Card: Divider + (Duration Pills or Battleground Info) + Start Button -->
+        <div class="w-full pt-3.5 mt-2 border-t border-gray-100 flex flex-col gap-3 relative z-20">
+          
+          <!-- Battleground Mode Info Banner (Inside card) -->
+          <div v-if="selectedLevel === 'battleground'" class="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 border border-rose-200/80 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-sm">
+                <Users class="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <div>
+                <div class="text-xs sm:text-sm font-bold text-gray-900">Aturan & Mekanisme Battle</div>
+                <div class="text-[10px] sm:text-xs text-gray-600 font-medium leading-tight">
+                  2–8 Pemain • Eliminasi bertahap tiap ronde • Penalti 1s Cooldown jika typo • Power-Up (Freeze, Storm, Backward)
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div class="text-sm font-bold text-gray-900">Battle Royale Realtime</div>
-            <div class="text-xs text-gray-600">Hingga 8 pemain per room • Penalti 1s Cooldown jika typo • Eliminasi bertahap (Target Match ~5 Menit)</div>
+
+          <!-- Segmented Horizontal Duration Pills (For normal quiz modes) -->
+          <div v-else class="flex items-center gap-1.5 sm:gap-2.5 w-full">
+            <button
+              v-for="min in [1, 3, 5]"
+              :key="min"
+              type="button"
+              @click="targetDurationMinutes = min"
+              :class="[
+                'flex-1 min-w-0 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer',
+                targetDurationMinutes === min
+                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-black'
+                  : 'bg-gray-100/90 text-gray-700 hover:bg-gray-200/80 border border-gray-200/60 font-bold'
+              ]"
+            >
+              <!-- Top Line: Minute Label -->
+              <span class="text-xs sm:text-sm tracking-tight font-extrabold">
+                {{ min }}'
+              </span>
+              <!-- Bottom Line: Speed + Question Count Subtext -->
+              <span 
+                :class="[
+                  'text-[9px] sm:text-[10px] truncate max-w-full font-medium mt-0.5',
+                  targetDurationMinutes === min ? 'text-indigo-100' : 'text-gray-400 opacity-80'
+                ]"
+              >
+                {{ getShortDurationDesc(min) }}
+              </span>
+            </button>
           </div>
+
+          <!-- Start Action Button (Dynamic for Battleground vs Normal Quiz) -->
+          <button 
+            type="button"
+            :class="[
+              'w-full py-3 sm:py-3.5 text-white rounded-2xl text-sm sm:text-base font-bold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed',
+              selectedLevel === 'battleground'
+                ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/20'
+                : 'bg-indigo-600 hover:bg-indigo-700'
+            ]"
+            @click="handleStart"
+            :disabled="quizStore.isLoading"
+          >
+            <span v-if="quizStore.isLoading" class="flex items-center gap-2">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Loading Questions...
+            </span>
+            <template v-else-if="selectedLevel === 'battleground'">
+              <span>Masuk Arena Battleground</span>
+              <Swords class="w-5 h-5 text-white" />
+            </template>
+            <template v-else>
+              <span>Start Quiz ({{ targetDurationMinutes }} Menit)</span>
+              <Zap class="w-5 h-5 text-amber-300 fill-amber-300" />
+            </template>
+          </button>
         </div>
       </div>
-
-      <!-- Normal Duration Options -->
-      <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <button 
-          v-for="min in [1, 3, 5]" 
-          :key="min"
-          type="button"
-          :class="[
-            'p-3.5 rounded-2xl cursor-pointer transition-all duration-200 flex flex-col items-center justify-center text-center',
-            targetDurationMinutes === min 
-              ? 'border-2 border-indigo-600 bg-indigo-50/40 text-indigo-950 shadow-sm' 
-              : 'border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:border-gray-300'
-          ]"
-          @click="targetDurationMinutes = min"
-        >
-          <span class="text-base font-extrabold" :class="targetDurationMinutes === min ? 'text-indigo-700' : 'text-gray-900'">{{ min }} Menit</span>
-          <span class="text-xs font-medium mt-0.5" :class="targetDurationMinutes === min ? 'text-indigo-600' : 'text-gray-500'">{{ getDurationDesc(min) }}</span>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Full-Width Start Quiz / Start Battle Button -->
-    <div class="w-full max-w-3xl mb-6 flex-shrink-0">
-      <button 
-        type="button"
-        :class="[
-          'w-full py-3.5 text-white rounded-2xl text-base font-bold cursor-pointer transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed',
-          selectedLevel === 'battleground'
-            ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/20'
-            : 'bg-indigo-600 hover:bg-indigo-700'
-        ]"
-        @click="handleStart"
-        :disabled="quizStore.isLoading"
-      >
-        <span v-if="quizStore.isLoading" class="flex items-center gap-2">
-          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Loading Questions...
-        </span>
-        <template v-else-if="selectedLevel === 'battleground'">
-          <span>Masuk Arena Battleground</span>
-          <Swords class="w-5 h-5 text-white" />
-        </template>
-        <template v-else>
-          <span>Start Quiz ({{ targetDurationMinutes }} Menit)</span>
-          <Zap class="w-5 h-5 text-amber-300 fill-amber-300" />
-        </template>
-      </button>
     </div>
   </div>
 </template>
