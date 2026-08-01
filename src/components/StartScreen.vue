@@ -60,7 +60,7 @@ const modesList: QuizModeDef[] = [
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'words', label: 'Everyday Word', tag: 'new' },
+      { key: 'words', label: 'Everyday Word' },
     ],
     icon: Keyboard,
   },
@@ -121,10 +121,13 @@ function getCardStyle(index: number) {
     translateY = firstStep + (diff - 1) * secondStep;
   }
 
-  // Curve horizontally along semi-circle - non-active cards indented further left
-  const baseShift = isMobile.value ? 10 : 55;
-  const stepShift = isMobile.value ? 40 : 65;
-  const translateX = isActive ? baseShift : (absDiff === 1 ? baseShift - stepShift : baseShift - (stepShift * 1.8));
+  // Active card shifted further right, non-active cards indented left along semi-circle
+  const activeShift = isMobile.value ? 35 : 105;
+  const nonActiveBase = isMobile.value ? 5 : 40;
+  const stepShift = isMobile.value ? 35 : 55;
+  const translateX = isActive
+    ? activeShift
+    : (absDiff === 1 ? nonActiveBase - stepShift : nonActiveBase - (stepShift * 1.8));
 
   const scale = isActive ? 1.0 : Math.max(0.68, 0.88 - (absDiff - 1) * 0.1);
   const opacity = isActive ? 1.0 : absDiff === 1 ? 0.88 : absDiff === 2 ? 0.5 : 0;
@@ -228,14 +231,14 @@ const handleStart = async () => {
         </div>
 
         <!-- Mode Cards Orbiting Arc Track -->
-        <div class="w-full pl-10 xs:pl-14 sm:pl-32 md:pl-38 pr-1 sm:pr-6 relative h-[380px] sm:h-[420px] flex items-center justify-center">
+        <div class="w-full pl-8 xs:pl-12 sm:pl-24 md:pl-28 pr-1 sm:pr-3 relative h-[380px] sm:h-[420px] flex items-center justify-center">
           <div 
             v-for="(mode, index) in modesList"
             :key="mode.id"
             @click="selectMode(index)"
             :style="getCardStyle(index)"
             :class="[
-              'absolute left-0 right-0 w-full max-w-[270px] xs:max-w-[290px] sm:max-w-md mx-auto transition-all duration-500 ease-out rounded-2xl cursor-pointer text-left border-2 overflow-hidden',
+              'absolute left-0 right-0 w-full max-w-[250px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out rounded-2xl cursor-pointer text-left border-2 overflow-hidden',
               index === activeModeIndex
                 ? mode.id === 'battleground'
                   ? 'bg-rose-50/70 border-rose-600 text-gray-900 shadow-xl shadow-rose-500/10 p-3 sm:p-5'
@@ -264,48 +267,46 @@ const handleStart = async () => {
                   {{ mode.title }}
                 </h3>
               </div>
-              <div class="flex items-center gap-1 flex-shrink-0">
-                <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider">
-                  {{ mode.badge }}
-                </span>
-                <span :class="['text-[10px] sm:text-xs font-bold transition-all duration-500', index === activeModeIndex ? 'text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 rounded-md' : 'text-gray-400 font-medium']">
-                  {{ index === activeModeIndex ? mode.levelTag : `(${mode.levelTag})` }}
-                </span>
-              </div>
+              <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
+                {{ mode.badge }}
+              </span>
             </div>
 
             <!-- Expandable Content Wrapper (Smoothly animates height, opacity & position on shrink/expand) -->
             <div 
               class="transition-all duration-500 ease-out overflow-hidden"
               :style="{
-                maxHeight: index === activeModeIndex ? '200px' : '0px',
+                maxHeight: index === activeModeIndex ? '220px' : '0px',
                 opacity: index === activeModeIndex ? '1' : '0',
                 marginTop: index === activeModeIndex ? '8px' : '0px',
                 transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
               }"
             >
-              <!-- Description -->
-              <p class="text-[11px] sm:text-sm text-gray-600 mb-2.5 sm:mb-3 font-medium leading-relaxed">
-                {{ mode.desc }}
-              </p>
+              <!-- 2-Column Content: Description on Left, Vertical SubTypes List on Right -->
+              <div class="flex items-start justify-between gap-2.5 sm:gap-3 pt-2 border-t border-gray-100">
+                <!-- Left: Description -->
+                <p class="text-[11px] sm:text-xs text-gray-600 font-medium leading-relaxed flex-1">
+                  {{ mode.desc }}
+                </p>
 
-              <!-- Sub-types buttons -->
-              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-gray-100 flex-wrap">
-                <button
-                  v-for="sub in mode.subTypes"
-                  :key="sub.key"
-                  type="button"
-                  @click.stop="selectSubType(sub.key)"
-                  :class="[
-                    'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
-                    characterTypes === sub.key
-                      ? 'bg-gray-900 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  ]"
-                >
-                  <span>{{ sub.label }}</span>
-                  <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase">{{ sub.tag }}</span>
-                </button>
+                <!-- Right: Vertical SubTypes List -->
+                <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex flex-col gap-1.5 flex-shrink-0 min-w-[95px] sm:min-w-[125px]">
+                  <button
+                    v-for="sub in mode.subTypes"
+                    :key="sub.key"
+                    type="button"
+                    @click.stop="selectSubType(sub.key)"
+                    :class="[
+                      'px-2.5 py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center justify-between gap-1 w-full text-left',
+                      characterTypes === sub.key
+                        ? 'bg-gray-900 text-white shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ]"
+                  >
+                    <span>{{ sub.label }}</span>
+                    <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
