@@ -4,12 +4,9 @@ import { useQuizStore } from '../stores/quizStore';
 import { toRomaji } from 'wanakana';
 import { AlertCircle } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
-import correctSoundFile from '../assets/sound/correct.wav';
-import incorrectSoundFile from '../assets/sound/incorrect.wav';
+import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
 
 const quizStore = useQuizStore();
-const correctAudio = new Audio(correctSoundFile);
-const incorrectAudio = new Audio(incorrectSoundFile);
 
 const inputRef = ref<HTMLInputElement | null>(null);
 const currentSentenceIndex = ref(0);
@@ -371,13 +368,13 @@ const evaluateInput = () => {
 
   if (typoFound && !isTypoInInput.value) {
     errorCount.value++;
-    incorrectAudio.play().catch(() => {});
+    playIncorrectSound();
   }
   isTypoInInput.value = typoFound;
 
   if (newActiveIdx >= units.value.length && !typoFound) {
     // Sentence completed!
-    correctAudio.play().catch(() => {});
+    playCorrectSound();
     const fullRomaji = currentSentence.value.romaji || 
       (currentSentence.value.romaji_variants ? currentSentence.value.romaji_variants.map((v: string[]) => v[0]).join('') : '');
 

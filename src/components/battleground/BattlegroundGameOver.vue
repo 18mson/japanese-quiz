@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
+import { stopRoundBgm, playVictorySound, playDefeatSound } from '../../utils/battleSoundManager';
 import { Trophy, Swords, Home, RotateCcw, Loader2, Sparkles } from '@lucide/vue';
 
 const store = useBattlegroundStore();
@@ -9,6 +10,14 @@ const emit = defineEmits<{ exit: [] }>();
 // Confetti animation
 const confettiDots = ref<Array<{ x: number; y: number; color: string; size: number; delay: number }>>([]);
 onMounted(() => {
+  stopRoundBgm();
+  const isWinner = data.value?.winnerPlayerId === store.myPlayerId;
+  if (isWinner) {
+    playVictorySound();
+  } else {
+    playDefeatSound();
+  }
+
   const colors = ['#f59e0b', '#6366f1', '#ec4899', '#10b981', '#f97316'];
   confettiDots.value = Array.from({ length: 30 }, () => ({
     x: Math.random() * 100,

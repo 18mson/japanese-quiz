@@ -5,8 +5,7 @@ import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
 import { sentencesData } from '../data/sentences';
 import { supabase } from '../lib/supabaseClient';
-import incorrect from '../assets/sound/incorrect.wav';
-import correct from '../assets/sound/correct.wav';
+import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
 import {
   checkIsCorrect,
   checkIsTypo,
@@ -127,11 +126,6 @@ export const useQuizStore = defineStore('quiz', () => {
   const attemptedChars = ref<Record<string, boolean>>({});
   const firstTryCorrectCount = ref<number>(0);
 
-  const correctSound = new Audio(correct);
-  correctSound.preload = 'auto';
-  const incorrectSound = new Audio(incorrect);
-  incorrectSound.preload = 'auto';
-
   const resetQuizSessionState = async (targetDuration: number, type: string, level: 'basic' | 'n5') => {
     isLoading.value = true; questionType.value = type; quizLevel.value = level; targetDurationMinutes.value = targetDuration;
     currentQuestionIndex.value = 0; score.value = 0; quizCompleted.value = false; selectedAnswer.value = null; isAnswerCorrect.value = null;
@@ -244,11 +238,11 @@ export const useQuizStore = defineStore('quiz', () => {
     if (isCorrectVal) {
       pointsEarned = isTypingMode.value ? (hintsUsed === 1 ? 3 : hintsUsed === 2 ? 2 : 4) : 4;
       score.value += pointsEarned;
-      correctSound.play().catch(() => {});
+      playCorrectSound();
       if (current) masteredChars.value[current.character] = true;
     } else {
       if (isTypo) { pointsEarned = 1; score.value += pointsEarned; }
-      incorrectSound.play().catch(() => {});
+      playIncorrectSound();
     }
     
     if (current) {

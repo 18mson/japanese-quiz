@@ -7,10 +7,22 @@ import {
 } from 'vue';
 import { toRomaji } from 'wanakana';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
-import { ShieldX, CheckCircle2, Clock, Zap, AlertTriangle, PlayCircle, Lock } from '@lucide/vue';
+import {
+  isMuted, toggleMute, getAudioContext,
+  playCountdownBeep, playPowerUpGain, playLightningStrike,
+  playFreezeSound, playPenaltyError, startRoundBgm, stopRoundBgm
+} from '../../utils/battleSoundManager';
+import { ShieldX, CheckCircle2, Clock, Zap, AlertTriangle, PlayCircle, Lock, Volume2, VolumeX, Loader2 } from '@lucide/vue';
 import VirtualKeyboard from '../VirtualKeyboard.vue';
 
 const store = useBattlegroundStore();
+
+const soundMuted = ref(isMuted());
+
+function handleToggleSound() {
+  soundMuted.value = toggleMute();
+  getAudioContext();
+}
 
 // ── Input State ───────────────────────────────────────────────
 const inputRef = ref<HTMLInputElement | null>(null);
@@ -282,6 +294,7 @@ const victimPowerUpAttacker = ref('');
 function applyVictimPowerUp(type: 'freeze' | 'backward' | 'storm', senderName: string) {
   victimPowerUpAttacker.value = senderName;
   if (type === 'freeze') {
+    playFreezeSound();
     isFrozen.value = true;
     freezeCountdown.value = 3.0;
     if (freezeTimer) clearInterval(freezeTimer);
@@ -295,12 +308,14 @@ function applyVictimPowerUp(type: 'freeze' | 'backward' | 'storm', senderName: s
       }
     }, 100);
   } else if (type === 'backward') {
+    playLightningStrike();
     isRewindingGlitch.value = true;
     setTimeout(() => (isRewindingGlitch.value = false), 1000);
     activeUnitIndex.value = Math.max(0, activeUnitIndex.value - 3);
     activeSubIndex.value = 0;
     lockedAccepted.value = null;
   } else if (type === 'storm') {
+    playLightningStrike();
     isStormActive.value = true;
     stormCountdown.value = 5.0;
     if (stormTimer) clearInterval(stormTimer);
@@ -320,12 +335,19 @@ function applyVictimPowerUp(type: 'freeze' | 'backward' | 'storm', senderName: s
 
     lightningInterval = setInterval(() => {
       lightningFlashActive.value = true;
+      playLightningStrike();
       setTimeout(() => {
         lightningFlashActive.value = false;
       }, 350);
     }, 1400);
   }
 }
+
+watch(prepCountdownSeconds, (val, oldVal) => {
+  if (store.phase === 'round_preparing' && val !== oldVal && val >= 0) {
+    playCountdownBeep(val === 0);
+  }
+});
 
 watch(() => store.phase, (p) => {
   if (p === 'round_preparing') {
@@ -346,6 +368,7 @@ watch(() => store.phase, (p) => {
   }
 
   if (p === 'round_active') {
+    startRoundBgm();
     currentSentenceIndex.value = 0;
     activeUnitIndex.value = 0;
     activeSubIndex.value = 0;
@@ -361,6 +384,8 @@ watch(() => store.phase, (p) => {
     initSentencePowerUp();
     autoSkipHyphens();
     focusInput();
+  } else {
+    stopRoundBgm();
   }
 }, { immediate: true });
 
@@ -454,6 +479,7 @@ function advanceChar(char: string) {
     if (justCompletedUnitIndex === powerUpUnitIndex.value) {
       if (!failedPowerUpUnits.value.has(justCompletedUnitIndex) && !claimedPowerUpUnits.value.has(justCompletedUnitIndex)) {
         claimedPowerUpUnits.value.add(justCompletedUnitIndex);
+        playPowerUpGain();
         store.triggerPowerUp(powerUpType.value);
       }
     }
@@ -481,6 +507,7 @@ function advanceChar(char: string) {
 function triggerError() {
   if (isPenaltyActive.value || isSubmitted.value || !store.iAmAlive) return;
 
+  playPenaltyError();
   failedPowerUpUnits.value.add(activeUnitIndex.value);
   hasError.value = true;
   isPenaltyActive.value = true;
@@ -583,13 +610,24 @@ function preventPaste(e: ClipboardEvent) {
         </div>
       </div>
 
-      <!-- Header Timer (Only shown when active) -->
-      <div v-if="store.phase === 'round_active'" class="flex items-center gap-1 text-xs sm:text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
-        <Clock class="w-3.5 h-3.5" />
-        {{ String(store.countdownSeconds).padStart(2, '0') }}s
-      </div>
-      <div v-else class="flex items-center gap-1 text-xs text-amber-400 font-bold animate-pulse">
-        <Loader2 class="w-3.5 h-3.5 animate-spin" />
+      <!-- Header Right: Timer & Audio Toggle -->
+      <div class="flex items-center gap-3">
+        <button
+          @click="handleToggleSound"
+          class="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white transition"
+          :title="soundMuted ? 'Aktifkan Suara' : 'Matikan Suara'"
+        >
+          <VolumeX v-if="soundMuted" class="w-3.5 h-3.5 text-rose-400" />
+          <Volume2 v-else class="w-3.5 h-3.5 text-indigo-400" />
+        </button>
+
+        <div v-if="store.phase === 'round_active'" class="flex items-center gap-1 text-xs sm:text-sm font-mono font-bold" :class="store.countdownSeconds <= 5 ? 'text-rose-400' : 'text-slate-300'">
+          <Clock class="w-3.5 h-3.5" />
+          {{ String(store.countdownSeconds).padStart(2, '0') }}s
+        </div>
+        <div v-else class="flex items-center gap-1 text-xs text-amber-400 font-bold animate-pulse">
+          <Loader2 class="w-3.5 h-3.5 animate-spin" />
+        </div>
       </div>
     </div>
 

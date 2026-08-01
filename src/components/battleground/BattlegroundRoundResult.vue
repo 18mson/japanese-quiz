@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
+import { playVictorySound, playDefeatSound, stopRoundBgm } from '../../utils/battleSoundManager';
 import { ShieldX, Timer, ChevronRight, Loader2 } from '@lucide/vue';
 
 const store = useBattlegroundStore();
@@ -9,6 +10,13 @@ const nextRoundCountdown = ref(0);
 let interval: ReturnType<typeof setInterval> | null = null;
 
 onMounted(() => {
+  stopRoundBgm();
+  if (myResult.value?.status === 'eliminated') {
+    playDefeatSound();
+  } else {
+    playVictorySound();
+  }
+
   const totalSecs = store.lastRoundResult?.nextRoundInSeconds ?? 5;
   nextRoundCountdown.value = totalSecs;
   interval = setInterval(() => {

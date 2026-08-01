@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
-import { Users, Plus, LogIn, Crown, AlertCircle, Loader2, Swords, Copy, Check, Globe, Lock, RotateCcw } from '@lucide/vue';
+import { useAuthStore } from '../../stores/authStore';
+import { isMuted, toggleMute, getAudioContext } from '../../utils/battleSoundManager';
+import { Users, Plus, LogIn, Crown, AlertCircle, Loader2, Swords, Copy, Check, Globe, Lock, RotateCcw, User, Volume2, VolumeX } from '@lucide/vue';
 
 const store = useBattlegroundStore();
+const authStore = useAuthStore();
+
+const soundMuted = ref(isMuted());
+
+function handleToggleSound() {
+  soundMuted.value = toggleMute();
+  getAudioContext();
+}
 
 // ── Local State ──────────────────────────────────────────────
 const mode = ref<'choose' | 'create' | 'join'>('choose');
@@ -12,10 +22,17 @@ const inputPlayerName = ref('');
 const inputRoomCode = ref('');
 const codeCopied = ref(false);
 
-// Prefill name from store
-if (store.myPlayerName && store.myPlayerName !== 'Player') {
-  inputPlayerName.value = store.myPlayerName;
-}
+// Prefill & autofill name from authStore / store
+watch(
+  () => [authStore.displayUsername, store.myPlayerName],
+  () => {
+    const defaultName = authStore.displayUsername || store.myPlayerName;
+    if (defaultName && defaultName !== 'Player' && (!inputPlayerName.value || inputPlayerName.value === 'Player')) {
+      inputPlayerName.value = defaultName;
+    }
+  },
+  { immediate: true }
+);
 
 watch(mode, (newMode) => {
   if (newMode === 'join') {
@@ -51,11 +68,13 @@ function validateName(): boolean {
 
 // ── Actions ──────────────────────────────────────────────────
 async function handleCreate() {
+  getAudioContext();
   if (!validateName()) return;
   await store.createRoom(inputPlayerName.value.trim(), isPublicRoom.value);
 }
 
 async function handleJoin(targetCode?: string) {
+  getAudioContext();
   if (!validateName()) return;
   const codeToJoin = targetCode ?? inputRoomCode.value.trim();
   if (codeToJoin.length !== 6) {
@@ -76,10 +95,21 @@ const emit = defineEmits<{ exit: [] }>();
 </script>
 
 <template>
-  <div class="min-h-full flex flex-col items-center justify-start p-4 md:p-8 bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white">
+  <div class="min-h-full flex flex-col items-center justify-start p-4 md:p-8 bg-gradient-to-br from-slate-950 via-indigo-950 to-violet-950 text-white relative">
+
+    <!-- Audio Mute Toggle Button -->
+    <button
+      @click="handleToggleSound"
+      class="absolute top-4 left-4 p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-slate-300 hover:text-white transition flex items-center gap-1.5 text-xs font-bold"
+      :title="soundMuted ? 'Aktifkan Suara' : 'Matikan Suara'"
+    >
+      <VolumeX v-if="soundMuted" class="w-4 h-4 text-rose-400" />
+      <Volume2 v-else class="w-4 h-4 text-indigo-400" />
+      <span>{{ soundMuted ? 'Muted' : 'Sound ON' }}</span>
+    </button>
 
     <!-- Header -->
-    <div class="w-full max-w-lg mb-8 text-center">
+    <div class="w-full max-w-lg mb-8 text-center mt-2">
       <div class="flex items-center justify-center gap-3 mb-3">
         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-lg shadow-rose-500/30">
           <Swords class="w-6 h-6 text-white" />
@@ -105,7 +135,14 @@ const emit = defineEmits<{ exit: [] }>();
 
         <!-- Player Name Input -->
         <div class="mb-6">
-          <label class="block text-sm font-bold text-slate-300 mb-2">Nama Pemain <span class="text-rose-400">*</span></label>
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-bold text-slate-300">
+              Nama Pemain <span class="text-rose-400">*</span>
+            </label>
+            <span v-if="authStore.user" class="text-xs text-indigo-300 font-semibold flex items-center gap-1.5 bg-indigo-500/20 px-2 py-0.5 rounded-md border border-indigo-500/30">
+              <User class="w-3.5 h-3.5 text-indigo-400" /> Auto-fill dari Akun
+            </span>
+          </div>
           <input
             ref="nameInputRef"
             v-model="inputPlayerName"

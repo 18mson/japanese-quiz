@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { supabase } from '../lib/supabaseClient';
-import { Trophy, Medal, Zap } from '@lucide/vue';
+import { Trophy, Medal, Zap, Award } from '@lucide/vue';
+import { hiraganaData } from '../data/hiragana';
+import { katakanaData } from '../data/katakana';
+import { wordsData } from '../data/words';
+import { useQuizStore } from '../stores/quizStore';
+import { useAuthStore } from '../stores/authStore';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -11,11 +16,17 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
-const activeTab = ref<'cumulative' | 'speed'>('cumulative');
+const quizStore = useQuizStore();
+const authStore = useAuthStore();
+
+const activeTab = ref<'cumulative' | 'speed' | 'mastery'>('cumulative');
 const cumulativeList = ref<any[]>([]);
 const speedList = ref<any[]>([]);
+const masteryList = ref<any[]>([]);
 const loading = ref(false);
 const errorMsg = ref<string | null>(null);
+
+const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length;
 
 const fetchCumulative = async () => {
   const { data, error } = await supabase
@@ -37,14 +48,95 @@ const fetchSpeed = async () => {
   speedList.value = data || [];
 };
 
+const fetchMastery = async () => {
+  try {
+    // 1. Fetch user names
+    const { data: usersData } = await supabase.from('users').select('id, username');
+    const userMap: Record<string, string> = {};
+    if (usersData) {
+      usersData.forEach((u: any) => {
+        if (u.id && u.username) userMap[u.id] = u.username;
+      });
+    }
+
+    // 2. Fetch streaks with streak >= 3
+    const { data: streaksData, error } = await supabase
+      .from('user_streaks')
+      .select('user_id, character, streak')
+      .gte('streak', 3);
+
+    if (error && error.code !== 'PGRST116') {
+      console.warn('Could not fetch user_streaks:', error);
+    }
+
+    const userMasteredMap: Record<string, Set<string>> = {};
+
+    if (streaksData) {
+      streaksData.forEach((item: any) => {
+        if (!userMasteredMap[item.user_id]) {
+          userMasteredMap[item.user_id] = new Set();
+        }
+        userMasteredMap[item.user_id].add(item.character);
+      });
+    }
+
+    const result: Array<{ id: string; username: string; percentage: number; isCurrentUser?: boolean }> = [];
+    const currentUserId = authStore.user?.id;
+    let currentUserAdded = false;
+
+    Object.entries(userMasteredMap).forEach(([uid, charSet]) => {
+      const count = charSet.size;
+      const pct = Math.min(100, Math.round((count / TOTAL_CHARACTERS) * 100));
+      const username = (currentUserId === uid ? authStore.displayUsername : null) || userMap[uid] || 'Pemain';
+      const isCurrentUser = uid === currentUserId;
+      if (isCurrentUser) currentUserAdded = true;
+      result.push({
+        id: uid,
+        username,
+        percentage: pct,
+        isCurrentUser,
+      });
+    });
+
+    // Calculate current local user mastery
+    const localMasteredCount = [...hiraganaData, ...katakanaData, ...wordsData].filter(
+      item => (quizStore.userStreaks[item.character] || 0) >= 3
+    ).length;
+    const localPct = Math.min(100, Math.round((localMasteredCount / TOTAL_CHARACTERS) * 100));
+
+    if (!currentUserAdded && (localPct > 0 || currentUserId)) {
+      result.push({
+        id: currentUserId || 'local_user',
+        username: authStore.displayUsername || 'Kamu',
+        percentage: localPct,
+        isCurrentUser: true,
+      });
+    } else if (currentUserAdded) {
+      const cur = result.find(r => r.isCurrentUser);
+      if (cur) {
+        cur.percentage = Math.max(cur.percentage, localPct);
+      }
+    }
+
+    // Sort by percentage descending
+    result.sort((a, b) => b.percentage - a.percentage);
+    masteryList.value = result.slice(0, 10);
+  } catch (err: any) {
+    console.error('Error loading mastery leaderboard:', err);
+    masteryList.value = [];
+  }
+};
+
 const loadLeaderboardData = async () => {
   loading.value = true;
   errorMsg.value = null;
   try {
     if (activeTab.value === 'cumulative') {
       await fetchCumulative();
-    } else {
+    } else if (activeTab.value === 'speed') {
       await fetchSpeed();
+    } else if (activeTab.value === 'mastery') {
+      await fetchMastery();
     }
   } catch (err: any) {
     console.error('Error loading leaderboard:', err);
@@ -103,13 +195,21 @@ watch(activeTab, () => {
         >
           Fastest Speed
         </button>
+        <button 
+          class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider flex items-center justify-center gap-1"
+          :class="activeTab === 'mastery' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-400 hover:text-gray-600'"
+          @click="activeTab = 'mastery'"
+        >
+          <Award class="w-3.5 h-3.5 text-amber-500" />
+          <span>Huruf</span>
+        </button>
       </div>
 
       <!-- Content Area -->
       <div class="p-6 flex-1 overflow-y-auto">
         <div v-if="loading" class="flex flex-col items-center justify-center py-12">
           <span class="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></span>
-          <p class="text-xs text-gray-500 mt-3 font-semibold">Loading scores...</p>
+          <p class="text-xs text-gray-500 mt-3 font-semibold">Loading leaderboard...</p>
         </div>
 
         <div v-else-if="errorMsg" class="text-center py-8 text-rose-500 text-sm">
@@ -160,7 +260,7 @@ watch(activeTab, () => {
           </table>
 
           <!-- Speed Rankings -->
-          <table v-else class="w-full text-left border-collapse">
+          <table v-else-if="activeTab === 'speed'" class="w-full text-left border-collapse">
             <thead>
               <tr class="border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                 <th class="pb-3 w-12">Rank</th>
@@ -202,6 +302,52 @@ watch(activeTab, () => {
               </tr>
             </tbody>
           </table>
+
+          <!-- Character Mastery Rankings -->
+          <table v-else-if="activeTab === 'mastery'" class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                <th class="pb-3 w-12">Rank</th>
+                <th class="pb-3">User</th>
+                <th class="pb-3 text-right">Penguasaan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr 
+                v-for="(row, idx) in masteryList" 
+                :key="row.id || idx" 
+                class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
+              >
+                <td class="py-3.5 font-extrabold text-sm text-gray-500">
+                  <div class="flex items-center">
+                    <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
+                    <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
+                    <Medal v-else-if="idx === 2" class="w-5 h-5 text-amber-700 fill-amber-700/20" />
+                    <span v-else>#{{ idx + 1 }}</span>
+                  </div>
+                </td>
+                <td class="py-3.5 font-bold text-sm text-gray-800">
+                  <div class="flex items-center gap-2">
+                    <span>{{ row.username }}</span>
+                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded text-[10px] font-extrabold">Kamu</span>
+                  </div>
+                </td>
+                <td class="py-3.5 text-right">
+                  <div class="inline-flex items-center justify-end gap-2">
+                    <div class="w-16 sm:w-24 bg-gray-100 rounded-full h-2 overflow-hidden hidden sm:block">
+                      <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full" :style="{ width: `${row.percentage}%` }"></div>
+                    </div>
+                    <span class="font-mono text-sm font-black text-indigo-600">{{ row.percentage }}%</span>
+                  </div>
+                </td>
+              </tr>
+              <tr v-if="masteryList.length === 0">
+                <td colspan="3" class="text-center py-12 text-gray-400 text-xs font-semibold">
+                  Belum ada data penguasaan. Mulai kuis untuk meningkatkan penguasaan hurufmu!
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -211,7 +357,7 @@ watch(activeTab, () => {
           @click="emit('close')"
           class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-md hover:shadow-lg"
         >
-          Close
+          Tutup
         </button>
       </div>
     </div>
