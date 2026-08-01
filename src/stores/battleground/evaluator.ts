@@ -221,19 +221,6 @@ async function runElimination(
 
   const isGameOver = !isDraw && survivors.length <= 1;
 
-  if (isGameOver && survivors.length === 1) {
-    await supabase
-      .from('room_players')
-      .update({ final_rank: 1 })
-      .eq('room_id', roomId)
-      .eq('player_id', survivors[0]);
-
-    await supabase
-      .from('rooms')
-      .update({ status: 'finished' })
-      .eq('id', roomId);
-  }
-
   const standings: RoundStanding[] = rankedPlayers.map(p => ({
     playerId: p.playerId,
     completionTimeMs: p.timeMs,
@@ -270,11 +257,28 @@ async function runElimination(
       isDraw,
       drawReason,
     };
+
+    // 1. Broadcast game_over event FIRST so all clients transition to 'game_over' phase immediately
     await realtimeChannel?.send({
       type: 'broadcast',
       event: 'game_over',
       payload: gameOverPayload,
     });
+
+    // 2. Update winner final rank in DB
+    if (survivors.length === 1) {
+      await supabase
+        .from('room_players')
+        .update({ final_rank: 1 })
+        .eq('room_id', roomId)
+        .eq('player_id', survivors[0]);
+    }
+
+    // 3. Mark room status as finished in DB
+    await supabase
+      .from('rooms')
+      .update({ status: 'finished' })
+      .eq('id', roomId);
   } else {
     await realtimeChannel?.send({
       type: 'broadcast',

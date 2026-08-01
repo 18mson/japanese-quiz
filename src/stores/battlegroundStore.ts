@@ -214,8 +214,11 @@ export const useBattlegroundStore = defineStore('battleground', () => {
         if (payload.new?.host_player_id) {
           hostPlayerId.value = payload.new.host_player_id;
         }
-        if (payload.new?.status === 'finished' && phase.value !== 'game_over') {
-          leaveRoom();
+        if (payload.new?.status === 'finished') {
+          // Only leave room if finished while players are waiting in lobby
+          if (phase.value === 'idle' || phase.value === 'lobby') {
+            leaveRoom();
+          }
         }
       }
     );

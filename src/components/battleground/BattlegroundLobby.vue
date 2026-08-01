@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
 import { useAuthStore } from '../../stores/authStore';
-import { isMuted, toggleMute, getAudioContext } from '../../utils/battleSoundManager';
+import { isMuted, toggleMute, getAudioContext, startLobbyBgm, stopLobbyBgm } from '../../utils/battleSoundManager';
 import { Users, Plus, LogIn, Crown, AlertCircle, Loader2, Swords, Copy, Check, Globe, Lock, RotateCcw, User, Volume2, VolumeX } from '@lucide/vue';
 
 const store = useBattlegroundStore();
@@ -13,6 +13,11 @@ const soundMuted = ref(isMuted());
 function handleToggleSound() {
   soundMuted.value = toggleMute();
   getAudioContext();
+  if (soundMuted.value) {
+    stopLobbyBgm();
+  } else {
+    startLobbyBgm();
+  }
 }
 
 // ── Local State ──────────────────────────────────────────────
@@ -41,9 +46,14 @@ watch(mode, (newMode) => {
 });
 
 onMounted(() => {
+  startLobbyBgm();
   if (mode.value === 'join') {
     store.fetchPublicRooms();
   }
+});
+
+onUnmounted(() => {
+  stopLobbyBgm();
 });
 
 // ── Computed ─────────────────────────────────────────────────
@@ -139,7 +149,7 @@ const emit = defineEmits<{ exit: [] }>();
               Nama Pemain <span class="text-rose-400">*</span>
             </label>
             <span v-if="authStore.user" class="text-xs text-indigo-300 font-semibold flex items-center gap-1.5 bg-indigo-500/20 px-2 py-0.5 rounded-md border border-indigo-500/30">
-              <User class="w-3.5 h-3.5 text-indigo-400" /> Auto-fill dari Akun
+              <User class="w-3.5 h-3.5 text-indigo-400" /> 
             </span>
           </div>
           <input

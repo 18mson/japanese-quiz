@@ -2,8 +2,9 @@
 // BattlegroundMode.vue
 // Main orchestrator. Renders the correct sub-screen based on store.phase.
 
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
+import { stopLobbyBgm } from '../utils/battleSoundManager';
 import BattlegroundLobby from './battleground/BattlegroundLobby.vue';
 import BattlegroundRound from './battleground/BattlegroundRound.vue';
 import BattlegroundRoundResult from './battleground/BattlegroundRoundResult.vue';
@@ -12,6 +13,15 @@ import { ShieldOff, Loader2 } from '@lucide/vue';
 
 const store = useBattlegroundStore();
 const emit = defineEmits<{ exit: [] }>();
+
+watch(
+  () => store.phase,
+  (newPhase) => {
+    if (newPhase !== 'idle' && newPhase !== 'lobby') {
+      stopLobbyBgm();
+    }
+  }
+);
 
 // When game is over we let the child emit exit.
 // Also handle ESC key for exit from lobby/idle.
