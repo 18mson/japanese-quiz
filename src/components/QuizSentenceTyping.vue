@@ -445,51 +445,51 @@ const handleKeyDown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto flex flex-col items-center p-2 sm:p-4 pb-36 sm:pb-0">
-    <!-- Live Header Stats Bar -->
-    <div class="w-full bg-slate-900 text-white rounded-2xl p-3 sm:p-4 mb-5 shadow-lg grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-center items-center">
+  <div class="w-full max-w-2xl mx-auto flex flex-col items-center p-1 sm:p-4 pb-36 sm:pb-0">
+    <!-- Live Header Stats Bar (1 row compact on mobile) -->
+    <div class="w-full bg-slate-900 text-white rounded-xl sm:rounded-2xl p-2 sm:p-4 mb-2.5 sm:mb-5 shadow-sm grid grid-cols-4 gap-1 sm:gap-4 text-center items-center">
       <div class="flex flex-col">
-        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Progress</span>
-        <span class="text-sm sm:text-base font-extrabold text-amber-400">
-          {{ currentSentenceIndex + 1 }} / {{ totalSentences }} Kalimat
+        <span class="text-[9px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Progress</span>
+        <span class="text-xs sm:text-base font-extrabold text-amber-400 truncate">
+          {{ currentSentenceIndex + 1 }}/{{ totalSentences }}
         </span>
       </div>
-      <div class="flex flex-col border-l sm:border-l-0 sm:border-x border-slate-800">
-        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
-        <span class="text-sm sm:text-base font-extrabold text-indigo-300">
-          {{ cpm }} <span class="text-xs text-slate-400 font-normal">CPM</span>
+      <div class="flex flex-col border-x border-slate-800">
+        <span class="text-[9px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
+        <span class="text-xs sm:text-base font-extrabold text-indigo-300 truncate">
+          {{ cpm }} <span class="text-[9px] sm:text-xs text-slate-400 font-normal">CPM</span>
         </span>
       </div>
       <div class="flex flex-col">
-        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
-        <span class="text-sm sm:text-base font-extrabold" :class="accuracy >= 90 ? 'text-emerald-400' : 'text-amber-300'">
+        <span class="text-[9px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
+        <span class="text-xs sm:text-base font-extrabold truncate" :class="accuracy >= 90 ? 'text-emerald-400' : 'text-amber-300'">
           {{ accuracy }}%
         </span>
       </div>
       <div class="flex flex-col border-l border-slate-800">
-        <span class="text-[11px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Waktu</span>
-        <span class="text-sm sm:text-base font-extrabold text-slate-200">
+        <span class="text-[9px] sm:text-xs text-slate-400 font-bold uppercase tracking-wider">Waktu</span>
+        <span class="text-xs sm:text-base font-extrabold text-slate-200 truncate">
           {{ elapsedTimeSeconds }}s
         </span>
       </div>
     </div>
 
     <!-- Sentence Typing Card -->
-    <div class="w-full bg-white rounded-3xl p-6 sm:p-8 border border-gray-200 shadow-md flex flex-col items-center text-center relative overflow-hidden mb-6">
+    <div class="w-full bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-8 border border-gray-200/80 shadow-xs flex flex-col items-center text-center relative overflow-hidden mb-2 sm:mb-6">
       
       <!-- Meaning / Indonesian Translation Hint -->
-      <div class="mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold">
-        <span>💡 {{ currentSentence?.meaning || 'Kalimat Bahasa Jepang' }}</span>
+      <div class="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold max-w-full truncate">
+        <span class="truncate">💡 {{ currentSentence?.meaning || 'Kalimat Bahasa Jepang' }}</span>
       </div>
 
       <!-- Japanese Sentence Display with Character-by-Character Highlight -->
-      <div class="flex items-center justify-center flex-wrap gap-1 sm:gap-2 my-4 min-h-[70px]">
+      <div class="flex items-center justify-center flex-wrap gap-1 sm:gap-2 my-2 sm:my-4 min-h-[45px] sm:min-h-[70px]">
         <div
           v-for="(unit, idx) in units"
           :key="idx"
           @click="toggleHint(Number(idx))"
           title="Klik untuk melihat hint romaji"
-          class="flex flex-col items-center transition-all duration-200 px-1.5 py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 select-none"
+          class="flex flex-col items-center transition-all duration-200 px-1 py-0.5 sm:px-1.5 sm:py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 select-none"
           :class="[
             Number(idx) < activeUnitIndex 
               ? 'text-emerald-600 font-extrabold scale-95' 
@@ -498,9 +498,9 @@ const handleKeyDown = (e: KeyboardEvent) => {
                 : 'text-gray-400 font-medium opacity-60')
           ]"
         >
-          <span class="text-3xl sm:text-4xl leading-tight">{{ unit.kana }}</span>
+          <span class="text-2xl sm:text-4xl leading-tight">{{ unit.kana }}</span>
           <span 
-            class="text-[10px] font-mono mt-1 font-bold uppercase tracking-tighter transition-all duration-200"
+            class="text-[9px] sm:text-[10px] font-mono mt-0.5 font-bold uppercase tracking-tighter transition-all duration-200"
             :class="[
               revealedHints[Number(idx)] ? 'opacity-100' : 'opacity-0 select-none',
               Number(idx) < activeUnitIndex ? 'text-emerald-600' : (Number(idx) === activeUnitIndex ? 'text-indigo-600' : 'text-gray-400')
@@ -512,14 +512,14 @@ const handleKeyDown = (e: KeyboardEvent) => {
       </div>
 
       <!-- Real-time Typing Input Box -->
-      <div class="w-full max-w-md mt-4 relative">
+      <div class="w-full max-w-md mt-2 sm:mt-4 relative">
         <input
           ref="inputRef"
           v-model="userInput"
           type="text"
           inputmode="none"
           placeholder="Ketik romaji karakter di atas..."
-          class="w-full px-5 py-3.5 text-lg font-mono text-center bg-gray-50 border-2 rounded-2xl transition-all duration-200 outline-none focus:bg-white shadow-inner"
+          class="w-full px-4 sm:px-5 py-2.5 sm:py-3.5 text-base sm:text-lg font-mono text-center bg-gray-50 border-2 rounded-xl sm:rounded-2xl transition-all duration-200 outline-none focus:bg-white shadow-inner"
           :class="[
             isTypoInInput 
               ? 'border-red-500 text-red-600 bg-red-50/50 focus:ring-4 focus:ring-red-100' 
@@ -533,7 +533,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
           autocapitalize="off"
           spellcheck="false"
         />
-        <div v-if="isTypoInInput" class="text-xs font-bold text-red-500 mt-2 flex items-center justify-center gap-1">
+        <div v-if="isTypoInInput" class="text-[11px] sm:text-xs font-bold text-red-500 mt-1.5 flex items-center justify-center gap-1">
           <AlertCircle class="w-3.5 h-3.5" />
           <span>Salah ketik! Tekan backspace atau ketik romaji yang benar.</span>
         </div>

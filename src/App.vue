@@ -139,10 +139,10 @@ const goToHome = () => {
 
     <!-- Main Screens -->
     <StartScreen v-if="!quizStarted" @start="startQuiz" @open-mastery-grid="showMasteryGridModal = true" @open-battleground="openBattleground" />
-    <div v-else class="max-w-2xl w-full mx-auto p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">
+    <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
       
-      <main class="bg-white rounded-2xl shadow-md p-4 sm:p-6 flex flex-col items-center justify-center w-full border border-gray-100 mb-4 flex-shrink-0 min-h-[300px]" v-if="!quizStore.quizCompleted">
+      <main class="bg-white rounded-2xl shadow-md p-2 sm:p-6 flex flex-col items-center justify-center w-full border border-gray-100 mb-2 sm:mb-4 flex-shrink-0 min-h-[220px] sm:min-h-[300px]" v-if="!quizStore.quizCompleted">
         <div v-if="quizStore.isLoading" class="flex flex-col items-center justify-center py-12 text-gray-500">
           <div class="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-3"></div>
           <span class="text-sm font-bold text-gray-600">Memuat Soal Kuis...</span>
