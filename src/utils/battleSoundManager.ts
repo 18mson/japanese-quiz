@@ -386,3 +386,26 @@ export function stopRoundBgm() {
     bgmOscillatorGroup = null;
   }
 }
+
+// ── SFX: Roulette Wheel Tick Sound ─────────────────────────────
+export function playRouletteTickSound() {
+  if (isMutedState) return;
+  try {
+    const ctx = getAudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(1400, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(350, ctx.currentTime + 0.035);
+
+    gain.gain.setValueAtTime(0.18, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.035);
+  } catch (e) {}
+}
