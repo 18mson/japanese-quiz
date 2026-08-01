@@ -8,6 +8,7 @@ import {
 import { toRomaji } from 'wanakana';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
 import { ShieldX, CheckCircle2, Clock, Zap, AlertTriangle, PlayCircle, Lock } from '@lucide/vue';
+import VirtualKeyboard from '../VirtualKeyboard.vue';
 
 const store = useBattlegroundStore();
 
@@ -745,6 +746,7 @@ function preventPaste(e: ClipboardEvent) {
         <input
           ref="inputRef"
           type="text"
+          inputmode="none"
           class="opacity-0 absolute w-0 h-0 pointer-events-none"
           autocomplete="off"
           autocorrect="off"
@@ -966,6 +968,14 @@ function preventPaste(e: ClipboardEvent) {
         {{ penaltyTimeLeft }}s
       </div>
       <span class="text-[10px] sm:text-xs text-rose-300/80 font-bold uppercase tracking-widest">Tunggu Cooldown Selesai...</span>
+    </div>
+
+    <!-- MOBILE VIRTUAL KEYBOARD -->
+    <div
+      v-if="store.phase === 'round_active' && !isSubmitted && store.iAmAlive && !isPenaltyActive && !isFrozen"
+      class="block sm:hidden fixed bottom-0 left-0 right-0 z-30"
+    >
+      <VirtualKeyboard theme="dark" :show-enter="false" @key="processTyped" />
     </div>
 
   </div>

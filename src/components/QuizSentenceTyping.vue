@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { toRomaji } from 'wanakana';
 import { AlertCircle } from '@lucide/vue';
+import VirtualKeyboard from './VirtualKeyboard.vue';
 import correctSoundFile from '../assets/sound/correct.wav';
 import incorrectSoundFile from '../assets/sound/incorrect.wav';
 
@@ -416,6 +417,23 @@ const handleInput = () => {
   evaluateInput();
 };
 
+const handleVirtualKey = (char: string) => {
+  userInput.value += char;
+  totalKeystrokes.value++;
+  evaluateInput();
+};
+
+const handleVirtualBackspace = () => {
+  if (userInput.value.length > 0) {
+    userInput.value = userInput.value.slice(0, -1);
+    evaluateInput();
+  }
+};
+
+const handleVirtualEnter = () => {
+  // If typed sentence is complete, input advances automatically
+};
+
 const handleKeyDown = (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
     userInput.value = '';
@@ -425,7 +443,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto flex flex-col items-center p-2 sm:p-4">
+  <div class="w-full max-w-2xl mx-auto flex flex-col items-center p-2 sm:p-4 pb-36 sm:pb-0">
     <!-- Live Header Stats Bar -->
     <div class="w-full bg-slate-900 text-white rounded-2xl p-3 sm:p-4 mb-5 shadow-lg grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 text-center items-center">
       <div class="flex flex-col">
@@ -518,5 +536,16 @@ const handleKeyDown = (e: KeyboardEvent) => {
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Mobile Virtual Keyboard -->
+  <div class="block sm:hidden fixed bottom-0 left-0 right-0 z-30">
+    <VirtualKeyboard
+      theme="light"
+      :show-enter="false"
+      @key="handleVirtualKey"
+      @backspace="handleVirtualBackspace"
+      @enter="handleVirtualEnter"
+    />
   </div>
 </template>

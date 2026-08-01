@@ -2,6 +2,7 @@
 import { ref, onMounted, watch, nextTick, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Check, X, AlertTriangle } from '@lucide/vue';
+import VirtualKeyboard from './VirtualKeyboard.vue';
 
 const quizStore = useQuizStore();
 const userInput = computed({
@@ -43,6 +44,21 @@ const handleEnter = () => {
   }
 };
 
+const handleVirtualKey = (char: string) => {
+  if (isAnswered.value) return;
+  userInput.value += char;
+};
+
+const handleVirtualBackspace = () => {
+  if (isAnswered.value) return;
+  userInput.value = userInput.value.slice(0, -1);
+};
+
+const handleVirtualEnter = () => {
+  if (isAnswered.value) return;
+  handleEnter();
+};
+
 const isAnswered = computed(() => quizStore.selectedAnswer !== null);
 
 const currentWord = computed(() => quizStore.currentQuestion);
@@ -61,7 +77,7 @@ const isTypo = computed(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-md mx-auto flex flex-col items-center">
+  <div class="w-full max-w-md mx-auto flex flex-col items-center pb-36 sm:pb-0">
     <!-- Typing Area -->
     <div class="w-full mb-6 relative">
       <input
@@ -144,6 +160,17 @@ const isTypo = computed(() => {
 
       <!-- Next button is rendered globally in bottom navbar -->
     </div>
+  </div>
+
+  <!-- Mobile Virtual Keyboard -->
+  <div v-if="!isAnswered" class="block sm:hidden fixed bottom-0 left-0 right-0 z-30">
+    <VirtualKeyboard
+      theme="light"
+      :disabled="isAnswered"
+      @key="handleVirtualKey"
+      @backspace="handleVirtualBackspace"
+      @enter="handleVirtualEnter"
+    />
   </div>
 </template>
 
