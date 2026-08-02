@@ -15,10 +15,11 @@ import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 import BattlegroundMode from './components/BattlegroundMode.vue';
 
+import AboutModal from './components/AboutModal.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
-import { LogOut, ChevronDown, Keyboard, Check, Settings } from '@lucide/vue';
+import { LogOut, ChevronDown, Keyboard, Check, Settings, Info } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -28,6 +29,7 @@ const quizStarted = ref(false);
 const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
 const showMasteryGridModal = ref(false);
+const showAboutModal = ref(false);
 const showBattleground = ref(false);
 
 const showUserDropdown = ref(false);
@@ -84,6 +86,9 @@ const checkRouteState = () => {
   ) {
     showBattleground.value = true;
   }
+  if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
+    showAboutModal.value = true;
+  }
 };
 
 onMounted(async () => {
@@ -122,9 +127,18 @@ const goToHome = () => {
   <div class="h-full w-screen bg-slate-50 font-sans flex flex-col overflow-hidden select-none">
     <!-- Top Global App Bar (Hidden when Battleground is active) -->
     <header v-if="!showBattleground" class="bg-white border-b border-gray-200 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
-      <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
-        <span class="text-xl">🇯🇵</span>
-        <span class="font-extrabold text-gray-900 tracking-tight text-sm sm:text-base">Nihongo Master</span>
+      <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
+          <span class="text-xl">🇯🇵</span>
+          <span class="font-extrabold text-gray-900 tracking-tight text-sm sm:text-base">Nihongo Master</span>
+        </div>
+        <button 
+            @click="showAboutModal = true"
+            class="px-2.5 py-1.5 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 border border-gray-200/80 rounded-xl text-xs font-bold text-gray-700 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+            title="Tentang Aplikasi"
+          >
+          <Info class="w-3.5 h-3.5 text-indigo-600" />
+        </button>
       </div>
 
       <div class="flex items-center gap-2">
@@ -292,6 +306,10 @@ const goToHome = () => {
       @close="showMasteryGridModal = false" 
       @start-weak-quiz="handleStartWeakQuiz"
     />
+    <AboutModal
+      :is-open="showAboutModal"
+      @close="showAboutModal = false"
+    />
     <LevelUpModal />
     <SyncConflictModal
       :is-open="authStore.showSyncConflictModal"
@@ -312,6 +330,7 @@ const goToHome = () => {
       @start="startQuiz" 
       @open-mastery-grid="showMasteryGridModal = true" 
       @open-leaderboard="showLeaderboardModal = true"
+      @open-about="showAboutModal = true"
       @open-battleground="openBattleground" 
     />
     <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">

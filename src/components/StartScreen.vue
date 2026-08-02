@@ -231,7 +231,7 @@ const getShortDurationDesc = (minutes: number) => {
   return '';
 };
 
-const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout']);
 
 const handleStart = async () => {
   if (selectedLevel.value === 'battleground') {
@@ -245,12 +245,7 @@ const handleStart = async () => {
 
 <template>
   <div class="max-w-4xl mx-auto p-4 md:p-6 pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full">
-    <!-- Header Title -->
-    <p class="text-sm md:text-base text-gray-600 mb-5 max-w-2xl font-medium leading-relaxed flex-shrink-0 text-center">
-      Master Hiragana, Katakana, N5 Vocabulary, and Sentence Typing through adaptive practice & Realtime Multiplayer Battleground!
-    </p>
-
-    <!-- Progress Header (1 Line) with Leaderboard & Mastery Grid -->
+    <!-- Progress Header (1 Line) with Leaderboard & Mastery Grid & About -->
     <div 
       class="w-full max-w-3xl mb-6 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm transition-all flex items-center justify-between gap-3 sm:gap-4 flex-shrink-0"
     >
@@ -274,14 +269,14 @@ const handleStart = async () => {
           title="Lihat Papan Peringkat"
         >
           <Trophy class="w-4 h-4 text-amber-500" />
-          <span class="hidden sm:inline">Papan Peringkat</span>
+          <span class="hidden sm:inline">Peringkat</span>
         </button>
         <button 
           type="button"
           @click="emit('openMasteryGrid')"
           class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
         >
-          <span>Lihat grid</span>
+          <span>Grid</span>
         </button>
       </div>
     </div>
