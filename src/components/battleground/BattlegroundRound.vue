@@ -14,6 +14,7 @@ import {
 } from '../../utils/battleSoundManager';
 import { ShieldX, CheckCircle2, Clock, Zap, AlertTriangle, PlayCircle, Lock, Volume2, VolumeX, Loader2 } from '@lucide/vue';
 import VirtualKeyboard from '../VirtualKeyboard.vue';
+import { getPlayerColor, type PlayerColorDef } from '../../utils/playerColors';
 
 const store = useBattlegroundStore();
 
@@ -395,6 +396,7 @@ onMounted(() => {
   focusInput();
   window.visualViewport?.addEventListener('resize', onViewportResize);
   window.visualViewport?.addEventListener('scroll', onViewportResize);
+  window.addEventListener('resize', handleMarkerResize);
 });
 onUnmounted(() => {
   if (progressThrottle) clearTimeout(progressThrottle);
@@ -405,6 +407,7 @@ onUnmounted(() => {
   if (lightningInterval) clearInterval(lightningInterval);
   window.visualViewport?.removeEventListener('resize', onViewportResize);
   window.visualViewport?.removeEventListener('scroll', onViewportResize);
+  window.removeEventListener('resize', handleMarkerResize);
 });
 
 function handleInput(event: Event) {
@@ -561,6 +564,8 @@ function throttledProgressBroadcast() {
     const overallPct = +(Math.min(100, ((sentProgress + unitProgress) / totalCount) * 100)).toFixed(2);
 
     store.broadcastProgress({
+      sentenceIndex: currentSentenceIndex.value,
+      activeUnitIndex: activeUnitIndex.value,
       completedSentences: currentSentenceIndex.value,
       totalSentences: totalCount,
       progressPercentage: overallPct,
@@ -571,6 +576,130 @@ function throttledProgressBroadcast() {
   }, 100);
 }
 
+// ── Live Progress Markers Logic ──────────────────────────────
+interface LiveMarker {
+  playerId: string;
+  playerName: string;
+  colorDef: PlayerColorDef;
+  sentenceIndex: number;
+  activeUnitIndex: number;
+  isSameSentence: boolean;
+  isBehind: boolean;
+  isAhead: boolean;
+  stackIndex: number;
+}
+
+const liveMarkers = computed<LiveMarker[]>(() => {
+  if (!store.alivePlayers || store.alivePlayers.length === 0) return [];
+  const myId = store.myPlayerId;
+  const currentSentIdx = currentSentenceIndex.value;
+
+  const result: LiveMarker[] = [];
+  const stackMap = new Map<string, number>();
+
+  for (const player of store.alivePlayers) {
+    if (player.player_id === myId) continue;
+
+    const pProgress = store.playerProgress.get(player.player_id);
+    const sentIdx = pProgress?.sentenceIndex ?? 0;
+    const unitIdx = pProgress?.activeUnitIndex ?? 0;
+    const colorDef = getPlayerColor(player.player_id, store.players);
+
+    const isSameSentence = sentIdx === currentSentIdx;
+    const isBehind = sentIdx < currentSentIdx;
+    const isAhead = sentIdx > currentSentIdx;
+
+    let posKey = '';
+    if (isSameSentence) {
+      posKey = `unit_${unitIdx}`;
+    } else if (isBehind) {
+      posKey = 'edge_left';
+    } else {
+      posKey = 'edge_right';
+    }
+
+    const currentStack = stackMap.get(posKey) ?? 0;
+    stackMap.set(posKey, currentStack + 1);
+
+    result.push({
+      playerId: player.player_id,
+      playerName: player.player_name,
+      colorDef,
+      sentenceIndex: sentIdx,
+      activeUnitIndex: unitIdx,
+      isSameSentence,
+      isBehind,
+      isAhead,
+      stackIndex: currentStack,
+    });
+  }
+
+  return result;
+});
+
+const sameSentenceMarkers = computed(() => {
+  return liveMarkers.value.filter((m) => m.isSameSentence);
+});
+
+const leftEdgeMarkers = computed(() => {
+  return liveMarkers.value.filter((m) => m.isBehind);
+});
+
+const rightEdgeMarkers = computed(() => {
+  return liveMarkers.value.filter((m) => m.isAhead);
+});
+
+// Dynamic Marker Positioning & Transition across units
+const unitElMap = ref<Map<number, HTMLElement>>(new Map());
+const layoutTick = ref(0);
+
+function setUnitRef(el: any, idx: number) {
+  if (el) {
+    unitElMap.value.set(idx, el as HTMLElement);
+  } else {
+    unitElMap.value.delete(idx);
+  }
+}
+
+function handleMarkerResize() {
+  layoutTick.value++;
+}
+
+function getMarkerPositionStyle(marker: LiveMarker) {
+  void layoutTick.value;
+  const el = unitElMap.value.get(marker.activeUnitIndex);
+
+  if (!el) {
+    const total = Math.max(1, units.value.length);
+    const pct = Math.min(95, Math.max(5, ((marker.activeUnitIndex + 0.5) / total) * 100));
+    return {
+      left: `${pct.toFixed(2)}%`,
+      top: '0px',
+      transform: `translate(-50%, -100%) translateY(${-(marker.stackIndex * 22)}px)`,
+    };
+  }
+
+  const left = el.offsetLeft + el.offsetWidth / 2;
+  const top = el.offsetTop - (marker.stackIndex * 22);
+
+  return {
+    left: `${left}px`,
+    top: `${top}px`,
+    transform: 'translate(-50%, -100%) translateY(10px)',
+  };
+}
+
+function getPowerUpHighlightClass(type: string, isActive: boolean): string {
+  const baseActive = isActive ? 'underline underline-offset-4 sm:underline-offset-8 font-black ' : 'font-bold ';
+  if (type === 'freeze') {
+    return baseActive + 'bg-cyan-500/40 text-cyan-200 border-2 border-cyan-400/90 shadow-[0_0_18px_rgba(6,182,212,0.8)] ring-2 ring-cyan-400/30 animate-pulse rounded-lg sm:rounded-xl px-1.5 sm:px-2 py-0.5';
+  } else if (type === 'backward') {
+    return baseActive + 'bg-rose-500/40 text-rose-200 border-2 border-rose-400/90 shadow-[0_0_18px_rgba(244,63,94,0.8)] ring-2 ring-rose-400/30 animate-pulse rounded-lg sm:rounded-xl px-1.5 sm:px-2 py-0.5';
+  } else {
+    return baseActive + 'bg-amber-500/40 text-amber-200 border-2 border-amber-400/90 shadow-[0_0_18px_rgba(245,158,11,0.8)] ring-2 ring-amber-400/30 animate-pulse rounded-lg sm:rounded-xl px-1.5 sm:px-2 py-0.5';
+  }
+}
+
 // ── Player Panel ──────────────────────────────────────────────
 function getProgress(playerId: string): number {
   const p = store.playerProgress.get(playerId);
@@ -578,8 +707,8 @@ function getProgress(playerId: string): number {
   return p.progressPercentage;
 }
 
-function avatarColor(name: string): string {
-  return `hsl(${(name.charCodeAt(0) * 47) % 360}, 60%, 40%)`;
+function avatarColor(playerId: string): string {
+  return getPlayerColor(playerId, store.players).hex;
 }
 
 function preventPaste(e: ClipboardEvent) {
@@ -673,7 +802,7 @@ function preventPaste(e: ClipboardEvent) {
     </div>
 
     <!-- Sentence Counter & Meaning Hint -->
-    <div class="px-3 pt-2 pb-1 text-center flex-shrink-0 z-10 flex flex-col items-center gap-0.5">
+    <div class="px-3 pt-2 pb-1 text-center flex-shrink-0 z-1 flex flex-col items-center gap-0.5">
       <div v-if="totalSentencesCount > 1" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-[11px] font-extrabold shadow-sm">
         <span>Kalimat {{ currentSentenceIndex + 1 }} dari {{ totalSentencesCount }}</span>
       </div>
@@ -686,41 +815,95 @@ function preventPaste(e: ClipboardEvent) {
       <!-- CENTER: Typing area (clicking anywhere focuses input) -->
       <div
         @click="focusInput"
-        class="flex-1 flex flex-col items-center justify-start md:justify-center p-3 pt-4 sm:p-6 overflow-y-auto cursor-pointer relative"
+        class="flex-1 flex flex-col items-center justify-start md:justify-center px-3 pb-3 pt-8 sm:px-6 sm:pt-10 overflow-y-auto cursor-pointer relative"
         :style="keyboardHeight > 0 ? { paddingBottom: keyboardHeight + 'px' } : { paddingBottom: '1.5rem' }"
       >
 
-        <!-- Sentence (Japanese) display with active character pointer & Power-Up Badge -->
-        <div class="mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-3 sm:gap-y-6 min-h-[50px] sm:min-h-[70px] w-full max-w-xl">
-          <template v-for="(unit, idx) in units" :key="idx">
-            <div class="relative inline-flex flex-col items-center">
+        <!-- Sentence (Japanese) display with active character pointer, Power-Up Highlight & Live Progress Markers -->
+        <div class="pt-7 sm:pt-9 mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-7 sm:gap-y-9 min-h-[60px] sm:min-h-[80px] w-full max-w-xl relative overflow-visible">
+          <!-- Left Edge Markers (Players on previous sentences - Opacity 50%) -->
+          <div v-if="leftEdgeMarkers.length > 0" class="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
+            <div
+              v-for="marker in leftEdgeMarkers"
+              :key="marker.playerId"
+              class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
+              :class="marker.colorDef.bgClass"
+              :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
+              :title="`${marker.playerName} (Kalimat Sebelum)`"
+            >
+              <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
+                {{ marker.playerName.charAt(0) }}
+              </span>
+            </div>
+          </div>
 
-              <!-- Power-Up Icon Badge above target word unit (Hidden once claimed or hangus) -->
+          <!-- Right Edge Markers (Players on future sentences - Opacity 50%) -->
+          <div v-if="rightEdgeMarkers.length > 0" class="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
+            <div
+              v-for="marker in rightEdgeMarkers"
+              :key="marker.playerId"
+              class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
+              :class="marker.colorDef.bgClass"
+              :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
+              :title="`${marker.playerName} (Kalimat Depan)`"
+            >
+              <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
+                {{ marker.playerName.charAt(0) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Same Sentence Live Player Markers (animated smooth movement across units) -->
+          <TransitionGroup name="marker-anim">
+            <div
+              v-for="marker in sameSentenceMarkers"
+              :key="marker.playerId"
+              class="absolute pointer-events-none z-25 transition-all duration-400 cubic-bezier(0.34,1.56,0.64,1) flex flex-col items-center"
+              :style="getMarkerPositionStyle(marker)"
+            >
               <div
-                v-if="idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)"
-                class="absolute -top-6 sm:-top-7 left-1/2 -translate-x-1/2 flex items-center justify-center w-6 sm:w-7 h-6 sm:h-7 rounded-full text-xs sm:text-sm font-bold shadow-lg transition-all animate-bounce z-20 backdrop-blur-md"
-                :class="[
-                  powerUpType === 'freeze' ? 'bg-cyan-500/30 border border-cyan-400/60 text-cyan-200 shadow-cyan-500/40 ring-2 ring-cyan-400/20' :
-                  (powerUpType === 'backward' ? 'bg-rose-500/30 border border-rose-400/60 text-rose-200 shadow-rose-500/40 ring-2 ring-rose-400/20' :
-                  'bg-amber-500/30 border border-amber-400/60 text-amber-200 shadow-amber-500/40 ring-2 ring-amber-400/20')
-                ]"
-                :title="powerUpType"
+                class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-lg animate-bounce border-2 border-white/90 flex-shrink-0"
+                :class="[marker.colorDef.bgClass, marker.colorDef.glowClass]"
+                :title="`${marker.playerName} (Karakter ${marker.activeUnitIndex + 1})`"
               >
-                <span v-if="powerUpType === 'freeze'">❄️</span>
-                <span v-else-if="powerUpType === 'backward'">⏪</span>
-                <span v-else>⚡</span>
+                <span class="text-[9px] sm:text-[10px] font-black text-white leading-none select-none uppercase shadow-sm">
+                  {{ marker.playerName.charAt(0) }}
+                </span>
               </div>
+            </div>
+          </TransitionGroup>
 
+          <template v-for="(unit, idx) in units" :key="idx">
+            <div
+              :ref="(el) => setUnitRef(el, idx)"
+              class="relative inline-flex flex-col items-center"
+            >
               <!-- Completed Japanese character/word -->
               <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold">{{ unit.kana }}</span>
 
-              <!-- Current active Japanese character/word pointer -->
-              <span v-else-if="idx === activeUnitIndex" class="text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400">
+              <!-- Current active Japanese character/word pointer (Custom highlight if power-up) -->
+              <span
+                v-else-if="idx === activeUnitIndex"
+                :class="[
+                  idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
+                    ? getPowerUpHighlightClass(powerUpType, true)
+                    : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400'
+                ]"
+              >
                 {{ unit.kana }}
               </span>
 
-              <!-- Upcoming Japanese character/word -->
-              <span v-else class="text-slate-400/70 font-medium">{{ unit.kana }}</span>
+              <!-- Upcoming Japanese character/word (Custom highlight if power-up) -->
+              <span
+                v-else
+                :class="[
+                  idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
+                    ? getPowerUpHighlightClass(powerUpType, false)
+                    : 'text-slate-400/70 font-medium'
+                ]"
+              >
+                {{ unit.kana }}
+              </span>
             </div>
           </template>
         </div>
@@ -898,27 +1081,31 @@ function preventPaste(e: ClipboardEvent) {
     </div>
 
     <!-- VICTIM BACKWARD REWIND OVERLAY ⏪ -->
-    <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/80 overflow-hidden">
-      <!-- Right-to-Left sweeping laser/light beams -->
+    <div v-if="isRewindingGlitch" class="fixed inset-0 pointer-events-none z-50 flex flex-col items-center justify-center bg-rose-950/85 overflow-hidden animate-glitch-screen">
+      <!-- Right-to-Left sweeping laser/light beams & Glitch Slice overlays -->
       <div class="absolute inset-0 w-full h-full pointer-events-none overflow-hidden">
         <!-- Wide gradient light beam sweeping right to left -->
         <div class="absolute inset-y-0 w-[120vw] bg-gradient-to-l from-transparent via-rose-500/50 to-transparent mix-blend-screen animate-rewind-sweep-1"></div>
         <div class="absolute inset-y-0 w-[80vw] bg-gradient-to-l from-transparent via-red-400/60 to-transparent mix-blend-screen animate-rewind-sweep-2"></div>
         
+        <!-- Glitch Scanlines & Chromatic Slices -->
+        <div class="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(255,255,255,0)_50%,rgba(0,0,0,0.4)_50%,rgba(0,0,0,0.4))] bg-[length:100%_4px] pointer-events-none opacity-40"></div>
+        <div class="absolute inset-0 bg-cyan-500/20 mix-blend-screen animate-glitch-slice-1"></div>
+        <div class="absolute inset-0 bg-rose-500/30 mix-blend-screen animate-glitch-slice-2"></div>
+
         <!-- Horizontal Cone Beams moving right to left -->
         <img src="/battle/cone_c_blur.png" class="absolute top-1/2 right-0 -translate-y-1/2 w-[120vh] h-[220vw] object-fill opacity-50 mix-blend-screen -rotate-90 animate-rewind-cone-1" style="filter: hue-rotate(320deg) brightness(3.5) saturate(3);" />
         <img src="/battle/cone_c_blur.png" class="absolute top-1/2 right-0 -translate-y-1/2 w-[90vh] h-[180vw] object-fill opacity-35 mix-blend-screen -rotate-90 animate-rewind-cone-2" style="filter: hue-rotate(330deg) brightness(4) saturate(3);" />
       </div>
 
-      <!-- Content -->
-      <div class="relative z-10 flex flex-col items-center">
-        <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl bg-rose-500/40 border border-rose-400/50 flex items-center justify-center text-3xl sm:text-4xl mb-3 animate-spin">
-          ⏪
+      <!-- Content (Icon removed, Glitch text active) -->
+      <div class="relative z-10 flex flex-col items-center animate-glitch-shake px-4 text-center">
+        <div class="text-xs sm:text-sm text-rose-300 font-extrabold uppercase tracking-widest mb-2 glitch-text-sm">
+          TIME REWIND ATTACK!
         </div>
-        <div class="text-center">
-          <div class="text-[10px] sm:text-xs text-rose-300 font-bold uppercase tracking-widest mb-1">TIME REWIND ATTACK!</div>
-          <h2 class="text-xl sm:text-2xl font-black text-white">TERLEMPAR MUNDUR -3 KATA!</h2>
-        </div>
+        <h2 class="text-2xl sm:text-4xl font-black text-white tracking-wider glitch-text">
+          TERLEMPAR MUNDUR -3 KATA!
+        </h2>
       </div>
     </div>
 
@@ -1048,6 +1235,65 @@ function preventPaste(e: ClipboardEvent) {
   animation: rewind-sweep-rtl-2 0.38s linear infinite;
 }
 
+/* Digital Glitch Animations for Backward Effect */
+@keyframes glitch-shake {
+  0% { transform: translate(0, 0) skew(0deg); }
+  10% { transform: translate(-4px, 2px) skew(-2deg); }
+  20% { transform: translate(4px, -1px) skew(3deg); }
+  30% { transform: translate(-2px, -3px) skew(0deg); }
+  40% { transform: translate(5px, 1px) skew(-3deg); }
+  50% { transform: translate(-1px, 4px) skew(1deg); }
+  60% { transform: translate(3px, -3px) skew(-1deg); }
+  70% { transform: translate(-5px, 0px) skew(2deg); }
+  80% { transform: translate(2px, -2px) skew(-2deg); }
+  90% { transform: translate(-1px, 3px) skew(1deg); }
+  100% { transform: translate(0, 0) skew(0deg); }
+}
+.animate-glitch-shake {
+  animation: glitch-shake 0.2s infinite;
+}
+.animate-glitch-screen {
+  animation: glitch-shake 0.12s infinite;
+}
+
+@keyframes glitch-slice-1 {
+  0% { clip-path: inset(20% 0 60% 0); transform: translate(-12px, 3px); }
+  20% { clip-path: inset(70% 0 10% 0); transform: translate(12px, -3px); }
+  40% { clip-path: inset(10% 0 80% 0); transform: translate(-14px, 4px); }
+  60% { clip-path: inset(50% 0 35% 0); transform: translate(8px, -2px); }
+  80% { clip-path: inset(85% 0 5% 0); transform: translate(-6px, 3px); }
+  100% { clip-path: inset(30% 0 50% 0); transform: translate(7px, -4px); }
+}
+@keyframes glitch-slice-2 {
+  0% { clip-path: inset(40% 0 45% 0); transform: translate(14px, -4px); }
+  25% { clip-path: inset(5% 0 85% 0); transform: translate(-10px, 3px); }
+  50% { clip-path: inset(65% 0 15% 0); transform: translate(11px, 2px); }
+  75% { clip-path: inset(15% 0 70% 0); transform: translate(-8px, -3px); }
+  100% { clip-path: inset(75% 0 10% 0); transform: translate(9px, 4px); }
+}
+.animate-glitch-slice-1 {
+  animation: glitch-slice-1 0.18s steps(2, start) infinite;
+}
+.animate-glitch-slice-2 {
+  animation: glitch-slice-2 0.14s steps(2, start) infinite;
+}
+
+.glitch-text {
+  text-shadow: -4px 0 #00ffff, 4px 0 #ff0055;
+  animation: glitch-text-anim 0.15s infinite;
+}
+.glitch-text-sm {
+  text-shadow: -2px 0 #00ffff, 2px 0 #ff0055;
+  animation: glitch-text-anim 0.2s infinite;
+}
+@keyframes glitch-text-anim {
+  0% { text-shadow: -4px 0 #00ffff, 4px 0 #ff0055; }
+  25% { text-shadow: 4px 0 #00ffff, -4px 0 #ff0055; }
+  50% { text-shadow: -3px 3px #00ffff, 3px -3px #ff0055; }
+  75% { text-shadow: 3px -3px #00ffff, -3px 3px #ff0055; }
+  100% { text-shadow: -4px 0 #00ffff, 4px 0 #ff0055; }
+}
+
 /* Individual falling rain drops (Storm Effect) */
 .rain-drop-container {
   position: absolute;
@@ -1116,6 +1362,17 @@ function preventPaste(e: ClipboardEvent) {
 }
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out forwards;
+}
+
+/* Marker Enter/Leave Transitions */
+.marker-anim-enter-active,
+.marker-anim-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.marker-anim-enter-from,
+.marker-anim-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -100%) scale(0.5);
 }
 
 /* No scrollbar utility */

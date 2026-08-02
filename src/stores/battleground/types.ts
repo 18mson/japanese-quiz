@@ -102,11 +102,14 @@ export interface PlayerProgress {
   playerId: string;
   charIndex?: number;
   totalChars?: number;
+  sentenceIndex?: number;
+  activeUnitIndex?: number;
   completedSentences?: number;
   totalSentences?: number;
   progressPercentage: number;
   correctChars?: number;
   wrongChars?: number;
+  playerColor?: string;
 }
 
 export interface PublicRoomItem {

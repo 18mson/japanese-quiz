@@ -105,7 +105,21 @@ export async function joinRoomByCodeApi(code: string, myPlayerId: string, myPlay
 
   const alreadyJoined = existingPlayers?.some((p: any) => p.player_id === myPlayerId);
 
-  if (!alreadyJoined) {
+  if (alreadyJoined) {
+    const { error: updateErr } = await supabase
+      .from('room_players')
+      .update({
+        status: 'alive',
+        player_name: myPlayerName,
+        eliminated_in_round: null,
+        elimination_reason: null,
+        final_rank: null,
+      })
+      .eq('room_id', room.id)
+      .eq('player_id', myPlayerId);
+
+    if (updateErr) throw updateErr;
+  } else {
     const { error: joinErr } = await supabase.from('room_players').insert({
       room_id: room.id,
       player_id: myPlayerId,

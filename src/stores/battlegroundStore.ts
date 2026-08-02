@@ -277,6 +277,26 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       }
     });
 
+    realtimeChannel.on('broadcast', { event: 'player_joined' }, async () => {
+      await refreshPlayers();
+    });
+
+    realtimeChannel.on('broadcast', { event: 'player_left' }, async ({ payload }: { payload: { playerId: string } }) => {
+      if (payload?.playerId) {
+        players.value = players.value.filter(p => p.player_id !== payload.playerId);
+        playerProgress.value.delete(payload.playerId);
+      }
+      await refreshPlayers();
+    });
+
+    realtimeChannel.on('presence', { event: 'leave' }, async () => {
+      await refreshPlayers();
+    });
+
+    realtimeChannel.on('presence', { event: 'sync' }, async () => {
+      await refreshPlayers();
+    });
+
     // Postgres CDC listeners
     realtimeChannel.on(
       'postgres_changes',
@@ -309,6 +329,18 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     unloadListener = () => {
       if (roomId.value && myPlayerId.value) {
         const isLobby = phase.value === 'idle' || phase.value === 'lobby';
+        if (realtimeChannel) {
+          try {
+            realtimeChannel.send({
+              type: 'broadcast',
+              event: 'player_left',
+              payload: { playerId: myPlayerId.value, isHost: isHost.value },
+            });
+            realtimeChannel.untrack();
+          } catch (e) {
+            // ignore on unload
+          }
+        }
         leaveRoomApi(roomId.value, myPlayerId.value, isLobby, isHost.value, iAmAlive.value);
       }
     };
@@ -624,6 +656,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   function broadcastProgress(progress: {
+    sentenceIndex?: number;
+    activeUnitIndex?: number;
     completedSentences: number;
     totalSentences: number;
     progressPercentage: number;
@@ -720,6 +754,19 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const pid = myPlayerId.value;
     const isLobby = phase.value === 'idle' || phase.value === 'lobby';
     const amHost = isHost.value;
+
+    if (realtimeChannel) {
+      try {
+        await realtimeChannel.send({
+          type: 'broadcast',
+          event: 'player_left',
+          payload: { playerId: pid, isHost: amHost },
+        });
+        await realtimeChannel.untrack();
+      } catch (e) {
+        console.warn('[Battleground] Untrack / broadcast leave error:', e);
+      }
+    }
 
     if (rId) {
       await leaveRoomApi(rId, pid, isLobby, amHost, iAmAlive.value);

@@ -67,7 +67,7 @@ const modesList: QuizModeDef[] = [
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'words', label: 'Kata' },
+      { key: 'words', label: 'Words' },
     ],
     icon: Keyboard,
     discGradient: 'from-blue-500 via-indigo-600 to-indigo-700',
@@ -261,7 +261,7 @@ const handleStart = async () => {
         <div class="truncate">
           <div class="text-xs text-gray-500 font-medium">Peta penguasaan huruf</div>
           <div class="text-sm md:text-base font-bold text-gray-900 truncate">
-            {{ quizStore.overallMasteryStats.mastered }} / {{ quizStore.overallMasteryStats.total }} Dikuasai
+            {{ quizStore.overallMasteryStats.mastered }} / {{ quizStore.overallMasteryStats.total }}
             <span class="text-indigo-600 font-extrabold ml-1.5">({{ quizStore.overallMasteryStats.percentage }}%)</span>
           </div>
         </div>
