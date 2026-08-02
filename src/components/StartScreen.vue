@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers } from '@lucide/vue';
+import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 
 const quizStore = useQuizStore();
@@ -91,10 +91,10 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'battleground',
-    title: 'Typing Battleground',
+    title: 'Online Multiplayer',
     levelTag: 'Multi',
     level: 'battleground',
-    defaultType: '',
+    defaultType: 'Multiplayer',
     desc: 'Battle Royale Mengetik (2–8 Pemain). Adu cepat & ketepatan mengetik secara realtime.',
     subTypes: [],
     icon: Swords,
@@ -122,79 +122,53 @@ function selectMode(index: number) {
     scrollDirection.value = 'down';
   }
   activeModeIndex.value = index;
-  playRouletteTickSound();
-
-  const m = modesList[index];
-  selectedLevel.value = m.level;
-  if (m.defaultType) {
-    characterTypes.value = m.defaultType;
+  selectedLevel.value = modesList[index].level;
+  if (modesList[index].defaultType) {
+    characterTypes.value = modesList[index].defaultType;
   }
+  playRouletteTickSound();
 }
 
 function selectSubType(type: string) {
   characterTypes.value = type;
 }
 
-// Mouse Wheel Scroll & Touch Drag Gesture Support for Mode Wheel
-let isWheelCooldown = false;
+let wheelTimeout: ReturnType<typeof setTimeout> | null = null;
+function handleWheel(event: WheelEvent) {
+  if (wheelTimeout) return;
 
-function handleWheel(e: WheelEvent) {
-  if (Math.abs(e.deltaY) < 15 || isWheelCooldown) return;
-
-  if (e.deltaY > 0) {
-    if (activeModeIndex.value < modesList.length - 1) {
-      selectMode(activeModeIndex.value + 1);
-      isWheelCooldown = true;
-      setTimeout(() => { isWheelCooldown = false; }, 200);
-    }
-  } else if (e.deltaY < 0) {
-    if (activeModeIndex.value > 0) {
-      selectMode(activeModeIndex.value - 1);
-      isWheelCooldown = true;
-      setTimeout(() => { isWheelCooldown = false; }, 200);
-    }
+  if (event.deltaY > 20) {
+    selectMode(activeModeIndex.value + 1);
+  } else if (event.deltaY < -20) {
+    selectMode(activeModeIndex.value - 1);
   }
+
+  wheelTimeout = setTimeout(() => {
+    wheelTimeout = null;
+  }, 180);
 }
 
 let touchStartY = 0;
-let touchStartX = 0;
-
 function handleTouchStart(e: TouchEvent) {
-  if (e.touches && e.touches.length > 0) {
+  if (e.touches.length > 0) {
     touchStartY = e.touches[0].clientY;
-    touchStartX = e.touches[0].clientX;
   }
 }
-
 function handleTouchMove(e: TouchEvent) {
-  // Prevent browser default pull-to-refresh & page scroll when dragging inside mode wheel container
-  if (e.cancelable) {
-    e.preventDefault();
-  }
-}
-
-function handleTouchEnd(e: TouchEvent) {
-  if (!e.changedTouches || e.changedTouches.length === 0) return;
-  const touchEndY = e.changedTouches[0].clientY;
-  const touchEndX = e.changedTouches[0].clientX;
-  const deltaY = touchStartY - touchEndY;
-  const deltaX = touchStartX - touchEndX;
-
-  // Ensure vertical swipe is dominant and passes threshold
-  if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 20) {
-    if (deltaY > 0) {
-      // Swiped finger UP -> select mode BELOW active
-      if (activeModeIndex.value < modesList.length - 1) {
+  if (e.touches.length > 0) {
+    const touchEndY = e.touches[0].clientY;
+    const diff = touchStartY - touchEndY;
+    if (Math.abs(diff) > 30) {
+      if (diff > 0) {
         selectMode(activeModeIndex.value + 1);
-      }
-    } else {
-      // Swiped finger DOWN -> select mode ABOVE active
-      if (activeModeIndex.value > 0) {
+      } else {
         selectMode(activeModeIndex.value - 1);
       }
+      touchStartY = touchEndY;
     }
   }
 }
+function handleTouchEnd() {}
 
 // Position cards along an arc trajectory hugging the red semi-circle
 function getCardStyle(index: number) {
@@ -257,7 +231,7 @@ const getShortDurationDesc = (minutes: number) => {
   return '';
 };
 
-const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard']);
 
 const handleStart = async () => {
   if (selectedLevel.value === 'battleground') {
@@ -276,12 +250,11 @@ const handleStart = async () => {
       Master Hiragana, Katakana, N5 Vocabulary, and Sentence Typing through adaptive practice & Realtime Multiplayer Battleground!
     </p>
 
-    <!-- Progress Header (1 Line) -->
+    <!-- Progress Header (1 Line) with Leaderboard & Mastery Grid -->
     <div 
-      @click="emit('openMasteryGrid')"
-      class="w-full max-w-3xl mb-6 bg-white border border-gray-200 hover:border-indigo-300 rounded-2xl p-4 shadow-sm transition-all cursor-pointer flex items-center justify-between gap-4 flex-shrink-0"
+      class="w-full max-w-3xl mb-6 bg-white border border-gray-200 rounded-2xl p-4 shadow-sm transition-all flex items-center justify-between gap-3 sm:gap-4 flex-shrink-0"
     >
-      <div class="flex items-center gap-3 min-w-0">
+      <div class="flex items-center gap-3 min-w-0 cursor-pointer flex-1" @click="emit('openMasteryGrid')">
         <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 flex-shrink-0">
           <Target class="w-5 h-5" />
         </div>
@@ -293,12 +266,24 @@ const handleStart = async () => {
           </div>
         </div>
       </div>
-      <button 
-        type="button"
-        class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs transition flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
-      >
-        <span>Lihat grid</span>
-      </button>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button 
+          type="button"
+          @click="emit('openLeaderboard')"
+          class="px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200/80 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
+          title="Lihat Papan Peringkat"
+        >
+          <Trophy class="w-4 h-4 text-amber-500" />
+          <span class="hidden sm:inline">Papan Peringkat</span>
+        </button>
+        <button 
+          type="button"
+          @click="emit('openMasteryGrid')"
+          class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <span>Lihat grid</span>
+        </button>
+      </div>
     </div>
 
     <!-- Step 1: Disk Wheel Mode Selection -->

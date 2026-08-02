@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useSettingsStore, type KeyboardHeight } from '../stores/settingsStore';
 
 const props = withDefaults(defineProps<{
   theme?: 'light' | 'dark';
@@ -7,6 +8,7 @@ const props = withDefaults(defineProps<{
   showEnter?: boolean;
   enterLabel?: string;
   enableSound?: boolean;
+  keyboardHeight?: KeyboardHeight;
 }>(), {
   theme: 'light',
   disabled: false,
@@ -20,6 +22,14 @@ const emit = defineEmits<{
   (e: 'backspace'): void;
   (e: 'enter'): void;
 }>();
+
+const settingsStore = useSettingsStore();
+
+const activeKeyboardHeight = computed(() => props.keyboardHeight || settingsStore.keyboardHeight);
+
+const keyHeightClass = computed(() => 
+  activeKeyboardHeight.value === 'tall' ? 'h-14 sm:h-16' : 'h-11 sm:h-12'
+);
 
 const row1 = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
 const row2 = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
@@ -139,9 +149,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
       >
@@ -158,9 +169,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
       >
@@ -176,9 +188,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(',')"
         @mousedown.prevent="handleKeyPress(',')"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-lg sm:text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === ',' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
         title="Comma"
@@ -193,9 +206,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(key)"
         @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] h-11 sm:h-12 rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
       >
@@ -208,9 +222,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleBackspace"
         @mousedown.prevent="handleBackspace"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] h-11 sm:h-12 rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           backspaceClass,
+          keyHeightClass,
           activeKey === 'backspace' ? '!scale-90 !bg-rose-600 !text-white !ring-2 !ring-rose-400 shadow-md' : ''
         ]"
         title="Backspace"
@@ -226,9 +241,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress('-')"
         @mousedown.prevent="handleKeyPress('-')"
-        class="w-11 sm:w-14 h-11 sm:h-12 rounded-lg font-bold text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="w-11 sm:w-14 rounded-lg font-bold text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === '-' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
       >
@@ -239,9 +255,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleKeyPress(' ')"
         @mousedown.prevent="handleKeyPress(' ')"
-        class="flex-1 h-11 sm:h-12 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+        class="flex-1 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
         :class="[
           keyBaseClass,
+          keyHeightClass,
           activeKey === ' ' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
         ]"
       >
@@ -253,9 +270,10 @@ const enterClass = computed(() => isDark.value
         :disabled="disabled"
         @touchstart.prevent="handleEnter"
         @mousedown.prevent="handleEnter"
-        class="w-20 sm:w-24 h-11 sm:h-12 rounded-lg text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform"
+        class="w-20 sm:w-24 rounded-lg text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform"
         :class="[
           enterClass,
+          keyHeightClass,
           activeKey === 'enter' ? '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg' : ''
         ]"
       >
