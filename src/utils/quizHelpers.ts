@@ -82,6 +82,11 @@ export const getFallbackLocalPool = (type: string, level: string): any[] => {
   if (type === 'katakana') {
     return level === 'basic' ? katakanaData.filter(k => k.type === 'basic') : katakanaData;
   }
+  if (type === 'mix') {
+    const h = level === 'basic' ? hiraganaData.filter(c => c.type === 'basic') : hiraganaData;
+    const k = level === 'basic' ? katakanaData.filter(k => k.type === 'basic') : katakanaData;
+    return [...h, ...k];
+  }
   if (type === 'words') {
     const multiCharWords = wordsData.filter(w => {
       const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');

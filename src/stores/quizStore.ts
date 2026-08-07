@@ -162,7 +162,10 @@ export const useQuizStore = defineStore('quiz', () => {
     const questionCount = getQuestionCountFromDuration(targetDuration, type);
 
     try {
-      const { data, error } = await supabase.from('characters').select('*').eq('quiz_type', type);
+      const query = type === 'mix'
+        ? supabase.from('characters').select('*').in('quiz_type', ['hiragana', 'katakana'])
+        : supabase.from('characters').select('*').eq('quiz_type', type);
+      const { data, error } = await query;
       if (error || !data || data.length === 0) throw error || new Error('No data');
 
       const mappedData = data.map(item => ({
@@ -180,6 +183,8 @@ export const useQuizStore = defineStore('quiz', () => {
         const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
         const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
         finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
+      } else if (level === 'basic') {
+        finalPool = mappedData.filter(item => item.type === 'basic');
       }
 
       questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
