@@ -69,7 +69,7 @@ const instructionText = computed(() => {
     <!-- Big Question Card -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 border border-indigo-100/50 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md',
+        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 dark:from-indigo-950/40 dark:to-slate-800/80 border border-indigo-100/50 dark:border-slate-700/80 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md',
         isWord ? 'w-full max-w-md min-h-24 py-3 px-4' : 'w-28 h-28'
       ]"
     >
@@ -77,7 +77,7 @@ const instructionText = computed(() => {
         <!-- Display Character/Word -->
         <span 
           :class="[
-            'text-gray-800 font-bold tracking-wide transition-all duration-300 leading-none',
+            'text-gray-800 dark:text-white font-bold tracking-wide transition-all duration-300 leading-none',
             isWord 
               ? (character.length > 6 ? 'text-2xl' : 'text-3xl')
               : 'text-4xl font-bold'
@@ -92,13 +92,13 @@ const instructionText = computed(() => {
           <template v-if="hasValidReadingHint">
             <button 
               v-if="!showReadingHint"
-              class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
               @click="showReadingHint = true"
             >
-              <Lightbulb class="w-3 h-3 text-indigo-600" />
+              <Lightbulb class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
               <span>Reading Hint</span>
             </button>
-            <span v-else class="text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+            <span v-else class="text-xs font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
               Reading: {{ currentKana }}
             </span>
           </template>
@@ -106,20 +106,20 @@ const instructionText = computed(() => {
           <!-- Meaning Hint Button/Pill -->
           <button 
             v-if="!showMeaningHint"
-            class="text-[10px] px-2.5 py-1 bg-white hover:bg-indigo-50 hover:border-indigo-300 text-indigo-600 rounded-full border border-indigo-200 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+            class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
             @click="showMeaningHint = true"
           >
-            <BookOpen class="w-3 h-3 text-indigo-600" />
+            <BookOpen class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
             <span>Petunjuk Arti</span>
           </button>
-          <span v-else class="text-xs font-medium text-teal-700 bg-teal-50 border border-teal-100 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+          <span v-else class="text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border border-teal-100 dark:border-teal-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
             Arti: {{ currentMeaning }}
           </span>
         </div>
       </div>
     </div>
     
-    <p class="text-sm text-gray-500 m-0 text-center font-medium">
+    <p class="text-sm text-gray-500 dark:text-slate-400 m-0 text-center font-medium">
       {{ instructionText }}
     </p>
   </div>

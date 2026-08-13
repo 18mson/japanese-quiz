@@ -47,30 +47,30 @@ onUnmounted(() => {
   <Teleport to="body">
     <div 
       v-if="isOpen" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fadeIn"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fadeIn"
       @click.self="emit('close')"
     >
       <div 
-        class="bg-white rounded-3xl shadow-2xl border border-gray-100 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden animate-scaleUp relative"
+        class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden animate-scaleUp relative"
       >
         <!-- Modal Header -->
-        <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-white flex-shrink-0">
+        <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-white dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 flex-shrink-0">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/20">
               🇯🇵
             </div>
             <div>
-              <h2 class="text-base sm:text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
+              <h2 class="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
                 <span>Tentang Nihongo Master</span>
-                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 text-indigo-700 rounded-full uppercase tracking-wider">v0.1.0</span>
+                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-full uppercase tracking-wider">v0.1.0</span>
               </h2>
-              <p class="text-xs text-gray-500 font-medium">Platform Belajar Mengetik & Vocabulary Jepang Interaktif</p>
+              <p class="text-xs text-gray-500 dark:text-slate-400 font-medium">Platform Belajar Mengetik & Vocabulary Jepang Interaktif</p>
             </div>
           </div>
 
           <button 
             @click="emit('close')" 
-            class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center transition cursor-pointer"
+            class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
             title="Tutup"
           >
             <X class="w-5 h-5" />
@@ -78,7 +78,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Scrollable Modal Content Body -->
-        <div class="p-5 sm:p-6 overflow-y-auto space-y-6 sm:space-y-8 text-gray-700 text-xs sm:text-sm leading-relaxed">
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-6 sm:space-y-8 text-gray-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
           
           <!-- 1. HERO & TUJUAN UTAMA -->
           <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-800 rounded-2xl p-5 sm:p-6 text-white shadow-lg relative overflow-hidden">
@@ -131,95 +131,95 @@ onUnmounted(() => {
 
           <!-- 2. DETAIL MODE-MODE PERMAINAN -->
           <div class="space-y-4">
-            <div class="flex items-center gap-2 border-b border-gray-100 pb-2">
-              <Gamepad2 class="w-5 h-5 text-indigo-600" />
-              <h3 class="text-sm sm:text-base font-black text-gray-900 tracking-tight">Detail Mode Permainan</h3>
+            <div class="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2">
+              <Gamepad2 class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <h3 class="text-sm sm:text-base font-black text-gray-900 dark:text-slate-100 tracking-tight">Detail Mode Permainan</h3>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               <!-- Mode 1: Multiple Choice -->
-              <div class="bg-slate-50 border border-gray-200/80 rounded-2xl p-4 space-y-2.5 hover:border-indigo-200 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-indigo-200 dark:hover:border-indigo-500/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-xl bg-indigo-500 text-white flex items-center justify-center">
                       <Layers class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 text-sm">1. Multiple Choice</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">1. Multiple Choice</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 text-indigo-800 rounded-md">Basic</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 rounded-md">Basic</span>
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed">
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Latihan pilihan ganda cepat untuk pengenalan visual karakter <strong>Hiragana</strong> dan <strong>Katakana</strong> dasar.
                 </p>
-                <div class="bg-white rounded-xl p-2.5 border border-gray-200 text-[11px] text-gray-500 space-y-1">
-                  <div class="font-bold text-gray-700 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-indigo-600" /> Fitur Kunci:
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" /> Fitur Kunci:
                   </div>
                   <p>Membantu pemula mengenali bentuk huruf Kana sebelum melangkah ke mode mengetik.</p>
                 </div>
               </div>
 
               <!-- Mode 2: Keyboard Typing -->
-              <div class="bg-slate-50 border border-gray-200/80 rounded-2xl p-4 space-y-2.5 hover:border-blue-200 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-blue-200 dark:hover:border-blue-500/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center">
                       <Keyboard class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 text-sm">2. Keyboard Typing</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">2. Keyboard Typing</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-800 rounded-md">Kana & Words</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 rounded-md">Kana & Words</span>
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed">
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Melatih muscle memory mengetik Romaji untuk Kana dan <strong>Kosakata N5 (Words)</strong> sehari-hari.
                 </p>
-                <div class="bg-white rounded-xl p-2.5 border border-gray-200 text-[11px] text-gray-500 space-y-1">
-                  <div class="font-bold text-gray-700 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-blue-600" /> Fitur Kunci:
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Fitur Kunci:
                   </div>
                   <p>Mendukung Keyboard Virtual custom dan Keyboard Fisik laptop/PC.</p>
                 </div>
               </div>
 
               <!-- Mode 3: Sentence Typing -->
-              <div class="bg-slate-50 border border-gray-200/80 rounded-2xl p-4 space-y-2.5 hover:border-purple-200 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-purple-200 dark:hover:border-purple-500/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center">
                       <BookOpen class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 text-sm">3. Sentence Typing</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">3. Sentence Typing</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 text-purple-800 rounded-md">Kalimat N5</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 rounded-md">Kalimat N5</span>
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed">
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Mengetik kalimat Jepang lengkap secara real-time dengan bantuan romaji aktif & mesin parsing Wanakana.
                 </p>
-                <div class="bg-white rounded-xl p-2.5 border border-gray-200 text-[11px] text-gray-500 space-y-1">
-                  <div class="font-bold text-gray-700 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-purple-600" /> Fitur Kunci:
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" /> Fitur Kunci:
                   </div>
                   <p>Smart Romaji Prompting + Penalti Typo 1.0s Cooldown jika salah menekan tombol.</p>
                 </div>
               </div>
 
               <!-- Mode 4: Multiplayer Battleground -->
-              <div class="bg-slate-50 border border-gray-200/80 rounded-2xl p-4 space-y-2.5 hover:border-rose-200 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-rose-200 dark:hover:border-rose-500/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center">
                       <Swords class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 text-sm">4. Online Battleground</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">4. Online Battleground</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-rose-100 text-rose-800 rounded-md">2–8 Players</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 rounded-md">2–8 Players</span>
                 </div>
-                <p class="text-xs text-gray-600 leading-relaxed">
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Arena Battle Royale Mengetik real-time! Adu kecepatan & ketepatan mengetik kalimat Jepang bersama pemain lain.
                 </p>
-                <div class="bg-white rounded-xl p-2.5 border border-gray-200 text-[11px] text-gray-500 space-y-1">
-                  <div class="font-bold text-gray-700 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-rose-600" /> Fitur Kunci:
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" /> Fitur Kunci:
                   </div>
                   <p>Bracket Eliminasi Bertahap, Spectator Mode, Room Publik/Privat, & Power-Ups.</p>
                 </div>
@@ -229,19 +229,19 @@ onUnmounted(() => {
 
           <!-- 3. ATURAN & MEKANISME UTAMA -->
           <div class="space-y-4">
-            <div class="flex items-center gap-2 border-b border-gray-100 pb-2">
+            <div class="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2">
               <Zap class="w-5 h-5 text-amber-500" />
-              <h3 class="text-sm sm:text-base font-black text-gray-900 tracking-tight">Aturan & Mekanisme Unggulan</h3>
+              <h3 class="text-sm sm:text-base font-black text-gray-900 dark:text-slate-100 tracking-tight">Aturan & Mekanisme Unggulan</h3>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <!-- Engine Mengetik Pintar -->
-              <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-indigo-600 font-extrabold text-xs sm:text-sm">
+              <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
+                <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-extrabold text-xs sm:text-sm">
                   <Keyboard class="w-4 h-4" />
                   <span>Pro Typing Engine</span>
                 </div>
-                <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside">
+                <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li><strong>Single Upcoming Letter:</strong> Hanya menampilkan 1 romaji aktif berikutnya agar fokus dan tidak berantakan.</li>
                   <li><strong>Highlighting Status:</strong> Hijau = selesai, Amber pulse = aktif, Abu-abu = mendatang.</li>
                   <li><strong>Auto Skip Strip ("-"):</strong> Tanda hubung otomatis terlewati tanpa perlu diketik manual.</li>
@@ -250,12 +250,12 @@ onUnmounted(() => {
               </div>
 
               <!-- Bracket Eliminasi Battleground -->
-              <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-rose-600 font-extrabold text-xs sm:text-sm">
+              <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
+                <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-extrabold text-xs sm:text-sm">
                   <Users class="w-4 h-4" />
                   <span>Mekanisme Eliminasi Battleground</span>
                 </div>
-                <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside">
+                <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li><strong>8 – 5 Pemain:</strong> Ronde 1 mengeliminasi hingga tersisa 4 survivor teratas.</li>
                   <li><strong>4 – 3 Pemain:</strong> Mengeliminasi hingga 2 survivor melaju ke Babak Final.</li>
                   <li><strong>2 Pemain (Final):</strong> Adu ketepatan penentu 1 Pemenang Utama.</li>
@@ -264,12 +264,12 @@ onUnmounted(() => {
               </div>
 
               <!-- Sistem Adaptif Mastery -->
-              <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-emerald-600 font-extrabold text-xs sm:text-sm">
+              <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
+                <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-extrabold text-xs sm:text-sm">
                   <Target class="w-4 h-4" />
                   <span>Spaced Repetition & Mastery</span>
                 </div>
-                <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside">
+                <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li><strong>Soal Lemah (60%):</strong> Prioritas soal yang pernah salah atau belum dikuasai.</li>
                   <li><strong>Missed Items Retry:</strong> Soal yang salah akan diulang di akhir sesi kuis hingga benar.</li>
                   <li><strong>Tingkat Penguasaan:</strong> Streak 0 (Unlearned) → 1-2 (Learning) → 3-4 (Mastered) → 5+ (Crown Mastered).</li>
@@ -277,12 +277,12 @@ onUnmounted(() => {
               </div>
 
               <!-- Durasi & Cloud Sync -->
-              <div class="bg-white border border-gray-200 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-purple-600 font-extrabold text-xs sm:text-sm">
+              <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
+                <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-extrabold text-xs sm:text-sm">
                   <Clock class="w-4 h-4" />
                   <span>Durasi Kuis & Sync Cloud</span>
                 </div>
-                <ul class="text-xs text-gray-600 space-y-1.5 list-disc list-inside">
+                <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li><strong>Pilihan Durasi:</strong> 1 Menit (Kilat), 3 Menit (Fokus), 5 Menit (Maraton).</li>
                   <li><strong>Tanpa Timer Anxiety:</strong> Timer disembunyikan saat kuis berlangsung agar latihan tenang.</li>
                   <li><strong>Cloud & Offline Sync:</strong> Progress tersimpan aman secara offline & tersinkronisasi ke Supabase.</li>
@@ -292,7 +292,7 @@ onUnmounted(() => {
           </div>
 
           <!-- 4. AUTHOR / CREATOR CREDIT SECTION -->
-          <div class="pt-4 border-t border-gray-100">
+          <div class="pt-4 border-t border-gray-100 dark:border-slate-800">
             <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
 
@@ -347,7 +347,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Modal Footer Action -->
-        <div class="px-5 py-3.5 sm:px-6 sm:py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-end flex-shrink-0">
+        <div class="px-5 py-3.5 sm:px-6 sm:py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end flex-shrink-0">
           <button
             @click="emit('close')"
             class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-2"

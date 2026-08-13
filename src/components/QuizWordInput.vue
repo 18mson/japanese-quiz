@@ -41,6 +41,8 @@ const handleEnter = () => {
     } else {
       quizStore.submitAnswer(''); // Skip if empty on Enter
     }
+  } else {
+    quizStore.nextQuestion();
   }
 };
 
@@ -89,10 +91,10 @@ const isTypo = computed(() => {
         type="text"
         inputmode="none"
         placeholder="Type romaji here..."
-        class="w-full px-6 py-4 text-xl text-center bg-white border-2 border-gray-300 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100/50 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-indigo-900/40 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
-          'border-green-500 bg-green-50/30 focus:ring-green-100/50': isAnswered && quizStore.isAnswerCorrect,
-          'border-red-500 bg-red-50/30 focus:ring-red-100/50': isAnswered && !quizStore.isAnswerCorrect
+          'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
+          'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50': isAnswered && !quizStore.isAnswerCorrect
         }"
         :disabled="isAnswered"
         @keydown.enter.stop="handleEnter"
@@ -102,7 +104,7 @@ const isTypo = computed(() => {
         spellcheck="false"
       />
       <div v-if="!isAnswered" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
-        <span class="hidden md:inline text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded border mr-2 font-mono">⏎ Enter</span>
+        <span class="hidden md:inline text-xs text-gray-400 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded border border-gray-200 dark:border-slate-700 font-mono">⏎ Enter</span>
       </div>
     </div>
 
@@ -115,10 +117,10 @@ const isTypo = computed(() => {
         class="w-full rounded-2xl p-4 sm:p-5 mb-4 text-center border shadow-sm transition-all duration-300 animate-pulse-subtle"
         :class="[
           quizStore.isAnswerCorrect 
-            ? 'bg-emerald-50 border-emerald-200 text-emerald-900 shadow-emerald-100/50' 
+            ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 shadow-emerald-100/50' 
             : (isTypo 
-              ? 'bg-amber-50 border-amber-200 text-amber-900 shadow-amber-100/50' 
-              : 'bg-rose-50 border-rose-200 text-rose-900 shadow-rose-100/50')
+              ? 'bg-amber-50 dark:bg-amber-950/80 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 shadow-amber-100/50' 
+              : 'bg-rose-50 dark:bg-rose-950/80 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200 shadow-rose-100/50')
         ]"
       >
         <div class="flex flex-col items-center gap-2">
@@ -140,23 +142,23 @@ const isTypo = computed(() => {
           
           <div class="mt-2 space-y-1">
             <p v-if="!quizStore.isAnswerCorrect" class="text-sm">
-              Jawabanmu: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'">{{ userInput || '(dilewati)' }}</span>
+              Jawabanmu: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 dark:bg-amber-900/70 text-amber-900 dark:text-amber-100' : 'bg-rose-100 dark:bg-rose-900/70 text-rose-900 dark:text-rose-100'">{{ userInput || '(dilewati)' }}</span>
             </p>
             <p class="text-base font-semibold">
-              Romaji yang benar: <span class="font-mono bg-white border border-gray-200 px-2 py-0.5 rounded text-indigo-700 shadow-sm">{{ correctRomajiDisplay }}</span>
+              Romaji yang benar: <span class="font-mono bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-2 py-0.5 rounded text-indigo-700 dark:text-indigo-300 shadow-sm">{{ correctRomajiDisplay }}</span>
             </p>
           </div>
         </div>
 
         <!-- Explanation Block -->
-        <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 flex flex-col items-center">
+        <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex flex-col items-center">
           <div class="flex items-baseline gap-2 flex-wrap justify-center">
-            <span class="text-2xl font-bold text-gray-800">{{ currentWord?.character }}</span>
-            <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 font-medium">
+            <span class="text-2xl font-bold text-gray-800 dark:text-slate-100">{{ currentWord?.character }}</span>
+            <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 dark:text-slate-400 font-medium">
               （{{ (currentWord as any)?.kana }}）
             </span>
           </div>
-          <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 italic">
+          <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 dark:text-slate-300 italic">
             Arti: {{ (currentWord as any)?.meaning }}
           </p>
         </div>
@@ -169,7 +171,7 @@ const isTypo = computed(() => {
   <!-- Mobile Virtual Keyboard -->
   <div v-if="!isAnswered" class="block sm:hidden fixed bottom-0 left-0 right-0 z-40">
     <VirtualKeyboard
-      theme="light"
+      theme="auto"
       enter-label="SUBMIT"
       :disabled="isAnswered"
       @key="handleVirtualKey"
@@ -179,14 +181,14 @@ const isTypo = computed(() => {
       <template #top>
         <button
           type="button"
-          class="px-4 py-1.5 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-700 font-bold rounded-lg text-xs transition border border-gray-300 flex items-center gap-1 cursor-pointer shadow-xs"
+          class="px-4 py-1.5 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg text-xs transition border border-gray-300 dark:border-slate-600 flex items-center gap-1 cursor-pointer shadow-xs"
           @click="quizStore.submitAnswer('')"
         >
           <span>Skip</span>
           <span class="text-[10px]">⏭</span>
         </button>
 
-        <span class="text-[11px] font-medium text-slate-400">
+        <span class="text-[11px] font-medium text-slate-400 dark:text-slate-400">
           Ketik romaji & tekan Submit ⏎
         </span>
       </template>

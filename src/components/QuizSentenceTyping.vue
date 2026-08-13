@@ -472,10 +472,10 @@ const handleKeyDown = (e: KeyboardEvent) => {
     </div>
 
     <!-- Sentence Typing Card -->
-    <div class="w-full bg-white rounded-2xl sm:rounded-3xl p-3 sm:p-8 border border-gray-200/80 shadow-xs flex flex-col items-center text-center relative overflow-hidden mb-2 sm:mb-6">
+    <div class="w-full bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl p-3 sm:p-8 border border-gray-200/80 dark:border-slate-800 shadow-xs flex flex-col items-center text-center relative overflow-hidden mb-2 sm:mb-6">
       
       <!-- Meaning / Indonesian Translation Hint -->
-      <div class="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-[11px] sm:text-xs font-semibold max-w-full truncate">
+      <div class="mb-2 sm:mb-4 inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800/80 text-indigo-700 dark:text-indigo-300 text-[11px] sm:text-xs font-semibold max-w-full truncate">
         <span class="truncate">💡 {{ currentSentence?.meaning || 'Kalimat Bahasa Jepang' }}</span>
       </div>
 
@@ -486,13 +486,13 @@ const handleKeyDown = (e: KeyboardEvent) => {
           :key="idx"
           @click="toggleHint(Number(idx))"
           title="Klik untuk melihat hint romaji"
-          class="flex flex-col items-center transition-all duration-200 px-1 py-0.5 sm:px-1.5 sm:py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 select-none"
+          class="flex flex-col items-center transition-all duration-200 px-1 py-0.5 sm:px-1.5 sm:py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 dark:hover:bg-slate-800 select-none"
           :class="[
             Number(idx) < activeUnitIndex 
-              ? 'text-emerald-600 font-extrabold scale-95' 
+              ? 'text-emerald-600 dark:text-emerald-400 font-extrabold scale-95' 
               : (Number(idx) === activeUnitIndex 
-                ? 'text-indigo-600 font-black scale-110 border-b-2 border-indigo-600 bg-indigo-50/50 shadow-xs' 
-                : 'text-gray-400 font-medium opacity-60')
+                ? 'text-indigo-600 dark:text-indigo-300 font-black scale-110 border-b-2 border-indigo-600 dark:border-indigo-400 bg-indigo-50/50 dark:bg-indigo-950/60 shadow-xs' 
+                : 'text-gray-400 dark:text-slate-500 font-medium opacity-60')
           ]"
         >
           <span class="text-2xl sm:text-4xl leading-tight">{{ unit.kana }}</span>
@@ -500,7 +500,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
             class="text-[9px] sm:text-[10px] font-mono mt-0.5 font-bold uppercase tracking-tighter transition-all duration-200"
             :class="[
               revealedHints[Number(idx)] ? 'opacity-100' : 'opacity-0 select-none',
-              Number(idx) < activeUnitIndex ? 'text-emerald-600' : (Number(idx) === activeUnitIndex ? 'text-indigo-600' : 'text-gray-400')
+              Number(idx) < activeUnitIndex ? 'text-emerald-600 dark:text-emerald-400' : (Number(idx) === activeUnitIndex ? 'text-indigo-600 dark:text-indigo-300' : 'text-gray-400 dark:text-slate-500')
             ]"
           >
             {{ unit.acceptedRomaji[0] }}
@@ -516,11 +516,11 @@ const handleKeyDown = (e: KeyboardEvent) => {
           type="text"
           inputmode="none"
           placeholder="Ketik romaji karakter di atas..."
-          class="w-full px-4 sm:px-5 py-2.5 sm:py-3.5 text-base sm:text-lg font-mono text-center bg-gray-50 border-2 rounded-xl sm:rounded-2xl transition-all duration-200 outline-none focus:bg-white shadow-inner"
+          class="w-full px-4 sm:px-5 py-2.5 sm:py-3.5 text-base sm:text-lg font-mono text-center bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white border-2 rounded-xl sm:rounded-2xl transition-all duration-200 outline-none focus:bg-white dark:focus:bg-slate-800 shadow-inner"
           :class="[
             isTypoInInput 
-              ? 'border-red-500 text-red-600 bg-red-50/50 focus:ring-4 focus:ring-red-100' 
-              : 'border-indigo-300 text-gray-900 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100'
+              ? 'border-red-500 dark:border-rose-500 text-red-600 dark:text-rose-400 bg-red-50/50 dark:bg-rose-950/40 focus:ring-4 focus:ring-red-100' 
+              : 'border-indigo-300 dark:border-indigo-700/80 text-gray-900 dark:text-white focus:border-indigo-600 dark:focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-indigo-900/40'
           ]"
           @input="handleInput"
           @keydown="handleKeyDown"
@@ -530,7 +530,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
           autocapitalize="off"
           spellcheck="false"
         />
-        <div v-if="isTypoInInput" class="text-[11px] sm:text-xs font-bold text-red-500 mt-1.5 flex items-center justify-center gap-1">
+        <div v-if="isTypoInInput" class="text-[11px] sm:text-xs font-bold text-red-500 dark:text-rose-400 mt-1.5 flex items-center justify-center gap-1">
           <AlertCircle class="w-3.5 h-3.5" />
           <span>Salah ketik! Tekan backspace atau ketik romaji yang benar.</span>
         </div>
@@ -541,14 +541,14 @@ const handleKeyDown = (e: KeyboardEvent) => {
   <!-- Mobile Virtual Keyboard -->
   <div class="block sm:hidden fixed bottom-0 left-0 right-0 z-40">
     <VirtualKeyboard
-      theme="light"
+      theme="auto"
       :show-enter="false"
       @key="handleVirtualKey"
       @backspace="handleVirtualBackspace"
       @enter="handleVirtualEnter"
     >
       <template #top>
-        <span class="text-[11px] font-semibold text-slate-400 mx-auto">
+        <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-400 mx-auto">
           Ketik romaji karakter kalimat di atas
         </span>
       </template>

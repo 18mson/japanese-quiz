@@ -3,14 +3,14 @@ import { ref, computed } from 'vue';
 import { useSettingsStore, type KeyboardHeight } from '../stores/settingsStore';
 
 const props = withDefaults(defineProps<{
-  theme?: 'light' | 'dark';
+  theme?: 'light' | 'dark' | 'auto';
   disabled?: boolean;
   showEnter?: boolean;
   enterLabel?: string;
   enableSound?: boolean;
   keyboardHeight?: KeyboardHeight;
 }>(), {
-  theme: 'light',
+  theme: 'auto',
   disabled: false,
   showEnter: true,
   enterLabel: 'SUBMIT',
@@ -107,7 +107,7 @@ function handleEnter() {
   emit('enter');
 }
 
-const isDark = computed(() => props.theme === 'dark');
+const isDark = computed(() => props.theme === 'dark' || (props.theme === 'auto' && settingsStore.isDarkMode));
 
 const containerClass = computed(() => isDark.value
   ? 'bg-slate-950/98 backdrop-blur-xl border-t border-slate-800/90 text-white shadow-2xl'

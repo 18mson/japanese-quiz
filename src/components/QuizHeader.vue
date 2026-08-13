@@ -7,74 +7,19 @@ const quizStore = useQuizStore();
 const questionNumber = computed(() => {
   return quizStore.currentQuestionIndex + 1;
 });
-
-
-
 </script>
 
 <template>
-  <header class="quiz-header">
-    <div class="quiz-stats">
-      <span class="quiz-progress">
+  <header class="py-3 px-4 text-center relative w-full">
+    <div class="flex justify-between items-center mb-2.5 text-slate-600 dark:text-slate-300 text-sm sm:text-base font-semibold">
+      <span class="flex items-center gap-1">
         Soal {{ questionNumber }} (Selesai: {{ quizStore.masteredCount }}/{{ quizStore.initialQuestionCount }})
-        <span v-if="quizStore.isMistakeRound" class="text-rose-600 font-bold ml-1">🎯 (Babak Perbaikan)</span>
+        <span v-if="quizStore.isMistakeRound" class="text-rose-600 dark:text-rose-400 font-bold ml-1">🎯 (Babak Perbaikan)</span>
       </span>
-      <span class="quiz-score">Score: {{ quizStore.score }}</span>
+      <span class="font-extrabold text-indigo-600 dark:text-indigo-400">Score: {{ quizStore.score }}</span>
     </div>
-    <div class="progress-container">
-      <div class="progress-bar" :style="{ width: `${quizStore.progress}%` }"></div>
+    <div class="w-full h-2.5 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
+      <div class="h-full bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 ease-in-out rounded-full" :style="{ width: `${quizStore.progress}%` }"></div>
     </div>
   </header>
 </template>
-
-<style scoped>
-.quiz-header {
-  padding: 1.5rem;
-  text-align: center;
-  position: relative;
-}
-
-.quiz-title {
-  font-size: 2.25rem;
-  color: #4F46E5;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.quiz-stats {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  color: #4B5563;
-  font-size: 1rem;
-}
-
-.quiz-score {
-  font-weight: 600;
-  color: #4F46E5;
-}
-
-.progress-container {
-  width: 100%;
-  height: 8px;
-  background-color: #E5E7EB;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #4F46E5;
-  transition: width 0.3s ease-in-out;
-}
-
-@media (max-width: 768px) {
-  .quiz-title {
-    font-size: 1.75rem;
-  }
-  
-  .quiz-stats {
-    font-size: 0.875rem;
-  }
-}
-</style>

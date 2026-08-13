@@ -160,44 +160,44 @@ watch(activeTab, () => {
 <template>
   <div 
     v-if="isOpen" 
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 dark:bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
     @click.self="emit('close')"
   >
     <div 
-      class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all duration-300 scale-100 border border-gray-100 flex flex-col max-h-[85vh]"
+      class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all duration-300 scale-100 border border-gray-100 dark:border-slate-800 flex flex-col max-h-[85vh]"
     >
       <!-- Header -->
-      <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex items-center justify-between flex-shrink-0">
-        <h3 class="text-lg font-extrabold text-gray-800 flex items-center gap-2">
+      <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/40 flex items-center justify-between flex-shrink-0">
+        <h3 class="text-lg font-extrabold text-gray-800 dark:text-slate-100 flex items-center gap-2">
           <Trophy class="w-5 h-5 text-amber-500" /> <span>Leaderboard</span>
         </h3>
         <button 
           @click="emit('close')"
-          class="text-gray-400 hover:text-gray-600 transition cursor-pointer text-xl"
+          class="text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200 transition cursor-pointer text-xl"
         >
           &times;
         </button>
       </div>
 
       <!-- Navigation Tabs -->
-      <div class="flex border-b border-gray-100 flex-shrink-0">
+      <div class="flex border-b border-gray-100 dark:border-slate-800 flex-shrink-0">
         <button 
           class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider"
-          :class="activeTab === 'cumulative' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-400 hover:text-gray-600'"
+          :class="activeTab === 'cumulative' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'cumulative'"
         >
           Total Score
         </button>
         <button 
           class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider"
-          :class="activeTab === 'speed' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-400 hover:text-gray-600'"
+          :class="activeTab === 'speed' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'speed'"
         >
           Fastest Speed
         </button>
         <button 
           class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider flex items-center justify-center gap-1"
-          :class="activeTab === 'mastery' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-400 hover:text-gray-600'"
+          :class="activeTab === 'mastery' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'mastery'"
         >
           <Award class="w-3.5 h-3.5 text-amber-500" />
@@ -208,11 +208,11 @@ watch(activeTab, () => {
       <!-- Content Area -->
       <div class="p-6 flex-1 overflow-y-auto">
         <div v-if="loading" class="flex flex-col items-center justify-center py-12">
-          <span class="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></span>
-          <p class="text-xs text-gray-500 mt-3 font-semibold">Loading leaderboard...</p>
+          <span class="w-8 h-8 border-4 border-indigo-200 dark:border-indigo-900 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"></span>
+          <p class="text-xs text-gray-500 dark:text-slate-400 mt-3 font-semibold">Loading leaderboard...</p>
         </div>
 
-        <div v-else-if="errorMsg" class="text-center py-8 text-rose-500 text-sm">
+        <div v-else-if="errorMsg" class="text-center py-8 text-rose-500 dark:text-rose-400 text-sm">
           {{ errorMsg }}
         </div>
 
@@ -220,7 +220,7 @@ watch(activeTab, () => {
           <!-- Cumulative Rankings -->
           <table v-if="activeTab === 'cumulative'" class="w-full text-left border-collapse">
             <thead>
-              <tr class="border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+              <tr class="border-b border-gray-100 dark:border-slate-800 text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">
                 <th class="pb-3 w-12">Rank</th>
                 <th class="pb-3">Player</th>
                 <th class="pb-3 text-right">Total Pts</th>
@@ -231,9 +231,9 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in cumulativeList" 
                 :key="idx" 
-                class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
+                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
               >
-                <td class="py-3.5 font-extrabold text-sm text-gray-500">
+                <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
                     <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
                     <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
@@ -241,18 +241,18 @@ watch(activeTab, () => {
                     <span v-else>#{{ idx + 1 }}</span>
                   </div>
                 </td>
-                <td class="py-3.5 font-bold text-sm text-gray-800">
+                <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   {{ row.username }}
                 </td>
-                <td class="py-3.5 font-mono text-sm text-indigo-600 font-extrabold text-right">
+                <td class="py-3.5 font-mono text-sm text-indigo-600 dark:text-indigo-400 font-extrabold text-right">
                   {{ row.total_score }}
                 </td>
-                <td class="py-3.5 font-mono text-xs text-gray-500 text-right">
+                <td class="py-3.5 font-mono text-xs text-gray-500 dark:text-slate-400 text-right">
                   {{ row.games_played }}
                 </td>
               </tr>
               <tr v-if="cumulativeList.length === 0">
-                <td colspan="4" class="text-center py-12 text-gray-400 text-xs font-semibold">
+                <td colspan="4" class="text-center py-12 text-gray-400 dark:text-slate-500 text-xs font-semibold">
                   No records yet. Be the first to secure a spot!
                 </td>
               </tr>
@@ -262,7 +262,7 @@ watch(activeTab, () => {
           <!-- Speed Rankings -->
           <table v-else-if="activeTab === 'speed'" class="w-full text-left border-collapse">
             <thead>
-              <tr class="border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+              <tr class="border-b border-gray-100 dark:border-slate-800 text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">
                 <th class="pb-3 w-12">Rank</th>
                 <th class="pb-3">Player</th>
                 <th class="pb-3 text-right">Time</th>
@@ -274,29 +274,29 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in speedList" 
                 :key="row.id" 
-                class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
+                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
               >
-                <td class="py-3.5 font-extrabold text-sm text-gray-500">
+                <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
                     <Zap v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
                     <span v-else>#{{ idx + 1 }}</span>
                   </div>
                 </td>
-                <td class="py-3.5 font-bold text-sm text-gray-800">
+                <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   {{ row.username }}
                 </td>
-                <td class="py-3.5 font-mono text-sm text-teal-600 font-extrabold text-right">
+                <td class="py-3.5 font-mono text-sm text-teal-600 dark:text-teal-400 font-extrabold text-right">
                   {{ row.duration_seconds.toFixed(1) }}s
                 </td>
-                <td class="py-3.5 font-mono text-xs text-gray-500 text-right">
+                <td class="py-3.5 font-mono text-xs text-gray-500 dark:text-slate-400 text-right">
                   {{ row.score }} pts
                 </td>
-                <td class="py-3.5 text-xs text-gray-500 text-right font-medium">
+                <td class="py-3.5 text-xs text-gray-500 dark:text-slate-400 text-right font-medium">
                   <span class="capitalize">{{ row.quiz_type }}</span> ({{ row.quiz_level }})
                 </td>
               </tr>
               <tr v-if="speedList.length === 0">
-                <td colspan="5" class="text-center py-12 text-gray-400 text-xs font-semibold">
+                <td colspan="5" class="text-center py-12 text-gray-400 dark:text-slate-500 text-xs font-semibold">
                   No records yet. Be the first to secure a spot!
                 </td>
               </tr>
@@ -306,7 +306,7 @@ watch(activeTab, () => {
           <!-- Character Mastery Rankings -->
           <table v-else-if="activeTab === 'mastery'" class="w-full text-left border-collapse">
             <thead>
-              <tr class="border-b border-gray-100 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+              <tr class="border-b border-gray-100 dark:border-slate-800 text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">
                 <th class="pb-3 w-12">Rank</th>
                 <th class="pb-3">User</th>
                 <th class="pb-3 text-right">Penguasaan</th>
@@ -316,9 +316,9 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in masteryList" 
                 :key="row.id || idx" 
-                class="border-b border-gray-50 last:border-none hover:bg-gray-50/50 transition-colors"
+                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
               >
-                <td class="py-3.5 font-extrabold text-sm text-gray-500">
+                <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
                     <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
                     <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
@@ -326,23 +326,23 @@ watch(activeTab, () => {
                     <span v-else>#{{ idx + 1 }}</span>
                   </div>
                 </td>
-                <td class="py-3.5 font-bold text-sm text-gray-800">
+                <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   <div class="flex items-center gap-2">
                     <span>{{ row.username }}</span>
-                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 text-indigo-700 rounded text-[10px] font-extrabold">Kamu</span>
+                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 rounded text-[10px] font-extrabold">Kamu</span>
                   </div>
                 </td>
                 <td class="py-3.5 text-right">
                   <div class="inline-flex items-center justify-end gap-2">
-                    <div class="w-16 sm:w-24 bg-gray-100 rounded-full h-2 overflow-hidden hidden sm:block">
+                    <div class="w-16 sm:w-24 bg-gray-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden hidden sm:block">
                       <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full" :style="{ width: `${row.percentage}%` }"></div>
                     </div>
-                    <span class="font-mono text-sm font-black text-indigo-600">{{ row.percentage }}%</span>
+                    <span class="font-mono text-sm font-black text-indigo-600 dark:text-indigo-400">{{ row.percentage }}%</span>
                   </div>
                 </td>
               </tr>
               <tr v-if="masteryList.length === 0">
-                <td colspan="3" class="text-center py-12 text-gray-400 text-xs font-semibold">
+                <td colspan="3" class="text-center py-12 text-gray-400 dark:text-slate-500 text-xs font-semibold">
                   Belum ada data penguasaan. Mulai kuis untuk meningkatkan penguasaan hurufmu!
                 </td>
               </tr>
@@ -352,7 +352,7 @@ watch(activeTab, () => {
       </div>
 
       <!-- Footer -->
-      <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end flex-shrink-0">
+      <div class="px-6 py-4 bg-gray-50 dark:bg-slate-800/40 border-t border-gray-100 dark:border-slate-800 flex justify-end flex-shrink-0">
         <button 
           @click="emit('close')"
           class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-md hover:shadow-lg"

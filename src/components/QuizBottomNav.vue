@@ -11,7 +11,7 @@ const quizStore = useQuizStore();
 <template>
   <div 
     v-if="quizStarted && !quizStore.quizCompleted && (quizStore.isTypingMode || quizStore.selectedAnswer !== null)" 
-    class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
   >
     <div class="max-w-md w-full flex justify-center gap-4">
       <!-- Pre-answer actions (Only in typing mode - shown on desktop, handled by VirtualKeyboard on mobile) -->
@@ -19,13 +19,13 @@ const quizStore = useQuizStore();
         <template v-if="quizStore.isTypingMode">
           <div class="hidden sm:flex justify-center gap-4 w-full">
             <button 
-              class="px-6 py-2.5 bg-gray-200 text-gray-700 font-semibold rounded-xl transition duration-200 hover:bg-gray-300 cursor-pointer shadow-sm text-sm"
+              class="px-6 py-2.5 bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-slate-200 font-semibold rounded-xl transition duration-200 hover:bg-gray-300 dark:hover:bg-slate-700 cursor-pointer shadow-sm text-sm"
               @click="quizStore.submitAnswer('')"
             >
               Skip
             </button>
             <button 
-              class="px-8 py-2.5 bg-indigo-600 text-white font-semibold rounded-xl transition duration-200 hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-sm flex-1 max-w-[200px]"
+              class="px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-sm flex-1 max-w-[200px]"
               :disabled="quizStore.userInput.trim() === ''"
               @click="quizStore.submitAnswer(quizStore.userInput)"
             >
