@@ -1,6 +1,6 @@
 # 🇯🇵 Nihongo Master: Typing & Vocab Battleground
 
-A modern, interactive, and intelligent web application designed to help learners master **Japanese Hiragana**, **Katakana**, **N5 Everyday Vocabulary**, and **Full Sentence Typing** through adaptive spaced repetition, visual mastery tracking, multiplayer battle royale games, and time-targeted practice sessions.
+A modern, interactive, and intelligent web application designed to help learners master **Japanese Hiragana**, **Katakana**, **N5 Everyday Vocabulary**, and **Full Sentence Typing** through adaptive spaced repetition, visual mastery tracking, multiplayer battle royale games, keyboard-first navigation, custom themes, and time-targeted practice sessions.
 
 ---
 
@@ -39,17 +39,29 @@ A modern, interactive, and intelligent web application designed to help learners
 - **Zero Timer Anxiety**: Timers are hidden during the quiz so users can focus on learning calmly.
 - **Speed Achievement Bonus**: Complete a session faster than the estimated target to earn bonus speed points and unlock achievement badges (`⚡ Lightning Fast!`, `🚀 Speed Demon!`).
 
-### 🎮 6. Flexible Single-Player Game Modes
-1. **Multiple Choice (Basic Level)**: Practice reading Hiragana and Katakana by choosing from standard multiple-choice Romaji options.
-2. **Keyboard Typing (Kana & Words)**: Direct keyboard input for Hiragana, Katakana, and **Everyday Words**. Supports custom virtual keyboard or native physical keyboard.
-3. **Sentence Typing (Full N5 Sentences)**: Real-time full N5 Japanese sentence typing powered by Wanakana parsing.
+### 🎮 6. Flexible Single-Player Game Modes & Mix Mode
+1. **Multiple Choice (Basic Level)**: Practice reading Hiragana, Katakana, or **Mix Mode** (combined Hiragana + Katakana) with standard multiple-choice Romaji options.
+2. **Keyboard Typing (Kana Typing)**: Direct keyboard input for Hiragana, Katakana, and **Mix Mode** with accuracy checking.
+3. **Sentence Typing (Full N5 Words & Sentences)**: Real-time full N5 Japanese word and sentence typing powered by Wanakana parsing.
    - 🎯 **Single Upcoming Character Prompt**: Displays only 1 upcoming Romaji letter at a time to prevent visual clutter.
    - 🇯🇵 **Japanese Character Pointer**: Live character-by-character highlighting on the Japanese text (*Emerald = Completed*, *Pulsing Amber = Active*, *Slate = Pending*).
    - ⚠️ **1-Second Typo Penalty Cooldown**: Incorrect key presses lock input for 1.0 second to teach accuracy.
    - ⏩ **Auto-Skip Hyphens (`"-"`) & Space Tolerance**: Hyphens are automatically skipped, and accidental spacebar presses do not trigger typo penalties.
 
-### ⚔️ 7. Online Multiplayer Typing Battleground
-- **Realtime Multiplayer Rooms (2–8 Players)**: Compete against other learners in a Japanese sentence typing Battle Royale with up to **8 players per room**, powered by Supabase Realtime broadcast.
+### ⌨️ 7. Full Keyboard Navigation & Disk Wheel Selector
+- **Mouse-Free Menu Controls**: Complete keyboard accessibility supporting `Tab` / `Shift+Tab` to switch sections, `Arrow Up / Down` to spin the disk wheel selector, `Arrow Left / Right` for sub-types and durations, and `Enter` to select or start.
+- **Vinyl Disk Wheel UI**: Interactive mode selector styled with smooth spin animations and visual feedback.
+
+### 🎨 8. Theme Customization & Ergonomic Settings
+- **Dark, Light & Auto Themes**: Instant toggling between Dark Mode, Light Mode, and System Default (`auto`) preferences, stored persistently in settings.
+- **Virtual Keyboard Height Adjustments**: Toggle virtual keyboard height between **Short** and **Tall** modes for optimized mobile and desktop typing ergonomics.
+
+### 🎵 9. Immersive Audio & Background Lobby Music
+- **Ambient Battleground Music**: Immersive background lobby soundtrack during multiplayer preparation.
+- **Sound Effects**: Audio feedback for correct/incorrect answers, roulette tick sounds on selection, and single-click sound toggles.
+
+### ⚔️ 10. Online Multiplayer Typing Battleground
+- **Realtime Multiplayer Rooms (2–8 Players)**: Compete against other learners in a Japanese sentence typing Battle Royale with up to **8 players per room**, powered by Supabase Realtime broadcast & presence.
 - **Public & Private Room System**:
   - **Public Rooms**: Displayed on the live *Public Rooms* directory for instant 1-click joining.
   - **Private Rooms**: Accessible only via a secret 6-character Room Code.
@@ -60,10 +72,10 @@ A modern, interactive, and intelligent web application designed to help learners
     - **7 Players**: Round 1 (7 $\rightarrow$ 4) $\rightarrow$ Round 2 (4 $\rightarrow$ 2 Final) $\rightarrow$ Round 3 (2 $\rightarrow$ 1 Champion).
     - **3 Players**: Round 1 (3 $\rightarrow$ 2 Final) $\rightarrow$ Round 2 (2 $\rightarrow$ 1 Champion).
     - **2 Players**: Round 1 (2 $\rightarrow$ 1 Champion).
-- **Spectator Mode**: Eliminated players remain in the room to watch active competitors race to victory live with realtime standings and progress bars.
+- **Active Player Markers & Spectator Mode**: Distinct color-coded player markers, active status indicators, and live spectator views for eliminated participants.
 
-### 🏆 8. Global Leaderboard & User Authentication
-- **Supabase Integration**: Synchronizes user streaks, match records, and leaderboard rankings online.
+### 🏆 11. Global Leaderboard & User Authentication
+- **Supabase Integration**: Synchronizes user streaks, match records, and leaderboard rankings online across devices.
 - **Speed & Cumulative Leaderboards**: Track top-performing speed runs and total cumulative scores.
 
 ---
@@ -72,8 +84,8 @@ A modern, interactive, and intelligent web application designed to help learners
 
 - **Frontend Core**: [Vue 3](https://vuejs.org/) (Composition API + `<script setup>`) + [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite](https://vitejs.dev/) + PWA support (`vite-plugin-pwa`)
-- **State Management**: [Pinia](https://pinia.vuejs.org/)
-- **Styling & Icons**: [Tailwind CSS](https://tailwindcss.com/) + [@lucide/vue](https://lucide.dev/)
+- **State Management**: [Pinia](https://pinia.vuejs.org/) (`authStore`, `quizStore`, `battlegroundStore`, `settingsStore`)
+- **Styling & Icons**: [Tailwind CSS](https://tailwindcss.com/) (with dark mode class support) + [@lucide/vue](https://lucide.dev/)
 - **Japanese Romaji Parsing**: [WanaKana](https://wanakana.com/)
 - **Database, Auth & Realtime**: [Supabase](https://supabase.com/) (PostgreSQL + Realtime Broadcast & Presence + Deno Edge Functions)
 
@@ -104,9 +116,12 @@ cp .env.example .env
 npm run dev
 ```
 
-### Production Build
+### Type Checking & Production Build
 ```bash
-# Type check and build production bundle
+# Run TypeScript type check
+npx vue-tsc --noEmit
+
+# Build production bundle
 npm run build
 
 # Preview build locally

@@ -58,9 +58,17 @@ const instructionText = computed(() => {
 
 <template>
   <div class="flex flex-col items-center my-2 w-full flex-shrink-0">
+    <!-- Real-time Tier Upgrade Badge Overlay (< 100ms instant feedback) -->
+    <div 
+      v-if="quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'up'"
+      class="mb-2 px-3.5 py-1 rounded-full text-xs font-black shadow-lg flex items-center gap-1.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 border border-yellow-200 cursor-default"
+    >
+      <span>✨ {{ quizStore.latestTierTransition.label }} 🎉</span>
+    </div>
+
     <!-- Reason Badge (Only shown for retry/perbaikan questions) -->
     <div 
-      v-if="questionReason === 'repeat' && reasonLabel" 
+      v-else-if="questionReason === 'repeat' && reasonLabel" 
       class="mb-2 px-3.5 py-1 rounded-full text-xs tracking-tight shadow-sm flex items-center gap-1.5 border bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold animate-pulse"
     >
       <span>{{ reasonLabel }}</span>

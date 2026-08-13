@@ -16,6 +16,8 @@ import QuizBottomNav from './components/QuizBottomNav.vue';
 import BattlegroundMode from './components/BattlegroundMode.vue';
 
 import AboutModal from './components/AboutModal.vue';
+import PreviewCardModal from './components/preview/PreviewCardModal.vue';
+import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
@@ -396,6 +398,10 @@ const goToHome = () => {
       :loading="authStore.syncConflictLoading"
       @resolve="authStore.resolveSyncConflict"
     />
+
+    <!-- Modals & Overlays -->
+    <PreviewCardModal v-if="quizStarted" />
+    <GoalCelebrationToast />
 
     <!-- Main Screens -->
     <BattlegroundMode

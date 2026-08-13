@@ -56,8 +56,8 @@ export const useAuthStore = defineStore('auth', () => {
       const serverStreaks = await quizStore.fetchServerStreaks(userId);
       const localStreaks = quizStore.getLocalStreaks();
 
-      const localCount = Object.values(localStreaks).filter(s => s > 0).length;
-      const serverCount = Object.values(serverStreaks).filter(s => s > 0).length;
+      const localCount = Object.values(localStreaks).filter((s: any) => Number(s) > 0).length;
+      const serverCount = Object.values(serverStreaks).filter((s: any) => Number(s) > 0).length;
 
       if (localCount > 0 && serverCount > 0) {
         const isDifferent = Object.keys(localStreaks).some(k => localStreaks[k] !== serverStreaks[k]) ||

@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
+import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 
 const quizStore = useQuizStore();
 const targetDurationMinutes = ref<number>(1);
@@ -384,8 +385,10 @@ const handleStart = async () => {
         </div>
       </div>
 
-      <!-- Action Buttons: Peringkat & Grid -->
-      <div class="flex items-center gap-2 flex-shrink-0">
+      <!-- Action Buttons: Daily Target, Peringkat & Grid -->
+      <div class="flex flex-wrap items-center gap-2 flex-shrink-0">
+        <DailyGoalProgressBar />
+
         <button 
           type="button"
           @click.stop="focusedSection = 'header'; focusedHeaderTarget = 'leaderboard'; emit('openLeaderboard');"

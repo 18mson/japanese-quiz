@@ -42,6 +42,13 @@ const unmasteredCount = computed(() => {
   return pool.filter(item => quizStore.getMasteryStreak(item.character) < 3).length;
 });
 
+const isAllAttempted = computed(() => {
+  const pool: any[] = activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
+  const newCount = pool.filter(item => quizStore.getMasteryTier(item.character) === 'new').length;
+  const isAllMastered = pool.every(item => quizStore.getMasteryStreak(item.character) >= 3);
+  return newCount === 0 && !isAllMastered;
+});
+
 const handleStartWeakQuiz = () => {
   emit('close');
   emit('startWeakQuiz', { type: activeCategory.value });
@@ -228,6 +235,12 @@ const handleStartWeakQuiz = () => {
               Tidak ada item yang sesuai dengan filter yang dipilih saat ini.
             </p>
           </div>
+        </div>
+
+        <!-- Notice Banner for 0% Belum but incomplete mastery -->
+        <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-xs text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
+          <Sparkles class="w-4 h-4 text-indigo-500 shrink-0" />
+          <span>Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.</span>
         </div>
 
         <!-- Footer -->

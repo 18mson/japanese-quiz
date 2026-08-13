@@ -38,3 +38,49 @@ export const computeCategoryMasteryStats = (
   const percentage = total > 0 ? Math.round((mastered / total) * 100) : 0;
   return { total, mastered, crown, learning, newItems, percentage };
 };
+
+export interface TierTransition {
+  character: string;
+  oldTier: MasteryTier;
+  newTier: MasteryTier;
+  direction: 'up' | 'down' | 'same';
+  label: string;
+}
+
+export const checkTierTransition = (
+  character: string,
+  oldStreak: number,
+  newStreak: number
+): TierTransition => {
+  const oldTier = getMasteryTierFromStreak(oldStreak);
+  const newTier = getMasteryTierFromStreak(newStreak);
+
+  const tierRanks: Record<MasteryTier, number> = {
+    new: 0,
+    learning: 1,
+    mastered: 2,
+    crown: 3
+  };
+
+  const oldRank = tierRanks[oldTier];
+  const newRank = tierRanks[newTier];
+
+  let direction: 'up' | 'down' | 'same' = 'same';
+  if (newRank > oldRank) direction = 'up';
+  else if (newRank < oldRank) direction = 'down';
+
+  const tierLabels: Record<MasteryTier, string> = {
+    new: 'Belum',
+    learning: 'Proses',
+    mastered: 'Hafal',
+    crown: 'Crown'
+  };
+
+  return {
+    character,
+    oldTier,
+    newTier,
+    direction,
+    label: `${character} → ${tierLabels[newTier]}!`
+  };
+};

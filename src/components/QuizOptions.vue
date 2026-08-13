@@ -1,10 +1,22 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Sparkles, X, CornerDownLeft } from '@lucide/vue';
+import { Sparkles, X } from '@lucide/vue';
+import { getRandomCorrectFeedback, getRandomRetryFeedback } from '../utils/feedbackMessages';
 
 const quizStore = useQuizStore();
 const focusedIndex = ref(0);
+const feedbackText = ref('');
+
+watch(() => quizStore.selectedAnswer, (newVal) => {
+  if (newVal !== null) {
+    if (quizStore.isAnswerCorrect) {
+      feedbackText.value = getRandomCorrectFeedback();
+    } else {
+      feedbackText.value = getRandomRetryFeedback();
+    }
+  }
+});
 
 // Reset focused index when current question index changes
 watch(() => quizStore.currentQuestionIndex, () => {
@@ -16,7 +28,11 @@ const submitOption = (option: string) => {
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
-  if (quizStore.isTypingMode || quizStore.quizCompleted) return;
+  if (quizStore.isTypingMode || quizStore.quizCompleted || quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal || quizStore.justClosedPreview) return;
+  if (Date.now() - quizStore.previewClosedTimestamp < 500) {
+    event.preventDefault();
+    return;
+  }
   const numOptions = quizStore.options.length;
   if (numOptions === 0) return;
 
@@ -119,27 +135,12 @@ const getOptionClass = (option: string, index: number) => {
       </button>
     </div>
 
-    <!-- Keyboard Guidance Bar -->
-    <div v-if="quizStore.selectedAnswer === null" class="mb-4 text-center">
-      <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 dark:text-slate-400 bg-gray-50 dark:bg-slate-800/60 px-3 py-1 rounded-full border border-gray-200/60 dark:border-slate-700/60 shadow-2xs">
-        <span>Kontrol Keyboard:</span>
-        <span class="font-mono text-indigo-600 dark:text-indigo-400 font-bold">⬅️ ➡️ ⬆️ ⬇️</span>
-        <span>atau</span>
-        <span class="font-mono text-indigo-600 dark:text-indigo-400 font-bold">1-6</span>
-        <span>, tekan</span>
-        <span class="font-mono bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-200 px-1 py-0.2 rounded flex items-center gap-0.5">
-          <span>Enter</span>
-          <CornerDownLeft class="w-2.5 h-2.5 inline" />
-        </span>
-      </span>
-    </div>
-
     <!-- Post Answer Feedback Banner -->
     <div class="w-full" v-if="quizStore.selectedAnswer !== null">
       <div class="pb-4">
         <div v-if="quizStore.isAnswerCorrect" class="text-base sm:text-lg font-bold p-3.5 rounded-xl w-full text-center bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 animate-fadeIn flex items-center justify-center gap-2 shadow-xs">
           <Sparkles class="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-          <span>Benar!</span>
+          <span>{{ feedbackText || 'Benar! 🌟' }}</span>
         </div>
         <div v-else class="text-base sm:text-lg font-bold p-3.5 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-rose-950/80 dark:text-rose-200 border border-rose-200 dark:border-rose-800 animate-fadeIn flex items-center justify-center gap-2 shadow-xs">
           <X class="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0" />

@@ -92,6 +92,24 @@ const getScoreMessage = () => {
   if (score >= 50) return 'Nice work! Keep practicing to improve!';
   return 'Good effort! With more practice, you\'ll improve quickly!';
 };
+
+import { TierTransition } from '../utils/masteryStats';
+
+const masteredPromotions = computed(() => {
+  return quizStore.sessionTierChanges.filter((t: TierTransition) => t.newTier === 'mastered' && t.direction === 'up');
+});
+
+const crownPromotions = computed(() => {
+  return quizStore.sessionTierChanges.filter((t: TierTransition) => t.newTier === 'crown' && t.direction === 'up');
+});
+
+const demotions = computed(() => {
+  return quizStore.sessionTierChanges.filter((t: TierTransition) => t.direction === 'down');
+});
+
+const hasTierChanges = computed(() => {
+  return quizStore.sessionTierChanges.length > 0;
+});
 </script>
 
 <template>
@@ -131,6 +149,43 @@ const getScoreMessage = () => {
       <div class="flex items-center justify-center gap-2 relative z-10">
         <Trophy class="w-6 h-6 text-amber-500 fill-amber-500/20 drop-shadow" />
         <span class="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">New Leaderboard Record!</span>
+      </div>
+    </div>
+
+    <!-- Tier Transition Recap Banner -->
+    <div 
+      v-if="hasTierChanges" 
+      class="mb-3 p-3.5 bg-slate-900/90 dark:bg-slate-950 border border-slate-800 rounded-2xl shadow-sm text-left animate-fadeIn flex-shrink-0"
+    >
+      <h4 class="text-xs font-black uppercase tracking-wider text-amber-400 mb-2 flex items-center gap-1.5">
+        <Sparkles class="w-4 h-4 text-amber-400" />
+        <span>Perubahan Tier (Sesi Ini)</span>
+      </h4>
+
+      <div class="flex flex-col gap-1.5 text-xs text-slate-200">
+        <!-- Crown promotions -->
+        <div v-if="crownPromotions.length > 0" class="flex items-center gap-2 font-bold text-amber-300 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+          <span>👑 {{ crownPromotions.length }} huruf naik ke Crown:</span>
+          <span class="font-jp text-base font-black tracking-widest text-amber-200">
+            {{ crownPromotions.map((t: TierTransition) => t.character).join(' ') }}
+          </span>
+        </div>
+
+        <!-- Mastered promotions -->
+        <div v-if="masteredPromotions.length > 0" class="flex items-center gap-2 font-semibold text-emerald-300 bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20">
+          <span>🟢 {{ masteredPromotions.length }} huruf naik ke Hafal:</span>
+          <span class="font-jp text-base font-bold tracking-widest text-emerald-200">
+            {{ masteredPromotions.map((t: TierTransition) => t.character).join(' ') }}
+          </span>
+        </div>
+
+        <!-- Demotions -->
+        <div v-if="demotions.length > 0" class="flex items-center gap-2 font-medium text-rose-300 bg-rose-500/10 p-2 rounded-xl border border-rose-500/20">
+          <span>🔁 {{ demotions.length }} huruf perlu diulang lagi:</span>
+          <span class="font-jp text-base font-bold tracking-widest text-rose-200">
+            {{ demotions.map((t: TierTransition) => t.character).join(' ') }}
+          </span>
+        </div>
       </div>
     </div>
     

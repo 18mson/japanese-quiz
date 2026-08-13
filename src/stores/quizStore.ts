@@ -6,15 +6,11 @@ import { wordsData } from '../data/words';
 import { sentencesData } from '../data/sentences';
 import { supabase } from '../lib/supabaseClient';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
-import {
-  checkIsCorrect,
-  checkIsTypo,
-  getQuestionCountFromDuration,
-  getFallbackLocalPool,
-  buildSmartAdaptiveQuestions
-} from '../utils/quizHelpers';
-import { getMasteryTierFromStreak, computeCategoryMasteryStats } from '../utils/masteryStats';
+import { checkIsCorrect, checkIsTypo, getQuestionCountFromDuration, getFallbackLocalPool, buildSmartAdaptiveQuestions } from '../utils/quizHelpers';
+import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransition, TierTransition } from '../utils/masteryStats';
 import { submitLeaderboardScore } from '../services/leaderboardService';
+import { buildGojuonBatches, GojuonBatch } from '../data/gojuonOrder';
+import { useGoalsStore } from './goalsStore';
 
 export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
@@ -126,6 +122,47 @@ export const useQuizStore = defineStore('quiz', () => {
   const attemptedChars = ref<Record<string, boolean>>({});
   const firstTryCorrectCount = ref<number>(0);
 
+  const previewMode = ref<'none' | 'full_wave' | 'micro'>('none');
+  const justClosedPreview = ref(false);
+  const previewClosedTimestamp = ref<number>(0);
+
+  const completeWavePreview = () => {
+    if (currentWaveItems.value.length > 0) {
+      currentWaveItems.value.forEach(item => {
+        previewedItems.value[item.character] = true;
+      });
+    }
+    isWavePreviewActive.value = false;
+    justClosedPreview.value = true;
+    previewClosedTimestamp.value = Date.now();
+    setTimeout(() => {
+      justClosedPreview.value = false;
+    }, 500);
+  };
+
+  const completeMicroPreview = () => {
+    if (microPreviewItem.value) {
+      previewedItems.value[microPreviewItem.value.character] = true;
+    }
+    showMicroPreviewModal.value = false;
+    microPreviewItem.value = null;
+    justClosedPreview.value = true;
+    previewClosedTimestamp.value = Date.now();
+    setTimeout(() => {
+      justClosedPreview.value = false;
+    }, 500);
+  };
+  const previewedItems = ref<Record<string, boolean>>({});
+  const fullWaveBatches = ref<GojuonBatch[]>([]);
+  const currentWaveIndex = ref<number>(0);
+  const isWavePreviewActive = ref<boolean>(false);
+  const currentWaveItems = ref<any[]>([]);
+  const microPreviewItem = ref<any | null>(null);
+  const showMicroPreviewModal = ref<boolean>(false);
+
+  const latestTierTransition = ref<TierTransition | null>(null);
+  const sessionTierChanges = ref<TierTransition[]>([]);
+
   const resetQuizSessionState = async (targetDuration: number, type: string, level: 'basic' | 'n5') => {
     isLoading.value = true; questionType.value = type; quizLevel.value = level; targetDurationMinutes.value = targetDuration;
     currentQuestionIndex.value = 0; score.value = 0; quizCompleted.value = false; selectedAnswer.value = null; isAnswerCorrect.value = null;
@@ -133,6 +170,17 @@ export const useQuizStore = defineStore('quiz', () => {
     newRecordAchieved.value = false; showLevelUpScreen.value = false; speedAchievement.value = null;
     sentenceStats.value = null;
     masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
+
+    // Reset preview & tier transition states
+    previewMode.value = 'none';
+    fullWaveBatches.value = [];
+    currentWaveIndex.value = 0;
+    isWavePreviewActive.value = false;
+    currentWaveItems.value = [];
+    microPreviewItem.value = null;
+    showMicroPreviewModal.value = false;
+    latestTierTransition.value = null;
+    sessionTierChanges.value = [];
 
     await loadStreaksFromServer();
     levelBeforeQuiz.value = currentUserLevel.value;
@@ -161,53 +209,70 @@ export const useQuizStore = defineStore('quiz', () => {
 
     const questionCount = getQuestionCountFromDuration(targetDuration, type);
 
+    let finalPool = getFallbackLocalPool(type, level);
+
     try {
       const query = type === 'mix'
         ? supabase.from('characters').select('*').in('quiz_type', ['hiragana', 'katakana'])
         : supabase.from('characters').select('*').eq('quiz_type', type);
       const { data, error } = await query;
-      if (error || !data || data.length === 0) throw error || new Error('No data');
 
-      const mappedData = data.map(item => ({
-        character: item.character, romaji: item.romaji,
-        kana: item.kana, meaning: item.meaning, type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'), lesson: item.lesson
-      }));
-
-      let finalPool = [...mappedData];
-      if (type === 'words') {
-        const wordPool = mappedData.filter(w => {
-          const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
-          return cleanKana.length > 1;
-        });
-        const level1Words = wordPool.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
-        const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
-        const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
-        finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
-      } else if (level === 'basic') {
-        finalPool = mappedData.filter(item => item.type === 'basic');
+      if (!error && data && data.length > 0) {
+        finalPool = data.map(item => ({
+          character: item.character, romaji: item.romaji,
+          kana: item.kana, meaning: item.meaning, type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'), lesson: item.lesson
+        }));
       }
+    } catch (err) {}
 
-      questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
-    } catch (err) {
-      questions.value = buildSmartAdaptiveQuestions(getFallbackLocalPool(type, level), questionCount, getMasteryStreak);
-    } finally {
-      if (!questions.value || questions.value.length === 0) {
-        questions.value = buildSmartAdaptiveQuestions(getFallbackLocalPool(type, level), questionCount, getMasteryStreak);
-      }
-      initialQuestionCount.value = questions.value.length;
-      isLoading.value = false;
+    if (type === 'words') {
+      const wordPool = finalPool.filter(w => {
+        const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
+        return cleanKana.length > 1;
+      });
+      const level1Words = wordPool.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
+      const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
+      const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
+      finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
+    } else if (level === 'basic') {
+      finalPool = finalPool.filter(item => item.type === 'basic');
     }
+
+    // Check unlearned items for Cold-Start Wave Preview Mode
+    const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
+
+    if (unlearnedInPool.length > 0 && type !== 'sentences') {
+      previewMode.value = 'full_wave';
+      const maxBatches = targetDuration <= 1 ? 2 : targetDuration <= 3 ? 3 : 4;
+      const batchCount = Math.min(maxBatches, Math.max(1, Math.ceil(unlearnedInPool.length / 5)));
+      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, batchCount);
+
+      if (fullWaveBatches.value.length > 0) {
+        currentWaveIndex.value = 0;
+        currentWaveItems.value = fullWaveBatches.value[0].items;
+        isWavePreviewActive.value = true;
+        const waveQuestionTarget = Math.max(5, Math.ceil(questionCount / fullWaveBatches.value.length));
+        questions.value = buildSmartAdaptiveQuestions(currentWaveItems.value, waveQuestionTarget, getMasteryStreak);
+      } else {
+        questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
+      }
+    } else {
+      previewMode.value = 'none';
+      questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
+    }
+
+    initialQuestionCount.value = questionCount;
+    isLoading.value = false;
   };
 
   const startWeakItemsQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
     await resetQuizSessionState(targetDuration, type, level);
     const questionCount = getQuestionCountFromDuration(targetDuration, type);
     const pool = getFallbackLocalPool(type, level);
-
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
     if (weakPool.length === 0) weakPool = [...pool];
     questions.value = buildSmartAdaptiveQuestions(weakPool, questionCount, getMasteryStreak);
-    initialQuestionCount.value = questions.value.length;
+    initialQuestionCount.value = questionCount;
     isLoading.value = false;
   };
 
@@ -217,10 +282,17 @@ export const useQuizStore = defineStore('quiz', () => {
     if (!currentQuestion.value || isTypingMode.value) return [];
     const correctRomaji = currentQuestion.value.romaji;
     const correctRomajis = Array.isArray(correctRomaji) ? correctRomaji : [correctRomaji];
-    const poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
-    const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
     
-    const incorrectOptions = pool.filter(r => !correctRomajis.includes(r)).sort(() => 0.5 - Math.random()).slice(0, 5);
+    let poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
+    if (previewMode.value === 'full_wave' && fullWaveBatches.value.length > 0) {
+      const cumulativeItems = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
+      if (cumulativeItems.length >= 6) {
+        poolData = cumulativeItems;
+      }
+    }
+
+    const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
+    const incorrectOptions = Array.from(new Set(pool.filter(r => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random()).slice(0, 5);
     return [...incorrectOptions, correctRomajis[0]].sort(() => 0.5 - Math.random());
   });
 
@@ -252,6 +324,7 @@ export const useQuizStore = defineStore('quiz', () => {
     
     if (current) {
       const charKey = current.character;
+      const oldStreak = userStreaks.value[charKey] || 0;
       
       // Track first-attempt accuracy (ONLY first time attempting this character in session)
       if (!attemptedChars.value[charKey]) {
@@ -259,17 +332,29 @@ export const useQuizStore = defineStore('quiz', () => {
         if (isCorrectVal) firstTryCorrectCount.value++;
       }
 
-      const newStreak = pointsEarned === 4 ? (userStreaks.value[charKey] || 0) + 1 : 0;
+      const newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
       userStreaks.value[charKey] = newStreak;
       try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) {}
+
+      // Check Tier Transition
+      const transition = checkTierTransition(charKey, oldStreak, newStreak);
+      if (transition.direction !== 'same') {
+        latestTierTransition.value = transition;
+        sessionTierChanges.value.push(transition);
+      }
       
+      // Record answer in Daily Goals Store
+      const goalsStore = useGoalsStore();
       import('./authStore').then(({ useAuthStore }) => {
         const authStore = useAuthStore();
+        goalsStore.recordAnswer(1, 0, authStore.user?.id);
         if (authStore.user) {
           supabase.from('user_streaks').upsert({
             user_id: authStore.user.id,
             character: charKey,
-            streak: newStreak
+            streak: newStreak,
+            last_tier: transition.newTier,
+            tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined
           }, { onConflict: 'user_id,character' }).then();
         }
       });
@@ -311,6 +396,10 @@ export const useQuizStore = defineStore('quiz', () => {
     } else speedAchievement.value = { timeSavedSeconds: 0, bonusPoints: 0, isFaster: false, rankText: '🎯 Steady & Consistent' };
 
     submitToLeaderboard(finalSubmissionScore);
+
+    const goalsStore = useGoalsStore();
+    goalsStore.checkAndTriggerCelebration();
+
     if (currentUserLevel.value > levelBeforeQuiz.value) showLevelUpScreen.value = true;
     else quizCompleted.value = true;
   };
@@ -319,10 +408,28 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const nextQuestion = () => {
     selectedAnswer.value = null; isAnswerCorrect.value = null; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
+    latestTierTransition.value = null;
     
+    const totalAnswered = userAnswers.value.length;
+    const isSessionComplete = totalAnswered >= initialQuestionCount.value;
+
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
-    } else if (masteredCount.value >= initialQuestionCount.value) {
+    } else if (!isSessionComplete && previewMode.value === 'full_wave' && currentWaveIndex.value + 1 < fullWaveBatches.value.length) {
+      // Advance to Next Wave in Full Wave Preview Mode
+      currentWaveIndex.value++;
+      const nextBatch = fullWaveBatches.value[currentWaveIndex.value];
+      currentWaveItems.value = nextBatch.items;
+      isWavePreviewActive.value = true;
+
+      // Cumulative pool (Wave 0..currentWave)
+      const cumulativePool = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
+      const totalQuestionTarget = getQuestionCountFromDuration(targetDurationMinutes.value, questionType.value);
+      const questionsPerWave = Math.ceil(totalQuestionTarget / fullWaveBatches.value.length);
+
+      questions.value = buildSmartAdaptiveQuestions(cumulativePool, questionsPerWave, getMasteryStreak);
+      currentQuestionIndex.value = 0;
+    } else if (isSessionComplete || masteredCount.value >= initialQuestionCount.value) {
       finishQuiz();
     } else {
       const unmastered = questions.value.filter(q => !masteredChars.value[q.character]);
@@ -339,7 +446,7 @@ export const useQuizStore = defineStore('quiz', () => {
   
   const progress = computed(() => {
     const total = initialQuestionCount.value || 1;
-    return Math.min(100, Math.round((masteredCount.value / total) * 100));
+    return Math.min(100, Math.round((userAnswers.value.length / total) * 100));
   });
 
   const finalScore = computed(() => {
@@ -364,6 +471,9 @@ export const useQuizStore = defineStore('quiz', () => {
     hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
     sentenceStats,
+    previewMode, previewedItems, fullWaveBatches, currentWaveIndex, isWavePreviewActive, currentWaveItems,
+    microPreviewItem, showMicroPreviewModal, latestTierTransition, sessionTierChanges, justClosedPreview, previewClosedTimestamp,
+    completeWavePreview, completeMicroPreview,
     getMasteryStreak, getMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
     finishSentenceQuiz,
     nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,

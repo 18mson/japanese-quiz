@@ -35,6 +35,8 @@ const submitAnswer = () => {
 };
 
 const handleEnter = () => {
+  if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal || quizStore.justClosedPreview) return;
+  if (Date.now() - quizStore.previewClosedTimestamp < 500) return;
   if (quizStore.selectedAnswer === null) {
     if (userInput.value.trim() !== '') {
       submitAnswer();
