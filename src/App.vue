@@ -417,10 +417,10 @@ const goToHome = () => {
       @open-about="showAboutModal = true"
       @open-battleground="openBattleground" 
     />
-    <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-24">
+    <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-48 sm:pb-24">
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
       
-      <main class="bg-white dark:bg-slate-900 rounded-2xl shadow-md p-2 sm:p-6 flex flex-col items-center justify-center w-full border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 flex-shrink-0 min-h-[220px] sm:min-h-[300px]" v-if="!quizStore.quizCompleted">
+      <main class="bg-white dark:bg-slate-900 rounded-2xl shadow-md p-3 sm:p-6 flex flex-col items-center justify-center w-full border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 flex-shrink-0 min-h-[180px] sm:min-h-[300px]" v-if="!quizStore.quizCompleted">
         <div v-if="quizStore.isLoading" class="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-slate-400">
           <div class="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-3"></div>
           <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>
@@ -429,7 +429,7 @@ const goToHome = () => {
           <QuizSentenceTyping v-if="quizStore.questionType === 'sentences'" />
           <template v-else>
             <QuizQuestion class="flex-shrink-0" />
-            <div class="w-full flex flex-col justify-start items-center py-2">
+            <div class="w-full flex flex-col justify-start items-center py-1 sm:py-2">
               <QuizWordInput v-if="quizStore.isTypingMode" />
               <QuizOptions v-else />
             </div>

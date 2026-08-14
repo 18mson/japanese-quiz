@@ -11,7 +11,8 @@ const quizStore = useQuizStore();
 <template>
   <div 
     v-if="quizStarted && !quizStore.quizCompleted && (quizStore.isTypingMode || quizStore.selectedAnswer !== null)" 
-    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+    class="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+    :class="quizStore.isTypingMode ? 'flex' : 'hidden sm:flex'"
   >
     <div class="max-w-md w-full flex justify-center gap-4">
       <!-- Pre-answer actions (Only in typing mode - shown on desktop, handled by VirtualKeyboard on mobile) -->
