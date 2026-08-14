@@ -5,6 +5,14 @@
 @layer base {
   body {
     @apply font-sans bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Prevent unwanted outline on cursor clicks and touch interactions */
+  button:focus:not(:focus-visible),
+  [role="button"]:focus:not(:focus-visible),
+  a:focus:not(:focus-visible) {
+    outline: none;
   }
 }
 

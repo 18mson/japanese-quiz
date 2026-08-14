@@ -11,7 +11,12 @@ const emit = defineEmits<{
 const quizStore = useQuizStore();
 
 const focusedButtonIndex = ref(1); // 0: Home, 1: Try Again, 2: Leaderboard
+const isKeyboardNav = ref(false);
 const listRef = ref<HTMLElement | null>(null);
+
+const deactivateKeyboardNav = () => {
+  isKeyboardNav.value = false;
+};
 
 const handleKeydown = (event: KeyboardEvent) => {
   if (!quizStore.quizCompleted) return;
@@ -23,9 +28,11 @@ const handleKeydown = (event: KeyboardEvent) => {
 
   if (event.key === 'ArrowRight') {
     event.preventDefault();
+    isKeyboardNav.value = true;
     focusedButtonIndex.value = (focusedButtonIndex.value + 1) % 3;
   } else if (event.key === 'ArrowLeft') {
     event.preventDefault();
+    isKeyboardNav.value = true;
     focusedButtonIndex.value = (focusedButtonIndex.value - 1 + 3) % 3;
   } else if (event.key === 'ArrowDown') {
     if (listRef.value) {
@@ -49,10 +56,14 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('pointerdown', deactivateKeyboardNav);
+  window.addEventListener('touchstart', deactivateKeyboardNav);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('pointerdown', deactivateKeyboardNav);
+  window.removeEventListener('touchstart', deactivateKeyboardNav);
 });
 
 const formatTimeSaved = (seconds: number) => {
@@ -338,17 +349,17 @@ const hasTierChanges = computed(() => {
     </div>
     
     <!-- Fixed/Pinned Bottom Action Bar -->
-    <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn">
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-4 sm:px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn">
       <div class="max-w-xs sm:max-w-sm w-full flex items-center justify-center gap-3">
         <!-- Home Button (Index 0) -->
         <button 
           class="p-2.5 rounded-xl transition-all shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-11 h-11 flex-shrink-0 border"
           :class="[
-            focusedButtonIndex === 0
+            isKeyboardNav && focusedButtonIndex === 0
               ? 'ring-2 ring-indigo-400 dark:ring-indigo-400 border-indigo-400 bg-indigo-50 dark:bg-slate-700 scale-[1.05]'
               : 'bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
           ]"
-          @click="focusedButtonIndex = 0; emit('home');"
+          @click="deactivateKeyboardNav(); emit('home');"
           title="Go to Home"
         >
           <Home class="w-5 h-5 text-gray-600 dark:text-slate-300" />
@@ -358,11 +369,11 @@ const hasTierChanges = computed(() => {
         <button 
           class="flex-1 py-2.5 px-6 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center"
           :class="[
-            focusedButtonIndex === 1
+            isKeyboardNav && focusedButtonIndex === 1
               ? 'ring-2 ring-indigo-400/90 dark:ring-indigo-300 border-indigo-400 scale-[1.02] bg-indigo-700'
               : ''
           ]"
-          @click="focusedButtonIndex = 1; quizStore.restartQuiz();"
+          @click="deactivateKeyboardNav(); quizStore.restartQuiz();"
         >
           Try Again
         </button>
@@ -371,11 +382,11 @@ const hasTierChanges = computed(() => {
         <button 
           class="p-2.5 rounded-xl transition-all shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-11 h-11 flex-shrink-0 border"
           :class="[
-            focusedButtonIndex === 2
+            isKeyboardNav && focusedButtonIndex === 2
               ? 'ring-2 ring-amber-400 dark:ring-amber-500 border-amber-400 bg-amber-200 dark:bg-amber-900/80 scale-[1.05]'
               : 'bg-amber-100 dark:bg-amber-950/80 hover:bg-amber-200 dark:hover:bg-amber-900/80 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800'
           ]"
-          @click="focusedButtonIndex = 2; emit('leaderboard');"
+          @click="deactivateKeyboardNav(); emit('leaderboard');"
           title="View Leaderboard"
         >
           <Trophy class="w-5 h-5 text-amber-600 dark:text-amber-400" />

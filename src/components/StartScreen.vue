@@ -19,14 +19,24 @@ const updateResponsive = () => {
 // ── Keyboard Section Focus State ─────────────────────────────────
 const focusedSection = ref<'header' | 'mode' | 'duration'>('mode');
 const focusedHeaderTarget = ref<'grid' | 'leaderboard'>('grid');
+const isKeyboardNav = ref(false);
 
 const durationList = [1, 3, 5];
+
+const deactivateKeyboardNav = () => {
+  isKeyboardNav.value = false;
+};
 
 const handleKeydown = (event: KeyboardEvent) => {
   // If user is typing in an input element or textarea, don't hijack keys
   const target = event.target as HTMLElement | null;
   if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
     return;
+  }
+
+  // Activate keyboard navigation highlight only on keyboard navigation keys
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key)) {
+    isKeyboardNav.value = true;
   }
 
   // Handle Tab / Shift+Tab for cycle switching sections
@@ -127,11 +137,15 @@ onMounted(() => {
   updateResponsive();
   window.addEventListener('resize', updateResponsive);
   window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('pointerdown', deactivateKeyboardNav);
+  window.addEventListener('touchstart', deactivateKeyboardNav);
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', updateResponsive);
   window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('pointerdown', deactivateKeyboardNav);
+  window.removeEventListener('touchstart', deactivateKeyboardNav);
 });
 
 // Modes definition for the Disk Wheel Selection
@@ -356,60 +370,60 @@ const handleStart = async () => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto p-4 md:p-6 pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
+  <div class="max-w-4xl mx-auto p-3.5 sm:p-6 pb-36 sm:pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
     
     <!-- SECTION 1: HEADER BAR (Grid & Leaderboard Buttons) -->
     <div 
-      @click="focusedSection = 'header'"
+      @click="deactivateKeyboardNav"
       :class="[
-        'w-full max-w-3xl mb-6 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all duration-200 flex items-center justify-between gap-3 sm:gap-4 flex-shrink-0 cursor-pointer',
-        focusedSection === 'header'
-          ? 'border-indigo-400 dark:border-indigo-500/70 shadow-md ring-1 ring-indigo-400/40 border'
+        'w-full max-w-3xl mb-4 sm:mb-6 bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 transition-all duration-200 flex items-center justify-between gap-2.5 sm:gap-4 flex-shrink-0 cursor-pointer',
+        isKeyboardNav && focusedSection === 'header'
+          ? 'border-indigo-400 dark:border-indigo-500/70 shadow-md ring-2 ring-indigo-400/40 border'
           : 'border border-gray-200 dark:border-slate-800 shadow-sm'
       ]"
     >
       <!-- Mastery Grid Stats Display -->
       <div 
-        @click.stop="focusedSection = 'header'; focusedHeaderTarget = 'grid'; emit('openMasteryGrid');"
-        class="flex items-center gap-3 min-w-0 cursor-pointer flex-1 hover:opacity-90 transition-opacity"
+        @click.stop="deactivateKeyboardNav(); emit('openMasteryGrid');"
+        class="flex items-center gap-2.5 sm:gap-3 min-w-0 cursor-pointer flex-1 hover:opacity-90 transition-opacity"
       >
-        <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800/80 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0">
-          <Target class="w-5 h-5" />
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800/80 flex items-center justify-center text-indigo-600 dark:text-indigo-400 flex-shrink-0">
+          <Target class="w-4 h-4 sm:w-5 sm:h-5" />
         </div>
         <div class="truncate">
-          <div class="text-xs text-gray-500 dark:text-slate-400 font-medium">Peta penguasaan huruf</div>
-          <div class="text-sm md:text-base font-bold text-gray-900 dark:text-slate-100 truncate">
+          <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-medium truncate">Peta penguasaan huruf</div>
+          <div class="text-xs sm:text-base font-bold text-gray-900 dark:text-slate-100 truncate">
             {{ quizStore.overallMasteryStats.mastered }} / {{ quizStore.overallMasteryStats.total }}
-            <span class="text-indigo-600 dark:text-indigo-400 font-extrabold ml-1.5">({{ quizStore.overallMasteryStats.percentage }}%)</span>
+            <span class="text-indigo-600 dark:text-indigo-400 font-extrabold ml-1 sm:ml-1.5">({{ quizStore.overallMasteryStats.percentage }}%)</span>
           </div>
         </div>
       </div>
 
       <!-- Action Buttons: Daily Target, Peringkat & Grid -->
-      <div class="flex flex-wrap items-center gap-2 flex-shrink-0">
-        <DailyGoalProgressBar />
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <DailyGoalProgressBar class="hidden xs:flex" />
 
         <button 
           type="button"
-          @click.stop="focusedSection = 'header'; focusedHeaderTarget = 'leaderboard'; emit('openLeaderboard');"
+          @click.stop="deactivateKeyboardNav(); emit('openLeaderboard');"
           :class="[
-            'px-3 py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-2xs',
-            focusedSection === 'header' && focusedHeaderTarget === 'leaderboard'
+            'px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-2xs',
+            isKeyboardNav && focusedSection === 'header' && focusedHeaderTarget === 'leaderboard'
               ? 'ring-2 ring-amber-400/80 dark:ring-amber-500/80 bg-amber-100/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-400 scale-[1.02]'
               : 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/80 hover:bg-amber-100'
           ]"
           title="Lihat Papan Peringkat"
         >
-          <Trophy class="w-4 h-4 text-amber-500" />
+          <Trophy class="w-4 h-4 text-amber-500 flex-shrink-0" />
           <span class="hidden sm:inline">Peringkat</span>
         </button>
 
         <button 
           type="button"
-          @click.stop="focusedSection = 'header'; focusedHeaderTarget = 'grid'; emit('openMasteryGrid');"
+          @click.stop="deactivateKeyboardNav(); emit('openMasteryGrid');"
           :class="[
-            'px-3.5 py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer border',
-            focusedSection === 'header' && focusedHeaderTarget === 'grid'
+            'px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer border',
+            isKeyboardNav && focusedSection === 'header' && focusedHeaderTarget === 'grid'
               ? 'ring-2 ring-indigo-400/80 dark:ring-indigo-500/80 bg-indigo-100 dark:bg-indigo-900/80 text-indigo-900 dark:text-indigo-100 border-indigo-400 scale-[1.02]'
               : 'bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 border-indigo-100 dark:border-indigo-800/80'
           ]"
@@ -421,7 +435,7 @@ const handleStart = async () => {
 
     <!-- SECTION 2: DISK WHEEL MODE SELECTION BOX -->
     <div 
-      @click="focusedSection = 'mode'"
+      @click="deactivateKeyboardNav"
       class="w-full max-w-3xl mb-6 flex-shrink-0"
     >
       <div 
@@ -431,8 +445,8 @@ const handleStart = async () => {
         @touchend="handleTouchEnd"
         :class="[
           'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[440px] sm:min-h-[460px] flex flex-col justify-between select-none touch-none overscroll-contain cursor-pointer',
-          focusedSection === 'mode'
-            ? 'border-indigo-400/80 dark:border-indigo-500/70 shadow-md ring-1 ring-indigo-400/30'
+          isKeyboardNav && focusedSection === 'mode'
+            ? 'border-indigo-400/80 dark:border-indigo-500/70 shadow-md ring-2 ring-indigo-400/40'
             : 'border-gray-200 dark:border-slate-800 shadow-sm'
         ]"
       >
@@ -479,7 +493,7 @@ const handleStart = async () => {
             <div 
               v-for="(mode, index) in modesList"
               :key="mode.id"
-              @click="focusedSection = 'mode'; selectMode(index);"
+              @click="deactivateKeyboardNav(); selectMode(index);"
               :style="getCardStyle(index)"
               :class="[
                 'absolute left-0 right-0 w-full max-w-[300px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out cursor-pointer text-left overflow-hidden',
@@ -528,7 +542,7 @@ const handleStart = async () => {
                     v-for="sub in mode.subTypes"
                     :key="sub.key"
                     type="button"
-                    @click.stop="focusedSection = 'mode'; selectSubType(sub.key);"
+                    @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
                     :class="[
                       'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
                       characterTypes === sub.key
@@ -573,10 +587,10 @@ const handleStart = async () => {
 
     <!-- SECTION 3: DURATION & STICKY BOTTOM ACTION BAR -->
     <div 
-      @click="focusedSection = 'duration'"
+      @click="deactivateKeyboardNav"
       :class="[
         'fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md transition-all duration-200 p-3 sm:p-4 shadow-lg flex flex-col items-center justify-center cursor-pointer',
-        focusedSection === 'duration'
+        isKeyboardNav && focusedSection === 'duration'
           ? 'border-t-2 border-t-indigo-400 dark:border-t-indigo-500/70 shadow-md'
           : 'border-t border-gray-200/80 dark:border-slate-800 shadow-lg'
       ]"
@@ -588,11 +602,11 @@ const handleStart = async () => {
             v-for="min in [1, 3, 5]"
             :key="min"
             type="button"
-            @click.stop="focusedSection = 'duration'; targetDurationMinutes = min;"
+            @click.stop="deactivateKeyboardNav(); targetDurationMinutes = min;"
             :class="[
               'flex-1 min-w-0 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer',
               targetDurationMinutes === min
-                ? focusedSection === 'duration'
+                ? isKeyboardNav && focusedSection === 'duration'
                   ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-400/90 font-black scale-[1.02]'
                   : 'bg-indigo-600 text-white shadow-md font-black'
                 : 'bg-gray-100/90 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700 border border-gray-200/60 dark:border-slate-700/60 font-bold'
@@ -622,9 +636,9 @@ const handleStart = async () => {
             selectedLevel === 'battleground'
               ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25'
               : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
-            focusedSection === 'duration' ? 'ring-2 ring-indigo-400/60 shadow-lg' : ''
+            isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-indigo-400/60 shadow-lg' : ''
           ]"
-          @click="focusedSection = 'duration'; handleStart();"
+          @click="deactivateKeyboardNav(); handleStart();"
           :disabled="quizStore.isLoading"
         >
           <Transition name="btn-content-fade" mode="out-in">
