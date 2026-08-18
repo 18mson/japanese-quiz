@@ -21,7 +21,7 @@ export const useQuizStore = defineStore('quiz', () => {
     try {
       const stored = localStorage.getItem('japanese-quiz-streaks');
       if (stored) return JSON.parse(stored);
-    } catch (e) {}
+    } catch (e) { }
     return {};
   };
 
@@ -52,7 +52,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userStreaks.value = serverStreaks;
     try {
       localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const loadStreaksFromStorage = async () => {
@@ -223,7 +223,7 @@ export const useQuizStore = defineStore('quiz', () => {
           kana: item.kana, meaning: item.meaning, type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'), lesson: item.lesson
         }));
       }
-    } catch (err) {}
+    } catch (err) { }
 
     if (type === 'words') {
       const wordPool = finalPool.filter(w => {
@@ -241,21 +241,21 @@ export const useQuizStore = defineStore('quiz', () => {
     // Check unlearned items for Cold-Start Wave Preview Mode
     const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
 
-    if (unlearnedInPool.length > 0 && type !== 'sentences') {
+    // Preview hanya untuk mode pilihan ganda (hiragana/katakana/mix, level basic)
+    const isMultipleChoiceMode = type !== 'sentences' && type !== 'words' && level !== 'n5';
+    if (unlearnedInPool.length > 0 && isMultipleChoiceMode) {
       previewMode.value = 'full_wave';
-      const maxBatches = targetDuration <= 1 ? 2 : targetDuration <= 3 ? 3 : 4;
-      const batchCount = Math.min(maxBatches, Math.max(1, Math.ceil(unlearnedInPool.length / 5)));
-      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, batchCount);
+      // Preview hanya 1 wave (max 5 huruf baru pertama) sebagai intro flashcard
+      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, 1);
 
       if (fullWaveBatches.value.length > 0) {
         currentWaveIndex.value = 0;
         currentWaveItems.value = fullWaveBatches.value[0].items;
         isWavePreviewActive.value = true;
-        const waveQuestionTarget = Math.max(5, Math.ceil(questionCount / fullWaveBatches.value.length));
-        questions.value = buildSmartAdaptiveQuestions(currentWaveItems.value, waveQuestionTarget, getMasteryStreak);
-      } else {
-        questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
       }
+      // Soal SELALU dibangun dari seluruh finalPool (bukan hanya batch preview)
+      // agar semua huruf (belum, proses, hafal, crown) bisa muncul sesuai bobot adaptif
+      questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
     } else {
       previewMode.value = 'none';
       questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
@@ -282,15 +282,9 @@ export const useQuizStore = defineStore('quiz', () => {
     if (!currentQuestion.value || isTypingMode.value) return [];
     const correctRomaji = currentQuestion.value.romaji;
     const correctRomajis = Array.isArray(correctRomaji) ? correctRomaji : [correctRomaji];
-    
-    let poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
-    if (previewMode.value === 'full_wave' && fullWaveBatches.value.length > 0) {
-      const cumulativeItems = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
-      if (cumulativeItems.length >= 6) {
-        poolData = cumulativeItems;
-      }
-    }
 
+    // Selalu gunakan full pool untuk opsi jawaban, bukan dibatasi wave
+    const poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
     const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
     const incorrectOptions = Array.from(new Set(pool.filter(r => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random()).slice(0, 5);
     return [...incorrectOptions, correctRomajis[0]].sort(() => 0.5 - Math.random());
@@ -302,15 +296,15 @@ export const useQuizStore = defineStore('quiz', () => {
     const current = currentQuestion.value;
     let isCorrectVal = false, isTypo = false;
     let hintsUsed = (showReadingHint.value ? 1 : 0) + (showMeaningHint.value ? 1 : 0);
-    
+
     if (current) {
       if (checkIsCorrect(userAnswerClean, current.romaji)) isCorrectVal = true;
       else if (isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji)) { isCorrectVal = false; isTypo = true; }
     }
-    
+
     selectedAnswer.value = romaji;
     isAnswerCorrect.value = isCorrectVal;
-    
+
     let pointsEarned = 0;
     if (isCorrectVal) {
       pointsEarned = isTypingMode.value ? (hintsUsed === 1 ? 3 : hintsUsed === 2 ? 2 : 4) : 4;
@@ -321,11 +315,11 @@ export const useQuizStore = defineStore('quiz', () => {
       if (isTypo) { pointsEarned = 1; score.value += pointsEarned; }
       playIncorrectSound();
     }
-    
+
     if (current) {
       const charKey = current.character;
       const oldStreak = userStreaks.value[charKey] || 0;
-      
+
       // Track first-attempt accuracy (ONLY first time attempting this character in session)
       if (!attemptedChars.value[charKey]) {
         attemptedChars.value[charKey] = true;
@@ -334,7 +328,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
       const newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
       userStreaks.value[charKey] = newStreak;
-      try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) {}
+      try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
 
       // Check Tier Transition
       const transition = checkTierTransition(charKey, oldStreak, newStreak);
@@ -342,7 +336,7 @@ export const useQuizStore = defineStore('quiz', () => {
         latestTierTransition.value = transition;
         sessionTierChanges.value.push(transition);
       }
-      
+
       // Record answer in Daily Goals Store
       const goalsStore = useGoalsStore();
       import('./authStore').then(({ useAuthStore }) => {
@@ -358,7 +352,7 @@ export const useQuizStore = defineStore('quiz', () => {
           }, { onConflict: 'user_id,character' }).then();
         }
       });
-        
+
       userAnswers.value.push({
         character: current.character, correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
         userRomaji: romaji || '(skipped)', isCorrect: isCorrectVal, kana: (current as any).kana, meaning: (current as any).meaning, pointsEarned, maxPoints: 4, isTypo, hintsUsed
@@ -369,12 +363,12 @@ export const useQuizStore = defineStore('quiz', () => {
       }
     }
   };
-  
+
   const submitToLeaderboard = async (submissionScore: number = score.value) => {
     const { useAuthStore } = await import('./authStore');
     const authStore = useAuthStore();
     if (!authStore.user) return;
-    
+
     const durationSeconds = (endTime.value - startTime.value) / 1000;
     const { isNewRecord } = await submitLeaderboardScore({
       userId: authStore.user.id, username: authStore.displayUsername || 'Anonymous',
@@ -409,26 +403,12 @@ export const useQuizStore = defineStore('quiz', () => {
   const nextQuestion = () => {
     selectedAnswer.value = null; isAnswerCorrect.value = null; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
     latestTierTransition.value = null;
-    
+
     const totalAnswered = userAnswers.value.length;
     const isSessionComplete = totalAnswered >= initialQuestionCount.value;
 
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
-    } else if (!isSessionComplete && previewMode.value === 'full_wave' && currentWaveIndex.value + 1 < fullWaveBatches.value.length) {
-      // Advance to Next Wave in Full Wave Preview Mode
-      currentWaveIndex.value++;
-      const nextBatch = fullWaveBatches.value[currentWaveIndex.value];
-      currentWaveItems.value = nextBatch.items;
-      isWavePreviewActive.value = true;
-
-      // Cumulative pool (Wave 0..currentWave)
-      const cumulativePool = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
-      const totalQuestionTarget = getQuestionCountFromDuration(targetDurationMinutes.value, questionType.value);
-      const questionsPerWave = Math.ceil(totalQuestionTarget / fullWaveBatches.value.length);
-
-      questions.value = buildSmartAdaptiveQuestions(cumulativePool, questionsPerWave, getMasteryStreak);
-      currentQuestionIndex.value = 0;
     } else if (isSessionComplete || masteredCount.value >= initialQuestionCount.value) {
       finishQuiz();
     } else {
@@ -439,11 +419,11 @@ export const useQuizStore = defineStore('quiz', () => {
       } else finishQuiz();
     }
   };
-  
+
   const restartQuiz = async () => {
     await startQuiz(targetDurationMinutes.value, questionType.value, quizLevel.value);
   };
-  
+
   const progress = computed(() => {
     const total = initialQuestionCount.value || 1;
     return Math.min(100, Math.round((userAnswers.value.length / total) * 100));

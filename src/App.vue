@@ -400,7 +400,7 @@ const goToHome = () => {
     />
 
     <!-- Modals & Overlays -->
-    <PreviewCardModal v-if="quizStarted" />
+    <PreviewCardModal />
     <GoalCelebrationToast />
 
     <!-- Main Screens -->
