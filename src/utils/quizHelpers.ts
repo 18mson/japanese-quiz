@@ -77,15 +77,15 @@ export const getQuestionCountFromDuration = (targetDurationMinutes: number, type
 
 export const getFallbackLocalPool = (type: string, level: string): any[] => {
   if (type === 'hiragana') {
-    return level === 'basic' ? hiraganaData.filter(c => c.type === 'basic') : hiraganaData;
+    // Selalu return semua hiragana (basic + dakuten + combination)
+    return hiraganaData;
   }
   if (type === 'katakana') {
-    return level === 'basic' ? katakanaData.filter(k => k.type === 'basic') : katakanaData;
+    // Selalu return semua katakana (basic + dakuten + combination)
+    return katakanaData;
   }
   if (type === 'mix') {
-    const h = level === 'basic' ? hiraganaData.filter(c => c.type === 'basic') : hiraganaData;
-    const k = level === 'basic' ? katakanaData.filter(k => k.type === 'basic') : katakanaData;
-    return [...h, ...k];
+    return [...hiraganaData, ...katakanaData];
   }
   if (type === 'words') {
     const multiCharWords = wordsData.filter(w => {

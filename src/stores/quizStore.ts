@@ -234,28 +234,35 @@ export const useQuizStore = defineStore('quiz', () => {
       const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
       const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
       finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
-    } else if (level === 'basic') {
-      finalPool = finalPool.filter(item => item.type === 'basic');
     }
 
-    // Check unlearned items for Cold-Start Wave Preview Mode
+    // Pisahkan: item yang sudah dikenal (streak > 0) dan yang belum (streak === 0)
+    const knownPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
     const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
 
     // Preview hanya untuk mode pilihan ganda (hiragana/katakana/mix, level basic)
+    // TIDAK untuk mode mengetik: words, sentences, atau level n5
     const isMultipleChoiceMode = type !== 'sentences' && type !== 'words' && level !== 'n5';
     if (unlearnedInPool.length > 0 && isMultipleChoiceMode) {
       previewMode.value = 'full_wave';
-      // Preview hanya 1 wave (max 5 huruf baru pertama) sebagai intro flashcard
-      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, 1);
+      // Batasi jumlah batch preview sesuai durasi sesi
+      const maxBatches = targetDuration <= 1 ? 2 : targetDuration <= 3 ? 3 : 4;
+      const batchCount = Math.min(maxBatches, Math.max(1, Math.ceil(unlearnedInPool.length / 5)));
+      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, batchCount);
 
       if (fullWaveBatches.value.length > 0) {
         currentWaveIndex.value = 0;
         currentWaveItems.value = fullWaveBatches.value[0].items;
         isWavePreviewActive.value = true;
+
+        // Soal awal: known items + batch preview pertama saja
+        // Item baru HANYA masuk soal setelah dipreview terlebih dahulu
+        const initialQuizPool = [...knownPool, ...fullWaveBatches.value[0].items];
+        const waveQuestionTarget = Math.max(5, Math.ceil(questionCount / fullWaveBatches.value.length));
+        questions.value = buildSmartAdaptiveQuestions(initialQuizPool, waveQuestionTarget, getMasteryStreak);
+      } else {
+        questions.value = buildSmartAdaptiveQuestions(knownPool.length > 0 ? knownPool : finalPool, questionCount, getMasteryStreak);
       }
-      // Soal SELALU dibangun dari seluruh finalPool (bukan hanya batch preview)
-      // agar semua huruf (belum, proses, hafal, crown) bisa muncul sesuai bobot adaptif
-      questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
     } else {
       previewMode.value = 'none';
       questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
@@ -409,6 +416,23 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
+    } else if (!isSessionComplete && previewMode.value === 'full_wave' && currentWaveIndex.value + 1 < fullWaveBatches.value.length) {
+      // Advance ke gelombang berikutnya: tampilkan preview dulu
+      currentWaveIndex.value++;
+      const nextBatch = fullWaveBatches.value[currentWaveIndex.value];
+      currentWaveItems.value = nextBatch.items;
+      isWavePreviewActive.value = true;
+
+      // Pool soal = semua item streak > 0 (known) + semua item yang sudah dipreview s/d wave ini
+      const allFinalPool = getFallbackLocalPool(questionType.value, quizLevel.value);
+      const knownPool = allFinalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
+      const cumulativePreviewedItems = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
+      const cumulativePool = [...knownPool, ...cumulativePreviewedItems.filter(pi => !knownPool.some(k => k.character === pi.character))];
+
+      const totalQuestionTarget = getQuestionCountFromDuration(targetDurationMinutes.value, questionType.value);
+      const questionsPerWave = Math.max(5, Math.ceil(totalQuestionTarget / fullWaveBatches.value.length));
+      questions.value = buildSmartAdaptiveQuestions(cumulativePool, questionsPerWave, getMasteryStreak);
+      currentQuestionIndex.value = 0;
     } else if (isSessionComplete || masteredCount.value >= initialQuestionCount.value) {
       finishQuiz();
     } else {
