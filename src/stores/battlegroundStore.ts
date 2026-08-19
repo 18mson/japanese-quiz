@@ -17,6 +17,8 @@ import type {
   PublicRoomItem,
   PowerUpType,
   PowerUpBroadcastPayload,
+  GameMode,
+  QuizCategory,
 } from './battleground/types';
 import {
   getGuestId,
@@ -36,6 +38,8 @@ import {
 import {
   submitRoundApi,
   startNextRoundApi,
+  startNextQuizBlitzRoundApi,
+  submitQuizBlitzRoundApi,
   resetRoomApi,
 } from './battleground/roundService';
 
@@ -43,6 +47,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   const authStore = useAuthStore();
 
   // ── State ───────────────────────────────────────────────────
+  const gameMode = ref<GameMode>('battleground');
+  const quizCategory = ref<QuizCategory>('hiragana');
   const phase = ref<GamePhase>('idle');
   const roomId = ref<string | null>(null);
   const roomCode = ref<string | null>(null);
@@ -57,6 +63,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   const isLoadingPublicRooms = ref(false);
   const error = ref<string | null>(null);
   const isLoading = ref(false);
+  const masterTimeRemainingSeconds = ref<number>(300); // 5 minutes master timer
 
   // ── Submissions & Timer ─────────────────────────────────────
   const mySubmissionStatus = ref<SubmissionStatus | null>(null);
@@ -64,6 +71,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   const myCorrectChars = ref(0);
   const myWrongChars = ref(0);
   const playersWhoSubmitted = ref<Set<string>>(new Set());
+  let quizBlitzAutoAdvanceTimeout: ReturnType<typeof setTimeout> | null = null;
 
   const countdownSeconds = ref<number>(0);
   let countdownTimer: ReturnType<typeof setInterval> | null = null;
@@ -84,6 +92,217 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     players.value.find(p => p.player_id === myPlayerId.value)
   );
   const iAmAlive = computed<boolean>(() => myPlayer.value?.status === 'alive');
+
+  // ── Actions ─────────────────────────────────────────────────
+  async function refreshPlayers() {
+    if (!roomId.value) return;
+    const { data } = await supabase
+      .from('room_players')
+      .select('*')
+      .eq('room_id', roomId.value)
+      .order('joined_at', { ascending: true });
+    if (data) players.value = data as RoomPlayer[];
+  }
+
+  async function fetchPublicRooms() {
+    isLoadingPublicRooms.value = true;
+    try {
+      publicRooms.value = await fetchPublicRoomsApi();
+    } catch (err: any) {
+      console.error('[Battleground] Failed to fetch public rooms:', err);
+    } finally {
+      isLoadingPublicRooms.value = false;
+    }
+  }
+
+  async function createRoom(
+    playerName?: string,
+    isPublic: boolean = true,
+    mode: GameMode = 'battleground',
+    category: QuizCategory = 'hiragana'
+  ) {
+    isLoading.value = true;
+    error.value = null;
+
+    try {
+      const pid = myPlayerId.value;
+      const pname = playerName || myPlayerName.value;
+
+      if (!authStore.user && playerName) {
+        localStorage.setItem('battleground_guest_name', playerName);
+      }
+
+      gameMode.value = mode;
+      quizCategory.value = category;
+
+      const room = await createRoomApi(pid, pname, isPublic, mode, category);
+
+      roomId.value = room.id;
+      roomCode.value = room.code;
+      hostPlayerId.value = pid;
+
+      subscribeToRoom(room.id);
+      await refreshPlayers();
+      phase.value = 'lobby';
+    } catch (err: any) {
+      error.value = err?.message ?? 'Failed to create room';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function joinRoom(code: string, playerName?: string) {
+    isLoading.value = true;
+    error.value = null;
+
+    try {
+      const pid = myPlayerId.value;
+      const pname = playerName || myPlayerName.value;
+
+      if (!authStore.user && playerName) {
+        localStorage.setItem('battleground_guest_name', playerName);
+      }
+
+      const room = await joinRoomByCodeApi(code, pid, pname);
+
+      roomId.value = room.id;
+      roomCode.value = room.code;
+      hostPlayerId.value = room.host_player_id;
+      gameMode.value = (room.game_mode as GameMode) || 'battleground';
+      quizCategory.value = (room.quiz_category as QuizCategory) || 'hiragana';
+
+      subscribeToRoom(room.id);
+      await refreshPlayers();
+
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'player_joined',
+        payload: { playerId: pid, playerName: pname },
+      });
+
+      phase.value = 'lobby';
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal join room.';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function togglePublic() {
+    if (!isHost.value || !roomId.value) return;
+    const currentPublic = myPlayer.value?.status === 'alive';
+    isLoading.value = true;
+    try {
+      await togglePublicApi(roomId.value, currentPublic);
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal mengubah status room.';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function startGame() {
+    if (!isHost.value || !roomId.value) return;
+    if (alivePlayers.value.length < 2) {
+      error.value = 'Butuh minimal 2 pemain untuk mulai.';
+      return;
+    }
+
+    isLoading.value = true;
+    error.value = null;
+    try {
+      await supabase.from('round_submissions').delete().eq('room_id', roomId.value);
+      await supabase.from('rounds').delete().eq('room_id', roomId.value);
+
+      await supabase
+        .from('rooms')
+        .update({ status: 'in_progress', current_round_num: 1, used_sentence_ids: [] })
+        .eq('id', roomId.value);
+
+      if (gameMode.value === 'quiz_blitz') {
+        await startNextQuizBlitzRound(1);
+      } else {
+        await startNextRound(1);
+      }
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal memulai game.';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function startNextQuizBlitzRound(roundNum: number) {
+    if (!roomId.value) return;
+
+    const res = await startNextQuizBlitzRoundApi({
+      roomId: roomId.value,
+      roundNum,
+      quizCategory: quizCategory.value,
+    });
+
+    const payloadData = {
+      id: res.roundData.id,
+      room_id: roomId.value,
+      round_number: roundNum,
+      sentence_id: res.question.id,
+      sentence_japanese: res.question.prompt,
+      sentence_romaji_variants: [[res.question.correctAnswer]],
+      sentence_word_spans: null,
+      sentence_meaning: res.question.meaning ?? res.question.questionText,
+      status: 'active' as const,
+      roundStartAt: res.startAt,
+      duration_seconds: res.durationSeconds,
+      start_at: res.startAt,
+      question_data: res.question,
+    };
+
+    activeRound.value = payloadData;
+    mySubmissionStatus.value = null;
+    myCompletionTimeMs.value = null;
+    playersWhoSubmitted.value.clear();
+    phase.value = 'round_preparing';
+    startCountdownFromServerTime(res.startAt);
+
+    await realtimeChannel?.send({
+      type: 'broadcast',
+      event: 'round_preparing',
+      payload: payloadData,
+    });
+  }
+
+  async function submitQuizBlitzAnswer(payload: {
+    selectedOptionIndex: number;
+    selectedAnswer: string;
+    isCorrect: boolean;
+  }) {
+    if (!activeRound.value || mySubmissionStatus.value !== null) return;
+
+    mySubmissionStatus.value = payload.isCorrect ? 'success' : 'typo';
+
+    try {
+      const res = await submitQuizBlitzRoundApi({
+        activeRound: activeRound.value,
+        myPlayerId: myPlayerId.value,
+        selectedOptionIndex: payload.selectedOptionIndex,
+        selectedAnswer: payload.selectedAnswer,
+        isCorrect: payload.isCorrect,
+      });
+
+      myCompletionTimeMs.value = res.completionTimeMs;
+
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'player_submitted',
+        payload: { playerId: myPlayerId.value },
+      });
+
+      if (isHost.value && activeRound.value) {
+        await evaluateRoundForHost(roomId.value!, activeRound.value, alivePlayers.value, realtimeChannel, false, playerProgress.value);
+      }
+    } catch (err: any) {
+      console.error('[QuizBlitz] Submit answer error:', err);
+    }
+  }
 
   // ── Realtime Subscription & Power-Up Events ───────────────
   const latestPowerUpEvent = ref<PowerUpBroadcastPayload | null>(null);
@@ -259,6 +478,14 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       }
       phase.value = 'round_result';
       clearCountdown();
+
+      // Quiz Blitz: Host auto-advances to next question after 5 seconds
+      if (gameMode.value === 'quiz_blitz' && isHost.value && !payload.isGameOver) {
+        if (quizBlitzAutoAdvanceTimeout) clearTimeout(quizBlitzAutoAdvanceTimeout);
+        quizBlitzAutoAdvanceTimeout = setTimeout(() => {
+          startNextRoundFromResult();
+        }, 5000);
+      }
     });
 
     realtimeChannel.on('broadcast', { event: 'game_over' }, ({ payload }: { payload: GameOverPayload }) => {
@@ -369,30 +596,37 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       const now = Date.now();
       const roundDuration = (activeRound.value?.duration_seconds ?? 30) * 1000;
       const elapsed = now - startMs;
-      const remaining = Math.max(0, Math.ceil((roundDuration - elapsed) / 1000));
-      countdownSeconds.value = remaining;
 
-      if (elapsed >= 0 && phase.value === 'round_preparing') {
-        phase.value = 'round_active';
-      }
-
-      if (remaining <= 0) {
-        clearCountdown();
-        if (iAmAlive.value && mySubmissionStatus.value === null) {
-          handleTimeout();
+      if (elapsed < 0) {
+        // PRE-ROUND PREPARATION: 3.. 2.. 1..
+        const preRemaining = Math.max(1, Math.ceil(-elapsed / 1000));
+        countdownSeconds.value = preRemaining;
+      } else {
+        // ACTIVE ROUND: 10.. 0 or 30.. 0
+        if (phase.value === 'round_preparing') {
+          phase.value = 'round_active';
         }
-        if (isHost.value && (phase.value === 'round_active' || phase.value === 'round_preparing')) {
-          setTimeout(async () => {
-            if (roomId.value && activeRound.value) {
-              await forceEvaluateWithTimeouts(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel, playerProgress.value);
-            }
-          }, 800);
+        const remaining = Math.max(0, Math.ceil((roundDuration - elapsed) / 1000));
+        countdownSeconds.value = remaining;
+
+        if (remaining <= 0) {
+          clearCountdown();
+          if (iAmAlive.value && mySubmissionStatus.value === null) {
+            handleTimeout();
+          }
+          if (isHost.value && phase.value === 'round_active') {
+            setTimeout(async () => {
+              if (roomId.value && activeRound.value) {
+                await forceEvaluateWithTimeouts(roomId.value, activeRound.value, alivePlayers.value, realtimeChannel, playerProgress.value);
+              }
+            }, 800);
+          }
         }
       }
     };
 
     tick();
-    countdownTimer = setInterval(tick, 500);
+    countdownTimer = setInterval(tick, 100);
   }
 
   function clearCountdown() {
@@ -405,6 +639,16 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   async function handleTimeout() {
     if (!roomId.value || !activeRound.value) return;
     if (mySubmissionStatus.value !== null) return;
+
+    if (gameMode.value === 'quiz_blitz') {
+      await submitQuizBlitzAnswer({
+        selectedOptionIndex: -1,
+        selectedAnswer: 'TIMEOUT',
+        isCorrect: false,
+      });
+      return;
+    }
+
     mySubmissionStatus.value = 'timeout';
 
     const pProg = playerProgress.value.get(myPlayerId.value);
@@ -432,129 +676,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     });
   }
 
-  // ── Actions ─────────────────────────────────────────────────
-  async function refreshPlayers() {
-    if (!roomId.value) return;
-    const { data } = await supabase
-      .from('room_players')
-      .select('*')
-      .eq('room_id', roomId.value)
-      .order('joined_at', { ascending: true });
-    if (data) players.value = data as RoomPlayer[];
-  }
 
-  async function fetchPublicRooms() {
-    isLoadingPublicRooms.value = true;
-    try {
-      publicRooms.value = await fetchPublicRoomsApi();
-    } catch (err: any) {
-      console.error('[Battleground] Failed to fetch public rooms:', err);
-    } finally {
-      isLoadingPublicRooms.value = false;
-    }
-  }
-
-  async function createRoom(playerName?: string, isPublic: boolean = true) {
-    isLoading.value = true;
-    error.value = null;
-
-    try {
-      const pid = myPlayerId.value;
-      const pname = playerName || myPlayerName.value;
-
-      if (!authStore.user && playerName) {
-        localStorage.setItem('battleground_guest_name', playerName);
-      }
-
-      const room = await createRoomApi(pid, pname, isPublic);
-
-      roomId.value = room.id;
-      roomCode.value = room.code;
-      hostPlayerId.value = pid;
-
-      subscribeToRoom(room.id);
-      await refreshPlayers();
-      phase.value = 'lobby';
-    } catch (err: any) {
-      error.value = err?.message ?? 'Failed to create room';
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  async function joinRoom(code: string, playerName?: string) {
-    isLoading.value = true;
-    error.value = null;
-
-    try {
-      const pid = myPlayerId.value;
-      const pname = playerName || myPlayerName.value;
-
-      if (!authStore.user && playerName) {
-        localStorage.setItem('battleground_guest_name', playerName);
-      }
-
-      const room = await joinRoomByCodeApi(code, pid, pname);
-
-      roomId.value = room.id;
-      roomCode.value = room.code;
-      hostPlayerId.value = room.host_player_id;
-
-      subscribeToRoom(room.id);
-      await refreshPlayers();
-
-      await realtimeChannel?.send({
-        type: 'broadcast',
-        event: 'player_joined',
-        payload: { playerId: pid, playerName: pname },
-      });
-
-      phase.value = 'lobby';
-    } catch (err: any) {
-      error.value = err?.message ?? 'Gagal join room.';
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  async function togglePublic() {
-    if (!isHost.value || !roomId.value) return;
-    const currentPublic = myPlayer.value?.status === 'alive';
-    isLoading.value = true;
-    try {
-      await togglePublicApi(roomId.value, currentPublic);
-    } catch (err: any) {
-      error.value = err?.message ?? 'Gagal mengubah status room.';
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  async function startGame() {
-    if (!isHost.value || !roomId.value) return;
-    if (alivePlayers.value.length < 2) {
-      error.value = 'Butuh minimal 2 pemain untuk mulai.';
-      return;
-    }
-
-    isLoading.value = true;
-    error.value = null;
-    try {
-      await supabase.from('round_submissions').delete().eq('room_id', roomId.value);
-      await supabase.from('rounds').delete().eq('room_id', roomId.value);
-
-      await supabase
-        .from('rooms')
-        .update({ status: 'in_progress', current_round_num: 1, used_sentence_ids: [] })
-        .eq('id', roomId.value);
-
-      await startNextRound(1);
-    } catch (err: any) {
-      error.value = err?.message ?? 'Gagal memulai game.';
-    } finally {
-      isLoading.value = false;
-    }
-  }
 
   async function startNextRound(roundNum: number) {
     if (!roomId.value) return;
@@ -600,7 +722,11 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     const nextNum = (lastRoundResult.value.roundNumber ?? 0) + 1;
     isLoading.value = true;
     try {
-      await startNextRound(nextNum);
+      if (gameMode.value === 'quiz_blitz') {
+        await startNextQuizBlitzRound(nextNum);
+      } else {
+        await startNextRound(nextNum);
+      }
     } finally {
       isLoading.value = false;
     }
@@ -792,6 +918,9 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   return {
+    gameMode,
+    quizCategory,
+    masterTimeRemainingSeconds,
     phase,
     roomId,
     roomCode,
@@ -826,8 +955,10 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     togglePublic,
     startGame,
     startNextRound,
+    startNextQuizBlitzRound,
     startNextRoundFromResult,
     submitRound,
+    submitQuizBlitzAnswer,
     broadcastProgress,
     resetRoomForNextGame,
     acceptPlayAgain,

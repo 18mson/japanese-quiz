@@ -90,7 +90,6 @@ onMounted(async () => {
   checkRouteState();
   settingsStore.applyTheme();
   await authStore.checkSession();
-  quizStore.startQuiz(1);
 });
 
 onUnmounted(() => {
@@ -111,6 +110,8 @@ const handleStartWeakQuiz = async ({ type }: { type: string }) => {
 const goToHome = () => {
   quizStarted.value = false;
   quizStore.quizCompleted = false;
+  quizStore.isWavePreviewActive = false;
+  quizStore.showMicroPreviewModal = false;
   closeBattleground();
 };
 </script>
@@ -400,7 +401,7 @@ const goToHome = () => {
     />
 
     <!-- Modals & Overlays -->
-    <PreviewCardModal />
+    <PreviewCardModal v-if="quizStarted && !showBattleground" />
     <GoalCelebrationToast />
 
     <!-- Main Screens -->

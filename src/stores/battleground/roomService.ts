@@ -6,7 +6,7 @@ import { generateRoomCode } from './helpers';
 export async function fetchPublicRoomsApi(): Promise<PublicRoomItem[]> {
   const { data: roomRows, error: fetchErr } = await supabase
     .from('rooms')
-    .select('id, code, host_player_id, max_players, created_at, room_players(player_name, player_id, status)')
+    .select('id, code, host_player_id, max_players, created_at, game_mode, quiz_category, room_players(player_name, player_id, status)')
     .eq('is_public', true)
     .eq('status', 'waiting')
     .order('created_at', { ascending: false })
@@ -33,6 +33,8 @@ export async function fetchPublicRoomsApi(): Promise<PublicRoomItem[]> {
       max_players: r.max_players ?? 8,
       player_count: activePlayers.length,
       created_at: r.created_at,
+      game_mode: (r.game_mode as any) ?? 'battleground',
+      quiz_category: (r.quiz_category as any) ?? 'hiragana',
     });
   }
 
@@ -46,7 +48,13 @@ export async function fetchPublicRoomsApi(): Promise<PublicRoomItem[]> {
   return validRooms;
 }
 
-export async function createRoomApi(myPlayerId: string, myPlayerName: string, isPublic: boolean = true) {
+export async function createRoomApi(
+  myPlayerId: string,
+  myPlayerName: string,
+  isPublic: boolean = true,
+  gameMode: import('./types').GameMode = 'battleground',
+  quizCategory: import('./types').QuizCategory = 'hiragana'
+) {
   const code = generateRoomCode();
 
   const { data: room, error: roomErr } = await supabase
@@ -58,6 +66,8 @@ export async function createRoomApi(myPlayerId: string, myPlayerName: string, is
       is_public: isPublic,
       max_players: 8,
       current_round_num: 1,
+      game_mode: gameMode,
+      quiz_category: quizCategory,
     })
     .select()
     .single();
@@ -69,6 +79,7 @@ export async function createRoomApi(myPlayerId: string, myPlayerName: string, is
     player_id: myPlayerId,
     player_name: myPlayerName,
     status: 'alive',
+    score: 0,
   });
 
   if (playerErr) throw playerErr;

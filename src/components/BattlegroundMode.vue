@@ -9,6 +9,7 @@ import BattlegroundLobby from './battleground/BattlegroundLobby.vue';
 import BattlegroundRound from './battleground/BattlegroundRound.vue';
 import BattlegroundRoundResult from './battleground/BattlegroundRoundResult.vue';
 import BattlegroundGameOver from './battleground/BattlegroundGameOver.vue';
+import QuizBlitzRound from './battleground/QuizBlitzRound.vue';
 import { ShieldOff, Loader2 } from '@lucide/vue';
 
 const store = useBattlegroundStore();
@@ -38,14 +39,14 @@ function handleExit() {
 
 // Spectator overlay — shown when player is eliminated but round is still active
 const isSpectating = computed(() =>
-  !store.iAmAlive && (store.phase === 'round_active' || store.phase === 'round_preparing')
+  store.gameMode !== 'quiz_blitz' && !store.iAmAlive && (store.phase === 'round_active' || store.phase === 'round_preparing')
 );
 
 </script>
 
 <template>
   <div
-    class="fixed inset-0 z-50 flex flex-col bg-slate-950 text-white overflow-hidden"
+    class="fixed inset-0 z-50 flex flex-col bg-slate-950 text-white overflow-y-auto"
     tabindex="-1"
     @keydown="handleKeydown"
   >
@@ -60,7 +61,7 @@ const isSpectating = computed(() =>
       </div>
     </div>
 
-    <!-- Spectator overlay (shown on top of round screen) -->
+    <!-- Spectator overlay (shown on top of round screen for battleground mode) -->
     <div
       v-if="isSpectating"
       class="absolute top-0 left-0 right-0 z-30 flex items-center justify-center py-2 bg-gradient-to-r from-slate-900/90 via-indigo-900/90 to-slate-900/90 backdrop-blur-sm"
@@ -83,20 +84,25 @@ const isSpectating = computed(() =>
         @exit="handleExit"
       />
 
-      <!-- round_preparing + round_active: both show the typing screen -->
-      <!-- The BattlegroundRound itself handles the pre-countdown display -->
+      <!-- Quiz Blitz: round_preparing + round_active + round_result handled in QuizBlitzRound -->
+      <QuizBlitzRound
+        v-else-if="store.gameMode === 'quiz_blitz' && (store.phase === 'round_preparing' || store.phase === 'round_active' || store.phase === 'round_result')"
+        key="quiz-blitz-round"
+      />
+
+      <!-- Battleground Typing: round_preparing + round_active -->
       <BattlegroundRound
         v-else-if="store.phase === 'round_preparing' || store.phase === 'round_active'"
         key="round"
       />
 
-      <!-- round_result -->
+      <!-- Battleground Typing: round_result -->
       <BattlegroundRoundResult
         v-else-if="store.phase === 'round_result'"
         key="result"
       />
 
-      <!-- game_over -->
+      <!-- game_over (shared for both modes) -->
       <BattlegroundGameOver
         v-else-if="store.phase === 'game_over'"
         key="game-over"

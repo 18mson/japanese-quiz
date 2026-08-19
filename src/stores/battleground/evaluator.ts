@@ -33,7 +33,11 @@ export async function evaluateRoundForHost(
 
   if (!allSubmitted && !force) return;
 
-  await runElimination(roomId, activeRound, alivePlayers, submissionList, realtimeChannel, playerProgressMap);
+  if (activeRound.question_data) {
+    await runQuizBlitzEvaluation(roomId, activeRound, alivePlayers, submissionList, realtimeChannel);
+  } else {
+    await runElimination(roomId, activeRound, alivePlayers, submissionList, realtimeChannel, playerProgressMap);
+  }
 }
 
 export async function forceEvaluateWithTimeouts(
@@ -287,3 +291,136 @@ async function runElimination(
     });
   }
 }
+
+async function runQuizBlitzEvaluation(
+  roomId: string,
+  activeRound: ActiveRound,
+  alivePlayers: RoomPlayer[],
+  subs: any[],
+  realtimeChannel: any
+): Promise<void> {
+  const roundNum = activeRound.round_number;
+
+  // 1. Fetch current scores from DB for all players
+  const { data: dbPlayers } = await supabase
+    .from('room_players')
+    .select('*')
+    .eq('room_id', roomId);
+
+  const playersList = dbPlayers ?? alivePlayers;
+
+  // Calculate previous ranks
+  const previousRanked = [...playersList].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+  const prevRankMap = new Map<string, number>();
+  previousRanked.forEach((p, idx) => {
+    prevRankMap.set(p.player_id, idx + 1);
+  });
+
+  // Calculate new scores for each player
+  const playerResults: import('./types').QuizBlitzScoreItem[] = [];
+
+  for (const player of playersList) {
+    const sub = subs.find((s: any) => s.player_id === player.player_id);
+    const prevScore = player.score ?? 0;
+    const isCorrect = sub?.is_valid === true;
+    const pointsAdded = typeof sub?.score === 'number' ? sub.score : (isCorrect ? 100 : 0);
+    const newScore = prevScore + pointsAdded;
+    const timeMs = sub?.completion_time_ms ?? 10000;
+
+    // Update DB
+    await supabase
+      .from('room_players')
+      .update({ score: newScore })
+      .eq('room_id', roomId)
+      .eq('player_id', player.player_id);
+
+    playerResults.push({
+      playerId: player.player_id,
+      playerName: player.player_name,
+      avatarSeed: player.avatar_seed ?? null,
+      previousScore: prevScore,
+      pointsAdded,
+      newScore,
+      rank: 1, // calculated below
+      previousRank: prevRankMap.get(player.player_id) ?? playersList.length,
+      isCorrect,
+      answerTimeMs: timeMs,
+    });
+  }
+
+  // Rank by newScore DESC, tiebreak by answerTimeMs ASC
+  playerResults.sort((a, b) => {
+    if (b.newScore !== a.newScore) return b.newScore - a.newScore;
+    if (a.answerTimeMs !== b.answerTimeMs) return a.answerTimeMs - b.answerTimeMs;
+    return a.playerName.localeCompare(b.playerName);
+  });
+
+  playerResults.forEach((p, idx) => {
+    p.rank = idx + 1;
+  });
+
+  // Check game duration: 5 minutes (300s) or 20 questions
+  const { data: roomData } = await supabase
+    .from('rooms')
+    .select('created_at')
+    .eq('id', roomId)
+    .single();
+
+  const gameStartedAt = roomData?.created_at ? new Date(roomData.created_at).getTime() : Date.now();
+  const elapsedSeconds = Math.floor((Date.now() - gameStartedAt) / 1000);
+  const isGameOver = elapsedSeconds >= 300 || roundNum >= 20;
+
+  const standings: RoundStanding[] = playerResults.map(p => ({
+    playerId: p.playerId,
+    completionTimeMs: p.answerTimeMs,
+    status: p.isCorrect ? 'success' : 'typo',
+    score: p.newScore,
+  }));
+
+  if (isGameOver) {
+    // Assign final ranks in DB
+    for (const res of playerResults) {
+      await supabase
+        .from('room_players')
+        .update({ final_rank: res.rank })
+        .eq('room_id', roomId)
+        .eq('player_id', res.playerId);
+    }
+
+    await supabase
+      .from('rooms')
+      .update({ status: 'finished' })
+      .eq('id', roomId);
+
+    const gameOverPayload: import('./types').GameOverPayload = {
+      winnerPlayerId: playerResults[0]?.playerId ?? null,
+      finalRoundNumber: roundNum,
+      eliminatedPlayers: [],
+      roundStandings: standings,
+      quizBlitzScores: playerResults,
+    };
+
+    await realtimeChannel?.send({
+      type: 'broadcast',
+      event: 'game_over',
+      payload: gameOverPayload,
+    });
+  } else {
+    const resultPayload: RoundResultPayload = {
+      roundNumber: roundNum,
+      eliminatedPlayers: [],
+      survivorPlayerIds: playerResults.map(p => p.playerId),
+      roundStandings: standings,
+      isGameOver: false,
+      nextRoundInSeconds: 5, // 5s preview
+      quizBlitzScores: playerResults,
+    };
+
+    await realtimeChannel?.send({
+      type: 'broadcast',
+      event: 'round_results',
+      payload: resultPayload,
+    });
+  }
+}
+

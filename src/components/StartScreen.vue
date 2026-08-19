@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
+import { useBattlegroundStore } from '../stores/battlegroundStore';
 import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 
 const quizStore = useQuizStore();
+const battlegroundStore = useBattlegroundStore();
 const targetDurationMinutes = ref<number>(1);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
+const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 
 const isMobile = ref(false);
 
@@ -218,13 +221,16 @@ const modesList: QuizModeDef[] = [
   {
     id: 'battleground',
     title: 'Online Multiplayer',
-    levelTag: 'Multi',
+    levelTag: 'Online',
     level: 'battleground',
-    defaultType: 'Multiplayer',
-    desc: 'Battle Royale Mengetik (2–8 Pemain). Adu cepat & ketepatan mengetik secara realtime.',
-    subTypes: [],
+    defaultType: 'battleground',
+    desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Battleground atau Quiz Blitz.',
+    subTypes: [
+      { key: 'battleground', label: '⚔️ Battleground' },
+      { key: 'quiz_blitz', label: '🔥 Quiz Blitz (5 Menit)' },
+    ],
     icon: Swords,
-    discGradient: 'from-red-500 via-rose-500 to-rose-600',
+    discGradient: 'from-red-500 via-rose-500 to-amber-600',
     discShadow: 'shadow-rose-500/25',
     discPulse: 'bg-rose-500',
   },
@@ -361,6 +367,12 @@ const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openL
 
 const handleStart = async () => {
   if (selectedLevel.value === 'battleground') {
+    if (characterTypes.value === 'quiz_blitz') {
+      battlegroundStore.gameMode = 'quiz_blitz';
+      battlegroundStore.quizCategory = selectedQuizBlitzCategory.value;
+    } else {
+      battlegroundStore.gameMode = 'battleground';
+    }
     emit('openBattleground');
   } else {
     await quizStore.startQuiz(targetDurationMinutes.value, characterTypes.value, selectedLevel.value);
@@ -562,16 +574,83 @@ const handleStart = async () => {
         <!-- Bottom Info inside mode box -->
         <div class="w-full pt-3.5 mt-2 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-3 relative z-20 min-h-[58px] justify-center">
           <Transition name="fade-slide-up" mode="out-in">
+            <!-- Quiz Blitz Info & Category Selector Banner -->
+            <div v-if="selectedLevel === 'battleground' && characterTypes === 'quiz_blitz'" key="quiz-blitz-banner" class="bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/60 dark:via-orange-950/40 dark:to-rose-950/60 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black flex-shrink-0 shadow-sm text-sm">
+                    🔥
+                  </div>
+                  <div>
+                    <div class="text-xs sm:text-sm font-black text-gray-900 dark:text-slate-100">Kategori Soal Quiz Blitz</div>
+                    <div class="text-[11px] text-gray-600 dark:text-slate-300 font-medium">10s/soal • Skor kecepatan adu refleks (Max 200 pts) • 5 Menit</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Inline Quick Category Selector -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
+                <button
+                  type="button"
+                  @click="selectedQuizBlitzCategory = 'hiragana'"
+                  :class="[
+                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
+                    selectedQuizBlitzCategory === 'hiragana'
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
+                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
+                  ]"
+                >
+                  あ Hiragana
+                </button>
+                <button
+                  type="button"
+                  @click="selectedQuizBlitzCategory = 'katakana'"
+                  :class="[
+                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
+                    selectedQuizBlitzCategory === 'katakana'
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
+                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
+                  ]"
+                >
+                  ア Katakana
+                </button>
+                <button
+                  type="button"
+                  @click="selectedQuizBlitzCategory = 'mix'"
+                  :class="[
+                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
+                    selectedQuizBlitzCategory === 'mix'
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
+                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
+                  ]"
+                >
+                  あ/ア Mix Kana
+                </button>
+                <button
+                  type="button"
+                  @click="selectedQuizBlitzCategory = 'kotoba_kanji'"
+                  :class="[
+                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
+                    selectedQuizBlitzCategory === 'kotoba_kanji'
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
+                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
+                  ]"
+                >
+                  📖 Kotoba & Kanji
+                </button>
+              </div>
+            </div>
+
             <!-- Battleground Info Banner -->
-            <div v-if="selectedLevel === 'battleground'" key="battle-banner" class="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 dark:from-rose-950/60 dark:via-orange-950/40 dark:to-amber-950/60 border border-rose-200/80 dark:border-rose-800/80 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 w-full">
+            <div v-else-if="selectedLevel === 'battleground'" key="battle-banner" class="bg-gradient-to-r from-rose-50 via-orange-50 to-amber-50 dark:from-rose-950/60 dark:via-orange-950/40 dark:to-amber-950/60 border border-rose-200/80 dark:border-rose-800/80 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 w-full">
               <div class="flex items-center gap-3">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold flex-shrink-0 shadow-sm">
                   <Users class="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <div class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100">Aturan & Mekanisme Battle</div>
+                  <div class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100">Aturan Battleground (Typing)</div>
                   <div class="text-xs sm:text-sm text-gray-600 dark:text-slate-300 font-medium leading-tight">
-                    2–8 Pemain • Eliminasi bertahap • Penalti 1s Cooldown • Power-Up (Freeze, Storm, Backward)
+                    2–8 Pemain • Eliminasi bertahap • Adu kecepatan mengetik romaji
                   </div>
                 </div>
               </div>

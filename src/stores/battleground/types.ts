@@ -1,5 +1,8 @@
 // src/stores/battleground/types.ts
 
+export type GameMode = 'battleground' | 'quiz_blitz';
+export type QuizCategory = 'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji';
+
 export type PlayerStatus = 'alive' | 'eliminated' | 'spectator';
 export type RoomStatus = 'waiting' | 'in_progress' | 'finished';
 export type RoundStatus = 'preparing' | 'active' | 'evaluating' | 'completed';
@@ -34,6 +37,7 @@ export interface RoomPlayer {
   elimination_reason: string | null;
   final_rank: number | null;
   joined_at: string;
+  score?: number;
 }
 
 export interface RoundSentenceItem {
@@ -42,6 +46,19 @@ export interface RoundSentenceItem {
   romaji_variants: string[][];
   word_spans?: number[] | null;
   meaning: string;
+}
+
+export interface QuizBlitzQuestion {
+  id: string;
+  prompt: string;          // Character, Kanji, or Word (e.g. "猫" or "あ")
+  subPrompt?: string;      // Reading hint if any (e.g. "ねこ")
+  promptType: 'character' | 'word' | 'kanji';
+  questionText: string;    // "Pilih romaji yang tepat" / "Pilih arti bahasa Indonesia yang tepat"
+  options: string[];       // 4–6 options
+  correctOptionIndex: number;
+  correctAnswer: string;
+  meaning?: string;
+  category: QuizCategory;
 }
 
 export interface ActiveRound {
@@ -57,6 +74,7 @@ export interface ActiveRound {
   start_at: string | null;
   duration_seconds: number;
   sentences?: RoundSentenceItem[];
+  question_data?: QuizBlitzQuestion | null;
 }
 
 export interface EliminatedPlayerInfo {
@@ -78,6 +96,20 @@ export interface RoundStanding {
   wrongChars?: number;
 }
 
+export interface QuizBlitzScoreItem {
+  playerId: string;
+  playerName: string;
+  avatarSeed: string | null;
+  previousScore: number;
+  pointsAdded: number;
+  newScore: number;
+  rank: number;
+  previousRank: number;
+  isCorrect: boolean;
+  answerTimeMs: number;
+  isCurrentUser?: boolean;
+}
+
 export interface RoundResultPayload {
   roundNumber: number;
   eliminatedPlayers: EliminatedPlayerInfo[];
@@ -87,6 +119,7 @@ export interface RoundResultPayload {
   nextRoundInSeconds: number;
   isDraw?: boolean;
   drawReason?: string;
+  quizBlitzScores?: QuizBlitzScoreItem[];
 }
 
 export interface GameOverPayload {
@@ -96,6 +129,7 @@ export interface GameOverPayload {
   roundStandings: RoundStanding[];
   isDraw?: boolean;
   drawReason?: string;
+  quizBlitzScores?: QuizBlitzScoreItem[];
 }
 
 export interface PlayerProgress {
@@ -120,4 +154,7 @@ export interface PublicRoomItem {
   max_players: number;
   player_count: number;
   created_at: string;
+  game_mode?: GameMode;
+  quiz_category?: QuizCategory;
 }
+
