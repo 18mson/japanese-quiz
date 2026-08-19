@@ -8,7 +8,7 @@ export interface GojuonBatch {
 
 // Gojūon row definitions by character
 const GOJUON_ROW_MAP: Record<string, string> = {
-  // Hiragana
+  // Hiragana (Basic)
   'あ': 'a', 'い': 'a', 'う': 'a', 'え': 'a', 'お': 'a',
   'か': 'ka', 'き': 'ka', 'く': 'ka', 'け': 'ka', 'こ': 'ka',
   'さ': 'sa', 'し': 'sa', 'す': 'sa', 'せ': 'sa', 'そ': 'sa',
@@ -20,7 +20,14 @@ const GOJUON_ROW_MAP: Record<string, string> = {
   'ら': 'ra', 'り': 'ra', 'る': 'ra', 'れ': 'ra', 'ろ': 'ra',
   'わ': 'wa', 'を': 'wa', 'ん': 'wa',
 
-  // Katakana
+  // Hiragana (Dakuten & Handakuten)
+  'が': 'ga', 'ぎ': 'ga', 'ぐ': 'ga', 'げ': 'ga', 'ご': 'ga',
+  'ざ': 'za', 'じ': 'za', 'ず': 'za', 'ぜ': 'za', 'ぞ': 'za',
+  'だ': 'da', 'ぢ': 'da', 'づ': 'da', 'で': 'da', 'ど': 'da',
+  'ば': 'ba', 'び': 'ba', 'ぶ': 'ba', 'べ': 'ba', 'ぼ': 'ba',
+  'ぱ': 'pa', 'ぴ': 'pa', 'ぷ': 'pa', 'ぺ': 'pa', 'ぽ': 'pa',
+
+  // Katakana (Basic)
   'ア': 'a', 'イ': 'a', 'ウ': 'a', 'エ': 'a', 'オ': 'a',
   'カ': 'ka', 'キ': 'ka', 'ク': 'ka', 'ケ': 'ka', 'コ': 'ka',
   'サ': 'sa', 'シ': 'sa', 'ス': 'sa', 'セ': 'sa', 'ソ': 'sa',
@@ -31,6 +38,13 @@ const GOJUON_ROW_MAP: Record<string, string> = {
   'ヤ': 'ya', 'ユ': 'ya', 'ヨ': 'ya',
   'ラ': 'ra', 'リ': 'ra', 'ル': 'ra', 'レ': 'ra', 'ロ': 'ra',
   'ワ': 'wa', 'ヲ': 'wa', 'ン': 'wa',
+
+  // Katakana (Dakuten & Handakuten)
+  'ガ': 'ga', 'ギ': 'ga', 'グ': 'ga', 'ゲ': 'ga', 'ゴ': 'ga',
+  'ザ': 'za', 'ジ': 'za', 'ズ': 'za', 'ゼ': 'za', 'ゾ': 'za',
+  'ダ': 'da', 'ヂ': 'da', 'ヅ': 'da', 'デ': 'da', 'ド': 'da',
+  'バ': 'ba', 'ビ': 'ba', 'ブ': 'ba', 'ベ': 'ba', 'ボ': 'ba',
+  'パ': 'pa', 'ピ': 'pa', 'プ': 'pa', 'ペ': 'pa', 'ポ': 'pa',
 };
 
 // Visually ambiguous pairs that should not be in the exact same batch if possible
@@ -57,18 +71,24 @@ export const buildGojuonBatches = (
   const rowGroups: Record<string, any[]> = {
     a: [], ka: [], sa: [], ta: [], na: [],
     ha: [], ma: [], ya: [], ra: [], wa: [],
+    ga: [], za: [], da: [], ba: [], pa: [],
     other: []
   };
 
   unlearnedPool.forEach(item => {
     const row = GOJUON_ROW_MAP[item.character] || 'other';
-    rowGroups[row].push(item);
+    if (rowGroups[row]) {
+      rowGroups[row].push(item);
+    } else {
+      rowGroups.other.push(item);
+    }
   });
 
-  // Flatten in Gojūon sequence order
+  // Flatten in Gojūon sequence order (Basic then Dakuten / Handakuten then Combination)
   const orderedList: any[] = [
     ...rowGroups.a, ...rowGroups.ka, ...rowGroups.sa, ...rowGroups.ta, ...rowGroups.na,
     ...rowGroups.ha, ...rowGroups.ma, ...rowGroups.ya, ...rowGroups.ra, ...rowGroups.wa,
+    ...rowGroups.ga, ...rowGroups.za, ...rowGroups.da, ...rowGroups.ba, ...rowGroups.pa,
     ...rowGroups.other
   ];
 

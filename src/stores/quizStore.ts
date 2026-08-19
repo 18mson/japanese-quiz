@@ -56,16 +56,19 @@ export const useQuizStore = defineStore('quiz', () => {
   };
 
   const loadStreaksFromStorage = async () => {
-    userStreaks.value = getLocalStreaks();
+    const local = getLocalStreaks();
+    userStreaks.value = { ...local };
     const { useAuthStore } = await import('./authStore');
     const authStore = useAuthStore();
     if (authStore.user) {
       try {
         const serverStreaks = await fetchServerStreaks(authStore.user.id);
-        if (Object.keys(serverStreaks).length > 0) {
-          userStreaks.value = serverStreaks;
-          localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
-        }
+        const merged: Record<string, number> = { ...local };
+        Object.entries(serverStreaks).forEach(([char, streak]) => {
+          merged[char] = Math.max(merged[char] || 0, streak);
+        });
+        userStreaks.value = merged;
+        localStorage.setItem('japanese-quiz-streaks', JSON.stringify(merged));
       } catch (e) {
         console.error('Error fetching server streaks:', e);
       }
@@ -355,7 +358,8 @@ export const useQuizStore = defineStore('quiz', () => {
             character: charKey,
             streak: newStreak,
             last_tier: transition.newTier,
-            tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined
+            tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
+            updated_at: new Date().toISOString()
           }, { onConflict: 'user_id,character' }).then();
         }
       });
