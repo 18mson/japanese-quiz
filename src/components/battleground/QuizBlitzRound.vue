@@ -224,7 +224,7 @@ const remainingSecFormatted = computed(() => {
           <div
             v-if="answered && pointsEarned !== null"
             :class="[
-              'absolute -top-3.5 px-3 py-1 rounded-full text-xs sm:text-sm font-black flex items-center gap-1 shadow-lg animate-bounce',
+              'absolute -top-3.5 px-3 py-1 rounded-full text-xs sm:text-sm font-black flex items-center gap-1 shadow-lg',
               pointsEarned > 0
                 ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/40'
                 : 'bg-rose-500 text-white shadow-rose-500/40'

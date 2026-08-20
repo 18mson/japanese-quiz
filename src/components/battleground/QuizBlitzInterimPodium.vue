@@ -105,7 +105,7 @@ function getAvatarUrl(seed: string | null, name: string) {
     <!-- Header Banner -->
     <div class="w-full text-center mb-3 sm:mb-4">
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-sm mb-1">
-        <Trophy class="w-4 h-4 text-amber-400 animate-bounce" />
+        <Trophy class="w-4 h-4 text-amber-400" />
         Peringkat Sementara Top 3
       </div>
       <p class="text-xs text-slate-400 font-medium">
@@ -134,7 +134,7 @@ function getAvatarUrl(seed: string | null, name: string) {
           <!-- Overtake / Points added badge -->
           <span
             v-if="top3[1].pointsAdded > 0"
-            class="absolute -top-3.5 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[10px] font-black text-slate-950 animate-bounce shadow-md shadow-emerald-500/30"
+            class="absolute -top-3.5 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[10px] font-black text-slate-950 shadow-md shadow-emerald-500/30"
           >
             +{{ top3[1].pointsAdded }}
           </span>
@@ -177,7 +177,7 @@ function getAvatarUrl(seed: string | null, name: string) {
           <!-- Overtake / Points added badge -->
           <span
             v-if="top3[0].pointsAdded > 0"
-            class="absolute -top-1 px-2 py-0.5 rounded-full bg-amber-400 text-[10px] sm:text-xs font-black text-slate-950 animate-bounce shadow-lg shadow-amber-400/40"
+            class="absolute -top-1 px-2 py-0.5 rounded-full bg-amber-400 text-[10px] sm:text-xs font-black text-slate-950 shadow-lg shadow-amber-400/40"
           >
             +{{ top3[0].pointsAdded }}
           </span>
@@ -218,7 +218,7 @@ function getAvatarUrl(seed: string | null, name: string) {
           <!-- Overtake / Points added badge -->
           <span
             v-if="top3[2].pointsAdded > 0"
-            class="absolute -top-3.5 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[10px] font-black text-slate-950 animate-bounce shadow-md shadow-emerald-500/30"
+            class="absolute -top-3.5 px-1.5 py-0.5 rounded-full bg-emerald-500 text-[10px] font-black text-slate-950 shadow-md shadow-emerald-500/30"
           >
             +{{ top3[2].pointsAdded }}
           </span>

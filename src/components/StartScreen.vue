@@ -226,8 +226,8 @@ const modesList: QuizModeDef[] = [
     defaultType: 'battleground',
     desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Battleground atau Quiz Blitz.',
     subTypes: [
+      { key: 'quiz_blitz', label: '🔥 Quiz Blitz' },
       { key: 'battleground', label: '⚔️ Battleground' },
-      { key: 'quiz_blitz', label: '🔥 Quiz Blitz (5 Menit)' },
     ],
     icon: Swords,
     discGradient: 'from-red-500 via-rose-500 to-amber-600',
