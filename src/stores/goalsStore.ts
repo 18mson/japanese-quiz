@@ -53,6 +53,7 @@ export const useGoalsStore = defineStore('goals', () => {
         questionsAnswered.value = parsed.questionsAnswered ?? 0;
         minutesSpent.value = parsed.minutesSpent ?? 0;
         goalCompleted.value = parsed.goalCompleted ?? false;
+        hasCelebratedToday.value = parsed.hasCelebratedToday ?? (parsed.goalCompleted ? true : false);
       }
     } catch (e) {}
 
@@ -81,7 +82,10 @@ export const useGoalsStore = defineStore('goals', () => {
         if (progData) {
           questionsAnswered.value = Math.max(questionsAnswered.value, progData.questions_answered);
           minutesSpent.value = Math.max(minutesSpent.value, progData.minutes_spent);
-          goalCompleted.value = progData.goal_completed;
+          if (progData.goal_completed) {
+            goalCompleted.value = true;
+            hasCelebratedToday.value = true;
+          }
         }
       } catch (e) {}
     }
@@ -101,7 +105,8 @@ export const useGoalsStore = defineStore('goals', () => {
       localStorage.setItem(todayKey, JSON.stringify({
         questionsAnswered: questionsAnswered.value,
         minutesSpent: minutesSpent.value,
-        goalCompleted: goalCompleted.value
+        goalCompleted: goalCompleted.value,
+        hasCelebratedToday: hasCelebratedToday.value
       }));
     } catch (e) {}
   };
@@ -141,7 +146,7 @@ export const useGoalsStore = defineStore('goals', () => {
     if (userId) syncToSupabase(userId);
   };
 
-  const hasCelebratedSession = ref<boolean>(false);
+  const hasCelebratedToday = ref<boolean>(false);
 
   // Optimistically record progress when answering questions
   const recordAnswer = (count: number = 1, secondsSpent: number = 0, userId?: string) => {
@@ -161,9 +166,10 @@ export const useGoalsStore = defineStore('goals', () => {
   };
 
   const checkAndTriggerCelebration = () => {
-    if (goalCompleted.value && !hasCelebratedSession.value) {
+    if (goalCompleted.value && !hasCelebratedToday.value) {
       showCelebration.value = true;
-      hasCelebratedSession.value = true;
+      hasCelebratedToday.value = true;
+      saveToLocal();
     }
   };
 
@@ -178,6 +184,7 @@ export const useGoalsStore = defineStore('goals', () => {
     questionsAnswered,
     minutesSpent,
     goalCompleted,
+    hasCelebratedToday,
     showCelebration,
     targetValue,
     currentValue,
