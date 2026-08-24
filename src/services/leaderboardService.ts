@@ -12,7 +12,8 @@ export interface LeaderboardSubmissionParams {
 export const submitLeaderboardScore = async (
   params: LeaderboardSubmissionParams
 ): Promise<{ isNewRecord: boolean }> => {
-  const { userId, username, submissionScore, durationSeconds, questionType, quizLevel } = params;
+  const { userId, submissionScore, durationSeconds, questionType, quizLevel } = params;
+  const username = params.username.includes('@') ? params.username.split('@')[0] : params.username;
 
   try {
     // 1. Check speed leaderboard

@@ -185,11 +185,11 @@ const isLastQuestion = computed(() => {
         </div>
 
         <!-- Options Grid on Mobile (Thumb reach zone) -->
-        <div class="grid grid-cols-3 gap-1.5 w-full">
+        <div class="grid grid-cols-3 gap-2 w-full">
           <button 
             v-for="(option, index) in quizStore.options" 
             :key="'mobile-' + option"
-            class="relative py-2.5 px-2 text-base font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-700/80 rounded-xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[48px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-700 focus:outline-none shadow-xs"
+            class="relative py-3.5 px-2 text-lg font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-700/80 rounded-2xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[62px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-700 focus:outline-none shadow-xs"
             :class="getOptionClass(option, index)"
             @click="deactivateKeyboardNav(); submitOption(option);"
             :disabled="quizStore.selectedAnswer !== null"
@@ -197,7 +197,7 @@ const isLastQuestion = computed(() => {
             <!-- Shortcut Badge -->
             <span 
               v-if="quizStore.selectedAnswer === null"
-              class="absolute top-1 left-1.5 text-[9px] font-mono font-bold px-1 py-0.2 rounded"
+              class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded"
               :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400'"
             >
               {{ index + 1 }}
@@ -210,7 +210,7 @@ const isLastQuestion = computed(() => {
         <!-- Next Question Action Button on Mobile when answered -->
         <div v-if="quizStore.selectedAnswer !== null" class="w-full pt-0.5 animate-fadeIn">
           <button 
-            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl py-2.5 px-4 shadow-md hover:shadow-lg transition duration-150 flex justify-center items-center gap-2 cursor-pointer text-sm active:scale-98"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl py-3 px-4 shadow-md hover:shadow-lg transition duration-150 flex justify-center items-center gap-2 cursor-pointer text-base active:scale-98"
             @click="quizStore.nextQuestion"
           >
             <span>{{ isLastQuestion ? 'Lihat Hasil' : 'Soal Berikutnya' }}</span>

@@ -17,12 +17,13 @@ export const useAuthStore = defineStore('auth', () => {
   const pendingServerStreaks = ref<Record<string, number>>({});
   const pendingUserId = ref<string>('');
 
-  // Helper to extract username for Leaderboard display (returns null if email was used)
-  const getDisplayName = (emailOrUsername: string): string | null => {
-    if (emailOrUsername.includes('@')) {
-      return null;
+  // Helper to extract username for Leaderboard display (strips domain if email was used)
+  const getDisplayName = (emailOrUsername: string): string => {
+    const clean = emailOrUsername.trim();
+    if (clean.includes('@')) {
+      return clean.split('@')[0];
     }
-    return emailOrUsername;
+    return clean;
   };
 
   // Helper to format email address for Supabase auth using valid MX domain (gmail.com)
@@ -199,7 +200,8 @@ export const useAuthStore = defineStore('auth', () => {
   const setUser = (val: User | null) => {
     user.value = val;
     if (val) {
-      displayUsername.value = val.user_metadata?.display_name || val.email || 'User';
+      const raw = val.user_metadata?.display_name || val.email || 'User';
+      displayUsername.value = raw.includes('@') ? raw.split('@')[0] : raw;
     } else {
       displayUsername.value = '';
     }

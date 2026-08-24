@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, nextTick, computed } from 'vue';
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Check, X, AlertTriangle } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
@@ -13,21 +13,11 @@ const inputRef = ref<HTMLInputElement | null>(null);
 
 const focusInput = () => {
   nextTick(() => {
-    if (inputRef.value) {
+    if (inputRef.value && quizStore.selectedAnswer === null) {
       inputRef.value.focus();
     }
   });
 };
-
-onMounted(() => {
-  focusInput();
-});
-
-// Refocus input and clear on next question
-watch(() => quizStore.currentQuestionIndex, () => {
-  userInput.value = '';
-  focusInput();
-});
 
 const submitAnswer = () => {
   if (userInput.value.trim() === '') return;
@@ -47,6 +37,36 @@ const handleEnter = () => {
     quizStore.nextQuestion();
   }
 };
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (quizStore.quizCompleted || quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal || quizStore.justClosedPreview) return;
+  if (Date.now() - quizStore.previewClosedTimestamp < 500) return;
+
+  const target = event.target as HTMLElement | null;
+  if (target && target !== inputRef.value && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+    return;
+  }
+
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    handleEnter();
+  }
+};
+
+onMounted(() => {
+  focusInput();
+  window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
+});
+
+// Refocus input and clear on next question
+watch(() => quizStore.currentQuestionIndex, () => {
+  userInput.value = '';
+  focusInput();
+});
 
 const handleVirtualKey = (char: string) => {
   if (isAnswered.value) return;

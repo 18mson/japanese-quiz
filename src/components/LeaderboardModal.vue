@@ -28,6 +28,11 @@ const errorMsg = ref<string | null>(null);
 
 const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length;
 
+const formatUsername = (name: string | null | undefined): string => {
+  if (!name) return 'Pemain';
+  return name.includes('@') ? name.split('@')[0] : name;
+};
+
 const fetchCumulative = async () => {
   const { data, error } = await supabase
     .from('leaderboard_cumulative')
@@ -242,7 +247,7 @@ watch(activeTab, () => {
                   </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
-                  {{ row.username }}
+                  {{ formatUsername(row.username) }}
                 </td>
                 <td class="py-3.5 font-mono text-sm text-indigo-600 dark:text-indigo-400 font-extrabold text-right">
                   {{ row.total_score }}
@@ -283,7 +288,7 @@ watch(activeTab, () => {
                   </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
-                  {{ row.username }}
+                  {{ formatUsername(row.username) }}
                 </td>
                 <td class="py-3.5 font-mono text-sm text-teal-600 dark:text-teal-400 font-extrabold text-right">
                   {{ row.duration_seconds.toFixed(1) }}s
@@ -328,7 +333,7 @@ watch(activeTab, () => {
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   <div class="flex items-center gap-2">
-                    <span>{{ row.username }}</span>
+                    <span>{{ formatUsername(row.username) }}</span>
                     <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 rounded text-[10px] font-extrabold">Kamu</span>
                   </div>
                 </td>
