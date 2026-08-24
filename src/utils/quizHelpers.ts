@@ -75,7 +75,7 @@ export const getQuestionCountFromDuration = (targetDurationMinutes: number, type
   return 78;
 };
 
-export const getFallbackLocalPool = (type: string, level: string): any[] => {
+export const getFallbackLocalPool = (type: string, _level: string = 'basic'): any[] => {
   if (type === 'hiragana') {
     // Selalu return semua hiragana (basic + dakuten + combination)
     return hiraganaData;
@@ -88,11 +88,10 @@ export const getFallbackLocalPool = (type: string, level: string): any[] => {
     return [...hiraganaData, ...katakanaData];
   }
   if (type === 'words') {
-    const multiCharWords = wordsData.filter(w => {
+    return wordsData.filter(w => {
       const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
       return cleanKana.length > 1;
     });
-    return level === 'basic' ? multiCharWords.filter(w => !/[\u4e00-\u9faf\u3400-\u4dbf]/.test(w.character)) : multiCharWords;
   }
   return [];
 };

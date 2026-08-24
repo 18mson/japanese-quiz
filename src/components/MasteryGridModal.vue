@@ -23,6 +23,15 @@ const activeCategory = ref<'hiragana' | 'katakana' | 'words'>('hiragana');
 const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
 
+const availableLessons = computed(() => {
+  const lessons = Array.from(new Set(wordsData.map(w => w.lesson).filter(Boolean))) as string[];
+  return lessons.sort((a, b) => {
+    const numA = parseInt(a.replace(/\D/g, '')) || 0;
+    const numB = parseInt(b.replace(/\D/g, '')) || 0;
+    return numA - numB;
+  });
+});
+
 const filteredItems = computed(() => {
   let pool: any[] = activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
 
@@ -115,7 +124,7 @@ const handleStartWeakQuiz = () => {
                   : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
               ]"
             >
-              <span>{{ cat === 'words' ? 'Kata' : cat }}</span>
+              <span>{{ cat === 'words' ? 'Kanji' : cat }}</span>
               <span 
                 v-if="cat === 'hiragana'" 
                 class="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full"
@@ -169,7 +178,7 @@ const handleStartWeakQuiz = () => {
               </template>
               <template v-else>
                 <button 
-                  v-for="les in ['Pelajaran 1', 'Pelajaran 2']" 
+                  v-for="les in availableLessons" 
                   :key="les"
                   @click="activeSubtype = les"
                   :class="[

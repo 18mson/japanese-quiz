@@ -92,8 +92,16 @@ export const useQuizStore = defineStore('quiz', () => {
   });
 
   const currentUserLevel = computed(() => {
-    const level1Words = wordsData.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
-    return level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3) ? 2 : 1;
+    let level = 1;
+    for (let i = 1; i <= 25; i++) {
+      const lessonWords = wordsData.filter(w => w.lesson === `Pelajaran ${i}` || (!w.lesson && i === 1));
+      if (lessonWords.length > 0 && lessonWords.every(w => (userStreaks.value[w.character] || 0) >= 3)) {
+        level = i + 1;
+      } else {
+        break;
+      }
+    }
+    return level;
   });
 
   const questionType = ref('hiragana');
@@ -216,37 +224,44 @@ export const useQuizStore = defineStore('quiz', () => {
 
     try {
       const query = type === 'mix'
-        ? supabase.from('characters').select('*').in('quiz_type', ['hiragana', 'katakana'])
-        : supabase.from('characters').select('*').eq('quiz_type', type);
+        ? supabase.from('quiz_items').select('*').in('category', ['hiragana', 'katakana'])
+        : supabase.from('quiz_items').select('*').eq('category', type);
       const { data, error } = await query;
 
       if (!error && data && data.length > 0) {
         finalPool = data.map(item => ({
-          character: item.character, romaji: item.romaji,
-          kana: item.kana, meaning: item.meaning, type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'), lesson: item.lesson
+          character: item.character,
+          romaji: item.romaji,
+          kana: item.kana,
+          meaning: item.meaning,
+          type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
+          lesson: item.lesson
         }));
       }
     } catch (err) { }
 
     if (type === 'words') {
-      const wordPool = finalPool.filter(w => {
+      finalPool = finalPool.filter(w => {
         const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
         return cleanKana.length > 1;
       });
-      const level1Words = wordPool.filter(w => !w.lesson || w.lesson === 'Pelajaran 1');
-      const level2Words = wordPool.filter(w => w.lesson === 'Pelajaran 2');
-      const level1Complete = level1Words.every(w => (userStreaks.value[w.character] || 0) >= 3);
-      finalPool = level1Complete ? [...level1Words, ...level2Words] : [...level1Words];
+
+      // Urutkan kata/kanji berdasarkan urutan pelajaran progresif (Pelajaran 1 s/d 25)
+      finalPool.sort((a, b) => {
+        const numA = parseInt((a.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
+        const numB = parseInt((b.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
+        return numA - numB;
+      });
     }
 
     // Pisahkan: item yang sudah dikenal (streak > 0) dan yang belum (streak === 0)
     const knownPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
     const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
 
-    // Preview hanya untuk mode pilihan ganda (hiragana/katakana/mix, level basic)
-    // TIDAK untuk mode mengetik: words, sentences, atau level n5
-    const isMultipleChoiceMode = type !== 'sentences' && type !== 'words' && level !== 'n5';
-    if (unlearnedInPool.length > 0 && isMultipleChoiceMode) {
+    // Preview diaktifkan untuk mode pilihan ganda (hiragana/katakana/mix) dan mode kanji (words)
+    // TIDAK untuk mode mengetik kalimat panjang (sentences)
+    const isPreviewSupported = type !== 'sentences';
+    if (unlearnedInPool.length > 0 && isPreviewSupported) {
       previewMode.value = 'full_wave';
       // Batasi jumlah batch preview sesuai durasi sesi
       const maxBatches = targetDuration <= 1 ? 2 : targetDuration <= 3 ? 3 : 4;

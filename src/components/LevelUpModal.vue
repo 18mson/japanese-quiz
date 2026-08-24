@@ -35,23 +35,23 @@ const claimLevelUp = () => {
         </h2>
         
         <p class="text-sm text-gray-200 font-medium max-w-xs mx-auto">
-          Amazing job! You have fully mastered all Everyday Words in Lesson 1!
+          Amazing job! You have fully mastered the Kanji & Vocabulary in this lesson!
         </p>
         
         <div class="flex items-center justify-center gap-6 my-4 w-full bg-white/5 py-4 rounded-2xl border border-white/10">
           <div class="flex flex-col">
             <span class="text-xs text-gray-400 uppercase font-bold">Previous</span>
-            <span class="text-2xl font-black text-gray-300">Level 1</span>
+            <span class="text-2xl font-black text-gray-300">Level {{ Math.max(1, quizStore.currentUserLevel - 1) }}</span>
           </div>
           <div class="text-xl text-amber-400 animate-pulse">➔</div>
           <div class="flex flex-col">
             <span class="text-xs text-amber-400 uppercase font-bold">Current</span>
-            <span class="text-2xl font-black text-amber-300">Level 2</span>
+            <span class="text-2xl font-black text-amber-300">Level {{ quizStore.currentUserLevel }}</span>
           </div>
         </div>
         
         <p class="text-xs text-teal-300 font-bold mb-2">
-          🔓 Unlocked: Minna no Nihongo Lesson 2 Vocabulary
+          🔓 Unlocked: Minna no Nihongo Lesson {{ quizStore.currentUserLevel }} Kanji & Vocabulary
         </p>
         
         <button 

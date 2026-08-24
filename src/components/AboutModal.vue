@@ -168,10 +168,10 @@ onUnmounted(() => {
                     </div>
                     <span class="font-black text-gray-900 dark:text-slate-100 text-sm">2. Keyboard Typing</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 rounded-md">Kana & Words</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 rounded-md">Kana & Kanji</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
-                  Melatih muscle memory mengetik Romaji untuk Kana dan <strong>Kosakata N5 (Words)</strong> sehari-hari.
+                  Melatih muscle memory mengetik Romaji untuk Kana dan <strong>Kosakata Kanji N5 (Minna no Nihongo)</strong>.
                 </p>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                   <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">

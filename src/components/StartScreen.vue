@@ -204,13 +204,13 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'sentence_typing',
-    title: 'Sentence Typing',
-    levelTag: 'Kata & Kalimat',
+    title: 'Kanji & Kalimat',
+    levelTag: 'Kanji & Kalimat',
     level: 'n5',
     defaultType: 'words',
-    desc: 'Latihan mengetik kosakata & kalimat Jepang N5 secara real-time dengan romaji.',
+    desc: 'Latihan mengetik kosakata Kanji & kalimat Jepang N5 secara real-time dengan romaji.',
     subTypes: [
-      { key: 'words', label: 'Words' },
+      { key: 'words', label: 'Kanji' },
       { key: 'sentences', label: 'Kalimat N5'},
     ],
     icon: BookOpen,
@@ -352,9 +352,9 @@ const getShortDurationDesc = (minutes: number) => {
     if (minutes === 3) return 'Fokus · 10 kalimat';
     if (minutes === 5) return 'Maraton · 16 kalimat';
   } else if (characterTypes.value === 'words') {
-    if (minutes === 1) return 'Kilat · 8 kata';
-    if (minutes === 3) return 'Fokus · 24 kata';
-    if (minutes === 5) return 'Maraton · 40 kata';
+    if (minutes === 1) return 'Kilat · 8 kanji';
+    if (minutes === 3) return 'Fokus · 24 kanji';
+    if (minutes === 5) return 'Maraton · 40 kanji';
   } else {
     if (minutes === 1) return 'Kilat · 16 soal';
     if (minutes === 3) return 'Fokus · 48 soal';
