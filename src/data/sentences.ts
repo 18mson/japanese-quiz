@@ -130,7 +130,7 @@ export const sentencesData: SentenceItem[] = [
   },
   {
     id: 's16',
-    japanese: 'どこでしゃしんをとりましか',
+    japanese: 'どこでしゃしんをとりましたか',
     meaning_id: 'Di mana mengambil foto?',
     difficulty: 'n5',
     romaji_variants: [['do'], ['ko'], ['de'], ['sha', 'sya'], ['shi', 'si'], ['n', 'nn'], ['wo', 'o'], ['to'], ['ri'], ['ma'], ['shi', 'si'], ['ka']],
@@ -202,11 +202,11 @@ export const sentencesData: SentenceItem[] = [
   },
   {
     id: 's25',
-    japanese: 'おとうとうはカフェでコーヒーをのみます',
+    japanese: 'おとうとはカフェでコーヒーをのみます',
     meaning_id: 'Adik laki-laki minum kopi di kafe',
     difficulty: 'n5',
-    romaji_variants: [['o'], ['to'], ['u'], ['to'], ['u'], ['wa', 'ha'], ['ka'], ['fe'], ['de'], ['ko'], ['o', 'u', ''], ['hi'], ['i', ''], ['wo', 'o'], ['no'], ['mi'], ['ma'], ['su']],
-    word_spans: [5, 1, 2, 1, 4, 1, 4]
+    romaji_variants: [['o'], ['to'], ['u'], ['to'], ['wa', 'ha'], ['ka'], ['fe'], ['de'], ['ko'], ['o', 'u', ''], ['hi'], ['i', ''], ['wo', 'o'], ['no'], ['mi'], ['ma'], ['su']],
+    word_spans: [4, 1, 2, 1, 4, 1, 4]
   },
   {
     id: 's26',
@@ -218,11 +218,11 @@ export const sentencesData: SentenceItem[] = [
   },
   {
     id: 's27',
-    japanese: 'まいばんじゅういちじにおやすみます',
+    japanese: 'まいばんじゅういちじにねます',
     meaning_id: 'Setiap malam tidur jam 11',
     difficulty: 'n5',
-    romaji_variants: [['ma'], ['i'], ['ba'], ['n', 'nn'], ['ju', 'jyu', 'zu'], ['u'], ['i'], ['chi', 'ti'], ['ji', 'zi'], ['ni'], ['o'], ['ya'], ['su'], ['mi'], ['ma'], ['su']],
-    word_spans: [4, 6, 1, 5]
+    romaji_variants: [['ma'], ['i'], ['ba'], ['n', 'nn'], ['ju', 'jyu', 'zu'], ['u'], ['i'], ['chi', 'ti'], ['ji', 'zi'], ['ni'], ['ne'], ['ma'], ['su']],
+    word_spans: [4, 6, 1, 3]
   },
   {
     id: 's28',
@@ -285,7 +285,7 @@ export const sentencesData: SentenceItem[] = [
     japanese: 'らいしゅうのどようびにあいましょう',
     meaning_id: 'Mari bertemu hari Sabtu minggu depan',
     difficulty: 'n5',
-    romaji_variants: [['ra'], ['i'], ['shu', 'syu'], ['u'], ['no'], ['do'], ['yo'], ['u'], ['bi'], ['ni'], ['a'], ['i'], ['ma'], ['sho', 'syo']],
+    romaji_variants: [['ra'], ['i'], ['shu', 'syu'], ['u'], ['no'], ['do'], ['yo'], ['u'], ['bi'], ['ni'], ['a'], ['i'], ['ma'], ['sho', 'syo'], ['u']],
     word_spans: [4, 1, 4, 1, 5]
   }
 ];

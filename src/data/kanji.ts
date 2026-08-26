@@ -21,7 +21,7 @@ export const kanjiN5Data: JapaneseKanji[] = [
   { character: '六', meaning: 'Enam', onyomi: ['ロク'], kunyomi: ['む', 'むっつ'], examples: ['六つ (enam buah)', '六日 (tanggal 6)'], type: 'kanji' },
   { character: '七', meaning: 'Tujuh', onyomi: ['シチ'], kunyomi: ['なな', 'ななつ'], examples: ['七つ (tujuh buah)', '七月 (Juli)'], type: 'kanji' },
   { character: '八', meaning: 'Delapan', onyomi: ['ハチ'], kunyomi: ['や', 'やっつ'], examples: ['八つ (delapan buah)', '八日 (tanggal 8)'], type: 'kanji' },
-  { character: '九', meaning: 'Sembilan', onyomi: ['キュウ', 'ク'], kunyomi: ['ここの', 'こ pride'], examples: ['九つ (sembilan buah)', '九月 (September)'], type: 'kanji' },
+  { character: '九', meaning: 'Sembilan', onyomi: ['キュウ', 'ク'], kunyomi: ['ここの', 'ここのつ'], examples: ['九つ (sembilan buah)', '九月 (September)'], type: 'kanji' },
   { character: '十', meaning: 'Sepuluh', onyomi: ['ジュウ', 'ジッ'], kunyomi: ['とお'], examples: ['十日 (tanggal 10)', '十月 (Oktober)'], type: 'kanji' },
   { character: '百', meaning: 'Ratus / Ratusan', onyomi: ['ヒャク'], kunyomi: [], examples: ['百 (seratus)', '三百 (tiga ratus)'], type: 'kanji' },
   { character: '千', meaning: 'Ribu / Ribuan', onyomi: ['セン'], kunyomi: ['ち'], examples: ['千 (seribu)', '三千 (tiga ribu)'], type: 'kanji' },
