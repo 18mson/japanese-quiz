@@ -157,7 +157,7 @@ onUnmounted(() => {
         <!-- Furigana / Kana reading if different from character -->
         <div 
           v-if="currentItem.kana && currentItem.kana !== charText"
-          class="text-base sm:text-lg font-bold text-slate-300 font-jp tracking-wider mb-0.5 mt-1"
+          class="text-lg sm:text-xl font-bold text-slate-200 font-jp tracking-wider mb-0.5 mt-1.5"
         >
           {{ currentItem.kana }}
         </div>

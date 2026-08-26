@@ -29,11 +29,11 @@ const strokeCharRefs = ref<InstanceType<typeof StrokeCharacter>[]>([]);
 // Responsive compact box sizing based on total character count
 const boxSizeClass = computed(() => {
   const count = characterEntries.value.length;
-  if (count <= 1) return 'w-24 h-24 sm:w-28 sm:h-28 max-w-[112px] max-h-[112px]';
-  if (count === 2) return 'w-20 h-20 sm:w-24 sm:h-24 max-w-[96px] max-h-[96px]';
-  if (count === 3) return 'w-16 h-16 sm:w-20 sm:h-20 max-w-[80px] max-h-[80px]';
-  if (count <= 5) return 'w-14 h-14 sm:w-16 sm:h-16 max-w-[64px] max-h-[64px]';
-  return 'w-11 h-11 sm:w-13 sm:h-13 max-w-[52px] max-h-[52px]';
+  if (count <= 1) return 'w-28 h-28 min-[380px]:w-32 min-[380px]:h-32 sm:w-36 sm:h-36 max-w-[144px] max-h-[144px]';
+  if (count === 2) return 'w-24 h-24 min-[380px]:w-26 min-[380px]:h-26 sm:w-28 sm:h-28 max-w-[116px] max-h-[116px]';
+  if (count === 3) return 'w-18 h-18 min-[380px]:w-20 min-[380px]:h-20 sm:w-24 sm:h-24 max-w-[96px] max-h-[96px]';
+  if (count <= 5) return 'w-15 h-15 min-[380px]:w-16 min-[380px]:h-16 sm:w-18 sm:h-18 max-w-[76px] max-h-[76px]';
+  return 'w-12 h-12 sm:w-14 sm:h-14 max-w-[58px] max-h-[58px]';
 });
 
 const loadCharacters = async (targetText: string) => {

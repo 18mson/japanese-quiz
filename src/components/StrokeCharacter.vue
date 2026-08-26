@@ -177,7 +177,7 @@ onUnmounted(() => {
         viewBox="0 0 109 109"
       >
         <!-- 1. Background Ghost Guide Paths (Faint outline of entire character) -->
-        <g class="opacity-25 dark:opacity-30">
+        <g class="opacity-25 dark:opacity-35">
           <path
             v-for="(d, idx) in strokes"
             :key="'guide-' + idx"
@@ -185,7 +185,7 @@ onUnmounted(() => {
             fill="none"
             stroke="currentColor"
             class="text-slate-400 dark:text-slate-500"
-            stroke-width="5.0"
+            stroke-width="5.2"
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -200,9 +200,9 @@ onUnmounted(() => {
             :d="d"
             fill="none"
             stroke="#fbbf24"
-            class="drop-shadow-xs"
+            class="drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
             :style="{
-              strokeWidth: '5.2',
+              strokeWidth: '5.6',
               strokeLinecap: 'round',
               strokeLinejoin: 'round',
               strokeDasharray: pathLengths[idx] || 180,
@@ -239,16 +239,16 @@ onUnmounted(() => {
         v-else 
         class="relative z-10 flex flex-col items-center justify-center animate-fadeIn text-center"
       >
-        <span class="text-2xl sm:text-3xl font-black text-amber-300 font-jp drop-shadow-md">
+        <span class="text-3xl sm:text-4xl min-[400px]:text-4xl font-black text-amber-300 font-jp drop-shadow-md">
           {{ char }}
         </span>
       </div>
     </div>
 
     <!-- Character Label Under Box -->
-    <div class="mt-1 flex items-center gap-1 text-[10px] font-bold text-slate-400">
+    <div class="mt-1 flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-400 font-jp">
       <span>{{ char }}</span>
-      <span v-if="hasStrokes" class="text-[8.5px] text-amber-400/80">({{ strokes.length }})</span>
+      <span v-if="hasStrokes" class="text-[9.5px] font-sans text-amber-400/80">({{ strokes.length }})</span>
     </div>
   </div>
 </template>
