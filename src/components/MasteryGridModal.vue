@@ -5,11 +5,14 @@ import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
 import MasteryCard from './mastery/MasteryCard.vue';
+import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
+import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
 import { 
   X, 
   Award, 
   Zap, 
-  Sparkles
+  Sparkles, 
+  RotateCcw 
 } from '@lucide/vue';
 
 defineProps<{
@@ -19,9 +22,15 @@ defineProps<{
 const emit = defineEmits(['close', 'startWeakQuiz']);
 const quizStore = useQuizStore();
 
+// Filter States
 const activeCategory = ref<'hiragana' | 'katakana' | 'words'>('hiragana');
 const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
+const filterBarRef = ref<InstanceType<typeof MasteryFilterBar> | null>(null);
+
+const closeDropdowns = () => {
+  filterBarRef.value?.closeDropdowns();
+};
 
 const availableLessons = computed(() => {
   const lessons = Array.from(new Set(wordsData.map(w => w.lesson).filter(Boolean))) as string[];
@@ -62,6 +71,34 @@ const handleStartWeakQuiz = () => {
   emit('close');
   emit('startWeakQuiz', { type: activeCategory.value });
 };
+
+// Preview Modal State & Handlers
+const selectedPreviewItem = ref<any | null>(null);
+const selectedPreviewIndex = ref<number>(-1);
+
+const openPreview = (item: any, index: number) => {
+  selectedPreviewItem.value = item;
+  selectedPreviewIndex.value = index;
+};
+
+const closePreview = () => {
+  selectedPreviewItem.value = null;
+  selectedPreviewIndex.value = -1;
+};
+
+const prevPreviewItem = () => {
+  if (selectedPreviewIndex.value > 0) {
+    selectedPreviewIndex.value--;
+    selectedPreviewItem.value = filteredItems.value[selectedPreviewIndex.value];
+  }
+};
+
+const nextPreviewItem = () => {
+  if (selectedPreviewIndex.value < filteredItems.value.length - 1) {
+    selectedPreviewIndex.value++;
+    selectedPreviewItem.value = filteredItems.value[selectedPreviewIndex.value];
+  }
+};
 </script>
 
 <template>
@@ -69,9 +106,13 @@ const handleStartWeakQuiz = () => {
     <div 
       v-if="isOpen" 
       class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
-      @click.self="emit('close')"
+      @click="closeDropdowns"
+      @click.self="emit('close'); closeDropdowns();"
     >
-      <div class="max-w-5xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] border border-gray-100 dark:border-slate-800 animate-scaleUp relative">
+      <div 
+        class="max-w-5xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[88vh] max-h-[850px] border border-gray-100 dark:border-slate-800 animate-scaleUp relative"
+        @click="closeDropdowns"
+      >
         
         <!-- Modal Header -->
         <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 text-white flex items-center justify-between shadow-md flex-shrink-0 relative overflow-hidden">
@@ -90,7 +131,6 @@ const handleStartWeakQuiz = () => {
           </div>
 
           <div class="flex items-center gap-2 relative z-10">
-            <!-- Weak Items Practice Quick Button -->
             <button 
               v-if="unmasteredCount > 0"
               @click="handleStartWeakQuiz"
@@ -101,7 +141,7 @@ const handleStartWeakQuiz = () => {
             </button>
 
             <button 
-              @click="emit('close')"
+              @click="emit('close'); closeDropdowns();"
               class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer"
             >
               <X class="w-4 h-4 sm:w-5 sm:h-5" />
@@ -109,116 +149,17 @@ const handleStartWeakQuiz = () => {
           </div>
         </div>
 
-        <!-- Filter & Navigation Bar -->
-        <div class="p-3 sm:p-4 bg-white dark:bg-slate-900 border-b border-gray-200/80 dark:border-slate-800 flex flex-col gap-2.5 flex-shrink-0">
-          <!-- Category Switcher Tabs (Row 1) -->
-          <div class="flex items-center bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full justify-center md:w-fit md:justify-start">
-            <button 
-              v-for="cat in ['hiragana', 'katakana', 'words']" 
-              :key="cat"
-              @click="activeCategory = cat as any; activeSubtype = 'all';"
-              :class="[
-                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black capitalize transition cursor-pointer flex items-center gap-1.5',
-                activeCategory === cat 
-                  ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none' 
-                  : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
-              ]"
-            >
-              <span>{{ cat === 'words' ? 'Kanji' : cat }}</span>
-              <span 
-                v-if="cat === 'hiragana'" 
-                class="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full"
-                :class="activeCategory === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
-              >
-                {{ quizStore.hiraganaMasteryStats.percentage }}%
-              </span>
-              <span 
-                v-else-if="cat === 'katakana'" 
-                class="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full"
-                :class="activeCategory === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
-              >
-                {{ quizStore.katakanaMasteryStats.percentage }}%
-              </span>
-              <span 
-                v-else 
-                class="text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded-full"
-                :class="activeCategory === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
-              >
-                {{ quizStore.wordsMasteryStats.percentage }}%
-              </span>
-            </button>
-          </div>
-
-          <!-- Subtype Filter Row (Row 2) -->
-          <div class="flex items-center gap-2 text-xs min-w-0">
-            <span class="text-xs font-bold text-gray-400 dark:text-slate-400 flex-shrink-0">Kelompok:</span>
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar flex-1 min-w-0">
-              <button 
-                @click="activeSubtype = 'all'"
-                :class="[
-                  'px-2.5 py-1 rounded-xl text-xs font-bold transition cursor-pointer flex-shrink-0',
-                  activeSubtype === 'all' ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
-                ]"
-              >
-                Semua
-              </button>
-
-              <template v-if="activeCategory !== 'words'">
-                <button 
-                  v-for="sub in ['basic', 'dakuten', 'combination']" 
-                  :key="sub"
-                  @click="activeSubtype = sub"
-                  :class="[
-                    'px-2.5 py-1 rounded-xl text-xs font-bold transition cursor-pointer capitalize flex-shrink-0',
-                    activeSubtype === sub ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
-                  ]"
-                >
-                  {{ sub }}
-                </button>
-              </template>
-              <template v-else>
-                <button 
-                  v-for="les in availableLessons" 
-                  :key="les"
-                  @click="activeSubtype = les"
-                  :class="[
-                    'px-2.5 py-1 rounded-xl text-xs font-bold transition cursor-pointer flex-shrink-0',
-                    activeSubtype === les ? 'bg-indigo-600 text-white shadow-sm' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700'
-                  ]"
-                >
-                  {{ les }}
-                </button>
-              </template>
-            </div>
-          </div>
-
-          <!-- Status Filter Row (Row 3) -->
-          <div class="flex items-center gap-2 text-xs min-w-0">
-            <span class="text-xs font-bold text-gray-400 dark:text-slate-400 flex-shrink-0">Status:</span>
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar flex-1 min-w-0">
-              <button 
-                v-for="st in [
-                  { key: 'all', label: 'Semua Status', style: 'bg-gray-800 text-white font-bold', inactive: 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300' },
-                  { key: 'new', label: 'Belum (0)', style: 'bg-slate-700 text-white font-bold', inactive: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300' },
-                  { key: 'learning', label: 'Proses (1-2)', style: 'bg-amber-600 text-white font-bold', inactive: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800' },
-                  { key: 'mastered', label: 'Hafal (3-4)', style: 'bg-emerald-600 text-white font-bold', inactive: 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' },
-                  { key: 'crown', label: 'Crown (5+)', style: 'bg-indigo-600 text-white font-bold', inactive: 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800' }
-                ]"
-                :key="st.key"
-                @click="activeStatusFilter = st.key as any"
-                :class="[
-                  'px-2.5 py-1 rounded-lg text-xs font-semibold transition cursor-pointer flex-shrink-0',
-                  activeStatusFilter === st.key ? st.style : st.inactive
-                ]"
-              >
-                {{ st.label }}
-              </button>
-            </div>
-          </div>
-        </div>
+        <!-- Filter & Switcher Bar Component -->
+        <MasteryFilterBar
+          ref="filterBarRef"
+          v-model:category="activeCategory"
+          v-model:subtype="activeSubtype"
+          v-model:statusFilter="activeStatusFilter"
+          :available-lessons="availableLessons"
+        />
 
         <!-- Interactive Grid Area -->
-        <div class="p-3 sm:p-6 overflow-y-auto flex-1 bg-gray-50/50 dark:bg-slate-950/60">
+        <div class="p-3 sm:p-6 overflow-y-auto flex-1 bg-gray-50/50 dark:bg-slate-950/60 min-h-0">
           <div 
             v-if="filteredItems.length > 0"
             :class="[
@@ -229,15 +170,16 @@ const handleStartWeakQuiz = () => {
             ]"
           >
             <MasteryCard 
-              v-for="item in filteredItems" 
-              :key="item.character" 
+              v-for="(item, index) in filteredItems" 
+              :key="activeCategory + '_' + item.character + '_' + (item.lesson || '') + '_' + (item.meaning || '') + '_' + index" 
               :item="item" 
               :category="activeCategory" 
+              @click="openPreview(item, index)"
             />
           </div>
 
           <!-- Empty State -->
-          <div v-else class="py-12 text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400">
+          <div v-else class="h-full min-h-[220px] text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 py-8">
             <Sparkles class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2 animate-bounce" />
             <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">Tidak ada karakter ditemui</h3>
             <p class="text-xs text-gray-400 dark:text-slate-400 max-w-xs mt-1">
@@ -254,9 +196,19 @@ const handleStartWeakQuiz = () => {
 
         <!-- Footer -->
         <div class="px-4 sm:px-6 py-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 font-medium flex-shrink-0">
-          <span class="text-xs text-gray-500 dark:text-slate-400 font-semibold">
-            Menampilkan <strong class="text-gray-900 dark:text-slate-100">{{ filteredItems.length }}</strong> karakter
-          </span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs text-gray-500 dark:text-slate-400 font-semibold">
+              Menampilkan <strong class="text-gray-900 dark:text-slate-100">{{ filteredItems.length }}</strong> karakter
+            </span>
+            <button
+              v-if="activeSubtype !== 'all' || activeStatusFilter !== 'all'"
+              @click="activeSubtype = 'all'; activeStatusFilter = 'all';"
+              class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline cursor-pointer ml-1"
+            >
+              <RotateCcw class="w-3 h-3" />
+              <span>Reset Filter</span>
+            </button>
+          </div>
 
           <button 
             @click="emit('close')"
@@ -268,6 +220,18 @@ const handleStartWeakQuiz = () => {
 
       </div>
     </div>
+
+    <!-- Character / Word Interactive Preview Modal Component -->
+    <MasteryPreviewModal
+      v-if="selectedPreviewItem"
+      :item="selectedPreviewItem"
+      :current-index="selectedPreviewIndex"
+      :total-items="filteredItems.length"
+      :category="activeCategory"
+      @close="closePreview"
+      @prev="prevPreviewItem"
+      @next="nextPreviewItem"
+    />
   </Teleport>
 </template>
 

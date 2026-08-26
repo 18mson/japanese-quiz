@@ -6,13 +6,16 @@ defineProps<{
   category: 'hiragana' | 'katakana' | 'words';
 }>();
 
+defineEmits(['click']);
+
 const quizStore = useQuizStore();
 </script>
 
 <template>
   <div 
+    @click="$emit('click', item)"
     :class="[
-      'rounded-2xl p-2 sm:p-3 flex flex-col items-center justify-center border transition-all duration-200 relative group hover:-translate-y-0.5 hover:shadow-md select-none text-center min-h-[72px] sm:min-h-[84px]',
+      'rounded-2xl p-2 sm:p-3 flex flex-col items-center justify-center border transition-all duration-200 relative group select-none text-center min-h-[72px] sm:min-h-[84px] cursor-pointer hover:-translate-y-1 hover:shadow-lg active:scale-95',
       quizStore.getMasteryTier(item.character) === 'crown' 
         ? 'bg-gradient-to-b from-indigo-50 to-purple-50 dark:from-indigo-950/80 dark:to-purple-950/80 border-indigo-300 dark:border-indigo-700 shadow-sm ring-1 ring-indigo-400/30' 
         : quizStore.getMasteryTier(item.character) === 'mastered'
