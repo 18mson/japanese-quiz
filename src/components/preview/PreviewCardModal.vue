@@ -205,7 +205,7 @@ onUnmounted(() => {
         @click="handleNextCard"
         class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-2xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-600/30 hover:scale-[1.02] cursor-pointer"
       >
-        <span>{{ isLastCard ? 'Mulai Quiz Soal Ini 🚀' : 'Lanjut Flashcard Berikutnya' }}</span>
+        <span>{{ isLastCard ? 'Mulai Quiz Soal Ini' : 'Lanjut Flashcard Berikutnya' }}</span>
         <ArrowRight class="w-4 h-4" />
       </button>
 

@@ -172,7 +172,8 @@ export const buildSmartAdaptiveQuestions = (
       questions.push({
         ...picked,
         questionReason: TIER_METADATA[tier].questionReason,
-        reasonLabel: TIER_METADATA[tier].reasonLabel
+        reasonLabel: TIER_METADATA[tier].reasonLabel,
+        isFirstAppearance: true
       });
       continue;
     }
@@ -196,7 +197,8 @@ export const buildSmartAdaptiveQuestions = (
     questions.push({
       ...picked,
       questionReason: TIER_METADATA[tier].questionReason,
-      reasonLabel: TIER_METADATA[tier].reasonLabel
+      reasonLabel: TIER_METADATA[tier].reasonLabel,
+      isFirstAppearance: true
     });
   }
 

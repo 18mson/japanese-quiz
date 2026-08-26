@@ -10,6 +10,7 @@ import { checkIsCorrect, checkIsTypo, getQuestionCountFromDuration, getFallbackL
 import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransition, TierTransition } from '../utils/masteryStats';
 import { submitLeaderboardScore } from '../services/leaderboardService';
 import { buildGojuonBatches, GojuonBatch } from '../data/gojuonOrder';
+import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
 import { useGoalsStore } from './goalsStore';
 
 export const useQuizStore = defineStore('quiz', () => {
@@ -173,6 +174,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const latestTierTransition = ref<TierTransition | null>(null);
   const sessionTierChanges = ref<TierTransition[]>([]);
+  const sessionCharAttempts = ref<Record<string, { attempts: number; failed: boolean; initialStreak: number; streakEvaluated: boolean }>>({});
 
   const resetQuizSessionState = async (targetDuration: number, type: string, level: 'basic' | 'n5') => {
     isLoading.value = true; questionType.value = type; quizLevel.value = level; targetDurationMinutes.value = targetDuration;
@@ -181,6 +183,7 @@ export const useQuizStore = defineStore('quiz', () => {
     newRecordAchieved.value = false; showLevelUpScreen.value = false; speedAchievement.value = null;
     sentenceStats.value = null;
     masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
+    sessionCharAttempts.value = {};
 
     // Reset preview & tier transition states
     previewMode.value = 'none';
@@ -252,13 +255,43 @@ export const useQuizStore = defineStore('quiz', () => {
         const numB = parseInt((b.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
         return numA - numB;
       });
+
+      // Gunakan algoritma komposisi khusus Kanji: unique pool + spacing repeat + isFirstAppearance flag
+      const kanjiQuestions = buildKanjiSessionQuestions(finalPool, questionCount, getMasteryStreak);
+      questions.value = kanjiQuestions;
+
+      // Kumpulkan item unlearned unik dalam sesi ini untuk ditampilkan di preview card awal
+      const uniqueUnlearnedInSession: any[] = [];
+      const seenChars = new Set<string>();
+      kanjiQuestions.forEach(q => {
+        if (!seenChars.has(q.character)) {
+          seenChars.add(q.character);
+          if ((userStreaks.value[q.character] || 0) === 0) {
+            uniqueUnlearnedInSession.push(q);
+          }
+        }
+      });
+
+      if (uniqueUnlearnedInSession.length > 0) {
+        previewMode.value = 'full_wave';
+        currentWaveIndex.value = 0;
+        currentWaveItems.value = uniqueUnlearnedInSession;
+        isWavePreviewActive.value = true;
+      } else {
+        previewMode.value = 'none';
+        isWavePreviewActive.value = false;
+      }
+
+      initialQuestionCount.value = questionCount;
+      isLoading.value = false;
+      return;
     }
 
     // Pisahkan: item yang sudah dikenal (streak > 0) dan yang belum (streak === 0)
     const knownPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
     const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
 
-    // Preview diaktifkan untuk mode pilihan ganda (hiragana/katakana/mix) dan mode kanji (words)
+    // Preview diaktifkan untuk mode pilihan ganda (hiragana/katakana/mix)
     // TIDAK untuk mode mengetik kalimat panjang (sentences)
     const isPreviewSupported = type !== 'sentences';
     if (unlearnedInPool.length > 0 && isPreviewSupported) {
@@ -296,7 +329,13 @@ export const useQuizStore = defineStore('quiz', () => {
     const pool = getFallbackLocalPool(type, level);
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
     if (weakPool.length === 0) weakPool = [...pool];
-    questions.value = buildSmartAdaptiveQuestions(weakPool, questionCount, getMasteryStreak);
+    
+    if (type === 'words') {
+      questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
+    } else {
+      questions.value = buildSmartAdaptiveQuestions(weakPool, questionCount, getMasteryStreak);
+    }
+
     initialQuestionCount.value = questionCount;
     isLoading.value = false;
   };
@@ -351,15 +390,90 @@ export const useQuizStore = defineStore('quiz', () => {
         if (isCorrectVal) firstTryCorrectCount.value++;
       }
 
-      const newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
-      userStreaks.value[charKey] = newStreak;
-      try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
+      if (questionType.value === 'words') {
+        // Kanji Mode: evaluate streak & mastery update ONCE per unique word per session
+        if (!sessionCharAttempts.value[charKey]) {
+          sessionCharAttempts.value[charKey] = {
+            attempts: 1,
+            failed: !isCorrectVal,
+            initialStreak: oldStreak,
+            streakEvaluated: false
+          };
+        } else {
+          sessionCharAttempts.value[charKey].attempts++;
+          if (!isCorrectVal) {
+            sessionCharAttempts.value[charKey].failed = true;
+          }
+        }
 
-      // Check Tier Transition
-      const transition = checkTierTransition(charKey, oldStreak, newStreak);
-      if (transition.direction !== 'same') {
-        latestTierTransition.value = transition;
-        sessionTierChanges.value.push(transition);
+        const charSessionState = sessionCharAttempts.value[charKey];
+        let streakChanged = false;
+        let newStreak = oldStreak;
+
+        if (!isCorrectVal) {
+          // If incorrect on any slot, streak resets to 0
+          if (oldStreak !== 0) {
+            newStreak = 0;
+            userStreaks.value[charKey] = 0;
+            streakChanged = true;
+          }
+        } else if (isCorrectVal && !charSessionState.failed && !charSessionState.streakEvaluated) {
+          // First clean correct answer for this word in session: increment streak +1
+          charSessionState.streakEvaluated = true;
+          newStreak = charSessionState.initialStreak + 1;
+          userStreaks.value[charKey] = newStreak;
+          streakChanged = true;
+        }
+
+        try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
+
+        if (streakChanged) {
+          const transition = checkTierTransition(charKey, oldStreak, newStreak);
+          if (transition.direction !== 'same') {
+            latestTierTransition.value = transition;
+            sessionTierChanges.value.push(transition);
+          }
+
+          import('./authStore').then(({ useAuthStore }) => {
+            const authStore = useAuthStore();
+            if (authStore.user) {
+              supabase.from('user_streaks').upsert({
+                user_id: authStore.user.id,
+                character: charKey,
+                streak: newStreak,
+                last_tier: transition.newTier,
+                tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
+                updated_at: new Date().toISOString()
+              }, { onConflict: 'user_id,character' }).then();
+            }
+          });
+        }
+      } else {
+        // Kana & other standard modes (1 unique character per slot)
+        const newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
+        userStreaks.value[charKey] = newStreak;
+        try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
+
+        // Check Tier Transition
+        const transition = checkTierTransition(charKey, oldStreak, newStreak);
+        if (transition.direction !== 'same') {
+          latestTierTransition.value = transition;
+          sessionTierChanges.value.push(transition);
+        }
+
+        import('./authStore').then(({ useAuthStore }) => {
+          const authStore = useAuthStore();
+          if (authStore.user) {
+            supabase.from('user_streaks').upsert({
+              user_id: authStore.user.id,
+              character: charKey,
+              streak: newStreak,
+              last_tier: transition.newTier,
+              tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
+              updated_at: new Date().toISOString()
+            }, { onConflict: 'user_id,character' }).then();
+          }
+        });
       }
 
       // Record answer in Daily Goals Store
@@ -367,16 +481,6 @@ export const useQuizStore = defineStore('quiz', () => {
       import('./authStore').then(({ useAuthStore }) => {
         const authStore = useAuthStore();
         goalsStore.recordAnswer(1, 0, authStore.user?.id);
-        if (authStore.user) {
-          supabase.from('user_streaks').upsert({
-            user_id: authStore.user.id,
-            character: charKey,
-            streak: newStreak,
-            last_tier: transition.newTier,
-            tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'user_id,character' }).then();
-        }
       });
 
       userAnswers.value.push({
@@ -385,7 +489,7 @@ export const useQuizStore = defineStore('quiz', () => {
       });
 
       if (!isCorrectVal) {
-        questions.value = [...questions.value, { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar' }];
+        questions.value = [...questions.value, { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }];
       }
     }
   };
