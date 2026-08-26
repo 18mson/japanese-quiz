@@ -47,7 +47,7 @@ const quizStore = useQuizStore();
     <!-- Main Character Display -->
     <span 
       :class="[
-        'font-bold tracking-tight text-center leading-tight my-0.5',
+        'font-bold tracking-tight text-center leading-tight my-0.5 font-jp',
         category === 'words' ? 'text-base sm:text-lg text-gray-800 dark:text-slate-100' : 'text-2xl sm:text-3xl text-gray-800 dark:text-slate-100',
         quizStore.getMasteryTier(item.character) === 'crown' ? 'text-indigo-900 dark:text-indigo-100 drop-shadow-xs' : '',
         quizStore.getMasteryTier(item.character) === 'mastered' ? 'text-emerald-950 dark:text-emerald-100' : '',

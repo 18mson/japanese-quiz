@@ -7,6 +7,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        jp: ['"Klee One"', '"Hiragino Sans"', '"Yu Gothic"', '"Meiryo"', 'sans-serif'],
+      },
       colors: {
         primary: '#4F46E5',
         secondary: '#F9A8D4',

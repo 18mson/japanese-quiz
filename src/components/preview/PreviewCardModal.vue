@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { Volume2, ArrowRight, Sparkles, Eye } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
+import KanjiAnimator from '../KanjiAnimator.vue';
 
 const quizStore = useQuizStore();
 
@@ -16,17 +17,32 @@ const itemsToPreview = computed(() => {
 
 const currentItem = computed(() => itemsToPreview.value[currentCardIndex.value] || null);
 
+const charText = computed(() => {
+  if (!currentItem.value) return '';
+  return currentItem.value.character || currentItem.value.japanese || currentItem.value.kana || '';
+});
+
 const isLastCard = computed(() => {
   return currentCardIndex.value >= itemsToPreview.value.length - 1;
 });
 
 const playAudioHint = () => {
   if (!currentItem.value) return;
-  // Audio playback fallback via SpeechSynthesis if available
+  // Audio playback via SpeechSynthesis
   if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(currentItem.value.kana || currentItem.value.character || '');
-    utterance.lang = 'ja-JP';
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        const textToSpeak = currentItem.value?.kana || currentItem.value?.character || currentItem.value?.japanese || '';
+        if (!textToSpeak) return;
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+      }, 50);
+    } catch (e) {
+      console.warn('TTS playback error:', e);
+    }
   }
 };
 
@@ -40,6 +56,10 @@ const handleNextCard = () => {
     currentCardIndex.value = 0;
   } else {
     currentCardIndex.value++;
+    // Play sound immediately on next card
+    setTimeout(() => {
+      playAudioHint();
+    }, 80);
   }
 };
 
@@ -48,66 +68,96 @@ let modalMountedAt = 0;
 const handleKeydown = (e: KeyboardEvent) => {
   if (!quizStore.isWavePreviewActive && !quizStore.showMicroPreviewModal) return;
   if (Date.now() - modalMountedAt < 300) return; // Prevent accidental skip on launch
-  if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+  if (e.key === 'Enter' || e.key === 'ArrowRight') {
     e.preventDefault();
     handleNextCard();
+  } else if (e.key === ' ' || e.key === 'v' || e.key === 'V') {
+    e.preventDefault();
+    playAudioHint();
   }
 };
+
+// Watch for modal visibility changes and card index updates
+watch(
+  [
+    () => quizStore.isWavePreviewActive, 
+    () => quizStore.showMicroPreviewModal, 
+    () => currentCardIndex.value,
+    () => currentItem.value
+  ],
+  ([waveActive, microActive]) => {
+    if (waveActive || microActive) {
+      setTimeout(() => {
+        playAudioHint();
+      }, 120);
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   modalMountedAt = Date.now();
   window.addEventListener('keydown', handleKeydown);
+  if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal) {
+    setTimeout(() => {
+      playAudioHint();
+    }, 150);
+  }
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
 });
 </script>
 
 <template>
   <div 
     v-if="quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal"
-    class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-4 z-50 animate-fadeIn"
+    class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn"
   >
-    <div class="max-w-md w-full bg-slate-900/90 border border-slate-700/80 rounded-3xl p-6 text-center shadow-2xl relative overflow-hidden flex flex-col items-center">
+    <div class="max-w-md w-full max-h-[90vh] overflow-y-auto bg-slate-900/90 border border-slate-700/80 rounded-3xl p-4 sm:p-5 text-center shadow-2xl relative flex flex-col items-center">
       
       <!-- Top Mode Badge -->
-      <div class="flex items-center gap-2 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-4">
+      <div class="flex items-center gap-2 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
         <Sparkles class="w-3.5 h-3.5 text-amber-400" />
         <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : 'Huruf Baru' }})</span>
         <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kanji' : 'Gelombang' }} {{ quizStore.currentWaveIndex + 1 }}</span>
       </div>
 
       <!-- Card Display Container -->
-      <div v-if="currentItem" class="w-full bg-slate-800/60 border border-slate-700/60 rounded-2xl p-5 sm:p-6 flex flex-col items-center shadow-inner relative">
+      <div v-if="currentItem" class="w-full bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-5 flex flex-col items-center shadow-inner relative">
         
-        <!-- Large Character / Kanji -->
-        <div 
-          class="font-black text-amber-300 drop-shadow-lg mb-1 font-jp leading-tight text-center"
-          :class="(currentItem.character || currentItem.japanese || '').length > 6 ? 'text-3xl sm:text-4xl' : ((currentItem.character || currentItem.japanese || '').length > 3 ? 'text-4xl sm:text-5xl' : 'text-6xl sm:text-7xl')"
-        >
-          {{ currentItem.character || currentItem.japanese }}
+        <!-- Animated Stroke Order Display -->
+        <div class="w-full py-1">
+          <KanjiAnimator 
+            :text="charText"
+            :speed="650"
+            :autoplay="true"
+          />
         </div>
 
         <!-- Furigana / Kana reading if different from character -->
         <div 
-          v-if="currentItem.kana && currentItem.kana !== (currentItem.character || currentItem.japanese)"
-          class="text-lg sm:text-xl font-bold text-slate-300 font-jp tracking-wider mb-1"
+          v-if="currentItem.kana && currentItem.kana !== charText"
+          class="text-base sm:text-lg font-bold text-slate-300 font-jp tracking-wider mb-0.5 mt-1"
         >
           {{ currentItem.kana }}
         </div>
 
         <!-- Romaji & Pronunciation -->
-        <div class="flex items-center justify-center gap-3 my-1.5 flex-wrap">
-          <span class="text-xl sm:text-2xl font-black text-indigo-400 tracking-wider uppercase">
+        <div class="flex items-center justify-center gap-2.5 my-1 flex-wrap">
+          <span class="text-sm sm:text-base font-extrabold text-indigo-400 tracking-wider uppercase">
             {{ Array.isArray(currentItem.romaji) ? currentItem.romaji.join(' / ') : currentItem.romaji }}
           </span>
           <button 
             @click="playAudioHint"
-            class="p-2 rounded-full bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 transition active:scale-95 cursor-pointer"
-            title="Dengarkan Pengucapan"
+            class="p-1.5 rounded-full bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 transition active:scale-95 cursor-pointer shadow-xs"
+            title="Dengarkan Pengucapan (Spasi / V)"
           >
-            <Volume2 class="w-4 h-4 sm:w-5 sm:h-5" />
+            <Volume2 class="w-4 h-4" />
           </button>
         </div>
 
