@@ -29,10 +29,11 @@ const strokeCharRefs = ref<InstanceType<typeof StrokeCharacter>[]>([]);
 // Responsive compact box sizing based on total character count
 const boxSizeClass = computed(() => {
   const count = characterEntries.value.length;
-  if (count <= 1) return 'w-20 h-20 sm:w-24 sm:h-24 max-w-[96px] max-h-[96px]';
-  if (count === 2) return 'w-16 h-16 sm:w-20 sm:h-20 max-w-[80px] max-h-[80px]';
-  if (count <= 4) return 'w-12 h-12 sm:w-14 sm:h-14 max-w-[56px] max-h-[56px]';
-  return 'w-10 h-10 sm:w-12 sm:h-12 max-w-[48px] max-h-[48px]';
+  if (count <= 1) return 'w-24 h-24 sm:w-28 sm:h-28 max-w-[112px] max-h-[112px]';
+  if (count === 2) return 'w-20 h-20 sm:w-24 sm:h-24 max-w-[96px] max-h-[96px]';
+  if (count === 3) return 'w-16 h-16 sm:w-20 sm:h-20 max-w-[80px] max-h-[80px]';
+  if (count <= 5) return 'w-14 h-14 sm:w-16 sm:h-16 max-w-[64px] max-h-[64px]';
+  return 'w-11 h-11 sm:w-13 sm:h-13 max-w-[52px] max-h-[52px]';
 });
 
 const loadCharacters = async (targetText: string) => {
@@ -126,18 +127,18 @@ defineExpose({
       v-else-if="characterEntries.length > 0"
       class="w-full flex flex-col items-center relative"
     >
-      <!-- Top Right Compact Replay Icon Button -->
+      <!-- Top Right Compact Replay Icon Button (Offside to top-right corner) -->
       <button
         type="button"
         @click="replayAll"
-        class="absolute -top-1 right-0 p-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/90 text-amber-400 dark:text-amber-300 border border-slate-700/60 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs z-20"
+        class="absolute -top-4 -right-3 p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs z-30"
         title="Ulangi Animasi Goresan"
       >
         <RotateCcw class="w-3.5 h-3.5" />
       </button>
 
-      <!-- Horizontal Compact Character Row -->
-      <div class="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap max-w-full py-0.5">
+      <!-- Horizontal Compact Character Row (Tighter Gap) -->
+      <div class="flex items-center justify-center gap-0.5 flex-wrap max-w-full py-0.5">
         <StrokeCharacter
           v-for="(item, idx) in characterEntries"
           :key="item.char + '_' + idx"

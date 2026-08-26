@@ -120,11 +120,26 @@ onUnmounted(() => {
   >
     <div class="max-w-md w-full max-h-[90vh] overflow-y-auto bg-slate-900/90 border border-slate-700/80 rounded-3xl p-4 sm:p-5 text-center shadow-2xl relative flex flex-col items-center">
       
-      <!-- Top Mode Badge -->
-      <div class="flex items-center gap-2 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider mb-3">
-        <Sparkles class="w-3.5 h-3.5 text-amber-400" />
-        <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : 'Huruf Baru' }})</span>
-        <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kanji' : 'Gelombang' }} {{ quizStore.currentWaveIndex + 1 }}</span>
+      <!-- Top Mode & Lesson Badges -->
+      <div class="flex items-center justify-center gap-2 flex-wrap mb-3">
+        <div class="flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider">
+          <Sparkles class="w-3.5 h-3.5 text-amber-400" />
+          <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : 'Huruf Baru' }})</span>
+          <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kanji' : 'Gelombang' }} {{ quizStore.currentWaveIndex + 1 }}</span>
+        </div>
+
+        <span 
+          v-if="currentItem?.lesson" 
+          class="text-xs px-3 py-1 rounded-full bg-violet-500/20 text-violet-300 font-bold border border-violet-500/30"
+        >
+          {{ currentItem.lesson }}
+        </span>
+        <span 
+          v-if="currentItem?.category_word" 
+          class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30"
+        >
+          {{ currentItem.category_word }}
+        </span>
       </div>
 
       <!-- Card Display Container -->
@@ -167,16 +182,6 @@ onUnmounted(() => {
           <p class="text-sm sm:text-base text-emerald-200 font-semibold italic">
             "{{ currentItem.meaning }}"
           </p>
-        </div>
-
-        <!-- Tags / Badges for Lesson & Category -->
-        <div v-if="currentItem.lesson || currentItem.category_word" class="mt-2.5 flex items-center justify-center gap-2 flex-wrap">
-          <span v-if="currentItem.lesson" class="text-[11px] px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold border border-indigo-500/30">
-            {{ currentItem.lesson }}
-          </span>
-          <span v-if="currentItem.category_word" class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
-            {{ currentItem.category_word }}
-          </span>
         </div>
 
         <div class="mt-4 pt-3 border-t border-slate-700/50 w-full flex justify-between items-center text-xs text-slate-400 font-semibold">
