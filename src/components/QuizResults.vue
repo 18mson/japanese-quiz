@@ -375,7 +375,7 @@ const hasTierChanges = computed(() => {
           ]"
           @click="deactivateKeyboardNav(); quizStore.restartQuiz();"
         >
-          Try Again
+          Main Lagi
         </button>
 
         <!-- Leaderboard Button (Index 2) -->

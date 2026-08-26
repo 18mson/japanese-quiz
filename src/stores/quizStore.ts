@@ -329,7 +329,7 @@ export const useQuizStore = defineStore('quiz', () => {
     const pool = getFallbackLocalPool(type, level);
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
     if (weakPool.length === 0) weakPool = [...pool];
-    
+
     if (type === 'words') {
       questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
     } else {
@@ -384,9 +384,8 @@ export const useQuizStore = defineStore('quiz', () => {
       const charKey = current.character;
       const oldStreak = userStreaks.value[charKey] || 0;
 
-      // Track first-attempt accuracy (ONLY first time attempting this character in session)
-      if (!attemptedChars.value[charKey]) {
-        attemptedChars.value[charKey] = true;
+      // Track first-attempt accuracy: count each correct answer during the initial main round (indices 0 to initialQuestionCount - 1)
+      if (currentQuestionIndex.value < initialQuestionCount.value) {
         if (isCorrectVal) firstTryCorrectCount.value++;
       }
 
