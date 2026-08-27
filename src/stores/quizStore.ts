@@ -56,9 +56,38 @@ export const useQuizStore = defineStore('quiz', () => {
     } catch (e) { }
   };
 
+  const introducedChars = ref<Record<string, boolean>>({});
+
+  const getLocalIntroduced = (): Record<string, boolean> => {
+    try {
+      const stored = localStorage.getItem('japanese-quiz-introduced');
+      if (stored) return JSON.parse(stored);
+    } catch (e) { }
+    return {};
+  };
+
+  const saveIntroducedToStorage = () => {
+    try {
+      localStorage.setItem('japanese-quiz-introduced', JSON.stringify(introducedChars.value));
+    } catch (e) { }
+  };
+
+  const loadIntroducedFromStorage = () => {
+    const local = getLocalIntroduced();
+    // Any character with a streak > 0 is already known/introduced
+    Object.keys(userStreaks.value).forEach(char => {
+      if ((userStreaks.value[char] || 0) > 0) {
+        local[char] = true;
+      }
+    });
+    introducedChars.value = local;
+    saveIntroducedToStorage();
+  };
+
   const loadStreaksFromStorage = async () => {
     const local = getLocalStreaks();
     userStreaks.value = { ...local };
+    loadIntroducedFromStorage();
     const { useAuthStore } = await import('./authStore');
     const authStore = useAuthStore();
     if (authStore.user) {
@@ -67,9 +96,13 @@ export const useQuizStore = defineStore('quiz', () => {
         const merged: Record<string, number> = { ...local };
         Object.entries(serverStreaks).forEach(([char, streak]) => {
           merged[char] = Math.max(merged[char] || 0, streak);
+          if (streak > 0) {
+            introducedChars.value[char] = true;
+          }
         });
         userStreaks.value = merged;
         localStorage.setItem('japanese-quiz-streaks', JSON.stringify(merged));
+        saveIntroducedToStorage();
       } catch (e) {
         console.error('Error fetching server streaks:', e);
       }
@@ -142,7 +175,9 @@ export const useQuizStore = defineStore('quiz', () => {
     if (currentWaveItems.value.length > 0) {
       currentWaveItems.value.forEach(item => {
         previewedItems.value[item.character] = true;
+        introducedChars.value[item.character] = true;
       });
+      saveIntroducedToStorage();
     }
     isWavePreviewActive.value = false;
     justClosedPreview.value = true;
@@ -155,6 +190,8 @@ export const useQuizStore = defineStore('quiz', () => {
   const completeMicroPreview = () => {
     if (microPreviewItem.value) {
       previewedItems.value[microPreviewItem.value.character] = true;
+      introducedChars.value[microPreviewItem.value.character] = true;
+      saveIntroducedToStorage();
     }
     showMicroPreviewModal.value = false;
     microPreviewItem.value = null;
@@ -261,12 +298,15 @@ export const useQuizStore = defineStore('quiz', () => {
       questions.value = kanjiQuestions;
 
       // Kumpulkan item unlearned unik dalam sesi ini untuk ditampilkan di preview card awal
+      // HANYA untuk kata yang benar-benar baru (belum pernah di-preview / dipelajari sama sekali)
       const uniqueUnlearnedInSession: any[] = [];
       const seenChars = new Set<string>();
       kanjiQuestions.forEach(q => {
         if (!seenChars.has(q.character)) {
           seenChars.add(q.character);
-          if ((userStreaks.value[q.character] || 0) === 0) {
+          const streak = userStreaks.value[q.character] || 0;
+          const isIntroduced = !!introducedChars.value[q.character];
+          if (streak === 0 && !isIntroduced) {
             uniqueUnlearnedInSession.push(q);
           }
         }
@@ -382,6 +422,8 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (current) {
       const charKey = current.character;
+      introducedChars.value[charKey] = true;
+      saveIntroducedToStorage();
       const oldStreak = userStreaks.value[charKey] || 0;
 
       // Track first-attempt accuracy: count each correct answer during the initial main round (indices 0 to initialQuestionCount - 1)
@@ -593,7 +635,7 @@ export const useQuizStore = defineStore('quiz', () => {
     isLoading, quizLevel, questionType, isTypingMode, userInput, showReadingHint, showMeaningHint,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
     startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
-    speedAchievement, userAnswers, userStreaks, currentQuestion, options, progress, finalScore,
+    speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,
     hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
     sentenceStats,

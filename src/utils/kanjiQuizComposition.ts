@@ -21,27 +21,28 @@ export interface KanjiQuestion extends KanjiItem {
 
 /**
  * Tier weights specifically designed for Kanji / Kotoba mode.
- * Lower 'new' weight (15%) and higher 'learning' weight (55%) to avoid cognitive overload.
+ * Balanced weights to encourage steady lesson progression while reviewing active words.
  */
 export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
-  new: 15,
-  learning: 55,
-  mastered: 25,
+  new: 35,
+  learning: 40,
+  mastered: 20,
   crown: 5
 };
 
 /**
- * Hard cap for new/unlearned unique words in a single session.
- * Cannot be exceeded regardless of rounding or tier weight.
+ * Gets dynamic cap for new/unlearned unique words in a single session based on total slots.
  */
-export const MAX_NEW_UNIQUE_PER_SESSION = 2;
+export const getMaxNewUniquePerSession = (totalSlots: number): number => {
+  return Math.max(2, Math.min(8, Math.round(totalSlots * 0.35)));
+};
 
 /**
  * Repetition weight per word based on its mastery tier.
- * Unlearned words repeat more often (3x) for active recall reinforcement.
+ * Keeps repetition natural (1-2x) to ensure high unique word diversity per session.
  */
 export const KANJI_REPEAT_WEIGHT: Record<MasteryTierKey, number> = {
-  new: 3,
+  new: 2,
   learning: 2,
   mastered: 1,
   crown: 1
@@ -67,8 +68,8 @@ export const KANJI_TIER_METADATA: Record<MasteryTierKey, { questionReason: strin
 };
 
 /**
- * Selects a compact pool of UNIQUE words for the session.
- * Prioritizes shorter character length for 'new' tier candidates (lower complexity first).
+ * Selects a rich pool of UNIQUE words for the session.
+ * Prioritizes natural lesson progression (Pelajaran 1 -> 2 -> 3...) rather than arbitrary character length.
  */
 export const selectKanjiUniquePool = (
   pool: KanjiItem[],
@@ -91,15 +92,12 @@ export const selectKanjiUniquePool = (
     tierBuckets[tier].push(item);
   });
 
-  // Sort 'new' tier candidates by character length ascending (1 kanji before 2-3 kanji words)
+  // Sort 'new' tier candidates by lesson order ascending (Pelajaran 1 -> 25)
   tierBuckets.new.sort((a, b) => {
-    const lenA = (a.character || '').length;
-    const lenB = (b.character || '').length;
-    if (lenA !== lenB) return lenA - lenB;
-    // Secondary: lesson number order
     const numA = parseInt((a.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
     const numB = parseInt((b.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
-    return numA - numB;
+    if (numA !== numB) return numA - numB;
+    return 0;
   });
 
   // Random shuffle within other buckets for variety
@@ -107,12 +105,13 @@ export const selectKanjiUniquePool = (
     tierBuckets[tier].sort(() => 0.5 - Math.random());
   });
 
-  // Determine target number of unique words (for 8 slots: 3 to 4 unique words)
+  // Determine target number of unique words (e.g. 5-6 unique words for 8 slots, 14-16 for 24 slots)
   const targetUniqueCount = Math.max(
     2,
-    Math.min(pool.length, Math.round(totalSlots / 2.3))
+    Math.min(pool.length, Math.max(Math.round(totalSlots * 0.65), Math.min(5, totalSlots)))
   );
 
+  const maxNewCount = getMaxNewUniquePerSession(totalSlots);
   const selectedUnique: { item: KanjiItem; tier: MasteryTierKey }[] = [];
   let newCount = 0;
 
@@ -128,22 +127,19 @@ export const selectKanjiUniquePool = (
     // Check which tiers still have candidates and are within caps
     const eligibleTiers = (['new', 'learning', 'mastered', 'crown'] as MasteryTierKey[]).filter(tier => {
       if (available[tier].length === 0) return false;
-      if (tier === 'new' && newCount >= MAX_NEW_UNIQUE_PER_SESSION) return false;
+      if (tier === 'new' && newCount >= maxNewCount) return false;
       return true;
     });
 
     if (eligibleTiers.length === 0) {
-      // If we already reached the max new items cap, do NOT force more new items
-      if (newCount >= MAX_NEW_UNIQUE_PER_SESSION) {
-        // If we have at least 2 unique items, break and let repeat slots fill the session
-        if (selectedUnique.length >= 2) {
-          break;
-        }
+      // If we already reached the max new items cap and have enough items, break
+      if (newCount >= maxNewCount && selectedUnique.length >= 2) {
+        break;
       }
 
-      // Fallback: pick any remaining item from any tier that still has items (if new cap not exceeded)
+      // Fallback: pick any remaining item from any tier that still has items
       const fallbackTier = (['learning', 'mastered', 'crown', 'new'] as MasteryTierKey[]).find(
-        tier => available[tier].length > 0 && (tier !== 'new' || newCount < MAX_NEW_UNIQUE_PER_SESSION)
+        tier => available[tier].length > 0 && (tier !== 'new' || newCount < maxNewCount)
       );
       if (!fallbackTier) break; // Exhausted eligible items
       const item = available[fallbackTier].shift()!;
