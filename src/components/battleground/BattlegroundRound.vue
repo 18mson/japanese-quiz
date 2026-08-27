@@ -820,7 +820,7 @@ function preventPaste(e: ClipboardEvent) {
       >
 
         <!-- Sentence (Japanese) display with active character pointer, Power-Up Highlight & Live Progress Markers -->
-        <div class="pt-7 sm:pt-9 mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-7 sm:gap-y-9 min-h-[60px] sm:min-h-[80px] w-full max-w-xl relative overflow-visible">
+        <div class="pt-7 sm:pt-9 mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-7 sm:gap-y-9 min-h-[60px] sm:min-h-[80px] w-full max-w-xl relative overflow-visible font-jp">
           <!-- Left Edge Markers (Players on previous sentences - Opacity 50%) -->
           <div v-if="leftEdgeMarkers.length > 0" class="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
             <div
@@ -876,10 +876,10 @@ function preventPaste(e: ClipboardEvent) {
           <template v-for="(unit, idx) in units" :key="idx">
             <div
               :ref="(el) => setUnitRef(el, idx)"
-              class="relative inline-flex flex-col items-center"
+              class="relative inline-flex flex-col items-center font-jp"
             >
               <!-- Completed Japanese character/word -->
-              <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold">{{ unit.kana }}</span>
+              <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold font-jp">{{ unit.kana }}</span>
 
               <!-- Current active Japanese character/word pointer (Custom highlight if power-up) -->
               <span
@@ -887,7 +887,8 @@ function preventPaste(e: ClipboardEvent) {
                 :class="[
                   idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
                     ? getPowerUpHighlightClass(powerUpType, true)
-                    : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400'
+                    : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400',
+                  'font-jp'
                 ]"
               >
                 {{ unit.kana }}
@@ -899,7 +900,8 @@ function preventPaste(e: ClipboardEvent) {
                 :class="[
                   idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
                     ? getPowerUpHighlightClass(powerUpType, false)
-                    : 'text-slate-400/70 font-medium'
+                    : 'text-slate-400/70 font-medium',
+                  'font-jp'
                 ]"
               >
                 {{ unit.kana }}

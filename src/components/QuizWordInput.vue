@@ -175,8 +175,8 @@ const isTypo = computed(() => {
         <!-- Explanation Block -->
         <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex flex-col items-center">
           <div class="flex items-baseline gap-2 flex-wrap justify-center">
-            <span class="text-2xl font-bold text-gray-800 dark:text-slate-100">{{ currentWord?.character }}</span>
-            <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 dark:text-slate-400 font-medium">
+            <span class="text-2xl font-bold text-gray-800 dark:text-slate-100 font-jp">{{ currentWord?.character }}</span>
+            <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 dark:text-slate-400 font-medium font-jp">
               （{{ (currentWord as any)?.kana }}）
             </span>
           </div>

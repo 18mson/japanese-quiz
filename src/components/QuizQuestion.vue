@@ -77,18 +77,20 @@ const instructionText = computed(() => {
     <!-- Big Question Card -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 dark:from-indigo-950/40 dark:to-slate-800/80 border border-indigo-100/50 dark:border-slate-700/80 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md',
-        isWord ? 'w-full max-w-md min-h-24 py-3 px-4' : 'w-28 h-28'
+        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 dark:from-indigo-950/40 dark:to-slate-800/80 border border-indigo-100/50 dark:border-slate-700/80 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md px-6 py-4',
+        isWord 
+          ? 'w-full max-w-md min-h-[100px] sm:min-h-[120px]' 
+          : 'w-full max-w-xs sm:max-w-sm min-h-[110px] sm:min-h-[130px]'
       ]"
     >
       <div class="flex flex-col items-center text-center w-full">
         <!-- Display Character/Word -->
         <span 
           :class="[
-            'text-gray-800 dark:text-white font-bold tracking-wide transition-all duration-300 leading-none',
+            'text-gray-900 dark:text-white font-black tracking-wide transition-all duration-300 leading-none font-jp drop-shadow-xs whitespace-nowrap select-none',
             isWord 
-              ? (character.length > 6 ? 'text-2xl' : 'text-3xl')
-              : 'text-4xl font-bold'
+              ? (character.length > 6 ? 'text-3xl sm:text-4xl' : (character.length > 3 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'))
+              : (character.length >= 2 ? 'text-5xl sm:text-6xl' : 'text-6xl sm:text-7xl')
           ]"
         >
           {{ character }}
@@ -107,7 +109,7 @@ const instructionText = computed(() => {
               <span>Reading Hint</span>
             </button>
             <span v-else class="text-xs font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-              Reading: {{ currentKana }}
+              Reading: <span class="font-jp">{{ currentKana }}</span>
             </span>
           </template>
 

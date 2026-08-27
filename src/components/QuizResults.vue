@@ -253,25 +253,25 @@ const hasTierChanges = computed(() => {
           }"
         >
           <!-- SVG Circular Progress around Character / Index Number -->
-          <div class="relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center mr-3 flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-gray-150 dark:border-slate-700 shadow-inner mt-0.5">
-            <svg class="absolute inset-0 w-full h-full transform -rotate-90">
-              <circle cx="18" cy="18" r="15" stroke="#f3f4f6" class="dark:stroke-slate-700" stroke-width="3" fill="transparent" />
+          <div class="relative w-16 h-16 sm:w-[72px] sm:h-[72px] flex items-center justify-center mr-3.5 flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-gray-200 dark:border-slate-700/80 shadow-sm">
+            <svg class="absolute inset-0 w-full h-full transform -rotate-90 p-0.5" viewBox="0 0 64 64">
+              <circle cx="32" cy="32" r="27" stroke="#e2e8f0" class="dark:stroke-slate-800" stroke-width="4" fill="transparent" />
               <circle 
-                cx="18" 
-                cy="18" 
-                r="15" 
+                cx="32" 
+                cy="32" 
+                r="27" 
                 :stroke="getProgressColor(answer)" 
-                stroke-width="3" 
+                stroke-width="4.5" 
                 fill="transparent" 
-                :stroke-dasharray="2 * Math.PI * 15" 
-                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 15) : (2 * Math.PI * 15 * (1 - (answer.pointsEarned || 0) / 4))" 
+                :stroke-dasharray="2 * Math.PI * 27" 
+                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 27) : (2 * Math.PI * 27 * (1 - (answer.pointsEarned || 0) / 4))" 
                 stroke-linecap="round"
                 class="transition-all duration-500 ease-out"
               />
             </svg>
             <span 
-              class="font-black text-gray-800 dark:text-slate-100 z-10 select-none text-center" 
-              :class="answer.character.length > 4 ? 'text-xs font-bold text-gray-600 dark:text-slate-300' : 'text-xs sm:text-sm font-bold'"
+              class="font-black text-gray-800 dark:text-slate-100 z-10 select-none text-center font-jp flex items-center justify-center leading-none" 
+              :class="answer.character.length > 4 ? 'text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400' : (answer.character.length > 2 ? 'text-base sm:text-lg font-bold' : 'text-2xl sm:text-3xl font-black')"
             >
               {{ answer.character.length > 4 ? `#${index + 1}` : answer.character }}
             </span>
@@ -279,7 +279,7 @@ const hasTierChanges = computed(() => {
 
           <div class="flex-1 flex flex-col min-w-0">
             <!-- Full Japanese sentence title if character is long -->
-            <h4 v-if="answer.character.length > 4" class="text-sm sm:text-base font-bold text-gray-900 dark:text-slate-100 leading-snug font-japanese mb-1 break-words">
+            <h4 v-if="answer.character.length > 4" class="text-sm sm:text-base font-bold text-gray-900 dark:text-slate-100 leading-snug font-jp mb-1 break-words">
               {{ answer.character }}
             </h4>
 
@@ -327,7 +327,7 @@ const hasTierChanges = computed(() => {
               </span>
 
               <!-- Kana reading badge -->
-              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-100/50 dark:border-indigo-800">
+              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-100/50 dark:border-indigo-800 font-jp">
                 {{ answer.kana }}
               </span>
             </div>

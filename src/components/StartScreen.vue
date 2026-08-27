@@ -600,7 +600,7 @@ const handleStart = async () => {
                       : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
                   ]"
                 >
-                  あ Hiragana
+                  <span class="font-jp">あ</span> Hiragana
                 </button>
                 <button
                   type="button"
@@ -612,7 +612,7 @@ const handleStart = async () => {
                       : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
                   ]"
                 >
-                  ア Katakana
+                  <span class="font-jp">ア</span> Katakana
                 </button>
                 <button
                   type="button"
@@ -624,7 +624,7 @@ const handleStart = async () => {
                       : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
                   ]"
                 >
-                  あ/ア Mix Kana
+                  <span class="font-jp">あ/ア</span> Mix Kana
                 </button>
                 <button
                   type="button"

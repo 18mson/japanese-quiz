@@ -309,7 +309,7 @@ const emit = defineEmits<{ exit: [] }>();
                     : 'border-slate-800 bg-slate-950/50 text-slate-400 hover:border-slate-700 font-bold'
                 ]"
               >
-                <span class="text-xs">あ</span>
+                <span class="text-xs font-jp">あ</span>
                 <span class="text-[11px] truncate">Hiragana</span>
               </button>
 
@@ -323,7 +323,7 @@ const emit = defineEmits<{ exit: [] }>();
                     : 'border-slate-800 bg-slate-950/50 text-slate-400 hover:border-slate-700 font-bold'
                 ]"
               >
-                <span class="text-xs">ア</span>
+                <span class="text-xs font-jp">ア</span>
                 <span class="text-[11px] truncate">Katakana</span>
               </button>
 
@@ -337,7 +337,7 @@ const emit = defineEmits<{ exit: [] }>();
                     : 'border-slate-800 bg-slate-950/50 text-slate-400 hover:border-slate-700 font-bold'
                 ]"
               >
-                <span class="text-xs">あ/ア</span>
+                <span class="text-xs font-jp">あ/ア</span>
                 <span class="text-[11px] truncate">Mix Kana</span>
               </button>
 
@@ -557,7 +557,7 @@ const emit = defineEmits<{ exit: [] }>();
               
               <div v-if="selectedQuizCategory === 'kotoba_kanji'" class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
                 <div>
-                  <div class="text-base font-black text-white">学校 <span class="text-xs font-normal text-amber-300">(がっこう)</span></div>
+                  <div class="text-base font-black text-white font-jp">学校 <span class="text-xs font-normal text-amber-300 font-jp">(がっこう)</span></div>
                   <div class="text-xs text-slate-400">JLPT N5 Kosakata & Kanji</div>
                 </div>
                 <div class="text-right">
@@ -567,17 +567,17 @@ const emit = defineEmits<{ exit: [] }>();
               </div>
 
               <div v-else-if="selectedQuizCategory === 'hiragana'" class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
-                <div class="text-base font-black text-white">あ / か / さ / た</div>
+                <div class="text-base font-black text-white font-jp">あ / か / さ / た</div>
                 <div class="text-xs font-bold text-emerald-400">➔ Romaji: a / ka / sa / ta</div>
               </div>
 
               <div v-else-if="selectedQuizCategory === 'katakana'" class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
-                <div class="text-base font-black text-white">ア / カ / サ / タ</div>
+                <div class="text-base font-black text-white font-jp">ア / カ / サ / タ</div>
                 <div class="text-xs font-bold text-emerald-400">➔ Romaji: a / ka / sa / ta</div>
               </div>
 
               <div v-else class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
-                <div class="text-base font-black text-white">あ / ア (Mix)</div>
+                <div class="text-base font-black text-white font-jp">あ / ア (Mix)</div>
                 <div class="text-xs font-bold text-emerald-400">➔ Campuran Hiragana & Katakana</div>
               </div>
             </div>
@@ -627,7 +627,7 @@ const emit = defineEmits<{ exit: [] }>();
               <div class="text-[10px] text-rose-400 font-extrabold uppercase tracking-wider mb-1">
                 Contoh Kalimat Mengetik
               </div>
-              <div class="text-sm font-bold text-white mb-0.5">こんにちは、元気ですか？</div>
+              <div class="text-sm font-bold text-white mb-0.5 font-jp">こんにちは、元気ですか？</div>
               <div class="text-xs font-mono text-slate-400">konnichiha, genkidesuka?</div>
             </div>
           </div>

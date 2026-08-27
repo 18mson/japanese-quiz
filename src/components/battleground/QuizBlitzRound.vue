@@ -239,12 +239,12 @@ const remainingSecFormatted = computed(() => {
           </div>
 
           <!-- Japanese Main Prompt (Large & High Contrast) -->
-          <div class="text-4xl sm:text-6xl font-black text-white tracking-wide my-1.5 drop-shadow-md">
+          <div class="text-4xl sm:text-6xl font-black text-white tracking-wide my-1.5 drop-shadow-md font-jp">
             {{ question.prompt }}
           </div>
 
           <!-- SubPrompt / Reading Hint if available -->
-          <div v-if="question.subPrompt" class="text-xs sm:text-sm font-semibold text-slate-400 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700 mt-1">
+          <div v-if="question.subPrompt" class="text-xs sm:text-sm font-semibold text-slate-400 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700 mt-1 font-jp">
             {{ question.subPrompt }}
           </div>
         </div>

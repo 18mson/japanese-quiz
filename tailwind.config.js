@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', '"Klee One"', '"Hiragino Sans"', '"Yu Gothic"', '"Meiryo"', 'sans-serif'],
         jp: ['"Klee One"', '"Hiragino Sans"', '"Yu Gothic"', '"Meiryo"', 'sans-serif'],
       },
       colors: {

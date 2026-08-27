@@ -480,13 +480,13 @@ const handleKeyDown = (e: KeyboardEvent) => {
       </div>
 
       <!-- Japanese Sentence Display with Character-by-Character Highlight -->
-      <div class="flex items-center justify-center flex-wrap gap-1 sm:gap-2 my-2 sm:my-4 min-h-[45px] sm:min-h-[70px]">
+      <div class="flex items-center justify-center flex-wrap gap-1.5 sm:gap-2.5 my-2 sm:my-4 min-h-[55px] sm:min-h-[85px]">
         <div
           v-for="(unit, idx) in units"
           :key="idx"
           @click="toggleHint(Number(idx))"
           title="Klik untuk melihat hint romaji"
-          class="flex flex-col items-center transition-all duration-200 px-1 py-0.5 sm:px-1.5 sm:py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 dark:hover:bg-slate-800 select-none"
+          class="flex flex-col items-center transition-all duration-200 px-1 py-0.5 sm:px-1.5 sm:py-1 rounded-xl cursor-pointer hover:bg-indigo-50/70 dark:hover:bg-slate-800 select-none font-jp"
           :class="[
             Number(idx) < activeUnitIndex 
               ? 'text-emerald-600 dark:text-emerald-400 font-extrabold scale-95' 
@@ -495,7 +495,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
                 : 'text-gray-400 dark:text-slate-500 font-medium opacity-60')
           ]"
         >
-          <span class="text-2xl sm:text-4xl leading-tight">{{ unit.kana }}</span>
+          <span class="text-3xl sm:text-5xl leading-tight font-jp font-bold">{{ unit.kana }}</span>
           <span 
             class="text-[9px] sm:text-[10px] font-mono mt-0.5 font-bold uppercase tracking-tighter transition-all duration-200"
             :class="[
