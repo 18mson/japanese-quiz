@@ -14,6 +14,9 @@ import LevelUpModal from './components/LevelUpModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 import BattlegroundMode from './components/BattlegroundMode.vue';
+import KaiwaPlayer from './components/KaiwaPlayer.vue';
+import RenshuuPlayer from './components/RenshuuPlayer.vue';
+import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
 
 import AboutModal from './components/AboutModal.vue';
 import PreviewCardModal from './components/preview/PreviewCardModal.vue';
@@ -402,6 +405,7 @@ const goToHome = () => {
 
     <!-- Modals & Overlays -->
     <PreviewCardModal v-if="quizStarted && !showBattleground" />
+    <LessonMaterialModal v-if="quizStarted && !showBattleground" />
     <GoalCelebrationToast />
 
     <!-- Main Screens -->
@@ -427,7 +431,9 @@ const goToHome = () => {
           <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>
         </div>
         <template v-else>
-          <QuizSentenceTyping v-if="quizStore.questionType === 'sentences'" />
+          <KaiwaPlayer v-if="quizStore.questionType === 'kaiwa'" />
+          <RenshuuPlayer v-else-if="quizStore.questionType === 'renshuu'" />
+          <QuizSentenceTyping v-else-if="quizStore.questionType === 'sentences'" />
           <template v-else>
             <QuizQuestion class="flex-shrink-0" />
             <div class="w-full flex flex-col justify-start items-center py-1 sm:py-2">

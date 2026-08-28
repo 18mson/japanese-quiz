@@ -7,7 +7,9 @@ export const normalizeRomajiForComparison = (str: string): string => {
   return str
     .toLowerCase()
     .trim()
+    .replace(/\(.*?\)|（.*?）/g, '') // ignore optional parenthetical readings e.g. (どなた)
     .replace(/[^a-z0-9]/g, '') // ignore all spaces, punctuation, symbols, and hyphens
+    .replace(/ha/g, 'wa')  // particle 'ha' and 'wa' normalized equally (watashi ha / watashi wa)
     .replace(/nn/g, 'n')  // normalize double n to single n
     .replace(/tsu/g, 'tu') // normalize tsu/tu
     .replace(/shi/g, 'si') // normalize shi/si
@@ -60,10 +62,13 @@ export const checkIsTypo = (userInputClean: string, targetRomaji: string | strin
 };
 
 export const getQuestionCountFromDuration = (targetDurationMinutes: number, type: string = 'hiragana'): number => {
-  if (type === 'sentences') {
-    if (targetDurationMinutes <= 1) return 4;
-    if (targetDurationMinutes <= 3) return 10;
-    return 16;
+  if (type === 'kaiwa') {
+    return 1; // 1 whole dialog
+  }
+  if (type === 'renshuu') {
+    if (targetDurationMinutes <= 1) return 6;
+    if (targetDurationMinutes <= 3) return 14;
+    return 25;
   }
   if (type === 'words') {
     if (targetDurationMinutes <= 1) return 8;

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy } from '@lucide/vue';
+import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
+import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
+const isReferenceModalOpen = ref(false);
 const targetDurationMinutes = ref<number>(1);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
@@ -138,10 +140,17 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 onMounted(() => {
   updateResponsive();
+  quizStore.loadRenshuuProgress();
   window.addEventListener('resize', updateResponsive);
   window.addEventListener('keydown', handleKeydown);
   window.addEventListener('pointerdown', deactivateKeyboardNav);
   window.addEventListener('touchstart', deactivateKeyboardNav);
+});
+
+watch(characterTypes, (newVal) => {
+  if (newVal === 'renshuu') {
+    quizStore.loadRenshuuProgress();
+  }
 });
 
 onUnmounted(() => {
@@ -204,14 +213,15 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'sentence_typing',
-    title: 'Kotoba & Bunshou',
+    title: 'Kotoba, Renshuu & Kaiwa',
     levelTag: 'N5 Intermediate',
     level: 'n5',
     defaultType: 'words',
-    desc: 'Latihan mengetik kosakata (kotoba) berhuruf Kanji & latihan susunan kalimat (bunshou) N5.',
+    desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
     subTypes: [
       { key: 'words', label: 'Kotoba (言葉)' },
-      { key: 'sentences', label: 'Bunshou (文章)' },
+      { key: 'renshuu', label: 'Renshuu (練習)' },
+      { key: 'kaiwa', label: 'Kaiwa (会話)' },
     ],
     icon: BookOpen,
     discGradient: 'from-violet-500 via-purple-600 to-indigo-600',
@@ -346,11 +356,22 @@ function getCardStyle(index: number) {
   };
 }
 
+const getModeDescription = (mode: QuizModeDef) => {
+  if (mode.id === 'sentence_typing') {
+    if (characterTypes.value === 'words') return 'Latihan mengetik kosakata berhuruf Kanji';
+    if (characterTypes.value === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play';
+    if (characterTypes.value === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5';
+  }
+  return mode.desc;
+};
+
 const getShortDurationDesc = (minutes: number) => {
-  if (characterTypes.value === 'sentences') {
-    if (minutes === 1) return 'Kilat · 4 kalimat';
-    if (minutes === 3) return 'Fokus · 10 kalimat';
-    if (minutes === 5) return 'Maraton · 16 kalimat';
+  if (characterTypes.value === 'kaiwa') {
+    return 'Percakapan · 1 Bab (9 Baris)';
+  } else if (characterTypes.value === 'renshuu') {
+    if (minutes === 1) return 'Kilat · 6 soal';
+    if (minutes === 3) return 'Fokus · 14 soal';
+    if (minutes === 5) return 'Lengkap · 25 soal';
   } else if (characterTypes.value === 'words') {
     if (minutes === 1) return 'Kilat · 8 kanji';
     if (minutes === 3) return 'Fokus · 24 kanji';
@@ -411,9 +432,20 @@ const handleStart = async () => {
         </div>
       </div>
 
-      <!-- Action Buttons: Daily Target, Peringkat & Grid -->
+      <!-- Action Buttons: Daily Target, Referensi, Peringkat & Grid -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
         <DailyGoalProgressBar class="hidden xs:flex" />
+
+        <button 
+          v-if="selectedLevel === 'n5'"
+          type="button"
+          @click.stop="deactivateKeyboardNav(); isReferenceModalOpen = true;"
+          class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/80 hover:bg-indigo-100 shadow-2xs"
+          title="Lihat Kosakata & Referensi Resmi Bab"
+        >
+          <BookOpen class="w-4 h-4 text-indigo-500 flex-shrink-0" />
+          <span class="hidden sm:inline">Referensi</span>
+        </button>
 
         <button 
           type="button"
@@ -545,7 +577,7 @@ const handleStart = async () => {
               >
                 <!-- Description -->
                 <p class="text-xs text-gray-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
-                  {{ mode.desc }}
+                  {{ getModeDescription(mode) }}
                 </p>
 
                 <!-- Sub-types buttons (Horizontal list under desc) -->
@@ -675,7 +707,31 @@ const handleStart = async () => {
       ]"
     >
       <!-- Duration Pills Selector (Inside bottom sticky bar) -->
-      <div v-if="selectedLevel !== 'battleground'" class="w-full max-w-3xl mb-3">
+      <!-- Renshuu Mode: Progress Card (Replaces Duration Presets) -->
+      <div v-if="characterTypes === 'renshuu'" class="w-full max-w-3xl mb-3 bg-white dark:bg-slate-900 border border-violet-500/40 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col gap-2 animate-fadeIn">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-violet-500 animate-pulse flex-shrink-0"></span>
+            <span class="text-xs sm:text-sm font-black text-violet-700 dark:text-violet-300 truncate">
+              Pelajaran {{ quizStore.currentLessonNumber }}: Renshuu
+            </span>
+          </div>
+          <span class="text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-0.5 rounded-full border border-gray-200 dark:border-slate-700 flex-shrink-0">
+            {{ quizStore.renshuuProgressStats.masteredCount }} / {{ quizStore.renshuuProgressStats.totalCount }} soal dikuasai ({{ quizStore.renshuuProgressStats.progressPercent }}%)
+          </span>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-3 bg-gray-100 dark:bg-slate-950 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 p-0.5 shadow-inner">
+          <div 
+            class="h-full bg-gradient-to-r from-violet-600 via-indigo-500 to-emerald-400 rounded-full transition-all duration-500"
+            :style="{ width: `${quizStore.renshuuProgressStats.progressPercent}%` }"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Duration Pills Selector for Other Modes -->
+      <div v-else-if="selectedLevel !== 'battleground'" class="w-full max-w-3xl mb-3">
         <div class="flex items-center gap-1.5 sm:gap-2.5 w-full">
           <button
             v-for="min in [1, 3, 5]"
@@ -714,7 +770,9 @@ const handleStart = async () => {
             'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden',
             selectedLevel === 'battleground'
               ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25'
-              : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
+              : characterTypes === 'renshuu'
+                ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-violet-500/25'
+                : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
             isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-indigo-400/60 shadow-lg' : ''
           ]"
           @click="deactivateKeyboardNav(); handleStart();"
@@ -732,6 +790,10 @@ const handleStart = async () => {
               <span>Masuk Arena Battleground</span>
               <Swords class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
+            <div v-else-if="characterTypes === 'renshuu'" key="renshuu" class="flex items-center justify-center gap-2 w-full">
+              <span>Mulai Sesi Berikutnya (10 Soal)</span>
+              <Sparkles class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+            </div>
             <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">
               <span>Start Quiz ({{ targetDurationMinutes }} Menit)</span>
               <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
@@ -740,6 +802,12 @@ const handleStart = async () => {
         </button>
       </div>
     </div>
+
+    <!-- Standalone Reference Modal for N5 Kotoba / Renshuu / Kaiwa -->
+    <LessonReferenceModal 
+      :is-open="isReferenceModalOpen" 
+      @close="isReferenceModalOpen = false" 
+    />
   </div>
 </template>
 

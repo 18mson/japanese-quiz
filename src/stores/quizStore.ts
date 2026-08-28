@@ -12,11 +12,26 @@ import { submitLeaderboardScore } from '../services/leaderboardService';
 import { buildGojuonBatches, GojuonBatch } from '../data/gojuonOrder';
 import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
 import { useGoalsStore } from './goalsStore';
+import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
+import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } from '../types/lesson';
 
 export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
   const userStreaks = ref<Record<string, number>>({});
   const sentenceStats = ref<{ wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number } | null>(null);
+
+  // Kaiwa & Renshuu state
+  const currentLessonNumber = ref<number>(1);
+  const bunkeiList = ref<GrammarPoint[]>([]);
+  const kaiwaData = ref<Kaiwa | null>(null);
+  const renshuuSessionQuestions = ref<RenshuuSessionQuestion[]>([]);
+  const renshuuProgressStats = ref<RenshuuProgressStats>({
+    masteredCount: 0,
+    totalCount: 45,
+    progressPercent: 0
+  });
+  const showLessonMaterial = ref<boolean>(false);
+  const isLessonMaterialCompleted = ref<boolean>(false);
 
   const getLocalStreaks = (): Record<string, number> => {
     try {
@@ -141,7 +156,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const questionType = ref('hiragana');
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
-  const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences');
+  const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
 
   const userInput = ref('');
   const showReadingHint = ref(false);
@@ -222,6 +237,13 @@ export const useQuizStore = defineStore('quiz', () => {
     masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
     sessionCharAttempts.value = {};
 
+    // Reset lesson material states
+    bunkeiList.value = [];
+    kaiwaData.value = null;
+    renshuuSessionQuestions.value = [];
+    showLessonMaterial.value = false;
+    isLessonMaterialCompleted.value = false;
+
     // Reset preview & tier transition states
     previewMode.value = 'none';
     fullWaveBatches.value = [];
@@ -241,6 +263,42 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const startQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
     await resetQuizSessionState(targetDuration, type, level);
+
+    if (type === 'kaiwa') {
+      const data = await fetchLessonKaiwa(currentLessonNumber.value);
+      kaiwaData.value = data;
+      showLessonMaterial.value = true;
+      isLessonMaterialCompleted.value = false;
+      initialQuestionCount.value = data.lines.length;
+      isLoading.value = false;
+      return;
+    }
+
+    if (type === 'renshuu') {
+      const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
+      const sessionData = await buildRenshuuSession(currentLessonNumber.value, authUserId, DEFAULT_RENSHUU_SESSION_SIZE);
+      const allBunkei = await fetchLessonBunkei(currentLessonNumber.value);
+
+      if (sessionData.relevantBunkeiIds.length > 0) {
+        const filtered = allBunkei.filter(b => b.id && sessionData.relevantBunkeiIds.includes(b.id));
+        bunkeiList.value = filtered.length > 0 ? filtered : allBunkei;
+      } else {
+        bunkeiList.value = allBunkei;
+      }
+
+      renshuuSessionQuestions.value = sessionData.questions;
+      renshuuProgressStats.value = {
+        masteredCount: sessionData.totalMastered,
+        totalCount: sessionData.totalAtomic,
+        progressPercent: sessionData.totalAtomic > 0 ? Math.round((sessionData.totalMastered / sessionData.totalAtomic) * 100) : 0
+      };
+
+      showLessonMaterial.value = true;
+      isLessonMaterialCompleted.value = false;
+      initialQuestionCount.value = sessionData.questions.length;
+      isLoading.value = false;
+      return;
+    }
 
     if (type === 'sentences') {
       const sentenceCount = getQuestionCountFromDuration(targetDuration, type);
@@ -631,6 +689,18 @@ export const useQuizStore = defineStore('quiz', () => {
     finishQuiz();
   };
 
+  const loadRenshuuProgress = async (lessonNumber: number = currentLessonNumber.value) => {
+    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
+    const stats = await fetchRenshuuProgress(lessonNumber, authUserId);
+    renshuuProgressStats.value = stats;
+  };
+
+  const recordRenshuuAnswer = async (itemId: string, itemType: 'a' | 'b' | 'c', isCorrect: boolean) => {
+    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
+    await saveRenshuuItemResult(itemId, itemType, isCorrect, authUserId);
+    await loadRenshuuProgress(currentLessonNumber.value);
+  };
+
   return {
     isLoading, quizLevel, questionType, isTypingMode, userInput, showReadingHint, showMeaningHint,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
@@ -639,12 +709,14 @@ export const useQuizStore = defineStore('quiz', () => {
     hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
     sentenceStats,
+    currentLessonNumber, bunkeiList, kaiwaData, renshuuSessionQuestions, renshuuProgressStats, showLessonMaterial, isLessonMaterialCompleted,
     previewMode, previewedItems, fullWaveBatches, currentWaveIndex, isWavePreviewActive, currentWaveItems,
     microPreviewItem, showMicroPreviewModal, latestTierTransition, sessionTierChanges, justClosedPreview, previewClosedTimestamp,
     completeWavePreview, completeMicroPreview,
     getMasteryStreak, getMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
     finishSentenceQuiz,
     nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
-    getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks
+    getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks,
+    loadRenshuuProgress, recordRenshuuAnswer
   };
 });

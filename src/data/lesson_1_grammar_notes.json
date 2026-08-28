@@ -1,0 +1,141 @@
+{
+  "lesson": {
+    "lesson_number": 1,
+    "source": "Terjemahan dan Keterangan Tata Bahasa - Indonesian Edition",
+    "source_pages_pdf": "30-35"
+  },
+
+  "kosakata": [
+    { "japanese": "わたし", "meaning": "saya" },
+    { "japanese": "あなた", "meaning": "Anda", "note": "Digunakan terhadap orang yang berhubungan sangat dekat (suami istri, pacar, dll). Perlu hati-hati karena jika dipakai ke lawan bicara yang hubungannya tidak dekat, akan memberi kesan kurang sopan." },
+    { "japanese": "あの ひと（あの かた）／あの 人（あの 方）", "meaning": "orang itu, beliau", "note": "あの かた adalah bentuk sopan dari あの ひと" },
+    { "japanese": "～さん", "meaning": "Sdr. ~, Bapak ~, Ibu ~", "note": "Akhiran untuk mengekspresikan kesopanan yang diletakkan di belakang nama orang. Tidak dipakai untuk marga/nama diri sendiri." },
+    { "japanese": "～ちゃん", "meaning": "(akhiran untuk anak kecil, pengganti ～さん)", "note": "Dipakai untuk anak laki-laki dan perempuan sebagai pengganti ～さん yang diletakkan di belakang nama anak, menunjukkan rasa akrab." },
+    { "japanese": "～じん／～人", "meaning": "orang ~", "note": "Akhiran yang menyatakan warga negara. Contoh: アメリカじん (orang Amerika Serikat)." },
+    { "japanese": "せんせい／先生", "meaning": "guru, dosen", "note": "Tidak dipakai jika menyebutkan pekerjaan diri sendiri." },
+    { "japanese": "きょうし／教師", "meaning": "guru, dosen" },
+    { "japanese": "がくせい／学生", "meaning": "mahasiswa" },
+    { "japanese": "かいしゃいん／会社員", "meaning": "karyawan perusahaan" },
+    { "japanese": "しゃいん／社員", "meaning": "karyawan perusahaan", "note": "Dipakai bersama dengan nama perusahaan. Contoh: IMCの しゃいん (karyawan perusahaan IMC)." },
+    { "japanese": "ぎんこういん／銀行員", "meaning": "pegawai bank" },
+    { "japanese": "いしゃ／医者", "meaning": "dokter" },
+    { "japanese": "けんきゅうしゃ／研究者", "meaning": "peneliti" },
+    { "japanese": "だいがく／大学", "meaning": "universitas" },
+    { "japanese": "びょういん／病院", "meaning": "rumah sakit" },
+    { "japanese": "だれ（どなた）", "meaning": "siapa", "note": "どなた adalah bentuk sopan dari だれ" },
+    { "japanese": "－さい／－歳", "meaning": "~ tahun (usia)" },
+    { "japanese": "なんさい（おいくつ）／何歳", "meaning": "umur berapa", "note": "おいくつ adalah bentuk sopan dari なんさい" },
+    { "japanese": "はい", "meaning": "ya" },
+    { "japanese": "いいえ", "meaning": "tidak, bukan" }
+  ],
+
+  "renshuu_c_phrases": [
+    { "japanese": "初めまして。", "meaning": "Perkenalkan.", "note": "Ucapan salam pada waktu pertama kali berkenalan." },
+    { "japanese": "～から 来ました。", "meaning": "datang dari ~, berasal dari ~" },
+    { "japanese": "[どうぞ] よろしく [お願いします]。", "meaning": "Salam kenal.", "note": "Ucapan terakhir untuk perkenalkan diri." },
+    { "japanese": "失礼ですが", "meaning": "permisi, maaf", "note": "Digunakan ketika bertanya tentang hal yang pribadi seperti nama, alamat, dan sebagainya." },
+    { "japanese": "お名前は？", "meaning": "Siapa namanya?" },
+    { "japanese": "こちらは ～さんです。", "meaning": "Ini Bapak ~ / Ini Ibu, Sdr. ~." }
+  ],
+
+  "reference_table_negara_orang_bahasa": [
+    { "negara": "アメリカ (Amerika Serikat)", "orang": "アメリカ人", "bahasa": "英語 (bahasa Inggris)" },
+    { "negara": "イギリス (Inggris)", "orang": "イギリス人", "bahasa": "英語 (bahasa Inggris)" },
+    { "negara": "イタリア (Italia)", "orang": "イタリア人", "bahasa": "イタリア語 (bahasa Italia)" },
+    { "negara": "イラン (Iran)", "orang": "イラン人", "bahasa": "ペルシア語 (bahasa Persia)" },
+    { "negara": "インド (India)", "orang": "インド人", "bahasa": "ヒンディー語 (bahasa India)" },
+    { "negara": "インドネシア (Indonesia)", "orang": "インドネシア人", "bahasa": "インドネシア語 (bahasa Indonesia)" },
+    { "negara": "エジプト (Mesir)", "orang": "エジプト人", "bahasa": "アラビア語 (bahasa Arab)" },
+    { "negara": "オーストラリア (Australia)", "orang": "オーストラリア人", "bahasa": "英語 (bahasa Inggris)" },
+    { "negara": "カナダ (Kanada)", "orang": "カナダ人", "bahasa": "英語 (bahasa Inggris) / フランス語 (bahasa Perancis)" },
+    { "negara": "韓国 (Korea Selatan)", "orang": "韓国人", "bahasa": "韓国語 (bahasa Korea)" },
+    { "negara": "サウジアラビア (Arab Saudi)", "orang": "サウジアラビア人", "bahasa": "アラビア語 (bahasa Arab)" },
+    { "negara": "シンガポール (Singapura)", "orang": "シンガポール人", "bahasa": "英語 (bahasa Inggris)" },
+    { "negara": "スペイン (Spanyol)", "orang": "スペイン人", "bahasa": "スペイン語 (bahasa Spanyol)" },
+    { "negara": "タイ (Thailand)", "orang": "タイ人", "bahasa": "タイ語 (bahasa Thailand)" },
+    { "negara": "中国 (Cina)", "orang": "中国人", "bahasa": "中国語 (bahasa Cina)" },
+    { "negara": "ドイツ (Jerman)", "orang": "ドイツ人", "bahasa": "ドイツ語 (bahasa Jerman)" },
+    { "negara": "日本 (Jepang)", "orang": "日本人", "bahasa": "日本語 (bahasa Jepang)" },
+    { "negara": "フランス (Perancis)", "orang": "フランス人", "bahasa": "フランス語 (bahasa Perancis)" },
+    { "negara": "フィリピン (Filipina)", "orang": "フィリピン人", "bahasa": "フィリピノ語 (bahasa Filipina)" },
+    { "negara": "ブラジル (Brazil)", "orang": "ブラジル人", "bahasa": "ポルトガル語 (bahasa Portugis)" },
+    { "negara": "ベトナム (Vietnam)", "orang": "ベトナム人", "bahasa": "ベトナム語 (bahasa Vietnam)" },
+    { "negara": "マレーシア (Malaysia)", "orang": "マレーシア人", "bahasa": "マレーシア語 (bahasa Malaysia)" },
+    { "negara": "メキシコ (Meksiko)", "orang": "メキシコ人", "bahasa": "スペイン語 (bahasa Spanyol)" },
+    { "negara": "ロシア (Rusia)", "orang": "ロシア人", "bahasa": "ロシア語 (bahasa Rusia)" }
+  ],
+
+  "fictional_entities_note": "IMC/パワー電気/ブラジルエアー = perusahaan fiksi; AKC = organisasi fiksi; 神戸病院 = rumah sakit fiksi; さくら大学/富士大学 = universitas fiksi (dipakai konsisten di seluruh buku sebagai worldbuilding tokoh).",
+
+  "grammar_explanations": [
+    {
+      "point_number": 1,
+      "pattern": "Kata Benda₁ は Kata Benda₂ です",
+      "sub_points": [
+        {
+          "title": "1) Partikel は",
+          "explanation": "Partikel は menunjukkan bahwa kata sebelumnya adalah topik kalimat (Topik dan Subjek). Si pembicara memakai は untuk hal yang mau dibicarakannya, kemudian selanjutnya membuat kalimat dengan menambahkan berbagai deskripsi.",
+          "example": { "japanese": "わたしは マイク・ミラーです。", "meaning": "Saya Mike Miller." },
+          "note": "[Perhatian] Partikel は dibaca わ."
+        },
+        {
+          "title": "2) です",
+          "explanation": "Kata Benda yang diikuti oleh です menjadi Predikat. です menyatakan maksud penilaian dan kepastian, juga menunjukkan sikap sopan terhadap lawan bicara. です dalam kalimat negatif atau waktu lampau, bentuknya berubah.",
+          "example": { "japanese": "わたしは 会社員です。", "meaning": "Saya pegawai perusahaan." }
+        }
+      ]
+    },
+    {
+      "point_number": 2,
+      "pattern": "Kata Benda₁ は Kata Benda₂ じゃ（では）ありません",
+      "explanation": "じゃ（では）ありません adalah bentuk negatif untuk です。Dalam percakapan sehari-hari sering digunakan じゃ ありません。Dalam pidato yang resmi atau bahasa tertulis digunakan では ありません。",
+      "example": { "japanese": "サントスさんは 学生じゃ ありません。（では）", "meaning": "Sdr. Santos bukan mahasiswa." },
+      "note": "[Perhatian] は dari では diucapkan わ."
+    },
+    {
+      "point_number": 3,
+      "pattern": "Kata Benda₁ は Kata Benda₂ ですか（kalimat tanya）",
+      "sub_points": [
+        {
+          "title": "1) Partikel か",
+          "explanation": "Partikel か menyatakan perasaan ketidakpastian atau heran si pembicara. Dengan memakai か pada akhir kalimat maka dapat membuat kalimat tanya. Kalimat tanya biasanya menyertai intonasi naik pada akhir kalimat."
+        },
+        {
+          "title": "2) Kalimat tanya untuk menanyakan \"Ya\" atau \"Tidak\" tentang isi kalimat",
+          "explanation": "Tanpa mengubah susunan kata-kata, membuat kalimat dengan membubuhi か pada akhir kalimat. Kalimat tanya ini menanyakan apakah benar atau tidak isi kalimat, dan jika benar menjawab dengan memakai はい, jika salah menjawab dengan いいえ。",
+          "examples": [
+            { "japanese": "ミラーさんは アメリカ人ですか。……はい、アメリカ人です。", "meaning": "Apakah Sdr. Miller orang Amerika? ……Ya, orang Amerika." },
+            { "japanese": "ミラーさんは 先生ですか。……いいえ、先生じゃ ありません。", "meaning": "Apakah Sdr. Miller guru? ……Bukan, dia bukan guru." }
+          ]
+        },
+        {
+          "title": "3) Kalimat tanya dengan kata tanya",
+          "explanation": "Bagian isi yang ingin ditanyakan diganti dengan kata tanya, dan dibubuhkan か pada akhir kalimat.",
+          "example": { "japanese": "あの方は どなたですか。……［あの方は］ミラーさんです。", "meaning": "Siapakah orang itu? ……[Beliau] Sdr. Miller." }
+        }
+      ]
+    },
+    {
+      "point_number": 4,
+      "pattern": "Kata Benda も",
+      "explanation": "も digunakan apabila menyatakan predikatnya dianggap sama dengan predikat sebelumnya.",
+      "example": { "japanese": "ミラーさんは 会社員です。グプタさんも 会社員です。", "meaning": "Sdr. Miller pegawai perusahaan. Sdr. Gupta juga pegawai perusahaan." }
+    },
+    {
+      "point_number": 5,
+      "pattern": "Kata Benda₁ の Kata Benda₂",
+      "explanation": "Jika Kata Benda₁ di depan menerangkan Kata Benda₂ di belakangnya, maka kedua Kata Benda disambung dengan の。Pada Pelajaran 1, Kata Benda₁ menunjukkan satu kesatuan Kata Benda₂.",
+      "example": { "japanese": "ミラーさんは IMCの 社員です。", "meaning": "Sdr. Miller pegawai perusahaan IMC." }
+    },
+    {
+      "point_number": 6,
+      "pattern": "～さん",
+      "explanation": "Dalam bahasa Jepang memakai さん di belakang marga atau nama lawan bicara atau orang pihak ketiga. Karena さん menunjukkan kesopanan, tidak dipakai untuk marga atau nama si pembicara sendiri. Sebagai gantinya, さん untuk anak kecil dengan rasa akrab dipakai ちゃん。",
+      "examples": [
+        { "japanese": "あの方は ミラーさんです。", "meaning": "Beliau Sdr. Miller." },
+        { "japanese": "鈴木：ミラーさんは 学生ですか。 ミラー：いいえ、会社員です。", "meaning": "Suzuki: Apakah Sdr. Miller mahasiswa? Miller: Bukan, saya pegawai perusahaan." }
+      ],
+      "note": "Ketika memanggil lawan bicara, jika telah mengenal namanya maka あなた tidak dipakai lagi, tetapi memanggil marga atau namanya yang dibubuhi dengan さん。[Perhatian] あなた digunakan terhadap orang yang berhubungan sangat dekat (suami istri, pacar dll). Perlu hati-hati bahwa jika menggunakannya kepada lawan bicara yang hubungan tidak dekat maka akan memberi kesan yang kurang sopan."
+    }
+  ]
+}
