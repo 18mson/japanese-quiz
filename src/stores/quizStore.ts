@@ -6,10 +6,10 @@ import { wordsData } from '../data/words';
 import { sentencesData } from '../data/sentences';
 import { supabase } from '../lib/supabaseClient';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
-import { checkIsCorrect, checkIsTypo, getQuestionCountFromDuration, getFallbackLocalPool, buildSmartAdaptiveQuestions } from '../utils/quizHelpers';
+import { checkIsCorrect, checkIsTypo, getQuestionCountFromDuration, getFallbackLocalPool } from '../utils/quizHelpers';
 import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransition, TierTransition } from '../utils/masteryStats';
 import { submitLeaderboardScore } from '../services/leaderboardService';
-import { buildGojuonBatches, GojuonBatch } from '../data/gojuonOrder';
+import { buildHurufSessionQuestions } from '../utils/hurufQuizComposition';
 import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
 import { useGoalsStore } from './goalsStore';
 import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
@@ -217,7 +217,7 @@ export const useQuizStore = defineStore('quiz', () => {
     }, 500);
   };
   const previewedItems = ref<Record<string, boolean>>({});
-  const fullWaveBatches = ref<GojuonBatch[]>([]);
+  const fullWaveBatches = ref<any[]>([]);
   const currentWaveIndex = ref<number>(0);
   const isWavePreviewActive = ref<boolean>(false);
   const currentWaveItems = ref<any[]>([]);
@@ -385,39 +385,14 @@ export const useQuizStore = defineStore('quiz', () => {
       return;
     }
 
-    // Pisahkan: item yang sudah dikenal (streak > 0) dan yang belum (streak === 0)
-    const knownPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
-    const unlearnedInPool = finalPool.filter(item => (userStreaks.value[item.character] || 0) === 0);
+    // Mode Huruf (Hiragana / Katakana / Mix)
+    // Continuous stream, probabilistic per-slot, tanpa wave batches / tanpa preview blocking
+    previewMode.value = 'none';
+    isWavePreviewActive.value = false;
+    currentWaveItems.value = [];
+    questions.value = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak);
 
-    // Preview diaktifkan untuk mode pilihan ganda (hiragana/katakana/mix)
-    // TIDAK untuk mode mengetik kalimat panjang (sentences)
-    const isPreviewSupported = type !== 'sentences';
-    if (unlearnedInPool.length > 0 && isPreviewSupported) {
-      previewMode.value = 'full_wave';
-      // Batasi jumlah batch preview sesuai durasi sesi
-      const maxBatches = targetDuration <= 1 ? 2 : targetDuration <= 3 ? 3 : 4;
-      const batchCount = Math.min(maxBatches, Math.max(1, Math.ceil(unlearnedInPool.length / 5)));
-      fullWaveBatches.value = buildGojuonBatches(unlearnedInPool, batchCount);
-
-      if (fullWaveBatches.value.length > 0) {
-        currentWaveIndex.value = 0;
-        currentWaveItems.value = fullWaveBatches.value[0].items;
-        isWavePreviewActive.value = true;
-
-        // Soal awal: known items + batch preview pertama saja
-        // Item baru HANYA masuk soal setelah dipreview terlebih dahulu
-        const initialQuizPool = [...knownPool, ...fullWaveBatches.value[0].items];
-        const waveQuestionTarget = Math.max(5, Math.ceil(questionCount / fullWaveBatches.value.length));
-        questions.value = buildSmartAdaptiveQuestions(initialQuizPool, waveQuestionTarget, getMasteryStreak);
-      } else {
-        questions.value = buildSmartAdaptiveQuestions(knownPool.length > 0 ? knownPool : finalPool, questionCount, getMasteryStreak);
-      }
-    } else {
-      previewMode.value = 'none';
-      questions.value = buildSmartAdaptiveQuestions(finalPool, questionCount, getMasteryStreak);
-    }
-
-    initialQuestionCount.value = questionCount;
+    initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
   };
 
@@ -431,10 +406,10 @@ export const useQuizStore = defineStore('quiz', () => {
     if (type === 'words') {
       questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
     } else {
-      questions.value = buildSmartAdaptiveQuestions(weakPool, questionCount, getMasteryStreak);
+      questions.value = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak);
     }
 
-    initialQuestionCount.value = questionCount;
+    initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
   };
 
@@ -630,7 +605,11 @@ export const useQuizStore = defineStore('quiz', () => {
   const masteredCount = computed(() => Object.keys(masteredChars.value).length);
 
   const nextQuestion = () => {
-    selectedAnswer.value = null; isAnswerCorrect.value = null; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
+    selectedAnswer.value = null;
+    isAnswerCorrect.value = null;
+    userInput.value = '';
+    showReadingHint.value = false;
+    showMeaningHint.value = false;
     latestTierTransition.value = null;
 
     const totalAnswered = userAnswers.value.length;
@@ -638,31 +617,16 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
-    } else if (!isSessionComplete && previewMode.value === 'full_wave' && currentWaveIndex.value + 1 < fullWaveBatches.value.length) {
-      // Advance ke gelombang berikutnya: tampilkan preview dulu
-      currentWaveIndex.value++;
-      const nextBatch = fullWaveBatches.value[currentWaveIndex.value];
-      currentWaveItems.value = nextBatch.items;
-      isWavePreviewActive.value = true;
-
-      // Pool soal = semua item streak > 0 (known) + semua item yang sudah dipreview s/d wave ini
-      const allFinalPool = getFallbackLocalPool(questionType.value, quizLevel.value);
-      const knownPool = allFinalPool.filter(item => (userStreaks.value[item.character] || 0) > 0);
-      const cumulativePreviewedItems = fullWaveBatches.value.slice(0, currentWaveIndex.value + 1).flatMap(b => b.items);
-      const cumulativePool = [...knownPool, ...cumulativePreviewedItems.filter(pi => !knownPool.some(k => k.character === pi.character))];
-
-      const totalQuestionTarget = getQuestionCountFromDuration(targetDurationMinutes.value, questionType.value);
-      const questionsPerWave = Math.max(5, Math.ceil(totalQuestionTarget / fullWaveBatches.value.length));
-      questions.value = buildSmartAdaptiveQuestions(cumulativePool, questionsPerWave, getMasteryStreak);
-      currentQuestionIndex.value = 0;
     } else if (isSessionComplete || masteredCount.value >= initialQuestionCount.value) {
       finishQuiz();
     } else {
       const unmastered = questions.value.filter(q => !masteredChars.value[q.character]);
       if (unmastered.length > 0) {
-        questions.value = [...questions.value, ...unmastered.map(q => ({ ...q, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar' }))];
+        questions.value = [...questions.value, ...unmastered.map(q => ({ ...q, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }))];
         currentQuestionIndex.value++;
-      } else finishQuiz();
+      } else {
+        finishQuiz();
+      }
     }
   };
 
