@@ -21,7 +21,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'prev', 'next']);
 const quizStore = useQuizStore();
-const viewMode = ref<'stroke' | 'text'>('text');
+const viewMode = ref<'stroke' | 'text'>('stroke');
 
 const playAudio = () => {
   if (!props.item) return;

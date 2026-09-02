@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
 import { resolveCharacter, type StrokeData } from '../services/strokeDataService';
 import StrokeCharacter from './StrokeCharacter.vue';
-import { RotateCcw, Loader2 } from '@lucide/vue';
+import { RotateCcw, Loader2, Play, Pause } from '@lucide/vue';
 
 const props = withDefaults(
   defineProps<{
     text: string;
     speed?: number;
     autoplay?: boolean;
+    loopDelay?: number;
   }>(),
   {
     speed: 650,
-    autoplay: true
+    autoplay: true,
+    loopDelay: 1400
   }
 );
 
@@ -25,6 +27,16 @@ const activeCharIndex = ref<number>(0);
 const isLoading = ref<boolean>(true);
 const characterEntries = ref<CharEntry[]>([]);
 const strokeCharRefs = ref<InstanceType<typeof StrokeCharacter>[]>([]);
+const isPlaying = ref<boolean>(props.autoplay);
+const isFinishedAll = ref<boolean>(false);
+let loopTimeout: any = null;
+
+const clearLoopTimeout = () => {
+  if (loopTimeout !== null) {
+    clearTimeout(loopTimeout);
+    loopTimeout = null;
+  }
+};
 
 // Responsive compact box sizing based on total character count
 const boxSizeClass = computed(() => {
@@ -37,8 +49,10 @@ const boxSizeClass = computed(() => {
 });
 
 const loadCharacters = async (targetText: string) => {
+  clearLoopTimeout();
   isLoading.value = true;
   activeCharIndex.value = 0;
+  isFinishedAll.value = false;
   strokeCharRefs.value = [];
   const chars = [...(targetText || '')];
   
@@ -62,7 +76,15 @@ const loadCharacters = async (targetText: string) => {
   isLoading.value = false;
   
   nextTick(() => {
-    replayAll();
+    if (isPlaying.value) {
+      replayAll();
+    } else {
+      strokeCharRefs.value.forEach(refEl => {
+        if (refEl && typeof refEl.reset === 'function') {
+          refEl.reset();
+        }
+      });
+    }
   });
 };
 
@@ -76,12 +98,26 @@ const handleCharComplete = (idx: number) => {
           nextRef.replay();
         }
       });
+    } else {
+      // Entire text is finished
+      isFinishedAll.value = true;
+      clearLoopTimeout();
+      if (isPlaying.value) {
+        loopTimeout = setTimeout(() => {
+          if (isPlaying.value) {
+            replayAll();
+          }
+        }, props.loopDelay);
+      }
     }
   }
 };
 
 const replayAll = () => {
+  clearLoopTimeout();
+  isFinishedAll.value = false;
   activeCharIndex.value = 0;
+
   // Reset all characters first
   strokeCharRefs.value.forEach((refEl) => {
     if (refEl && typeof refEl.reset === 'function') {
@@ -98,6 +134,36 @@ const replayAll = () => {
   });
 };
 
+const togglePlayPause = () => {
+  if (isPlaying.value) {
+    // Pause
+    isPlaying.value = false;
+    clearLoopTimeout();
+    const currentRef = strokeCharRefs.value[activeCharIndex.value];
+    if (currentRef && typeof currentRef.pause === 'function') {
+      currentRef.pause();
+    }
+  } else {
+    // Play
+    isPlaying.value = true;
+    if (isFinishedAll.value) {
+      replayAll();
+    } else {
+      const currentRef = strokeCharRefs.value[activeCharIndex.value];
+      if (currentRef && typeof currentRef.resume === 'function') {
+        currentRef.resume();
+      } else {
+        replayAll();
+      }
+    }
+  }
+};
+
+const handleManualReplay = () => {
+  isPlaying.value = true;
+  replayAll();
+};
+
 watch(
   () => props.text,
   (newText) => {
@@ -109,8 +175,14 @@ onMounted(() => {
   loadCharacters(props.text);
 });
 
+onUnmounted(() => {
+  clearLoopTimeout();
+});
+
 defineExpose({
-  replayAll
+  replayAll,
+  togglePlayPause,
+  isPlaying
 });
 </script>
 
@@ -127,15 +199,29 @@ defineExpose({
       v-else-if="characterEntries.length > 0"
       class="w-full flex flex-col items-center relative"
     >
-      <!-- Top Right Compact Replay Icon Button (Offside to top-right corner) -->
-      <button
-        type="button"
-        @click="replayAll"
-        class="absolute -top-4 -right-3 p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs z-30"
-        title="Ulangi Animasi Goresan"
-      >
-        <RotateCcw class="w-3.5 h-3.5" />
-      </button>
+      <!-- Top Right Compact Controls (Play/Pause & Replay) -->
+      <div class="absolute -top-3.5 -right-2 flex items-center gap-1.5 z-30">
+        <!-- Play / Pause Button -->
+        <button
+          type="button"
+          @click="togglePlayPause"
+          class="p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
+          :title="isPlaying ? 'Jeda Animasi (Pause)' : 'Putar Animasi (Play)'"
+        >
+          <Pause v-if="isPlaying" class="w-3.5 h-3.5 fill-current" />
+          <Play v-else class="w-3.5 h-3.5 fill-current ml-0.5" />
+        </button>
+
+        <!-- Replay Button -->
+        <button
+          type="button"
+          @click="handleManualReplay"
+          class="p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
+          title="Ulangi Dari Awal (Restart)"
+        >
+          <RotateCcw class="w-3.5 h-3.5" />
+        </button>
+      </div>
 
       <!-- Horizontal Compact Character Row (Tighter Gap) -->
       <div class="flex items-center justify-center gap-0.5 flex-wrap max-w-full py-0.5">

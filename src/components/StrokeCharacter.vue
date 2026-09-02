@@ -29,7 +29,12 @@ const pathLengths = ref<number[]>([]);
 const strokeOffsets = ref<number[]>([]);
 const activeStrokeIndex = ref<number>(-1);
 const isComplete = ref<boolean>(false);
+const isPaused = ref<boolean>(false);
 let rafId: number | null = null;
+let currentStrokeStartTime = 0;
+let currentStrokeDuration = 0;
+let currentStrokeTotalLen = 0;
+let currentStrokeElapsedBeforePause = 0;
 
 const strokes = computed(() => props.strokeData?.strokes || []);
 const hasStrokes = computed(() => !props.strokeData?.skip && strokes.value.length > 0);
@@ -54,7 +59,7 @@ const cancelCurrentAnimation = () => {
   }
 };
 
-const playStroke = (index: number) => {
+const runStrokeStep = (index: number, initialElapsed = 0) => {
   if (!hasStrokes.value || index >= strokes.value.length) {
     isComplete.value = true;
     activeStrokeIndex.value = strokes.value.length;
@@ -63,25 +68,28 @@ const playStroke = (index: number) => {
   }
 
   activeStrokeIndex.value = index;
-  const totalLen = pathLengths.value[index] || 180;
-  const duration = Math.max(200, props.speed);
-  const startTime = performance.now();
+  currentStrokeTotalLen = pathLengths.value[index] || 180;
+  currentStrokeDuration = Math.max(200, props.speed);
+  currentStrokeStartTime = performance.now();
+  currentStrokeElapsedBeforePause = initialElapsed;
 
   const step = (now: number) => {
-    const elapsed = now - startTime;
-    const progress = Math.min(1, elapsed / duration);
+    if (isPaused.value) return;
+    const elapsed = (now - currentStrokeStartTime) + currentStrokeElapsedBeforePause;
+    const progress = Math.min(1, elapsed / currentStrokeDuration);
     
     // Ease out cubic
     const easeProgress = 1 - Math.pow(1 - progress, 3);
-    strokeOffsets.value[index] = totalLen * (1 - easeProgress);
+    strokeOffsets.value[index] = currentStrokeTotalLen * (1 - easeProgress);
 
     if (progress < 1) {
       rafId = requestAnimationFrame(step);
     } else {
       strokeOffsets.value[index] = 0;
       rafId = null;
+      currentStrokeElapsedBeforePause = 0;
       // Continue to next stroke
-      playStroke(index + 1);
+      runStrokeStep(index + 1, 0);
     }
   };
 
@@ -91,12 +99,14 @@ const playStroke = (index: number) => {
 const startAnimation = () => {
   cancelCurrentAnimation();
   isComplete.value = false;
+  isPaused.value = false;
   activeStrokeIndex.value = -1;
+  currentStrokeElapsedBeforePause = 0;
 
   nextTick(() => {
     measureAllPaths();
     if (strokes.value.length > 0) {
-      playStroke(0);
+      runStrokeStep(0, 0);
     } else {
       isComplete.value = true;
       emit('animation-complete');
@@ -104,10 +114,38 @@ const startAnimation = () => {
   });
 };
 
+const pause = () => {
+  if (isPaused.value || isComplete.value) return;
+  isPaused.value = true;
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+    if (activeStrokeIndex.value >= 0 && activeStrokeIndex.value < strokes.value.length) {
+      currentStrokeElapsedBeforePause += (performance.now() - currentStrokeStartTime);
+    }
+  }
+};
+
+const resume = () => {
+  if (!isPaused.value) return;
+  isPaused.value = false;
+  if (isComplete.value) {
+    startAnimation();
+    return;
+  }
+  if (activeStrokeIndex.value >= 0 && activeStrokeIndex.value < strokes.value.length) {
+    runStrokeStep(activeStrokeIndex.value, currentStrokeElapsedBeforePause);
+  } else {
+    startAnimation();
+  }
+};
+
 const reset = () => {
   cancelCurrentAnimation();
   activeStrokeIndex.value = -1;
   isComplete.value = false;
+  isPaused.value = false;
+  currentStrokeElapsedBeforePause = 0;
   strokeOffsets.value = pathLengths.value.length > 0 ? [...pathLengths.value] : [];
 };
 
@@ -118,7 +156,10 @@ const replay = () => {
 defineExpose({
   replay,
   reset,
-  isComplete
+  pause,
+  resume,
+  isComplete,
+  isPaused
 });
 
 watch(
