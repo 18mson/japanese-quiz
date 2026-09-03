@@ -58,7 +58,7 @@ const getBoxSize = (idx: number) => {
 const secondCharVerticalOffset = computed(() => {
   if (!isCombination.value || charList.value.length < 2) return 0;
   const second = charList.value[1];
-  if (['ゃ', 'ゅ', 'ょ', 'っ'].includes(second)) return -12;
+  if (['ゃ', 'ゅ', 'ょ', 'っ'].includes(second)) return -14;
   if (second === 'ュ') return -8;
   return -4;
 });
@@ -397,7 +397,7 @@ defineExpose({
 
     <!-- Main Canvas Card: 1 Unified Visual Surface for Genkouyoushi -->
     <div 
-      class="relative rounded-3xl transition-all duration-300 bg-slate-50/90 dark:bg-slate-950 flex items-center justify-center p-2.5 sm:p-3.5 shadow-xs dark:shadow-md"
+      class="relative rounded-3xl transition-all duration-300 bg-slate-50/90 dark:bg-slate-950 flex items-center justify-center p-2 sm:p-3.5 shadow-xs dark:shadow-md"
       :class="[
         isEntireCombinationComplete ? 'border-2 border-emerald-500/80 ring-2 ring-emerald-500/20 shadow-emerald-950/20 dark:shadow-emerald-950/40' :
         'border-2 border-indigo-200 dark:border-indigo-500/70 ring-2 ring-indigo-500/10 dark:ring-indigo-500/20 shadow-indigo-950/10 dark:shadow-indigo-950/50'
@@ -444,7 +444,7 @@ defineExpose({
         <div 
           class="relative select-none"
           :style="{ 
-            width: `${mainBoxSize + 74}px`, 
+            width: `${mainBoxSize + 90}px`, 
             height: `${mainBoxSize}px` 
           }"
         >
@@ -486,7 +486,7 @@ defineExpose({
 
           <!-- 2. Area Kecil (Huruf Youon Kecil, OVERLAPPING di Pojok Kanan-Bawah - Transparan & Terangkat) -->
           <div 
-            class="absolute bottom-3 sm:bottom-4 right-0 rounded-2xl overflow-hidden transition-all duration-300 bg-transparent flex items-center justify-center shadow-none"
+            class="absolute bottom-7 sm:bottom-8 right-0 rounded-2xl overflow-hidden transition-all duration-300 bg-transparent flex items-center justify-center shadow-none"
             :class="[
               activeCharIndex === 1 ? 'z-30 pointer-events-auto border border-dashed border-indigo-500/80 dark:border-slate-500/80 opacity-100' :
               completedCharStrokes[1] > 0 ? 'z-20 pointer-events-none border border-dashed border-slate-300 dark:border-slate-700/40 opacity-100' :
