@@ -14,7 +14,7 @@ const questionNumber = computed(() => {
     <!-- Top Row: Question Info & Score -->
     <div class="flex flex-wrap justify-between items-center gap-2 text-slate-600 dark:text-slate-300 text-xs sm:text-sm font-semibold">
       <span v-if="quizStore.selectedMode === 'writing'" class="flex items-center gap-1.5 font-extrabold text-emerald-600 dark:text-emerald-400">
-        ✍️ Mode Handwriting
+        Mode Handwriting
       </span>
       <span v-else class="flex items-center gap-1">
         Soal {{ questionNumber }} (Selesai: {{ Math.min(quizStore.initialQuestionCount, quizStore.userAnswers.length) }}/{{ quizStore.initialQuestionCount }})

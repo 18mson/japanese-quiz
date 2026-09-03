@@ -209,7 +209,7 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'writing',
-    title: '✍️ Handwriting',
+    title: 'Handwriting',
     levelTag: 'Handwriting',
     level: 'basic',
     defaultType: 'hiragana',
