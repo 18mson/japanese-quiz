@@ -10,7 +10,9 @@ import {
   CheckCircle2, 
   Crown,
   Award,
-  Zap
+  Zap,
+  Search,
+  X
 } from '@lucide/vue';
 
 const props = defineProps<{
@@ -18,12 +20,14 @@ const props = defineProps<{
   subtype: string;
   statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown';
   availableLessons: string[];
+  searchQuery: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:category', val: 'hiragana' | 'katakana' | 'words'): void;
   (e: 'update:subtype', val: string): void;
   (e: 'update:statusFilter', val: 'all' | 'new' | 'learning' | 'mastered' | 'crown'): void;
+  (e: 'update:searchQuery', val: string): void;
 }>();
 
 const quizStore = useQuizStore();
@@ -38,6 +42,13 @@ const closeDropdowns = () => {
 };
 
 defineExpose({ closeDropdowns });
+
+const searchPlaceholder = computed(() => {
+  if (props.category === 'words') {
+    return 'Cari kanji, arti, romaji...';
+  }
+  return 'Cari karakter atau romaji...';
+});
 
 const activeSubtypeLabel = computed(() => {
   if (props.subtype === 'all') {
@@ -97,42 +108,66 @@ const statusPills = [
 
 <template>
   <div class="p-3 sm:p-4 bg-white dark:bg-slate-900 border-b border-gray-200/80 dark:border-slate-800 flex flex-col gap-3 flex-shrink-0">
-    <!-- Category Switcher Tabs (Row 1) -->
-    <div class="grid grid-cols-3 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center">
-      <button 
-        v-for="cat in ['hiragana', 'katakana', 'words']" 
-        :key="cat"
-        @click="emit('update:category', cat as any); emit('update:subtype', 'all'); closeDropdowns();"
-        :class="[
-          'px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition cursor-pointer flex items-center justify-center gap-1.5',
-          category === cat 
-            ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none' 
-            : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
-        ]"
-      >
-        <span>{{ cat === 'words' ? 'Kanji & Kotoba' : cat }}</span>
-        <span 
-          v-if="cat === 'hiragana'" 
-          class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
-          :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+    <!-- Category Switcher Tabs & Search Bar (Row 1) -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
+      <!-- Category Switcher Tabs -->
+      <div class="grid grid-cols-3 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0">
+        <button 
+          v-for="cat in ['hiragana', 'katakana', 'words']" 
+          :key="cat"
+          @click="emit('update:category', cat as any); emit('update:subtype', 'all'); closeDropdowns();"
+          :class="[
+            'px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition cursor-pointer flex items-center justify-center gap-1.5',
+            category === cat 
+              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none' 
+              : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
+          ]"
         >
-          {{ quizStore.hiraganaMasteryStats.percentage }}%
-        </span>
-        <span 
-          v-else-if="cat === 'katakana'" 
-          class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
-          :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          <span>{{ cat === 'words' ? 'Kanji & Kotoba' : cat }}</span>
+          <span 
+            v-if="cat === 'hiragana'" 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.hiraganaMasteryStats.percentage }}%
+          </span>
+          <span 
+            v-else-if="cat === 'katakana'" 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.katakanaMasteryStats.percentage }}%
+          </span>
+          <span 
+            v-else 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.wordsMasteryStats.percentage }}%
+          </span>
+        </button>
+      </div>
+
+      <!-- Search Input Bar -->
+      <div class="relative w-full sm:w-64 md:w-72 lg:w-80 shrink-0">
+        <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-400 pointer-events-none" />
+        <input 
+          :value="searchQuery"
+          @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
+          type="text"
+          :placeholder="searchPlaceholder"
+          class="w-full h-10 pl-9 pr-9 bg-gray-50 hover:bg-gray-100/70 focus:bg-white dark:bg-slate-800/90 dark:hover:bg-slate-800 dark:focus:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 dark:text-slate-100 text-xs sm:text-sm font-medium rounded-xl outline-none transition placeholder:text-gray-400 dark:placeholder:text-slate-500 shadow-xs"
+        />
+        <button
+          v-if="searchQuery"
+          type="button"
+          @click="emit('update:searchQuery', '')"
+          class="absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-md hover:bg-gray-200/80 dark:hover:bg-slate-700 text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
+          title="Hapus pencarian"
         >
-          {{ quizStore.katakanaMasteryStats.percentage }}%
-        </span>
-        <span 
-          v-else 
-          class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
-          :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
-        >
-          {{ quizStore.wordsMasteryStats.percentage }}%
-        </span>
-      </button>
+          <X class="w-3.5 h-3.5" />
+        </button>
+      </div>
     </div>
 
     <!-- Dropdown Filters (Row 2) -->

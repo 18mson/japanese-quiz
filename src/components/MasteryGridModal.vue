@@ -7,12 +7,14 @@ import { wordsData } from '../data/words';
 import MasteryCard from './mastery/MasteryCard.vue';
 import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
+import { toRomaji, toHiragana, toKatakana } from 'wanakana';
 import { 
   X, 
   Award, 
   Zap, 
   Sparkles, 
-  RotateCcw 
+  RotateCcw,
+  SearchX
 } from '@lucide/vue';
 
 defineProps<{
@@ -26,6 +28,7 @@ const quizStore = useQuizStore();
 const activeCategory = ref<'hiragana' | 'katakana' | 'words'>('hiragana');
 const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
+const searchQuery = ref<string>('');
 const filterBarRef = ref<InstanceType<typeof MasteryFilterBar> | null>(null);
 
 const closeDropdowns = () => {
@@ -41,6 +44,56 @@ const availableLessons = computed(() => {
   });
 });
 
+const matchesQuery = (item: any, q: string, qHira: string, qKata: string, qRom: string): boolean => {
+  if (!q) return true;
+
+  // 1. Character match
+  if (item.character) {
+    const charLower = item.character.toLowerCase();
+    if (charLower.includes(q) || (qHira && charLower.includes(qHira)) || (qKata && charLower.includes(qKata))) {
+      return true;
+    }
+  }
+
+  // 2. Romaji match (supports string and array)
+  if (item.romaji) {
+    if (typeof item.romaji === 'string') {
+      const romLower = item.romaji.toLowerCase();
+      if (romLower.includes(q) || (qRom && romLower.includes(qRom))) return true;
+    } else if (Array.isArray(item.romaji)) {
+      if (item.romaji.some((r: string) => {
+        const rLower = r.toLowerCase();
+        return rLower.includes(q) || (qRom && rLower.includes(qRom));
+      })) {
+        return true;
+      }
+    }
+  }
+
+  // 3. Kana match (furigana / reading)
+  if (item.kana) {
+    const kanaLower = item.kana.toLowerCase();
+    if (kanaLower.includes(q) || (qHira && kanaLower.includes(qHira)) || (qKata && kanaLower.includes(qKata))) {
+      return true;
+    }
+  }
+
+  // 4. Meaning match (Indonesian translation)
+  if (item.meaning && item.meaning.toLowerCase().includes(q)) {
+    return true;
+  }
+
+  // 5. Lesson or category_word match
+  if (item.lesson && item.lesson.toLowerCase().includes(q)) {
+    return true;
+  }
+  if (item.category_word && item.category_word.toLowerCase().includes(q)) {
+    return true;
+  }
+
+  return false;
+};
+
 const currentGroupItems = computed(() => {
   let pool: any[] = activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
 
@@ -51,11 +104,32 @@ const currentGroupItems = computed(() => {
   return pool;
 });
 
+const allCategoryItems = computed(() => {
+  return activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
+});
+
+const totalCategoryMatches = computed(() => {
+  const query = searchQuery.value.trim().toLowerCase();
+  if (!query) return 0;
+  const qHira = toHiragana(query);
+  const qKata = toKatakana(query);
+  const qRom = toRomaji(query).toLowerCase();
+  return allCategoryItems.value.filter(item => matchesQuery(item, query, qHira, qKata, qRom)).length;
+});
+
 const filteredItems = computed(() => {
   let pool = currentGroupItems.value;
 
   if (activeStatusFilter.value !== 'all') {
     pool = pool.filter(item => quizStore.getMasteryTier(item.character) === activeStatusFilter.value);
+  }
+
+  const query = searchQuery.value.trim().toLowerCase();
+  if (query) {
+    const qHira = toHiragana(query);
+    const qKata = toKatakana(query);
+    const qRom = toRomaji(query).toLowerCase();
+    pool = pool.filter(item => matchesQuery(item, query, qHira, qKata, qRom));
   }
 
   return pool;
@@ -161,6 +235,7 @@ const nextPreviewItem = () => {
           v-model:category="activeCategory"
           v-model:subtype="activeSubtype"
           v-model:statusFilter="activeStatusFilter"
+          v-model:searchQuery="searchQuery"
           :available-lessons="availableLessons"
         />
 
@@ -186,11 +261,38 @@ const nextPreviewItem = () => {
 
           <!-- Empty State -->
           <div v-else class="h-full min-h-[220px] text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 py-8">
-            <Sparkles class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2 animate-bounce" />
-            <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">Tidak ada karakter ditemui</h3>
-            <p class="text-xs text-gray-400 dark:text-slate-400 max-w-xs mt-1">
-              Tidak ada item yang sesuai dengan filter yang dipilih saat ini.
+            <component 
+              :is="searchQuery.trim() ? SearchX : Sparkles" 
+              class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2" 
+              :class="{ 'animate-bounce': !searchQuery.trim() }" 
+            />
+            <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">
+              {{ searchQuery.trim() ? 'Tidak ada hasil pencarian' : 'Tidak ada karakter ditemui' }}
+            </h3>
+            <p class="text-xs text-gray-400 dark:text-slate-400 max-w-sm mt-1 px-4">
+              <template v-if="searchQuery.trim()">
+                Tidak ada karakter atau kosakata yang cocok dengan "<span class="font-semibold text-gray-700 dark:text-slate-200">{{ searchQuery }}</span>"<span v-if="activeSubtype !== 'all'"> pada kelompok ini</span>.
+              </template>
+              <template v-else>
+                Tidak ada item yang sesuai dengan filter yang dipilih saat ini.
+              </template>
             </p>
+
+            <div v-if="searchQuery.trim()" class="flex flex-wrap items-center justify-center gap-2 mt-4">
+              <button 
+                v-if="activeSubtype !== 'all' && totalCategoryMatches > 0"
+                @click="activeSubtype = 'all'"
+                class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-sm flex items-center gap-1.5"
+              >
+                <span>Cari di Semua Kelompok ({{ totalCategoryMatches }} ditemukan)</span>
+              </button>
+              <button 
+                @click="searchQuery = ''"
+                class="px-3.5 py-1.5 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-xl text-xs font-bold transition cursor-pointer"
+              >
+                Hapus Pencarian
+              </button>
+            </div>
           </div>
         </div>
 
@@ -207,12 +309,12 @@ const nextPreviewItem = () => {
               Menampilkan <strong class="text-gray-900 dark:text-slate-100">{{ filteredItems.length }}</strong> karakter
             </span>
             <button
-              v-if="activeSubtype !== 'all' || activeStatusFilter !== 'all'"
-              @click="activeSubtype = 'all'; activeStatusFilter = 'all';"
+              v-if="activeSubtype !== 'all' || activeStatusFilter !== 'all' || searchQuery.trim() !== ''"
+              @click="activeSubtype = 'all'; activeStatusFilter = 'all'; searchQuery = '';"
               class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline cursor-pointer ml-1"
             >
               <RotateCcw class="w-3 h-3" />
-              <span>Reset Filter</span>
+              <span>{{ searchQuery.trim() ? (activeSubtype !== 'all' || activeStatusFilter !== 'all' ? 'Reset Semua' : 'Hapus Pencarian') : 'Reset Filter' }}</span>
             </button>
           </div>
 
