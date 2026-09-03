@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import type { KataBantuBilanganData } from '../../types/reference';
 import { Layers, ChevronDown, ChevronUp, AlertCircle, Search } from '@lucide/vue';
+import SpeakerButton from '../SpeakerButton.vue';
 
 const props = defineProps<{
   data: KataBantuBilanganData;
@@ -114,6 +115,7 @@ const filteredCategories = computed(() => {
             <div>
               <div class="flex items-center gap-2">
                 <h4 class="text-sm sm:text-base font-bold text-white capitalize">{{ cat.category }}</h4>
+                <SpeakerButton :text="cat.counter_reading || cat.counter" size="sm" />
               </div>
               <p class="text-xs text-slate-400 mt-0.5">
                 Contoh: <strong class="text-slate-300">{{ cat.usage_example }}</strong>
@@ -159,7 +161,10 @@ const filteredCategories = computed(() => {
                     {{ val.value }}
                   </td>
                   <td class="px-3 py-1.5 font-bold font-jp text-white text-sm sm:text-base">
-                    {{ val.japanese }}
+                    <div class="flex items-center gap-1.5">
+                      <span>{{ val.japanese }}</span>
+                      <SpeakerButton :text="val.japanese" size="sm" />
+                    </div>
                   </td>
                   <td class="px-3 py-1.5 text-right">
                     <span 

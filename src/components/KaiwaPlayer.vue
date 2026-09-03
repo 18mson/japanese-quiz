@@ -6,6 +6,7 @@ import { normalizeRomajiForComparison, checkIsCorrect, checkIsTypo } from '../ut
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
 import { Check, X, ArrowRight, RotateCcw, HelpCircle, Trophy } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
+import SpeakerButton from './SpeakerButton.vue';
 
 const quizStore = useQuizStore();
 
@@ -256,7 +257,10 @@ onMounted(() => {
                 {{ item.isCorrect ? '✓ Benar' : '✗ Salah' }}
               </span>
             </div>
-            <div class="text-sm font-black font-jp">{{ item.line.japanese }}</div>
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-sm font-black font-jp">{{ item.line.japanese }}</div>
+              <SpeakerButton :text="item.line.japanese" size="sm" />
+            </div>
             <div class="text-[11px] text-slate-300 italic">"{{ item.line.meaning }}"</div>
           </div>
         </div>
@@ -301,9 +305,12 @@ onMounted(() => {
             </button>
           </div>
 
-          <!-- Japanese Prompt -->
-          <div class="text-lg sm:text-xl font-black text-amber-300 font-jp tracking-wide">
-            {{ currentLine.japanese }}
+          <!-- Japanese Prompt with Speaker -->
+          <div class="flex items-center justify-between gap-2">
+            <div class="text-lg sm:text-xl font-black text-amber-300 font-jp tracking-wide">
+              {{ currentLine.japanese }}
+            </div>
+            <SpeakerButton :text="currentLine.japanese" size="sm" />
           </div>
 
           <!-- Meaning -->

@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import type { UngkapanWaktuData } from '../../types/reference';
 import { Clock, Calendar, Search, AlertTriangle } from '@lucide/vue';
+import SpeakerButton from '../SpeakerButton.vue';
 
 const props = defineProps<{
   data: UngkapanWaktuData;
@@ -139,7 +140,10 @@ const searchMatchesDuration = computed(() => {
             <span class="capitalize px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700/60 font-semibold">{{ item.group }}</span>
             <span class="text-cyan-400 font-bold">Kalender</span>
           </div>
-          <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+          <div class="flex items-center justify-between gap-1.5 mt-0.5">
+            <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+            <SpeakerButton :text="item.japanese" size="sm" />
+          </div>
           <span class="text-xs text-slate-300 mt-1 italic">"{{ item.meaning }}"</span>
         </div>
 
@@ -153,7 +157,10 @@ const searchMatchesDuration = computed(() => {
             <span class="capitalize px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700/60 font-semibold">{{ item.group }} ({{ item.value }})</span>
             <span class="text-amber-400 font-bold">Durasi</span>
           </div>
-          <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+          <div class="flex items-center justify-between gap-1.5 mt-0.5">
+            <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+            <SpeakerButton :text="item.japanese" size="sm" />
+          </div>
         </div>
       </div>
 
@@ -190,18 +197,33 @@ const searchMatchesDuration = computed(() => {
               >
                 <!-- Hari -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.hari[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.hari[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.hari[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.hari[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.hari[i-1]?.japanese" :text="data.kalender.hari[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
                 <!-- Pagi -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.pagi[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.pagi[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.pagi[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.pagi[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.pagi[i-1]?.japanese" :text="data.kalender.pagi[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
                 <!-- Malam -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.malam[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.malam[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.malam[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.malam[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.malam[i-1]?.japanese" :text="data.kalender.malam[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -235,18 +257,33 @@ const searchMatchesDuration = computed(() => {
               >
                 <!-- Minggu -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.minggu[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.minggu[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.minggu[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.minggu[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.minggu[i-1]?.japanese" :text="data.kalender.minggu[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
                 <!-- Bulan -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.bulan[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.bulan[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.bulan[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.bulan[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.bulan[i-1]?.japanese" :text="data.kalender.bulan[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
                 <!-- Tahun -->
                 <td class="px-4 py-3">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.tahun[i-1]?.japanese }}</div>
-                  <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.tahun[i-1]?.meaning }}</div>
+                  <div class="flex items-center justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.tahun[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.tahun[i-1]?.meaning }}</div>
+                    </div>
+                    <SpeakerButton v-if="data.kalender.tahun[i-1]?.japanese" :text="data.kalender.tahun[i-1]?.japanese" size="sm" />
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -289,9 +326,14 @@ const searchMatchesDuration = computed(() => {
                   <td class="px-3 py-2 font-bold text-slate-300">
                     {{ j.value === '?' ? 'Berapa?' : j.value + ' Jam' }}
                   </td>
-                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-white flex items-center gap-1.5">
-                    <span>{{ j.japanese }}</span>
-                    <span v-if="isDurationIrregular('jam', j.value)" class="text-[10px] px-1.5 bg-amber-500/20 text-amber-300 rounded font-bold">Khusus</span>
+                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-white">
+                    <div class="flex items-center justify-between gap-1.5">
+                      <div class="flex items-center gap-1.5">
+                        <span>{{ j.japanese }}</span>
+                        <span v-if="isDurationIrregular('jam', j.value)" class="text-[10px] px-1.5 bg-amber-500/20 text-amber-300 rounded font-bold">Khusus</span>
+                      </div>
+                      <SpeakerButton :text="j.japanese" size="sm" />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -327,7 +369,10 @@ const searchMatchesDuration = computed(() => {
                     {{ m.value === '?' ? 'Berapa?' : m.value + ' Menit' }}
                   </td>
                   <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-white">
-                    {{ m.japanese }}
+                    <div class="flex items-center justify-between gap-1.5">
+                      <span>{{ m.japanese }}</span>
+                      <SpeakerButton :text="m.japanese" size="sm" />
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -371,26 +416,30 @@ const searchMatchesDuration = computed(() => {
                 </td>
                 <!-- Hari -->
                 <td class="px-3 py-2">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">
-                    {{ data.durasi.jangka_waktu.hari[idx-1]?.japanese }}
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                    <span>{{ data.durasi.jangka_waktu.hari[idx-1]?.japanese }}</span>
+                    <SpeakerButton v-if="data.durasi.jangka_waktu.hari[idx-1]?.japanese" :text="data.durasi.jangka_waktu.hari[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Minggu -->
                 <td class="px-3 py-2">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">
-                    {{ data.durasi.jangka_waktu.minggu[idx-1]?.japanese }}
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                    <span>{{ data.durasi.jangka_waktu.minggu[idx-1]?.japanese }}</span>
+                    <SpeakerButton v-if="data.durasi.jangka_waktu.minggu[idx-1]?.japanese" :text="data.durasi.jangka_waktu.minggu[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Bulan -->
                 <td class="px-3 py-2">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">
-                    {{ data.durasi.jangka_waktu.bulan[idx-1]?.japanese }}
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                    <span>{{ data.durasi.jangka_waktu.bulan[idx-1]?.japanese }}</span>
+                    <SpeakerButton v-if="data.durasi.jangka_waktu.bulan[idx-1]?.japanese" :text="data.durasi.jangka_waktu.bulan[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Tahun -->
                 <td class="px-3 py-2">
-                  <div class="font-bold text-white font-jp text-sm sm:text-base">
-                    {{ data.durasi.jangka_waktu.tahun[idx-1]?.japanese }}
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                    <span>{{ data.durasi.jangka_waktu.tahun[idx-1]?.japanese }}</span>
+                    <SpeakerButton v-if="data.durasi.jangka_waktu.tahun[idx-1]?.japanese" :text="data.durasi.jangka_waktu.tahun[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
               </tr>

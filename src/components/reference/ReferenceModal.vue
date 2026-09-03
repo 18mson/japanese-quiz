@@ -7,8 +7,10 @@ import {
   Clock, 
   Layers, 
   BookOpen, 
-  Loader2 
+  Loader2,
+  Volume2
 } from '@lucide/vue';
+import { useSettingsStore } from '../../stores/settingsStore';
 import TabKataBilangan from './TabKataBilangan.vue';
 import TabUngkapanWaktu from './TabUngkapanWaktu.vue';
 import TabKataBantuBilangan from './TabKataBantuBilangan.vue';
@@ -44,6 +46,7 @@ const emit = defineEmits<{
   (e: 'close'): void;
 }>();
 
+const settingsStore = useSettingsStore();
 const activeTab = ref<'kata_bilangan' | 'ungkapan_waktu' | 'kata_bantu_bilangan' | 'konjugasi_kata_kerja'>(props.initialTab);
 const isLoading = ref(false);
 
@@ -136,14 +139,36 @@ onUnmounted(() => {
               </div>
             </div>
 
-            <!-- Close Button -->
-            <button 
-              @click="emit('close')"
-              class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer border border-slate-700/60"
-              title="Tutup (Esc)"
-            >
-              <X class="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+            <div class="flex items-center gap-2.5">
+              <!-- Quick TTS Speed Toggle -->
+              <div class="hidden sm:flex items-center gap-1 bg-slate-950/80 border border-slate-700/60 p-1 rounded-xl shadow-inner">
+                <Volume2 class="w-3.5 h-3.5 text-indigo-400 ml-1 mr-0.5" />
+                <button
+                  v-for="rate in ([0.6, 0.9, 1.2] as const)"
+                  :key="rate"
+                  type="button"
+                  @click="settingsStore.setSpeechRate(rate)"
+                  :class="[
+                    'px-2 py-0.5 rounded-lg text-[11px] font-bold transition cursor-pointer',
+                    settingsStore.speechRate === rate
+                      ? 'bg-indigo-600 text-white shadow-xs font-black'
+                      : 'text-slate-400 hover:text-slate-200'
+                  ]"
+                  :title="`Kecepatan Suara ${rate}x`"
+                >
+                  {{ rate }}x
+                </button>
+              </div>
+
+              <!-- Close Button -->
+              <button 
+                @click="emit('close')"
+                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer border border-slate-700/60"
+                title="Tutup (Esc)"
+              >
+                <X class="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
 
           <!-- 4 Main Navigation Tabs -->

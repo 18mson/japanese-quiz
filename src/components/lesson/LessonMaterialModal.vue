@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { BookOpen, MessageSquare, ArrowRight, ArrowLeft, Play, Sparkles, ChevronDown, ChevronUp } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import LessonReferenceModal from './LessonReferenceModal.vue';
+import SpeakerButton from '../SpeakerButton.vue';
 
 const quizStore = useQuizStore();
 
@@ -189,10 +190,13 @@ onUnmounted(() => {
                   <div 
                     v-for="(ex, eIdx) in (sub.examples || [sub.example])" 
                     :key="eIdx"
-                    class="text-xs"
+                    class="text-xs flex items-start justify-between gap-2"
                   >
-                    <div class="font-bold text-amber-300 font-jp">{{ ex?.japanese }}</div>
-                    <div class="text-slate-400">"{{ ex?.meaning }}"</div>
+                    <div>
+                      <div class="font-bold text-amber-300 font-jp">{{ ex?.japanese }}</div>
+                      <div class="text-slate-400">"{{ ex?.meaning }}"</div>
+                    </div>
+                    <SpeakerButton v-if="ex?.japanese" :text="ex.japanese" size="sm" />
                   </div>
                 </div>
 
@@ -221,13 +225,16 @@ onUnmounted(() => {
               </div>
 
               <!-- Primary Example -->
-              <div class="space-y-0.5">
-                <div class="text-sm sm:text-base font-black text-amber-300 font-jp">
-                  {{ currentBunkei.examples[0].japanese }}
+              <div class="flex items-start justify-between gap-2">
+                <div class="space-y-0.5">
+                  <div class="text-sm sm:text-base font-black text-amber-300 font-jp">
+                    {{ currentBunkei.examples[0].japanese }}
+                  </div>
+                  <div class="text-xs sm:text-sm text-slate-300">
+                    "{{ currentBunkei.examples[0].meaning }}"
+                  </div>
                 </div>
-                <div class="text-xs sm:text-sm text-slate-300">
-                  "{{ currentBunkei.examples[0].meaning }}"
-                </div>
+                <SpeakerButton :text="currentBunkei.examples[0].japanese" size="sm" />
               </div>
 
               <!-- Additional Examples (Collapsible) -->
@@ -245,10 +252,13 @@ onUnmounted(() => {
                   <div 
                     v-for="(ex, exIdx) in currentBunkei.examples.slice(1)" 
                     :key="exIdx"
-                    class="space-y-0.5 text-xs sm:text-sm"
+                    class="flex items-start justify-between gap-2 text-xs sm:text-sm"
                   >
-                    <div class="font-bold text-amber-200 font-jp">{{ ex.japanese }}</div>
-                    <div class="text-slate-400">"{{ ex.meaning }}"</div>
+                    <div class="space-y-0.5">
+                      <div class="font-bold text-amber-200 font-jp">{{ ex.japanese }}</div>
+                      <div class="text-slate-400">"{{ ex.meaning }}"</div>
+                    </div>
+                    <SpeakerButton :text="ex.japanese" size="sm" />
                   </div>
                 </div>
               </div>

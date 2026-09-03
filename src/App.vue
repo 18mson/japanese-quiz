@@ -25,7 +25,7 @@ import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
-import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked } from '@lucide/vue';
+import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked, Volume2 } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -269,6 +269,47 @@ const goToHome = () => {
                 </div>
               </div>
 
+              <!-- Settings Section: TTS Speech Rate -->
+              <div class="px-2 py-1.5">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+                  <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <span>Kecepatan Audio (TTS)</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                  <button
+                    @click="settingsStore.setSpeechRate(0.6)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 0.6 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="0.6x Lambat"
+                  >
+                    <span>0.6x</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setSpeechRate(0.9)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 0.9 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="0.9x Normal"
+                  >
+                    <span>0.9x</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setSpeechRate(1.2)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 1.2 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="1.2x Cepat"
+                  >
+                    <span>1.2x</span>
+                  </button>
+                </div>
+              </div>
+
               <!-- Divider -->
               <div class="my-1.5 border-t border-gray-100 dark:border-slate-800"></div>
 
@@ -370,6 +411,47 @@ const goToHome = () => {
                   >
                     <Check v-if="settingsStore.keyboardHeight === 'tall'" class="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
                     <span>Tall</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Settings Section: TTS Speech Rate -->
+              <div class="px-2 py-1.5">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+                  <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <span>Kecepatan Audio (TTS)</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                  <button
+                    @click="settingsStore.setSpeechRate(0.6)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 0.6 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="0.6x Lambat"
+                  >
+                    <span>0.6x</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setSpeechRate(0.9)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 0.9 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="0.9x Normal"
+                  >
+                    <span>0.9x</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setSpeechRate(1.2)"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.speechRate === 1.2 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="1.2x Cepat"
+                  >
+                    <span>1.2x</span>
                   </button>
                 </div>
               </div>

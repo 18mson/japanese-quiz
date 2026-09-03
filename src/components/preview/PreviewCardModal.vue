@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { Volume2, ArrowRight, Sparkles, Eye } from '@lucide/vue';
+import { ArrowRight, Sparkles, Eye } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import KanjiAnimator from '../KanjiAnimator.vue';
+import SpeakerButton from '../SpeakerButton.vue';
+import { useTextToSpeech } from '../../composables/useTextToSpeech';
 
 const quizStore = useQuizStore();
+const { speak, stop } = useTextToSpeech();
 
 const currentCardIndex = ref(0);
 
@@ -22,27 +25,18 @@ const charText = computed(() => {
   return currentItem.value.character || currentItem.value.japanese || currentItem.value.kana || '';
 });
 
+const textToSpeak = computed(() => {
+  if (!currentItem.value) return '';
+  return currentItem.value.kana || currentItem.value.character || currentItem.value.japanese || '';
+});
+
 const isLastCard = computed(() => {
   return currentCardIndex.value >= itemsToPreview.value.length - 1;
 });
 
 const playAudioHint = () => {
-  if (!currentItem.value) return;
-  // Audio playback via SpeechSynthesis
-  if ('speechSynthesis' in window) {
-    try {
-      window.speechSynthesis.cancel();
-      setTimeout(() => {
-        const textToSpeak = currentItem.value?.kana || currentItem.value?.character || currentItem.value?.japanese || '';
-        if (!textToSpeak) return;
-        const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'ja-JP';
-        utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
-      }, 50);
-    } catch (e) {
-      console.warn('TTS playback error:', e);
-    }
+  if (textToSpeak.value) {
+    speak(textToSpeak.value);
   }
 };
 
@@ -107,9 +101,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-  }
+  stop();
 });
 </script>
 
@@ -174,13 +166,7 @@ onUnmounted(() => {
           <span class="text-sm sm:text-base font-extrabold text-indigo-400 tracking-wider uppercase">
             {{ Array.isArray(currentItem.romaji) ? currentItem.romaji.join(' / ') : currentItem.romaji }}
           </span>
-          <button 
-            @click="playAudioHint"
-            class="p-1.5 rounded-full bg-indigo-500/20 hover:bg-indigo-500/40 text-indigo-300 transition active:scale-95 cursor-pointer shadow-xs"
-            title="Dengarkan Pengucapan (Spasi / V)"
-          >
-            <Volume2 class="w-4 h-4" />
-          </button>
+          <SpeakerButton :text="textToSpeak" size="md" />
         </div>
 
         <!-- Meaning / Arti Bahasa Indonesia -->

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import KanjiAnimator from '../KanjiAnimator.vue';
+import SpeakerButton from '../SpeakerButton.vue';
+import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import { 
   X, 
   Sparkles, 
-  Volume2, 
   ChevronLeft, 
   ChevronRight,
   PenTool,
@@ -21,17 +22,17 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'prev', 'next']);
 const quizStore = useQuizStore();
+const { speak, stop } = useTextToSpeech();
 const viewMode = ref<'stroke' | 'text'>('stroke');
 
+const textToSpeak = computed(() => {
+  if (!props.item) return '';
+  return props.item.kana || props.item.character || '';
+});
+
 const playAudio = () => {
-  if (!props.item) return;
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-    const textToSpeak = props.item.kana || props.item.character || '';
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
-    utterance.lang = 'ja-JP';
-    utterance.rate = 0.9;
-    window.speechSynthesis.speak(utterance);
+  if (textToSpeak.value) {
+    speak(textToSpeak.value);
   }
 };
 
@@ -54,9 +55,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-  }
+  stop();
 });
 </script>
 
@@ -151,13 +150,7 @@ onUnmounted(() => {
           <span class="text-sm sm:text-base font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">
             {{ Array.isArray(item.romaji) ? item.romaji.join(' / ') : item.romaji }}
           </span>
-          <button 
-            @click="playAudio"
-            class="p-1.5 rounded-full bg-indigo-100 hover:bg-indigo-200 dark:bg-indigo-500/20 dark:hover:bg-indigo-500/40 text-indigo-600 dark:text-indigo-300 transition active:scale-95 cursor-pointer shadow-xs"
-            title="Dengarkan Suara (Spasi)"
-          >
-            <Volume2 class="w-4 h-4" />
-          </button>
+          <SpeakerButton :text="textToSpeak" size="md" />
         </div>
 
         <!-- Indonesian Meaning for Vocabulary / Kanji -->

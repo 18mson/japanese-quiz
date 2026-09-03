@@ -16,6 +16,7 @@ import {
   User
 } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
+import SpeakerButton from './SpeakerButton.vue';
 
 const quizStore = useQuizStore();
 
@@ -246,13 +247,16 @@ onMounted(() => {
       class="w-full max-w-xl bg-slate-900/95 border border-violet-500/30 rounded-3xl p-4 sm:p-6 shadow-xl flex flex-col gap-3.5 animate-fadeIn text-slate-100"
     >
       <!-- Reference Base Example -->
-      <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-3 sm:p-4 text-left">
-        <div class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-violet-400 mb-1">
-          📌 Pola Contoh Acuan:
+      <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-3 sm:p-4 text-left flex items-center justify-between gap-3">
+        <div>
+          <div class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-violet-400 mb-1">
+            📌 Pola Contoh Acuan:
+          </div>
+          <div class="text-base sm:text-lg font-black text-slate-200 font-jp">
+            {{ currentQuestion.renshuuA.baseExample }}
+          </div>
         </div>
-        <div class="text-base sm:text-lg font-black text-slate-200 font-jp">
-          {{ currentQuestion.renshuuA.baseExample }}
-        </div>
+        <SpeakerButton :text="currentQuestion.renshuuA.baseExample" size="sm" />
       </div>
 
       <!-- Substitution Word Prompt -->
@@ -337,10 +341,11 @@ onMounted(() => {
         >
           <Check v-if="feedbackState === 'correct'" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
           <X v-else class="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
-          <div>
+          <div class="flex-1 min-w-0">
             <div class="font-jp font-black text-sm">{{ currentQuestion.renshuuA.targetJapanese }}</div>
             <div class="text-[11px] opacity-80">{{ currentQuestion.renshuuA.targetRomaji }}</div>
           </div>
+          <SpeakerButton :text="currentQuestion.renshuuA.targetJapanese" size="sm" />
         </div>
       </div>
     </div>
@@ -477,10 +482,11 @@ onMounted(() => {
         >
           <Check v-if="feedbackState === 'correct'" class="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
           <X v-else class="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" />
-          <div>
+          <div class="flex-1 min-w-0">
             <div class="font-jp font-black text-sm">{{ currentQuestion.renshuuB.targetJapanese }}</div>
             <div class="text-[11px] opacity-80">{{ currentQuestion.renshuuB.targetRomaji }}</div>
           </div>
+          <SpeakerButton :text="currentQuestion.renshuuB.targetJapanese" size="sm" />
         </div>
       </div>
     </div>
@@ -502,19 +508,22 @@ onMounted(() => {
         <div 
           v-for="(line, lIdx) in currentQuestion.renshuuC.template"
           :key="lIdx"
-          class="flex items-start gap-2 text-sm sm:text-base font-bold"
+          class="flex items-start justify-between gap-2 text-sm sm:text-base font-bold py-1 border-b border-slate-800/40 last:border-0"
         >
-          <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-xs font-black text-emerald-400 flex-shrink-0">
-            {{ line.speaker }}
-          </span>
-          <div>
-            <div class="font-jp text-slate-100 leading-relaxed font-black">
-              {{ line.japanese }}
-            </div>
-            <div class="text-[11px] text-slate-400 italic">
-              {{ line.meaning }}
+          <div class="flex items-start gap-2 min-w-0">
+            <span class="px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-xs font-black text-emerald-400 flex-shrink-0">
+              {{ line.speaker }}
+            </span>
+            <div>
+              <div class="font-jp text-slate-100 leading-relaxed font-black">
+                {{ line.japanese }}
+              </div>
+              <div class="text-[11px] text-slate-400 italic">
+                {{ line.meaning }}
+              </div>
             </div>
           </div>
+          <SpeakerButton :text="line.japanese" size="sm" />
         </div>
       </div>
 
@@ -561,9 +570,12 @@ onMounted(() => {
         <div 
           v-for="(resLine, rIdx) in (currentQuestion.renshuuC.options.find(o => o.key === selectedOptionKey)?.resolvedLines || [])"
           :key="rIdx"
-          class="text-xs font-bold font-jp text-slate-200"
+          class="text-xs font-bold font-jp text-slate-200 flex items-center justify-between gap-2 py-0.5"
         >
-          <span class="text-emerald-300">{{ resLine.speaker }}:</span> {{ resLine.japanese }}
+          <div>
+            <span class="text-emerald-300">{{ resLine.speaker }}:</span> {{ resLine.japanese }}
+          </div>
+          <SpeakerButton :text="resLine.japanese" size="sm" />
         </div>
       </div>
     </div>

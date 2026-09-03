@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import type { KonjugasiKataKerjaData, VerbItem } from '../../types/reference';
 import { BookOpen, Search, Info } from '@lucide/vue';
+import SpeakerButton from '../SpeakerButton.vue';
 
 const props = defineProps<{
   data: KonjugasiKataKerjaData;
@@ -201,7 +202,7 @@ const filteredVerbs = computed(() => {
         <table class="w-full text-left text-xs sm:text-sm">
           <thead class="bg-slate-950/90 text-slate-300 text-[11px] font-extrabold uppercase tracking-wider border-b border-slate-800 sticky top-0 z-10 backdrop-blur-md">
             <tr>
-              <th class="px-3.5 py-3 text-emerald-400">Bentuk ます (Masu)</th>
+              <th class="px-3.5 py-3 text-emerald-400 min-w-[170px]">Bentuk ます (Masu)</th>
               <th class="px-3 py-3 text-cyan-300">Bentuk て (Te)</th>
               <th class="px-3 py-3 text-indigo-300">Bentuk Kamus (Jisho)</th>
               <th class="px-3 py-3 text-rose-300">Bentuk ない (Nai)</th>
@@ -218,11 +219,16 @@ const filteredVerbs = computed(() => {
             >
               <!-- Bentuk Masu + Reading -->
               <td class="px-3.5 py-2.5">
-                <div class="font-extrabold text-white font-jp text-sm sm:text-base group-hover:text-emerald-300 transition">
-                  {{ v.masu }}
-                </div>
-                <div class="text-[11px] text-slate-400 font-jp mt-0.5">
-                  {{ v.masu_reading }}
+                <div class="flex items-center justify-between gap-2">
+                  <div>
+                    <div class="font-extrabold text-white font-jp text-sm sm:text-base group-hover:text-emerald-300 transition whitespace-nowrap">
+                      {{ v.masu }}
+                    </div>
+                    <div class="text-[11px] text-slate-400 font-jp mt-0.5">
+                      {{ v.masu_reading }}
+                    </div>
+                  </div>
+                  <SpeakerButton :text="v.masu_reading || v.masu" size="sm" />
                 </div>
               </td>
 
