@@ -42,9 +42,9 @@ const isEntireCombinationComplete = ref(false);
 const charList = computed(() => Array.from(props.targetChar || ''));
 const isCombination = computed(() => charList.value.length > 1);
 
-// Proportional sizing: Main box is 220px, small sub-character box is 140px (~64% of main box)
+// Proportional sizing: Main box is 220px, small sub-character box is 148px (~67% of main box)
 const mainBoxSize = computed(() => (isCombination.value ? 220 : props.size));
-const smallBoxSize = computed(() => Math.max(140, Math.round(mainBoxSize.value * 0.64)));
+const smallBoxSize = computed(() => Math.max(148, Math.round(mainBoxSize.value * 0.67)));
 
 const getBoxSize = (idx: number) => {
   if (!isCombination.value) return props.size;
@@ -289,17 +289,17 @@ const initWriterQuiz = async () => {
     const size = getBoxSize(i);
     // Area utama gets standard brush stroke, area kecil gets proportional thickness
     const drawingWidth = isCombination.value
-      ? (i === 0 ? 56 : 46)
+      ? (i === 0 ? 56 : 48)
       : Math.max(68, Math.round(size * 0.26));
 
     // Optimasi ukuran & padding untuk huruf kedua di kombinasi (karakter Youon kecil):
     // Semua karakter kecil kana (ゃ, ゅ, ょ, ャ, ュ, ョ, dll.) pada data font aslinya hanya mengisi
     // sebagian kecil dari glyph box (500-670 unit). Dengan padding default (+14px), huruf kedua
     // terasa terlalu kecil dan menyisakan banyak area kosong yang belum terisi di kanvas.
-    // Memberikan padding -6px untuk semua huruf kedua di kombinasi memperbesar skala
-    // secara proporsional (~36%), memangkas ruang kosong, dan membuat tulisan lebih pas & nyaman.
+    // Memberikan padding -10px untuk semua huruf kedua di kombinasi memperbesar skala
+    // secara proporsional (~42%), memangkas ruang kosong, dan membuat tulisan lebih pas & nyaman.
     const isSecondCombinationChar = isCombination.value && i === 1;
-    const padding = isSecondCombinationChar ? -6 : Math.round(size * 0.1);
+    const padding = isSecondCombinationChar ? -10 : Math.round(size * 0.1);
 
     const isDark = settingsStore.isDarkMode;
     const strokeColor = isDark ? '#38bdf8' : '#0284c7';
