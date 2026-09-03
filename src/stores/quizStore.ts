@@ -156,6 +156,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const questionType = ref('hiragana');
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
+  const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
 
   const userInput = ref('');
@@ -261,7 +262,13 @@ export const useQuizStore = defineStore('quiz', () => {
     startTime.value = Date.now();
   };
 
-  const startQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
+  const startQuiz = async (
+    targetDuration: number = 1,
+    type: string = 'hiragana',
+    level: 'basic' | 'n5' = 'basic',
+    kanaCategory: 'all' | 'basic' | 'dakuten' | 'combination' = selectedKanaCategory.value
+  ) => {
+    selectedKanaCategory.value = kanaCategory;
     await resetQuizSessionState(targetDuration, type, level);
 
     if (type === 'kaiwa') {
@@ -321,9 +328,14 @@ export const useQuizStore = defineStore('quiz', () => {
     let finalPool = getFallbackLocalPool(type, level);
 
     try {
-      const query = type === 'mix'
+      let query = type === 'mix'
         ? supabase.from('quiz_items').select('*').in('category', ['hiragana', 'katakana'])
         : supabase.from('quiz_items').select('*').eq('category', type);
+
+      if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
+        query = query.eq('type', selectedKanaCategory.value);
+      }
+
       const { data, error } = await query;
 
       if (!error && data && data.length > 0) {
@@ -337,6 +349,13 @@ export const useQuizStore = defineStore('quiz', () => {
         }));
       }
     } catch (err) { }
+
+    if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
+      const filtered = finalPool.filter(item => item.type === selectedKanaCategory.value);
+      if (filtered.length > 0) {
+        finalPool = filtered;
+      }
+    }
 
     if (type === 'words') {
       finalPool = finalPool.filter(w => {
@@ -396,10 +415,22 @@ export const useQuizStore = defineStore('quiz', () => {
     isLoading.value = false;
   };
 
-  const startWeakItemsQuiz = async (targetDuration: number = 1, type: string = 'hiragana', level: 'basic' | 'n5' = 'basic') => {
+  const startWeakItemsQuiz = async (
+    targetDuration: number = 1,
+    type: string = 'hiragana',
+    level: 'basic' | 'n5' = 'basic',
+    kanaCategory: 'all' | 'basic' | 'dakuten' | 'combination' = selectedKanaCategory.value
+  ) => {
+    selectedKanaCategory.value = kanaCategory;
     await resetQuizSessionState(targetDuration, type, level);
     const questionCount = getQuestionCountFromDuration(targetDuration, type);
-    const pool = getFallbackLocalPool(type, level);
+    let pool = getFallbackLocalPool(type, level);
+
+    if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
+      const filtered = pool.filter(item => item.type === selectedKanaCategory.value);
+      if (filtered.length > 0) pool = filtered;
+    }
+
     let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
     if (weakPool.length === 0) weakPool = [...pool];
 
@@ -420,8 +451,14 @@ export const useQuizStore = defineStore('quiz', () => {
     const correctRomaji = currentQuestion.value.romaji;
     const correctRomajis = Array.isArray(correctRomaji) ? correctRomaji : [correctRomaji];
 
-    // Selalu gunakan full pool untuk opsi jawaban, bukan dibatasi wave
-    const poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
+    // Gunakan pool jawaban sesuai kategori huruf jika dispesifikasikan
+    let poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
+    if (['hiragana', 'katakana', 'mix'].includes(questionType.value) && selectedKanaCategory.value !== 'all') {
+      const filtered = poolData.filter(w => w.type === selectedKanaCategory.value);
+      if (filtered.length >= 6) {
+        poolData = filtered;
+      }
+    }
     const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
     const incorrectOptions = Array.from(new Set(pool.filter(r => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random()).slice(0, 5);
     return [...incorrectOptions, correctRomajis[0]].sort(() => 0.5 - Math.random());
@@ -631,7 +668,7 @@ export const useQuizStore = defineStore('quiz', () => {
   };
 
   const restartQuiz = async () => {
-    await startQuiz(targetDurationMinutes.value, questionType.value, quizLevel.value);
+    await startQuiz(targetDurationMinutes.value, questionType.value, quizLevel.value, selectedKanaCategory.value);
   };
 
   const progress = computed(() => {
@@ -666,7 +703,7 @@ export const useQuizStore = defineStore('quiz', () => {
   };
 
   return {
-    isLoading, quizLevel, questionType, isTypingMode, userInput, showReadingHint, showMeaningHint,
+    isLoading, quizLevel, questionType, selectedKanaCategory, isTypingMode, userInput, showReadingHint, showMeaningHint,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
     startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
     speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,

@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles } from '@lucide/vue';
+import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
@@ -10,10 +10,22 @@ import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
 const isReferenceModalOpen = ref(false);
-const targetDurationMinutes = ref<number>(1);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
+const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
+
+const kanaCategoryOptions = [
+  { key: 'all', label: 'Semua', badge: '✨', desc: 'Semua variasi huruf' },
+  { key: 'basic', label: 'Dasar', badge: 'あ', desc: '46 huruf dasar (seion)' },
+  { key: 'dakuten', label: 'Dakuten', badge: 'が', desc: '25 huruf ga, za, da, ba, pa' },
+  { key: 'combination', label: 'Kombinasi', badge: 'きゃ', desc: '33/36 huruf gabungan (youon)' },
+] as const;
+
+const selectedKanaCategoryDesc = computed(() => {
+  const opt = kanaCategoryOptions.find(o => o.key === selectedKanaCategory.value);
+  return opt ? opt.desc : 'Semua variasi huruf';
+});
 
 const isMobile = ref(false);
 
@@ -25,8 +37,6 @@ const updateResponsive = () => {
 const focusedSection = ref<'header' | 'mode' | 'duration'>('mode');
 const focusedHeaderTarget = ref<'grid' | 'leaderboard'>('grid');
 const isKeyboardNav = ref(false);
-
-const durationList = [1, 3, 5];
 
 const deactivateKeyboardNav = () => {
   isKeyboardNav.value = false;
@@ -114,21 +124,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 
   // ── SECTION 3: DURATION & START ──────────────────────────────
   else if (focusedSection.value === 'duration') {
-    if (event.key === 'ArrowRight') {
-      if (selectedLevel.value !== 'battleground') {
-        event.preventDefault();
-        const currentIdx = durationList.indexOf(targetDurationMinutes.value);
-        const nextIdx = (currentIdx + 1) % durationList.length;
-        targetDurationMinutes.value = durationList[nextIdx];
-      }
-    } else if (event.key === 'ArrowLeft') {
-      if (selectedLevel.value !== 'battleground') {
-        event.preventDefault();
-        const currentIdx = durationList.indexOf(targetDurationMinutes.value);
-        const prevIdx = (currentIdx - 1 + durationList.length) % durationList.length;
-        targetDurationMinutes.value = durationList[prevIdx];
-      }
-    } else if (event.key === 'ArrowUp') {
+    if (event.key === 'ArrowUp') {
       event.preventDefault();
       focusedSection.value = 'mode';
     } else if (event.key === 'Enter') {
@@ -365,26 +361,7 @@ const getModeDescription = (mode: QuizModeDef) => {
   return mode.desc;
 };
 
-const getShortDurationDesc = (minutes: number) => {
-  if (characterTypes.value === 'kaiwa') {
-    return 'Percakapan · 1 Bab (9 Baris)';
-  } else if (characterTypes.value === 'renshuu') {
-    if (minutes === 1) return 'Kilat · 6 soal';
-    if (minutes === 3) return 'Fokus · 14 soal';
-    if (minutes === 5) return 'Lengkap · 25 soal';
-  } else if (characterTypes.value === 'words') {
-    if (minutes === 1) return 'Kilat · 8 kanji';
-    if (minutes === 3) return 'Fokus · 24 kanji';
-    if (minutes === 5) return 'Maraton · 40 kanji';
-  } else {
-    if (minutes === 1) return 'Kilat · 16 soal';
-    if (minutes === 3) return 'Fokus · 48 soal';
-    if (minutes === 5) return 'Maraton · 78 soal';
-  }
-  return '';
-};
-
-const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku']);
 
 const handleStart = async () => {
   if (selectedLevel.value === 'battleground') {
@@ -396,7 +373,7 @@ const handleStart = async () => {
     }
     emit('openBattleground');
   } else {
-    await quizStore.startQuiz(targetDurationMinutes.value, characterTypes.value, selectedLevel.value);
+    await quizStore.startQuiz(1, characterTypes.value, selectedLevel.value, selectedKanaCategory.value);
     emit('start');
   }
 };
@@ -444,7 +421,17 @@ const handleStart = async () => {
           title="Lihat Kosakata & Referensi Resmi Bab"
         >
           <BookOpen class="w-4 h-4 text-indigo-500 flex-shrink-0" />
-          <span class="hidden sm:inline">Referensi</span>
+          <span class="hidden sm:inline">Referensi Bab</span>
+        </button>
+
+        <button 
+          type="button"
+          @click.stop="deactivateKeyboardNav(); emit('openFuroku');"
+          class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200/80 dark:border-violet-800/80 hover:bg-violet-100 dark:hover:bg-violet-900/50 shadow-2xs"
+          title="Furoku (付録) - Lampiran Bilangan, Waktu, Counter, Konjugasi Kata Kerja"
+        >
+          <BookMarked class="w-4 h-4 text-violet-500 flex-shrink-0" />
+          <span>Furoku</span>
         </button>
 
         <button 
@@ -688,6 +675,51 @@ const handleStart = async () => {
               </div>
             </div>
 
+            <!-- Kana Category Selector Banner (Basic / Dakuten / Kombinasi / All) -->
+            <div 
+              v-else-if="['multiple_choice', 'keyboard_typing'].includes(activeMode.id) && ['hiragana', 'katakana', 'mix'].includes(characterTypes)"
+              key="kana-category-banner" 
+              class="bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full animate-fadeIn"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs">
+                    {{ selectedKanaCategory === 'all' ? '✨' : (selectedKanaCategory === 'basic' ? 'あ' : (selectedKanaCategory === 'dakuten' ? 'が' : 'きゃ')) }}
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1.5">
+                      <span>Kategori Huruf:</span>
+                      <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+                        {{ characterTypes === 'hiragana' ? 'Hiragana' : (characterTypes === 'katakana' ? 'Katakana' : 'Mix Kana') }}
+                      </span>
+                    </div>
+                    <div class="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+                      {{ selectedKanaCategoryDesc }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4 Category Filter Pills -->
+              <div class="grid grid-cols-4 gap-1.5 pt-0.5">
+                <button
+                  v-for="cat in kanaCategoryOptions"
+                  :key="cat.key"
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); selectedKanaCategory = cat.key;"
+                  :class="[
+                    'py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
+                    selectedKanaCategory === cat.key
+                      ? 'bg-indigo-600 text-white border-indigo-500 font-black shadow-xs scale-[1.02]'
+                      : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+                  ]"
+                >
+                  <span class="font-jp text-xs opacity-90">{{ cat.badge }}</span>
+                  <span class="text-[11px] sm:text-xs truncate">{{ cat.label }}</span>
+                </button>
+              </div>
+            </div>
+
             <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
               Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
             </div>
@@ -730,40 +762,25 @@ const handleStart = async () => {
         </div>
       </div>
 
-      <!-- Duration Pills Selector for Other Modes -->
-      <div v-else-if="selectedLevel !== 'battleground'" class="w-full max-w-3xl mb-3">
-        <div class="flex items-center gap-1.5 sm:gap-2.5 w-full">
-          <button
-            v-for="min in [1, 3, 5]"
-            :key="min"
-            type="button"
-            @click.stop="deactivateKeyboardNav(); targetDurationMinutes = min;"
-            :class="[
-              'flex-1 min-w-0 py-2 sm:py-2.5 px-1.5 sm:px-2 rounded-xl sm:rounded-2xl transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer',
-              targetDurationMinutes === min
-                ? isKeyboardNav && focusedSection === 'duration'
-                  ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-400/90 font-black scale-[1.02]'
-                  : 'bg-indigo-600 text-white shadow-md font-black'
-                : 'bg-gray-100/90 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-gray-200/80 dark:hover:bg-slate-700 border border-gray-200/60 dark:border-slate-700/60 font-bold'
-            ]"
-          >
-            <span class="text-xs sm:text-sm tracking-tight font-extrabold">
-              {{ min }}'
-            </span>
-            <span 
-              :class="[
-                'text-[12px] sm:text-sm truncate max-w-full font-medium mt-0.5',
-                targetDurationMinutes === min ? 'text-indigo-100' : 'text-gray-400 dark:text-slate-400 opacity-80'
-              ]"
-            >
-              {{ getShortDurationDesc(min) }}
-            </span>
-          </button>
-        </div>
-      </div>
-
       <!-- Start Button CTA -->
-      <div class="w-full max-w-3xl">
+      <div class="w-full max-w-3xl flex flex-col items-center gap-2">
+        <!-- Quick Mode Info Pill -->
+        <div 
+          v-if="selectedLevel !== 'battleground' && characterTypes !== 'renshuu'" 
+          class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-medium"
+        >
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-200/60 dark:border-emerald-800/60">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            Mode Kilat (1 Menit)
+          </span>
+          <span v-if="['hiragana', 'katakana', 'mix'].includes(characterTypes)" class="text-indigo-600 dark:text-indigo-400 font-bold">
+            • Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
+          </span>
+          <span v-else class="text-slate-400">
+            • {{ characterTypes === 'words' ? '8 Kanji' : (characterTypes === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
+          </span>
+        </div>
+
         <button 
           type="button"
           :class="[
@@ -795,7 +812,7 @@ const handleStart = async () => {
               <Sparkles class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
             </div>
             <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">
-              <span>Start Quiz ({{ targetDurationMinutes }} Menit)</span>
+              <span>Mulai Kuis (Kilat)</span>
               <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
             </div>
           </Transition>

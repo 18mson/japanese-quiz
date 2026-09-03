@@ -19,12 +19,13 @@ import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
 
 import AboutModal from './components/AboutModal.vue';
+import ReferenceModal from './components/reference/ReferenceModal.vue';
 import PreviewCardModal from './components/preview/PreviewCardModal.vue';
 import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
-import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor } from '@lucide/vue';
+import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -35,6 +36,7 @@ const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
 const showMasteryGridModal = ref(false);
 const showAboutModal = ref(false);
+const showReferenceModal = ref(false);
 const showBattleground = ref(false);
 
 const showUserDropdown = ref(false);
@@ -85,6 +87,16 @@ const checkRouteState = () => {
   if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
     showAboutModal.value = true;
   }
+  if (
+    pathname.includes('/furoku') || 
+    searchParams.get('mode') === 'furoku' || 
+    hash === '#furoku' ||
+    pathname.includes('/referensi') ||
+    searchParams.get('mode') === 'referensi' ||
+    hash === '#referensi'
+  ) {
+    showReferenceModal.value = true;
+  }
 };
 
 onMounted(async () => {
@@ -134,6 +146,15 @@ const goToHome = () => {
             title="Tentang Aplikasi"
           >
           <Info class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+        </button>
+
+        <button 
+          @click="showReferenceModal = true"
+          class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-violet-50 dark:hover:bg-violet-950/50 hover:text-violet-600 dark:hover:text-violet-300 border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+          title="Furoku (付録) - Referensi & Lampiran"
+        >
+          <BookMarked class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+          <span class="hidden sm:inline">Furoku</span>
         </button>
       </div>
 
@@ -394,6 +415,10 @@ const goToHome = () => {
       :is-open="showAboutModal"
       @close="showAboutModal = false"
     />
+    <ReferenceModal
+      :is-open="showReferenceModal"
+      @close="showReferenceModal = false"
+    />
     <LevelUpModal />
     <SyncConflictModal
       :is-open="authStore.showSyncConflictModal"
@@ -420,7 +445,8 @@ const goToHome = () => {
       @open-mastery-grid="showMasteryGridModal = true" 
       @open-leaderboard="showLeaderboardModal = true"
       @open-about="showAboutModal = true"
-      @open-battleground="openBattleground" 
+      @open-battleground="openBattleground"
+      @open-furoku="showReferenceModal = true"
     />
     <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-48 sm:pb-24">
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
