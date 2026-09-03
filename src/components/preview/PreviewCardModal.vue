@@ -125,8 +125,15 @@ onUnmounted(() => {
         <div class="flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider">
           <Sparkles class="w-3.5 h-3.5 text-amber-400" />
           <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : 'Huruf Baru' }})</span>
-          <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kanji' : 'Gelombang' }} {{ quizStore.currentWaveIndex + 1 }}</span>
+          <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kosakata Baru' : 'Huruf Baru' }}</span>
         </div>
+
+        <span 
+          v-if="currentItem?.type && quizStore.questionType !== 'words'" 
+          class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 capitalize"
+        >
+          {{ currentItem.type === 'basic' ? 'Dasar' : currentItem.type === 'dakuten' ? 'Dakuten' : currentItem.type === 'combination' ? 'Kombinasi' : currentItem.type }}
+        </span>
 
         <span 
           v-if="currentItem?.lesson" 
@@ -149,7 +156,7 @@ onUnmounted(() => {
         <div class="w-full py-1">
           <KanjiAnimator 
             :text="charText"
-            :speed="650"
+            :speed="850"
             :autoplay="true"
           />
         </div>

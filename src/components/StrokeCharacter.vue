@@ -31,6 +31,8 @@ const activeStrokeIndex = ref<number>(-1);
 const isComplete = ref<boolean>(false);
 const isPaused = ref<boolean>(false);
 let rafId: number | null = null;
+let strokeTimeout: any = null;
+let animSessionId = 0;
 let currentStrokeStartTime = 0;
 let currentStrokeDuration = 0;
 let currentStrokeTotalLen = 0;
@@ -53,13 +55,19 @@ const measureAllPaths = () => {
 };
 
 const cancelCurrentAnimation = () => {
+  animSessionId++;
   if (rafId !== null) {
     cancelAnimationFrame(rafId);
     rafId = null;
   }
+  if (strokeTimeout !== null) {
+    clearTimeout(strokeTimeout);
+    strokeTimeout = null;
+  }
 };
 
-const runStrokeStep = (index: number, initialElapsed = 0) => {
+const runStrokeStep = (index: number, initialElapsed = 0, sessionId = animSessionId) => {
+  if (sessionId !== animSessionId) return;
   if (!hasStrokes.value || index >= strokes.value.length) {
     isComplete.value = true;
     activeStrokeIndex.value = strokes.value.length;
@@ -69,17 +77,26 @@ const runStrokeStep = (index: number, initialElapsed = 0) => {
 
   activeStrokeIndex.value = index;
   currentStrokeTotalLen = pathLengths.value[index] || 180;
-  currentStrokeDuration = Math.max(200, props.speed);
+
+  // Length-proportional duration ensures constant, natural writing velocity across all stroke lengths.
+  // Short dots/ticks take a reasonable time, while long strokes take proportionally more time so they never rush.
+  const len = currentStrokeTotalLen;
+  const speedMultiplier = (props.speed || 800) / 650;
+  const baseMs = 380 * speedMultiplier;
+  const msPerPx = 5.5 * speedMultiplier;
+  currentStrokeDuration = Math.max(480 * speedMultiplier, baseMs + (len * msPerPx));
+
   currentStrokeStartTime = performance.now();
   currentStrokeElapsedBeforePause = initialElapsed;
 
   const step = (now: number) => {
+    if (sessionId !== animSessionId) return;
     if (isPaused.value) return;
     const elapsed = (now - currentStrokeStartTime) + currentStrokeElapsedBeforePause;
     const progress = Math.min(1, elapsed / currentStrokeDuration);
     
-    // Ease out cubic
-    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    // Smooth calligraphy ease-in-out (sine): gentle touchdown, steady stroke movement, gentle lift
+    const easeProgress = -(Math.cos(Math.PI * progress) - 1) / 2;
     strokeOffsets.value[index] = currentStrokeTotalLen * (1 - easeProgress);
 
     if (progress < 1) {
@@ -88,8 +105,18 @@ const runStrokeStep = (index: number, initialElapsed = 0) => {
       strokeOffsets.value[index] = 0;
       rafId = null;
       currentStrokeElapsedBeforePause = 0;
-      // Continue to next stroke
-      runStrokeStep(index + 1, 0);
+
+      // Natural brush-lift pause before next stroke
+      if (index + 1 < strokes.value.length) {
+        strokeTimeout = setTimeout(() => {
+          strokeTimeout = null;
+          if (sessionId === animSessionId && !isPaused.value) {
+            runStrokeStep(index + 1, 0, sessionId);
+          }
+        }, 120);
+      } else {
+        runStrokeStep(index + 1, 0, sessionId);
+      }
     }
   };
 
@@ -98,15 +125,17 @@ const runStrokeStep = (index: number, initialElapsed = 0) => {
 
 const startAnimation = () => {
   cancelCurrentAnimation();
+  const currentSession = animSessionId;
   isComplete.value = false;
   isPaused.value = false;
   activeStrokeIndex.value = -1;
   currentStrokeElapsedBeforePause = 0;
 
   nextTick(() => {
+    if (currentSession !== animSessionId) return;
     measureAllPaths();
     if (strokes.value.length > 0) {
-      runStrokeStep(0, 0);
+      runStrokeStep(0, 0, currentSession);
     } else {
       isComplete.value = true;
       emit('animation-complete');
@@ -124,6 +153,10 @@ const pause = () => {
       currentStrokeElapsedBeforePause += (performance.now() - currentStrokeStartTime);
     }
   }
+  if (strokeTimeout !== null) {
+    clearTimeout(strokeTimeout);
+    strokeTimeout = null;
+  }
 };
 
 const resume = () => {
@@ -134,7 +167,7 @@ const resume = () => {
     return;
   }
   if (activeStrokeIndex.value >= 0 && activeStrokeIndex.value < strokes.value.length) {
-    runStrokeStep(activeStrokeIndex.value, currentStrokeElapsedBeforePause);
+    runStrokeStep(activeStrokeIndex.value, currentStrokeElapsedBeforePause, animSessionId);
   } else {
     startAnimation();
   }
@@ -175,7 +208,9 @@ watch(
 watch(
   () => props.isActive,
   (active) => {
-    if (active && (activeStrokeIndex.value === -1 || !isComplete.value)) {
+    if (!active) {
+      reset();
+    } else if (props.autoplay && (activeStrokeIndex.value === -1 || !isComplete.value)) {
       startAnimation();
     }
   }

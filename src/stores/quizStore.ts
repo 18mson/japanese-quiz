@@ -11,6 +11,7 @@ import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransit
 import { submitLeaderboardScore } from '../services/leaderboardService';
 import { buildHurufSessionQuestions } from '../utils/hurufQuizComposition';
 import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
+import { sortInGojuonOrder } from '../data/gojuonOrder';
 import { useGoalsStore } from './goalsStore';
 import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
 import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } from '../types/lesson';
@@ -196,6 +197,7 @@ export const useQuizStore = defineStore('quiz', () => {
       saveIntroducedToStorage();
     }
     isWavePreviewActive.value = false;
+    startTime.value = Date.now();
     justClosedPreview.value = true;
     previewClosedTimestamp.value = Date.now();
     setTimeout(() => {
@@ -405,11 +407,33 @@ export const useQuizStore = defineStore('quiz', () => {
     }
 
     // Mode Huruf (Hiragana / Katakana / Mix)
-    // Continuous stream, probabilistic per-slot, tanpa wave batches / tanpa preview blocking
-    previewMode.value = 'none';
-    isWavePreviewActive.value = false;
-    currentWaveItems.value = [];
-    questions.value = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak);
+    const hurufQuestions = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak, introducedChars.value);
+    questions.value = hurufQuestions;
+
+    // Kumpulkan huruf unlearned unik dalam sesi ini untuk ditampilkan di preview card awal
+    // HANYA untuk huruf yang benar-benar baru (belum pernah di-preview / dipelajari sama sekali)
+    const uniqueUnlearnedInSession: any[] = [];
+    const seenChars = new Set<string>();
+    hurufQuestions.forEach(q => {
+      if (!seenChars.has(q.character)) {
+        seenChars.add(q.character);
+        const streak = userStreaks.value[q.character] || 0;
+        const isIntroduced = !!introducedChars.value[q.character];
+        if (streak === 0 && !isIntroduced) {
+          uniqueUnlearnedInSession.push(q);
+        }
+      }
+    });
+
+    if (uniqueUnlearnedInSession.length > 0) {
+      previewMode.value = 'full_wave';
+      currentWaveIndex.value = 0;
+      currentWaveItems.value = sortInGojuonOrder(uniqueUnlearnedInSession);
+      isWavePreviewActive.value = true;
+    } else {
+      previewMode.value = 'none';
+      isWavePreviewActive.value = false;
+    }
 
     initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
@@ -437,7 +461,7 @@ export const useQuizStore = defineStore('quiz', () => {
     if (type === 'words') {
       questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
     } else {
-      questions.value = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak);
+      questions.value = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak, introducedChars.value);
     }
 
     initialQuestionCount.value = questions.value.length;

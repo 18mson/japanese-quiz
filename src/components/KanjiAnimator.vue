@@ -12,9 +12,9 @@ const props = withDefaults(
     loopDelay?: number;
   }>(),
   {
-    speed: 650,
+    speed: 800,
     autoplay: true,
-    loopDelay: 1400
+    loopDelay: 1600
   }
 );
 
@@ -89,10 +89,12 @@ const loadCharacters = async (targetText: string) => {
 };
 
 const handleCharComplete = (idx: number) => {
+  if (!isPlaying.value) return;
   if (idx === activeCharIndex.value) {
     if (activeCharIndex.value < characterEntries.value.length - 1) {
       activeCharIndex.value = idx + 1;
       nextTick(() => {
+        if (!isPlaying.value) return;
         const nextRef = strokeCharRefs.value[idx + 1];
         if (nextRef && typeof nextRef.replay === 'function') {
           nextRef.replay();
@@ -126,6 +128,7 @@ const replayAll = () => {
   });
 
   nextTick(() => {
+    if (!isPlaying.value) return;
     // Start character 0
     const firstRef = strokeCharRefs.value[0];
     if (firstRef && typeof firstRef.replay === 'function') {

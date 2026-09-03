@@ -7,7 +7,7 @@ export interface GojuonBatch {
 }
 
 // Gojūon row definitions by character
-const GOJUON_ROW_MAP: Record<string, string> = {
+export const GOJUON_ROW_MAP: Record<string, string> = {
   // Hiragana (Basic)
   'あ': 'a', 'い': 'a', 'う': 'a', 'え': 'a', 'お': 'a',
   'か': 'ka', 'き': 'ka', 'く': 'ka', 'け': 'ka', 'こ': 'ka',
@@ -56,6 +56,93 @@ const VISUAL_CONFUSION_PAIRS: Array<[string, string]> = [
   ['ね', 'れ'],
   ['は', 'ほ'],
 ];
+
+export const GOJUON_ROW_ORDER = [
+  'a', 'ka', 'sa', 'ta', 'na',
+  'ha', 'ma', 'ya', 'ra', 'wa',
+  'ga', 'za', 'da', 'ba', 'pa',
+  'other'
+];
+
+// Canonical kana list in standard curriculum order (Basic, Dakuten, Combination)
+const CANONICAL_KANA_ORDER: Record<string, number> = {};
+
+[
+  // Hiragana Basic
+  'あ', 'い', 'う', 'え', 'お',
+  'か', 'き', 'く', 'け', 'こ',
+  'さ', 'し', 'す', 'せ', 'そ',
+  'た', 'ち', 'つ', 'て', 'と',
+  'な', 'に', 'ぬ', 'ね', 'の',
+  'は', 'ひ', 'ふ', 'へ', 'ほ',
+  'ま', 'み', 'む', 'め', 'も',
+  'や', 'ゆ', 'よ',
+  'ら', 'り', 'る', 'れ', 'ろ',
+  'わ', 'を', 'ん',
+
+  // Hiragana Dakuten
+  'が', 'ぎ', 'ぐ', 'げ', 'ご',
+  'ざ', 'じ', 'ず', 'ぜ', 'ぞ',
+  'だ', 'ぢ', 'づ', 'で', 'ど',
+  'ば', 'び', 'ぶ', 'べ', 'ぼ',
+  'ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ',
+
+  // Hiragana Combination
+  'きゃ', 'きゅ', 'きょ',
+  'しゃ', 'しゅ', 'しょ',
+  'ちゃ', 'ちゅ', 'ちょ',
+  'にゃ', 'にゅ', 'にょ',
+  'ひゃ', 'ひゅ', 'ひょ',
+  'みゃ', 'みゅ', 'みょ',
+  'りゃ', 'りゅ', 'りょ',
+  'ぎゃ', 'ぎゅ', 'ぎょ',
+  'じゃ', 'じゅ', 'じょ',
+  'びゃ', 'びゅ', 'びょ',
+  'ぴゃ', 'ぴゅ', 'ぴょ',
+
+  // Katakana Basic
+  'ア', 'イ', 'ウ', 'エ', 'オ',
+  'カ', 'キ', 'ク', 'ケ', 'コ',
+  'サ', 'シ', 'ス', 'セ', 'ソ',
+  'タ', 'チ', 'ツ', 'テ', 'ト',
+  'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
+  'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
+  'マ', 'ミ', 'ム', 'メ', 'モ',
+  'ヤ', 'ユ', 'ヨ',
+  'ラ', 'リ', 'ル', 'レ', 'ロ',
+  'ワ', 'ヲ', 'ン',
+
+  // Katakana Dakuten
+  'ガ', 'ギ', 'グ', 'ゲ', 'ゴ',
+  'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ',
+  'ダ', 'ヂ', 'ヅ', 'デ', 'ド',
+  'バ', 'ビ', 'ブ', 'ベ', 'ボ',
+  'パ', 'ピ', 'プ', 'ペ', 'ポ',
+
+  // Katakana Combination
+  'キャ', 'キュ', 'キョ',
+  'シャ', 'シュ', 'ショ',
+  'チャ', 'チュ', 'チョ',
+  'ニャ', 'ニュ', 'ニョ',
+  'ヒャ', 'ヒュ', 'ヒョ',
+  'ミャ', 'ミュ', 'ミョ',
+  'リャ', 'リュ', 'リョ',
+  'ギャ', 'ギュ', 'ギョ',
+  'ジャ', 'ジュ', 'ジョ',
+  'ビャ', 'ビュ', 'ビョ',
+  'ピャ', 'ピュ', 'ピョ',
+].forEach((char, idx) => {
+  CANONICAL_KANA_ORDER[char] = idx;
+});
+
+export const sortInGojuonOrder = <T extends { character: string }>(items: T[]): T[] => {
+  return [...items].sort((a, b) => {
+    const idxA = CANONICAL_KANA_ORDER[a.character] ?? 9999;
+    const idxB = CANONICAL_KANA_ORDER[b.character] ?? 9999;
+    if (idxA !== idxB) return idxA - idxB;
+    return a.character.localeCompare(b.character);
+  });
+};
 
 /**
  * Organizes an unlearned items pool into Gojūon ordered batches.
