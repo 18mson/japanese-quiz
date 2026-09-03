@@ -21,7 +21,7 @@ const isQuestionActive = computed(() =>
   store.phase === 'round_active' && !answered.value && !isReviewPhase.value
 );
 
-const isPreparing = computed(() => store.phase === 'round_preparing');
+const isPreparing = computed(() => store.phase === 'round_preparing' && (store.activeRound?.round_number ?? 1) <= 1);
 
 // Master 5-minute timer formatted MM:SS
 const formattedMasterTime = computed(() => {
@@ -60,7 +60,7 @@ function startQuestionTimer() {
   }, 25);
 }
 
-// Reset when new round prepares
+// Reset when new round prepares or becomes active
 watch(
   () => store.phase,
   (newPhase) => {
@@ -70,12 +70,30 @@ watch(
       pointsEarned.value = null;
       localTimerMs.value = 10000;
     } else if (newPhase === 'round_active') {
+      selectedOptionIndex.value = null;
+      answered.value = false;
+      pointsEarned.value = null;
       startQuestionTimer();
     } else if (newPhase === 'round_result') {
       if (questionInterval) clearInterval(questionInterval);
     }
   },
   { immediate: true }
+);
+
+// Reset immediately when a new round question arrives during active session
+watch(
+  () => store.activeRound?.sentence_id,
+  (newId) => {
+    if (newId) {
+      selectedOptionIndex.value = null;
+      answered.value = false;
+      pointsEarned.value = null;
+      if (store.phase === 'round_active') {
+        startQuestionTimer();
+      }
+    }
+  }
 );
 
 function handleOptionSelect(idx: number, optValue: string) {
@@ -194,7 +212,7 @@ const remainingSecFormatted = computed(() => {
       
       <!-- PRE-ROUND COUNTDOWN (3.. 2.. 1..) -->
       <div v-if="isPreparing" class="flex flex-col items-center justify-center gap-3 animate-fadeIn my-auto">
-        <div class="text-xs sm:text-sm uppercase tracking-widest text-slate-400 font-extrabold">Bersiap Soal Ronde {{ store.activeRound?.round_number }}</div>
+        <div class="text-xs sm:text-sm uppercase tracking-widest text-slate-400 font-extrabold">Bersiap Memulai Quiz Blitz!</div>
         <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-indigo-500 via-amber-500 to-rose-500 p-1 flex items-center justify-center shadow-2xl shadow-indigo-500/30 animate-pulse">
           <div class="w-full h-full rounded-[22px] bg-slate-950 flex items-center justify-center">
             <span class="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-300 to-white font-mono">

@@ -25,7 +25,7 @@ import {
   Flame,
   BookOpen
 } from '@lucide/vue';
-import type { GameMode, QuizCategory } from '../../stores/battleground/types';
+import type { GameMode, QuizCategory, KanaCategory } from '../../stores/battleground/types';
 
 const store = useBattlegroundStore();
 const authStore = useAuthStore();
@@ -47,16 +47,25 @@ const mode = ref<'create' | 'join'>('create');
 const isPublicRoom = ref(true);
 const selectedGameMode = ref<GameMode>(store.gameMode || 'quiz_blitz');
 const selectedQuizCategory = ref<QuizCategory>(store.quizCategory || 'kotoba_kanji');
+const selectedKanaCategory = ref<KanaCategory>(store.kanaCategory || 'all');
 const inputPlayerName = ref('');
 const inputRoomCode = ref('');
 const codeCopied = ref(false);
 
+const kanaCategoryOptions = [
+  { key: 'all', label: 'Semua', badge: '✨' },
+  { key: 'basic', label: 'Dasar', badge: 'あ' },
+  { key: 'dakuten', label: 'Dakuten', badge: 'が' },
+  { key: 'combination', label: 'Kombinasi', badge: 'きゃ' },
+] as const;
+
 // Sync initial values from store
 watch(
-  () => [store.gameMode, store.quizCategory] as const,
-  ([gMode, qCat]) => {
+  () => [store.gameMode, store.quizCategory, store.kanaCategory] as const,
+  ([gMode, qCat, kCat]) => {
     if (gMode) selectedGameMode.value = gMode;
     if (qCat) selectedQuizCategory.value = qCat;
+    if (kCat) selectedKanaCategory.value = kCat;
   },
   { immediate: true }
 );
@@ -118,7 +127,8 @@ async function handleCreate() {
     inputPlayerName.value.trim(),
     isPublicRoom.value,
     selectedGameMode.value,
-    selectedQuizCategory.value
+    selectedQuizCategory.value,
+    selectedKanaCategory.value
   );
 }
 
@@ -355,6 +365,33 @@ const emit = defineEmits<{ exit: [] }>();
                 <span class="text-[11px] truncate">Kotoba & Kanji</span>
               </button>
             </div>
+
+            <!-- Sub-Filter Kategori Huruf (Basic / Dakuten / Kombinasi / All) -->
+            <div v-if="['hiragana', 'katakana', 'mix'].includes(selectedQuizCategory)" class="mt-2.5 pt-2 border-t border-slate-800/80 animate-fadeIn">
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="text-xs font-bold text-slate-400 uppercase tracking-wider">Variasi Huruf</label>
+                <span class="text-[10px] text-amber-400 font-bold">
+                  {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar Saja' : (selectedKanaCategory === 'dakuten' ? 'Dakuten Saja' : 'Kombinasi Saja')) }}
+                </span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button
+                  v-for="cat in kanaCategoryOptions"
+                  :key="'lobby_' + cat.key"
+                  type="button"
+                  @click="selectedKanaCategory = cat.key"
+                  :class="[
+                    'py-2 px-1 rounded-xl border text-center transition cursor-pointer flex flex-col items-center justify-center gap-0.5 shadow-2xs',
+                    selectedKanaCategory === cat.key
+                      ? 'border-amber-400 bg-amber-500/25 text-amber-200 font-black ring-1 ring-amber-400/50 scale-[1.02]'
+                      : 'border-slate-800 bg-slate-950/40 text-slate-400 hover:border-slate-700 hover:text-slate-300 font-bold'
+                  ]"
+                >
+                  <span class="text-xs font-jp">{{ cat.badge }}</span>
+                  <span class="text-[10px] sm:text-[11px] truncate">{{ cat.label }}</span>
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Room Privacy Options -->
@@ -443,7 +480,7 @@ const emit = defineEmits<{ exit: [] }>();
                   <div class="text-xs font-bold text-white truncate flex items-center gap-1.5">
                     <span>{{ room.host_name }}</span>
                     <span v-if="room.game_mode === 'quiz_blitz'" class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                      🔥 Quiz Blitz
+                      🔥 {{ room.quiz_category === 'kotoba_kanji' ? 'Kotoba' : room.quiz_category }}{{ room.kana_category && room.kana_category !== 'all' ? ` · ${room.kana_category}` : '' }}
                     </span>
                     <span v-else class="px-1.5 py-0.2 rounded text-[9px] font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">
                       ⚔️ Battleground
@@ -552,7 +589,7 @@ const emit = defineEmits<{ exit: [] }>();
             <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30">
               <div class="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider mb-1.5 flex items-center gap-1">
                 <BookOpen class="w-3.5 h-3.5" />
-                Preview Kategori: {{ selectedQuizCategory === 'kotoba_kanji' ? 'Kotoba & Kanji N5' : selectedQuizCategory }}
+                Preview Kategori: {{ selectedQuizCategory === 'kotoba_kanji' ? 'Kotoba & Kanji N5' : (selectedQuizCategory === 'hiragana' ? 'Hiragana' : (selectedQuizCategory === 'katakana' ? 'Katakana' : 'Mix Kana')) + (selectedKanaCategory !== 'all' ? ` · ${selectedKanaCategory}` : '') }}
               </div>
               
               <div v-if="selectedQuizCategory === 'kotoba_kanji'" class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
@@ -668,7 +705,7 @@ const emit = defineEmits<{ exit: [] }>();
       <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs">
         <div class="flex items-center gap-2">
           <span v-if="store.gameMode === 'quiz_blitz'" class="px-2 py-0.5 rounded-lg bg-amber-500/20 border border-amber-500/40 text-amber-300 font-black flex items-center gap-1">
-            🔥 Quiz Blitz · {{ store.quizCategory === 'kotoba_kanji' ? 'Kotoba & Kanji N5' : store.quizCategory }}
+            🔥 Quiz Blitz · {{ store.quizCategory === 'kotoba_kanji' ? 'Kotoba & Kanji N5' : store.quizCategory + (store.kanaCategory && store.kanaCategory !== 'all' ? ` (${store.kanaCategory})` : '') }}
           </span>
           <span v-else class="px-2 py-0.5 rounded-lg bg-rose-500/20 border border-rose-500/40 text-rose-300 font-black flex items-center gap-1">
             ⚔️ Typing Battleground

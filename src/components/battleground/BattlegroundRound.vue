@@ -1134,9 +1134,9 @@ function preventPaste(e: ClipboardEvent) {
       </div>
     </div>
 
-    <!-- PRE-ROUND COUNTDOWN OVERLAY (phase === 'round_preparing') -->
+    <!-- PRE-ROUND COUNTDOWN OVERLAY (phase === 'round_preparing', hanya saat game baru mulai / ronde 1) -->
     <div
-      v-if="store.phase === 'round_preparing'"
+      v-if="store.phase === 'round_preparing' && (store.activeRound?.round_number ?? 1) <= 1"
       class="absolute inset-0 z-40 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn"
     >
       <div class="w-14 sm:w-16 h-14 sm:h-16 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center mb-3 sm:mb-4 text-amber-300 shadow-xl shadow-amber-500/20">

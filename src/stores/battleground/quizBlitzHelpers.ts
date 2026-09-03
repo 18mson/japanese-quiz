@@ -3,24 +3,39 @@ import { hiraganaData } from '../../data/hiragana';
 import { katakanaData } from '../../data/katakana';
 import { wordsData } from '../../data/words';
 import { kanjiN5Data } from '../../data/kanji';
-import type { QuizBlitzQuestion, QuizCategory } from './types';
+import type { QuizBlitzQuestion, QuizCategory, KanaCategory } from './types';
 
 /**
  * Generates a single synchronized Quiz Blitz multiple choice question for a room round.
  */
 export function generateQuizBlitzQuestion(
   category: QuizCategory,
-  usedIds: Set<string> = new Set()
+  usedIds: Set<string> = new Set(),
+  kanaCategory: KanaCategory = 'all'
 ): QuizBlitzQuestion {
   if (category === 'hiragana') {
-    return pickKanaQuestion(hiraganaData, 'hiragana', usedIds);
+    let pool = hiraganaData;
+    if (kanaCategory !== 'all') {
+      const filtered = pool.filter(item => item.type === kanaCategory);
+      if (filtered.length > 0) pool = filtered;
+    }
+    return pickKanaQuestion(pool, 'hiragana', usedIds, kanaCategory);
   }
   if (category === 'katakana') {
-    return pickKanaQuestion(katakanaData, 'katakana', usedIds);
+    let pool = katakanaData;
+    if (kanaCategory !== 'all') {
+      const filtered = pool.filter(item => item.type === kanaCategory);
+      if (filtered.length > 0) pool = filtered;
+    }
+    return pickKanaQuestion(pool, 'katakana', usedIds, kanaCategory);
   }
   if (category === 'mix') {
-    const combined = [...hiraganaData, ...katakanaData];
-    return pickKanaQuestion(combined, 'mix', usedIds);
+    let combined = [...hiraganaData, ...katakanaData];
+    if (kanaCategory !== 'all') {
+      const filtered = combined.filter(item => item.type === kanaCategory);
+      if (filtered.length > 0) combined = filtered;
+    }
+    return pickKanaQuestion(combined, 'mix', usedIds, kanaCategory);
   }
   // 'kotoba_kanji': 50% chance Kanji, 50% chance N5 Vocab
   return pickKotobaKanjiQuestion(usedIds);
@@ -29,7 +44,8 @@ export function generateQuizBlitzQuestion(
 function pickKanaQuestion(
   pool: any[],
   category: QuizCategory,
-  usedIds: Set<string>
+  usedIds: Set<string>,
+  kanaCategory?: KanaCategory
 ): QuizBlitzQuestion {
   const unused = pool.filter(item => !usedIds.has(item.character));
   const candidatePool = unused.length > 0 ? unused : pool;
@@ -56,6 +72,7 @@ function pickKanaQuestion(
     correctOptionIndex: correctIndex,
     correctAnswer: correctRomaji,
     category,
+    kana_category: kanaCategory,
   };
 }
 

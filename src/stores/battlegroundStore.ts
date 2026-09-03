@@ -19,6 +19,7 @@ import type {
   PowerUpBroadcastPayload,
   GameMode,
   QuizCategory,
+  KanaCategory,
 } from './battleground/types';
 import {
   getGuestId,
@@ -49,6 +50,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   // ── State ───────────────────────────────────────────────────
   const gameMode = ref<GameMode>('battleground');
   const quizCategory = ref<QuizCategory>('hiragana');
+  const kanaCategory = ref<KanaCategory>('all');
   const phase = ref<GamePhase>('idle');
   const roomId = ref<string | null>(null);
   const roomCode = ref<string | null>(null);
@@ -119,7 +121,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     playerName?: string,
     isPublic: boolean = true,
     mode: GameMode = 'battleground',
-    category: QuizCategory = 'hiragana'
+    category: QuizCategory = 'hiragana',
+    kanaCat: KanaCategory = 'all'
   ) {
     isLoading.value = true;
     error.value = null;
@@ -134,8 +137,9 @@ export const useBattlegroundStore = defineStore('battleground', () => {
 
       gameMode.value = mode;
       quizCategory.value = category;
+      kanaCategory.value = kanaCat;
 
-      const room = await createRoomApi(pid, pname, isPublic, mode, category);
+      const room = await createRoomApi(pid, pname, isPublic, mode, category, kanaCat);
 
       roomId.value = room.id;
       roomCode.value = room.code;
@@ -170,6 +174,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       hostPlayerId.value = room.host_player_id;
       gameMode.value = (room.game_mode as GameMode) || 'battleground';
       quizCategory.value = (room.quiz_category as QuizCategory) || 'hiragana';
+      kanaCategory.value = (room.kana_category as KanaCategory) || 'all';
 
       subscribeToRoom(room.id);
       await refreshPlayers();
@@ -238,6 +243,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       roomId: roomId.value,
       roundNum,
       quizCategory: quizCategory.value,
+      kanaCategory: kanaCategory.value,
     });
 
     const payloadData = {
@@ -260,7 +266,13 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     mySubmissionStatus.value = null;
     myCompletionTimeMs.value = null;
     playersWhoSubmitted.value.clear();
-    phase.value = 'round_preparing';
+
+    // Hanya ronde 1 yang masuk ke phase 'round_preparing', ronde 2+ langsung 'round_active'
+    if (roundNum === 1) {
+      phase.value = 'round_preparing';
+    } else {
+      phase.value = 'round_active';
+    }
     startCountdownFromServerTime(res.startAt);
 
     await realtimeChannel?.send({
@@ -451,7 +463,14 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       myCompletionTimeMs.value = null;
       playersWhoSubmitted.value = new Set();
       playerProgress.value = new Map();
-      phase.value = 'round_preparing';
+
+      // Hanya ronde 1 (awal sesi game) yang ada jeda countdown bersiap
+      // Ronde 2+ langsung aktif seketika
+      if ((payload.round_number ?? 1) > 1) {
+        phase.value = 'round_active';
+      } else {
+        phase.value = 'round_preparing';
+      }
 
       startCountdownFromServerTime(payload.roundStartAt);
     });
@@ -707,7 +726,12 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     mySubmissionStatus.value = null;
     myCompletionTimeMs.value = null;
     playersWhoSubmitted.value.clear();
-    phase.value = 'round_preparing';
+
+    if (roundNum === 1) {
+      phase.value = 'round_preparing';
+    } else {
+      phase.value = 'round_active';
+    }
     startCountdownFromServerTime(res.startAt);
 
     await realtimeChannel?.send({
@@ -920,6 +944,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   return {
     gameMode,
     quizCategory,
+    kanaCategory,
     masterTimeRemainingSeconds,
     phase,
     roomId,

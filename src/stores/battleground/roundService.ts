@@ -120,7 +120,10 @@ export async function startNextRoundApi(params: {
     meaning: s.meaning_id,
   }));
 
-  const startAt = new Date(Date.now() + 3000).toISOString(); // 3s pre-countdown
+  // Hanya ronde 1 yang ada pre-countdown 3 detik saat sesi mulai
+  const startAt = roundNum === 1
+    ? new Date(Date.now() + 3000).toISOString()
+    : new Date(Date.now()).toISOString();
 
   const { data: roundData, error: roundErr } = await supabase
     .from('rounds')
@@ -161,20 +164,26 @@ export async function startNextQuizBlitzRoundApi(params: {
   roomId: string;
   roundNum: number;
   quizCategory: import('./types').QuizCategory;
+  kanaCategory?: import('./types').KanaCategory;
 }) {
-  const { roomId, roundNum, quizCategory } = params;
+  const { roomId, roundNum, quizCategory, kanaCategory } = params;
   const { generateQuizBlitzQuestion } = await import('./quizBlitzHelpers');
 
   const { data: roomData } = await supabase
     .from('rooms')
-    .select('used_sentence_ids')
+    .select('used_sentence_ids, kana_category')
     .eq('id', roomId)
     .single();
 
   const usedIds = new Set<string>(roomData?.used_sentence_ids ?? []);
-  const question = generateQuizBlitzQuestion(quizCategory, usedIds);
+  const resolvedKanaCategory = kanaCategory ?? (roomData?.kana_category as any) ?? 'all';
+  const question = generateQuizBlitzQuestion(quizCategory, usedIds, resolvedKanaCategory);
 
-  const startAt = new Date(Date.now() + 3000).toISOString(); // 3s pre-countdown
+  // Hanya ronde 1 (awal sesi game) yang ada countdown jeda bersiap 3 detik.
+  // Ronde 2, 3, dst langsung mulai seketika tanpa jeda countdown lagi.
+  const startAt = roundNum === 1
+    ? new Date(Date.now() + 3000).toISOString()
+    : new Date(Date.now()).toISOString();
   const durationSeconds = 10; // 10s per question
 
   const { data: roundData, error: roundErr } = await supabase

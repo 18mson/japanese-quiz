@@ -2,6 +2,7 @@
 
 export type GameMode = 'battleground' | 'quiz_blitz';
 export type QuizCategory = 'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji';
+export type KanaCategory = 'all' | 'basic' | 'dakuten' | 'combination';
 
 export type PlayerStatus = 'alive' | 'eliminated' | 'spectator';
 export type RoomStatus = 'waiting' | 'in_progress' | 'finished';
@@ -59,6 +60,7 @@ export interface QuizBlitzQuestion {
   correctAnswer: string;
   meaning?: string;
   category: QuizCategory;
+  kana_category?: KanaCategory;
 }
 
 export interface ActiveRound {
@@ -156,5 +158,6 @@ export interface PublicRoomItem {
   created_at: string;
   game_mode?: GameMode;
   quiz_category?: QuizCategory;
+  kana_category?: KanaCategory;
 }
 

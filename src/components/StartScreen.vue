@@ -368,6 +368,7 @@ const handleStart = async () => {
     if (characterTypes.value === 'quiz_blitz') {
       battlegroundStore.gameMode = 'quiz_blitz';
       battlegroundStore.quizCategory = selectedQuizBlitzCategory.value;
+      battlegroundStore.kanaCategory = selectedKanaCategory.value;
     } else {
       battlegroundStore.gameMode = 'battleground';
     }
@@ -657,6 +658,38 @@ const handleStart = async () => {
                 >
                   📖 Kotoba & Kanji
                 </button>
+              </div>
+
+              <!-- Sub-Filter Kana Category for Quiz Blitz (when Hiragana/Katakana/Mix is chosen) -->
+              <div 
+                v-if="['hiragana', 'katakana', 'mix'].includes(selectedQuizBlitzCategory)" 
+                class="flex flex-col gap-1 pt-2 border-t border-amber-300/40 dark:border-amber-800/40 animate-fadeIn"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider">
+                    Variasi Huruf:
+                  </span>
+                  <span class="text-[10px] text-amber-800 dark:text-amber-400 font-bold">
+                    {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar Saja' : (selectedKanaCategory === 'dakuten' ? 'Dakuten Saja' : 'Kombinasi Saja')) }}
+                  </span>
+                </div>
+                <div class="grid grid-cols-4 gap-1">
+                  <button
+                    v-for="cat in kanaCategoryOptions"
+                    :key="'blitz_' + cat.key"
+                    type="button"
+                    @click.stop="deactivateKeyboardNav(); selectedKanaCategory = cat.key;"
+                    :class="[
+                      'py-1.5 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
+                      selectedKanaCategory === cat.key
+                        ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
+                        : 'bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 border-amber-200/50 dark:border-amber-900/50'
+                    ]"
+                  >
+                    <span class="font-jp text-xs">{{ cat.badge }}</span>
+                    <span class="text-[10px] sm:text-[11px] truncate">{{ cat.label }}</span>
+                  </button>
+                </div>
               </div>
             </div>
 
