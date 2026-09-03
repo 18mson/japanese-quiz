@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
-import { createQuizHanziWriter, preloadCharacterData } from '../../services/hanziWriterService';
+import { createQuizHanziWriter, fetchCharacterData, preloadCharacterData } from '../../services/hanziWriterService';
+import { useSettingsStore } from '../../stores/settingsStore';
 import { RotateCcw, Loader2 } from '@lucide/vue';
+
+const settingsStore = useSettingsStore();
 
 const props = withDefaults(
   defineProps<{
     targetChar: string;
+    romaji?: string;
     size?: number;
     showGrid?: boolean;
     leniency?: number;
+    isFinished?: boolean;
   }>(),
   {
-    size: 300,
+    size: 290,
     showGrid: true,
-    leniency: 1.2
+    leniency: 1.2,
+    isFinished: false
   }
 );
 
@@ -25,100 +31,194 @@ const emit = defineEmits<{
   (e: 'ready', data: { totalStrokes: number }): void;
 }>();
 
-const targetContainerRef = ref<HTMLDivElement | null>(null);
 const isLoading = ref(true);
-const currentStrokeProgress = ref({ current: 0, total: 1 });
 const consecutiveMistakes = ref(0);
-const totalMistakes = ref(0);
-const isOutlineVisible = ref(false);
+const charMistakes = ref(0);
+const totalQuestionMistakes = ref(0);
 const isFailedMaxMistakes = ref(false);
-let writerInstance: any = null;
+const isEntireCombinationComplete = ref(false);
 
-// Multi-character support for combination letters (e.g., きゃ -> ['き', 'ゃ'])
+// Multi-character support for combination letters (e.g. ぎゃ -> ['ぎ', 'ゃ'])
 const charList = computed(() => Array.from(props.targetChar || ''));
+const isCombination = computed(() => charList.value.length > 1);
+
+// Proportional sizing: Main box is 220px, small sub-character box is 140px (~64% of main box)
+const mainBoxSize = computed(() => (isCombination.value ? 220 : props.size));
+const smallBoxSize = computed(() => Math.max(140, Math.round(mainBoxSize.value * 0.64)));
+
+const getBoxSize = (idx: number) => {
+  if (!isCombination.value) return props.size;
+  return idx === 0 ? mainBoxSize.value : smallBoxSize.value;
+};
+
+// Vertical centering offset for second character in combination:
+// In raw font glyph data (kana-json), small kana (ゃ, ゅ, ょ, っ) sit ~300 units lower in the 1024 em-box,
+// which causes them to sit near the bottom of the canvas with a huge empty gap on top.
+// Shifting them up vertically aligns their center precisely with the canvas crosshairs (symmetrical top/bottom).
+const secondCharVerticalOffset = computed(() => {
+  if (!isCombination.value || charList.value.length < 2) return 0;
+  const second = charList.value[1];
+  if (['ゃ', 'ゅ', 'ょ', 'っ'].includes(second)) return -12;
+  if (second === 'ュ') return -8;
+  return -4;
+});
+
+// Theme-adaptive grid guide line colors (light & dark mode)
+const gridOuterColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.12)' : 'rgba(100, 116, 139, 0.20)');
+const gridMainColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.18)' : 'rgba(100, 116, 139, 0.28)');
+const gridDiagColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.05)' : 'rgba(100, 116, 139, 0.12)');
+const gridSmallColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.15)' : 'rgba(100, 116, 139, 0.25)');
+
 const activeCharIndex = ref(0);
-const activeChar = computed(() => charList.value[activeCharIndex.value] || props.targetChar);
+const boxContainerRefs = ref<HTMLElement[]>([]);
+const setBoxRef = (el: any, idx: number) => {
+  if (el) boxContainerRefs.value[idx] = el as HTMLElement;
+};
 
-const initSingleCharQuiz = async () => {
-  if (!targetContainerRef.value || !activeChar.value) return;
-  isLoading.value = true;
-  consecutiveMistakes.value = 0;
-  isOutlineVisible.value = false;
+// Tracking strokes per character
+const strokeCountPerChar = ref<number[]>([1, 1]);
+const currentStrokeInActiveChar = ref(0);
+const completedCharStrokes = ref<number[]>([0, 0]);
+const isOutlineVisibleList = ref<boolean[]>([false, false]);
 
-  // Cleanup old instance if present
-  if (writerInstance) {
-    try {
-      writerInstance.cancelQuiz();
-    } catch (e) {
-      // ignore
-    }
-    writerInstance = null;
+// Unified Stroke Counter: Combined across all characters
+const combinedTotalStrokes = computed(() => {
+  if (!isCombination.value) return strokeCountPerChar.value[0] || 1;
+  return (strokeCountPerChar.value[0] || 0) + (strokeCountPerChar.value[1] || 0);
+});
+
+const currentCombinedStrokes = computed(() => {
+  if (!isCombination.value) return currentStrokeInActiveChar.value;
+  if (activeCharIndex.value === 0) {
+    return currentStrokeInActiveChar.value;
+  } else {
+    // Character 0 is fully completed + progress in character 1
+    return (strokeCountPerChar.value[0] || 0) + currentStrokeInActiveChar.value;
   }
-  targetContainerRef.value.innerHTML = '';
+});
 
-  // Preload character stroke & median data for active character
-  await preloadCharacterData(activeChar.value);
+let writerInstances: any[] = [];
+let pathObservers: MutationObserver[] = [];
 
-  // Mount HanziWriter to target container (Garis panduan dihilangkan di awal)
-  writerInstance = createQuizHanziWriter(targetContainerRef.value, activeChar.value, props.size, {
-    showOutline: false,
-    showCharacter: false,
-    outlineColor: 'rgba(148, 163, 184, 0.28)',
-    drawingWidth: Math.max(68, Math.round(props.size * 0.26)), // Bold brush stroke matching Japanese font thickness
-    strokeColor: '#38bdf8', // Blue sky confirmed
-    drawingColor: '#818cf8', // Indigo drawing in progress
-    highlightColor: '#34d399', // Emerald flash
-    renderer: 'svg',
-    leniency: props.leniency
+/**
+ * Bezier Curve Smoothing Helper: Converts sharp piecewise L segments into smooth quadratic bezier curves
+ */
+function smoothPathString(d: string): string {
+  const parts = d.trim().split(/(?=[MLCZQ])/i);
+  const points: { x: number; y: number }[] = [];
+
+  for (const part of parts) {
+    const type = part[0];
+    const coords = part.slice(1).trim().split(/[\s,]+/).map(Number);
+    if (type === 'M' || type === 'm') {
+      if (coords.length >= 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
+        points.push({ x: coords[0], y: coords[1] });
+      }
+    } else if (type === 'L' || type === 'l') {
+      for (let i = 0; i < coords.length; i += 2) {
+        if (!isNaN(coords[i]) && !isNaN(coords[i + 1])) {
+          points.push({ x: coords[i], y: coords[i + 1] });
+        }
+      }
+    }
+  }
+
+  if (points.length < 3) return d;
+
+  let smoothed = `M ${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length - 1; i++) {
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    const midX = (p1.x + p2.x) / 2;
+    const midY = (p1.y + p2.y) / 2;
+    smoothed += ` Q ${p1.x} ${p1.y} ${midX} ${midY}`;
+  }
+  const last = points[points.length - 1];
+  smoothed += ` L ${last.x} ${last.y}`;
+  return smoothed;
+}
+
+const setupPathSmootherForContainer = (container: HTMLElement) => {
+  const observer = new MutationObserver(() => {
+    const paths = container.querySelectorAll('path');
+    paths.forEach(path => {
+      const d = path.getAttribute('d');
+      if (d && !d.includes('Q') && d.includes('L')) {
+        const smoothD = smoothPathString(d);
+        if (smoothD !== d) {
+          path.setAttribute('d', smoothD);
+        }
+      }
+    });
   });
 
-  setupPathSmoother();
+  observer.observe(container, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['d']
+  });
 
-  // Start HanziWriter quiz with real-time callbacks
-  writerInstance.quiz({
+  pathObservers.push(observer);
+};
+
+/**
+ * Start quiz on character at index idx
+ */
+const startCharQuiz = (idx: number) => {
+  const writer = writerInstances[idx];
+  if (!writer) return;
+
+  activeCharIndex.value = idx;
+  charMistakes.value = 0;
+  consecutiveMistakes.value = 0;
+  currentStrokeInActiveChar.value = 0;
+
+  writer.quiz({
     leniency: props.leniency,
     showHintAfterMisses: 3,
     acceptBackwardsStrokes: true,
     highlightOnComplete: true,
     onCorrectStroke: (strokeData: any) => {
       if (isFailedMaxMistakes.value) return;
-      // Goresan benar me-reset counter salah berturut-turut
       consecutiveMistakes.value = 0;
       const current = strokeData.strokeNum + 1;
-      const total = strokeData.strokeNum + strokeData.strokesRemaining + 1;
-      currentStrokeProgress.value = { current, total };
-      emit('correct-stroke', { strokeNum: current, totalStrokes: total });
+      currentStrokeInActiveChar.value = current;
+
+      emit('correct-stroke', {
+        strokeNum: currentCombinedStrokes.value,
+        totalStrokes: combinedTotalStrokes.value
+      });
     },
     onMistake: (strokeData: any) => {
       if (isFailedMaxMistakes.value) return;
-      totalMistakes.value++;
+      charMistakes.value++;
+      totalQuestionMistakes.value++;
       consecutiveMistakes.value++;
       const strokeNum = strokeData.strokeNum + 1;
       emit('mistake', { strokeNum });
 
-      // 1. Setelah salah 3x berturut-turut: munculkan garis panduan
-      if (consecutiveMistakes.value >= 3 && !isOutlineVisible.value) {
-        isOutlineVisible.value = true;
-        if (writerInstance) {
-          try {
-            writerInstance.showOutline({ duration: 400 });
-          } catch (e) {
-            try { writerInstance.showOutline(); } catch (err) {}
-          }
+      // 1. Setelah salah 3x berturut-turut pada karakter ini: tampilkan garis panduan bantuan
+      if (consecutiveMistakes.value >= 3 && !isOutlineVisibleList.value[idx]) {
+        isOutlineVisibleList.value[idx] = true;
+        try {
+          writer.showOutline({ duration: 400 });
+        } catch (e) {
+          try { writer.showOutline(); } catch (err) {}
         }
       }
 
-      // 2. Jika salah 5x: jawaban salah, tampilkan huruf asli & kunci
-      if (totalMistakes.value >= 5) {
+      // 2. Jika salah 5x pada karakter ini: jawaban salah, tampilkan huruf asli di semua kotak
+      if (charMistakes.value >= 5) {
         isFailedMaxMistakes.value = true;
-        if (writerInstance) {
+        writerInstances.forEach(w => {
           try {
-            writerInstance.cancelQuiz();
-            writerInstance.showCharacter({ duration: 400 });
+            w?.cancelQuiz();
+            w?.showCharacter({ duration: 400 });
           } catch (e) {}
-        }
+        });
         emit('fail-max-mistakes', {
-          totalMistakes: totalMistakes.value,
+          totalMistakes: totalQuestionMistakes.value,
           character: props.targetChar
         });
       }
@@ -126,49 +226,113 @@ const initSingleCharQuiz = async () => {
     onComplete: (_summary: any) => {
       if (isFailedMaxMistakes.value) return;
 
-      // Jika masih ada karakter berikutnya dalam kombinasi (misal 'ゃ' setelah 'き' di 'きゃ')
-      if (activeCharIndex.value < charList.value.length - 1) {
+      completedCharStrokes.value[idx] = strokeCountPerChar.value[idx];
+      currentStrokeInActiveChar.value = strokeCountPerChar.value[idx];
+
+      if (idx < charList.value.length - 1) {
+        // Otomatis berpindah fokus ke karakter kecil (Area Kecil) di kanan-bawah
         setTimeout(() => {
-          activeCharIndex.value++;
-          initSingleCharQuiz();
-        }, 320);
+          startCharQuiz(idx + 1);
+        }, 280);
       } else {
-        // Semua karakter gabungan selesai ditulis
+        // Seluruh kombinasi kana selesai digambar secara terpadu dalam 1 layar
+        isEntireCombinationComplete.value = true;
         emit('complete', {
-          totalMistakes: totalMistakes.value,
+          totalMistakes: totalQuestionMistakes.value,
           character: props.targetChar
         });
       }
     }
   });
-
-  // Query character stroke count
-  if (writerInstance._character?.strokes) {
-    const count = writerInstance._character.strokes.length;
-    currentStrokeProgress.value = { current: 0, total: count };
-    emit('ready', { totalStrokes: count });
-  }
-
-  isLoading.value = false;
-};
-
-const initWriterQuiz = async () => {
-  activeCharIndex.value = 0;
-  totalMistakes.value = 0;
-  isFailedMaxMistakes.value = false;
-  await initSingleCharQuiz();
 };
 
 /**
- * Restart current character quiz
+ * Initialize all boxes for the target character (single large card OR unified combination card)
  */
-const restartQuiz = () => {
+const initWriterQuiz = async () => {
+  isLoading.value = true;
   activeCharIndex.value = 0;
+  charMistakes.value = 0;
+  totalQuestionMistakes.value = 0;
   consecutiveMistakes.value = 0;
-  totalMistakes.value = 0;
-  isOutlineVisible.value = false;
   isFailedMaxMistakes.value = false;
-  initSingleCharQuiz();
+  isEntireCombinationComplete.value = false;
+  isOutlineVisibleList.value = [false, false];
+  completedCharStrokes.value = [0, 0];
+  currentStrokeInActiveChar.value = 0;
+
+  // Cleanup old writer instances and observers
+  writerInstances.forEach(w => {
+    try { w?.cancelQuiz(); } catch (e) {}
+  });
+  writerInstances = [];
+
+  pathObservers.forEach(obs => obs.disconnect());
+  pathObservers = [];
+
+  // Preload character stroke & median data for all sub-characters
+  await preloadCharacterData(props.targetChar);
+  await nextTick();
+
+  // Initialize HanziWriter for each character in charList
+  for (let i = 0; i < charList.value.length; i++) {
+    const ch = charList.value[i];
+    const container = boxContainerRefs.value[i];
+    if (!container) continue;
+
+    container.innerHTML = '';
+
+    const charData = await fetchCharacterData(ch).catch(() => null);
+    const strokeCount = charData?.strokes?.length || 1;
+    strokeCountPerChar.value[i] = strokeCount;
+
+    const size = getBoxSize(i);
+    // Area utama gets standard brush stroke, area kecil gets proportional thickness
+    const drawingWidth = isCombination.value
+      ? (i === 0 ? 56 : 46)
+      : Math.max(68, Math.round(size * 0.26));
+
+    // Optimasi ukuran & padding untuk huruf kedua di kombinasi (karakter Youon kecil):
+    // Semua karakter kecil kana (ゃ, ゅ, ょ, ャ, ュ, ョ, dll.) pada data font aslinya hanya mengisi
+    // sebagian kecil dari glyph box (500-670 unit). Dengan padding default (+14px), huruf kedua
+    // terasa terlalu kecil dan menyisakan banyak area kosong yang belum terisi di kanvas.
+    // Memberikan padding -6px untuk semua huruf kedua di kombinasi memperbesar skala
+    // secara proporsional (~36%), memangkas ruang kosong, dan membuat tulisan lebih pas & nyaman.
+    const isSecondCombinationChar = isCombination.value && i === 1;
+    const padding = isSecondCombinationChar ? -6 : Math.round(size * 0.1);
+
+    const isDark = settingsStore.isDarkMode;
+    const strokeColor = isDark ? '#38bdf8' : '#0284c7';
+    const drawingColor = isDark ? '#818cf8' : '#4f46e5';
+    const highlightColor = isDark ? '#34d399' : '#059669';
+    const outlineColor = isDark ? 'rgba(148, 163, 184, 0.28)' : 'rgba(100, 116, 139, 0.30)';
+
+    const writer = createQuizHanziWriter(container, ch, size, {
+      padding,
+      showOutline: false,
+      showCharacter: false,
+      outlineColor,
+      drawingWidth,
+      strokeColor,
+      drawingColor,
+      highlightColor,
+      renderer: 'svg',
+      leniency: props.leniency
+    });
+
+    writerInstances[i] = writer;
+    setupPathSmootherForContainer(container);
+  }
+
+  emit('ready', { totalStrokes: combinedTotalStrokes.value });
+  isLoading.value = false;
+
+  // Start quiz on Area Utama (character 0)
+  startCharQuiz(0);
+};
+
+const restartQuiz = () => {
+  initWriterQuiz();
 };
 
 watch(
@@ -179,138 +343,25 @@ watch(
   }
 );
 
-onMounted(async () => {
-  await nextTick();
+watch(
+  () => settingsStore.isDarkMode,
+  () => {
+    initWriterQuiz();
+  }
+);
+
+onMounted(() => {
   initWriterQuiz();
 });
 
-let pathObserver: MutationObserver | null = null;
-let isSmoothing = false;
-
-/**
- * Converts jagged polyline path into a smooth quadratic Bezier curve
- */
-function smoothSvgPath(d: string): string {
-  if (!d || !d.includes(' L ')) return d;
-  const parts = d.trim().split(/\s*L\s*/);
-  const mPart = parts[0].replace(/^M\s*/, '');
-  const [startX, startY] = mPart.split(/\s+/).map(Number);
-  if (isNaN(startX) || isNaN(startY)) return d;
-
-  const points: { x: number; y: number }[] = [{ x: startX, y: startY }];
-  for (let i = 1; i < parts.length; i++) {
-    const coords = parts[i].trim().split(/\s+/).map(Number);
-    if (coords.length >= 2 && !isNaN(coords[0]) && !isNaN(coords[1])) {
-      points.push({ x: coords[0], y: coords[1] });
-    }
-  }
-
-  if (points.length < 3) return d;
-
-  let out = `M ${points[0].x} ${points[0].y}`;
-  for (let i = 1; i < points.length - 1; i++) {
-    const midX = (points[i].x + points[i + 1].x) / 2;
-    const midY = (points[i].y + points[i + 1].y) / 2;
-    out += ` Q ${points[i].x} ${points[i].y}, ${midX} ${midY}`;
-  }
-  out += ` L ${points[points.length - 1].x} ${points[points.length - 1].y}`;
-  return out;
-}
-
-/**
- * Observes user stroke path in HanziWriter SVG and applies Bezier curve smoothing
- */
-const setupPathSmoother = () => {
-  if (pathObserver) {
-    pathObserver.disconnect();
-    pathObserver = null;
-  }
-  if (!targetContainerRef.value) return;
-
-  pathObserver = new MutationObserver((mutations) => {
-    if (isSmoothing) return;
-    for (const mutation of mutations) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'd') {
-        const target = mutation.target as SVGPathElement;
-        const d = target.getAttribute('d');
-        if (d && d.includes(' L ') && !d.includes(' Q ')) {
-          const smoothed = smoothSvgPath(d);
-          if (smoothed !== d) {
-            isSmoothing = true;
-            target.setAttribute('d', smoothed);
-            isSmoothing = false;
-          }
-        }
-      }
-    }
-  });
-
-  pathObserver.observe(targetContainerRef.value, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ['d']
-  });
-};
-
 onUnmounted(() => {
-  if (pathObserver) {
-    pathObserver.disconnect();
-    pathObserver = null;
-  }
-  if (writerInstance) {
-    try {
-      writerInstance.cancelQuiz();
-    } catch (e) {
-      // ignore
-    }
-    writerInstance = null;
-  }
+  pathObservers.forEach(obs => obs.disconnect());
+  pathObservers = [];
+  writerInstances.forEach(w => {
+    try { w?.cancelQuiz(); } catch (e) {}
+  });
+  writerInstances = [];
 });
-
-const KANA_TO_ROMAJI: Record<string, string> = {
-  // Hiragana
-  'あ': 'a', 'い': 'i', 'う': 'u', 'え': 'e', 'お': 'o',
-  'か': 'ka', 'き': 'ki', 'く': 'ku', 'け': 'ke', 'こ': 'ko',
-  'さ': 'sa', 'し': 'shi', 'す': 'su', 'せ': 'se', 'そ': 'so',
-  'た': 'ta', 'ち': 'chi', 'つ': 'tsu', 'て': 'te', 'と': 'to',
-  'な': 'na', 'に': 'ni', 'ぬ': 'nu', 'ね': 'ne', 'の': 'no',
-  'は': 'ha', 'ひ': 'hi', 'ふ': 'fu', 'へ': 'he', 'ほ': 'ho',
-  'ま': 'ma', 'み': 'mi', 'む': 'mu', 'め': 'me', 'も': 'mo',
-  'や': 'ya', 'ゆ': 'yu', 'よ': 'yo',
-  'ら': 'ra', 'り': 'ri', 'る': 'ru', 'れ': 're', 'ろ': 'ro',
-  'わ': 'wa', 'を': 'wo', 'ん': 'n',
-  'が': 'ga', 'ぎ': 'gi', 'ぐ': 'gu', 'げ': 'ge', 'ご': 'go',
-  'ざ': 'za', 'じ': 'ji', 'ず': 'zu', 'ぜ': 'ze', 'ぞ': 'zo',
-  'だ': 'da', 'ぢ': 'ji', 'づ': 'zu', 'で': 'de', 'ど': 'do',
-  'ば': 'ba', 'び': 'bi', 'ぶ': 'bu', 'べ': 'be', 'ぼ': 'bo',
-  'ぱ': 'pa', 'ぴ': 'pi', 'ぷ': 'pu', 'ぺ': 'pe', 'ぽ': 'po',
-  'ゃ': 'ya', 'ゅ': 'yu', 'ょ': 'yo', 'っ': 'tsu',
-  'ぁ': 'a', 'ぃ': 'i', 'ぅ': 'u', 'ぇ': 'e', 'ぉ': 'o',
-
-  // Katakana
-  'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
-  'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
-  'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
-  'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
-  'ナ': 'na', 'ニ': 'ni', 'ヌ': 'nu', 'ネ': 'ne', 'ノ': 'no',
-  'ハ': 'ha', 'ヒ': 'hi', 'フ': 'fu', 'ヘ': 'he', 'ホ': 'ho',
-  'マ': 'ma', 'ミ': 'mi', 'ム': 'mu', 'メ': 'me', 'モ': 'mo',
-  'ヤ': 'ya', 'ユ': 'yu', 'ヨ': 'yo',
-  'ラ': 'ra', 'リ': 'ri', 'ル': 'ru', 'レ': 're', 'ロ': 'ro',
-  'ワ': 'wa', 'ヲ': 'wo', 'ン': 'n',
-  'ガ': 'ga', 'ギ': 'gi', 'グ': 'gu', 'ゲ': 'ge', 'ゴ': 'go',
-  'ザ': 'za', 'ジ': 'ji', 'ズ': 'zu', 'ゼ': 'ze', 'ゾ': 'zo',
-  'ダ': 'da', 'ヂ': 'ji', 'ヅ': 'zu', 'デ': 'de', 'ド': 'do',
-  'バ': 'ba', 'ビ': 'bi', 'ブ': 'bu', 'ベ': 'be', 'ボ': 'bo',
-  'パ': 'pa', 'ピ': 'pi', 'プ': 'pu', 'ペ': 'pe', 'ポ': 'po',
-  'ャ': 'ya', 'ュ': 'yu', 'ョ': 'yo', 'ッ': 'tsu',
-  'ァ': 'a', 'ィ': 'i', 'ゥ': 'u', 'ェ': 'e', 'ォ': 'o'
-};
-
-const getKanaRomaji = (char: string): string => {
-  return KANA_TO_ROMAJI[char] || char;
-};
 
 defineExpose({
   restartQuiz
@@ -318,97 +369,197 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-3 select-none">
-    <!-- Multi-Character Combination Indicator in Romaji (e.g. Bagian ni, Bagian yu) -->
-    <div 
-      v-if="charList.length > 1" 
-      class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs shadow-xs animate-fadeIn"
-    >
+  <div class="flex flex-col items-center gap-3 select-none w-full">
+    <!-- Top Row: Romaji Clue & Unified Combined Stroke Counter -->
+    <div class="flex items-center justify-between w-full max-w-sm px-2 text-xs">
+      <span class="font-black text-slate-700 dark:text-slate-300 font-mono tracking-wider text-sm">
+        {{ props.romaji || props.targetChar }}
+      </span>
+
       <div class="flex items-center gap-2">
+        <!-- Single Unified Checkmark: ONLY appears when BOTH characters are complete -->
         <span 
-          v-for="(ch, idx) in charList" 
-          :key="idx"
-          :class="[
-            'px-3 py-1 rounded-lg font-bold text-xs flex items-center gap-1.5 transition-all font-mono',
-            idx === activeCharIndex ? 'bg-indigo-600 text-white shadow-md shadow-indigo-950/50 ring-1 ring-indigo-400' :
-            idx < activeCharIndex ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
-            'bg-slate-800/80 text-slate-500'
-          ]"
+          v-if="isEntireCombinationComplete" 
+          class="flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md animate-scaleUp"
         >
-          <span>Bagian {{ getKanaRomaji(ch) }}</span>
-          <span v-if="idx < activeCharIndex" class="text-[11px] font-sans">✓</span>
+          ✓ Selesai
         </span>
+
+        <!-- Combined Stroke Counter: (e.g. Goresan: 0 / 9) -->
+        <div 
+          v-if="!isLoading && combinedTotalStrokes > 0"
+          class="text-[11px] font-mono px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 shadow-xs"
+        >
+          Goresan: <strong :class="isEntireCombinationComplete ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-900 dark:text-white font-bold'">{{ currentCombinedStrokes }}</strong> / {{ combinedTotalStrokes }}
+        </div>
       </div>
     </div>
 
-    <!-- Drawing Stage Card -->
+    <!-- Main Canvas Card: 1 Unified Visual Surface for Genkouyoushi -->
     <div 
-      class="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-700/80 bg-slate-950 flex items-center justify-center p-1"
-      :style="{ width: `${size + 8}px`, height: `${size + 8}px` }"
+      class="relative rounded-3xl transition-all duration-300 bg-slate-50/90 dark:bg-slate-950 flex items-center justify-center p-2.5 sm:p-3.5 shadow-xs dark:shadow-md"
+      :class="[
+        isEntireCombinationComplete ? 'border-2 border-emerald-500/80 ring-2 ring-emerald-500/20 shadow-emerald-950/20 dark:shadow-emerald-950/40' :
+        'border-2 border-indigo-200 dark:border-indigo-500/70 ring-2 ring-indigo-500/10 dark:ring-indigo-500/20 shadow-indigo-950/10 dark:shadow-indigo-950/50'
+      ]"
     >
-      <!-- Practice Kanji/Kana Grid Overlay (T-Grid with dashed cross lines) -->
-      <svg 
-        v-if="showGrid" 
-        class="absolute inset-1 w-full h-full pointer-events-none z-0" 
-        :viewBox="`0 0 ${size} ${size}`"
-      >
-        <!-- Outer border -->
-        <rect x="1" y="1" :width="size - 2" :height="size - 2" fill="none" stroke="rgba(148, 163, 184, 0.12)" stroke-width="1.5" />
-        <!-- Horizontal dashed center -->
-        <line x1="0" :y1="size / 2" :x2="size" :y2="size / 2" stroke="rgba(148, 163, 184, 0.18)" stroke-width="1" stroke-dasharray="5 5" />
-        <!-- Vertical dashed center -->
-        <line :x1="size / 2" y1="0" :x2="size / 2" :y2="size" stroke="rgba(148, 163, 184, 0.18)" stroke-width="1" stroke-dasharray="5 5" />
-        <!-- Diagonals -->
-        <line x1="0" y1="0" :x2="size" :y2="size" stroke="rgba(148, 163, 184, 0.06)" stroke-width="1" />
-        <line :x1="size" y1="0" x2="0" :y2="size" stroke="rgba(148, 163, 184, 0.06)" stroke-width="1" />
-      </svg>
+      <!-- Single Character Mode (Centered large box) -->
+      <template v-if="!isCombination">
+        <div 
+          class="relative rounded-2xl overflow-hidden flex items-center justify-center"
+          :style="{ width: `${mainBoxSize}px`, height: `${mainBoxSize}px` }"
+        >
+          <!-- Grid Overlay -->
+          <svg 
+            v-if="showGrid" 
+            class="absolute inset-0 w-full h-full pointer-events-none z-0" 
+            :viewBox="`0 0 ${mainBoxSize} ${mainBoxSize}`"
+          >
+            <rect x="1" y="1" :width="mainBoxSize - 2" :height="mainBoxSize - 2" fill="none" :stroke="gridOuterColor" stroke-width="1.5" />
+            <line x1="0" :y1="mainBoxSize / 2" :x2="mainBoxSize" :y2="mainBoxSize / 2" :stroke="gridMainColor" stroke-width="1" stroke-dasharray="4 4" />
+            <line :x1="mainBoxSize / 2" y1="0" :x2="mainBoxSize" :y2="mainBoxSize" :stroke="gridMainColor" stroke-width="1" stroke-dasharray="4 4" />
+            <line x1="0" y1="0" :x2="mainBoxSize" :y2="mainBoxSize" :stroke="gridDiagColor" stroke-width="1" />
+            <line :x1="mainBoxSize" y1="0" x2="0" :y2="mainBoxSize" :stroke="gridDiagColor" stroke-width="1" />
+          </svg>
 
-      <!-- HanziWriter Target DOM (Direct Vector & Pointer Surface) -->
-      <div 
-        ref="targetContainerRef" 
-        class="relative z-10 touch-none cursor-crosshair hw-surface"
-        :style="{ width: `${size}px`, height: `${size}px` }"
-      ></div>
+          <!-- Target Surface -->
+          <div 
+            :ref="el => setBoxRef(el, 0)" 
+            class="relative z-10 touch-none hw-surface cursor-crosshair"
+            :style="{ width: `${mainBoxSize}px`, height: `${mainBoxSize}px` }"
+          ></div>
+
+          <!-- Outline Hint Active Badge -->
+          <div 
+            v-if="isOutlineVisibleList[0]"
+            class="absolute top-2 left-2 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 dark:border-amber-500/40 text-amber-700 dark:text-amber-300 z-20 pointer-events-none shadow-xs animate-fadeIn"
+          >
+            💡 Bantuan
+          </div>
+        </div>
+      </template>
+
+      <!-- Combination Kana Mode (Unified surface with Overlapping Area Kecil in Bottom-Right) -->
+      <template v-else>
+        <div 
+          class="relative select-none"
+          :style="{ 
+            width: `${mainBoxSize + 74}px`, 
+            height: `${mainBoxSize}px` 
+          }"
+        >
+          <!-- 1. Area Utama (Huruf Besar, e.g. ぎ) -->
+          <div 
+            class="absolute top-0 left-0 rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300"
+            :class="activeCharIndex === 0 ? 'z-10' : 'z-0 pointer-events-none'"
+            :style="{ width: `${mainBoxSize}px`, height: `${mainBoxSize}px` }"
+          >
+            <!-- Grid Overlay -->
+            <svg 
+              v-if="showGrid" 
+              class="absolute inset-0 w-full h-full pointer-events-none z-0" 
+              :viewBox="`0 0 ${mainBoxSize} ${mainBoxSize}`"
+            >
+              <rect x="1" y="1" :width="mainBoxSize - 2" :height="mainBoxSize - 2" fill="none" :stroke="gridOuterColor" stroke-width="1.5" />
+              <line x1="0" :y1="mainBoxSize / 2" :x2="mainBoxSize" :y2="mainBoxSize / 2" :stroke="gridMainColor" stroke-width="1" stroke-dasharray="4 4" />
+              <line :x1="mainBoxSize / 2" y1="0" :x2="mainBoxSize" :y2="mainBoxSize" :stroke="gridMainColor" stroke-width="1" stroke-dasharray="4 4" />
+              <line x1="0" y1="0" :x2="mainBoxSize" :y2="mainBoxSize" :stroke="gridDiagColor" stroke-width="1" />
+              <line :x1="mainBoxSize" y1="0" x2="0" :y2="mainBoxSize" :stroke="gridDiagColor" stroke-width="1" />
+            </svg>
+
+            <!-- Target Surface -->
+            <div 
+              :ref="el => setBoxRef(el, 0)" 
+              class="relative z-10 touch-none hw-surface"
+              :class="activeCharIndex === 0 ? 'cursor-crosshair' : 'pointer-events-none'"
+              :style="{ width: `${mainBoxSize}px`, height: `${mainBoxSize}px` }"
+            ></div>
+
+            <!-- Outline Hint Active Badge -->
+            <div 
+              v-if="isOutlineVisibleList[0]"
+              class="absolute top-2 left-2 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 dark:border-amber-500/40 text-amber-700 dark:text-amber-300 z-20 pointer-events-none shadow-xs animate-fadeIn"
+            >
+              💡 Bantuan
+            </div>
+          </div>
+
+          <!-- 2. Area Kecil (Huruf Youon Kecil, OVERLAPPING di Pojok Kanan-Bawah - Transparan & Terangkat) -->
+          <div 
+            class="absolute bottom-3 sm:bottom-4 right-0 rounded-2xl overflow-hidden transition-all duration-300 bg-transparent flex items-center justify-center shadow-none"
+            :class="[
+              activeCharIndex === 1 ? 'z-30 pointer-events-auto border border-dashed border-indigo-500/80 dark:border-slate-500/80 opacity-100' :
+              completedCharStrokes[1] > 0 ? 'z-20 pointer-events-none border border-dashed border-slate-300 dark:border-slate-700/40 opacity-100' :
+              'z-10 pointer-events-none border border-dashed border-slate-200 dark:border-slate-700/30 opacity-60'
+            ]"
+            :style="{ 
+              width: `${smallBoxSize}px`, 
+              height: `${smallBoxSize}px`, 
+              background: 'transparent'
+            }"
+          >
+            <!-- Grid Overlay for Area Kecil -->
+            <svg 
+              v-if="showGrid" 
+              class="absolute inset-0 w-full h-full pointer-events-none z-0" 
+              :viewBox="`0 0 ${smallBoxSize} ${smallBoxSize}`"
+            >
+              <line x1="0" :y1="smallBoxSize / 2" :x2="smallBoxSize" :y2="smallBoxSize / 2" :stroke="gridSmallColor" stroke-width="1" stroke-dasharray="3 3" />
+              <line :x1="smallBoxSize / 2" y1="0" :x2="smallBoxSize" :y2="smallBoxSize / 2" :stroke="gridSmallColor" stroke-width="1" stroke-dasharray="3 3" />
+            </svg>
+
+            <!-- Target Surface for Area Kecil -->
+            <div 
+              :ref="el => setBoxRef(el, 1)" 
+              class="relative z-10 touch-none hw-surface bg-transparent"
+              :class="activeCharIndex === 1 ? 'cursor-crosshair' : 'pointer-events-none'"
+              :style="{ 
+                width: `${smallBoxSize}px`, 
+                height: `${smallBoxSize}px`, 
+                background: 'transparent',
+                transform: `translateY(${secondCharVerticalOffset}px)`
+              }"
+            ></div>
+
+            <!-- Outline Hint Active Badge -->
+            <div 
+              v-if="isOutlineVisibleList[1]"
+              class="absolute top-1 left-1 text-[8px] font-bold px-1 py-0.5 rounded bg-amber-500/15 dark:bg-amber-500/20 border border-amber-500/30 dark:border-amber-500/40 text-amber-700 dark:text-amber-300 z-20 pointer-events-none shadow-xs animate-fadeIn"
+            >
+              💡
+            </div>
+          </div>
+        </div>
+      </template>
 
       <!-- Loading State Overlay -->
       <div 
         v-if="isLoading" 
-        class="absolute inset-0 bg-slate-950/80 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-20"
+        class="absolute inset-0 bg-white/85 dark:bg-slate-950/80 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-40 rounded-3xl"
       >
-        <Loader2 class="w-6 h-6 text-indigo-400 animate-spin" />
-        <span class="text-[11px] font-bold text-slate-400">Menyiapkan huruf...</span>
-      </div>
-
-      <!-- Badges: Failed after 5 mistakes or Outline Active after 3 consecutive mistakes -->
-      <div 
-        v-if="isFailedMaxMistakes"
-        class="absolute top-2.5 left-3 text-[10px] font-bold px-2.5 py-1 rounded-md bg-rose-500/25 border border-rose-500/50 text-rose-300 z-20 pointer-events-none shadow-xs animate-fadeIn flex items-center gap-1"
-      >
-        <span>❌ 5x salah - Huruf ini salah</span>
-      </div>
-      <div 
-        v-else-if="isOutlineVisible"
-        class="absolute top-2.5 left-3 text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/20 border border-amber-500/40 text-amber-300 z-20 pointer-events-none shadow-xs animate-fadeIn flex items-center gap-1"
-      >
-        <span>💡 Garis bantuan aktif (3x salah)</span>
-      </div>
-
-      <!-- Stroke Counter Pill -->
-      <div 
-        v-if="!isLoading && currentStrokeProgress.total > 0"
-        class="absolute bottom-2.5 right-3 text-[11px] font-mono px-2 py-0.5 rounded-md bg-slate-900/80 border border-slate-800 text-slate-400 z-20 pointer-events-none shadow-xs"
-      >
-        Goresan: <strong class="text-white">{{ currentStrokeProgress.current }}</strong> / {{ currentStrokeProgress.total }}
+        <Loader2 class="w-6 h-6 text-indigo-600 dark:text-indigo-400 animate-spin" />
+        <span class="text-xs font-bold text-slate-600 dark:text-slate-400">Menyiapkan huruf...</span>
       </div>
     </div>
 
-    <!-- Action Toolbar -->
-    <div class="flex items-center justify-between gap-3 w-full max-w-[310px] pt-1">
+    <!-- Failed Max Mistakes Banner -->
+    <div 
+      v-if="isFailedMaxMistakes"
+      class="text-[11px] font-bold px-3 py-1 rounded-lg bg-rose-500/15 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 text-rose-700 dark:text-rose-300 shadow-xs animate-fadeIn flex items-center gap-1.5"
+    >
+      <span>❌ 5x salah - Huruf ini salah</span>
+    </div>
+
+    <!-- Action Toolbar (Resets Both Instances simultaneously - only visible during writing) -->
+    <div 
+      v-if="!isFinished && !isFailedMaxMistakes && !isEntireCombinationComplete" 
+      class="flex items-center justify-center gap-3 w-full max-w-sm pt-1"
+    >
       <button
         type="button"
         @click="restartQuiz"
         :disabled="isLoading"
-        class="w-full py-2.5 px-3 rounded-xl bg-slate-800/80 hover:bg-slate-700/90 text-slate-300 disabled:opacity-40 font-bold text-xs border border-slate-700 transition cursor-pointer flex items-center justify-center gap-1.5 shadow-xs active:scale-98"
+        class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-300 disabled:opacity-40 font-bold text-xs border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-98"
       >
         <RotateCcw class="w-3.5 h-3.5" />
         <span>Ulangi Gambar</span>
@@ -424,6 +575,12 @@ defineExpose({
   user-select: none;
   -webkit-user-select: none;
   shape-rendering: geometricPrecision;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.hw-surface :deep(rect) {
+  fill: none !important;
 }
 
 .hw-surface :deep(path) {

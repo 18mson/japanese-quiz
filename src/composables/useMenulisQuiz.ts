@@ -53,10 +53,14 @@ export function useMenulisQuiz() {
     return getTierFromStreak(streak);
   });
 
-  // Automatically play sound clue on character change
+  // Automatically reset question state and play sound clue on character change
   watch(
     () => currentChar.value?.character,
     (newChar) => {
+      isQuestionFinished.value = false;
+      isCurrentCorrect.value = null;
+      lastGradedResult.value = null;
+      currentMistakesCount.value = 0;
       if (newChar) {
         setTimeout(() => {
           speak(newChar);

@@ -40,7 +40,7 @@ const handleClick = (e: MouseEvent) => {
     disabled
     :title="'Suara tidak tersedia di perangkat ini'"
     :class="[
-      'inline-flex items-center justify-center rounded-xl transition cursor-not-allowed opacity-35 bg-slate-800/40 text-slate-500 border border-slate-700/30 flex-shrink-0 select-none',
+      'inline-flex items-center justify-center rounded-xl transition cursor-not-allowed opacity-40 bg-slate-100 dark:bg-slate-800/40 text-slate-400 dark:text-slate-500 border border-slate-200 dark:border-slate-700/30 flex-shrink-0 select-none',
       size === 'sm' ? 'w-6 h-6 p-1 text-xs' : 'w-8 h-8 p-1.5 text-sm',
       customClass
     ]"
@@ -57,7 +57,7 @@ const handleClick = (e: MouseEvent) => {
     title="Hentikan Suara"
     :class="[
       'relative inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none',
-      'bg-indigo-500/30 border border-indigo-400 text-indigo-300 ring-2 ring-indigo-400/50 shadow-md shadow-indigo-500/20 active:scale-95',
+      'bg-indigo-100 dark:bg-indigo-500/30 border border-indigo-500 dark:border-indigo-400 text-indigo-700 dark:text-indigo-300 ring-2 ring-indigo-400/50 shadow-md shadow-indigo-500/20 active:scale-95',
       size === 'sm' ? 'w-6 h-6 p-1' : 'w-8 h-8 p-1.5',
       customClass
     ]"
@@ -65,7 +65,7 @@ const handleClick = (e: MouseEvent) => {
   >
     <!-- Ripple animation ring -->
     <span class="absolute -inset-0.5 rounded-xl bg-indigo-400/30 animate-ping pointer-events-none"></span>
-    <Volume2 :class="[size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4', 'animate-pulse text-indigo-300 relative z-10']" />
+    <Volume2 :class="[size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4', 'animate-pulse text-indigo-700 dark:text-indigo-300 relative z-10']" />
   </button>
 
   <!-- Idle State -->
@@ -76,7 +76,7 @@ const handleClick = (e: MouseEvent) => {
     title="Dengarkan Pengucapan"
     :class="[
       'inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none',
-      'bg-indigo-500/15 hover:bg-indigo-500/30 active:bg-indigo-500/40 text-indigo-300 hover:text-indigo-200 border border-indigo-500/25 hover:border-indigo-400/50 shadow-xs active:scale-95',
+      'bg-indigo-50 hover:bg-indigo-100 active:bg-indigo-200 dark:bg-indigo-500/15 dark:hover:bg-indigo-500/30 dark:active:bg-indigo-500/40 text-indigo-600 hover:text-indigo-700 dark:text-indigo-300 dark:hover:text-indigo-200 border border-indigo-200 dark:border-indigo-500/25 shadow-xs active:scale-95',
       size === 'sm' ? 'w-6 h-6 p-1' : 'w-8 h-8 p-1.5',
       customClass
     ]"
