@@ -163,7 +163,13 @@ const filteredCategories = computed(() => {
                   </td>
                   <td class="px-3 py-1.5 text-right">
                     <span 
-                      v-if="hasSoundChange(val.japanese)"
+                      v-if="val.value === 20"
+                      class="text-[10px] px-1.5 py-0.2 rounded font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                    >
+                      Bentuk Khusus
+                    </span>
+                    <span 
+                      v-else-if="hasSoundChange(val.japanese)"
                       class="text-[10px] px-1.5 py-0.2 rounded font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30"
                     >
                       Pola Bunyi
@@ -176,6 +182,22 @@ const filteredCategories = computed(() => {
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <!-- Formula Guide for Combined Ages (21-99) -->
+          <div v-if="cat.category === 'usia dan umur'" class="p-3 rounded-xl bg-violet-500/10 border border-violet-500/30 text-xs text-violet-200 space-y-1.5">
+            <div class="font-bold text-violet-300 flex items-center gap-1.5">
+              <span>💡 Rumus Umur Gabungan (21–99 Tahun):</span>
+            </div>
+            <p class="leading-relaxed text-slate-300">
+              Pola umum: <code class="px-1.5 py-0.5 rounded bg-slate-800 text-violet-300 font-bold">[Puluhan] + [Satuan 1–9]</code>
+            </p>
+            <ul class="list-disc list-inside space-y-0.5 text-[11px] text-slate-400 pl-1">
+              <li>Berakhiran <strong>1</strong> ➔ selalu menjadi <span class="text-amber-300 font-jp">〜いっさい</span> (misal 21: にじゅういっさい, 31: さんじゅういっさい)</li>
+              <li>Berakhiran <strong>8</strong> ➔ selalu menjadi <span class="text-amber-300 font-jp">〜はっさい</span> (misal 28: にじゅうはっさい, 38: さんじゅうはっさい)</li>
+              <li>Kelipatan <strong>10</strong> ➔ selalu berakhiran <span class="text-amber-300 font-jp">〜じゅっさい</span> (30: さんじゅっさい, 40: よんじゅっさい, dst.)</li>
+              <li>Pengecualian khusus hanya <strong>20 tahun = はたち (hatachi)</strong> dan <strong>100 tahun = ひゃくさい (hyakusai)</strong>.</li>
+            </ul>
           </div>
         </div>
       </div>

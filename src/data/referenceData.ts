@@ -1194,9 +1194,101 @@ export const kataBantuBilanganData: KataBantuBilanganData = {
           "japanese": "なんびき"
         }
       ]
+    },
+    {
+      "category": "usia dan umur",
+      "counter": "歳 (才)",
+      "counter_reading": "さい",
+      "usage_example": "usia / umur seseorang",
+      "values": [
+        {
+          "value": 1,
+          "japanese": "いっさい"
+        },
+        {
+          "value": 2,
+          "japanese": "にさい"
+        },
+        {
+          "value": 3,
+          "japanese": "さんさい"
+        },
+        {
+          "value": 4,
+          "japanese": "よんさい"
+        },
+        {
+          "value": 5,
+          "japanese": "ごさい"
+        },
+        {
+          "value": 6,
+          "japanese": "ろくさい"
+        },
+        {
+          "value": 7,
+          "japanese": "ななさい"
+        },
+        {
+          "value": 8,
+          "japanese": "はっさい"
+        },
+        {
+          "value": 9,
+          "japanese": "きゅうさい"
+        },
+        {
+          "value": 10,
+          "japanese": "じゅっさい、じっさい"
+        },
+        {
+          "value": 20,
+          "japanese": "はたち (二十歳)"
+        },
+        {
+          "value": 21,
+          "japanese": "にじゅういっさい"
+        },
+        {
+          "value": 30,
+          "japanese": "さんじゅっさい"
+        },
+        {
+          "value": 40,
+          "japanese": "よんじゅっさい"
+        },
+        {
+          "value": 50,
+          "japanese": "ごじゅっさい"
+        },
+        {
+          "value": 60,
+          "japanese": "ろくじゅっさい"
+        },
+        {
+          "value": 70,
+          "japanese": "ななじゅっさい"
+        },
+        {
+          "value": 80,
+          "japanese": "はちじゅっさい"
+        },
+        {
+          "value": 90,
+          "japanese": "きゅうじゅっさい"
+        },
+        {
+          "value": 100,
+          "japanese": "ひゃくさい (百歳)"
+        },
+        {
+          "value": "?",
+          "japanese": "なんさい、おいくつ"
+        }
+      ]
     }
   ],
-  "note": "Counter untuk umur (〜さい/歳) sudah dibahas terpisah di Pelajaran 1 (lihat lesson_1_transcript.json). Pola pengucapan counter ini serupa dengan pola pada kata bilangan dasar (perubahan bunyi di angka 1,3,6,8,10 tergantung counter yang dipakai)."
+  "note": "Counter untuk umur (〜さい/歳): 1–10 tahun adalah pola dasar. Umur gabungan (21–99) dibentuk dengan [Puluhan] + [Satuan 1–9], di mana akhiran 1 selalu -issai (contoh: 21 = にじゅういっさい) dan akhiran 8 selalu -hassai (contoh: 28 = にじゅうはっさい). Umur kelipatan 10 berakhiran -jussai (contoh: 30 = さんじゅっさい, 40 = よんじゅっさい). Dua pengecualian utama: 20 tahun adalah はたち (hatachi), dan 100 tahun adalah ひゃくさい (hyakusai)."
 };
 
 export const konjugasiKataKerjaData: KonjugasiKataKerjaData = {
