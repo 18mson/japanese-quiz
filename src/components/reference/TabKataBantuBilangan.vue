@@ -95,11 +95,11 @@ const filteredCategories = computed(() => {
     </div>
 
     <!-- Category Cards Grid -->
-    <div v-if="filteredCategories.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div v-if="filteredCategories.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
       <div 
         v-for="cat in filteredCategories" 
         :key="'counter_cat_' + cat.category"
-        class="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition shadow-md flex flex-col"
+        class="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden hover:border-slate-700 transition shadow-md flex flex-col h-fit"
       >
         <!-- Card Header (Always Visible & Clickable) -->
         <button 
