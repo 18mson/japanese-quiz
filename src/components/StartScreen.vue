@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked } from '@lucide/vue';
+import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked, PenTool } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
@@ -208,6 +208,23 @@ const modesList: QuizModeDef[] = [
     discPulse: 'bg-blue-400',
   },
   {
+    id: 'writing',
+    title: '✍️ Handwriting',
+    levelTag: 'Handwriting',
+    level: 'basic',
+    defaultType: 'hiragana',
+    desc: 'Latihan menggambar langsung huruf Kana dengan urutan goresan presisi di layar.',
+    subTypes: [
+      { key: 'hiragana', label: 'Hiragana' },
+      { key: 'katakana', label: 'Katakana' },
+      { key: 'mix', label: 'Mix' },
+    ],
+    icon: PenTool,
+    discGradient: 'from-emerald-500 via-teal-600 to-cyan-600',
+    discShadow: 'shadow-emerald-500/25',
+    discPulse: 'bg-emerald-400',
+  },
+  {
     id: 'sentence_typing',
     title: 'Kotoba, Renshuu & Kaiwa',
     levelTag: 'N5 Intermediate',
@@ -374,6 +391,7 @@ const handleStart = async () => {
     }
     emit('openBattleground');
   } else {
+    quizStore.selectedMode = activeMode.value.id as any;
     await quizStore.startQuiz(1, characterTypes.value, selectedLevel.value, selectedKanaCategory.value);
     emit('start');
   }
@@ -710,7 +728,7 @@ const handleStart = async () => {
 
             <!-- Kana Category Selector Banner (Basic / Dakuten / Kombinasi / All) -->
             <div 
-              v-else-if="['multiple_choice', 'keyboard_typing'].includes(activeMode.id) && ['hiragana', 'katakana', 'mix'].includes(characterTypes)"
+              v-else-if="['multiple_choice', 'keyboard_typing', 'writing'].includes(activeMode.id) && ['hiragana', 'katakana', 'mix'].includes(characterTypes)"
               key="kana-category-banner" 
               class="bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full animate-fadeIn"
             >
@@ -797,20 +815,16 @@ const handleStart = async () => {
 
       <!-- Start Button CTA -->
       <div class="w-full max-w-3xl flex flex-col items-center gap-2">
-        <!-- Quick Mode Info Pill -->
+        <!-- Session Info Pill -->
         <div 
           v-if="selectedLevel !== 'battleground' && characterTypes !== 'renshuu'" 
           class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-medium"
         >
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold border border-emerald-200/60 dark:border-emerald-800/60">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            Mode Kilat (1 Menit)
-          </span>
           <span v-if="['hiragana', 'katakana', 'mix'].includes(characterTypes)" class="text-indigo-600 dark:text-indigo-400 font-bold">
-            • Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
+            Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
           </span>
-          <span v-else class="text-slate-400">
-            • {{ characterTypes === 'words' ? '8 Kanji' : (characterTypes === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
+          <span v-else class="text-slate-400 font-bold">
+            {{ characterTypes === 'words' ? '8 Kanji' : (characterTypes === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
           </span>
         </div>
 
@@ -845,7 +859,7 @@ const handleStart = async () => {
               <Sparkles class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
             </div>
             <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">
-              <span>Mulai Kuis (Kilat)</span>
+              <span>Mulai Kuis</span>
               <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
             </div>
           </Transition>

@@ -280,11 +280,11 @@ onUnmounted(() => {
               <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
                 <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-extrabold text-xs sm:text-sm">
                   <Clock class="w-4 h-4" />
-                  <span>Durasi Kuis & Sync Cloud</span>
+                  <span>Sesi Kuis & Sync Cloud</span>
                 </div>
                 <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
-                  <li><strong>Pilihan Durasi:</strong> 1 Menit (Kilat), 3 Menit (Fokus), 5 Menit (Maraton).</li>
-                  <li><strong>Tanpa Timer Anxiety:</strong> Timer disembunyikan saat kuis berlangsung agar latihan tenang.</li>
+                  <li><strong>Sesi Belajar Efektif:</strong> Jumlah soal adaptif terstruktur untuk retensi maksimal.</li>
+                  <li><strong>Tanpa Timer Anxiety:</strong> Latihan tenang dan fokus tanpa tekanan hitung mundur waktu.</li>
                   <li><strong>Cloud & Offline Sync:</strong> Progress tersimpan aman secara offline & tersinkronisasi ke Supabase.</li>
                 </ul>
               </div>

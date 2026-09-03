@@ -158,7 +158,8 @@ export const useQuizStore = defineStore('quiz', () => {
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
-  const isTypingMode = computed(() => quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
+  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing'>('multiple_choice');
+  const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
 
   const userInput = ref('');
   const showReadingHint = ref(false);
@@ -727,7 +728,7 @@ export const useQuizStore = defineStore('quiz', () => {
   };
 
   return {
-    isLoading, quizLevel, questionType, selectedKanaCategory, isTypingMode, userInput, showReadingHint, showMeaningHint,
+    isLoading, quizLevel, questionType, selectedKanaCategory, selectedMode, isTypingMode, userInput, showReadingHint, showMeaningHint,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
     startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
     speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,

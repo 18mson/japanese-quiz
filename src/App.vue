@@ -17,6 +17,7 @@ import BattlegroundMode from './components/BattlegroundMode.vue';
 import KaiwaPlayer from './components/KaiwaPlayer.vue';
 import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
+import QuizWritingPlayer from './components/writing/QuizWritingPlayer.vue';
 
 import AboutModal from './components/AboutModal.vue';
 import ReferenceModal from './components/reference/ReferenceModal.vue';
@@ -539,7 +540,8 @@ const goToHome = () => {
           <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>
         </div>
         <template v-else>
-          <KaiwaPlayer v-if="quizStore.questionType === 'kaiwa'" />
+          <QuizWritingPlayer v-if="quizStore.selectedMode === 'writing'" @exit="goToHome" />
+          <KaiwaPlayer v-else-if="quizStore.questionType === 'kaiwa'" />
           <RenshuuPlayer v-else-if="quizStore.questionType === 'renshuu'" />
           <QuizSentenceTyping v-else-if="quizStore.questionType === 'sentences'" />
           <template v-else>
