@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { createQuizHanziWriter, preloadCharacterData } from '../../services/hanziWriterService';
 import { RotateCcw, Loader2 } from '@lucide/vue';
 
@@ -34,13 +34,16 @@ const isOutlineVisible = ref(false);
 const isFailedMaxMistakes = ref(false);
 let writerInstance: any = null;
 
-const initWriterQuiz = async () => {
-  if (!targetContainerRef.value || !props.targetChar) return;
+// Multi-character support for combination letters (e.g., きゃ -> ['き', 'ゃ'])
+const charList = computed(() => Array.from(props.targetChar || ''));
+const activeCharIndex = ref(0);
+const activeChar = computed(() => charList.value[activeCharIndex.value] || props.targetChar);
+
+const initSingleCharQuiz = async () => {
+  if (!targetContainerRef.value || !activeChar.value) return;
   isLoading.value = true;
   consecutiveMistakes.value = 0;
-  totalMistakes.value = 0;
   isOutlineVisible.value = false;
-  isFailedMaxMistakes.value = false;
 
   // Cleanup old instance if present
   if (writerInstance) {
@@ -53,11 +56,11 @@ const initWriterQuiz = async () => {
   }
   targetContainerRef.value.innerHTML = '';
 
-  // Preload character stroke & median data
-  await preloadCharacterData(props.targetChar);
+  // Preload character stroke & median data for active character
+  await preloadCharacterData(activeChar.value);
 
   // Mount HanziWriter to target container (Garis panduan dihilangkan di awal)
-  writerInstance = createQuizHanziWriter(targetContainerRef.value, props.targetChar, props.size, {
+  writerInstance = createQuizHanziWriter(targetContainerRef.value, activeChar.value, props.size, {
     showOutline: false,
     showCharacter: false,
     outlineColor: 'rgba(148, 163, 184, 0.28)',
@@ -120,12 +123,22 @@ const initWriterQuiz = async () => {
         });
       }
     },
-    onComplete: (summary: any) => {
+    onComplete: (_summary: any) => {
       if (isFailedMaxMistakes.value) return;
-      emit('complete', {
-        totalMistakes: summary.totalMistakes,
-        character: summary.character
-      });
+
+      // Jika masih ada karakter berikutnya dalam kombinasi (misal 'ゃ' setelah 'き' di 'きゃ')
+      if (activeCharIndex.value < charList.value.length - 1) {
+        setTimeout(() => {
+          activeCharIndex.value++;
+          initSingleCharQuiz();
+        }, 320);
+      } else {
+        // Semua karakter gabungan selesai ditulis
+        emit('complete', {
+          totalMistakes: totalMistakes.value,
+          character: props.targetChar
+        });
+      }
     }
   });
 
@@ -139,77 +152,23 @@ const initWriterQuiz = async () => {
   isLoading.value = false;
 };
 
+const initWriterQuiz = async () => {
+  activeCharIndex.value = 0;
+  totalMistakes.value = 0;
+  isFailedMaxMistakes.value = false;
+  await initSingleCharQuiz();
+};
+
 /**
  * Restart current character quiz
  */
 const restartQuiz = () => {
+  activeCharIndex.value = 0;
   consecutiveMistakes.value = 0;
   totalMistakes.value = 0;
   isOutlineVisible.value = false;
   isFailedMaxMistakes.value = false;
-
-  if (writerInstance) {
-    try {
-      writerInstance.cancelQuiz();
-      try {
-        writerInstance.hideOutline();
-      } catch (e) {}
-
-      writerInstance.quiz({
-        leniency: props.leniency,
-        showHintAfterMisses: 3,
-        acceptBackwardsStrokes: true,
-        highlightOnComplete: true,
-        onCorrectStroke: (strokeData: any) => {
-          if (isFailedMaxMistakes.value) return;
-          consecutiveMistakes.value = 0;
-          const current = strokeData.strokeNum + 1;
-          const total = strokeData.strokeNum + strokeData.strokesRemaining + 1;
-          currentStrokeProgress.value = { current, total };
-          emit('correct-stroke', { strokeNum: current, totalStrokes: total });
-        },
-        onMistake: (strokeData: any) => {
-          if (isFailedMaxMistakes.value) return;
-          totalMistakes.value++;
-          consecutiveMistakes.value++;
-          emit('mistake', { strokeNum: strokeData.strokeNum + 1 });
-
-          // 1. Setelah salah 3x berturut-turut: munculkan garis panduan
-          if (consecutiveMistakes.value >= 3 && !isOutlineVisible.value) {
-            isOutlineVisible.value = true;
-            try {
-              writerInstance.showOutline({ duration: 400 });
-            } catch (e) {
-              try { writerInstance.showOutline(); } catch (err) {}
-            }
-          }
-
-          // 2. Jika salah mencapai 5x: jawaban salah
-          if (totalMistakes.value >= 5) {
-            isFailedMaxMistakes.value = true;
-            try {
-              writerInstance.cancelQuiz();
-              writerInstance.showCharacter({ duration: 400 });
-            } catch (e) {}
-            emit('fail-max-mistakes', {
-              totalMistakes: totalMistakes.value,
-              character: props.targetChar
-            });
-          }
-        },
-        onComplete: (summary: any) => {
-          if (isFailedMaxMistakes.value) return;
-          emit('complete', {
-            totalMistakes: summary.totalMistakes,
-            character: summary.character
-          });
-        }
-      });
-      currentStrokeProgress.value.current = 0;
-    } catch (e) {
-      initWriterQuiz();
-    }
-  }
+  initSingleCharQuiz();
 };
 
 watch(
@@ -316,6 +275,29 @@ defineExpose({
 
 <template>
   <div class="flex flex-col items-center gap-3 select-none">
+    <!-- Multi-Character Combination Indicator (e.g. き + ゃ) -->
+    <div 
+      v-if="charList.length > 1" 
+      class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs shadow-xs animate-fadeIn"
+    >
+      <span class="text-slate-400 font-semibold text-[11px]">Bagian Huruf:</span>
+      <div class="flex items-center gap-1.5">
+        <span 
+          v-for="(ch, idx) in charList" 
+          :key="idx"
+          :class="[
+            'px-2.5 py-0.5 rounded-lg font-bold text-xs flex items-center gap-1 transition-all',
+            idx === activeCharIndex ? 'bg-indigo-600 text-white shadow-md shadow-indigo-950/50 ring-1 ring-indigo-400' :
+            idx < activeCharIndex ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+            'bg-slate-800/80 text-slate-500'
+          ]"
+        >
+          <span>{{ ch }}</span>
+          <span v-if="idx < activeCharIndex" class="text-[10px]">✓</span>
+        </span>
+      </div>
+    </div>
+
     <!-- Drawing Stage Card -->
     <div 
       class="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-700/80 bg-slate-950 flex items-center justify-center p-1"

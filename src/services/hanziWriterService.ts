@@ -25,6 +25,12 @@ export function getCharCategory(char: string): 'hiragana' | 'katakana' | 'kanji'
  * Fetch character JSON data with memory and localStorage caching
  */
 export async function fetchCharacterData(char: string): Promise<CharacterJson> {
+  if (!char) throw new Error('No character provided');
+  // Safeguard: if multi-character string is passed, extract the first codepoint
+  if (Array.from(char).length > 1) {
+    char = Array.from(char)[0];
+  }
+
   // 1. Check memory cache first
   if (memoryDataCache.has(char)) {
     return memoryDataCache.get(char)!;
@@ -99,12 +105,12 @@ export const customCharDataLoader = (
 /**
  * Preload character data ahead of time for smooth UX
  */
-export async function preloadCharacterData(char: string): Promise<CharacterJson | null> {
-  try {
-    return await fetchCharacterData(char);
-  } catch (e) {
-    return null;
-  }
+export async function preloadCharacterData(char: string): Promise<void> {
+  if (!char) return;
+  const chars = Array.from(char);
+  await Promise.all(
+    chars.map(c => fetchCharacterData(c).catch(() => null))
+  );
 }
 
 /**
