@@ -58,9 +58,9 @@ const getBoxSize = (idx: number) => {
 const secondCharVerticalOffset = computed(() => {
   if (!isCombination.value || charList.value.length < 2) return 0;
   const second = charList.value[1];
-  if (['ゃ', 'ゅ', 'ょ', 'っ'].includes(second)) return -14;
-  if (second === 'ュ') return -8;
-  return -4;
+  if (['ゃ', 'ゅ', 'ょ', 'っ'].includes(second)) return -4;
+  if (second === 'ュ') return -2;
+  return 0;
 });
 
 // Theme-adaptive grid guide line colors (light & dark mode)
@@ -484,9 +484,9 @@ defineExpose({
             </div>
           </div>
 
-          <!-- 2. Area Kecil (Huruf Youon Kecil, OVERLAPPING di Pojok Kanan-Bawah - Transparan & Terangkat) -->
+          <!-- 2. Area Kecil (Huruf Youon Kecil, OVERLAPPING di Pojok Kanan-Bawah - Transparan & Terposisi Bawah) -->
           <div 
-            class="absolute bottom-7 sm:bottom-8 right-0 rounded-2xl overflow-hidden transition-all duration-300 bg-transparent flex items-center justify-center shadow-none"
+            class="absolute bottom-2 sm:bottom-3 right-0 rounded-2xl overflow-hidden transition-all duration-300 bg-transparent flex items-center justify-center shadow-none"
             :class="[
               activeCharIndex === 1 ? 'z-30 pointer-events-auto border border-dashed border-indigo-500/80 dark:border-slate-500/80 opacity-100' :
               completedCharStrokes[1] > 0 ? 'z-20 pointer-events-none border border-dashed border-slate-300 dark:border-slate-700/40 opacity-100' :
