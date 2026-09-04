@@ -119,14 +119,14 @@ onUnmounted(() => {
           <Sparkles class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
         </div>
 
-        <!-- Failed 5x Mistakes Banner -->
+        <!-- Failed 4x Mistakes Banner -->
         <div 
           v-else
           class="bg-rose-500/15 border border-rose-500/40 text-rose-800 dark:text-rose-300 rounded-2xl p-3 flex flex-col items-center justify-center gap-1 font-bold text-xs sm:text-sm shadow-md shadow-rose-950/20 dark:shadow-rose-950/30 text-center"
         >
           <div class="flex items-center gap-1.5 text-rose-600 dark:text-rose-400">
             <XCircle class="w-4 h-4 shrink-0" />
-            <span>Batas 5x Salah Tercapai</span>
+            <span>Batas 4x Salah Tercapai</span>
           </div>
           <span class="text-[11px] font-normal text-rose-700/90 dark:text-rose-200/90">
             Huruf ini akan otomatis diulang di akhir kuis sampai benar.
@@ -171,7 +171,7 @@ onUnmounted(() => {
             currentMistakesCount >= 3 ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500 dark:text-slate-400'
           ]"
         >
-          Salah: {{ currentMistakesCount }}/5
+          Salah: {{ currentMistakesCount }}/4
         </span>
         <span class="text-[11px] text-slate-500 dark:text-slate-400">✍️ Gores di area huruf</span>
       </div>

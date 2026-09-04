@@ -81,7 +81,8 @@ export function useMenulisQuiz() {
    * Handle correct stroke progression from KanaQuizTarget
    */
   const handleCorrectStroke = (_data: { strokeNum: number; totalStrokes: number }) => {
-    // Progress tracked in real-time by KanaQuizTarget
+    // Reset mistake counter when a stroke is drawn correctly
+    currentMistakesCount.value = 0;
   };
 
   /**
@@ -111,7 +112,7 @@ export function useMenulisQuiz() {
   };
 
   /**
-   * Handle fail event after reaching max 5 mistakes
+   * Handle fail event after reaching max 4 mistakes
    * Marks answer as incorrect and enqueues to mistake round at the end of the session
    */
   const handleFailMaxMistakes = async (payload: { totalMistakes: number; character: string }) => {

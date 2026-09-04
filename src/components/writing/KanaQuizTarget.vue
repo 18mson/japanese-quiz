@@ -182,6 +182,13 @@ const startCharQuiz = (idx: number) => {
     onCorrectStroke: (strokeData: any) => {
       if (isFailedMaxMistakes.value) return;
       consecutiveMistakes.value = 0;
+      charMistakes.value = 0;
+      if (isOutlineVisibleList.value[idx]) {
+        isOutlineVisibleList.value[idx] = false;
+        try {
+          writer.hideOutline({ duration: 300 });
+        } catch (e) {}
+      }
       const current = strokeData.strokeNum + 1;
       currentStrokeInActiveChar.value = current;
 
@@ -208,8 +215,8 @@ const startCharQuiz = (idx: number) => {
         }
       }
 
-      // 2. Jika salah 5x pada karakter ini: jawaban salah, tampilkan huruf asli di semua kotak
-      if (charMistakes.value >= 5) {
+      // 2. Jika salah 4x pada karakter ini: jawaban salah, tampilkan huruf asli di semua kotak
+      if (charMistakes.value >= 4) {
         isFailedMaxMistakes.value = true;
         writerInstances.forEach(w => {
           try {
@@ -547,7 +554,7 @@ defineExpose({
       v-if="isFailedMaxMistakes"
       class="text-[11px] font-bold px-3 py-1 rounded-lg bg-rose-500/15 dark:bg-rose-500/20 border border-rose-500/30 dark:border-rose-500/40 text-rose-700 dark:text-rose-300 shadow-xs animate-fadeIn flex items-center gap-1.5"
     >
-      <span>❌ 5x salah - Huruf ini salah</span>
+      <span>❌ 4x salah - Huruf ini salah</span>
     </div>
 
     <!-- Action Toolbar (Resets Both Instances simultaneously - only visible during writing) -->
