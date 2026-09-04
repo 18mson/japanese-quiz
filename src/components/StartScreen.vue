@@ -213,7 +213,7 @@ const modesList: QuizModeDef[] = [
     levelTag: 'Handwriting',
     level: 'basic',
     defaultType: 'hiragana',
-    desc: 'Latihan menggambar langsung huruf Kana dengan urutan goresan presisi di layar.',
+    desc: 'Latihan menggambar langsung huruf Kana dengan urutan goresan di layar.',
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
