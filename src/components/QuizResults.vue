@@ -350,24 +350,25 @@ const hasTierChanges = computed(() => {
     
     <!-- Fixed/Pinned Bottom Action Bar -->
     <div class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-4 sm:px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn">
-      <div class="max-w-xs sm:max-w-sm w-full flex items-center justify-center gap-3">
-        <!-- Home Button (Index 0) -->
+      <div class="max-w-sm sm:max-w-md w-full flex items-center justify-center gap-3">
+        <!-- Selesai / Home Button (Index 0) -->
         <button 
-          class="p-2.5 rounded-xl transition-all shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center w-11 h-11 flex-shrink-0 border"
+          class="py-2.5 px-4 rounded-xl transition-all shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-1.5 flex-shrink-0 border text-sm font-bold"
           :class="[
             isKeyboardNav && focusedButtonIndex === 0
               ? 'ring-2 ring-indigo-400 dark:ring-indigo-400 border-indigo-400 bg-indigo-50 dark:bg-slate-700 scale-[1.05]'
               : 'bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
           ]"
           @click="deactivateKeyboardNav(); emit('home');"
-          title="Go to Home"
+          title="Selesai & Ke Beranda"
         >
-          <Home class="w-5 h-5 text-gray-600 dark:text-slate-300" />
+          <Home class="w-4 h-4 text-gray-600 dark:text-slate-300" />
+          <span>Selesai</span>
         </button>
         
         <!-- Try Again Button (Index 1) -->
         <button 
-          class="flex-1 py-2.5 px-6 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center"
+          class="flex-1 py-2.5 px-5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center flex items-center justify-center gap-1.5"
           :class="[
             isKeyboardNav && focusedButtonIndex === 1
               ? 'ring-2 ring-indigo-400/90 dark:ring-indigo-300 border-indigo-400 scale-[1.02] bg-indigo-700'
