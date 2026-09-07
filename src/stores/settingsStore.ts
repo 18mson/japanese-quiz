@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export type KeyboardHeight = 'short' | 'tall';
 export type ThemeMode = 'auto' | 'dark' | 'light';
 export type SpeechRate = 0.6 | 0.9 | 1.2;
+export type WritingLeniencyMode = 'relaxed' | 'standard' | 'strict';
 
 export const useSettingsStore = defineStore('settings', () => {
   const getInitialHeight = (): KeyboardHeight => {
@@ -37,9 +38,32 @@ export const useSettingsStore = defineStore('settings', () => {
     return 0.9;
   };
 
+  const getInitialWritingLeniencyMode = (): WritingLeniencyMode => {
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('writing_leniency_mode') as WritingLeniencyMode | null;
+      if (saved === 'relaxed' || saved === 'standard' || saved === 'strict') {
+        return saved;
+      }
+    }
+    return 'standard';
+  };
+
   const keyboardHeight = ref<KeyboardHeight>(getInitialHeight());
   const themeMode = ref<ThemeMode>(getInitialTheme());
   const speechRate = ref<number>(getInitialSpeechRate());
+  const writingLeniencyMode = ref<WritingLeniencyMode>(getInitialWritingLeniencyMode());
+
+  const writingLeniencyMultiplier = computed(() => {
+    switch (writingLeniencyMode.value) {
+      case 'relaxed':
+        return 1.2;
+      case 'strict':
+        return 0.8;
+      case 'standard':
+      default:
+        return 1.0;
+    }
+  });
 
   const systemPrefersDark = ref(
     typeof window !== 'undefined' && window.matchMedia
@@ -99,6 +123,13 @@ export const useSettingsStore = defineStore('settings', () => {
     }
   };
 
+  const setWritingLeniencyMode = (mode: WritingLeniencyMode) => {
+    writingLeniencyMode.value = mode;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('writing_leniency_mode', mode);
+    }
+  };
+
   // Watch isDarkMode to update DOM whenever it changes
   watch(isDarkMode, () => {
     applyTheme();
@@ -112,6 +143,9 @@ export const useSettingsStore = defineStore('settings', () => {
     setThemeMode,
     applyTheme,
     speechRate,
-    setSpeechRate
+    setSpeechRate,
+    writingLeniencyMode,
+    writingLeniencyMultiplier,
+    setWritingLeniencyMode
   };
 });

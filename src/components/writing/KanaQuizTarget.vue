@@ -18,10 +18,53 @@ const props = withDefaults(
   {
     size: 290,
     showGrid: true,
-    leniency: 1.2,
     isFinished: false
   }
 );
+
+// TASK 2 & 3: Leniency adaptif berdasarkan jenis input (device-aware)
+const LENIENCY_BY_INPUT_TYPE = {
+  touch: 1.6, // jari di touchscreen — paling longgar, presisi natural paling rendah
+  mouse: 1.3, // termasuk trackpad yang di-klik-drag sebagai mouse — menengah
+  pen: 1.1    // stylus/Apple Pencil dll — presisi tinggi, leniency mendekati default
+} as const;
+
+type InputPointerType = keyof typeof LENIENCY_BY_INPUT_TYPE;
+
+const getInitialPointerType = (): InputPointerType | null => {
+  if (typeof window === 'undefined') return null;
+  if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+    return 'touch';
+  }
+  if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    return 'mouse';
+  }
+  return null;
+};
+
+const detectedPointerType = ref<InputPointerType | null>(getInitialPointerType());
+
+const effectiveLeniency = computed(() => {
+  if (props.leniency !== undefined) {
+    return props.leniency;
+  }
+  // Baseline 1.4 jika pointer belum terdeteksi (Task 2)
+  const base = detectedPointerType.value
+    ? LENIENCY_BY_INPUT_TYPE[detectedPointerType.value]
+    : 1.4;
+  // Multiplier dari preferensi profil user (Task 4: Santai 1.2, Standar 1.0, Ketat 0.8)
+  const multiplier = settingsStore.writingLeniencyMultiplier;
+  return Math.round(base * multiplier * 100) / 100;
+});
+
+const handlePointerDown = (e: PointerEvent) => {
+  const pType = e.pointerType as InputPointerType;
+  if (pType === 'touch' || pType === 'mouse' || pType === 'pen') {
+    if (detectedPointerType.value !== pType) {
+      detectedPointerType.value = pType;
+    }
+  }
+};
 
 const emit = defineEmits<{
   (e: 'correct-stroke', data: { strokeNum: number; totalStrokes: number }): void;
@@ -100,6 +143,24 @@ const currentCombinedStrokes = computed(() => {
 let writerInstances: any[] = [];
 let pathObservers: MutationObserver[] = [];
 
+const applyLeniencyToWriters = () => {
+  const currentLeniency = effectiveLeniency.value;
+  writerInstances.forEach(writer => {
+    if (writer) {
+      if (writer._options) {
+        writer._options.leniency = currentLeniency;
+      }
+      if (writer._quiz && writer._quiz._options) {
+        writer._quiz._options.leniency = currentLeniency;
+      }
+    }
+  });
+};
+
+watch(effectiveLeniency, () => {
+  applyLeniencyToWriters();
+});
+
 /**
  * Bezier Curve Smoothing Helper: Converts sharp piecewise L segments into smooth quadratic bezier curves
  */
@@ -175,7 +236,7 @@ const startCharQuiz = (idx: number) => {
   currentStrokeInActiveChar.value = 0;
 
   writer.quiz({
-    leniency: props.leniency,
+    leniency: effectiveLeniency.value,
     showHintAfterMisses: 3,
     acceptBackwardsStrokes: true,
     highlightOnComplete: true,
@@ -324,7 +385,7 @@ const initWriterQuiz = async () => {
       drawingColor,
       highlightColor,
       renderer: 'svg',
-      leniency: props.leniency
+      leniency: effectiveLeniency.value
     });
 
     writerInstances[i] = writer;
@@ -358,10 +419,12 @@ watch(
 );
 
 onMounted(() => {
+  window.addEventListener('pointerdown', handlePointerDown, { capture: true });
   initWriterQuiz();
 });
 
 onUnmounted(() => {
+  window.removeEventListener('pointerdown', handlePointerDown, { capture: true });
   pathObservers.forEach(obs => obs.disconnect());
   pathObservers = [];
   writerInstances.forEach(w => {
@@ -376,7 +439,10 @@ defineExpose({
 </script>
 
 <template>
-  <div class="flex flex-col items-center gap-3 select-none w-full">
+  <div 
+    class="flex flex-col items-center gap-3 select-none w-full"
+    @pointerdown.capture="handlePointerDown"
+  >
     <!-- Top Row: Romaji Clue & Unified Combined Stroke Counter -->
     <div class="flex items-center justify-between w-full max-w-sm px-2 text-xs">
       <span class="font-black text-slate-700 dark:text-slate-300 font-mono tracking-wider text-sm">

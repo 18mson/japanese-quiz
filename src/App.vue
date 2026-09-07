@@ -26,7 +26,7 @@ import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
-import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked, Volume2 } from '@lucide/vue';
+import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked, Volume2, PenTool } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -311,6 +311,47 @@ const goToHome = () => {
                 </div>
               </div>
 
+              <!-- Settings Section: Handwriting Leniency -->
+              <div class="px-2 py-1.5">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+                  <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <span>Toleransi Menulis</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('relaxed')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'relaxed' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Santai (Paling toleran, cocok untuk touchscreen)"
+                  >
+                    <span>Santai</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('standard')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'standard' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Standar (Toleransi seimbang)"
+                  >
+                    <span>Standar</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('strict')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'strict' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Ketat (Presisi bentuk lebih tinggi)"
+                  >
+                    <span>Ketat</span>
+                  </button>
+                </div>
+              </div>
+
               <!-- Divider -->
               <div class="my-1.5 border-t border-gray-100 dark:border-slate-800"></div>
 
@@ -453,6 +494,47 @@ const goToHome = () => {
                     title="1.2x Cepat"
                   >
                     <span>1.2x</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Settings Section: Handwriting Leniency -->
+              <div class="px-2 py-1.5">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+                  <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <span>Toleransi Menulis</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('relaxed')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'relaxed' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Santai (Paling toleran, cocok untuk touchscreen)"
+                  >
+                    <span>Santai</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('standard')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'standard' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Standar (Toleransi seimbang)"
+                  >
+                    <span>Standar</span>
+                  </button>
+                  <button
+                    @click="settingsStore.setWritingLeniencyMode('strict')"
+                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
+                    :class="settingsStore.writingLeniencyMode === 'strict' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+                    title="Ketat (Presisi bentuk lebih tinggi)"
+                  >
+                    <span>Ketat</span>
                   </button>
                 </div>
               </div>

@@ -19,7 +19,7 @@ const props = withDefaults(
   {
     size: 300,
     showGrid: true,
-    leniency: 1.3
+    leniency: 1.4
   }
 );
 
