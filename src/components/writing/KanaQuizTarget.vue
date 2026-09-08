@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
+import { interpolate } from 'flubber';
 import { createQuizHanziWriter, fetchCharacterData, preloadCharacterData } from '../../services/hanziWriterService';
 import { useSettingsStore } from '../../stores/settingsStore';
 import { RotateCcw, Loader2 } from '@lucide/vue';
@@ -123,6 +124,8 @@ const strokeCountPerChar = ref<number[]>([1, 1]);
 const currentStrokeInActiveChar = ref(0);
 const completedCharStrokes = ref<number[]>([0, 0]);
 const isOutlineVisibleList = ref<boolean[]>([false, false]);
+const charDataList = ref<any[]>([]);
+const activeMorphElements: SVGPathElement[] = [];
 
 // Unified Stroke Counter: Combined across all characters
 const combinedTotalStrokes = computed(() => {
@@ -201,8 +204,11 @@ function smoothPathString(d: string): string {
 
 const setupPathSmootherForContainer = (container: HTMLElement) => {
   const observer = new MutationObserver(() => {
-    const paths = container.querySelectorAll('path');
-    paths.forEach(path => {
+    // Only smooth user drawing paths (direct children of svg > g, without clip-path or defs)
+    const userPaths = container.querySelectorAll('svg > g > path:not([clip-path]):not(.morph-stroke-path)');
+    userPaths.forEach(path => {
+      // Safeguard: ensure path is not inside a clipPath or defs
+      if (path.closest('defs') || path.closest('clipPath') || path.hasAttribute('clip-path')) return;
       const d = path.getAttribute('d');
       if (d && !d.includes('Q') && d.includes('L')) {
         const smoothD = smoothPathString(d);
@@ -221,6 +227,153 @@ const setupPathSmootherForContainer = (container: HTMLElement) => {
   });
 
   pathObservers.push(observer);
+};
+
+/**
+ * Converts user stroke centerline points into a closed ribbon polygon with rounded caps
+ */
+function strokeToRibbonPolygon(points: { x: number; y: number }[], width: number): string {
+  if (!points || points.length < 2) return '';
+  const half = width / 2;
+  const left: { x: number; y: number }[] = [];
+  const right: { x: number; y: number }[] = [];
+
+  let pts = points;
+  if (pts.length === 2 && pts[0].x === pts[1].x && pts[0].y === pts[1].y) {
+    pts = [{ x: pts[0].x - 1, y: pts[0].y }, { x: pts[1].x + 1, y: pts[1].y }];
+  }
+
+  for (let i = 0; i < pts.length; i++) {
+    const p = pts[i];
+    let dx = 0;
+    let dy = 0;
+    if (i === 0) {
+      dx = pts[1].x - p.x;
+      dy = pts[1].y - p.y;
+    } else if (i === pts.length - 1) {
+      dx = p.x - pts[i - 1].x;
+      dy = p.y - pts[i - 1].y;
+    } else {
+      dx = pts[i + 1].x - pts[i - 1].x;
+      dy = pts[i + 1].y - pts[i - 1].y;
+    }
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = (-dy / len) * half;
+    const ny = (dx / len) * half;
+
+    left.push({ x: p.x + nx, y: p.y + ny });
+    right.push({ x: p.x - nx, y: p.y - ny });
+  }
+
+  let d = `M ${left[0].x.toFixed(1)} ${left[0].y.toFixed(1)}`;
+  for (let i = 1; i < left.length; i++) {
+    d += ` L ${left[i].x.toFixed(1)} ${left[i].y.toFixed(1)}`;
+  }
+
+  const pLast = pts[pts.length - 1];
+  const prev = pts[pts.length - 2];
+  const fwdAngle = Math.atan2(pLast.y - prev.y, pLast.x - prev.x);
+  for (let a = 1; a <= 4; a++) {
+    const angle = fwdAngle - Math.PI / 2 + (a * Math.PI / 4);
+    const capX = pLast.x + Math.cos(angle) * half;
+    const capY = pLast.y + Math.sin(angle) * half;
+    d += ` L ${capX.toFixed(1)} ${capY.toFixed(1)}`;
+  }
+
+  for (let i = right.length - 1; i >= 0; i--) {
+    d += ` L ${right[i].x.toFixed(1)} ${right[i].y.toFixed(1)}`;
+  }
+
+  const pFirst = pts[0];
+  const nextP = pts[1];
+  const backAngle = Math.atan2(pFirst.y - nextP.y, pFirst.x - nextP.x);
+  for (let a = 1; a <= 4; a++) {
+    const angle = backAngle - Math.PI / 2 + (a * Math.PI / 4);
+    const capX = pFirst.x + Math.cos(angle) * half;
+    const capY = pFirst.y + Math.sin(angle) * half;
+    d += ` L ${capX.toFixed(1)} ${capY.toFixed(1)}`;
+  }
+
+  d += ' Z';
+  return d;
+}
+
+/**
+ * Option 2: True SVG Path Shape Morphing with Flubber
+ * Directly morphs user hand-drawn brush ribbon into the calligraphic character stroke.
+ */
+const runShapeMorph = (idx: number, strokeData: any) => {
+  const container = boxContainerRefs.value[idx];
+  if (!container || !strokeData?.drawnPath?.points) return;
+
+  const targetStrokeD = charDataList.value[idx]?.strokes?.[strokeData.strokeNum];
+  if (!targetStrokeD) return;
+
+  const svg = container.querySelector('svg');
+  if (!svg) return;
+
+  const charGroup = svg.querySelector(':scope > g') || svg.querySelector('g');
+  if (!charGroup) return;
+
+  const size = getBoxSize(idx);
+  const drawingWidth = isCombination.value
+    ? (idx === 0 ? 56 : 48)
+    : Math.max(68, Math.round(size * 0.26));
+
+  const ribbonD = strokeToRibbonPolygon(strokeData.drawnPath.points, drawingWidth);
+  if (!ribbonD) return;
+
+  let interpolator: ((t: number) => string) | null = null;
+  try {
+    interpolator = interpolate(ribbonD, targetStrokeD, { maxSegmentLength: 20 });
+  } catch (err) {
+    console.warn('Flubber morph fallback:', err);
+    return;
+  }
+
+  if (!interpolator) return;
+
+  const isDark = settingsStore.isDarkMode;
+  const startColor = isDark ? '#818cf8' : '#6366f1';
+  const endColor = isDark ? '#38bdf8' : '#0284c7';
+
+  const morphPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  morphPath.setAttribute('d', interpolator(0));
+  morphPath.setAttribute('fill', startColor);
+  morphPath.setAttribute('stroke', 'none');
+  morphPath.setAttribute('class', 'morph-stroke-path');
+  charGroup.appendChild(morphPath);
+  activeMorphElements.push(morphPath);
+
+  const duration = 280;
+  const startTime = performance.now();
+
+  const animate = (currentTime: number) => {
+    const elapsed = currentTime - startTime;
+    const linearT = Math.min(1, elapsed / duration);
+    // Smooth ease-out cubic
+    const easedT = 1 - Math.pow(1 - linearT, 3);
+
+    try {
+      morphPath.setAttribute('d', interpolator!(easedT));
+    } catch {
+      // ignore frame interpolation error
+    }
+
+    if (easedT > 0.4) {
+      morphPath.setAttribute('fill', endColor);
+    }
+
+    if (linearT < 1) {
+      requestAnimationFrame(animate);
+    } else {
+      morphPath.remove();
+      const idxInActive = activeMorphElements.indexOf(morphPath);
+      if (idxInActive >= 0) activeMorphElements.splice(idxInActive, 1);
+    }
+  };
+
+  requestAnimationFrame(animate);
 };
 
 /**
@@ -252,6 +405,9 @@ const startCharQuiz = (idx: number) => {
       }
       const current = strokeData.strokeNum + 1;
       currentStrokeInActiveChar.value = current;
+
+      // Trigger Option 2: True Path Shape Morphing via Flubber
+      runShapeMorph(idx, strokeData);
 
       emit('correct-stroke', {
         strokeNum: currentCombinedStrokes.value,
@@ -338,6 +494,10 @@ const initWriterQuiz = async () => {
   pathObservers.forEach(obs => obs.disconnect());
   pathObservers = [];
 
+  activeMorphElements.forEach(el => el.remove());
+  activeMorphElements.length = 0;
+  charDataList.value = [];
+
   // Preload character stroke & median data for all sub-characters
   await preloadCharacterData(props.targetChar);
   await nextTick();
@@ -351,6 +511,9 @@ const initWriterQuiz = async () => {
     container.innerHTML = '';
 
     const charData = await fetchCharacterData(ch).catch(() => null);
+    if (charData) {
+      charDataList.value[i] = charData;
+    }
     const strokeCount = charData?.strokes?.length || 1;
     strokeCountPerChar.value[i] = strokeCount;
 
@@ -385,7 +548,9 @@ const initWriterQuiz = async () => {
       drawingColor,
       highlightColor,
       renderer: 'svg',
-      leniency: effectiveLeniency.value
+      leniency: effectiveLeniency.value,
+      drawingFadeDuration: 200,
+      strokeFadeDuration: 280
     });
 
     writerInstances[i] = writer;
@@ -427,6 +592,8 @@ onUnmounted(() => {
   window.removeEventListener('pointerdown', handlePointerDown, { capture: true });
   pathObservers.forEach(obs => obs.disconnect());
   pathObservers = [];
+  activeMorphElements.forEach(el => el.remove());
+  activeMorphElements.length = 0;
   writerInstances.forEach(w => {
     try { w?.cancelQuiz(); } catch (e) {}
   });
@@ -660,5 +827,9 @@ defineExpose({
   stroke-linecap: round !important;
   stroke-linejoin: round !important;
   shape-rendering: geometricPrecision;
+}
+
+.hw-surface :deep(.morph-stroke-path) {
+  pointer-events: none !important;
 }
 </style>

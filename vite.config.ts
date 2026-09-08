@@ -15,12 +15,28 @@ export default defineConfig({
         name: 'Nihongo Master: Typing & Vocab Battleground',
         short_name: 'NihongoMaster',
         description: 'Master Japanese Kana, N5 Vocab & Realtime Typing Battleground',
-        theme_color: '#4F46E5',
+        theme_color: '#312E81',
+        background_color: '#0F172A',
+        display: 'standalone',
+        orientation: 'portrait',
         icons: [
           {
-            src: '/favicon.svg',
+            src: '/pwa-192x192.png',
             sizes: '192x192',
-            type: 'image/svg+xml'
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: '/pwa-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       },

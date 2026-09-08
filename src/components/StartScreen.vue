@@ -165,7 +165,7 @@ interface QuizModeDef {
   defaultType: string;
   desc: string;
   badge?: string;
-  subTypes?: Array<{ key: string; label: string; tag?: string }>;
+  subTypes?: Array<{ key: string; label: string; tag?: string; beta?: boolean }>;
   icon: any;
   discGradient: string;
   discShadow: string;
@@ -233,8 +233,8 @@ const modesList: QuizModeDef[] = [
     desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
     subTypes: [
       { key: 'words', label: 'Kotoba (言葉)' },
-      { key: 'renshuu', label: 'Renshuu (練習)' },
-      { key: 'kaiwa', label: 'Kaiwa (会話)' },
+      { key: 'renshuu', label: 'Renshuu (練習)', beta: true },
+      { key: 'kaiwa', label: 'Kaiwa (会話)', beta: true },
     ],
     icon: BookOpen,
     discGradient: 'from-violet-500 via-purple-600 to-indigo-600',
@@ -601,6 +601,7 @@ const handleStart = async () => {
                     ]"
                   >
                     <span>{{ sub.label }}</span>
+                    <span v-if="sub.beta" class="text-[8px] sm:text-[9px] font-black px-1 py-px rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">Beta</span>
                     <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
                   </button>
                 </div>
