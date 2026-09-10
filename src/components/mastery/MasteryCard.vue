@@ -3,7 +3,7 @@ import { useQuizStore } from '../../stores/quizStore';
 
 defineProps<{
   item: any;
-  category: 'hiragana' | 'katakana' | 'words';
+  category: 'hiragana' | 'katakana' | 'words' | 'kanji';
 }>();
 
 defineEmits(['click']);
@@ -58,14 +58,19 @@ const quizStore = useQuizStore();
       {{ item.character }}
     </span>
 
-    <!-- Romaji Subtitle -->
+    <!-- Reading Subtitle -->
     <span class="text-xs font-semibold text-gray-500 dark:text-slate-300 truncate max-w-full">
-      {{ Array.isArray(item.romaji) ? item.romaji[0] : item.romaji }}
+      <template v-if="category === 'kanji'">
+        {{ item.kunyomi?.[0] || item.onyomi?.[0] || '' }}
+      </template>
+      <template v-else>
+        {{ Array.isArray(item.romaji) ? item.romaji[0] : item.romaji }}
+      </template>
     </span>
 
-    <!-- Words Meaning (Only for words category) -->
+    <!-- Meaning (For words and kanji category) -->
     <span 
-      v-if="category === 'words' && item.meaning"
+      v-if="(category === 'words' || category === 'kanji') && item.meaning"
       class="text-[11px] text-gray-400 dark:text-slate-400 truncate max-w-full font-medium"
     >
       {{ item.meaning }}

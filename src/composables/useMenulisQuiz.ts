@@ -7,10 +7,20 @@ import { useTextToSpeech } from './useTextToSpeech';
 export interface MenulisCharacterItem {
   character: string;
   romaji: string;
-  type: 'basic' | 'dakuten' | 'combination';
-  category: 'hiragana' | 'katakana';
+  type: string;
+  category: 'hiragana' | 'katakana' | 'kanji';
   meaning?: string;
   kana?: string;
+  fullWord?: string;
+  prefixKana?: string;
+  targetKana?: string;
+  suffixKana?: string;
+  wordMeaning?: string;
+  kanjiMeaning?: string;
+  lesson?: string;
+  onyomi?: string[];
+  kunyomi?: string[];
+  examples?: Array<{ word: string; kana: string; meaning: string }>;
 }
 
 export function useMenulisQuiz() {
@@ -40,7 +50,17 @@ export function useMenulisQuiz() {
       type: (q.type as any) || 'basic',
       category: (q.category as any) || (quizStore.questionType as any) || 'hiragana',
       meaning: q.meaning,
-      kana: q.kana
+      kana: q.kana,
+      fullWord: (q as any).fullWord || q.character,
+      prefixKana: (q as any).prefixKana || '',
+      targetKana: (q as any).targetKana || (q.kana || romajiStr),
+      suffixKana: (q as any).suffixKana || '',
+      wordMeaning: (q as any).meaning,
+      kanjiMeaning: (q as any).kanjiMeaning || q.meaning,
+      lesson: (q as any).lesson,
+      onyomi: (q as any).onyomi,
+      kunyomi: (q as any).kunyomi,
+      examples: (q as any).examples
     };
   });
 
@@ -63,7 +83,8 @@ export function useMenulisQuiz() {
       currentMistakesCount.value = 0;
       if (newChar) {
         setTimeout(() => {
-          speak(newChar);
+          const textToSpeak = currentChar.value?.fullWord || newChar;
+          speak(textToSpeak);
         }, 220);
       }
     },

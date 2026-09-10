@@ -2,10 +2,11 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked, PenTool } from '@lucide/vue';
+import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked, PenTool, ChevronLeft, ChevronRight } from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
+import { kanjiLessonList } from '../data/kanjiWritingPrompts';
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
@@ -14,6 +15,71 @@ const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
+
+// Responsive screen detection
+const isMobile = ref(false);
+const isSmallScreen = ref(false);
+
+const updateResponsive = () => {
+  if (typeof window !== 'undefined') {
+    isMobile.value = window.innerWidth < 640;
+    isSmallScreen.value = window.innerWidth < 420;
+  }
+};
+
+// Kanji Lesson Pagination State (2 on narrow mobile, 3 on standard mobile, 4 on desktop)
+const kanjiLessonStartIndex = ref(0);
+const kanjiPageSize = computed(() => {
+  if (isSmallScreen.value) return 2;
+  if (isMobile.value) return 3;
+  return 4;
+});
+
+const visibleKanjiLessons = computed(() => {
+  return kanjiLessonList.slice(
+    kanjiLessonStartIndex.value,
+    kanjiLessonStartIndex.value + kanjiPageSize.value
+  );
+});
+
+const canPrevKanjiLessons = computed(() => kanjiLessonStartIndex.value > 0);
+const canNextKanjiLessons = computed(() => {
+  return kanjiLessonStartIndex.value + kanjiPageSize.value < kanjiLessonList.length;
+});
+
+const prevKanjiLessons = () => {
+  kanjiLessonStartIndex.value = Math.max(0, kanjiLessonStartIndex.value - kanjiPageSize.value);
+};
+
+const nextKanjiLessons = () => {
+  if (canNextKanjiLessons.value) {
+    kanjiLessonStartIndex.value = Math.min(
+      kanjiLessonList.length - kanjiPageSize.value,
+      kanjiLessonStartIndex.value + kanjiPageSize.value
+    );
+  }
+};
+
+// Auto scroll pagination to keep selected lesson in view if selected elsewhere
+watch(
+  () => quizStore.selectedKanjiLessonNumber,
+  (newVal) => {
+    if (newVal > 0) {
+      const idx = kanjiLessonList.findIndex(l => l.lessonNumber === newVal);
+      if (idx !== -1) {
+        if (idx < kanjiLessonStartIndex.value || idx >= kanjiLessonStartIndex.value + kanjiPageSize.value) {
+          kanjiLessonStartIndex.value = Math.floor(idx / kanjiPageSize.value) * kanjiPageSize.value;
+        }
+      }
+    }
+  }
+);
+
+watch(kanjiPageSize, (newSize) => {
+  if (kanjiLessonStartIndex.value + newSize > kanjiLessonList.length) {
+    kanjiLessonStartIndex.value = Math.max(0, kanjiLessonList.length - newSize);
+  }
+});
 
 const kanaCategoryOptions = [
   { key: 'all', label: 'Semua', badge: '✨', desc: 'Semua variasi huruf' },
@@ -26,12 +92,6 @@ const selectedKanaCategoryDesc = computed(() => {
   const opt = kanaCategoryOptions.find(o => o.key === selectedKanaCategory.value);
   return opt ? opt.desc : 'Semua variasi huruf';
 });
-
-const isMobile = ref(false);
-
-const updateResponsive = () => {
-  isMobile.value = window.innerWidth < 640;
-};
 
 // ── Keyboard Section Focus State ─────────────────────────────────
 const focusedSection = ref<'header' | 'mode' | 'duration'>('mode');
@@ -179,11 +239,11 @@ const modesList: QuizModeDef[] = [
     levelTag: 'Basic',
     level: 'basic',
     defaultType: 'hiragana',
-    desc: 'Latihan pilihan ganda huruf Kana (Hiragana, Katakana, Mix) secara cepat & interaktif.',
+    desc: 'Latihan pilihan ganda huruf Kana (Hiragana, Katakana, Mix Kana) secara cepat & interaktif.',
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'mix', label: 'Mix' },
+      { key: 'mix', label: 'Mix Kana' },
     ],
     icon: Layers,
     discGradient: 'from-indigo-500 via-indigo-600 to-violet-600',
@@ -196,11 +256,11 @@ const modesList: QuizModeDef[] = [
     levelTag: 'Kana Typing',
     level: 'n5',
     defaultType: 'hiragana',
-    desc: 'Ketik huruf Kana (Hiragana, Katakana, Mix) dengan keyboard presisi.',
+    desc: 'Ketik huruf Kana (Hiragana, Katakana, Mix Kana) dengan keyboard presisi.',
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'mix', label: 'Mix' },
+      { key: 'mix', label: 'Mix Kana' },
     ],
     icon: Keyboard,
     discGradient: 'from-blue-500 via-indigo-600 to-indigo-700',
@@ -213,11 +273,12 @@ const modesList: QuizModeDef[] = [
     levelTag: 'Handwriting',
     level: 'basic',
     defaultType: 'hiragana',
-    desc: 'Latihan menggambar langsung huruf Kana dengan urutan goresan di layar.',
+    desc: 'Latihan menggambar langsung huruf Kana dan Kanji N5 dengan urutan goresan di layar.',
     subTypes: [
       { key: 'hiragana', label: 'Hiragana' },
       { key: 'katakana', label: 'Katakana' },
-      { key: 'mix', label: 'Mix' },
+      { key: 'mix', label: 'Mix Kana' },
+      { key: 'kanji', label: 'Kanji N5' },
     ],
     icon: PenTool,
     discGradient: 'from-emerald-500 via-teal-600 to-cyan-600',
@@ -772,6 +833,95 @@ const handleStart = async () => {
               </div>
             </div>
 
+            <!-- Kanji N5 Lesson Progression & Selector Banner -->
+            <div 
+              v-else-if="activeMode.id === 'writing' && characterTypes === 'kanji'"
+              key="kanji-lesson-banner"
+              class="bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs font-jp">
+                    漢
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1.5">
+                      <span>Target Menulis:</span>
+                      <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+                        {{ quizStore.currentKanjiLessonLabel }}
+                      </span>
+                    </div>
+                    <div class="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+                      {{ quizStore.currentKanjiLessonStats.mastered }} / {{ quizStore.currentKanjiLessonStats.total }} kanji dikuasai ({{ quizStore.currentKanjiLessonStats.percentage }}%)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Lesson Selector: Sticky "Semua" + Paginated Lessons with Prev/Next buttons -->
+              <div class="flex items-center gap-1 sm:gap-1.5 w-full pt-0.5">
+                <!-- Sticky "Semua" Pill -->
+                <button
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); quizStore.selectedKanjiLessonNumber = 0;"
+                  :class="[
+                    'py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1 sm:gap-1.5 shadow-2xs',
+                    quizStore.selectedKanjiLessonNumber === 0
+                      ? 'bg-emerald-600 text-white border-emerald-500 font-black shadow-xs scale-[1.02]'
+                      : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+                  ]"
+                >
+                  <span class="whitespace-nowrap">✨ Semua</span>
+                  <span class="hidden sm:inline text-[10px] opacity-80">(1–25)</span>
+                </button>
+
+                <div class="w-px h-6 bg-gray-200 dark:bg-slate-700 shrink-0 mx-0.5"></div>
+
+                <!-- Prev Button -->
+                <button
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); prevKanjiLessons();"
+                  :disabled="!canPrevKanjiLessons"
+                  class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+                  title="Pelajaran Sebelumnya"
+                >
+                  <ChevronLeft class="w-3.5 h-3.5" />
+                </button>
+
+                <!-- Paginated Visible Lessons -->
+                <div class="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
+                  <button
+                    v-for="les in visibleKanjiLessons"
+                    :key="les.lessonNumber"
+                    type="button"
+                    @click.stop="deactivateKeyboardNav(); quizStore.selectedKanjiLessonNumber = les.lessonNumber;"
+                    :class="[
+                      'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
+                      quizStore.selectedKanjiLessonNumber === les.lessonNumber
+                        ? 'bg-emerald-600 text-white border-emerald-500 font-black shadow-xs scale-[1.02]'
+                        : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+                    ]"
+                  >
+                    <span class="truncate font-semibold text-[11px] sm:text-xs">
+                      {{ isMobile ? `Pel. ${les.lessonNumber}` : les.lesson }}
+                    </span>
+                    <span class="text-[10px] opacity-80 shrink-0">({{ les.count }})</span>
+                  </button>
+                </div>
+
+                <!-- Next Button -->
+                <button
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); nextKanjiLessons();"
+                  :disabled="!canNextKanjiLessons"
+                  class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+                  title="Pelajaran Berikutnya"
+                >
+                  <ChevronRight class="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+
             <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
               Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
             </div>
@@ -823,6 +973,9 @@ const handleStart = async () => {
         >
           <span v-if="['hiragana', 'katakana', 'mix'].includes(characterTypes)" class="text-indigo-600 dark:text-indigo-400 font-bold">
             Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
+          </span>
+          <span v-else-if="characterTypes === 'kanji'" class="text-emerald-600 dark:text-emerald-400 font-bold">
+            Target: {{ quizStore.currentKanjiLessonLabel }} ({{ quizStore.currentKanjiLessonStats.total }} Kanji N5)
           </span>
           <span v-else class="text-slate-400 font-bold">
             {{ characterTypes === 'words' ? '8 Kanji' : (characterTypes === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}

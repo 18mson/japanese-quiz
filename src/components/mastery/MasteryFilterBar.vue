@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
+import { kanjiGroups } from '../../data/kanji';
 import { 
   Sparkles, 
   ChevronDown, 
@@ -16,7 +17,7 @@ import {
 } from '@lucide/vue';
 
 const props = defineProps<{
-  category: 'hiragana' | 'katakana' | 'words';
+  category: 'hiragana' | 'katakana' | 'words' | 'kanji';
   subtype: string;
   statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown';
   availableLessons: string[];
@@ -24,7 +25,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:category', val: 'hiragana' | 'katakana' | 'words'): void;
+  (e: 'update:category', val: 'hiragana' | 'katakana' | 'words' | 'kanji'): void;
   (e: 'update:subtype', val: string): void;
   (e: 'update:statusFilter', val: 'all' | 'new' | 'learning' | 'mastered' | 'crown'): void;
   (e: 'update:searchQuery', val: string): void;
@@ -47,12 +48,23 @@ const searchPlaceholder = computed(() => {
   if (props.category === 'words') {
     return 'Cari kanji, arti, romaji...';
   }
+  if (props.category === 'kanji') {
+    return 'Cari kanji, arti, onyomi, kunyomi...';
+  }
   return 'Cari karakter atau romaji...';
 });
 
 const activeSubtypeLabel = computed(() => {
   if (props.subtype === 'all') {
-    return props.category === 'words' ? 'Semua Pelajaran (Semua Bab)' : 'Semua Kelompok';
+    return props.category === 'words' 
+      ? 'Semua Pelajaran (Semua Bab)' 
+      : props.category === 'kanji'
+      ? 'Semua Kelompok (105 Kanji)'
+      : 'Semua Kelompok';
+  }
+  if (props.category === 'kanji') {
+    const found = kanjiGroups.find(g => g.key === props.subtype);
+    return found ? found.label : props.subtype;
   }
   if (props.category !== 'words') {
     if (props.subtype === 'basic') return 'Dasar (Basic)';
@@ -111,11 +123,12 @@ const statusPills = [
     <!-- Category Switcher Tabs & Search Bar (Row 1) -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
       <!-- Category Switcher Tabs -->
-      <div class="grid grid-cols-3 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0">
+      <div class="grid grid-cols-2 sm:grid-cols-4 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
         <button 
-          v-for="cat in ['hiragana', 'katakana', 'words']" 
+          v-for="cat in (['hiragana', 'katakana', 'words', 'kanji'] as const)" 
           :key="cat"
-          @click="emit('update:category', cat as any); emit('update:subtype', 'all'); closeDropdowns();"
+          type="button"
+          @click="emit('update:category', cat); emit('update:subtype', 'all'); closeDropdowns();"
           :class="[
             'px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition cursor-pointer flex items-center justify-center gap-1.5',
             category === cat 
@@ -123,7 +136,7 @@ const statusPills = [
               : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
           ]"
         >
-          <span>{{ cat === 'words' ? 'Kanji & Kotoba' : cat }}</span>
+          <span>{{ cat === 'words' ? 'Kosakata' : (cat === 'kanji' ? 'Kanji N5' : cat) }}</span>
           <span 
             v-if="cat === 'hiragana'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
@@ -139,11 +152,18 @@ const statusPills = [
             {{ quizStore.katakanaMasteryStats.percentage }}%
           </span>
           <span 
-            v-else 
+            v-else-if="cat === 'words'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
             :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.wordsMasteryStats.percentage }}%
+          </span>
+          <span 
+            v-else-if="cat === 'kanji'" 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.kanjiMasteryStats.percentage }}%
           </span>
         </button>
       </div>
@@ -202,11 +222,29 @@ const statusPills = [
               ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
               : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
           >
-            <span class="truncate">{{ category === 'words' ? 'Semua Pelajaran (Semua Bab)' : 'Semua Kelompok' }}</span>
+            <span class="truncate">{{ category === 'words' ? 'Semua Pelajaran (Semua Bab)' : (category === 'kanji' ? 'Semua Kelompok (105 Kanji)' : 'Semua Kelompok') }}</span>
             <Check v-if="subtype === 'all'" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
           </button>
 
-          <template v-if="category !== 'words'">
+          <!-- Kanji Groups -->
+          <template v-if="category === 'kanji'">
+            <button
+              v-for="grp in kanjiGroups.filter(g => g.key !== 'all')"
+              :key="grp.key"
+              type="button"
+              @click="emit('update:subtype', grp.key); closeDropdowns();"
+              class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
+              :class="subtype === grp.key 
+                ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
+            >
+              <span class="truncate">{{ grp.label }}</span>
+              <Check v-if="subtype === grp.key" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
+            </button>
+          </template>
+
+          <!-- Hiragana / Katakana Groups -->
+          <template v-else-if="category !== 'words'">
             <button
               v-for="sub in [
                 { key: 'basic', label: 'Dasar (Basic)' },
@@ -226,6 +264,7 @@ const statusPills = [
             </button>
           </template>
 
+          <!-- Words Lessons -->
           <template v-else>
             <button
               v-for="les in availableLessons"

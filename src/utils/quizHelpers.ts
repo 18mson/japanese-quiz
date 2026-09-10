@@ -2,6 +2,7 @@
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
+import { kanjiN5Data } from '../data/kanji';
 
 export const normalizeRomajiForComparison = (str: string): string => {
   return str
@@ -70,7 +71,7 @@ export const getQuestionCountFromDuration = (targetDurationMinutes: number, type
     if (targetDurationMinutes <= 3) return 14;
     return 25;
   }
-  if (type === 'words') {
+  if (type === 'words' || type === 'kanji') {
     if (targetDurationMinutes <= 1) return 8;
     if (targetDurationMinutes <= 3) return 24;
     return 40;
@@ -98,6 +99,9 @@ export const getFallbackLocalPool = (type: string, _level: string = 'basic'): an
       return cleanKana.length > 1;
     });
   }
+  if (type === 'kanji') {
+    return kanjiN5Data;
+  }
   return [];
 };
 
@@ -111,4 +115,5 @@ export const getTierFromStreak = (streak: number): MasteryTierKey => {
 };
 
 export { HURUF_TIER_WEIGHTS, HURUF_TIER_METADATA, buildHurufSessionQuestions, buildHurufSessionQuestions as buildSmartAdaptiveQuestions } from './hurufQuizComposition';
+export { buildKanjiWritingSessionQuestions } from './kanjiWritingComposition';
 

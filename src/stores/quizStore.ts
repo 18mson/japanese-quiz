@@ -3,6 +3,7 @@ import { ref, computed } from 'vue';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
+import { kanjiN5Data } from '../data/kanji';
 import { sentencesData } from '../data/sentences';
 import { supabase } from '../lib/supabaseClient';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
@@ -11,7 +12,9 @@ import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransit
 import { submitLeaderboardScore } from '../services/leaderboardService';
 import { buildHurufSessionQuestions } from '../utils/hurufQuizComposition';
 import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
+import { buildKanjiWritingSessionQuestions } from '../utils/kanjiWritingComposition';
 import { sortInGojuonOrder } from '../data/gojuonOrder';
+import { kanjiWritingEntries, kanjiWritingEntriesMap, kanjiLessonList } from '../data/kanjiWritingPrompts';
 import { useGoalsStore } from './goalsStore';
 import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
 import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } from '../types/lesson';
@@ -127,17 +130,34 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const loadStreaksFromServer = loadStreaksFromStorage;
 
-  const getMasteryStreak = (character: string): number => userStreaks.value[character] || 0;
+  const kanjiCharSet = new Set(kanjiN5Data.map(k => k.character));
+
+  const getMasteryStreak = (character: string): number => {
+    const direct = userStreaks.value[character] || 0;
+    if (kanjiCharSet.has(character)) {
+      const relatedWords = wordsData.filter(w => w.character.includes(character));
+      if (relatedWords.length > 0) {
+        let maxWordStreak = 0;
+        for (const rw of relatedWords) {
+          const s = userStreaks.value[rw.character] || 0;
+          if (s > maxWordStreak) maxWordStreak = s;
+        }
+        return Math.max(direct, maxWordStreak);
+      }
+    }
+    return direct;
+  };
   const getMasteryTier = (character: string) => getMasteryTierFromStreak(getMasteryStreak(character));
 
   const hiraganaMasteryStats = computed(() => computeCategoryMasteryStats(hiraganaData, userStreaks.value));
   const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
   const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value));
+  const kanjiMasteryStats = computed(() => computeCategoryMasteryStats(kanjiN5Data, userStreaks.value, getMasteryStreak));
 
   const overallMasteryStats = computed(() => {
-    const h = hiraganaMasteryStats.value, k = katakanaMasteryStats.value, w = wordsMasteryStats.value;
-    const total = h.total + k.total + w.total, mastered = h.mastered + k.mastered + w.mastered;
-    const crown = h.crown + k.crown + w.crown, learning = h.learning + k.learning + w.learning, newItems = h.newItems + k.newItems + w.newItems;
+    const h = hiraganaMasteryStats.value, k = katakanaMasteryStats.value, w = wordsMasteryStats.value, kj = kanjiMasteryStats.value;
+    const total = h.total + k.total + w.total + kj.total, mastered = h.mastered + k.mastered + w.mastered + kj.mastered;
+    const crown = h.crown + k.crown + w.crown + kj.crown, learning = h.learning + k.learning + w.learning + kj.learning, newItems = h.newItems + k.newItems + w.newItems + kj.newItems;
     return { total, mastered, crown, learning, newItems, percentage: total > 0 ? Math.round((mastered / total) * 100) : 0 };
   });
 
@@ -160,6 +180,34 @@ export const useQuizStore = defineStore('quiz', () => {
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing'>('multiple_choice');
   const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
+  const selectedKanjiLessonNumber = ref<number>(0);
+
+  const activeKanjiLessonNumber = computed(() => {
+    if (selectedKanjiLessonNumber.value && selectedKanjiLessonNumber.value > 0) {
+      return selectedKanjiLessonNumber.value;
+    }
+    for (const les of kanjiLessonList) {
+      const entries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === les.lessonNumber);
+      const allMastered = entries.every(e => getMasteryStreak(e.kanji) >= 3);
+      if (!allMastered) return les.lessonNumber;
+    }
+    return 1;
+  });
+
+  const currentKanjiLessonLabel = computed(() => {
+    if (selectedKanjiLessonNumber.value === 0) {
+      return `Semua (Pelajaran ${activeKanjiLessonNumber.value})`;
+    }
+    return `Pelajaran ${activeKanjiLessonNumber.value}`;
+  });
+
+  const currentKanjiLessonStats = computed(() => {
+    const entries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === activeKanjiLessonNumber.value);
+    const total = entries.length;
+    const mastered = entries.filter(e => getMasteryStreak(e.kanji) >= 3).length;
+    const percentage = total > 0 ? Math.round((mastered / total) * 100) : 0;
+    return { total, mastered, percentage };
+  });
 
   const userInput = ref('');
   const showReadingHint = ref(false);
@@ -407,6 +455,47 @@ export const useQuizStore = defineStore('quiz', () => {
       return;
     }
 
+    if (type === 'kanji') {
+      let candidatePool: typeof kanjiWritingEntries = [];
+      const selectedLesson = selectedKanjiLessonNumber.value;
+
+      if (selectedLesson > 0) {
+        // Mode Pelajaran Tertentu:
+        // Fokuskan pada pelajaran terpilih; sertakan pelajaran sebelumnya sebagai review retensi jika diperlukan
+        const currentLessonEntries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === selectedLesson);
+        const previousLessonEntries = kanjiWritingEntries.filter(e => e.primaryLessonNumber < selectedLesson);
+        candidatePool = [...currentLessonEntries, ...previousLessonEntries];
+      } else {
+        // Mode "✨ Semua (1–25)":
+        // Urutan kurikulum progresif: pelajaran 1 s/d activeKanjiLessonNumber
+        const activeLesson = activeKanjiLessonNumber.value;
+        candidatePool = kanjiWritingEntries.filter(e => e.primaryLessonNumber <= activeLesson);
+      }
+
+      const sessionResult = buildKanjiWritingSessionQuestions(
+        candidatePool,
+        questionCount,
+        getMasteryStreak,
+        introducedChars.value
+      );
+
+      questions.value = sessionResult.questions;
+
+      if (sessionResult.newKanjiEntries.length > 0) {
+        previewMode.value = 'full_wave';
+        currentWaveIndex.value = 0;
+        currentWaveItems.value = sessionResult.newKanjiEntries;
+        isWavePreviewActive.value = true;
+      } else {
+        previewMode.value = 'none';
+        isWavePreviewActive.value = false;
+      }
+
+      initialQuestionCount.value = sessionResult.questions.length;
+      isLoading.value = false;
+      return;
+    }
+
     // Mode Huruf (Hiragana / Katakana / Mix)
     const hurufQuestions = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak, introducedChars.value);
     questions.value = hurufQuestions;
@@ -461,6 +550,17 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (type === 'words') {
       questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
+    } else if (type === 'kanji') {
+      const weakEntries = kanjiWritingEntries.filter(e => getMasteryStreak(e.kanji) < 3);
+      const poolEntries = weakEntries.length > 0 ? weakEntries : kanjiWritingEntries;
+      const sessionResult = buildKanjiWritingSessionQuestions(
+        poolEntries,
+        questionCount,
+        getMasteryStreak,
+        introducedChars.value,
+        { maxNewOverride: 0 }
+      );
+      questions.value = sessionResult.questions;
     } else {
       questions.value = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak, introducedChars.value);
     }
@@ -526,8 +626,8 @@ export const useQuizStore = defineStore('quiz', () => {
         if (isCorrectVal) firstTryCorrectCount.value++;
       }
 
-      if (questionType.value === 'words') {
-        // Kanji Mode: evaluate streak & mastery update ONCE per unique word per session
+      if (questionType.value === 'words' || questionType.value === 'kanji') {
+        // Kanji / Writing Kanji Mode: evaluate streak & mastery update ONCE per unique word/kanji per session
         if (!sessionCharAttempts.value[charKey]) {
           sessionCharAttempts.value[charKey] = {
             attempts: 1,
@@ -625,7 +725,27 @@ export const useQuizStore = defineStore('quiz', () => {
       });
 
       if (!isCorrectVal) {
-        questions.value = [...questions.value, { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }];
+        let repeatedQuestion = { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false };
+        if (current.type === 'kanji') {
+          const entry = kanjiWritingEntriesMap[current.character];
+          if (entry && entry.prompts.length > 1) {
+            const others = entry.prompts.filter(p => p.word !== current.fullWord);
+            if (others.length > 0) {
+              const newPrompt = others[Math.floor(Math.random() * others.length)];
+              repeatedQuestion = {
+                ...repeatedQuestion,
+                romaji: newPrompt.targetKana,
+                kana: newPrompt.fullKana,
+                fullWord: newPrompt.word,
+                prefixKana: newPrompt.prefixKana,
+                targetKana: newPrompt.targetKana,
+                suffixKana: newPrompt.suffixKana,
+                meaning: newPrompt.meaning
+              };
+            }
+          }
+        }
+        questions.value = [...questions.value, repeatedQuestion];
       }
     }
   };
@@ -732,9 +852,10 @@ export const useQuizStore = defineStore('quiz', () => {
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
     startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
     speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,
-    hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, overallMasteryStats,
+    hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, kanjiMasteryStats, kanjiN5Data, overallMasteryStats,
     currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
     sentenceStats,
+    selectedKanjiLessonNumber, activeKanjiLessonNumber, currentKanjiLessonLabel, currentKanjiLessonStats,
     currentLessonNumber, bunkeiList, kaiwaData, renshuuSessionQuestions, renshuuProgressStats, showLessonMaterial, isLessonMaterialCompleted,
     previewMode, previewedItems, fullWaveBatches, currentWaveIndex, isWavePreviewActive, currentWaveItems,
     microPreviewItem, showMicroPreviewModal, latestTierTransition, sessionTierChanges, justClosedPreview, previewClosedTimestamp,

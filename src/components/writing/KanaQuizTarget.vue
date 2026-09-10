@@ -632,6 +632,19 @@ defineExpose({
         >
           Goresan: <strong :class="isEntireCombinationComplete ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-900 dark:text-white font-bold'">{{ currentCombinedStrokes }}</strong> / {{ combinedTotalStrokes }}
         </div>
+
+        <!-- Tombol Reset Gambar (Hanya icon di sebelah goresan agar hemat tempat) -->
+        <button
+          v-if="!isFinished && !isFailedMaxMistakes && !isEntireCombinationComplete"
+          type="button"
+          @click="restartQuiz"
+          :disabled="isLoading"
+          class="p-1 sm:p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/90 dark:hover:bg-slate-700 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer disabled:opacity-40 flex items-center justify-center active:scale-95"
+          title="Ulangi Gambar"
+          aria-label="Ulangi Gambar"
+        >
+          <RotateCcw class="w-3.5 h-3.5" />
+        </button>
       </div>
     </div>
 
@@ -790,21 +803,6 @@ defineExpose({
       <span>❌ 4x salah - Huruf ini salah</span>
     </div>
 
-    <!-- Action Toolbar (Resets Both Instances simultaneously - only visible during writing) -->
-    <div 
-      v-if="!isFinished && !isFailedMaxMistakes && !isEntireCombinationComplete" 
-      class="flex items-center justify-center gap-3 w-full max-w-sm pt-1"
-    >
-      <button
-        type="button"
-        @click="restartQuiz"
-        :disabled="isLoading"
-        class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-300 disabled:opacity-40 font-bold text-xs border border-slate-200 dark:border-slate-700 transition cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-98"
-      >
-        <RotateCcw class="w-3.5 h-3.5" />
-        <span>Ulangi Gambar</span>
-      </button>
-    </div>
   </div>
 </template>
 

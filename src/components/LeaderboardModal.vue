@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { supabase } from '../lib/supabaseClient';
-import { Trophy, Medal, Zap, Award } from '@lucide/vue';
+import { Trophy, Award } from '@lucide/vue';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
+import { kanjiN5Data } from '../data/kanji';
 import { useQuizStore } from '../stores/quizStore';
 import { useAuthStore } from '../stores/authStore';
 
@@ -12,9 +13,7 @@ const props = defineProps<{
   isOpen: boolean;
 }>();
 
-const emit = defineEmits<{
-  (e: 'close'): void;
-}>();
+const emit = defineEmits(['close']);
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -26,7 +25,7 @@ const masteryList = ref<any[]>([]);
 const loading = ref(false);
 const errorMsg = ref<string | null>(null);
 
-const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length;
+const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length + kanjiN5Data.length;
 
 const formatUsername = (name: string | null | undefined): string => {
   if (!name) return 'Pemain';
@@ -104,8 +103,8 @@ const fetchMastery = async () => {
     });
 
     // Calculate current local user mastery
-    const localMasteredCount = [...hiraganaData, ...katakanaData, ...wordsData].filter(
-      item => (quizStore.userStreaks[item.character] || 0) >= 3
+    const localMasteredCount = [...hiraganaData, ...katakanaData, ...wordsData, ...kanjiN5Data].filter(
+      item => quizStore.getMasteryStreak(item.character) >= 3
     ).length;
     const localPct = Math.min(100, Math.round((localMasteredCount / TOTAL_CHARACTERS) * 100));
 

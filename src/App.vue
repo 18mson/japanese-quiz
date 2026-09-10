@@ -135,7 +135,7 @@ const goToHome = () => {
 <template>
   <div class="h-full w-screen bg-slate-50 dark:bg-slate-950 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
     <!-- Top Global App Bar (Hidden when Battleground is active) -->
-    <header v-if="!showBattleground" class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <header v-if="!showBattleground" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
           <span class="text-xl">🇯🇵</span>
@@ -157,6 +157,47 @@ const goToHome = () => {
           <BookMarked class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
           <span class="hidden sm:inline">Furoku</span>
         </button>
+      </div>
+
+      <!-- Desktop Quiz Progress Bar (Centering perfectly via absolute positioning) -->
+      <div 
+        v-if="quizStarted && !quizStore.quizCompleted" 
+        class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 lg:gap-4 px-3.5 py-1 bg-slate-50 dark:bg-slate-800/90 rounded-xl border border-gray-200/80 dark:border-slate-700/60 shadow-2xs animate-fadeIn z-10"
+      >
+        <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
+          <span>Soal {{ quizStore.currentQuestionIndex + 1 }}</span>
+          <span class="text-slate-400 dark:text-slate-500 font-normal">
+            ({{ Math.min(quizStore.initialQuestionCount, quizStore.userAnswers.length) }}/{{ quizStore.initialQuestionCount }})
+          </span>
+          <span v-if="quizStore.isMistakeRound" class="text-rose-600 dark:text-rose-400 font-bold text-[11px] bg-rose-50 dark:bg-rose-950/50 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-800/60">
+            🎯 Babak Perbaikan
+          </span>
+        </div>
+
+        <!-- Progress Bar Line -->
+        <div class="w-24 sm:w-32 lg:w-48 h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+          <div 
+            class="h-full bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 ease-in-out rounded-full" 
+            :style="{ width: `${quizStore.progress}%` }"
+          ></div>
+        </div>
+
+        <!-- Score Counter -->
+        <div class="flex items-center gap-1 text-xs font-extrabold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+          <span>Score:</span>
+          <span>{{ quizStore.score }}</span>
+        </div>
+      </div>
+
+      <!-- Subtle Bottom Progress Indicator Line on Desktop -->
+      <div 
+        v-if="quizStarted && !quizStore.quizCompleted" 
+        class="hidden md:block absolute bottom-0 left-0 right-0 h-0.5 bg-transparent overflow-hidden pointer-events-none"
+      >
+        <div 
+          class="h-full bg-indigo-600 dark:bg-indigo-400 transition-all duration-300 ease-in-out" 
+          :style="{ width: `${quizStore.progress}%` }"
+        ></div>
       </div>
 
       <div class="flex items-center gap-2">
@@ -613,10 +654,22 @@ const goToHome = () => {
       @open-battleground="openBattleground"
       @open-furoku="showReferenceModal = true"
     />
-    <div v-else class="max-w-2xl w-full mx-auto p-2 sm:p-4 flex flex-col min-h-full overflow-y-auto relative pb-48 sm:pb-24">
+    <div 
+      v-else 
+      class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'"
+    >
       <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
       
-      <main class="bg-white dark:bg-slate-900 rounded-2xl shadow-md p-3 sm:p-6 flex flex-col items-center justify-center w-full border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 flex-shrink-0 min-h-[180px] sm:min-h-[300px]" v-if="!quizStore.quizCompleted">
+      <main 
+        class="w-full flex flex-col items-center justify-center flex-shrink-0 md:my-auto transition-all duration-300"
+        :class="[
+          quizStore.selectedMode === 'writing'
+            ? 'bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
+            : 'bg-white dark:bg-slate-900 rounded-2xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]'
+        ]"
+        v-if="!quizStore.quizCompleted"
+      >
         <div v-if="quizStore.isLoading" class="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-slate-400">
           <div class="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-3"></div>
           <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>

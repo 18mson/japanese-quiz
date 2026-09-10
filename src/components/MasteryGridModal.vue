@@ -4,6 +4,7 @@ import { useQuizStore } from '../stores/quizStore';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
+import { kanjiN5Data } from '../data/kanji';
 import MasteryCard from './mastery/MasteryCard.vue';
 import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
@@ -25,7 +26,7 @@ const emit = defineEmits(['close', 'startWeakQuiz']);
 const quizStore = useQuizStore();
 
 // Filter States
-const activeCategory = ref<'hiragana' | 'katakana' | 'words'>('hiragana');
+const activeCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>('hiragana');
 const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
 const searchQuery = ref<string>('');
@@ -91,21 +92,56 @@ const matchesQuery = (item: any, q: string, qHira: string, qKata: string, qRom: 
     return true;
   }
 
+  // 6. Onyomi & Kunyomi match (for Kanji)
+  if (Array.isArray(item.onyomi)) {
+    if (item.onyomi.some((o: string) => o.toLowerCase().includes(q) || (qKata && o.includes(qKata)) || (qHira && toHiragana(o).includes(qHira)))) {
+      return true;
+    }
+  }
+  if (Array.isArray(item.kunyomi)) {
+    if (item.kunyomi.some((k: string) => k.toLowerCase().includes(q) || (qHira && k.includes(qHira)))) {
+      return true;
+    }
+  }
+  if (Array.isArray(item.examples)) {
+    if (item.examples.some((ex: string) => ex.toLowerCase().includes(q) || (qHira && ex.includes(qHira)))) {
+      return true;
+    }
+  }
+
   return false;
 };
 
 const currentGroupItems = computed(() => {
-  let pool: any[] = activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
+  let pool: any[] = activeCategory.value === 'hiragana' 
+    ? hiraganaData 
+    : activeCategory.value === 'katakana' 
+    ? katakanaData 
+    : activeCategory.value === 'kanji'
+    ? kanjiN5Data
+    : wordsData;
 
   if (activeSubtype.value !== 'all') {
-    pool = activeCategory.value === 'words' ? pool.filter(w => w.lesson === activeSubtype.value) : pool.filter(c => c.type === activeSubtype.value);
+    if (activeCategory.value === 'words') {
+      pool = pool.filter(w => w.lesson === activeSubtype.value);
+    } else if (activeCategory.value === 'kanji') {
+      pool = pool.filter(k => k.group === activeSubtype.value);
+    } else {
+      pool = pool.filter(c => c.type === activeSubtype.value);
+    }
   }
 
   return pool;
 });
 
 const allCategoryItems = computed(() => {
-  return activeCategory.value === 'hiragana' ? hiraganaData : activeCategory.value === 'katakana' ? katakanaData : wordsData;
+  return activeCategory.value === 'hiragana' 
+    ? hiraganaData 
+    : activeCategory.value === 'katakana' 
+    ? katakanaData 
+    : activeCategory.value === 'kanji'
+    ? kanjiN5Data
+    : wordsData;
 });
 
 const totalCategoryMatches = computed(() => {
@@ -247,6 +283,8 @@ const nextPreviewItem = () => {
               'grid gap-2 sm:gap-3',
               activeCategory === 'words' 
                 ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
+                : activeCategory === 'kanji'
+                ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'
                 : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10'
             ]"
           >
@@ -299,7 +337,7 @@ const nextPreviewItem = () => {
         <!-- Notice Banner for 0% Belum but incomplete mastery -->
         <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-xs text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
           <Sparkles class="w-4 h-4 text-indigo-500 shrink-0" />
-          <span>{{ activeCategory === 'words' ? 'Semua kanji & kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.' }}</span>
+          <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : (activeCategory === 'kanji' ? 'Semua kanji di kelompok ini sudah dipelajari — terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
         </div>
 
         <!-- Footer -->

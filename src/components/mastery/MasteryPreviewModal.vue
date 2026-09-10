@@ -17,7 +17,7 @@ const props = defineProps<{
   item: any;
   currentIndex: number;
   totalItems: number;
-  category: 'hiragana' | 'katakana' | 'words';
+  category: 'hiragana' | 'katakana' | 'words' | 'kanji';
 }>();
 
 const emit = defineEmits(['close', 'prev', 'next']);
@@ -27,6 +27,9 @@ const viewMode = ref<'stroke' | 'text'>('stroke');
 
 const textToSpeak = computed(() => {
   if (!props.item) return '';
+  if (props.category === 'kanji') {
+    return props.item.kunyomi?.[0] || props.item.onyomi?.[0] || props.item.character || '';
+  }
   return props.item.kana || props.item.character || '';
 });
 
@@ -145,20 +148,55 @@ onUnmounted(() => {
           {{ item.kana }}
         </div>
 
-        <!-- Romaji & Audio Speaker -->
-        <div class="flex items-center justify-center gap-2.5 my-1 flex-wrap">
+        <!-- Romaji & Audio Speaker (For Kana & Words) -->
+        <div v-if="category !== 'kanji'" class="flex items-center justify-center gap-2.5 my-1 flex-wrap">
           <span class="text-sm sm:text-base font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">
             {{ Array.isArray(item.romaji) ? item.romaji.join(' / ') : item.romaji }}
           </span>
           <SpeakerButton :text="textToSpeak" size="md" />
         </div>
 
+        <!-- Kanji Pronunciation Readings (Onyomi / Kunyomi) -->
+        <div v-if="category === 'kanji'" class="w-full flex flex-col gap-1.5 my-1">
+          <div class="flex items-center justify-center gap-2 mb-0.5">
+            <span class="text-xs font-bold text-gray-500 dark:text-slate-400">Dengarkan Pengucapan:</span>
+            <SpeakerButton :text="textToSpeak" size="sm" />
+          </div>
+
+          <div v-if="item.kunyomi?.length" class="flex items-center justify-between px-3 py-1.5 bg-amber-50 dark:bg-amber-950/40 rounded-xl border border-amber-200/80 dark:border-amber-800/50 text-xs">
+            <span class="font-bold text-amber-700 dark:text-amber-400">Kunyomi (Kun):</span>
+            <span class="font-black font-jp text-amber-900 dark:text-amber-200 tracking-wide text-sm">{{ item.kunyomi.join('、') }}</span>
+          </div>
+
+          <div v-if="item.onyomi?.length" class="flex items-center justify-between px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 rounded-xl border border-blue-200/80 dark:border-blue-800/50 text-xs">
+            <span class="font-bold text-blue-700 dark:text-blue-400">Onyomi (On):</span>
+            <span class="font-black font-jp text-blue-900 dark:text-blue-200 tracking-wide text-sm">{{ item.onyomi.join('、') }}</span>
+          </div>
+        </div>
+
         <!-- Indonesian Meaning for Vocabulary / Kanji -->
-        <div v-if="item.meaning" class="mt-3 w-full px-4 py-2.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-center shadow-xs">
-          <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-700 dark:text-emerald-400 block mb-0.5">Arti:</span>
+        <div v-if="item.meaning" class="mt-2 w-full px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-center shadow-xs">
+          <span class="text-[10px] uppercase tracking-wider font-bold text-emerald-700 dark:text-emerald-400 block mb-0.5">Arti:</span>
           <p class="text-sm sm:text-base text-emerald-900 dark:text-emerald-200 font-bold italic">
             "{{ item.meaning }}"
           </p>
+        </div>
+
+        <!-- Examples (Contoh Kotoba Terkait untuk Kanji) -->
+        <div v-if="category === 'kanji' && item.examples?.length" class="mt-2.5 w-full bg-white dark:bg-slate-900/70 p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-left">
+          <span class="text-[10px] uppercase font-black text-indigo-600 dark:text-indigo-400 flex items-center gap-1 mb-1.5">
+            <Sparkles class="w-3 h-3" />
+            <span>Contoh Kosakata Terkait:</span>
+          </span>
+          <div class="flex flex-wrap gap-1.5">
+            <span 
+              v-for="ex in item.examples" 
+              :key="ex"
+              class="px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-slate-800 border border-gray-200/80 dark:border-slate-700 text-xs font-bold text-gray-800 dark:text-slate-200 font-jp"
+            >
+              {{ ex }}
+            </span>
+          </div>
         </div>
 
         <!-- Mastery Status Badge & Details -->

@@ -614,7 +614,7 @@ const emit = defineEmits<{ exit: [] }>();
               </div>
 
               <div v-else class="flex items-center justify-between bg-slate-950/80 px-3 py-2 rounded-xl border border-amber-500/20">
-                <div class="text-base font-black text-white font-jp">あ / ア (Mix)</div>
+                <div class="text-base font-black text-white font-jp">あ / ア (Mix Kana)</div>
                 <div class="text-xs font-bold text-emerald-400">➔ Campuran Hiragana & Katakana</div>
               </div>
             </div>

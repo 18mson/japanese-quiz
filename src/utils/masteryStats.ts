@@ -18,7 +18,8 @@ export const getMasteryTierFromStreak = (streak: number): MasteryTier => {
 
 export const computeCategoryMasteryStats = (
   dataset: any[],
-  userStreaks: Record<string, number>
+  userStreaks: Record<string, number>,
+  customStreakResolver?: (character: string) => number
 ): MasteryCategoryStats => {
   const total = dataset.length;
   let mastered = 0;
@@ -27,7 +28,7 @@ export const computeCategoryMasteryStats = (
   let newItems = 0;
 
   dataset.forEach(item => {
-    const streak = userStreaks[item.character] || 0;
+    const streak = customStreakResolver ? customStreakResolver(item.character) : (userStreaks[item.character] || 0);
     const tier = getMasteryTierFromStreak(streak);
     if (tier === 'crown') { crown++; mastered++; }
     else if (tier === 'mastered') { mastered++; }
