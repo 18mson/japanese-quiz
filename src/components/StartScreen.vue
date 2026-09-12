@@ -136,6 +136,53 @@ watch(kanjiPageSize, (newSize) => {
   }
 });
 
+// Hitungan Wave Pagination State (2 on mobile, 3 on desktop)
+const hitunganWaveStartIndex = ref(0);
+const hitunganWavePageSize = computed(() => {
+  if (isMobile.value) return 2;
+  return 3;
+});
+
+const visibleHitunganWaves = computed(() => {
+  return filteredHitunganWaves.value.slice(
+    hitunganWaveStartIndex.value,
+    hitunganWaveStartIndex.value + hitunganWavePageSize.value
+  );
+});
+
+const canPrevHitunganWaves = computed(() => hitunganWaveStartIndex.value > 0);
+const canNextHitunganWaves = computed(() => {
+  return hitunganWaveStartIndex.value + hitunganWavePageSize.value < filteredHitunganWaves.value.length;
+});
+
+const prevHitunganWaves = () => {
+  hitunganWaveStartIndex.value = Math.max(0, hitunganWaveStartIndex.value - hitunganWavePageSize.value);
+};
+
+const nextHitunganWaves = () => {
+  if (canNextHitunganWaves.value) {
+    hitunganWaveStartIndex.value = Math.min(
+      filteredHitunganWaves.value.length - hitunganWavePageSize.value,
+      hitunganWaveStartIndex.value + hitunganWavePageSize.value
+    );
+  }
+};
+
+watch(selectedHitunganWaveKey, (newVal) => {
+  const idx = filteredHitunganWaves.value.findIndex(w => w.wave_key === newVal);
+  if (idx !== -1) {
+    if (idx < hitunganWaveStartIndex.value || idx >= hitunganWaveStartIndex.value + hitunganWavePageSize.value) {
+      hitunganWaveStartIndex.value = Math.floor(idx / hitunganWavePageSize.value) * hitunganWavePageSize.value;
+    }
+  }
+});
+
+watch(hitunganWavePageSize, (newSize) => {
+  if (hitunganWaveStartIndex.value + newSize > filteredHitunganWaves.value.length) {
+    hitunganWaveStartIndex.value = Math.max(0, filteredHitunganWaves.value.length - newSize);
+  }
+});
+
 const kanaCategoryOptions = [
   { key: 'all', label: 'Semua', badge: '✨', desc: 'Semua variasi huruf' },
   { key: 'basic', label: 'Dasar', badge: 'あ', desc: '46 huruf dasar (seion)' },
@@ -264,6 +311,7 @@ watch(characterTypes, (newVal) => {
     quizStore.loadRenshuuProgress();
   } else if (['angka', 'counter', 'campuran'].includes(newVal)) {
     selectedHitunganTab.value = newVal as any;
+    hitunganWaveStartIndex.value = 0;
     if (newVal === 'angka' && !filteredHitunganWaves.value.some(w => w.wave_key === selectedHitunganWaveKey.value)) {
       selectedHitunganWaveKey.value = 'basic_1_10';
     } else if (newVal === 'counter' && !filteredHitunganWaves.value.some(w => w.wave_key === selectedHitunganWaveKey.value)) {
@@ -1032,80 +1080,70 @@ const handleStart = async () => {
               key="hitungan-banner"
               class="bg-gradient-to-r from-amber-50/80 via-orange-50/60 to-rose-50/80 dark:from-amber-950/50 dark:via-orange-950/30 dark:to-rose-950/50 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn"
             >
-              <!-- Top Row: Category Tabs + Pattern Modal Trigger -->
-              <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
-                <div class="flex items-center gap-1 bg-white/80 dark:bg-slate-900/80 p-1 rounded-xl border border-amber-200/80 dark:border-amber-800/80">
+              <!-- Wave Chips Selector with Prev/Next Navigation + Pattern Modal Trigger -->
+              <div class="flex items-center gap-1 sm:gap-1.5 w-full">
+                <!-- Prev Button -->
+                <button
+                  v-if="filteredHitunganWaves.length > hitunganWavePageSize"
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); prevHitunganWaves();"
+                  :disabled="!canPrevHitunganWaves"
+                  class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-amber-800/80 bg-white/80 dark:bg-slate-800/80 text-amber-900 dark:text-amber-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-amber-900/40 transition cursor-pointer shrink-0 shadow-2xs"
+                  title="Level Sebelumnya"
+                >
+                  <ChevronLeft class="w-3.5 h-3.5" />
+                </button>
+
+                <!-- Paginated Visible Waves -->
+                <div class="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
                   <button
+                    v-for="wave in visibleHitunganWaves"
+                    :key="wave.wave_key"
                     type="button"
-                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'angka'; selectedHitunganWaveKey = 'basic_1_10';"
+                    @click.stop="deactivateKeyboardNav(); selectedHitunganWaveKey = wave.wave_key;"
                     :class="[
-                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
-                      selectedHitunganTab === 'angka'
-                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                      'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
+                      selectedHitunganWaveKey === wave.wave_key
+                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
+                        : 'bg-white/85 dark:bg-slate-800/85 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700'
                     ]"
                   >
-                    🔢 Angka
-                  </button>
-                  <button
-                    type="button"
-                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'counter'; selectedHitunganWaveKey = 'counter_hon';"
-                    :class="[
-                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
-                      selectedHitunganTab === 'counter'
-                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                    ]"
-                  >
-                    🏷️ Counter
-                  </button>
-                  <button
-                    type="button"
-                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'campuran'; selectedHitunganWaveKey = 'mixed_review';"
-                    :class="[
-                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
-                      selectedHitunganTab === 'campuran'
-                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
-                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                    ]"
-                  >
-                    ✨ Campuran
+                    <span class="truncate font-semibold text-[11px] sm:text-xs">
+                      {{ wave.shortTitle }}
+                    </span>
+                    <!-- Checkmark if tutorial already seen -->
+                    <CheckCircle2 
+                      v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen" 
+                      class="w-3.5 h-3.5 shrink-0" 
+                      :class="selectedHitunganWaveKey === wave.wave_key ? 'text-slate-950' : 'text-emerald-500'" 
+                    />
                   </button>
                 </div>
+
+                <!-- Next Button -->
+                <button
+                  v-if="filteredHitunganWaves.length > hitunganWavePageSize"
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); nextHitunganWaves();"
+                  :disabled="!canNextHitunganWaves"
+                  class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-amber-800/80 bg-white/80 dark:bg-slate-800/80 text-amber-900 dark:text-amber-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-amber-900/40 transition cursor-pointer shrink-0 shadow-2xs"
+                  title="Level Berikutnya"
+                >
+                  <ChevronRight class="w-3.5 h-3.5" />
+                </button>
+
+                <div class="w-px h-6 bg-amber-200 dark:bg-amber-800/60 shrink-0 mx-0.5"></div>
 
                 <!-- Preview Pattern Button -->
                 <button
                   type="button"
                   @click.stop="openHitunganTutorial(currentHitunganWave)"
-                  class="px-2.5 py-1.5 rounded-xl bg-white/90 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-amber-900/40 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
+                  class="py-2 px-2.5 sm:px-3 rounded-xl bg-white/90 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-amber-900/40 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
                   title="Buka Penjelasan Pola & Pengecualian"
                 >
                   <BookOpen class="w-3.5 h-3.5 text-amber-500" />
-                  <span>Lihat Pola</span>
-                </button>
-              </div>
-
-              <!-- Middle Row: Wave Chips Selector -->
-              <div class="flex items-center gap-1.5 overflow-x-auto py-1 pr-1 scrollbar-thin">
-                <button
-                  v-for="wave in filteredHitunganWaves"
-                  :key="wave.wave_key"
-                  type="button"
-                  @click.stop="deactivateKeyboardNav(); selectedHitunganWaveKey = wave.wave_key;"
-                  :class="[
-                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1.5 shadow-2xs',
-                    selectedHitunganWaveKey === wave.wave_key
-                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
-                      : 'bg-white/85 dark:bg-slate-800/85 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700'
-                  ]"
-                >
-                  <span>{{ wave.shortTitle }}</span>
-                  <!-- Checkmark if tutorial already seen -->
-                  <CheckCircle2 
-                    v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen" 
-                    class="w-3.5 h-3.5" 
-                    :class="selectedHitunganWaveKey === wave.wave_key ? 'text-slate-950' : 'text-emerald-500'" 
-                  />
+                  <span class="whitespace-nowrap hidden sm:inline">Lihat Pola</span>
+                  <span class="whitespace-nowrap sm:hidden">Pola</span>
                 </button>
               </div>
 
@@ -1126,7 +1164,7 @@ const handleStart = async () => {
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                     ]"
                   >
-                    🔢 Angka ➔ かな
+                   Angka ➔ かな
                   </button>
                   <button
                     type="button"
@@ -1138,7 +1176,7 @@ const handleStart = async () => {
                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                     ]"
                   >
-                    かな ➔ 🔢 Angka
+                    かな ➔ Angka
                   </button>
                 </div>
               </div>

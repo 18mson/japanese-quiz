@@ -161,7 +161,7 @@ onUnmounted(() => {
           @click="emit('start')"
           class="flex-1 px-5 py-2.5 rounded-xl font-black text-xs sm:text-sm bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 transition cursor-pointer active:scale-[0.98]"
         >
-          <span>Mulai Latihan →</span>
+          <span>Mulai Latihan</span>
           <ArrowRight class="w-4 h-4" />
         </button>
       </div>
