@@ -144,9 +144,9 @@ onUnmounted(() => {
                     <div class="w-8 h-8 rounded-xl bg-indigo-500 text-white flex items-center justify-center">
                       <Layers class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">1. Multiple Choice</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">1. Pilihan Ganda</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 rounded-md">Basic</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 rounded-md">Dasar</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Latihan pilihan ganda cepat untuk pengenalan visual karakter <strong>Hiragana</strong> dan <strong>Katakana</strong> dasar.
@@ -166,7 +166,7 @@ onUnmounted(() => {
                     <div class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center">
                       <Keyboard class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">2. Keyboard Typing</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">2. Ketik Kana</span>
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 rounded-md">Kana & Kanji</span>
                 </div>
@@ -188,7 +188,7 @@ onUnmounted(() => {
                     <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center">
                       <BookOpen class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">3. Sentence Typing</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">3. Kotoba & Pola</span>
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 rounded-md">Kalimat N5</span>
                 </div>
@@ -210,7 +210,7 @@ onUnmounted(() => {
                     <div class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center">
                       <Swords class="w-4 h-4" />
                     </div>
-                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">4. Online Battleground</span>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">4. Duel Online</span>
                   </div>
                   <span class="px-2 py-0.5 text-[10px] font-bold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 rounded-md">2–8 Players</span>
                 </div>

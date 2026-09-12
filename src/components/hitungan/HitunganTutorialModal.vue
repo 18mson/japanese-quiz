@@ -41,11 +41,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div 
-    v-if="isOpen && wave"
-    class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn"
-    @click.self="emit('close')"
-  >
+  <Teleport to="body">
+    <div 
+      v-if="isOpen && wave"
+      class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn"
+      @click.self="emit('close')"
+    >
     <div 
       class="w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl p-5 sm:p-6 text-left shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden text-slate-100"
     >
@@ -167,4 +168,5 @@ onUnmounted(() => {
       </div>
     </div>
   </div>
+</Teleport>
 </template>

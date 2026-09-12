@@ -4,6 +4,7 @@ import { useHitunganQuiz } from '../../composables/useHitunganQuiz';
 import { HITUNGAN_WAVES, type HitunganWaveDef } from '../../data/hitunganWaves';
 import HitunganTutorialModal from './HitunganTutorialModal.vue';
 import NumberKeypad from './NumberKeypad.vue';
+import VirtualKeyboard from '../VirtualKeyboard.vue';
 import SpeakerButton from '../SpeakerButton.vue';
 import * as wanakana from 'wanakana';
 import { 
@@ -51,23 +52,53 @@ const {
   handleProceed,
 } = useHitunganQuiz(props.initialWave, props.initialDirection, props.unlockedWaveKeys || []);
 
-// Auto focus text input on number_to_kana
+// Auto focus text input on number_to_kana (only on desktop to prevent mobile keyboard popups)
 const focusTextInput = () => {
   nextTick(() => {
     if (direction.value === 'number_to_kana' && inputRef.value && !isAnswerChecked.value) {
-      inputRef.value.focus();
+      if (typeof window !== 'undefined' && window.innerWidth >= 640) {
+        inputRef.value.focus();
+      }
     }
   });
 };
 
+// Handle physical keyboard input with IMEMode to correctly process 'n' vs 'na', 'ni', etc.
 const handleTextInput = (e: Event) => {
   const target = e.target as HTMLInputElement;
-  userInput.value = target.value;
+  userInput.value = wanakana.toHiragana(target.value.toLowerCase(), { IMEMode: true });
+  target.value = userInput.value;
 };
 
-const handleRomajiConversion = () => {
-  if (userInput.value) {
-    userInput.value = wanakana.toHiragana(userInput.value);
+// Handle mobile VirtualKeyboard input with IMEMode
+const handleVirtualKey = (char: string) => {
+  if (isAnswerChecked.value) return;
+  userInput.value = wanakana.toHiragana(userInput.value + char.toLowerCase(), { IMEMode: true });
+  if (inputRef.value) {
+    inputRef.value.value = userInput.value;
+  }
+};
+
+const handleVirtualBackspace = () => {
+  if (isAnswerChecked.value) return;
+  if (userInput.value.length > 0) {
+    userInput.value = userInput.value.slice(0, -1);
+    if (inputRef.value) {
+      inputRef.value.value = userInput.value;
+    }
+  }
+};
+
+const handleVirtualEnter = () => {
+  if (isAnswerChecked.value) return;
+  handleFormSubmit();
+};
+
+const handleClearInput = () => {
+  if (isAnswerChecked.value) return;
+  userInput.value = '';
+  if (inputRef.value) {
+    inputRef.value.value = '';
   }
 };
 
@@ -76,7 +107,13 @@ const handleFormSubmit = () => {
     handleProceed();
     focusTextInput();
   } else {
-    handleRomajiConversion();
+    // Finalize kana conversion on submit (e.g. resolve trailing 'n' to 'ん')
+    if (userInput.value) {
+      userInput.value = wanakana.toHiragana(userInput.value.trim().toLowerCase());
+      if (inputRef.value) {
+        inputRef.value.value = userInput.value;
+      }
+    }
     submitAnswer(userInput.value);
   }
 };
@@ -136,7 +173,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto flex flex-col items-center justify-between text-slate-800 dark:text-slate-100 animate-fadeIn min-h-[460px] pb-6 select-none">
+  <div 
+    class="w-full max-w-2xl mx-auto flex flex-col items-center justify-between text-slate-800 dark:text-slate-100 animate-fadeIn min-h-[460px] select-none transition-all"
+    :class="direction === 'number_to_kana' && !isAnswerChecked && !isQuizFinished ? 'pb-60 sm:pb-6' : 'pb-6'"
+  >
     <!-- Tutorial Modal (Opened anytime via "Lihat Pola") -->
     <HitunganTutorialModal 
       :is-open="isTutorialOpen" 
@@ -240,9 +280,13 @@ onUnmounted(() => {
             <input 
               ref="inputRef"
               type="text"
+              inputmode="none"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
               :value="userInput"
               @input="handleTextInput"
-              @keyup="handleRomajiConversion"
               :disabled="isAnswerChecked"
               placeholder="Ketik romaji (contoh: yon, juu, hyaku)..."
               class="w-full px-4 py-3.5 text-center text-lg sm:text-xl font-bold bg-white dark:bg-slate-900 border-2 rounded-2xl transition-all focus:outline-none shadow-sm placeholder:text-slate-400 font-jp"
@@ -253,16 +297,27 @@ onUnmounted(() => {
                     : 'border-rose-500 text-rose-500 bg-rose-50/20 dark:bg-rose-950/20'
                   : 'border-slate-300 dark:border-slate-700 focus:border-amber-500 dark:focus:border-amber-400'
               ]"
-              autofocus
             />
+
+            <!-- Clear button -->
+            <button
+              v-if="userInput && !isAnswerChecked"
+              type="button"
+              @click="handleClearInput"
+              class="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition rounded-lg cursor-pointer"
+              title="Hapus input"
+            >
+              <RotateCcw class="w-4 h-4" />
+            </button>
           </div>
 
+          <!-- Desktop Submit button (hidden on mobile, handled by VirtualKeyboard on mobile) -->
           <button 
             v-if="!isAnswerChecked"
             type="button"
             @click="handleFormSubmit"
             :disabled="!userInput.trim()"
-            class="w-full py-3 px-6 rounded-xl font-black text-sm bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 disabled:opacity-50 text-slate-950 shadow-md transition cursor-pointer active:scale-[0.99] flex items-center justify-center gap-2"
+            class="hidden sm:flex w-full py-3 px-6 rounded-xl font-black text-sm bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 disabled:opacity-50 text-slate-950 shadow-md transition cursor-pointer active:scale-[0.99] items-center justify-center gap-2"
           >
             <span>Kirim Jawaban (Enter)</span>
             <ArrowRight class="w-4 h-4" />
@@ -383,6 +438,36 @@ onUnmounted(() => {
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Mobile Virtual Keyboard for number_to_kana mode -->
+  <div 
+    v-if="direction === 'number_to_kana' && !isAnswerChecked && !isQuizFinished" 
+    class="block sm:hidden fixed bottom-0 left-0 right-0 z-40"
+  >
+    <VirtualKeyboard
+      theme="auto"
+      enter-label="SUBMIT"
+      :disabled="isAnswerChecked"
+      @key="handleVirtualKey"
+      @backspace="handleVirtualBackspace"
+      @enter="handleVirtualEnter"
+    >
+      <template #top>
+        <button
+          type="button"
+          class="px-3 py-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold rounded-lg text-xs transition border border-slate-300 dark:border-slate-700 flex items-center gap-1 cursor-pointer"
+          @click="handleClearInput"
+        >
+          <span>Hapus</span>
+          <RotateCcw class="w-3 h-3" />
+        </button>
+
+        <span class="text-[11px] font-medium text-slate-400 dark:text-slate-400">
+          Ketik romaji ➔ otomatis jadi kana
+        </span>
+      </template>
+    </VirtualKeyboard>
   </div>
 </template>
 

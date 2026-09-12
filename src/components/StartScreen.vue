@@ -348,8 +348,8 @@ interface QuizModeDef {
 const modesList: QuizModeDef[] = [
   {
     id: 'multiple_choice',
-    title: 'Multiple Choice',
-    levelTag: 'Basic',
+    title: 'Pilihan Ganda',
+    levelTag: 'Dasar',
     level: 'basic',
     defaultType: 'hiragana',
     desc: 'Latihan pilihan ganda huruf Kana (Hiragana, Katakana, Mix Kana) secara cepat & interaktif.',
@@ -365,8 +365,8 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'keyboard_typing',
-    title: 'Keyboard Typing',
-    levelTag: 'Kana Typing',
+    title: 'Ketik Kana',
+    levelTag: 'Mengetik',
     level: 'n5',
     defaultType: 'hiragana',
     desc: 'Ketik huruf Kana (Hiragana, Katakana, Mix Kana) dengan keyboard presisi.',
@@ -382,8 +382,8 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'writing',
-    title: 'Handwriting',
-    levelTag: 'Handwriting',
+    title: 'Tulis Huruf',
+    levelTag: 'Goresan',
     level: 'basic',
     defaultType: 'hiragana',
     desc: 'Latihan menggambar langsung huruf Kana dan Kanji N5 dengan urutan goresan di layar.',
@@ -400,8 +400,8 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'sentence_typing',
-    title: 'Kotoba, Renshuu & Kaiwa',
-    levelTag: 'N5 Intermediate',
+    title: 'Kotoba & Pola',
+    levelTag: 'N5 Menengah',
     level: 'n5',
     defaultType: 'words',
     desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
@@ -418,7 +418,7 @@ const modesList: QuizModeDef[] = [
   {
     id: 'hitungan',
     title: 'Hitungan (数字)',
-    levelTag: 'Numbers & Counters',
+    levelTag: 'Angka & Counter',
     level: 'basic',
     defaultType: 'angka',
     desc: 'Latihan angka dan kata bantu hitung (counter) bahasa Jepang dengan sistem wave bertahap dan mode bolak-balik.',
@@ -434,8 +434,8 @@ const modesList: QuizModeDef[] = [
   },
   {
     id: 'battleground',
-    title: 'Online Multiplayer',
-    levelTag: 'Online',
+    title: 'Duel Online',
+    levelTag: 'Multiplayer',
     level: 'battleground',
     defaultType: 'battleground',
     desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Battleground atau Quiz Blitz.',
@@ -826,101 +826,17 @@ const handleStart = async () => {
         <!-- Bottom Info inside mode box -->
         <div class="w-full pt-3.5 mt-2 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-3 relative z-20 min-h-[58px] justify-center">
           <Transition name="fade-slide-up" mode="out-in">
-            <!-- Quiz Blitz Info & Category Selector Banner -->
-            <div v-if="selectedLevel === 'battleground' && characterTypes === 'quiz_blitz'" key="quiz-blitz-banner" class="bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/60 dark:via-orange-950/40 dark:to-rose-950/60 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full">
-              <div class="flex items-center justify-between gap-2">
-                <div class="flex items-center gap-2.5 min-w-0">
-                  <div class="w-8 h-8 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-black flex-shrink-0 shadow-sm text-sm">
-                    🔥
-                  </div>
-                  <div>
-                    <div class="text-xs sm:text-sm font-black text-gray-900 dark:text-slate-100">Kategori Soal Quiz Blitz</div>
-                    <div class="text-[11px] text-gray-600 dark:text-slate-300 font-medium">10s/soal • Skor kecepatan adu refleks (Max 200 pts) • 5 Menit</div>
-                  </div>
+            <!-- Quiz Blitz Info Banner -->
+            <div v-if="selectedLevel === 'battleground' && characterTypes === 'quiz_blitz'" key="quiz-blitz-banner" class="bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/60 dark:via-orange-950/40 dark:to-rose-950/60 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex items-center justify-between gap-3 w-full">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500 text-slate-950 flex items-center justify-center font-bold flex-shrink-0 shadow-sm text-sm">
+                  🔥
                 </div>
-              </div>
-
-              <!-- Inline Quick Category Selector -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-1">
-                <button
-                  type="button"
-                  @click="selectedQuizBlitzCategory = 'hiragana'"
-                  :class="[
-                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
-                    selectedQuizBlitzCategory === 'hiragana'
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
-                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
-                  ]"
-                >
-                  <span class="font-jp">あ</span> Hiragana
-                </button>
-                <button
-                  type="button"
-                  @click="selectedQuizBlitzCategory = 'katakana'"
-                  :class="[
-                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
-                    selectedQuizBlitzCategory === 'katakana'
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
-                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
-                  ]"
-                >
-                  <span class="font-jp">ア</span> Katakana
-                </button>
-                <button
-                  type="button"
-                  @click="selectedQuizBlitzCategory = 'mix'"
-                  :class="[
-                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
-                    selectedQuizBlitzCategory === 'mix'
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
-                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
-                  ]"
-                >
-                  <span class="font-jp">あ/ア</span> Mix Kana
-                </button>
-                <button
-                  type="button"
-                  @click="selectedQuizBlitzCategory = 'kotoba_kanji'"
-                  :class="[
-                    'px-2 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border',
-                    selectedQuizBlitzCategory === 'kotoba_kanji'
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-sm'
-                      : 'bg-white/60 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-700'
-                  ]"
-                >
-                  📖 Kotoba & Kanji
-                </button>
-              </div>
-
-              <!-- Sub-Filter Kana Category for Quiz Blitz (when Hiragana/Katakana/Mix is chosen) -->
-              <div 
-                v-if="['hiragana', 'katakana', 'mix'].includes(selectedQuizBlitzCategory)" 
-                class="flex flex-col gap-1 pt-2 border-t border-amber-300/40 dark:border-amber-800/40 animate-fadeIn"
-              >
-                <div class="flex items-center justify-between">
-                  <span class="text-[10px] font-bold text-amber-900 dark:text-amber-300 uppercase tracking-wider">
-                    Variasi Huruf:
-                  </span>
-                  <span class="text-[10px] text-amber-800 dark:text-amber-400 font-bold">
-                    {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar Saja' : (selectedKanaCategory === 'dakuten' ? 'Dakuten Saja' : 'Kombinasi Saja')) }}
-                  </span>
-                </div>
-                <div class="grid grid-cols-4 gap-1">
-                  <button
-                    v-for="cat in kanaCategoryOptions"
-                    :key="'blitz_' + cat.key"
-                    type="button"
-                    @click.stop="deactivateKeyboardNav(); selectedKanaCategory = cat.key;"
-                    :class="[
-                      'py-1.5 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
-                      selectedKanaCategory === cat.key
-                        ? 'bg-amber-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
-                        : 'bg-white/70 dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 border-amber-200/50 dark:border-amber-900/50'
-                    ]"
-                  >
-                    <span class="font-jp text-xs">{{ cat.badge }}</span>
-                    <span class="text-[10px] sm:text-[11px] truncate">{{ cat.label }}</span>
-                  </button>
+                <div>
+                  <div class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100">Aturan Quiz Blitz</div>
+                  <div class="text-xs sm:text-sm text-gray-600 dark:text-slate-300 font-medium leading-tight">
+                    10s/soal • Skor kecepatan adu refleks (Max 200 pts) • 5 Menit
+                  </div>
                 </div>
               </div>
             </div>
@@ -1057,7 +973,7 @@ const handleStart = async () => {
                     <span class="truncate font-semibold text-[11px] sm:text-xs">
                       {{ isMobile ? `Pel. ${les.lessonNumber}` : les.lesson }}
                     </span>
-                    <span class="text-[10px] opacity-80 shrink-0">({{ les.count }})</span>
+                    <span class="hidden sm:inline text-[10px] opacity-80 shrink-0">({{ les.count }})</span>
                   </button>
                 </div>
 
