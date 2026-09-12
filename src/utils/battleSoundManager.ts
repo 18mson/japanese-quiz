@@ -387,27 +387,67 @@ export function stopRoundBgm() {
   }
 }
 
-// ── SFX: Roulette Wheel Tick Sound ─────────────────────────────
-export function playRouletteTickSound() {
+// ── SFX: Mode Selection / Dial Wheel Sound (Satisfying Tactile Marimba Pop) ─────
+export function playModeSelectSound(modeIndex: number = 0, _direction: 'up' | 'down' = 'down') {
   if (isMutedState) return;
   try {
     const ctx = getAudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    const now = ctx.currentTime;
 
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(1400, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(350, ctx.currentTime + 0.035);
+    // Japanese Pentatonic / Marimba harmonic frequencies for the modes (C5, D5, E5, G5, A5, C6)
+    const scale = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
+    const baseFreq = scale[Math.abs(modeIndex) % scale.length] || 659.25;
 
-    gain.gain.setValueAtTime(0.18, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.035);
+    // 1. Tactile Sub-Thump (Physical haptic wheel feel)
+    const thumpOsc = ctx.createOscillator();
+    const thumpGain = ctx.createGain();
+    thumpOsc.type = 'sine';
+    thumpOsc.frequency.setValueAtTime(130, now);
+    thumpOsc.frequency.exponentialRampToValueAtTime(45, now + 0.04);
 
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    thumpGain.gain.setValueAtTime(0.14, now);
+    thumpGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.035);
+    thumpOsc.connect(thumpGain);
+    thumpGain.connect(ctx.destination);
+    thumpOsc.start(now);
+    thumpOsc.stop(now + 0.04);
+
+    // 2. Primary Resonant Mallet Strike (Clean sine with quick impact bend)
+    const mainOsc = ctx.createOscillator();
+    const mainGain = ctx.createGain();
+    mainOsc.type = 'sine';
+    mainOsc.frequency.setValueAtTime(baseFreq * 1.15, now);
+    mainOsc.frequency.exponentialRampToValueAtTime(baseFreq, now + 0.015);
+
+    mainGain.gain.setValueAtTime(0.001, now);
+    mainGain.gain.linearRampToValueAtTime(0.22, now + 0.004);
+    mainGain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+
+    mainOsc.connect(mainGain);
+    mainGain.connect(ctx.destination);
+    mainOsc.start(now);
+    mainOsc.stop(now + 0.09);
+
+    // 3. Subtle Glassy Overtone (Adds crispness and character)
+    const overtoneOsc = ctx.createOscillator();
+    const overtoneGain = ctx.createGain();
+    overtoneOsc.type = 'triangle';
+    overtoneOsc.frequency.setValueAtTime(baseFreq * 2.0, now);
+
+    overtoneGain.gain.setValueAtTime(0.001, now);
+    overtoneGain.gain.linearRampToValueAtTime(0.07, now + 0.003);
+    overtoneGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+    overtoneOsc.connect(overtoneGain);
+    overtoneGain.connect(ctx.destination);
+    overtoneOsc.start(now);
+    overtoneOsc.stop(now + 0.05);
   } catch (e) { }
+}
+
+export function playRouletteTickSound(modeIndex: number = 0) {
+  playModeSelectSound(modeIndex);
 }
 
 // ── Lobby BGM (Disabled) ──────────────────────────────────────────────────
