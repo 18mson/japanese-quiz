@@ -18,6 +18,8 @@ import KanaCategoryPanel, { type KanaCategoryType } from './start/panels/KanaCat
 import KanjiLessonPanel from './start/panels/KanjiLessonPanel.vue';
 import HitunganWavePanel from './start/panels/HitunganWavePanel.vue';
 import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
+import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
+import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
 
 const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku']);
 
@@ -262,7 +264,7 @@ watch(characterTypes, (newVal) => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto p-3.5 sm:p-6 pb-36 sm:pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
+  <div class="max-w-4xl xl:max-w-[1460px] 2xl:max-w-[1620px] mx-auto p-3.5 sm:p-6 pb-36 sm:pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
     <!-- Hitungan Tutorial Modal -->
     <HitunganTutorialModal 
       :is-open="isHitunganTutorialOpen" 
@@ -271,71 +273,88 @@ watch(characterTypes, (newVal) => {
       @start="startHitunganPracticeFromTutorial" 
     />
     
-    <!-- SECTION 1: HEADER BAR -->
-    <StartHeaderBar
-      :is-keyboard-nav="isKeyboardNav"
-      :focused-section="focusedSection"
-      :focused-header-target="focusedHeaderTarget"
-      :selected-level="selectedLevel"
-      @open-mastery-grid="emit('openMasteryGrid')"
-      @open-leaderboard="emit('openLeaderboard')"
-      @open-furoku="emit('openFuroku')"
-      @open-reference="isReferenceModalOpen = true"
-      @interact="deactivateKeyboardNav"
-    />
+    <!-- SECTION 1: HEADER BAR (Mobile & Tablet only, hidden on desktop >= xl) -->
+    <div class="w-full max-w-4xl xl:hidden mb-1">
+      <StartHeaderBar
+        :is-keyboard-nav="isKeyboardNav"
+        :focused-section="focusedSection"
+        :focused-header-target="focusedHeaderTarget"
+        :selected-level="selectedLevel"
+        @open-mastery-grid="emit('openMasteryGrid')"
+        @open-leaderboard="emit('openLeaderboard')"
+        @open-furoku="emit('openFuroku')"
+        @open-reference="isReferenceModalOpen = true"
+        @interact="deactivateKeyboardNav"
+      />
+    </div>
 
-    <!-- SECTION 2: DISK WHEEL MODE SELECTION BOX -->
-    <StartWheelSelector
-      :modes="modesList"
-      :active-mode-index="activeModeIndex"
-      :prev-active-mode-index="prevActiveModeIndex"
-      :scroll-direction="scrollDirection"
-      :character-type="characterTypes"
-      :selected-hitungan-tab="selectedHitunganTab"
-      :is-keyboard-nav="isKeyboardNav"
-      :focused-section="focusedSection"
-      @select-mode="selectMode"
-      @select-sub-type="selectSubType"
-      @interact="deactivateKeyboardNav"
-    >
-      <!-- Mode Bottom Configuration Panels -->
-      <Transition name="fade-slide-up" mode="out-in">
-        <!-- Duel Online Info Banner -->
-        <DuelOnlinePanel 
-          v-if="selectedLevel === 'battleground'" 
-          :sub-type="characterTypes" 
-        />
+    <!-- SECTION 2: 3-COLUMN DESKTOP VIEW & CENTERED WHEEL -->
+    <div class="w-full flex justify-center items-start gap-5 2xl:gap-8 mt-1 xl:mt-0">
+      <!-- Left Column: Peta Penguasaan Huruf (Desktop >= xl) -->
+      <aside class="hidden xl:block w-[300px] 2xl:w-[340px] shrink-0">
+        <DesktopMasterySidebar @open-mastery-grid="emit('openMasteryGrid')" />
+      </aside>
 
-        <!-- Kana Category Selector Panel (Basic / Dakuten / Kombinasi / All) -->
-        <KanaCategoryPanel
-          v-else-if="isKanaMode"
-          v-model="selectedKanaCategory"
+      <!-- Center Column: Wheel Selector & Options -->
+      <main class="w-full max-w-3xl flex flex-col items-center min-w-0">
+        <StartWheelSelector
+          :modes="modesList"
+          :active-mode-index="activeModeIndex"
+          :prev-active-mode-index="prevActiveModeIndex"
+          :scroll-direction="scrollDirection"
           :character-type="characterTypes"
+          :selected-hitungan-tab="selectedHitunganTab"
+          :is-keyboard-nav="isKeyboardNav"
+          :focused-section="focusedSection"
+          @select-mode="selectMode"
+          @select-sub-type="selectSubType"
           @interact="deactivateKeyboardNav"
-        />
+        >
+          <!-- Mode Bottom Configuration Panels -->
+          <Transition name="fade-slide-up" mode="out-in">
+            <!-- Duel Online Info Banner -->
+            <DuelOnlinePanel 
+              v-if="selectedLevel === 'battleground'" 
+              :sub-type="characterTypes" 
+            />
 
-        <!-- Kanji N5 Lesson Progression & Selector Panel -->
-        <KanjiLessonPanel
-          v-else-if="activeMode.id === 'writing' && characterTypes === 'kanji'"
-          @interact="deactivateKeyboardNav"
-        />
+            <!-- Kana Category Selector Panel (Basic / Dakuten / Kombinasi / All) -->
+            <KanaCategoryPanel
+              v-else-if="isKanaMode"
+              v-model="selectedKanaCategory"
+              :character-type="characterTypes"
+              @interact="deactivateKeyboardNav"
+            />
 
-        <!-- Hitungan Mode Wave & Direction Selector Panel -->
-        <HitunganWavePanel
-          v-else-if="activeMode.id === 'hitungan'"
-          :selected-tab="selectedHitunganTab"
-          v-model:selected-wave-key="selectedHitunganWaveKey"
-          v-model:direction="selectedHitunganDirection"
-          @open-tutorial="openHitunganTutorial"
-          @interact="deactivateKeyboardNav"
-        />
+            <!-- Kanji N5 Lesson Progression & Selector Panel -->
+            <KanjiLessonPanel
+              v-else-if="activeMode.id === 'writing' && characterTypes === 'kanji'"
+              @interact="deactivateKeyboardNav"
+            />
 
-        <!-- Default Subtype Fallback Info -->
-        <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
-          Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
-        </div>
-      </Transition>
-    </StartWheelSelector>
+            <!-- Hitungan Mode Wave & Direction Selector Panel -->
+            <HitunganWavePanel
+              v-else-if="activeMode.id === 'hitungan'"
+              :selected-tab="selectedHitunganTab"
+              v-model:selected-wave-key="selectedHitunganWaveKey"
+              v-model:direction="selectedHitunganDirection"
+              @open-tutorial="openHitunganTutorial"
+              @interact="deactivateKeyboardNav"
+            />
+
+            <!-- Default Subtype Fallback Info -->
+            <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
+              Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
+            </div>
+          </Transition>
+        </StartWheelSelector>
+      </main>
+
+      <!-- Right Column: Papan Peringkat / Leaderboard (Desktop >= xl) -->
+      <aside class="hidden xl:block w-[300px] 2xl:w-[340px] shrink-0">
+        <DesktopLeaderboardSidebar @open-leaderboard="emit('openLeaderboard')" />
+      </aside>
+    </div>
 
     <!-- SECTION 3: STICKY BOTTOM ACTION BAR -->
     <StartBottomBar

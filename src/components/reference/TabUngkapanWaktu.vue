@@ -66,30 +66,30 @@ const searchMatchesDuration = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-6 animate-fadeIn text-slate-100">
+  <div class="space-y-6 animate-fadeIn text-slate-800 dark:text-slate-100">
     <!-- Header & Subtab Switcher -->
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-slate-800/80">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-gray-200 dark:border-slate-800/80">
       <div class="flex items-center gap-2.5 w-full sm:w-auto">
-        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
           <Clock class="w-5 h-5" />
         </div>
         <div>
-          <h3 class="text-sm sm:text-base font-bold text-white">Ungkapan Waktu (時 / 日 / 間)</h3>
-          <p class="text-xs text-slate-400">Kalender relatif dan durasi jangka waktu</p>
+          <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Ungkapan Waktu (時 / 日 / 間)</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400">Kalender relatif dan durasi jangka waktu</p>
         </div>
       </div>
 
       <!-- Search & Sub-tabs Group -->
       <div class="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap justify-between">
         <!-- Sub-tabs -->
-        <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-bold">
+        <div class="flex items-center bg-gray-100 dark:bg-slate-950/80 p-1 rounded-xl border border-gray-200 dark:border-slate-800 text-xs font-bold">
           <button 
             @click="activeSubTab = 'kalender'"
             :class="[
               'px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5',
               activeSubTab === 'kalender' 
                 ? 'bg-cyan-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             <Calendar class="w-3.5 h-3.5" />
@@ -101,7 +101,7 @@ const searchMatchesDuration = computed(() => {
               'px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5',
               activeSubTab === 'durasi' 
                 ? 'bg-cyan-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             <Clock class="w-3.5 h-3.5" />
@@ -111,12 +111,12 @@ const searchMatchesDuration = computed(() => {
 
         <!-- Search Box -->
         <div class="relative w-full sm:w-56">
-          <Search class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search class="w-4 h-4 text-gray-400 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input 
             v-model="searchQuery" 
             type="text" 
             placeholder="Cari waktu..."
-            class="w-full pl-9 pr-3.5 py-1.5 bg-slate-950/70 border border-slate-700/70 rounded-xl text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400/60 focus:ring-1 focus:ring-cyan-400/40 transition"
+            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/40 transition"
           />
         </div>
       </div>
@@ -124,9 +124,9 @@ const searchMatchesDuration = computed(() => {
 
     <!-- Search Matches View -->
     <div v-if="searchQuery.trim()" class="space-y-4">
-      <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+      <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 px-1">
         <span>Hasil pencarian "{{ searchQuery }}":</span>
-        <button @click="searchQuery = ''" class="text-cyan-400 hover:underline">Reset pencarian</button>
+        <button @click="searchQuery = ''" class="text-cyan-600 dark:text-cyan-400 hover:underline">Reset pencarian</button>
       </div>
 
       <div v-if="(searchMatchesCalendar?.length || 0) + (searchMatchesDuration?.length || 0) > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -134,37 +134,37 @@ const searchMatchesDuration = computed(() => {
         <div 
           v-for="(item, idx) in (searchMatchesCalendar || [])" 
           :key="'srch_cal_' + idx"
-          class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between"
+          class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 flex flex-col justify-between shadow-xs"
         >
-          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span class="capitalize px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700/60 font-semibold">{{ item.group }}</span>
-            <span class="text-cyan-400 font-bold">Kalender</span>
+          <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 mb-1">
+            <span class="capitalize px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700/60 font-semibold">{{ item.group }}</span>
+            <span class="text-cyan-600 dark:text-cyan-400 font-bold">Kalender</span>
           </div>
           <div class="flex items-center justify-between gap-1.5 mt-0.5">
-            <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+            <span class="text-base font-bold font-jp text-gray-900 dark:text-white">{{ item.japanese }}</span>
             <SpeakerButton :text="item.japanese" size="sm" />
           </div>
-          <span class="text-xs text-slate-300 mt-1 italic">"{{ item.meaning }}"</span>
+          <span class="text-xs text-gray-600 dark:text-slate-300 mt-1 italic">"{{ item.meaning }}"</span>
         </div>
 
         <!-- Duration Results -->
         <div 
           v-for="(item, idx) in (searchMatchesDuration || [])" 
           :key="'srch_dur_' + idx"
-          class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between"
+          class="p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 flex flex-col justify-between shadow-xs"
         >
-          <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
-            <span class="capitalize px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700/60 font-semibold">{{ item.group }} ({{ item.value }})</span>
-            <span class="text-amber-400 font-bold">Durasi</span>
+          <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 mb-1">
+            <span class="capitalize px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700/60 font-semibold">{{ item.group }} ({{ item.value }})</span>
+            <span class="text-amber-600 dark:text-amber-400 font-bold">Durasi</span>
           </div>
           <div class="flex items-center justify-between gap-1.5 mt-0.5">
-            <span class="text-base font-bold font-jp text-white">{{ item.japanese }}</span>
+            <span class="text-base font-bold font-jp text-gray-900 dark:text-white">{{ item.japanese }}</span>
             <SpeakerButton :text="item.japanese" size="sm" />
           </div>
         </div>
       </div>
 
-      <div v-else class="py-12 text-center text-slate-400 text-sm">
+      <div v-else class="py-12 text-center text-gray-400 dark:text-slate-400 text-sm">
         Tidak ditemukan ungkapan waktu yang cocok dengan kata kunci "{{ searchQuery }}".
       </div>
     </div>
@@ -174,33 +174,33 @@ const searchMatchesDuration = computed(() => {
       <!-- Tabel 1: Hari / Pagi / Malam (3 Kolom Berdampingan) -->
       <div class="space-y-2.5">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-          <h4 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+          <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">
             1. Perubahan Harian: Hari, Pagi, Malam
           </h4>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/80">
+        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-950/80 text-slate-400 uppercase text-[11px] font-extrabold border-b border-slate-800">
+            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 text-cyan-300">Hari (日)</th>
-                <th class="px-4 py-3 text-amber-300">Pagi (朝)</th>
-                <th class="px-4 py-3 text-indigo-300">Malam (晩 / 夜)</th>
+                <th class="px-4 py-3 text-cyan-700 dark:text-cyan-300 font-bold">Hari (日)</th>
+                <th class="px-4 py-3 text-amber-700 dark:text-amber-300 font-bold">Pagi (朝)</th>
+                <th class="px-4 py-3 text-indigo-700 dark:text-indigo-300 font-bold">Malam (晩 / 夜)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60">
+            <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
               <tr 
                 v-for="i in 6" 
                 :key="'row_day_' + i"
-                class="hover:bg-slate-800/40 transition"
+                class="hover:bg-gray-50 dark:hover:bg-slate-800/40 transition"
               >
                 <!-- Hari -->
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.hari[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.hari[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.hari[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.hari[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.hari[i-1]?.japanese" :text="data.kalender.hari[i-1]?.japanese" size="sm" />
                   </div>
@@ -209,8 +209,8 @@ const searchMatchesDuration = computed(() => {
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.pagi[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.pagi[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.pagi[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.pagi[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.pagi[i-1]?.japanese" :text="data.kalender.pagi[i-1]?.japanese" size="sm" />
                   </div>
@@ -219,8 +219,8 @@ const searchMatchesDuration = computed(() => {
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.malam[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.malam[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.malam[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.malam[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.malam[i-1]?.japanese" :text="data.kalender.malam[i-1]?.japanese" size="sm" />
                   </div>
@@ -234,33 +234,33 @@ const searchMatchesDuration = computed(() => {
       <!-- Tabel 2: Minggu / Bulan / Tahun (3 Kolom Berdampingan) -->
       <div class="space-y-2.5 pt-2">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
-          <h4 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">
+          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">
             2. Perubahan Periode: Minggu, Bulan, Tahun
           </h4>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/80">
+        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-950/80 text-slate-400 uppercase text-[11px] font-extrabold border-b border-slate-800">
+            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 text-violet-300">Minggu (週)</th>
-                <th class="px-4 py-3 text-emerald-300">Bulan (月)</th>
-                <th class="px-4 py-3 text-rose-300">Tahun (年)</th>
+                <th class="px-4 py-3 text-violet-700 dark:text-violet-300 font-bold">Minggu (週)</th>
+                <th class="px-4 py-3 text-emerald-700 dark:text-emerald-300 font-bold">Bulan (月)</th>
+                <th class="px-4 py-3 text-rose-700 dark:text-rose-300 font-bold">Tahun (年)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60">
+            <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
               <tr 
                 v-for="i in 6" 
                 :key="'row_period_' + i"
-                class="hover:bg-slate-800/40 transition"
+                class="hover:bg-gray-50 dark:hover:bg-slate-800/40 transition"
               >
                 <!-- Minggu -->
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.minggu[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.minggu[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.minggu[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.minggu[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.minggu[i-1]?.japanese" :text="data.kalender.minggu[i-1]?.japanese" size="sm" />
                   </div>
@@ -269,8 +269,8 @@ const searchMatchesDuration = computed(() => {
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.bulan[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.bulan[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.bulan[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.bulan[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.bulan[i-1]?.japanese" :text="data.kalender.bulan[i-1]?.japanese" size="sm" />
                   </div>
@@ -279,8 +279,8 @@ const searchMatchesDuration = computed(() => {
                 <td class="px-4 py-3">
                   <div class="flex items-center justify-between gap-2">
                     <div>
-                      <div class="font-bold text-white font-jp text-sm sm:text-base">{{ data.kalender.tahun[i-1]?.japanese }}</div>
-                      <div class="text-[11px] sm:text-xs text-slate-400">{{ data.kalender.tahun[i-1]?.meaning }}</div>
+                      <div class="font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">{{ data.kalender.tahun[i-1]?.japanese }}</div>
+                      <div class="text-[11px] sm:text-xs text-gray-500 dark:text-slate-400">{{ data.kalender.tahun[i-1]?.meaning }}</div>
                     </div>
                     <SpeakerButton v-if="data.kalender.tahun[i-1]?.japanese" :text="data.kalender.tahun[i-1]?.japanese" size="sm" />
                   </div>
@@ -300,37 +300,37 @@ const searchMatchesDuration = computed(() => {
         <div class="space-y-2.5">
           <div class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              <h4 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">Durasi Jam (〜時間)</h4>
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">Durasi Jam (〜時間)</h4>
             </div>
-            <span class="text-[11px] text-amber-400 font-medium">⚠️ 4 jam = よじかん</span>
+            <span class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">⚠️ 4 jam = よじかん</span>
           </div>
 
-          <div class="rounded-2xl border border-slate-800 bg-slate-900/80 overflow-hidden">
+          <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs">
             <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-950/80 text-slate-400 text-[11px] uppercase border-b border-slate-800">
+              <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
                 <tr>
                   <th class="px-3 py-2.5 w-16">Nilai</th>
                   <th class="px-3 py-2.5">Pengucapan Jepang</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/60">
+              <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
                 <tr 
                   v-for="j in data.durasi.jam_menit.jam" 
                   :key="'jam_' + j.value"
                   :class="[
-                    'hover:bg-slate-800/40 transition',
+                    'hover:bg-gray-50 dark:hover:bg-slate-800/40 transition',
                     isDurationIrregular('jam', j.value) ? 'bg-amber-500/10' : ''
                   ]"
                 >
-                  <td class="px-3 py-2 font-bold text-slate-300">
+                  <td class="px-3 py-2 font-bold text-gray-700 dark:text-slate-300">
                     {{ j.value === '?' ? 'Berapa?' : j.value + ' Jam' }}
                   </td>
-                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-white">
+                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-gray-900 dark:text-white">
                     <div class="flex items-center justify-between gap-1.5">
                       <div class="flex items-center gap-1.5">
                         <span>{{ j.japanese }}</span>
-                        <span v-if="isDurationIrregular('jam', j.value)" class="text-[10px] px-1.5 bg-amber-500/20 text-amber-300 rounded font-bold">Khusus</span>
+                        <span v-if="isDurationIrregular('jam', j.value)" class="text-[10px] px-1.5 bg-amber-100 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 rounded font-bold">Khusus</span>
                       </div>
                       <SpeakerButton :text="j.japanese" size="sm" />
                     </div>
@@ -345,30 +345,30 @@ const searchMatchesDuration = computed(() => {
         <div class="space-y-2.5">
           <div class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-              <h4 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">Durasi Menit (〜分)</h4>
+              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+              <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">Durasi Menit (〜分)</h4>
             </div>
-            <span class="text-[11px] text-slate-400">Pola 〜ふん / 〜ぷん</span>
+            <span class="text-[11px] text-gray-500 dark:text-slate-400">Pola 〜ふん / 〜ぷん</span>
           </div>
 
-          <div class="rounded-2xl border border-slate-800 bg-slate-900/80 overflow-hidden">
+          <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs">
             <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-slate-950/80 text-slate-400 text-[11px] uppercase border-b border-slate-800">
+              <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
                 <tr>
                   <th class="px-3 py-2.5 w-16">Nilai</th>
                   <th class="px-3 py-2.5">Pengucapan Jepang</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/60">
+              <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
                 <tr 
                   v-for="m in data.durasi.jam_menit.menit" 
                   :key="'menit_' + m.value"
-                  class="hover:bg-slate-800/40 transition"
+                  class="hover:bg-gray-50 dark:hover:bg-slate-800/40 transition"
                 >
-                  <td class="px-3 py-2 font-bold text-slate-300">
+                  <td class="px-3 py-2 font-bold text-gray-700 dark:text-slate-300">
                     {{ m.value === '?' ? 'Berapa?' : m.value + ' Menit' }}
                   </td>
-                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-white">
+                  <td class="px-3 py-2 font-bold font-jp text-sm sm:text-base text-gray-900 dark:text-white">
                     <div class="flex items-center justify-between gap-1.5">
                       <span>{{ m.japanese }}</span>
                       <SpeakerButton :text="m.japanese" size="sm" />
@@ -385,59 +385,59 @@ const searchMatchesDuration = computed(() => {
       <div class="space-y-2.5 pt-2">
         <div class="flex items-center justify-between px-1">
           <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <h4 class="text-xs sm:text-sm font-bold text-slate-200 uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">
               Jangka Waktu Hari, Minggu, Bulan, dan Tahun
             </h4>
           </div>
-          <span class="text-[11px] text-amber-400 font-medium">⚠️ 1 hari = いちにち, 2 hari = ふつか, 4 th = よねん</span>
+          <span class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">⚠️ 1 hari = いちにち, 2 hari = ふつか, 4 th = よねん</span>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/80">
+        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-slate-950/80 text-slate-400 uppercase text-[11px] font-extrabold border-b border-slate-800">
+            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-3 py-3 text-slate-400 w-16">Jangka</th>
-                <th class="px-3 py-3 text-cyan-300">Hari (〜日間)</th>
-                <th class="px-3 py-3 text-violet-300">Minggu (〜週間)</th>
-                <th class="px-3 py-3 text-emerald-300">Bulan (〜ヶ月間)</th>
-                <th class="px-3 py-3 text-amber-300">Tahun (〜年間)</th>
+                <th class="px-3 py-3 text-gray-600 dark:text-slate-400 w-16 font-bold">Jangka</th>
+                <th class="px-3 py-3 text-cyan-700 dark:text-cyan-300 font-bold">Hari (〜日間)</th>
+                <th class="px-3 py-3 text-violet-700 dark:text-violet-300 font-bold">Minggu (〜週間)</th>
+                <th class="px-3 py-3 text-emerald-700 dark:text-emerald-300 font-bold">Bulan (〜ヶ月間)</th>
+                <th class="px-3 py-3 text-amber-700 dark:text-amber-300 font-bold">Tahun (〜年間)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60">
+            <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
               <tr 
                 v-for="idx in 11" 
                 :key="'jangka_row_' + idx"
-                class="hover:bg-slate-800/40 transition"
+                class="hover:bg-gray-50 dark:hover:bg-slate-800/40 transition"
               >
                 <!-- Label / Value -->
-                <td class="px-3 py-2 font-black text-slate-400">
+                <td class="px-3 py-2 font-black text-gray-500 dark:text-slate-400">
                   {{ idx <= 10 ? idx : '?' }}
                 </td>
                 <!-- Hari -->
                 <td class="px-3 py-2">
-                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">
                     <span>{{ data.durasi.jangka_waktu.hari[idx-1]?.japanese }}</span>
                     <SpeakerButton v-if="data.durasi.jangka_waktu.hari[idx-1]?.japanese" :text="data.durasi.jangka_waktu.hari[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Minggu -->
                 <td class="px-3 py-2">
-                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">
                     <span>{{ data.durasi.jangka_waktu.minggu[idx-1]?.japanese }}</span>
                     <SpeakerButton v-if="data.durasi.jangka_waktu.minggu[idx-1]?.japanese" :text="data.durasi.jangka_waktu.minggu[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Bulan -->
                 <td class="px-3 py-2">
-                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">
                     <span>{{ data.durasi.jangka_waktu.bulan[idx-1]?.japanese }}</span>
                     <SpeakerButton v-if="data.durasi.jangka_waktu.bulan[idx-1]?.japanese" :text="data.durasi.jangka_waktu.bulan[idx-1]?.japanese" size="sm" />
                   </div>
                 </td>
                 <!-- Tahun -->
                 <td class="px-3 py-2">
-                  <div class="flex items-center justify-between gap-1.5 font-bold text-white font-jp text-sm sm:text-base">
+                  <div class="flex items-center justify-between gap-1.5 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base">
                     <span>{{ data.durasi.jangka_waktu.tahun[idx-1]?.japanese }}</span>
                     <SpeakerButton v-if="data.durasi.jangka_waktu.tahun[idx-1]?.japanese" :text="data.durasi.jangka_waktu.tahun[idx-1]?.japanese" size="sm" />
                   </div>
@@ -450,11 +450,11 @@ const searchMatchesDuration = computed(() => {
     </div>
 
     <!-- Irregular Pattern Warning / Info Box -->
-    <div v-if="data.durasi.note_irregular" class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start gap-3 text-xs sm:text-sm text-amber-200">
-      <AlertTriangle class="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+    <div v-if="data.durasi.note_irregular" class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 flex items-start gap-3 text-xs sm:text-sm text-amber-900 dark:text-amber-200">
+      <AlertTriangle class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
       <div class="space-y-1">
-        <span class="font-extrabold text-amber-300 block">Catatan Pola Khusus Durasi:</span>
-        <p class="leading-relaxed text-amber-200/90">{{ data.durasi.note_irregular }}</p>
+        <span class="font-extrabold text-amber-800 dark:text-amber-300 block">Catatan Pola Khusus Durasi:</span>
+        <p class="leading-relaxed text-amber-900/90 dark:text-amber-200/90">{{ data.durasi.note_irregular }}</p>
       </div>
     </div>
   </div>

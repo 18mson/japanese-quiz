@@ -143,7 +143,7 @@ function getCardStyle(index: number) {
       ]"
     >
       <!-- Top Right Inside Badge: "Pilih Mode" -->
-      <div class="absolute top-3.5 right-4 sm:top-4 sm:right-5 z-20 flex items-center gap-2 pointer-events-none">
+      <div class="absolute top-3.5 right-4 sm:top-5 sm:right-5 z-20 flex items-center gap-2 pointer-events-none">
         <div class="px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl bg-slate-900 dark:bg-slate-800 text-white text-xs sm:text-sm font-black tracking-tight shadow-sm flex items-center gap-1.5 border border-slate-800 dark:border-slate-700">
           <span>Pilih Mode</span>
           <span :class="['w-2 h-2 rounded-full animate-pulse transition-colors duration-500', activeMode.discPulse]"></span>

@@ -40,10 +40,8 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       user.value = session?.user ?? null;
-      if (user.value) {
-        const quizStore = useQuizStore();
-        await quizStore.loadStreaksFromStorage();
-      }
+      const quizStore = useQuizStore();
+      await quizStore.loadStreaksFromStorage();
     } catch (err: any) {
       console.error('Error fetching session:', err);
     } finally {

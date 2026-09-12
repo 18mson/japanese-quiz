@@ -15,8 +15,14 @@ import {
   Zap, 
   Sparkles, 
   RotateCcw,
-  SearchX
+  SearchX,
+  Edit3,
+  Check,
+  CheckSquare,
+  AlertTriangle,
+  Loader2
 } from '@lucide/vue';
+import { watch } from 'vue';
 
 defineProps<{
   isOpen: boolean;
@@ -31,6 +37,83 @@ const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
 const searchQuery = ref<string>('');
 const filterBarRef = ref<InstanceType<typeof MasteryFilterBar> | null>(null);
+
+// Bulk Edit Mode States
+const isEditMode = ref<boolean>(false);
+const selectedCharacters = ref<Set<string>>(new Set());
+const targetTier = ref<'new' | 'learning' | 'mastered' | 'crown'>('mastered');
+const showConfirmModal = ref<boolean>(false);
+const isApplying = ref<boolean>(false);
+
+const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown', string> = {
+  new: 'Belum Dipelajari',
+  learning: 'Sedang Belajar (Streak 1)',
+  mastered: 'Hafal / Mastered (Streak 3)',
+  crown: 'Mahkota / Crown (Streak 5)'
+};
+
+const toggleEditMode = () => {
+  isEditMode.value = !isEditMode.value;
+  if (!isEditMode.value) {
+    clearSelection();
+  }
+};
+
+const handleToggleSelect = (character: string) => {
+  const next = new Set(selectedCharacters.value);
+  if (next.has(character)) {
+    next.delete(character);
+  } else {
+    next.add(character);
+  }
+  selectedCharacters.value = next;
+};
+
+const clearSelection = () => {
+  selectedCharacters.value = new Set();
+};
+
+const isAllVisibleSelected = computed(() => {
+  if (filteredItems.value.length === 0) return false;
+  return filteredItems.value.every(item => selectedCharacters.value.has(item.character));
+});
+
+const toggleSelectAllVisible = () => {
+  const next = new Set(selectedCharacters.value);
+  if (isAllVisibleSelected.value) {
+    filteredItems.value.forEach(item => {
+      next.delete(item.character);
+    });
+  } else {
+    filteredItems.value.forEach(item => {
+      next.add(item.character);
+    });
+  }
+  selectedCharacters.value = next;
+};
+
+const handleApplyBulkUpdate = async () => {
+  if (selectedCharacters.value.size === 0) {
+    showConfirmModal.value = false;
+    return;
+  }
+  isApplying.value = true;
+  try {
+    const chars = Array.from(selectedCharacters.value);
+    await quizStore.bulkUpdateMasteryTier(chars, targetTier.value);
+  } catch (e) {
+    console.error('Error applying bulk mastery update:', e);
+  } finally {
+    showConfirmModal.value = false;
+    clearSelection();
+    isEditMode.value = false;
+    isApplying.value = false;
+  }
+};
+
+watch(activeCategory, () => {
+  clearSelection();
+});
 
 const closeDropdowns = () => {
   filterBarRef.value?.closeDropdowns();
@@ -247,8 +330,26 @@ const nextPreviewItem = () => {
           </div>
 
           <div class="flex items-center gap-2 relative z-10">
+            <!-- Toggle Edit Mode Button -->
             <button 
-              v-if="unmasteredCount > 0"
+              type="button"
+              @click="toggleEditMode"
+              :class="[
+                'px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs',
+                isEditMode 
+                  ? 'bg-amber-400 hover:bg-amber-300 text-amber-950 font-black shadow-md ring-2 ring-amber-300/60' 
+                  : 'bg-white/10 hover:bg-white/20 text-white'
+              ]"
+              :title="isEditMode ? 'Keluar dari Mode Edit' : 'Pilih dan ubah status penguasaan secara massal'"
+            >
+              <Check v-if="isEditMode" class="w-3.5 h-3.5" />
+              <Edit3 v-else class="w-3.5 h-3.5 text-amber-300" />
+              <span class="hidden xs:inline">{{ isEditMode ? 'Selesai Edit' : 'Edit Status' }}</span>
+              <span class="xs:hidden">{{ isEditMode ? 'Selesai' : 'Edit' }}</span>
+            </button>
+
+            <button 
+              v-if="unmasteredCount > 0 && !isEditMode"
               @click="handleStartWeakQuiz"
               class="px-3 sm:px-4 py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer animate-pulse-slow"
             >
@@ -275,12 +376,48 @@ const nextPreviewItem = () => {
           :available-lessons="availableLessons"
         />
 
+        <!-- Edit Mode Sub-bar for Quick Selection -->
+        <div 
+          v-if="isEditMode" 
+          class="px-3 sm:px-6 py-2 bg-indigo-50/90 dark:bg-indigo-950/40 border-b border-indigo-100 dark:border-indigo-900/60 flex items-center justify-between gap-2 flex-wrap text-xs flex-shrink-0 animate-fadeIn"
+        >
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-indigo-900 dark:text-indigo-200">
+              Mode Edit Penguasaan
+            </span>
+            <span class="px-2 py-0.5 rounded-full bg-indigo-200/70 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 font-extrabold text-[11px]">
+              {{ selectedCharacters.size }} dipilih
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <button 
+              type="button"
+              v-if="filteredItems.length > 0"
+              @click="toggleSelectAllVisible"
+              class="px-2.5 py-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 rounded-lg text-gray-700 dark:text-slate-200 font-bold transition flex items-center gap-1 cursor-pointer text-xs"
+            >
+              <CheckSquare class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <span>{{ isAllVisibleSelected ? 'Batal Pilih Semua' : `Pilih Semua yang Tampil (${filteredItems.length})` }}</span>
+            </button>
+
+            <button 
+              type="button"
+              v-if="selectedCharacters.size > 0"
+              @click="clearSelection"
+              class="px-2.5 py-1 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 font-medium cursor-pointer text-xs"
+            >
+              Batal Pilih
+            </button>
+          </div>
+        </div>
+
         <!-- Interactive Grid Area -->
-        <div class="p-3 sm:p-6 overflow-y-auto flex-1 bg-gray-50/50 dark:bg-slate-950/60 min-h-0">
+        <div class="p-3 sm:p-6 overflow-y-auto flex-1 bg-gray-50/50 dark:bg-slate-950/60 min-h-0 relative">
           <div 
             v-if="filteredItems.length > 0"
             :class="[
-              'grid gap-2 sm:gap-3',
+              'grid gap-2 sm:gap-3 pb-16',
               activeCategory === 'words' 
                 ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
                 : activeCategory === 'kanji'
@@ -293,7 +430,10 @@ const nextPreviewItem = () => {
               :key="activeCategory + '_' + item.character + '_' + (item.lesson || '') + '_' + (item.meaning || '') + '_' + index" 
               :item="item" 
               :category="activeCategory" 
+              :is-select-mode="isEditMode"
+              :is-selected="selectedCharacters.has(item.character)"
               @click="openPreview(item, index)"
+              @toggle-select="handleToggleSelect(item.character)"
             />
           </div>
 
@@ -333,6 +473,59 @@ const nextPreviewItem = () => {
             </div>
           </div>
         </div>
+
+        <!-- Floating Action Bar for Bulk Edit (Inside modal relative container) -->
+        <Transition name="slide-up">
+          <div 
+            v-if="isEditMode && selectedCharacters.size > 0"
+            class="absolute bottom-16 inset-x-3 sm:inset-x-6 z-30 pointer-events-none flex justify-center"
+          >
+            <div class="pointer-events-auto w-full max-w-2xl bg-slate-900/95 dark:bg-slate-950/95 text-white backdrop-blur-md border border-slate-700/80 dark:border-slate-800 rounded-2xl p-2.5 sm:p-3 shadow-2xl flex flex-wrap items-center justify-between gap-2.5 sm:gap-3">
+              <!-- Left: Selected Count -->
+              <div class="flex items-center gap-2">
+                <span class="w-6 h-6 rounded-full bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center shadow-xs">
+                  {{ selectedCharacters.size }}
+                </span>
+                <span class="text-xs sm:text-sm font-bold text-slate-100">
+                  Karakter Dipilih
+                </span>
+              </div>
+
+              <!-- Middle: Target Tier Selector -->
+              <div class="flex items-center gap-1.5 bg-slate-800/90 dark:bg-slate-900/90 px-2 py-1 rounded-xl border border-slate-700/60">
+                <span class="text-[11px] text-slate-400 font-semibold hidden sm:inline">Tandai:</span>
+                <select 
+                  v-model="targetTier"
+                  class="bg-transparent text-amber-300 text-xs font-bold py-0.5 px-1 rounded-lg border-none focus:ring-1 focus:ring-amber-400 focus:outline-none cursor-pointer"
+                >
+                  <option value="new" class="bg-slate-900 text-slate-200">🔴 Belum (Reset ke 0)</option>
+                  <option value="learning" class="bg-slate-900 text-slate-200">🟡 Proses (Streak 1)</option>
+                  <option value="mastered" class="bg-slate-900 text-slate-200">🟢 Mastered (Streak 3)</option>
+                  <option value="crown" class="bg-slate-900 text-slate-200">👑 Crown (Streak 5)</option>
+                </select>
+              </div>
+
+              <!-- Right: Buttons -->
+              <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
+                <button 
+                  type="button" 
+                  @click="clearSelection" 
+                  class="px-2.5 py-1.5 text-xs text-slate-400 hover:text-white font-medium transition cursor-pointer"
+                >
+                  Batal
+                </button>
+                <button 
+                  type="button" 
+                  @click="showConfirmModal = true"
+                  class="px-3.5 sm:px-4 py-1.5 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Check class="w-4 h-4" />
+                  <span>Terapkan</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </Transition>
 
         <!-- Notice Banner for 0% Belum but incomplete mastery -->
         <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-xs text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
@@ -378,6 +571,97 @@ const nextPreviewItem = () => {
       @prev="prevPreviewItem"
       @next="nextPreviewItem"
     />
+
+    <!-- Confirmation Modal Dialog for Bulk Update -->
+    <div 
+      v-if="showConfirmModal" 
+      class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
+      @click.self="!isApplying && (showConfirmModal = false)"
+    >
+      <div 
+        class="max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-slate-800 p-5 sm:p-6 animate-scaleUp text-gray-800 dark:text-slate-100"
+        @click.stop
+      >
+        <!-- Icon & Title -->
+        <div class="flex items-start gap-3.5 mb-4">
+          <div 
+            :class="[
+              'w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-inner',
+              targetTier === 'new' 
+                ? 'bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400' 
+                : targetTier === 'crown' 
+                ? 'bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400'
+                : targetTier === 'mastered'
+                ? 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400'
+                : 'bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400'
+            ]"
+          >
+            <AlertTriangle v-if="targetTier === 'new'" class="w-6 h-6" />
+            <Award v-else class="w-6 h-6" />
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-gray-900 dark:text-white">
+              Ubah Status {{ selectedCharacters.size }} Karakter?
+            </h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">
+              Tindakan ini akan memperbarui status penguasaan secara langsung.
+            </p>
+          </div>
+        </div>
+
+        <!-- Details Card -->
+        <div class="p-3.5 bg-gray-50 dark:bg-slate-800/60 rounded-2xl border border-gray-100 dark:border-slate-800 mb-4 text-xs space-y-2">
+          <div class="flex justify-between items-center text-gray-600 dark:text-slate-300">
+            <span>Target Status:</span>
+            <span class="font-extrabold text-indigo-600 dark:text-indigo-300">
+              {{ tierLabelsMap[targetTier] }}
+            </span>
+          </div>
+
+          <!-- Explanatory note based on target tier -->
+          <div 
+            v-if="targetTier === 'mastered' || targetTier === 'crown'" 
+            class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-[11px] leading-relaxed border border-emerald-200/60 dark:border-emerald-800/40"
+          >
+            💡 <strong>Pemberitahuan:</strong> Karakter ini akan dianggap sudah dikuasai. Preview/animasi stroke order pertama-kali <strong>tidak akan muncul lagi</strong> saat ditemui di mode game manapun (Kotoba, Menulis, Quiz).
+          </div>
+          <div 
+            v-else-if="targetTier === 'new'" 
+            class="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-800 dark:text-rose-300 text-[11px] leading-relaxed border border-rose-200/60 dark:border-rose-800/40"
+          >
+            ⚠️ <strong>Perhatian:</strong> Streak karakter ini akan di-reset ke 0. Karakter akan kembali dianggap baru dan preview/animasi pertama-kali akan ditampilkan kembali jika diaktifkan di pengaturan quiz.
+          </div>
+          <div 
+            v-else 
+            class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 text-[11px] leading-relaxed border border-indigo-200/60 dark:border-indigo-800/40"
+          >
+            ℹ️ Streak karakter ini akan disetel ke 1 (Sedang Belajar).
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-end gap-2.5 pt-1">
+          <button 
+            type="button" 
+            :disabled="isApplying"
+            @click.stop="showConfirmModal = false"
+            class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-300 transition cursor-pointer disabled:opacity-50"
+          >
+            Batal
+          </button>
+          <button 
+            type="button" 
+            :disabled="isApplying"
+            @click.stop="handleApplyBulkUpdate"
+            class="px-5 py-2 rounded-xl text-xs sm:text-sm font-black bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+          >
+            <Loader2 v-if="isApplying" class="w-4 h-4 animate-spin" />
+            <Check v-else class="w-4 h-4" />
+            <span>{{ isApplying ? 'Memproses...' : 'Ya, Terapkan' }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </Teleport>
 </template>
 
@@ -386,4 +670,14 @@ const nextPreviewItem = () => {
 .animate-fadeIn { animation: fadeIn 0.25s ease-out forwards; }
 @keyframes scaleUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 .animate-scaleUp { animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all 0.25s ease-out;
+}
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(16px);
+}
 </style>

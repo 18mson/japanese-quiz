@@ -58,16 +58,16 @@ const rightCategories = computed(() => filteredCategories.value.filter((_, i) =>
 </script>
 
 <template>
-  <div class="space-y-6 animate-fadeIn text-slate-100">
+  <div class="space-y-6 animate-fadeIn text-slate-800 dark:text-slate-100">
     <!-- Header Controls & Actions -->
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-slate-800/80 shadow-sm">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-gray-200 dark:border-slate-800/80 shadow-xs">
       <div class="flex items-center gap-2.5 w-full sm:w-auto">
-        <div class="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 shrink-0">
           <Layers class="w-5 h-5" />
         </div>
         <div>
-          <h3 class="text-sm sm:text-base font-bold text-white">Kata Bantu Bilangan (助数詞)</h3>
-          <p class="text-xs text-slate-400">8 kategori penghitung benda, frekuensi, tempat, dan hewan</p>
+          <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Kata Bantu Bilangan (助数詞)</h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400">8 kategori penghitung benda, frekuensi, tempat, dan hewan</p>
         </div>
       </div>
 
@@ -75,19 +75,19 @@ const rightCategories = computed(() => filteredCategories.value.filter((_, i) =>
       <div class="flex items-center gap-2.5 w-full sm:w-auto justify-between sm:justify-end flex-wrap">
         <button
           @click="areAllExpanded ? collapseAll() : expandAll()"
-          class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 border border-slate-700 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+          class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-xs font-bold text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700 transition cursor-pointer flex items-center gap-1.5 shadow-xs"
         >
           <component :is="areAllExpanded ? ChevronUp : ChevronDown" class="w-3.5 h-3.5" />
           <span>{{ areAllExpanded ? 'Tutup Semua' : 'Buka Semua' }}</span>
         </button>
 
         <div class="relative w-full sm:w-56">
-          <Search class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search class="w-4 h-4 text-gray-400 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input 
             v-model="searchQuery" 
             type="text" 
             placeholder="Cari counter / benda..."
-            class="w-full pl-9 pr-3.5 py-1.5 bg-slate-950/70 border border-slate-700/70 rounded-xl text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-violet-400/60 focus:ring-1 focus:ring-violet-400/40 transition"
+            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40 transition"
           />
         </div>
       </div>

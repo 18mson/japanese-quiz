@@ -21,9 +21,26 @@ import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } fro
 import { HITUNGAN_WAVES, type HitunganWaveDef } from '../data/hitunganWaves';
 import { HitunganService, type HitunganProgressRecord } from '../services/hitunganService';
 
+  const getLocalStreaks = (): Record<string, number> => {
+    try {
+      const stored = localStorage.getItem('japanese-quiz-streaks');
+      if (stored) return JSON.parse(stored);
+    } catch (e) { }
+    return {};
+  };
+
+  const getLocalIntroduced = (): Record<string, boolean> => {
+    try {
+      const stored = localStorage.getItem('japanese-quiz-introduced');
+      if (stored) return JSON.parse(stored);
+    } catch (e) { }
+    return {};
+  };
+
 export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
-  const userStreaks = ref<Record<string, number>>({});
+  const userStreaks = ref<Record<string, number>>(getLocalStreaks());
+  const introducedChars = ref<Record<string, boolean>>(getLocalIntroduced());
   const sentenceStats = ref<{ wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number } | null>(null);
 
   // Kaiwa & Renshuu state
@@ -38,14 +55,6 @@ export const useQuizStore = defineStore('quiz', () => {
   });
   const showLessonMaterial = ref<boolean>(false);
   const isLessonMaterialCompleted = ref<boolean>(false);
-
-  const getLocalStreaks = (): Record<string, number> => {
-    try {
-      const stored = localStorage.getItem('japanese-quiz-streaks');
-      if (stored) return JSON.parse(stored);
-    } catch (e) { }
-    return {};
-  };
 
   const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
     const { data, error } = await supabase.from('user_streaks').select('character, streak').eq('user_id', userId);
@@ -75,16 +84,6 @@ export const useQuizStore = defineStore('quiz', () => {
     try {
       localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
     } catch (e) { }
-  };
-
-  const introducedChars = ref<Record<string, boolean>>({});
-
-  const getLocalIntroduced = (): Record<string, boolean> => {
-    try {
-      const stored = localStorage.getItem('japanese-quiz-introduced');
-      if (stored) return JSON.parse(stored);
-    } catch (e) { }
-    return {};
   };
 
   const saveIntroducedToStorage = () => {
@@ -150,6 +149,101 @@ export const useQuizStore = defineStore('quiz', () => {
     return direct;
   };
   const getMasteryTier = (character: string) => getMasteryTierFromStreak(getMasteryStreak(character));
+
+  const bulkUpdateMasteryTier = async (
+    characters: string[],
+    targetTier: 'new' | 'learning' | 'mastered' | 'crown'
+  ) => {
+    if (!characters || characters.length === 0) return;
+
+    const streakMap: Record<'new' | 'learning' | 'mastered' | 'crown', number> = {
+      new: 0,
+      learning: 1,
+      mastered: 3,
+      crown: 5
+    };
+    const targetStreak = streakMap[targetTier];
+
+    // 1. Update in-memory reactive userStreaks immediately
+    const updatedStreaks = { ...userStreaks.value };
+    const updatedIntroduced = { ...introducedChars.value };
+
+    characters.forEach(char => {
+      if (targetStreak === 0) {
+        delete updatedStreaks[char];
+        delete updatedIntroduced[char];
+      } else {
+        updatedStreaks[char] = targetStreak;
+        updatedIntroduced[char] = true;
+      }
+    });
+
+    userStreaks.value = updatedStreaks;
+    introducedChars.value = updatedIntroduced;
+
+    // 2. Persist to localStorage immediately
+    try {
+      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(updatedStreaks));
+      localStorage.setItem('japanese-quiz-introduced', JSON.stringify(updatedIntroduced));
+    } catch (e) {
+      console.error('Error saving streaks to localStorage:', e);
+    }
+
+    // 3. Batch push to Supabase ONLY if user is actively logged in
+    try {
+      const { useAuthStore } = await import('./authStore');
+      const authStore = useAuthStore();
+      const currentUserId = authStore.user?.id;
+
+      // If user is not logged in, apply to local storage/browser only
+      if (!currentUserId) {
+        return;
+      }
+
+      // Check session validity
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user || session.user.id !== currentUserId) {
+        return;
+      }
+
+      if (targetStreak === 0) {
+        // Reset to 0: delete records from Supabase user_streaks
+        const chunkSize = 100;
+        for (let i = 0; i < characters.length; i += chunkSize) {
+          const chunk = characters.slice(i, i + chunkSize);
+          await supabase
+            .from('user_streaks')
+            .delete()
+            .eq('user_id', currentUserId)
+            .in('character', chunk);
+        }
+      } else {
+        // Upsert streaks with timestamps
+        const now = new Date().toISOString();
+        const rows = characters.map(char => ({
+          user_id: currentUserId,
+          character: char,
+          streak: targetStreak,
+          last_tier: targetTier,
+          tier_changed_at: now,
+          updated_at: now
+        }));
+
+        const chunkSize = 100;
+        for (let i = 0; i < rows.length; i += chunkSize) {
+          const chunk = rows.slice(i, i + chunkSize);
+          const { error } = await supabase
+            .from('user_streaks')
+            .upsert(chunk, { onConflict: 'user_id,character' });
+          if (error) {
+            console.error('Error batch upserting user_streaks to Supabase:', error);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn('Skipping database push (user offline, unauthenticated, or network issue):', err);
+    }
+  };
 
   const hiraganaMasteryStats = computed(() => computeCategoryMasteryStats(hiraganaData, userStreaks.value));
   const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
@@ -879,7 +973,7 @@ export const useQuizStore = defineStore('quiz', () => {
     previewMode, previewedItems, fullWaveBatches, currentWaveIndex, isWavePreviewActive, currentWaveItems,
     microPreviewItem, showMicroPreviewModal, latestTierTransition, sessionTierChanges, justClosedPreview, previewClosedTimestamp,
     completeWavePreview, completeMicroPreview,
-    getMasteryStreak, getMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
+    getMasteryStreak, getMasteryTier, bulkUpdateMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
     finishSentenceQuiz,
     nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
     getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks,

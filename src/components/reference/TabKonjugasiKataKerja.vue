@@ -79,29 +79,29 @@ const filteredVerbs = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-6 animate-fadeIn text-slate-100">
+  <div class="space-y-6 animate-fadeIn text-slate-800 dark:text-slate-100">
     <!-- Header Controls & Filters -->
-    <div class="flex flex-col gap-3 bg-slate-900/60 p-3.5 sm:p-4 rounded-2xl border border-slate-800/80">
+    <div class="flex flex-col gap-3 bg-white dark:bg-slate-900/60 p-3.5 sm:p-4 rounded-2xl border border-gray-200 dark:border-slate-800/80">
       <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-2.5 w-full sm:w-auto">
-          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
             <BookOpen class="w-5 h-5" />
           </div>
           <div>
-            <h3 class="text-sm sm:text-base font-bold text-white">Konjugasi Kata Kerja (動詞の活用)</h3>
-            <p class="text-xs text-slate-400">Tabel 5 bentuk konjugasi (ます, て, Kamus, ない, た)</p>
+            <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white">Konjugasi Kata Kerja (動詞の活用)</h3>
+            <p class="text-xs text-gray-500 dark:text-slate-400">Tabel 5 bentuk konjugasi (ます, て, Kamus, ない, た)</p>
           </div>
         </div>
 
         <!-- Group Selector Tabs -->
-        <div class="flex items-center bg-slate-950/80 p-1 rounded-xl border border-slate-800 text-xs font-bold w-full sm:w-auto justify-between overflow-x-auto">
+        <div class="flex items-center bg-gray-100 dark:bg-slate-950/80 p-1 rounded-xl border border-gray-200 dark:border-slate-800 text-xs font-bold w-full sm:w-auto justify-between overflow-x-auto">
           <button 
             @click="selectedGroup = 'all'"
             :class="[
               'px-3 py-1.5 rounded-lg transition cursor-pointer shrink-0',
               selectedGroup === 'all' 
                 ? 'bg-emerald-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             Semua ({{ allVerbsWithGroup.length }})
@@ -112,7 +112,7 @@ const filteredVerbs = computed(() => {
               'px-3 py-1.5 rounded-lg transition cursor-pointer shrink-0',
               selectedGroup === 'kelompok_1' 
                 ? 'bg-emerald-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             Kelompok I ({{ data.kelompok_1.verbs.length }})
@@ -123,7 +123,7 @@ const filteredVerbs = computed(() => {
               'px-3 py-1.5 rounded-lg transition cursor-pointer shrink-0',
               selectedGroup === 'kelompok_2' 
                 ? 'bg-emerald-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             Kelompok II ({{ data.kelompok_2.verbs.length }})
@@ -134,7 +134,7 @@ const filteredVerbs = computed(() => {
               'px-3 py-1.5 rounded-lg transition cursor-pointer shrink-0',
               selectedGroup === 'kelompok_3' 
                 ? 'bg-emerald-600 text-white shadow-xs' 
-                : 'text-slate-400 hover:text-slate-200'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
             Kelompok III ({{ data.kelompok_3.verbs.length }})
@@ -143,15 +143,15 @@ const filteredVerbs = computed(() => {
       </div>
 
       <!-- Secondary Filter Row: Search + Lesson Filter Dropdown -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-1 border-t border-slate-800/60">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-1 border-t border-gray-100 dark:border-slate-800/60">
         <!-- Search Input -->
         <div class="relative w-full sm:flex-1">
-          <Search class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search class="w-4 h-4 text-gray-400 dark:text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input 
             v-model="searchQuery" 
             type="text" 
             placeholder="Cari kata Jepang (kanji/bacaan) atau arti bahasa Indonesia (misal: makan, bertemu, pergi)..."
-            class="w-full pl-9 pr-3.5 py-1.5 bg-slate-950/70 border border-slate-700/70 rounded-xl text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-400/60 focus:ring-1 focus:ring-emerald-400/40 transition"
+            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/40 transition"
           />
         </div>
 
@@ -160,7 +160,7 @@ const filteredVerbs = computed(() => {
           <div class="relative w-full sm:w-48">
             <select 
               v-model="selectedLessonFilter"
-              class="w-full px-3 py-1.5 bg-slate-950/80 border border-slate-700/70 rounded-xl text-xs font-bold text-slate-200 focus:outline-none focus:border-emerald-400/60 cursor-pointer"
+              class="w-full px-3 py-1.5 bg-gray-50 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs font-bold text-gray-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500 cursor-pointer"
             >
               <option value="all">Semua Pelajaran (1-25)</option>
               <option value="range_1_5">Pelajaran 1 - 5</option>
@@ -179,52 +179,52 @@ const filteredVerbs = computed(() => {
     </div>
 
     <!-- Active Group Explanation Box -->
-    <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-start gap-3 text-xs sm:text-sm text-emerald-200">
-      <Info class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+    <div class="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-start gap-3 text-xs sm:text-sm text-emerald-900 dark:text-emerald-200">
+      <Info class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
       <div class="space-y-0.5">
-        <span class="font-extrabold text-emerald-300 block">
+        <span class="font-extrabold text-emerald-800 dark:text-emerald-300 block">
           {{ selectedGroup === 'all' ? 'Panduan Umum Konjugasi:' : (selectedGroup === 'kelompok_1' ? data.kelompok_1.title : selectedGroup === 'kelompok_2' ? data.kelompok_2.title : data.kelompok_3.title) }}
         </span>
-        <p class="leading-relaxed text-emerald-200/90 text-xs">{{ currentGroupDescription }}</p>
+        <p class="leading-relaxed text-emerald-900/90 dark:text-emerald-200/90 text-xs">{{ currentGroupDescription }}</p>
       </div>
     </div>
 
     <!-- Verbs Table -->
     <div class="space-y-2">
-      <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+      <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 px-1">
         <span>Menampilkan <strong>{{ filteredVerbs.length }}</strong> kata kerja</span>
         <span v-if="searchQuery || selectedLessonFilter !== 'all'">
-          <button @click="searchQuery = ''; selectedLessonFilter = 'all';" class="text-emerald-400 hover:underline">Reset Filter</button>
+          <button @click="searchQuery = ''; selectedLessonFilter = 'all';" class="text-emerald-600 dark:text-emerald-400 hover:underline">Reset Filter</button>
         </span>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/80 shadow-md">
+      <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
         <table class="w-full text-left text-xs sm:text-sm">
-          <thead class="bg-slate-950/90 text-slate-300 text-[11px] font-extrabold uppercase tracking-wider border-b border-slate-800 sticky top-0 z-10 backdrop-blur-md">
+          <thead class="bg-gray-100/95 dark:bg-slate-950/90 text-gray-700 dark:text-slate-300 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10 backdrop-blur-md">
             <tr>
-              <th class="px-3.5 py-3 text-emerald-400 min-w-[170px]">Bentuk ます (Masu)</th>
-              <th class="px-3 py-3 text-cyan-300">Bentuk て (Te)</th>
-              <th class="px-3 py-3 text-indigo-300">Bentuk Kamus (Jisho)</th>
-              <th class="px-3 py-3 text-rose-300">Bentuk ない (Nai)</th>
-              <th class="px-3 py-3 text-amber-300">Bentuk た (Ta)</th>
-              <th class="px-3.5 py-3 text-slate-300 min-w-[140px]">Arti Indonesia</th>
-              <th class="px-2.5 py-3 text-center w-16 text-slate-400">Bab</th>
+              <th class="px-3.5 py-3 text-emerald-700 dark:text-emerald-400 min-w-[170px]">Bentuk ます (Masu)</th>
+              <th class="px-3 py-3 text-cyan-700 dark:text-cyan-300">Bentuk て (Te)</th>
+              <th class="px-3 py-3 text-indigo-700 dark:text-indigo-300">Bentuk Kamus (Jisho)</th>
+              <th class="px-3 py-3 text-rose-700 dark:text-rose-300">Bentuk ない (Nai)</th>
+              <th class="px-3 py-3 text-amber-700 dark:text-amber-300">Bentuk た (Ta)</th>
+              <th class="px-3.5 py-3 text-gray-700 dark:text-slate-300 min-w-[140px]">Arti Indonesia</th>
+              <th class="px-2.5 py-3 text-center w-16 text-gray-500 dark:text-slate-400">Bab</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/60">
+          <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
             <tr 
               v-for="(v, idx) in filteredVerbs" 
               :key="v.masu + '_' + idx"
-              class="hover:bg-slate-800/50 transition group"
+              class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition group"
             >
               <!-- Bentuk Masu + Reading -->
               <td class="px-3.5 py-2.5">
                 <div class="flex items-center justify-between gap-2">
                   <div>
-                    <div class="font-extrabold text-white font-jp text-sm sm:text-base group-hover:text-emerald-300 transition whitespace-nowrap">
+                    <div class="font-extrabold text-gray-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition whitespace-nowrap">
                       {{ v.masu }}
                     </div>
-                    <div class="text-[11px] text-slate-400 font-jp mt-0.5">
+                    <div class="text-[11px] text-gray-500 dark:text-slate-400 font-jp mt-0.5">
                       {{ v.masu_reading }}
                     </div>
                   </div>
@@ -234,40 +234,40 @@ const filteredVerbs = computed(() => {
 
               <!-- Bentuk Te -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-cyan-200 font-jp text-xs sm:text-sm bg-cyan-950/40 px-2 py-1 rounded-lg border border-cyan-800/40 inline-block">
+                <span class="font-bold text-cyan-800 dark:text-cyan-200 font-jp text-xs sm:text-sm bg-cyan-50 dark:bg-cyan-950/40 px-2 py-1 rounded-lg border border-cyan-200 dark:border-cyan-800/40 inline-block">
                   {{ v.te }}
                 </span>
               </td>
 
               <!-- Bentuk Kamus -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-indigo-200 font-jp text-xs sm:text-sm bg-indigo-950/40 px-2 py-1 rounded-lg border border-indigo-800/40 inline-block">
+                <span class="font-bold text-indigo-800 dark:text-indigo-200 font-jp text-xs sm:text-sm bg-indigo-50 dark:bg-indigo-950/40 px-2 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/40 inline-block">
                   {{ v.kamus }}
                 </span>
               </td>
 
               <!-- Bentuk Nai -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-rose-200 font-jp text-xs sm:text-sm bg-rose-950/40 px-2 py-1 rounded-lg border border-rose-800/40 inline-block">
+                <span class="font-bold text-rose-800 dark:text-rose-200 font-jp text-xs sm:text-sm bg-rose-50 dark:bg-rose-950/40 px-2 py-1 rounded-lg border border-rose-200 dark:border-rose-800/40 inline-block">
                   {{ v.nai }}
                 </span>
               </td>
 
               <!-- Bentuk Ta -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-amber-200 font-jp text-xs sm:text-sm bg-amber-950/40 px-2 py-1 rounded-lg border border-amber-800/40 inline-block">
+                <span class="font-bold text-amber-800 dark:text-amber-200 font-jp text-xs sm:text-sm bg-amber-50 dark:bg-amber-950/40 px-2 py-1 rounded-lg border border-amber-200 dark:border-amber-800/40 inline-block">
                   {{ v.ta }}
                 </span>
               </td>
 
               <!-- Arti -->
-              <td class="px-3.5 py-2.5 text-xs sm:text-sm text-slate-200 font-medium">
+              <td class="px-3.5 py-2.5 text-xs sm:text-sm text-gray-700 dark:text-slate-200 font-medium">
                 {{ v.meaning }}
               </td>
 
               <!-- Bab Badge -->
               <td class="px-2.5 py-2.5 text-center">
-                <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-black bg-slate-800 text-slate-300 border border-slate-700/80">
+                <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-[10px] font-black bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700/80">
                   L{{ v.pelajaran }}
                 </span>
               </td>
@@ -277,7 +277,7 @@ const filteredVerbs = computed(() => {
       </div>
 
       <!-- Empty Filter State -->
-      <div v-if="filteredVerbs.length === 0" class="py-14 text-center text-slate-400 text-sm">
+      <div v-if="filteredVerbs.length === 0" class="py-14 text-center text-gray-400 dark:text-slate-400 text-sm">
         Tidak ada kata kerja yang cocok dengan filter atau kata pencarian.
       </div>
     </div>

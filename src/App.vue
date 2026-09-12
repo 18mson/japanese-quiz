@@ -107,6 +107,7 @@ onMounted(async () => {
   checkRouteState();
   settingsStore.applyTheme();
   await authStore.checkSession();
+  await quizStore.loadStreaksFromStorage();
 });
 
 onUnmounted(() => {

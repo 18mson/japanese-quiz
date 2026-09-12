@@ -112,28 +112,28 @@ onUnmounted(() => {
     <Transition name="fade">
       <div 
         v-if="isOpen" 
-        class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-2.5 sm:p-5 select-none animate-fadeIn"
+        class="fixed inset-0 bg-slate-950/50 dark:bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-2.5 sm:p-5 select-none animate-fadeIn"
         @click.self="emit('close')"
       >
         <div 
-          class="max-w-5xl w-full bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[90vh] max-h-[880px] animate-scaleUp relative"
+          class="max-w-5xl w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[90vh] max-h-[880px] animate-scaleUp relative text-slate-800 dark:text-slate-100"
         >
           <!-- Top Decorative Glows -->
-          <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-600/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
           <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
           <!-- Header Bar -->
-          <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-slate-900 via-indigo-950/80 to-slate-900 border-b border-slate-800 flex items-center justify-between shadow-md flex-shrink-0 relative z-10">
+          <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-gray-50 via-indigo-50/50 to-gray-50 dark:from-slate-900 dark:via-indigo-950/80 dark:to-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between shadow-xs flex-shrink-0 relative z-10">
             <div class="flex items-center gap-2.5 sm:gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
-                <BookMarked class="w-5 h-5 text-amber-300" />
+              <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 border border-indigo-100 dark:border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 shadow-inner flex-shrink-0">
+                <BookMarked class="w-5 h-5 text-indigo-600 dark:text-amber-300" />
               </div>
               <div>
                 <div class="flex items-center gap-2">
-                  <h2 class="text-base sm:text-xl font-black text-white tracking-tight">Furoku (付録)</h2>
-                  <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-bold border border-indigo-500/30">Referensi Cepat</span>
+                  <h2 class="text-base sm:text-xl font-black text-gray-900 dark:text-white tracking-tight">Furoku (付録)</h2>
+                  <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-bold border border-indigo-200 dark:border-indigo-500/30">Referensi Cepat</span>
                 </div>
-                <p class="text-xs text-slate-400 mt-0.5 hidden sm:block">
+                <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5 hidden sm:block">
                   Buku saku lampiran: kata bilangan, ungkapan waktu, kata bantu bilangan, dan konjugasi kata kerja.
                 </p>
               </div>
@@ -141,8 +141,8 @@ onUnmounted(() => {
 
             <div class="flex items-center gap-2.5">
               <!-- Quick TTS Speed Toggle -->
-              <div class="hidden sm:flex items-center gap-1 bg-slate-950/80 border border-slate-700/60 p-1 rounded-xl shadow-inner">
-                <Volume2 class="w-3.5 h-3.5 text-indigo-400 ml-1 mr-0.5" />
+              <div class="hidden sm:flex items-center gap-1 bg-gray-100 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700/60 p-1 rounded-xl shadow-inner">
+                <Volume2 class="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 ml-1 mr-0.5" />
                 <button
                   v-for="rate in ([0.6, 0.9, 1.2] as const)"
                   :key="rate"
@@ -152,7 +152,7 @@ onUnmounted(() => {
                     'px-2 py-0.5 rounded-lg text-[11px] font-bold transition cursor-pointer',
                     settingsStore.speechRate === rate
                       ? 'bg-indigo-600 text-white shadow-xs font-black'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
                   ]"
                   :title="`Kecepatan Suara ${rate}x`"
                 >
@@ -163,7 +163,7 @@ onUnmounted(() => {
               <!-- Close Button -->
               <button 
                 @click="emit('close')"
-                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition cursor-pointer border border-slate-700/60"
+                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-500 hover:text-gray-800 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition cursor-pointer border border-gray-200 dark:border-slate-700/60"
                 title="Tutup (Esc)"
               >
                 <X class="w-4 h-4 sm:w-5 sm:h-5" />
@@ -172,15 +172,15 @@ onUnmounted(() => {
           </div>
 
           <!-- 4 Main Navigation Tabs -->
-          <div class="px-3 sm:px-6 py-2.5 bg-slate-950/70 border-b border-slate-800/80 flex items-center gap-1.5 sm:gap-2 overflow-x-auto flex-shrink-0 z-10">
+          <div class="px-3 sm:px-6 py-2.5 bg-gray-100/70 dark:bg-slate-950/70 border-b border-gray-200 dark:border-slate-800/80 flex items-center gap-1.5 sm:gap-2 overflow-x-auto flex-shrink-0 z-10">
             <!-- Tab 1: Kata Bilangan -->
             <button
               @click="activeTab = 'kata_bilangan'"
               :class="[
                 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
                 activeTab === 'kata_bilangan'
-                  ? 'bg-amber-500/20 border-amber-500/40 text-amber-300 shadow-xs shadow-amber-950/40'
-                  : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-amber-500/15 border-amber-500/40 text-amber-700 dark:text-amber-300 shadow-xs'
+                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
               ]"
             >
               <Hash class="w-4 h-4" />
@@ -193,8 +193,8 @@ onUnmounted(() => {
               :class="[
                 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
                 activeTab === 'ungkapan_waktu'
-                  ? 'bg-cyan-500/20 border-cyan-500/40 text-cyan-300 shadow-xs shadow-cyan-950/40'
-                  : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-700 dark:text-cyan-300 shadow-xs'
+                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
               ]"
             >
               <Clock class="w-4 h-4" />
@@ -207,8 +207,8 @@ onUnmounted(() => {
               :class="[
                 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
                 activeTab === 'kata_bantu_bilangan'
-                  ? 'bg-violet-500/20 border-violet-500/40 text-violet-300 shadow-xs shadow-violet-950/40'
-                  : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-violet-500/15 border-violet-500/40 text-violet-700 dark:text-violet-300 shadow-xs'
+                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
               ]"
             >
               <Layers class="w-4 h-4" />
@@ -221,8 +221,8 @@ onUnmounted(() => {
               :class="[
                 'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
                 activeTab === 'konjugasi_kata_kerja'
-                  ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 shadow-xs shadow-emerald-950/40'
-                  : 'bg-slate-900/60 border-slate-800/80 text-slate-400 hover:text-slate-200 hover:border-slate-700'
+                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 shadow-xs'
+                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
               ]"
             >
               <BookOpen class="w-4 h-4" />
@@ -231,10 +231,10 @@ onUnmounted(() => {
           </div>
 
           <!-- Content Body (Scrollable) -->
-          <div class="p-3.5 sm:p-6 overflow-y-auto flex-1 bg-slate-950/50 min-h-0 relative">
+          <div class="p-3.5 sm:p-6 overflow-y-auto flex-1 bg-gray-50/60 dark:bg-slate-950/50 min-h-0 relative">
             <!-- Loading Indicator Overlay (Non-blocking) -->
-            <div v-if="isLoading" class="absolute top-2 right-4 flex items-center gap-1.5 text-xs text-slate-400">
-              <Loader2 class="w-3.5 h-3.5 animate-spin text-indigo-400" />
+            <div v-if="isLoading" class="absolute top-2 right-4 flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
+              <Loader2 class="w-3.5 h-3.5 animate-spin text-indigo-500 dark:text-indigo-400" />
               <span>Sinkronisasi...</span>
             </div>
 
@@ -261,13 +261,13 @@ onUnmounted(() => {
           </div>
 
           <!-- Footer Bar -->
-          <div class="px-4 sm:px-6 py-2.5 sm:py-3 bg-slate-900 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-medium flex-shrink-0">
+          <div class="px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 font-medium flex-shrink-0">
             <span class="text-[11px] sm:text-xs">
               Sumber: <em>Terjemahan dan Keterangan Tata Bahasa Minna no Nihongo (Indonesian Edition)</em>
             </span>
             <button 
               @click="emit('close')"
-              class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-xl transition cursor-pointer text-xs sm:text-sm border border-slate-700"
+              class="px-4 py-1.5 bg-white hover:bg-gray-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 font-bold rounded-xl transition cursor-pointer text-xs sm:text-sm border border-gray-200 dark:border-slate-700 shadow-2xs"
             >
               Tutup
             </button>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Target, BookOpen, BookMarked, Trophy } from '@lucide/vue';
+import { Target, BookOpen, Trophy } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import DailyGoalProgressBar from '../goals/DailyGoalProgressBar.vue';
 
@@ -68,15 +68,6 @@ const onAction = (action: () => void) => {
         <span class="hidden sm:inline">Referensi Bab</span>
       </button>
 
-      <button 
-        type="button"
-        @click.stop="onAction(() => emit('openFuroku'))"
-        class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border border-violet-200/80 dark:border-violet-800/80 hover:bg-violet-100 dark:hover:bg-violet-900/50 shadow-2xs"
-        title="Furoku (付録) - Lampiran Bilangan, Waktu, Counter, Konjugasi Kata Kerja"
-      >
-        <BookMarked class="w-4 h-4 text-violet-500 flex-shrink-0" />
-        <span>Furoku</span>
-      </button>
 
       <button 
         type="button"
