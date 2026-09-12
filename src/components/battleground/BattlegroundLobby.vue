@@ -298,8 +298,8 @@ const emit = defineEmits<{ exit: [] }>();
                   ⚔️
                 </div>
                 <div class="min-w-0">
-                  <div class="text-xs font-black text-white truncate">Battleground</div>
-                  <div class="text-[10px] text-slate-400 truncate">Typing Royale Eliminasi</div>
+                  <div class="text-xs font-black text-white truncate">Adu Ketik</div>
+                  <div class="text-[10px] text-slate-400 truncate">Typing Eliminasi</div>
                 </div>
               </button>
             </div>
@@ -483,7 +483,7 @@ const emit = defineEmits<{ exit: [] }>();
                       🔥 {{ room.quiz_category === 'kotoba_kanji' ? 'Kotoba' : room.quiz_category }}{{ room.kana_category && room.kana_category !== 'all' ? ` · ${room.kana_category}` : '' }}
                     </span>
                     <span v-else class="px-1.5 py-0.2 rounded text-[9px] font-black bg-rose-500/20 text-rose-300 border border-rose-500/40">
-                      ⚔️ Battleground
+                      Adu Ketik
                     </span>
                   </div>
                   <div class="text-[10px] text-slate-400 flex items-center gap-1.5 mt-0.5">
@@ -627,8 +627,8 @@ const emit = defineEmits<{ exit: [] }>();
                 ⚔️
               </div>
               <div>
-                <h2 class="text-base font-black text-rose-300">Mode: Battleground</h2>
-                <p class="text-[11px] text-slate-400">Typing Battle Royale Eliminasi</p>
+                <h2 class="text-base font-black text-rose-300">Mode: Adu Ketik</h2>
+                <p class="text-[11px] text-slate-400">Typing Eliminasi</p>
               </div>
             </div>
 
@@ -708,7 +708,7 @@ const emit = defineEmits<{ exit: [] }>();
             🔥 Quiz Blitz · {{ store.quizCategory === 'kotoba_kanji' ? 'Kotoba & Kanji N5' : store.quizCategory + (store.kanaCategory && store.kanaCategory !== 'all' ? ` (${store.kanaCategory})` : '') }}
           </span>
           <span v-else class="px-2 py-0.5 rounded-lg bg-rose-500/20 border border-rose-500/40 text-rose-300 font-black flex items-center gap-1">
-            ⚔️ Typing Battleground
+            ⚔️ Adu Ketik
           </span>
         </div>
         <span class="text-slate-400 font-medium">Durasi: {{ store.gameMode === 'quiz_blitz' ? '5 Menit (10s/soal)' : 'Eliminasi' }}</span>

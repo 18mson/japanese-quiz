@@ -215,7 +215,7 @@ onUnmounted(() => {
                   <span class="px-2 py-0.5 text-[10px] font-bold bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 rounded-md">2–8 Players</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
-                  Arena Battle Royale Mengetik real-time! Adu kecepatan & ketepatan mengetik kalimat Jepang bersama pemain lain.
+                  Arena duel multiplayer real-time! Tersedia mode <strong>Adu Ketik</strong> (eliminasi romaji) dan <strong>Quiz Blitz</strong> (adu refleks pilihan ganda).
                 </p>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                   <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">

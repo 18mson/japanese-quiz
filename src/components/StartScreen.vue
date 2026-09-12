@@ -423,9 +423,9 @@ const modesList: QuizModeDef[] = [
     defaultType: 'angka',
     desc: 'Latihan angka dan kata bantu hitung (counter) bahasa Jepang dengan sistem wave bertahap dan mode bolak-balik.',
     subTypes: [
-      { key: 'angka', label: '🔢 Angka' },
-      { key: 'counter', label: '🏷️ Counter' },
-      { key: 'campuran', label: '✨ Campuran' },
+      { key: 'angka', label: 'Angka' },
+      { key: 'counter', label: 'Counter' },
+      { key: 'campuran', label: 'Campuran' },
     ],
     icon: Calculator,
     discGradient: 'from-amber-500 via-orange-600 to-rose-600',
@@ -438,10 +438,10 @@ const modesList: QuizModeDef[] = [
     levelTag: 'Multiplayer',
     level: 'battleground',
     defaultType: 'battleground',
-    desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Battleground atau Quiz Blitz.',
+    desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Adu Ketik atau Quiz Blitz.',
     subTypes: [
-      { key: 'quiz_blitz', label: '🔥 Quiz Blitz' },
-      { key: 'battleground', label: '⚔️ Battleground' },
+      { key: 'quiz_blitz', label: 'Quiz Blitz' },
+      { key: 'battleground', label: 'Adu Ketik' },
     ],
     icon: Swords,
     discGradient: 'from-red-500 via-rose-500 to-amber-600',
@@ -848,7 +848,7 @@ const handleStart = async () => {
                   <Users class="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <div class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100">Aturan Battleground (Typing)</div>
+                  <div class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-100">Aturan Adu Ketik</div>
                   <div class="text-xs sm:text-sm text-gray-600 dark:text-slate-300 font-medium leading-tight">
                     2–8 Pemain • Eliminasi bertahap • Adu kecepatan mengetik romaji
                   </div>
@@ -1186,7 +1186,7 @@ const handleStart = async () => {
               Loading Questions...
             </div>
             <div v-else-if="selectedLevel === 'battleground'" key="battleground" class="flex items-center justify-center gap-2 w-full">
-              <span>Masuk Arena Battleground</span>
+              <span>Masuk Arena Duel Online</span>
               <Swords class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div v-else-if="activeMode.id === 'hitungan'" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-slate-950">
