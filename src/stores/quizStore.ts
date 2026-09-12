@@ -18,6 +18,8 @@ import { kanjiWritingEntries, kanjiWritingEntriesMap, kanjiLessonList } from '..
 import { useGoalsStore } from './goalsStore';
 import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
 import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } from '../types/lesson';
+import { HITUNGAN_WAVES, type HitunganWaveDef } from '../data/hitunganWaves';
+import { HitunganService, type HitunganProgressRecord } from '../services/hitunganService';
 
 export const useQuizStore = defineStore('quiz', () => {
   const isLoading = ref(false);
@@ -178,9 +180,26 @@ export const useQuizStore = defineStore('quiz', () => {
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
-  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing'>('multiple_choice');
+  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>('multiple_choice');
   const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
   const selectedKanjiLessonNumber = ref<number>(0);
+
+  // Hitungan State
+  const selectedHitunganWave = ref<HitunganWaveDef>(HITUNGAN_WAVES[0]);
+  const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
+  const hitunganProgressMap = ref<Record<string, HitunganProgressRecord>>({});
+
+  const unlockedHitunganWaveKeys = computed(() => {
+    return Object.keys(hitunganProgressMap.value).filter(
+      key => hitunganProgressMap.value[key]?.tutorial_seen
+    );
+  });
+
+  const loadHitunganProgress = async () => {
+    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
+    const prog = await HitunganService.getProgress(authUserId);
+    hitunganProgressMap.value = prog;
+  };
 
   const activeKanjiLessonNumber = computed(() => {
     if (selectedKanjiLessonNumber.value && selectedKanjiLessonNumber.value > 0) {
@@ -864,6 +883,7 @@ export const useQuizStore = defineStore('quiz', () => {
     finishSentenceQuiz,
     nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
     getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks,
-    loadRenshuuProgress, recordRenshuuAnswer
+    loadRenshuuProgress, recordRenshuuAnswer,
+    selectedHitunganWave, selectedHitunganDirection, hitunganProgressMap, unlockedHitunganWaveKeys, loadHitunganProgress
   };
 });

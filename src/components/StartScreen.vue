@@ -2,19 +2,74 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBattlegroundStore } from '../stores/battlegroundStore';
-import { Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked, PenTool, ChevronLeft, ChevronRight } from '@lucide/vue';
+import { useAuthStore } from '../stores/authStore';
+import { 
+  Zap, Target, Swords, Users, Keyboard, BookOpen, Layers, Trophy, Sparkles, BookMarked, 
+  PenTool, ChevronLeft, ChevronRight, Calculator, CheckCircle2, ArrowRight
+} from '@lucide/vue';
 import { playRouletteTickSound } from '../utils/battleSoundManager';
 import DailyGoalProgressBar from './goals/DailyGoalProgressBar.vue';
 import LessonReferenceModal from './lesson/LessonReferenceModal.vue';
+import HitunganTutorialModal from './hitungan/HitunganTutorialModal.vue';
 import { kanjiLessonList } from '../data/kanjiWritingPrompts';
+import { HITUNGAN_WAVES, type HitunganWaveDef } from '../data/hitunganWaves';
+import { HitunganService } from '../services/hitunganService';
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
+const authStore = useAuthStore();
 const isReferenceModalOpen = ref(false);
 const characterTypes = ref('hiragana');
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
+
+// Hitungan Mode Selection State
+const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
+const selectedHitunganWaveKey = ref<string>('basic_1_10');
+const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
+const isHitunganTutorialOpen = ref(false);
+const hitunganWaveForTutorial = ref<HitunganWaveDef | null>(null);
+
+const currentHitunganWave = computed(() => {
+  return HITUNGAN_WAVES.find(w => w.wave_key === selectedHitunganWaveKey.value) || HITUNGAN_WAVES[0];
+});
+
+const filteredHitunganWaves = computed(() => {
+  if (selectedHitunganTab.value === 'angka') {
+    return HITUNGAN_WAVES.filter(w => w.type === 'number_range');
+  }
+  if (selectedHitunganTab.value === 'counter') {
+    return HITUNGAN_WAVES.filter(w => w.type === 'counter');
+  }
+  return HITUNGAN_WAVES.filter(w => w.type === 'mixed');
+});
+
+const openHitunganTutorial = (wave: HitunganWaveDef) => {
+  hitunganWaveForTutorial.value = wave;
+  isHitunganTutorialOpen.value = true;
+};
+
+const startHitunganPracticeFromTutorial = async () => {
+  if (hitunganWaveForTutorial.value) {
+    await HitunganService.saveProgress(
+      hitunganWaveForTutorial.value.wave_key,
+      { tutorial_seen: true },
+      authStore.user?.id,
+      hitunganWaveForTutorial.value.id
+    );
+    await quizStore.loadHitunganProgress();
+  }
+  isHitunganTutorialOpen.value = false;
+  launchHitunganQuiz();
+};
+
+const launchHitunganQuiz = () => {
+  quizStore.selectedMode = 'hitungan';
+  quizStore.selectedHitunganWave = currentHitunganWave.value;
+  quizStore.selectedHitunganDirection = selectedHitunganDirection.value;
+  emit('start');
+};
 
 // Responsive screen detection
 const isMobile = ref(false);
@@ -197,6 +252,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 onMounted(() => {
   updateResponsive();
   quizStore.loadRenshuuProgress();
+  quizStore.loadHitunganProgress();
   window.addEventListener('resize', updateResponsive);
   window.addEventListener('keydown', handleKeydown);
   window.addEventListener('pointerdown', deactivateKeyboardNav);
@@ -206,6 +262,15 @@ onMounted(() => {
 watch(characterTypes, (newVal) => {
   if (newVal === 'renshuu') {
     quizStore.loadRenshuuProgress();
+  } else if (['angka', 'counter', 'campuran'].includes(newVal)) {
+    selectedHitunganTab.value = newVal as any;
+    if (newVal === 'angka' && !filteredHitunganWaves.value.some(w => w.wave_key === selectedHitunganWaveKey.value)) {
+      selectedHitunganWaveKey.value = 'basic_1_10';
+    } else if (newVal === 'counter' && !filteredHitunganWaves.value.some(w => w.wave_key === selectedHitunganWaveKey.value)) {
+      selectedHitunganWaveKey.value = 'counter_hon';
+    } else if (newVal === 'campuran') {
+      selectedHitunganWaveKey.value = 'mixed_review';
+    }
   }
 });
 
@@ -301,6 +366,23 @@ const modesList: QuizModeDef[] = [
     discGradient: 'from-violet-500 via-purple-600 to-indigo-600',
     discShadow: 'shadow-violet-500/25',
     discPulse: 'bg-violet-400',
+  },
+  {
+    id: 'hitungan',
+    title: 'Hitungan (数字)',
+    levelTag: 'Numbers & Counters',
+    level: 'basic',
+    defaultType: 'angka',
+    desc: 'Latihan angka dan kata bantu hitung (counter) bahasa Jepang dengan sistem wave bertahap dan mode bolak-balik.',
+    subTypes: [
+      { key: 'angka', label: '🔢 Angka' },
+      { key: 'counter', label: '🏷️ Counter' },
+      { key: 'campuran', label: '✨ Campuran' },
+    ],
+    icon: Calculator,
+    discGradient: 'from-amber-500 via-orange-600 to-rose-600',
+    discShadow: 'shadow-amber-500/25',
+    discPulse: 'bg-amber-400',
   },
   {
     id: 'battleground',
@@ -435,6 +517,10 @@ const getModeDescription = (mode: QuizModeDef) => {
     if (characterTypes.value === 'words') return 'Latihan mengetik kosakata berhuruf Kanji';
     if (characterTypes.value === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play';
     if (characterTypes.value === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5';
+  } else if (mode.id === 'hitungan') {
+    if (selectedHitunganTab.value === 'angka') return 'Latihan angka dasar 1-10, puluhan, ratusan, dan ribuan bertahap.';
+    if (selectedHitunganTab.value === 'counter') return 'Latihan kata bantu hitung (counter) seperti 本, 杯, 匹, 個, dll.';
+    if (selectedHitunganTab.value === 'campuran') return 'Review gabungan dari seluruh wave yang sudah dipelajari polanya.';
   }
   return mode.desc;
 };
@@ -442,6 +528,17 @@ const getModeDescription = (mode: QuizModeDef) => {
 const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku']);
 
 const handleStart = async () => {
+  if (activeMode.value.id === 'hitungan') {
+    const wave = currentHitunganWave.value;
+    const prog = quizStore.hitunganProgressMap[wave.wave_key];
+    // If user has not seen tutorial yet, display preview tutorial card first!
+    if (!prog?.tutorial_seen) {
+      openHitunganTutorial(wave);
+      return;
+    }
+    launchHitunganQuiz();
+    return;
+  }
   if (selectedLevel.value === 'battleground') {
     if (characterTypes.value === 'quiz_blitz') {
       battlegroundStore.gameMode = 'quiz_blitz';
@@ -461,6 +558,13 @@ const handleStart = async () => {
 
 <template>
   <div class="max-w-4xl mx-auto p-3.5 sm:p-6 pb-36 sm:pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
+    <!-- Hitungan Tutorial Modal -->
+    <HitunganTutorialModal 
+      :is-open="isHitunganTutorialOpen" 
+      :wave="hitunganWaveForTutorial" 
+      @close="isHitunganTutorialOpen = false" 
+      @start="startHitunganPracticeFromTutorial" 
+    />
     
     <!-- SECTION 1: HEADER BAR (Grid & Leaderboard Buttons) -->
     <div 
@@ -922,6 +1026,124 @@ const handleStart = async () => {
               </div>
             </div>
 
+            <!-- Hitungan Mode Wave & Direction Selector Banner -->
+            <div 
+              v-else-if="activeMode.id === 'hitungan'"
+              key="hitungan-banner"
+              class="bg-gradient-to-r from-amber-50/80 via-orange-50/60 to-rose-50/80 dark:from-amber-950/50 dark:via-orange-950/30 dark:to-rose-950/50 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn"
+            >
+              <!-- Top Row: Category Tabs + Pattern Modal Trigger -->
+              <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                <div class="flex items-center gap-1 bg-white/80 dark:bg-slate-900/80 p-1 rounded-xl border border-amber-200/80 dark:border-amber-800/80">
+                  <button
+                    type="button"
+                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'angka'; selectedHitunganWaveKey = 'basic_1_10';"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
+                      selectedHitunganTab === 'angka'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ]"
+                  >
+                    🔢 Angka
+                  </button>
+                  <button
+                    type="button"
+                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'counter'; selectedHitunganWaveKey = 'counter_hon';"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
+                      selectedHitunganTab === 'counter'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ]"
+                  >
+                    🏷️ Counter
+                  </button>
+                  <button
+                    type="button"
+                    @click.stop="deactivateKeyboardNav(); selectedHitunganTab = 'campuran'; selectedHitunganWaveKey = 'mixed_review';"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer',
+                      selectedHitunganTab === 'campuran'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-xs'
+                        : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                    ]"
+                  >
+                    ✨ Campuran
+                  </button>
+                </div>
+
+                <!-- Preview Pattern Button -->
+                <button
+                  type="button"
+                  @click.stop="openHitunganTutorial(currentHitunganWave)"
+                  class="px-2.5 py-1.5 rounded-xl bg-white/90 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-amber-900/40 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
+                  title="Buka Penjelasan Pola & Pengecualian"
+                >
+                  <BookOpen class="w-3.5 h-3.5 text-amber-500" />
+                  <span>Lihat Pola</span>
+                </button>
+              </div>
+
+              <!-- Middle Row: Wave Chips Selector -->
+              <div class="flex items-center gap-1.5 overflow-x-auto py-1 pr-1 scrollbar-thin">
+                <button
+                  v-for="wave in filteredHitunganWaves"
+                  :key="wave.wave_key"
+                  type="button"
+                  @click.stop="deactivateKeyboardNav(); selectedHitunganWaveKey = wave.wave_key;"
+                  :class="[
+                    'px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1.5 shadow-2xs',
+                    selectedHitunganWaveKey === wave.wave_key
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
+                      : 'bg-white/85 dark:bg-slate-800/85 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700'
+                  ]"
+                >
+                  <span>{{ wave.shortTitle }}</span>
+                  <!-- Checkmark if tutorial already seen -->
+                  <CheckCircle2 
+                    v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen" 
+                    class="w-3.5 h-3.5" 
+                    :class="selectedHitunganWaveKey === wave.wave_key ? 'text-slate-950' : 'text-emerald-500'" 
+                  />
+                </button>
+              </div>
+
+              <!-- Direction Selector -->
+              <div class="flex items-center justify-between pt-1 border-t border-amber-200/60 dark:border-amber-800/50 flex-wrap gap-1.5">
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 dark:text-amber-300">
+                  Arah Latihan:
+                </span>
+
+                <div class="flex items-center gap-1 bg-white/70 dark:bg-slate-900/70 p-0.5 rounded-xl border border-amber-200 dark:border-amber-800/60">
+                  <button
+                    type="button"
+                    @click.stop="selectedHitunganDirection = 'number_to_kana'"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
+                      selectedHitunganDirection === 'number_to_kana'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-2xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ]"
+                  >
+                    🔢 Angka ➔ かな
+                  </button>
+                  <button
+                    type="button"
+                    @click.stop="selectedHitunganDirection = 'kana_to_number'"
+                    :class="[
+                      'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
+                      selectedHitunganDirection === 'kana_to_number'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-2xs'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ]"
+                  >
+                    かな ➔ 🔢 Angka
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
               Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
             </div>
@@ -977,6 +1199,9 @@ const handleStart = async () => {
           <span v-else-if="characterTypes === 'kanji'" class="text-emerald-600 dark:text-emerald-400 font-bold">
             Target: {{ quizStore.currentKanjiLessonLabel }} ({{ quizStore.currentKanjiLessonStats.total }} Kanji N5)
           </span>
+          <span v-else-if="activeMode.id === 'hitungan'" class="text-amber-600 dark:text-amber-400 font-bold">
+            Wave: {{ currentHitunganWave.title }} • {{ selectedHitunganDirection === 'number_to_kana' ? 'Ketik Kana' : 'Numpad Touch' }}
+          </span>
           <span v-else class="text-slate-400 font-bold">
             {{ characterTypes === 'words' ? '8 Kanji' : (characterTypes === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
           </span>
@@ -988,9 +1213,11 @@ const handleStart = async () => {
             'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden',
             selectedLevel === 'battleground'
               ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25'
-              : characterTypes === 'renshuu'
-                ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-violet-500/25'
-                : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
+              : activeMode.id === 'hitungan'
+                ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/25 text-slate-950 font-black'
+                : characterTypes === 'renshuu'
+                  ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-violet-500/25'
+                  : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
             isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-indigo-400/60 shadow-lg' : ''
           ]"
           @click="deactivateKeyboardNav(); handleStart();"
@@ -1007,6 +1234,10 @@ const handleStart = async () => {
             <div v-else-if="selectedLevel === 'battleground'" key="battleground" class="flex items-center justify-center gap-2 w-full">
               <span>Masuk Arena Battleground</span>
               <Swords class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+            </div>
+            <div v-else-if="activeMode.id === 'hitungan'" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-slate-950">
+              <span>Mulai: {{ currentHitunganWave.shortTitle }} ({{ selectedHitunganDirection === 'number_to_kana' ? 'Angka ➔ Kana' : 'Kana ➔ Angka' }})</span>
+              <ArrowRight class="w-5 h-5 sm:w-6 sm:h-6 text-slate-950" />
             </div>
             <div v-else-if="characterTypes === 'renshuu'" key="renshuu" class="flex items-center justify-center gap-2 w-full">
               <span>Mulai Sesi Berikutnya (10 Soal)</span>

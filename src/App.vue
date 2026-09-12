@@ -18,6 +18,7 @@ import KaiwaPlayer from './components/KaiwaPlayer.vue';
 import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
 import QuizWritingPlayer from './components/writing/QuizWritingPlayer.vue';
+import QuizHitunganPlayer from './components/hitungan/QuizHitunganPlayer.vue';
 
 import AboutModal from './components/AboutModal.vue';
 import ReferenceModal from './components/reference/ReferenceModal.vue';
@@ -657,14 +658,14 @@ const goToHome = () => {
     <div 
       v-else 
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
-      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-3xl pb-32 md:pb-20' : 'max-w-2xl pb-48 md:pb-20')"
     >
-      <QuizHeader v-if="!quizStore.quizCompleted" class="flex-shrink-0" />
+      <QuizHeader v-if="!quizStore.quizCompleted && quizStore.selectedMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" class="flex-shrink-0" />
       
       <main 
         class="w-full flex flex-col items-center justify-center flex-shrink-0 md:my-auto transition-all duration-300"
         :class="[
-          quizStore.selectedMode === 'writing'
+          quizStore.selectedMode === 'writing' || quizStore.selectedMode === 'hitungan'
             ? 'bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
             : 'bg-white dark:bg-slate-900 rounded-2xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]'
         ]"
@@ -676,6 +677,13 @@ const goToHome = () => {
         </div>
         <template v-else>
           <QuizWritingPlayer v-if="quizStore.selectedMode === 'writing'" @exit="goToHome" />
+          <QuizHitunganPlayer 
+            v-else-if="quizStore.selectedMode === 'hitungan'"
+            :initial-wave="quizStore.selectedHitunganWave"
+            :initial-direction="quizStore.selectedHitunganDirection"
+            :unlocked-wave-keys="quizStore.unlockedHitunganWaveKeys"
+            @exit="goToHome"
+          />
           <KaiwaPlayer v-else-if="quizStore.questionType === 'kaiwa'" />
           <RenshuuPlayer v-else-if="quizStore.questionType === 'renshuu'" />
           <QuizSentenceTyping v-else-if="quizStore.questionType === 'sentences'" />
@@ -690,7 +698,7 @@ const goToHome = () => {
       </main>
       
       <QuizResults v-else class="flex-1 overflow-hidden" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
-      <QuizBottomNav :quiz-started="quizStarted" />
+      <QuizBottomNav v-if="quizStore.selectedMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" :quiz-started="quizStarted" />
     </div>
   </div>
 </template>
