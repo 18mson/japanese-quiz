@@ -53,7 +53,6 @@ export const wordsData: JapaneseWord[] = [
   { character: 'かぎ', kana: 'かぎ', romaji: ['kagi'], meaning: 'kunci', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
   { character: 'かばん', kana: 'かばん', romaji: ['kaban'], meaning: 'tas', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
   { character: 'テレビ', kana: 'テレビ', romaji: ['terebi'], meaning: 'televisi', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
-  { character: 'CD', kana: 'シーディー', romaji: ['shi-di-', 'shidi', 'cd', 'si-di-'], meaning: 'CD', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
   { character: 'ラジオ', kana: 'ラジオ', romaji: ['rajio'], meaning: 'radio', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
   { character: 'カメラ', kana: 'カメラ', romaji: ['kamera'], meaning: 'kamera', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },
   { character: 'コンピューター', kana: 'コンピューター', romaji: ['konpyuutaa', 'konpyuta'], meaning: 'komputer, PC', type: 'word', lesson: 'Pelajaran 2', category_word: 'Kata Benda' },

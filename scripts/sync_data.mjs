@@ -44,7 +44,6 @@ const baseAdditionalWords = [
   { kanji: 'かぎ', kana: 'かぎ', romaji: ['kagi'], meaning: 'kunci', category: 'Kata Benda', lesson: 'Pelajaran 2' },
   { kanji: 'かばん', kana: 'かばん', romaji: ['kaban'], meaning: 'tas', category: 'Kata Benda', lesson: 'Pelajaran 2' },
   { kanji: 'テレビ', kana: 'テレビ', romaji: ['terebi'], meaning: 'televisi', category: 'Kata Benda', lesson: 'Pelajaran 2' },
-  { kanji: 'CD', kana: 'シーディー', romaji: ['shi-di-', 'shidi', 'cd', 'si-di-'], meaning: 'CD', category: 'Kata Benda', lesson: 'Pelajaran 2' },
   { kanji: 'ラジオ', kana: 'ラジオ', romaji: ['rajio'], meaning: 'radio', category: 'Kata Benda', lesson: 'Pelajaran 2' },
   { kanji: 'カメラ', kana: 'カメラ', romaji: ['kamera'], meaning: 'kamera', category: 'Kata Benda', lesson: 'Pelajaran 2' },
   { kanji: 'コンピューター', kana: 'コンピューター', romaji: ['konpyuutaa', 'konpyuta'], meaning: 'komputer, PC', category: 'Kata Benda', lesson: 'Pelajaran 2' },
