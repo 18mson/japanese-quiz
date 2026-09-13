@@ -522,10 +522,7 @@ export const useQuizStore = defineStore('quiz', () => {
     }
 
     if (type === 'words') {
-      finalPool = finalPool.filter(w => {
-        const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
-        return cleanKana.length > 1;
-      });
+      finalPool = finalPool.filter(w => !!w.character && w.character.trim().length > 0);
 
       // Urutkan kata/kanji berdasarkan urutan pelajaran progresif (Pelajaran 1 s/d 25)
       finalPool.sort((a, b) => {

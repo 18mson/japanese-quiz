@@ -94,10 +94,7 @@ export const getFallbackLocalPool = (type: string, _level: string = 'basic'): an
     return [...hiraganaData, ...katakanaData];
   }
   if (type === 'words') {
-    return wordsData.filter(w => {
-      const cleanKana = (w.kana || '').replace(/[～ー\-?？\s]/g, '');
-      return cleanKana.length > 1;
-    });
+    return wordsData.filter(w => !!w.character && w.character.trim().length > 0);
   }
   if (type === 'kanji') {
     return kanjiN5Data;
