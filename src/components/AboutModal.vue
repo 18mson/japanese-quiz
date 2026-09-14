@@ -16,9 +16,13 @@ import {
   CheckCircle2,
   Users,
   Flame,
-  Award
+  Award,
+  Calculator,
+  PenTool,
+  GitBranch
 } from '@lucide/vue';
 import BaseModal from './common/BaseModal.vue';
+import { APP_VERSION, VERSION_HISTORY } from '../config/version';
 
 defineProps<{
   isOpen: boolean;
@@ -45,7 +49,7 @@ defineEmits<{
             <div>
               <h2 class="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
                 <span>Tentang Nihongo Master</span>
-                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-full uppercase tracking-wider">v0.1.0</span>
+                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-full uppercase tracking-wider">v{{ APP_VERSION }}</span>
               </h2>
               <p class="text-xs text-gray-500 dark:text-slate-400 font-medium">Platform Belajar Mengetik & Vocabulary Jepang Interaktif</p>
             </div>
@@ -78,7 +82,7 @@ defineEmits<{
               <p class="text-indigo-100 text-xs sm:text-sm leading-relaxed font-normal">
                 <strong>Nihongo Master</strong> diciptakan dengan satu tujuan utama: 
                 <span class="text-amber-300 font-bold">membuat proses belajar Bahasa Jepang menjadi sangat menyenangkan (FUN)</span>. 
-                Kami mengubah latihan hafalan kana & kosakata yang kaku menjadi pengalaman interaktif berbasis kecepatan mengetik, tantangan adaptif, dan duel multiplayer battleground yang memicu adrenalin.
+                Kami mengubah latihan hafalan kana & kosakata yang kaku menjadi pengalaman interaktif berbasis kecepatan mengetik, tantangan adaptif, dan duel online yang memicu adrenalin.
               </p>
               
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
@@ -105,7 +109,7 @@ defineEmits<{
                     <Swords class="w-4 h-4" />
                   </div>
                   <div>
-                    <div class="font-extrabold text-white text-xs">Battleground Online</div>
+                    <div class="font-extrabold text-white text-xs">Duel Online</div>
                     <div class="text-[11px] text-indigo-200">Adu cepat vs teman</div>
                   </div>
                 </div>
@@ -187,7 +191,7 @@ defineEmits<{
                 </div>
               </div>
 
-              <!-- Mode 4: Multiplayer Battleground -->
+              <!-- Mode 4: Duel Online -->
               <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-rose-200 dark:hover:border-rose-500/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
@@ -206,6 +210,50 @@ defineEmits<{
                     <CheckCircle2 class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" /> Fitur Kunci:
                   </div>
                   <p>Bracket Eliminasi Bertahap, Spectator Mode, Room Publik/Privat, & Power-Ups.</p>
+                </div>
+              </div>
+
+              <!-- Mode 5: Hitungan & Waktu (Kazu & Jikan) -->
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-amber-200 dark:hover:border-amber-500/50 transition">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center">
+                      <Calculator class="w-4 h-4" />
+                    </div>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">5. Hitungan & Waktu</span>
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 rounded-md">NEW v2.0 • Angka</span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
+                  Kuasai bilangan dasar, satuan penghitung (counter: ~hon, ~mai, ~tsu, dll.), jam, menit, tanggal, dan pola pengecualian bunyi (irregular).
+                </p>
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" /> Fitur Kunci:
+                  </div>
+                  <p>Audio TTS native, tutorial pola & rumus, 2 arah kuis (Angka ⇄ Kana), dan Onscreen Number Keypad.</p>
+                </div>
+              </div>
+
+              <!-- Mode 6: Latihan Menulis Kanji & Kana -->
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-emerald-200 dark:hover:border-emerald-500/50 transition">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center">
+                      <PenTool class="w-4 h-4" />
+                    </div>
+                    <span class="font-black text-gray-900 dark:text-slate-100 text-sm">6. Latihan Menulis</span>
+                  </div>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-md">NEW v2.0 • Goresan</span>
+                </div>
+                <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
+                  Latihan motorik menulis aksara Hiragana, Katakana, dan Kanji N5 dengan canvas interaktif dan evaluasi goresan real-time.
+                </p>
+                <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
+                  <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
+                    <CheckCircle2 class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Fitur Kunci:
+                  </div>
+                  <p>Stroke order engine (HanziWriter), panduan animasi goresan, grid referensi, dan babak perbaikan otomatis.</p>
                 </div>
               </div>
             </div>
@@ -233,11 +281,11 @@ defineEmits<{
                 </ul>
               </div>
 
-              <!-- Bracket Eliminasi Battleground -->
+              <!-- Bracket Eliminasi Duel Online -->
               <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
                 <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-extrabold text-xs sm:text-sm">
                   <Users class="w-4 h-4" />
-                  <span>Mekanisme Eliminasi Battleground</span>
+                  <span>Mekanisme Eliminasi Duel Online</span>
                 </div>
                 <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1.5 list-disc list-inside">
                   <li><strong>8 – 5 Pemain:</strong> Ronde 1 mengeliminasi hingga tersisa 4 survivor teratas.</li>
@@ -275,7 +323,55 @@ defineEmits<{
             </div>
           </div>
 
-          <!-- 4. AUTHOR / CREATOR CREDIT SECTION -->
+          <!-- 4. SISTEM VERSI & CATATAN RILIS (CHANGELOG) -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2 flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <GitBranch class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <h3 class="text-sm sm:text-base font-black text-gray-900 dark:text-slate-100 tracking-tight">
+                  Sistem Versi & Catatan Rilis
+                </h3>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+                Versi Saat Ini: v{{ APP_VERSION }}
+              </span>
+            </div>
+
+            <!-- History Timeline Cards -->
+            <div class="space-y-3">
+              <div 
+                v-for="item in VERSION_HISTORY" 
+                :key="item.version"
+                class="bg-white dark:bg-slate-800/90 border border-gray-200 dark:border-slate-700/80 rounded-2xl p-4 space-y-2 shadow-xs transition"
+                :class="item.version === APP_VERSION ? 'ring-1 ring-indigo-500/30' : ''"
+              >
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <div class="flex items-center gap-2">
+                    <span 
+                      class="px-2.5 py-0.5 text-xs font-mono font-black rounded-lg"
+                      :class="item.version === APP_VERSION ? 'bg-indigo-600 text-white shadow-xs' : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300'"
+                    >
+                      v{{ item.version }}
+                    </span>
+                    <h4 class="text-xs sm:text-sm font-black text-gray-900 dark:text-slate-100">
+                      {{ item.title }}
+                    </h4>
+                  </div>
+                  <span class="text-[11px] font-bold text-gray-400 dark:text-slate-400">
+                    {{ item.tag }} • {{ item.date }}
+                  </span>
+                </div>
+
+                <ul class="text-xs text-gray-600 dark:text-slate-300 space-y-1 list-disc list-inside pl-1">
+                  <li v-for="(highlight, hIdx) in item.highlights" :key="hIdx">
+                    {{ highlight }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. AUTHOR / CREATOR CREDIT SECTION -->
           <div class="pt-4 border-t border-gray-100 dark:border-slate-800">
             <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>
