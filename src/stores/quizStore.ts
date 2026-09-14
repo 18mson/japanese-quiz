@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
@@ -325,9 +325,36 @@ export const useQuizStore = defineStore('quiz', () => {
   const userInput = ref('');
   const showReadingHint = ref(false);
   const showMeaningHint = ref(false);
+  const isMeaningHintAutoOpened = ref(false);
   const currentQuestionIndex = ref(0);
   const score = ref(0);
   const questions = ref<any[]>([]);
+  const currentQuestion = computed(() => questions.value[currentQuestionIndex.value] || null);
+
+  const openMeaningHint = () => {
+    showMeaningHint.value = true;
+    isMeaningHintAutoOpened.value = false;
+  };
+
+  const initQuestionHints = () => {
+    showReadingHint.value = false;
+    isMeaningHintAutoOpened.value = false;
+
+    const current = currentQuestion.value;
+    if (current && (questionType.value === 'words' || current.type === 'word') && isTypingMode.value) {
+      const streak = getMasteryStreak(current.character);
+      // Untuk kosakata yang baru belajar (belum / 1 strike), petunjuk arti langsung terbuka
+      // Kalau sudah 2x strike (streak >= 2), harus di-click dulu
+      if (streak < 2) {
+        showMeaningHint.value = true;
+        isMeaningHintAutoOpened.value = true;
+      } else {
+        showMeaningHint.value = false;
+      }
+    } else {
+      showMeaningHint.value = false;
+    }
+  };
   const initialQuestionCount = ref<number>(0);
   const selectedAnswer = ref<string | null>(null);
   const isAnswerCorrect = ref<boolean | null>(null);
@@ -362,6 +389,7 @@ export const useQuizStore = defineStore('quiz', () => {
     startTime.value = Date.now();
     justClosedPreview.value = true;
     previewClosedTimestamp.value = Date.now();
+    initQuestionHints();
     setTimeout(() => {
       justClosedPreview.value = false;
     }, 500);
@@ -377,6 +405,7 @@ export const useQuizStore = defineStore('quiz', () => {
     microPreviewItem.value = null;
     justClosedPreview.value = true;
     previewClosedTimestamp.value = Date.now();
+    initQuestionHints();
     setTimeout(() => {
       justClosedPreview.value = false;
     }, 500);
@@ -397,6 +426,7 @@ export const useQuizStore = defineStore('quiz', () => {
     isLoading.value = true; questionType.value = type; quizLevel.value = level; targetDurationMinutes.value = targetDuration;
     currentQuestionIndex.value = 0; score.value = 0; quizCompleted.value = false; selectedAnswer.value = null; isAnswerCorrect.value = null;
     userAnswers.value = []; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
+    isMeaningHintAutoOpened.value = false;
     newRecordAchieved.value = false; showLevelUpScreen.value = false; speedAchievement.value = null;
     sentenceStats.value = null;
     masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
@@ -562,6 +592,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
       initialQuestionCount.value = questionCount;
       isLoading.value = false;
+      initQuestionHints();
       return;
     }
 
@@ -603,6 +634,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
       initialQuestionCount.value = sessionResult.questions.length;
       isLoading.value = false;
+      initQuestionHints();
       return;
     }
 
@@ -637,6 +669,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
+    initQuestionHints();
   };
 
   const startWeakItemsQuiz = async (
@@ -677,9 +710,8 @@ export const useQuizStore = defineStore('quiz', () => {
 
     initialQuestionCount.value = questions.value.length;
     isLoading.value = false;
+    initQuestionHints();
   };
-
-  const currentQuestion = computed(() => questions.value[currentQuestionIndex.value] || null);
 
   const options = computed(() => {
     if (!currentQuestion.value || isTypingMode.value) return [];
@@ -704,7 +736,8 @@ export const useQuizStore = defineStore('quiz', () => {
     const userAnswerClean = romaji.trim().toLowerCase();
     const current = currentQuestion.value;
     let isCorrectVal = false, isTypo = false;
-    let hintsUsed = (showReadingHint.value ? 1 : 0) + (showMeaningHint.value ? 1 : 0);
+    const isMeaningHintPenalized = showMeaningHint.value && !isMeaningHintAutoOpened.value;
+    let hintsUsed = (showReadingHint.value ? 1 : 0) + (isMeaningHintPenalized ? 1 : 0);
 
     if (current) {
       if (checkIsCorrect(userAnswerClean, current.romaji)) isCorrectVal = true;
@@ -902,6 +935,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userInput.value = '';
     showReadingHint.value = false;
     showMeaningHint.value = false;
+    isMeaningHintAutoOpened.value = false;
     latestTierTransition.value = null;
 
     const totalAnswered = userAnswers.value.length;
@@ -909,6 +943,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (currentQuestionIndex.value < questions.value.length - 1) {
       currentQuestionIndex.value++;
+      initQuestionHints();
     } else if (isSessionComplete || masteredCount.value >= initialQuestionCount.value) {
       finishQuiz();
     } else {
@@ -916,11 +951,21 @@ export const useQuizStore = defineStore('quiz', () => {
       if (unmastered.length > 0) {
         questions.value = [...questions.value, ...unmastered.map(q => ({ ...q, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }))];
         currentQuestionIndex.value++;
+        initQuestionHints();
       } else {
         finishQuiz();
       }
     }
   };
+
+  watch(
+    () => [currentQuestionIndex.value, questions.value],
+    () => {
+      if (!quizCompleted.value && currentQuestion.value) {
+        initQuestionHints();
+      }
+    }
+  );
 
   const restartQuiz = async () => {
     await startQuiz(targetDurationMinutes.value, questionType.value, quizLevel.value, selectedKanaCategory.value);
@@ -959,6 +1004,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
   return {
     isLoading, quizLevel, questionType, selectedKanaCategory, selectedMode, isTypingMode, userInput, showReadingHint, showMeaningHint,
+    isMeaningHintAutoOpened, openMeaningHint, initQuestionHints,
     currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
     startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
     speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,

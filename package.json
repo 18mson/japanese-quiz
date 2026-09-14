@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
-    "test": "npx tsx tests/numberToKana.test.ts"
+    "test": "npx tsx tests/numberToKana.test.ts && npx tsx tests/kotobaHints.test.ts"
   },
   "dependencies": {
     "@lucide/vue": "^1.23.0",

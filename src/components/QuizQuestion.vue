@@ -11,7 +11,10 @@ const showReadingHint = computed({
 });
 const showMeaningHint = computed({
   get: () => quizStore.showMeaningHint,
-  set: (val) => quizStore.showMeaningHint = val
+  set: (val) => {
+    if (val) quizStore.openMeaningHint();
+    else quizStore.showMeaningHint = false;
+  }
 });
 
 const character = computed(() => {
@@ -114,17 +117,19 @@ const instructionText = computed(() => {
           </template>
 
           <!-- Meaning Hint Button/Pill -->
-          <button 
-            v-if="!showMeaningHint"
-            class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
-            @click="showMeaningHint = true"
-          >
-            <BookOpen class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
-            <span>Petunjuk Arti</span>
-          </button>
-          <span v-else class="text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border border-teal-100 dark:border-teal-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-            Arti: {{ currentMeaning }}
-          </span>
+          <template v-if="currentMeaning">
+            <button 
+              v-if="!showMeaningHint"
+              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+              @click="quizStore.openMeaningHint()"
+            >
+              <BookOpen class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+              <span>Petunjuk Arti</span>
+            </button>
+            <span v-else class="text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border border-teal-100 dark:border-teal-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+              Arti: {{ currentMeaning }}
+            </span>
+          </template>
         </div>
       </div>
     </div>
