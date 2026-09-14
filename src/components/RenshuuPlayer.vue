@@ -164,6 +164,7 @@ const selectOption = (optKey: string) => {
 const advanceToNextQuestion = () => {
   if (currentQuestionIndex.value < totalQuestions.value - 1) {
     currentQuestionIndex.value++;
+    quizStore.currentQuestionIndex = currentQuestionIndex.value;
     userInput.value = '';
     showHint.value = false;
     isTypoInInput.value = false;
@@ -184,16 +185,13 @@ const handleInputKeydown = (e: KeyboardEvent) => {
   }
 };
 
-const progressPercent = computed(() => {
-  if (totalQuestions.value === 0) return 0;
-  return Math.round(((currentQuestionIndex.value) / totalQuestions.value) * 100);
-});
-
 watch(currentQuestionIndex, () => {
+  quizStore.currentQuestionIndex = currentQuestionIndex.value;
   focusInput();
 });
 
 onMounted(() => {
+  quizStore.currentQuestionIndex = currentQuestionIndex.value;
   focusInput();
 });
 </script>
@@ -221,21 +219,7 @@ onMounted(() => {
           <div class="text-xs font-black text-slate-200 truncate">
             {{ currentQuestion?.sectionTitle || 'Renshuu Pola Kalimat' }}
           </div>
-          <div class="text-[11px] text-slate-400 truncate">
-            Soal {{ currentQuestionIndex + 1 }} dari {{ totalQuestions }}
-          </div>
         </div>
-      </div>
-
-      <!-- Progress bar pill -->
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <div class="w-16 sm:w-24 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-          <div 
-            class="h-full bg-gradient-to-r from-violet-500 to-indigo-500 transition-all duration-300"
-            :style="{ width: `${progressPercent}%` }"
-          ></div>
-        </div>
-        <span class="text-[11px] font-extrabold text-violet-400">{{ progressPercent }}%</span>
       </div>
     </div>
 

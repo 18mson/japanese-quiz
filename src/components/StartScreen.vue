@@ -104,7 +104,7 @@ const startHitunganPracticeFromTutorial = () => {
 };
 
 const launchHitunganQuiz = (wave?: HitunganWaveDef) => {
-  quizStore.selectedMode = 'hitungan';
+  quizStore.initHitunganSession(10);
   quizStore.selectedHitunganWave = wave || currentHitunganWave.value;
   quizStore.selectedHitunganDirection = selectedHitunganDirection.value;
   emit('start');

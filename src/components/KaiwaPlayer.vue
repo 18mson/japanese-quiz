@@ -137,6 +137,7 @@ const submitCurrentLine = () => {
   setTimeout(() => {
     if (currentLineIndex.value < totalLines.value - 1) {
       currentLineIndex.value++;
+      quizStore.currentQuestionIndex = currentLineIndex.value;
       userInput.value = '';
       showHint.value = false;
       isTypoInInput.value = false;
@@ -175,17 +176,20 @@ const restartKaiwa = () => {
   quizStore.userAnswers = [];
   quizStore.score = 0;
   quizStore.quizCompleted = false;
+  quizStore.currentQuestionIndex = 0;
   focusInput();
 };
 
 watch(
   () => currentLineIndex.value,
   () => {
+    quizStore.currentQuestionIndex = currentLineIndex.value;
     focusInput();
   }
 );
 
 onMounted(() => {
+  quizStore.currentQuestionIndex = currentLineIndex.value;
   focusInput();
 });
 </script>
@@ -202,21 +206,7 @@ onMounted(() => {
           <div class="text-xs font-bold text-slate-300 truncate">
             {{ quizStore.kaiwaData?.title }} · <span class="text-indigo-400 font-semibold">{{ quizStore.kaiwaData?.title_meaning }}</span>
           </div>
-          <div class="text-[11px] text-slate-400 truncate">
-            Baris {{ Math.min(currentLineIndex + 1, totalLines) }} dari {{ totalLines }}
-          </div>
         </div>
-      </div>
-
-      <!-- Progress bar pill -->
-      <div class="flex items-center gap-1.5 flex-shrink-0">
-        <div class="w-20 bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-          <div 
-            class="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-300"
-            :style="{ width: `${((currentLineIndex) / Math.max(1, totalLines)) * 100}%` }"
-          ></div>
-        </div>
-        <span class="text-[11px] font-extrabold text-indigo-400">{{ Math.round(((currentLineIndex) / Math.max(1, totalLines)) * 100) }}%</span>
       </div>
     </div>
 

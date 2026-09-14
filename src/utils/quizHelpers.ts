@@ -3,6 +3,7 @@ import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
 import { kanjiN5Data } from '../data/kanji';
+import { kanjiWritingEntriesMap } from '../data/kanjiWritingPrompts';
 
 export const normalizeRomajiForComparison = (str: string): string => {
   return str
@@ -111,6 +112,27 @@ export const getTierFromStreak = (streak: number): MasteryTierKey => {
   return 'new';
 };
 
-export { HURUF_TIER_WEIGHTS, HURUF_TIER_METADATA, buildHurufSessionQuestions, buildHurufSessionQuestions as buildSmartAdaptiveQuestions } from './hurufQuizComposition';
-export { buildKanjiWritingSessionQuestions } from './kanjiWritingComposition';
+export const buildRepeatedQuestion = (current: any): any => {
+  let repeated = { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false };
+  if (current.type === 'kanji') {
+    const entry = kanjiWritingEntriesMap[current.character];
+    if (entry && entry.prompts.length > 1) {
+      const others = entry.prompts.filter(p => p.word !== current.fullWord);
+      if (others.length > 0) {
+        const newPrompt = others[Math.floor(Math.random() * others.length)];
+        repeated = {
+          ...repeated,
+          romaji: newPrompt.targetKana,
+          kana: newPrompt.fullKana,
+          fullWord: newPrompt.word,
+          prefixKana: newPrompt.prefixKana,
+          targetKana: newPrompt.targetKana,
+          suffixKana: newPrompt.suffixKana,
+          meaning: newPrompt.meaning
+        };
+      }
+    }
+  }
+  return repeated;
+};
 

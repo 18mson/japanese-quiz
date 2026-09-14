@@ -5,6 +5,7 @@ import { numberToKana, getAcceptedKanaReadings } from '../utils/numberToKana';
 import { HITUNGAN_WAVES, getCounterCategoryData, type HitunganWaveDef } from '../data/hitunganWaves';
 import { HitunganService } from '../services/hitunganService';
 import { useAuthStore } from '../stores/authStore';
+import { useQuizStore } from '../stores/quizStore';
 import { useTextToSpeech } from './useTextToSpeech';
 
 export interface HitunganQuestion {
@@ -27,6 +28,7 @@ export function useHitunganQuiz(
   unlockedWaveKeys: string[] = []
 ) {
   const authStore = useAuthStore();
+  const quizStore = useQuizStore();
   const { speak } = useTextToSpeech();
 
   const currentWave = ref<HitunganWaveDef>(initialWave);
@@ -217,6 +219,9 @@ export function useHitunganQuiz(
     isCorrect.value = false;
     isQuizFinished.value = false;
 
+    // Synchronize session with quizStore for global header progress
+    quizStore.initHitunganSession(totalQuestions.value);
+
     nextQuestion();
   };
 
@@ -282,10 +287,17 @@ export function useHitunganQuiz(
     if (userIsCorrect) {
       correctCount.value++;
       streak.value++;
+      quizStore.score += 10;
     } else {
       incorrectCount.value++;
       streak.value = 0;
     }
+
+    quizStore.userAnswers.push({
+      question: currentQuestion.value.displayPrompt,
+      userAnswer: inputVal,
+      isCorrect: userIsCorrect
+    });
 
     // Save progress asynchronously
     await HitunganService.saveProgress(
@@ -305,8 +317,10 @@ export function useHitunganQuiz(
   const handleProceed = () => {
     if (questionNumber.value >= totalQuestions.value) {
       isQuizFinished.value = true;
+      quizStore.isHitunganFinished = true;
     } else {
       questionNumber.value++;
+      quizStore.currentQuestionIndex = questionNumber.value - 1;
       nextQuestion();
     }
   };

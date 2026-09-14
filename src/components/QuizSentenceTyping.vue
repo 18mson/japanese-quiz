@@ -19,9 +19,10 @@ const toggleHint = (index: number) => {
   focusInput();
 };
 
-watch(currentSentenceIndex, () => {
+watch(currentSentenceIndex, (newIdx) => {
+  quizStore.currentQuestionIndex = newIdx;
   revealedHints.value = {};
-});
+}, { immediate: true });
 
 // Stats tracking
 const totalKeystrokes = ref(0);

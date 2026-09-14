@@ -1,327 +1,42 @@
 import { defineStore } from 'pinia';
-import { ref, computed, watch } from 'vue';
-import { hiraganaData } from '../data/hiragana';
-import { katakanaData } from '../data/katakana';
-import { wordsData } from '../data/words';
+import { ref, computed, watch, toRef } from 'vue';
 import { kanjiN5Data } from '../data/kanji';
-import { sentencesData } from '../data/sentences';
-import { supabase } from '../lib/supabaseClient';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
-import { checkIsCorrect, checkIsTypo, getQuestionCountFromDuration, getFallbackLocalPool } from '../utils/quizHelpers';
-import { getMasteryTierFromStreak, computeCategoryMasteryStats, checkTierTransition, TierTransition } from '../utils/masteryStats';
+import { checkIsCorrect, checkIsTypo, getFallbackLocalPool, buildRepeatedQuestion } from '../utils/quizHelpers';
 import { submitLeaderboardScore } from '../services/leaderboardService';
-import { buildHurufSessionQuestions } from '../utils/hurufQuizComposition';
-import { buildKanjiSessionQuestions } from '../utils/kanjiQuizComposition';
-import { buildKanjiWritingSessionQuestions } from '../utils/kanjiWritingComposition';
-import { sortInGojuonOrder } from '../data/gojuonOrder';
-import { kanjiWritingEntries, kanjiWritingEntriesMap, kanjiLessonList } from '../data/kanjiWritingPrompts';
 import { useGoalsStore } from './goalsStore';
-import { fetchLessonBunkei, fetchLessonKaiwa, buildRenshuuSession, fetchRenshuuProgress, saveRenshuuItemResult, DEFAULT_RENSHUU_SESSION_SIZE } from '../services/lessonService';
-import { GrammarPoint, Kaiwa, RenshuuSessionQuestion, RenshuuProgressStats } from '../types/lesson';
-import { HITUNGAN_WAVES, type HitunganWaveDef } from '../data/hitunganWaves';
-import { HitunganService, type HitunganProgressRecord } from '../services/hitunganService';
-
-  const getLocalStreaks = (): Record<string, number> => {
-    try {
-      const stored = localStorage.getItem('japanese-quiz-streaks');
-      if (stored) return JSON.parse(stored);
-    } catch (e) { }
-    return {};
-  };
-
-  const getLocalIntroduced = (): Record<string, boolean> => {
-    try {
-      const stored = localStorage.getItem('japanese-quiz-introduced');
-      if (stored) return JSON.parse(stored);
-    } catch (e) { }
-    return {};
-  };
+import { useMasteryStore } from './masteryStore';
+import { useLessonStore } from './lessonStore';
+import { useHitunganStore } from './hitunganStore';
+import { prepareStandardQuestions, prepareWeakItemsQuestions } from '../utils/quizSessionBuilder';
+import { useQuizPreview } from '../composables/useQuizPreview';
+import { useKanjiLessonPanel } from '../composables/useKanjiLessonPanel';
 
 export const useQuizStore = defineStore('quiz', () => {
+  const masteryStore = useMasteryStore();
+  const lessonStore = useLessonStore();
+  const hitunganStore = useHitunganStore();
+
   const isLoading = ref(false);
-  const userStreaks = ref<Record<string, number>>(getLocalStreaks());
-  const introducedChars = ref<Record<string, boolean>>(getLocalIntroduced());
   const sentenceStats = ref<{ wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number } | null>(null);
 
-  // Kaiwa & Renshuu state
-  const currentLessonNumber = ref<number>(1);
-  const bunkeiList = ref<GrammarPoint[]>([]);
-  const kaiwaData = ref<Kaiwa | null>(null);
-  const renshuuSessionQuestions = ref<RenshuuSessionQuestion[]>([]);
-  const renshuuProgressStats = ref<RenshuuProgressStats>({
-    masteredCount: 0,
-    totalCount: 45,
-    progressPercent: 0
-  });
-  const showLessonMaterial = ref<boolean>(false);
-  const isLessonMaterialCompleted = ref<boolean>(false);
-
-  const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
-    const { data, error } = await supabase.from('user_streaks').select('character, streak').eq('user_id', userId);
-    if (error) throw error;
-    const streaks: Record<string, number> = {};
-    if (data) data.forEach(item => { streaks[item.character] = item.streak; });
-    return streaks;
-  };
-
-  const syncLocalToServer = async (userId: string) => {
-    const current = getLocalStreaks();
-    const entries = Object.entries(current).filter(([_, streak]) => streak > 0);
-    if (entries.length === 0) return;
-
-    const rows = entries.map(([character, streak]) => ({
-      user_id: userId,
-      character,
-      streak
-    }));
-
-    const { error } = await supabase.from('user_streaks').upsert(rows, { onConflict: 'user_id,character' });
-    if (error) console.error('Failed to sync local streaks to server:', error);
-  };
-
-  const applyServerStreaks = (serverStreaks: Record<string, number>) => {
-    userStreaks.value = serverStreaks;
-    try {
-      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(serverStreaks));
-    } catch (e) { }
-  };
-
-  const saveIntroducedToStorage = () => {
-    try {
-      localStorage.setItem('japanese-quiz-introduced', JSON.stringify(introducedChars.value));
-    } catch (e) { }
-  };
-
-  const loadIntroducedFromStorage = () => {
-    const local = getLocalIntroduced();
-    // Any character with a streak > 0 is already known/introduced
-    Object.keys(userStreaks.value).forEach(char => {
-      if ((userStreaks.value[char] || 0) > 0) {
-        local[char] = true;
-      }
-    });
-    introducedChars.value = local;
-    saveIntroducedToStorage();
-  };
-
-  const loadStreaksFromStorage = async () => {
-    const local = getLocalStreaks();
-    userStreaks.value = { ...local };
-    loadIntroducedFromStorage();
-    const { useAuthStore } = await import('./authStore');
-    const authStore = useAuthStore();
-    if (authStore.user) {
-      try {
-        const serverStreaks = await fetchServerStreaks(authStore.user.id);
-        const merged: Record<string, number> = { ...local };
-        Object.entries(serverStreaks).forEach(([char, streak]) => {
-          merged[char] = Math.max(merged[char] || 0, streak);
-          if (streak > 0) {
-            introducedChars.value[char] = true;
-          }
-        });
-        userStreaks.value = merged;
-        localStorage.setItem('japanese-quiz-streaks', JSON.stringify(merged));
-        saveIntroducedToStorage();
-      } catch (e) {
-        console.error('Error fetching server streaks:', e);
-      }
-    }
-  };
-
-  const loadStreaksFromServer = loadStreaksFromStorage;
-
-  const kanjiCharSet = new Set(kanjiN5Data.map(k => k.character));
-
-  const getMasteryStreak = (character: string): number => {
-    const direct = userStreaks.value[character] || 0;
-    if (kanjiCharSet.has(character)) {
-      const relatedWords = wordsData.filter(w => w.character.includes(character));
-      if (relatedWords.length > 0) {
-        let maxWordStreak = 0;
-        for (const rw of relatedWords) {
-          const s = userStreaks.value[rw.character] || 0;
-          if (s > maxWordStreak) maxWordStreak = s;
-        }
-        return Math.max(direct, maxWordStreak);
-      }
-    }
-    return direct;
-  };
-  const getMasteryTier = (character: string) => getMasteryTierFromStreak(getMasteryStreak(character));
-
-  const bulkUpdateMasteryTier = async (
-    characters: string[],
-    targetTier: 'new' | 'learning' | 'mastered' | 'crown'
-  ) => {
-    if (!characters || characters.length === 0) return;
-
-    const streakMap: Record<'new' | 'learning' | 'mastered' | 'crown', number> = {
-      new: 0,
-      learning: 1,
-      mastered: 3,
-      crown: 5
-    };
-    const targetStreak = streakMap[targetTier];
-
-    // 1. Update in-memory reactive userStreaks immediately
-    const updatedStreaks = { ...userStreaks.value };
-    const updatedIntroduced = { ...introducedChars.value };
-
-    characters.forEach(char => {
-      if (targetStreak === 0) {
-        delete updatedStreaks[char];
-        delete updatedIntroduced[char];
-      } else {
-        updatedStreaks[char] = targetStreak;
-        updatedIntroduced[char] = true;
-      }
-    });
-
-    userStreaks.value = updatedStreaks;
-    introducedChars.value = updatedIntroduced;
-
-    // 2. Persist to localStorage immediately
-    try {
-      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(updatedStreaks));
-      localStorage.setItem('japanese-quiz-introduced', JSON.stringify(updatedIntroduced));
-    } catch (e) {
-      console.error('Error saving streaks to localStorage:', e);
-    }
-
-    // 3. Batch push to Supabase ONLY if user is actively logged in
-    try {
-      const { useAuthStore } = await import('./authStore');
-      const authStore = useAuthStore();
-      const currentUserId = authStore.user?.id;
-
-      // If user is not logged in, apply to local storage/browser only
-      if (!currentUserId) {
-        return;
-      }
-
-      // Check session validity
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user || session.user.id !== currentUserId) {
-        return;
-      }
-
-      if (targetStreak === 0) {
-        // Reset to 0: delete records from Supabase user_streaks
-        const chunkSize = 100;
-        for (let i = 0; i < characters.length; i += chunkSize) {
-          const chunk = characters.slice(i, i + chunkSize);
-          await supabase
-            .from('user_streaks')
-            .delete()
-            .eq('user_id', currentUserId)
-            .in('character', chunk);
-        }
-      } else {
-        // Upsert streaks with timestamps
-        const now = new Date().toISOString();
-        const rows = characters.map(char => ({
-          user_id: currentUserId,
-          character: char,
-          streak: targetStreak,
-          last_tier: targetTier,
-          tier_changed_at: now,
-          updated_at: now
-        }));
-
-        const chunkSize = 100;
-        for (let i = 0; i < rows.length; i += chunkSize) {
-          const chunk = rows.slice(i, i + chunkSize);
-          const { error } = await supabase
-            .from('user_streaks')
-            .upsert(chunk, { onConflict: 'user_id,character' });
-          if (error) {
-            console.error('Error batch upserting user_streaks to Supabase:', error);
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('Skipping database push (user offline, unauthenticated, or network issue):', err);
-    }
-  };
-
-  const hiraganaMasteryStats = computed(() => computeCategoryMasteryStats(hiraganaData, userStreaks.value));
-  const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
-  const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value));
-  const kanjiMasteryStats = computed(() => computeCategoryMasteryStats(kanjiN5Data, userStreaks.value, getMasteryStreak));
-
-  const overallMasteryStats = computed(() => {
-    const h = hiraganaMasteryStats.value, k = katakanaMasteryStats.value, w = wordsMasteryStats.value, kj = kanjiMasteryStats.value;
-    const total = h.total + k.total + w.total + kj.total, mastered = h.mastered + k.mastered + w.mastered + kj.mastered;
-    const crown = h.crown + k.crown + w.crown + kj.crown, learning = h.learning + k.learning + w.learning + kj.learning, newItems = h.newItems + k.newItems + w.newItems + kj.newItems;
-    return { total, mastered, crown, learning, newItems, percentage: total > 0 ? Math.round((mastered / total) * 100) : 0 };
-  });
-
-  const currentUserLevel = computed(() => {
-    let level = 1;
-    for (let i = 1; i <= 25; i++) {
-      const lessonWords = wordsData.filter(w => w.lesson === `Pelajaran ${i}` || (!w.lesson && i === 1));
-      if (lessonWords.length > 0 && lessonWords.every(w => (userStreaks.value[w.character] || 0) >= 3)) {
-        level = i + 1;
-      } else {
-        break;
-      }
-    }
-    return level;
-  });
-
+  // ── Quiz Configuration State ────────────────────────────────
   const questionType = ref('hiragana');
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>('multiple_choice');
   const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
-  const selectedKanjiLessonNumber = ref<number>(0);
 
-  // Hitungan State
-  const selectedHitunganWave = ref<HitunganWaveDef>(HITUNGAN_WAVES[0]);
-  const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
-  const hitunganProgressMap = ref<Record<string, HitunganProgressRecord>>({});
+  // ── Kanji Lesson Panel ──────────────────────────────────────
+  const {
+    selectedKanjiLessonNumber,
+    activeKanjiLessonNumber,
+    currentKanjiLessonLabel,
+    currentKanjiLessonStats
+  } = useKanjiLessonPanel(masteryStore.getMasteryStreak);
 
-  const unlockedHitunganWaveKeys = computed(() => {
-    return Object.keys(hitunganProgressMap.value).filter(
-      key => hitunganProgressMap.value[key]?.tutorial_seen
-    );
-  });
-
-  const loadHitunganProgress = async () => {
-    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
-    const prog = await HitunganService.getProgress(authUserId);
-    hitunganProgressMap.value = prog;
-  };
-
-  const activeKanjiLessonNumber = computed(() => {
-    if (selectedKanjiLessonNumber.value && selectedKanjiLessonNumber.value > 0) {
-      return selectedKanjiLessonNumber.value;
-    }
-    for (const les of kanjiLessonList) {
-      const entries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === les.lessonNumber);
-      const allMastered = entries.every(e => getMasteryStreak(e.kanji) >= 3);
-      if (!allMastered) return les.lessonNumber;
-    }
-    return 1;
-  });
-
-  const currentKanjiLessonLabel = computed(() => {
-    if (selectedKanjiLessonNumber.value === 0) {
-      return `Semua (Pelajaran ${activeKanjiLessonNumber.value})`;
-    }
-    return `Pelajaran ${activeKanjiLessonNumber.value}`;
-  });
-
-  const currentKanjiLessonStats = computed(() => {
-    const entries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === activeKanjiLessonNumber.value);
-    const total = entries.length;
-    const mastered = entries.filter(e => getMasteryStreak(e.kanji) >= 3).length;
-    const percentage = total > 0 ? Math.round((mastered / total) * 100) : 0;
-    return { total, mastered, percentage };
-  });
-
+  // ── Quiz Session State ──────────────────────────────────────
   const userInput = ref('');
   const showReadingHint = ref(false);
   const showMeaningHint = ref(false);
@@ -342,9 +57,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     const current = currentQuestion.value;
     if (current && (questionType.value === 'words' || current.type === 'word') && isTypingMode.value) {
-      const streak = getMasteryStreak(current.character);
-      // Untuk kosakata yang baru belajar (belum / 1 strike), petunjuk arti langsung terbuka
-      // Kalau sudah 2x strike (streak >= 2), harus di-click dulu
+      const streak = masteryStore.getMasteryStreak(current.character);
       if (streak < 2) {
         showMeaningHint.value = true;
         isMeaningHintAutoOpened.value = true;
@@ -355,6 +68,7 @@ export const useQuizStore = defineStore('quiz', () => {
       showMeaningHint.value = false;
     }
   };
+
   const initialQuestionCount = ref<number>(0);
   const selectedAnswer = ref<string | null>(null);
   const isAnswerCorrect = ref<boolean | null>(null);
@@ -368,94 +82,73 @@ export const useQuizStore = defineStore('quiz', () => {
   const speedAchievement = ref<{ timeSavedSeconds: number; bonusPoints: number; isFaster: boolean; rankText: string; } | null>(null);
   const userAnswers = ref<any[]>([]);
 
-  // Fully reactive tracking objects for Vue 3
   const masteredChars = ref<Record<string, boolean>>({});
   const attemptedChars = ref<Record<string, boolean>>({});
   const firstTryCorrectCount = ref<number>(0);
-
-  const previewMode = ref<'none' | 'full_wave' | 'micro'>('none');
-  const justClosedPreview = ref(false);
-  const previewClosedTimestamp = ref<number>(0);
-
-  const completeWavePreview = () => {
-    if (currentWaveItems.value.length > 0) {
-      currentWaveItems.value.forEach(item => {
-        previewedItems.value[item.character] = true;
-        introducedChars.value[item.character] = true;
-      });
-      saveIntroducedToStorage();
-    }
-    isWavePreviewActive.value = false;
-    startTime.value = Date.now();
-    justClosedPreview.value = true;
-    previewClosedTimestamp.value = Date.now();
-    initQuestionHints();
-    setTimeout(() => {
-      justClosedPreview.value = false;
-    }, 500);
-  };
-
-  const completeMicroPreview = () => {
-    if (microPreviewItem.value) {
-      previewedItems.value[microPreviewItem.value.character] = true;
-      introducedChars.value[microPreviewItem.value.character] = true;
-      saveIntroducedToStorage();
-    }
-    showMicroPreviewModal.value = false;
-    microPreviewItem.value = null;
-    justClosedPreview.value = true;
-    previewClosedTimestamp.value = Date.now();
-    initQuestionHints();
-    setTimeout(() => {
-      justClosedPreview.value = false;
-    }, 500);
-  };
-  const previewedItems = ref<Record<string, boolean>>({});
-  const fullWaveBatches = ref<any[]>([]);
-  const currentWaveIndex = ref<number>(0);
-  const isWavePreviewActive = ref<boolean>(false);
-  const currentWaveItems = ref<any[]>([]);
-  const microPreviewItem = ref<any | null>(null);
-  const showMicroPreviewModal = ref<boolean>(false);
-
-  const latestTierTransition = ref<TierTransition | null>(null);
-  const sessionTierChanges = ref<TierTransition[]>([]);
   const sessionCharAttempts = ref<Record<string, { attempts: number; failed: boolean; initialStreak: number; streakEvaluated: boolean }>>({});
 
-  const resetQuizSessionState = async (targetDuration: number, type: string, level: 'basic' | 'n5') => {
-    isLoading.value = true; questionType.value = type; quizLevel.value = level; targetDurationMinutes.value = targetDuration;
-    currentQuestionIndex.value = 0; score.value = 0; quizCompleted.value = false; selectedAnswer.value = null; isAnswerCorrect.value = null;
-    userAnswers.value = []; userInput.value = ''; showReadingHint.value = false; showMeaningHint.value = false;
-    isMeaningHintAutoOpened.value = false;
-    newRecordAchieved.value = false; showLevelUpScreen.value = false; speedAchievement.value = null;
-    sentenceStats.value = null;
-    masteredChars.value = {}; attemptedChars.value = {}; firstTryCorrectCount.value = 0;
-    sessionCharAttempts.value = {};
-
-    // Reset lesson material states
-    bunkeiList.value = [];
-    kaiwaData.value = null;
-    renshuuSessionQuestions.value = [];
-    showLessonMaterial.value = false;
-    isLessonMaterialCompleted.value = false;
-
-    // Reset preview & tier transition states
-    previewMode.value = 'none';
-    fullWaveBatches.value = [];
-    currentWaveIndex.value = 0;
-    isWavePreviewActive.value = false;
-    currentWaveItems.value = [];
-    microPreviewItem.value = null;
-    showMicroPreviewModal.value = false;
-    latestTierTransition.value = null;
-    sessionTierChanges.value = [];
-
-    await loadStreaksFromServer();
-    levelBeforeQuiz.value = currentUserLevel.value;
-    quizLesson.value = `Pelajaran ${currentUserLevel.value}`;
+  // ── Wave Preview Composable ─────────────────────────────────
+  const {
+    previewMode,
+    justClosedPreview,
+    previewClosedTimestamp,
+    previewedItems,
+    fullWaveBatches,
+    currentWaveIndex,
+    isWavePreviewActive,
+    currentWaveItems,
+    microPreviewItem,
+    showMicroPreviewModal,
+    completeWavePreview,
+    completeMicroPreview
+  } = useQuizPreview(masteryStore, () => {
     startTime.value = Date.now();
+    initQuestionHints();
+  });
+
+  const initHitunganSession = (totalQuestions: number = 10) => {
+    selectedMode.value = 'hitungan';
+    currentQuestionIndex.value = 0;
+    initialQuestionCount.value = totalQuestions;
+    score.value = 0;
+    userAnswers.value = [];
+    quizCompleted.value = false;
+    hitunganStore.isHitunganFinished = false;
   };
 
+  const resetQuizSessionState = async (targetDuration: number, type: string, level: 'basic' | 'n5') => {
+    isLoading.value = true;
+    questionType.value = type;
+    quizLevel.value = level;
+    targetDurationMinutes.value = targetDuration;
+    currentQuestionIndex.value = 0;
+    score.value = 0;
+    quizCompleted.value = false;
+    selectedAnswer.value = null;
+    isAnswerCorrect.value = null;
+    userAnswers.value = [];
+    userInput.value = '';
+    showReadingHint.value = false;
+    showMeaningHint.value = false;
+    isMeaningHintAutoOpened.value = false;
+    questions.value = [];
+    startTime.value = Date.now();
+    endTime.value = 0;
+    newRecordAchieved.value = false;
+    levelBeforeQuiz.value = masteryStore.currentUserLevel;
+    showLevelUpScreen.value = false;
+    speedAchievement.value = null;
+    masteredChars.value = {};
+    attemptedChars.value = {};
+    firstTryCorrectCount.value = 0;
+    masteryStore.latestTierTransition = null;
+    masteryStore.sessionTierChanges = [];
+    sessionCharAttempts.value = {};
+
+    lessonStore.resetLessonSession();
+  };
+
+  // ── Start Quiz Gameplay ─────────────────────────────────────
   const startQuiz = async (
     targetDuration: number = 1,
     type: string = 'hiragana',
@@ -466,208 +159,37 @@ export const useQuizStore = defineStore('quiz', () => {
     await resetQuizSessionState(targetDuration, type, level);
 
     if (type === 'kaiwa') {
-      const data = await fetchLessonKaiwa(currentLessonNumber.value);
-      kaiwaData.value = data;
-      showLessonMaterial.value = true;
-      isLessonMaterialCompleted.value = false;
+      const data = await lessonStore.startKaiwaSession(lessonStore.currentLessonNumber);
       initialQuestionCount.value = data.lines.length;
       isLoading.value = false;
       return;
     }
 
     if (type === 'renshuu') {
-      const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
-      const sessionData = await buildRenshuuSession(currentLessonNumber.value, authUserId, DEFAULT_RENSHUU_SESSION_SIZE);
-      const allBunkei = await fetchLessonBunkei(currentLessonNumber.value);
-
-      if (sessionData.relevantBunkeiIds.length > 0) {
-        const filtered = allBunkei.filter(b => b.id && sessionData.relevantBunkeiIds.includes(b.id));
-        bunkeiList.value = filtered.length > 0 ? filtered : allBunkei;
-      } else {
-        bunkeiList.value = allBunkei;
-      }
-
-      renshuuSessionQuestions.value = sessionData.questions;
-      renshuuProgressStats.value = {
-        masteredCount: sessionData.totalMastered,
-        totalCount: sessionData.totalAtomic,
-        progressPercent: sessionData.totalAtomic > 0 ? Math.round((sessionData.totalMastered / sessionData.totalAtomic) * 100) : 0
-      };
-
-      showLessonMaterial.value = true;
-      isLessonMaterialCompleted.value = false;
+      const sessionData = await lessonStore.startRenshuuSession(lessonStore.currentLessonNumber);
       initialQuestionCount.value = sessionData.questions.length;
       isLoading.value = false;
       return;
     }
 
-    if (type === 'sentences') {
-      const sentenceCount = getQuestionCountFromDuration(targetDuration, type);
-      const shuffled = [...sentencesData].sort(() => 0.5 - Math.random()).slice(0, sentenceCount);
-      questions.value = shuffled.map(s => ({
-        id: s.id,
-        character: s.japanese,
-        japanese: s.japanese,
-        romaji_variants: s.romaji_variants,
-        meaning: s.meaning_id,
-        romaji: s.romaji_variants.map(v => v[0]).join('')
-      }));
-      initialQuestionCount.value = questions.value.length;
-      isLoading.value = false;
-      return;
-    }
-
-    const questionCount = getQuestionCountFromDuration(targetDuration, type);
-
-    let finalPool = getFallbackLocalPool(type, level);
-
-    try {
-      let query = type === 'mix'
-        ? supabase.from('quiz_items').select('*').in('category', ['hiragana', 'katakana'])
-        : supabase.from('quiz_items').select('*').eq('category', type);
-
-      if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
-        query = query.eq('type', selectedKanaCategory.value);
-      }
-
-      const { data, error } = await query;
-
-      if (!error && data && data.length > 0) {
-        finalPool = data.map(item => ({
-          character: item.character,
-          romaji: item.romaji,
-          kana: item.kana,
-          meaning: item.meaning,
-          type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
-          lesson: item.lesson
-        }));
-      }
-    } catch (err) { }
-
-    if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
-      const filtered = finalPool.filter(item => item.type === selectedKanaCategory.value);
-      if (filtered.length > 0) {
-        finalPool = filtered;
-      }
-    }
-
-    if (type === 'words') {
-      finalPool = finalPool.filter(w => !!w.character && w.character.trim().length > 0);
-
-      // Urutkan kata/kanji berdasarkan urutan pelajaran progresif (Pelajaran 1 s/d 25)
-      finalPool.sort((a, b) => {
-        const numA = parseInt((a.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
-        const numB = parseInt((b.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
-        return numA - numB;
-      });
-
-      // Gunakan algoritma komposisi khusus Kanji: unique pool + spacing repeat + isFirstAppearance flag
-      const kanjiQuestions = buildKanjiSessionQuestions(finalPool, questionCount, getMasteryStreak);
-      questions.value = kanjiQuestions;
-
-      // Kumpulkan item unlearned unik dalam sesi ini untuk ditampilkan di preview card awal
-      // HANYA untuk kata yang benar-benar baru (belum pernah di-preview / dipelajari sama sekali)
-      const uniqueUnlearnedInSession: any[] = [];
-      const seenChars = new Set<string>();
-      kanjiQuestions.forEach(q => {
-        if (!seenChars.has(q.character)) {
-          seenChars.add(q.character);
-          const streak = userStreaks.value[q.character] || 0;
-          const isIntroduced = !!introducedChars.value[q.character];
-          if (streak === 0 && !isIntroduced) {
-            uniqueUnlearnedInSession.push(q);
-          }
-        }
-      });
-
-      if (uniqueUnlearnedInSession.length > 0) {
-        previewMode.value = 'full_wave';
-        currentWaveIndex.value = 0;
-        currentWaveItems.value = uniqueUnlearnedInSession;
-        isWavePreviewActive.value = true;
-      } else {
-        previewMode.value = 'none';
-        isWavePreviewActive.value = false;
-      }
-
-      initialQuestionCount.value = questionCount;
-      isLoading.value = false;
-      initQuestionHints();
-      return;
-    }
-
-    if (type === 'kanji') {
-      let candidatePool: typeof kanjiWritingEntries = [];
-      const selectedLesson = selectedKanjiLessonNumber.value;
-
-      if (selectedLesson > 0) {
-        // Mode Pelajaran Tertentu:
-        // Fokuskan pada pelajaran terpilih; sertakan pelajaran sebelumnya sebagai review retensi jika diperlukan
-        const currentLessonEntries = kanjiWritingEntries.filter(e => e.primaryLessonNumber === selectedLesson);
-        const previousLessonEntries = kanjiWritingEntries.filter(e => e.primaryLessonNumber < selectedLesson);
-        candidatePool = [...currentLessonEntries, ...previousLessonEntries];
-      } else {
-        // Mode "✨ Semua (1–25)":
-        // Urutan kurikulum progresif: pelajaran 1 s/d activeKanjiLessonNumber
-        const activeLesson = activeKanjiLessonNumber.value;
-        candidatePool = kanjiWritingEntries.filter(e => e.primaryLessonNumber <= activeLesson);
-      }
-
-      const sessionResult = buildKanjiWritingSessionQuestions(
-        candidatePool,
-        questionCount,
-        getMasteryStreak,
-        introducedChars.value
-      );
-
-      questions.value = sessionResult.questions;
-
-      if (sessionResult.newKanjiEntries.length > 0) {
-        previewMode.value = 'full_wave';
-        currentWaveIndex.value = 0;
-        currentWaveItems.value = sessionResult.newKanjiEntries;
-        isWavePreviewActive.value = true;
-      } else {
-        previewMode.value = 'none';
-        isWavePreviewActive.value = false;
-      }
-
-      initialQuestionCount.value = sessionResult.questions.length;
-      isLoading.value = false;
-      initQuestionHints();
-      return;
-    }
-
-    // Mode Huruf (Hiragana / Katakana / Mix)
-    const hurufQuestions = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak, introducedChars.value);
-    questions.value = hurufQuestions;
-
-    // Kumpulkan huruf unlearned unik dalam sesi ini untuk ditampilkan di preview card awal
-    // HANYA untuk huruf yang benar-benar baru (belum pernah di-preview / dipelajari sama sekali)
-    const uniqueUnlearnedInSession: any[] = [];
-    const seenChars = new Set<string>();
-    hurufQuestions.forEach(q => {
-      if (!seenChars.has(q.character)) {
-        seenChars.add(q.character);
-        const streak = userStreaks.value[q.character] || 0;
-        const isIntroduced = !!introducedChars.value[q.character];
-        if (streak === 0 && !isIntroduced) {
-          uniqueUnlearnedInSession.push(q);
-        }
-      }
+    const res = await prepareStandardQuestions({
+      targetDuration,
+      type,
+      level,
+      selectedKanaCategory: selectedKanaCategory.value,
+      selectedKanjiLessonNumber: selectedKanjiLessonNumber.value,
+      activeKanjiLessonNumber: activeKanjiLessonNumber.value,
+      getMasteryStreak: masteryStore.getMasteryStreak,
+      userStreaks: masteryStore.userStreaks,
+      introducedChars: masteryStore.introducedChars
     });
 
-    if (uniqueUnlearnedInSession.length > 0) {
-      previewMode.value = 'full_wave';
-      currentWaveIndex.value = 0;
-      currentWaveItems.value = sortInGojuonOrder(uniqueUnlearnedInSession);
-      isWavePreviewActive.value = true;
-    } else {
-      previewMode.value = 'none';
-      isWavePreviewActive.value = false;
-    }
-
-    initialQuestionCount.value = questions.value.length;
+    questions.value = res.questions;
+    previewMode.value = res.previewMode;
+    isWavePreviewActive.value = res.isWavePreviewActive;
+    currentWaveItems.value = res.currentWaveItems;
+    currentWaveIndex.value = 0;
+    initialQuestionCount.value = res.initialQuestionCount;
     isLoading.value = false;
     initQuestionHints();
   };
@@ -680,35 +202,18 @@ export const useQuizStore = defineStore('quiz', () => {
   ) => {
     selectedKanaCategory.value = kanaCategory;
     await resetQuizSessionState(targetDuration, type, level);
-    const questionCount = getQuestionCountFromDuration(targetDuration, type);
-    let pool = getFallbackLocalPool(type, level);
 
-    if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory.value !== 'all') {
-      const filtered = pool.filter(item => item.type === selectedKanaCategory.value);
-      if (filtered.length > 0) pool = filtered;
-    }
+    const res = await prepareWeakItemsQuestions({
+      targetDuration,
+      type,
+      level,
+      selectedKanaCategory: selectedKanaCategory.value,
+      getMasteryStreak: masteryStore.getMasteryStreak,
+      introducedChars: masteryStore.introducedChars
+    });
 
-    let weakPool = pool.filter(item => getMasteryStreak(item.character) < 3);
-    if (weakPool.length === 0) weakPool = [...pool];
-
-    if (type === 'words') {
-      questions.value = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
-    } else if (type === 'kanji') {
-      const weakEntries = kanjiWritingEntries.filter(e => getMasteryStreak(e.kanji) < 3);
-      const poolEntries = weakEntries.length > 0 ? weakEntries : kanjiWritingEntries;
-      const sessionResult = buildKanjiWritingSessionQuestions(
-        poolEntries,
-        questionCount,
-        getMasteryStreak,
-        introducedChars.value,
-        { maxNewOverride: 0 }
-      );
-      questions.value = sessionResult.questions;
-    } else {
-      questions.value = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak, introducedChars.value);
-    }
-
-    initialQuestionCount.value = questions.value.length;
+    questions.value = res.questions;
+    initialQuestionCount.value = res.initialQuestionCount;
     isLoading.value = false;
     initQuestionHints();
   };
@@ -718,144 +223,81 @@ export const useQuizStore = defineStore('quiz', () => {
     const correctRomaji = currentQuestion.value.romaji;
     const correctRomajis = Array.isArray(correctRomaji) ? correctRomaji : [correctRomaji];
 
-    // Gunakan pool jawaban sesuai kategori huruf jika dispesifikasikan
     let poolData = getFallbackLocalPool(questionType.value, quizLevel.value);
     if (['hiragana', 'katakana', 'mix'].includes(questionType.value) && selectedKanaCategory.value !== 'all') {
       const filtered = poolData.filter(w => w.type === selectedKanaCategory.value);
-      if (filtered.length >= 6) {
-        poolData = filtered;
-      }
+      if (filtered.length >= 6) poolData = filtered;
     }
     const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
     const incorrectOptions = Array.from(new Set(pool.filter(r => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random()).slice(0, 5);
     return [...incorrectOptions, correctRomajis[0]].sort(() => 0.5 - Math.random());
   });
 
+  // ── Answer Submission & Scoring ─────────────────────────────
   const submitAnswer = (romaji: string) => {
     if (quizCompleted.value || selectedAnswer.value !== null) return;
     const userAnswerClean = romaji.trim().toLowerCase();
     const current = currentQuestion.value;
     let isCorrectVal = false, isTypo = false;
-    const isMeaningHintPenalized = showMeaningHint.value && !isMeaningHintAutoOpened.value;
-    let hintsUsed = (showReadingHint.value ? 1 : 0) + (isMeaningHintPenalized ? 1 : 0);
 
     if (current) {
-      if (checkIsCorrect(userAnswerClean, current.romaji)) isCorrectVal = true;
-      else if (isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji)) { isCorrectVal = false; isTypo = true; }
-    }
+      isCorrectVal = checkIsCorrect(userAnswerClean, current.romaji);
+      isTypo = checkIsTypo(userAnswerClean, current.romaji);
 
-    selectedAnswer.value = romaji;
-    isAnswerCorrect.value = isCorrectVal;
+      let hintsUsed = 0;
+      if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
+      if (showReadingHint.value) hintsUsed++;
 
-    let pointsEarned = 0;
-    if (isCorrectVal) {
-      pointsEarned = isTypingMode.value ? (hintsUsed === 1 ? 3 : hintsUsed === 2 ? 2 : 4) : 4;
-      score.value += pointsEarned;
-      playCorrectSound();
-      if (current) masteredChars.value[current.character] = true;
-    } else {
-      if (isTypo) { pointsEarned = 1; score.value += pointsEarned; }
-      playIncorrectSound();
-    }
+      const isFirstTry = !attemptedChars.value[current.character];
+      attemptedChars.value[current.character] = true;
 
-    if (current) {
-      const charKey = current.character;
-      introducedChars.value[charKey] = true;
-      saveIntroducedToStorage();
-      const oldStreak = userStreaks.value[charKey] || 0;
+      let pointsEarned = 0;
+      if (isCorrectVal) {
+        playCorrectSound();
+        if (hintsUsed === 0) pointsEarned = 4;
+        else if (hintsUsed === 1) pointsEarned = 3;
+        else pointsEarned = 2;
 
-      // Track first-attempt accuracy: count each correct answer during the initial main round (indices 0 to initialQuestionCount - 1)
-      if (currentQuestionIndex.value < initialQuestionCount.value) {
-        if (isCorrectVal) firstTryCorrectCount.value++;
-      }
-
-      if (questionType.value === 'words' || questionType.value === 'kanji') {
-        // Kanji / Writing Kanji Mode: evaluate streak & mastery update ONCE per unique word/kanji per session
-        if (!sessionCharAttempts.value[charKey]) {
-          sessionCharAttempts.value[charKey] = {
-            attempts: 1,
-            failed: !isCorrectVal,
-            initialStreak: oldStreak,
-            streakEvaluated: false
-          };
-        } else {
-          sessionCharAttempts.value[charKey].attempts++;
-          if (!isCorrectVal) {
-            sessionCharAttempts.value[charKey].failed = true;
-          }
-        }
-
-        const charSessionState = sessionCharAttempts.value[charKey];
-        let streakChanged = false;
-        let newStreak = oldStreak;
-
-        if (!isCorrectVal) {
-          // If incorrect on any slot, streak resets to 0
-          if (oldStreak !== 0) {
-            newStreak = 0;
-            userStreaks.value[charKey] = 0;
-            streakChanged = true;
-          }
-        } else if (isCorrectVal && !charSessionState.failed && !charSessionState.streakEvaluated) {
-          // First clean correct answer for this word in session: increment streak +1
-          charSessionState.streakEvaluated = true;
-          newStreak = charSessionState.initialStreak + 1;
-          userStreaks.value[charKey] = newStreak;
-          streakChanged = true;
-        }
-
-        try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
-
-        if (streakChanged) {
-          const transition = checkTierTransition(charKey, oldStreak, newStreak);
-          if (transition.direction !== 'same') {
-            latestTierTransition.value = transition;
-            sessionTierChanges.value.push(transition);
-          }
-
-          import('./authStore').then(({ useAuthStore }) => {
-            const authStore = useAuthStore();
-            if (authStore.user) {
-              supabase.from('user_streaks').upsert({
-                user_id: authStore.user.id,
-                character: charKey,
-                streak: newStreak,
-                last_tier: transition.newTier,
-                tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
-                updated_at: new Date().toISOString()
-              }, { onConflict: 'user_id,character' }).then();
-            }
-          });
+        if (isFirstTry) {
+          firstTryCorrectCount.value++;
+          masteredChars.value[current.character] = true;
         }
       } else {
-        // Kana & other standard modes (1 unique character per slot)
-        const newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
-        userStreaks.value[charKey] = newStreak;
-        try { localStorage.setItem('japanese-quiz-streaks', JSON.stringify(userStreaks.value)); } catch (e) { }
-
-        // Check Tier Transition
-        const transition = checkTierTransition(charKey, oldStreak, newStreak);
-        if (transition.direction !== 'same') {
-          latestTierTransition.value = transition;
-          sessionTierChanges.value.push(transition);
-        }
-
-        import('./authStore').then(({ useAuthStore }) => {
-          const authStore = useAuthStore();
-          if (authStore.user) {
-            supabase.from('user_streaks').upsert({
-              user_id: authStore.user.id,
-              character: charKey,
-              streak: newStreak,
-              last_tier: transition.newTier,
-              tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
-              updated_at: new Date().toISOString()
-            }, { onConflict: 'user_id,character' }).then();
-          }
-        });
+        playIncorrectSound();
+        pointsEarned = 0;
+        delete masteredChars.value[current.character];
       }
 
-      // Record answer in Daily Goals Store
+      score.value += pointsEarned;
+      selectedAnswer.value = romaji;
+      isAnswerCorrect.value = isCorrectVal;
+
+      const charKey = current.character;
+      const oldStreak = masteryStore.userStreaks[charKey] || 0;
+
+      if (!sessionCharAttempts.value[charKey]) {
+        sessionCharAttempts.value[charKey] = {
+          attempts: 1,
+          failed: !isCorrectVal,
+          initialStreak: oldStreak,
+          streakEvaluated: false
+        };
+      } else {
+        sessionCharAttempts.value[charKey].attempts++;
+        if (!isCorrectVal) {
+          sessionCharAttempts.value[charKey].failed = true;
+        }
+      }
+
+      const isWordOrKanji = questionType.value === 'words' || current.type === 'word' || current.type === 'kanji';
+      masteryStore.recordAnswerStreak(
+        charKey,
+        isWordOrKanji,
+        isCorrectVal,
+        pointsEarned,
+        sessionCharAttempts.value[charKey]
+      );
+
       const goalsStore = useGoalsStore();
       import('./authStore').then(({ useAuthStore }) => {
         const authStore = useAuthStore();
@@ -863,32 +305,20 @@ export const useQuizStore = defineStore('quiz', () => {
       });
 
       userAnswers.value.push({
-        character: current.character, correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
-        userRomaji: romaji || '(skipped)', isCorrect: isCorrectVal, kana: (current as any).kana, meaning: (current as any).meaning, pointsEarned, maxPoints: 4, isTypo, hintsUsed
+        character: current.character,
+        correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
+        userRomaji: romaji || '(skipped)',
+        isCorrect: isCorrectVal,
+        kana: (current as any).kana,
+        meaning: (current as any).meaning,
+        pointsEarned,
+        maxPoints: 4,
+        isTypo,
+        hintsUsed
       });
 
       if (!isCorrectVal) {
-        let repeatedQuestion = { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false };
-        if (current.type === 'kanji') {
-          const entry = kanjiWritingEntriesMap[current.character];
-          if (entry && entry.prompts.length > 1) {
-            const others = entry.prompts.filter(p => p.word !== current.fullWord);
-            if (others.length > 0) {
-              const newPrompt = others[Math.floor(Math.random() * others.length)];
-              repeatedQuestion = {
-                ...repeatedQuestion,
-                romaji: newPrompt.targetKana,
-                kana: newPrompt.fullKana,
-                fullWord: newPrompt.word,
-                prefixKana: newPrompt.prefixKana,
-                targetKana: newPrompt.targetKana,
-                suffixKana: newPrompt.suffixKana,
-                meaning: newPrompt.meaning
-              };
-            }
-          }
-        }
-        questions.value = [...questions.value, repeatedQuestion];
+        questions.value = [...questions.value, buildRepeatedQuestion(current)];
       }
     }
   };
@@ -900,8 +330,12 @@ export const useQuizStore = defineStore('quiz', () => {
 
     const durationSeconds = (endTime.value - startTime.value) / 1000;
     const { isNewRecord } = await submitLeaderboardScore({
-      userId: authStore.user.id, username: authStore.displayUsername || 'Anonymous',
-      submissionScore, durationSeconds, questionType: questionType.value, quizLevel: quizLevel.value
+      userId: authStore.user.id,
+      username: authStore.displayUsername || 'Anonymous',
+      submissionScore,
+      durationSeconds,
+      questionType: questionType.value,
+      quizLevel: quizLevel.value
     });
     if (isNewRecord) newRecordAchieved.value = true;
   };
@@ -916,14 +350,16 @@ export const useQuizStore = defineStore('quiz', () => {
       const bonusPoints = Math.round(timeSavedSeconds * 0.5);
       let rankText = timeSavedSeconds >= 60 ? '🚀 Speed Demon!' : timeSavedSeconds >= 30 ? '⚡ Lightning Fast!' : '⚡ Selesai Lebih Cepat!';
       speedAchievement.value = { timeSavedSeconds, bonusPoints, isFaster: true, rankText };
-    } else speedAchievement.value = { timeSavedSeconds: 0, bonusPoints: 0, isFaster: false, rankText: '🎯 Steady & Consistent' };
+    } else {
+      speedAchievement.value = { timeSavedSeconds: 0, bonusPoints: 0, isFaster: false, rankText: '🎯 Steady & Consistent' };
+    }
 
     submitToLeaderboard(finalSubmissionScore);
 
     const goalsStore = useGoalsStore();
     goalsStore.checkAndTriggerCelebration();
 
-    if (currentUserLevel.value > levelBeforeQuiz.value) showLevelUpScreen.value = true;
+    if (masteryStore.currentUserLevel > levelBeforeQuiz.value) showLevelUpScreen.value = true;
     else quizCompleted.value = true;
   };
 
@@ -936,7 +372,7 @@ export const useQuizStore = defineStore('quiz', () => {
     showReadingHint.value = false;
     showMeaningHint.value = false;
     isMeaningHintAutoOpened.value = false;
-    latestTierTransition.value = null;
+    masteryStore.latestTierTransition = null;
 
     const totalAnswered = userAnswers.value.length;
     const isSessionComplete = totalAnswered >= initialQuestionCount.value;
@@ -990,37 +426,115 @@ export const useQuizStore = defineStore('quiz', () => {
     finishQuiz();
   };
 
-  const loadRenshuuProgress = async (lessonNumber: number = currentLessonNumber.value) => {
-    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
-    const stats = await fetchRenshuuProgress(lessonNumber, authUserId);
-    renshuuProgressStats.value = stats;
-  };
-
-  const recordRenshuuAnswer = async (itemId: string, itemType: 'a' | 'b' | 'c', isCorrect: boolean) => {
-    const authUserId = (await supabase.auth.getUser()).data.user?.id || null;
-    await saveRenshuuItemResult(itemId, itemType, isCorrect, authUserId);
-    await loadRenshuuProgress(currentLessonNumber.value);
-  };
-
   return {
-    isLoading, quizLevel, questionType, selectedKanaCategory, selectedMode, isTypingMode, userInput, showReadingHint, showMeaningHint,
-    isMeaningHintAutoOpened, openMeaningHint, initQuestionHints,
-    currentQuestionIndex, score, questions, selectedAnswer, isAnswerCorrect, quizCompleted,
-    startTime, endTime, newRecordAchieved, levelBeforeQuiz, showLevelUpScreen, quizLesson,
-    speedAchievement, userAnswers, userStreaks, introducedChars, currentQuestion, options, progress, finalScore,
-    hiraganaMasteryStats, katakanaMasteryStats, wordsMasteryStats, kanjiMasteryStats, kanjiN5Data, overallMasteryStats,
-    currentUserLevel, isMistakeRound, masteredCount, initialQuestionCount, firstTryCorrectCount,
+    // Configuration & Meta
+    isLoading,
+    quizLevel,
+    questionType,
+    selectedKanaCategory,
+    selectedMode,
+    isTypingMode,
+    userInput,
+    showReadingHint,
+    showMeaningHint,
+    isMeaningHintAutoOpened,
+    openMeaningHint,
+    initQuestionHints,
+
+    // Active Quiz Session
+    currentQuestionIndex,
+    score,
+    questions,
+    selectedAnswer,
+    isAnswerCorrect,
+    quizCompleted,
+    startTime,
+    endTime,
+    newRecordAchieved,
+    levelBeforeQuiz,
+    showLevelUpScreen,
+    quizLesson,
+    targetDurationMinutes,
+    speedAchievement,
+    userAnswers,
+    currentQuestion,
+    options,
+    progress,
+    finalScore,
+    isMistakeRound,
+    masteredCount,
+    initialQuestionCount,
+    firstTryCorrectCount,
     sentenceStats,
-    selectedKanjiLessonNumber, activeKanjiLessonNumber, currentKanjiLessonLabel, currentKanjiLessonStats,
-    currentLessonNumber, bunkeiList, kaiwaData, renshuuSessionQuestions, renshuuProgressStats, showLessonMaterial, isLessonMaterialCompleted,
-    previewMode, previewedItems, fullWaveBatches, currentWaveIndex, isWavePreviewActive, currentWaveItems,
-    microPreviewItem, showMicroPreviewModal, latestTierTransition, sessionTierChanges, justClosedPreview, previewClosedTimestamp,
-    completeWavePreview, completeMicroPreview,
-    getMasteryStreak, getMasteryTier, bulkUpdateMasteryTier, startQuiz, startWeakItemsQuiz, submitAnswer,
+
+    // Kanji Lesson Panels
+    selectedKanjiLessonNumber,
+    activeKanjiLessonNumber,
+    currentKanjiLessonLabel,
+    currentKanjiLessonStats,
+    kanjiN5Data,
+
+    // Wave Preview
+    previewMode,
+    previewedItems,
+    fullWaveBatches,
+    currentWaveIndex,
+    isWavePreviewActive,
+    currentWaveItems,
+    microPreviewItem,
+    showMicroPreviewModal,
+    justClosedPreview,
+    previewClosedTimestamp,
+    completeWavePreview,
+    completeMicroPreview,
+
+    // Core Actions
+    startQuiz,
+    startWeakItemsQuiz,
+    submitAnswer,
     finishSentenceQuiz,
-    nextQuestion, restartQuiz, loadStreaksFromServer, loadStreaksFromStorage,
-    getLocalStreaks, fetchServerStreaks, syncLocalToServer, applyServerStreaks,
-    loadRenshuuProgress, recordRenshuuAnswer,
-    selectedHitunganWave, selectedHitunganDirection, hitunganProgressMap, unlockedHitunganWaveKeys, loadHitunganProgress
+    nextQuestion,
+    restartQuiz,
+
+    // Delegated to Mastery Store
+    userStreaks: toRef(masteryStore, 'userStreaks'),
+    introducedChars: toRef(masteryStore, 'introducedChars'),
+    latestTierTransition: toRef(masteryStore, 'latestTierTransition'),
+    sessionTierChanges: toRef(masteryStore, 'sessionTierChanges'),
+    hiraganaMasteryStats: toRef(masteryStore, 'hiraganaMasteryStats'),
+    katakanaMasteryStats: toRef(masteryStore, 'katakanaMasteryStats'),
+    wordsMasteryStats: toRef(masteryStore, 'wordsMasteryStats'),
+    kanjiMasteryStats: toRef(masteryStore, 'kanjiMasteryStats'),
+    overallMasteryStats: toRef(masteryStore, 'overallMasteryStats'),
+    currentUserLevel: toRef(masteryStore, 'currentUserLevel'),
+    getMasteryStreak: masteryStore.getMasteryStreak,
+    getMasteryTier: masteryStore.getMasteryTier,
+    bulkUpdateMasteryTier: masteryStore.bulkUpdateMasteryTier,
+    loadStreaksFromServer: masteryStore.loadStreaksFromServer,
+    loadStreaksFromStorage: masteryStore.loadStreaksFromStorage,
+    getLocalStreaks: masteryStore.getLocalStreaks,
+    fetchServerStreaks: masteryStore.fetchServerStreaks,
+    syncLocalToServer: masteryStore.syncLocalToServer,
+    applyServerStreaks: masteryStore.applyServerStreaks,
+
+    // Delegated to Lesson Store
+    currentLessonNumber: toRef(lessonStore, 'currentLessonNumber'),
+    bunkeiList: toRef(lessonStore, 'bunkeiList'),
+    kaiwaData: toRef(lessonStore, 'kaiwaData'),
+    renshuuSessionQuestions: toRef(lessonStore, 'renshuuSessionQuestions'),
+    renshuuProgressStats: toRef(lessonStore, 'renshuuProgressStats'),
+    showLessonMaterial: toRef(lessonStore, 'showLessonMaterial'),
+    isLessonMaterialCompleted: toRef(lessonStore, 'isLessonMaterialCompleted'),
+    loadRenshuuProgress: lessonStore.loadRenshuuProgress,
+    recordRenshuuAnswer: lessonStore.recordRenshuuAnswer,
+
+    // Delegated to Hitungan Store
+    selectedHitunganWave: toRef(hitunganStore, 'selectedHitunganWave'),
+    selectedHitunganDirection: toRef(hitunganStore, 'selectedHitunganDirection'),
+    hitunganProgressMap: toRef(hitunganStore, 'hitunganProgressMap'),
+    unlockedHitunganWaveKeys: toRef(hitunganStore, 'unlockedHitunganWaveKeys'),
+    loadHitunganProgress: hitunganStore.loadHitunganProgress,
+    isHitunganFinished: toRef(hitunganStore, 'isHitunganFinished'),
+    initHitunganSession
   };
 });

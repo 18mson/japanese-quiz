@@ -228,20 +228,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Progress Indicator Bar -->
-    <div class="w-full mb-4">
-      <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-1 px-1">
-        <span>Soal {{ questionNumber }} dari {{ totalQuestions }}</span>
-        <span>Akurasi: {{ questionNumber > 1 ? Math.round((correctCount / (questionNumber - 1)) * 100) : 100 }}%</span>
-      </div>
-      <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-        <div 
-          class="h-full bg-gradient-to-r from-amber-500 to-orange-500 transition-all duration-300 rounded-full"
-          :style="{ width: `${(questionNumber / totalQuestions) * 100}%` }"
-        ></div>
-      </div>
-    </div>
-
     <!-- MAIN ACTIVE QUIZ VIEW -->
     <div v-if="!isQuizFinished && currentQuestion" class="w-full flex-1 flex flex-col justify-between items-center gap-4">
       <!-- 1. Question Card Display -->
