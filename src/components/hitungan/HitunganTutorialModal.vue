@@ -3,6 +3,7 @@ import { onMounted, onUnmounted } from 'vue';
 import { BookOpen, X, ArrowRight, Volume2, AlertTriangle, Sparkles } from '@lucide/vue';
 import type { HitunganWaveDef } from '../../data/hitunganWaves';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
+import BaseModal from '../common/BaseModal.vue';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -27,10 +28,7 @@ const handleStart = () => {
 
 const handleKeyDown = (e: KeyboardEvent) => {
   if (!props.isOpen) return;
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    emit('close');
-  } else if (e.key === 'Enter') {
+  if (e.key === 'Enter') {
     e.preventDefault();
     handleStart();
   }
@@ -46,15 +44,14 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Teleport to="body">
-    <div 
-      v-if="isOpen && wave"
-      class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn"
-      @click.self="emit('close')"
-    >
-    <div 
-      class="w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl p-5 sm:p-6 text-left shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden text-slate-100"
-    >
+  <BaseModal
+    :is-open="isOpen && !!wave"
+    max-width="lg"
+    :show-close-button="false"
+    panel-class="bg-slate-900 border-slate-700/80 text-slate-100 p-5 sm:p-6"
+    @close="emit('close')"
+  >
+    <div v-if="wave" class="flex flex-col h-full">
       <!-- Top Header Row -->
       <div class="flex items-center justify-between pb-3.5 border-b border-slate-800 flex-shrink-0">
         <div class="flex items-center gap-2.5">
@@ -172,6 +169,5 @@ onUnmounted(() => {
         </button>
       </div>
     </div>
-  </div>
-</Teleport>
+  </BaseModal>
 </template>

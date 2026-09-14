@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useAuthStore } from '../stores/authStore';
 import { AlertCircle, Sparkles } from '@lucide/vue';
+import BaseModal from './common/BaseModal.vue';
 
 defineProps<{
   isOpen: boolean;
@@ -53,16 +54,14 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div 
-    v-if="isOpen" 
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 dark:bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
-    @click.self="handleClose"
+  <BaseModal
+    :is-open="isOpen"
+    max-width="md"
+    :show-close-button="false"
+    @close="handleClose"
   >
-    <div 
-      class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all duration-300 scale-100 border border-gray-100 dark:border-slate-800"
-      @keydown.enter="handleSubmit"
-    >
-      <!-- Header / Tabs -->
+    <!-- Header / Tabs -->
+    <template #header>
       <div class="flex border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40">
         <button 
           class="flex-1 py-4 text-center text-sm font-bold border-b-2 transition-all cursor-pointer"
@@ -79,73 +78,74 @@ const handleSubmit = async () => {
           Buat Akun
         </button>
       </div>
+    </template>
 
-      <!-- Content -->
-      <div class="p-6">
-        <div class="text-center mb-6">
-          <h3 class="text-xl font-extrabold text-gray-800 dark:text-slate-100">
-            {{ isLoginTab ? 'Selamat Datang Kembali!' : 'Bergabung Kuis Bahasa Jepang' }}
-          </h3>
-          <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
-            {{ isLoginTab ? 'Masuk untuk menyinkronkan skor dan melihat papan peringkat.' : 'Buat akun untuk memantau perkembangan penguasaan Anda.' }}
-          </p>
-        </div>
-
-        <!-- Feedback Messages -->
-        <div 
-          v-if="authStore.errorMsg" 
-          class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs rounded-xl flex items-center gap-2 animate-shake"
-        >
-          <AlertCircle class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0" />
-          <span>{{ authStore.errorMsg }}</span>
-        </div>
-
-        <div 
-          v-if="registerSuccess" 
-          class="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs rounded-xl flex items-center gap-2"
-        >
-          <Sparkles class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-          <span>Pendaftaran berhasil! Silakan Masuk.</span>
-        </div>
-
-        <!-- Form Fields -->
-        <div class="space-y-4">
-          <div>
-            <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
-              Nama Pengguna atau Email
-            </label>
-            <input 
-              v-model="emailOrUsername" 
-              type="text" 
-              placeholder="contoh: joshua atau josh@email.com"
-              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
-            />
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
-              Kata Sandi
-            </label>
-            <input 
-              v-model="password" 
-              type="password" 
-              placeholder="••••••••"
-              class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
-            />
-          </div>
-
-          <button 
-            @click="handleSubmit" 
-            :disabled="authStore.loading"
-            class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:shadow-indigo-500/20 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
-          >
-            <span v-if="authStore.loading" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-            <span>{{ isLoginTab ? 'Masuk' : 'Daftar' }}</span>
-          </button>
-        </div>
+    <div class="p-6" @keydown.enter="handleSubmit">
+      <div class="text-center mb-6">
+        <h3 class="text-xl font-extrabold text-gray-800 dark:text-slate-100">
+          {{ isLoginTab ? 'Selamat Datang Kembali!' : 'Bergabung Kuis Bahasa Jepang' }}
+        </h3>
+        <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
+          {{ isLoginTab ? 'Masuk untuk menyinkronkan skor dan melihat papan peringkat.' : 'Buat akun untuk memantau perkembangan penguasaan Anda.' }}
+        </p>
       </div>
 
-      <!-- Footer Close Option -->
+      <!-- Feedback Messages -->
+      <div 
+        v-if="authStore.errorMsg" 
+        class="mb-4 p-3 bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800 text-rose-700 dark:text-rose-300 text-xs rounded-xl flex items-center gap-2 animate-shake"
+      >
+        <AlertCircle class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0" />
+        <span>{{ authStore.errorMsg }}</span>
+      </div>
+
+      <div 
+        v-if="registerSuccess" 
+        class="mb-4 p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-100 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 text-xs rounded-xl flex items-center gap-2"
+      >
+        <Sparkles class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+        <span>Pendaftaran berhasil! Silakan Masuk.</span>
+      </div>
+
+      <!-- Form Fields -->
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+            Nama Pengguna atau Email
+          </label>
+          <input 
+            v-model="emailOrUsername" 
+            type="text" 
+            placeholder="contoh: joshua atau josh@email.com"
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
+          />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
+            Kata Sandi
+          </label>
+          <input 
+            v-model="password" 
+            type="password" 
+            placeholder="••••••••"
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
+          />
+        </div>
+
+        <button 
+          @click="handleSubmit" 
+          :disabled="authStore.loading"
+          class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:shadow-indigo-500/20 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
+        >
+          <span v-if="authStore.loading" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+          <span>{{ isLoginTab ? 'Masuk' : 'Daftar' }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer Close Option -->
+    <template #footer>
       <div class="px-6 py-4 bg-gray-50 dark:bg-slate-800/40 border-t border-gray-100 dark:border-slate-800 flex justify-end">
         <button 
           @click="handleClose"
@@ -154,8 +154,8 @@ const handleSubmit = async () => {
           Batal
         </button>
       </div>
-    </div>
-  </div>
+    </template>
+  </BaseModal>
 </template>
 
 <style scoped>

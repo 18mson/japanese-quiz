@@ -4,12 +4,11 @@ import { useMenulisQuiz } from '../../composables/useMenulisQuiz';
 import { useQuizStore } from '../../stores/quizStore';
 import KanaQuizTarget from './KanaQuizTarget.vue';
 import SpeakerButton from '../SpeakerButton.vue';
+import QuizActionNavbar from '../common/QuizActionNavbar.vue';
+import StreakBadge from '../common/StreakBadge.vue';
+import QuizFeedbackBanner from '../common/QuizFeedbackBanner.vue';
 import { 
-  Flame, 
-  ArrowRight,
-  CheckCircle2, 
-  XCircle, 
-  Sparkles
+  ArrowRight
 } from '@lucide/vue';
 
 defineEmits<{
@@ -84,11 +83,7 @@ onUnmounted(() => {
           </span>
 
           <!-- Streak Counter -->
-          <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-slate-800/90 border border-amber-200 dark:border-slate-700/70 text-amber-700 dark:text-amber-300 text-xs font-bold shadow-xs">
-            <Flame class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
-            <span class="font-extrabold text-amber-600 dark:text-amber-300">{{ consecutiveCorrect }}</span>
-            <span class="text-[10px] text-amber-700/80 dark:text-slate-400 font-normal">Streak</span>
-          </div>
+          <StreakBadge :streak="consecutiveCorrect" show-always label="Streak" />
         </div>
 
         <span class="text-xs text-slate-500 dark:text-slate-400 font-bold capitalize bg-slate-100 dark:bg-slate-800/60 px-2.5 py-1 rounded-lg border border-slate-200/60 dark:border-slate-700/60">
@@ -176,31 +171,13 @@ onUnmounted(() => {
           </div>
         </div>
 
-        <!-- Post-Answer Banners & Desktop 'Selanjutnya' Button -->
-        <div v-else class="flex flex-col gap-3 animate-scaleUp">
-          <!-- Correct Banner -->
-          <div 
-            v-if="isCurrentCorrect"
-            class="bg-emerald-500/15 border border-emerald-500/40 text-emerald-800 dark:text-emerald-300 rounded-2xl p-3 flex items-center justify-center gap-2 font-bold text-xs sm:text-sm shadow-xs"
-          >
-            <CheckCircle2 class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span>{{ successBannerText }}</span>
-            <Sparkles class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-          </div>
-
-          <!-- Failed 4x Mistakes Banner -->
-          <div 
-            v-else
-            class="bg-rose-500/15 border border-rose-500/40 text-rose-800 dark:text-rose-300 rounded-2xl p-3 flex flex-col items-center justify-center gap-1 font-bold text-xs sm:text-sm shadow-xs text-center"
-          >
-            <div class="flex items-center gap-1.5 text-rose-600 dark:text-rose-400">
-              <XCircle class="w-4 h-4 shrink-0" />
-              <span>Batas 4x Salah Tercapai</span>
-            </div>
-            <span class="text-[11px] font-normal text-rose-700/90 dark:text-rose-200/90">
-              Huruf ini akan otomatis diulang di akhir kuis.
-            </span>
-          </div>
+        <!-- Post-Answer Banners -->
+        <div v-else class="flex flex-col gap-3">
+          <QuizFeedbackBanner
+            :is-correct="!!isCurrentCorrect"
+            :title="isCurrentCorrect ? successBannerText : 'Batas 4x Salah Tercapai'"
+            :subtitle="!isCurrentCorrect ? 'Huruf ini akan otomatis diulang di akhir kuis.' : ''"
+          />
         </div>
       </div>
     </div>
@@ -220,24 +197,13 @@ onUnmounted(() => {
     </div>
   </div>
 
-  <!-- Fixed Bottom Navbar for Proceed Action (Consistent across modes) -->
-  <div 
-    v-if="isQuestionFinished" 
-    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
-  >
-    <div class="max-w-md w-full flex justify-center">
-      <button 
-        type="button"
-        @click="proceedToNextQuestion"
-        class="w-full sm:w-64 font-bold rounded-xl py-2.5 shadow-md hover:shadow-lg transition duration-200 flex justify-center items-center gap-2 cursor-pointer text-sm text-white"
-        :class="isCurrentCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'"
-      >
-        <span>{{ isLastQuestion ? 'Lihat Hasil Akhir' : 'Lanjut Soal Berikutnya' }}</span>
-        <span class="text-xs bg-white/20 px-2 py-0.5 rounded border border-white/30 font-mono">Enter</span>
-        <ArrowRight class="w-4 h-4" />
-      </button>
-    </div>
-  </div>
+  <!-- Reusable Bottom Action Navbar -->
+  <QuizActionNavbar
+    :show="isQuestionFinished"
+    :status="isCurrentCorrect ? 'correct' : 'wrong'"
+    :is-last="isLastQuestion"
+    @proceed="proceedToNextQuestion"
+  />
 </template>
 
 <style scoped>

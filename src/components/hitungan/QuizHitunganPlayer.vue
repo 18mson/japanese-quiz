@@ -6,17 +6,17 @@ import HitunganTutorialModal from './HitunganTutorialModal.vue';
 import NumberKeypad from './NumberKeypad.vue';
 import VirtualKeyboard from '../VirtualKeyboard.vue';
 import SpeakerButton from '../SpeakerButton.vue';
+import QuizActionNavbar from '../common/QuizActionNavbar.vue';
+import StreakBadge from '../common/StreakBadge.vue';
+import QuizFeedbackBanner from '../common/QuizFeedbackBanner.vue';
 import * as wanakana from 'wanakana';
 import { 
-  Flame, 
   BookOpen, 
   ArrowRight, 
   RotateCcw, 
   Home, 
-  CheckCircle2, 
-  XCircle, 
   Volume2, 
-  LogOut,
+  LogOut, 
   Trophy
 } from '@lucide/vue';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
@@ -200,10 +200,7 @@ onUnmounted(() => {
       <!-- Right Controls: Streak, Tutorial & Exit -->
       <div class="flex items-center gap-2 flex-shrink-0">
         <!-- Streak Counter -->
-        <div v-if="streak > 0" class="flex items-center gap-1 text-xs font-black text-amber-500 bg-amber-50 dark:bg-amber-950/60 px-2 py-1 rounded-xl border border-amber-200 dark:border-amber-800/80 animate-pulse">
-          <Flame class="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-          <span>{{ streak }}</span>
-        </div>
+        <StreakBadge :streak="streak" />
 
         <!-- Tutorial Button -->
         <button 
@@ -332,63 +329,54 @@ onUnmounted(() => {
       </div>
 
       <!-- 3. Visual Answer Feedback Banner (Prominent & Direction-Aware) -->
-      <div 
-        v-if="isAnswerChecked" 
-        class="w-full rounded-2xl p-4 sm:p-5 transition-all duration-300 flex flex-col gap-3 shadow-md animate-scaleUp"
-        :class="isCorrect ? 'bg-emerald-50 dark:bg-emerald-950/70 border-2 border-emerald-400 dark:border-emerald-700' : 'bg-rose-50 dark:bg-rose-950/70 border-2 border-rose-400 dark:border-rose-700'"
+      <QuizFeedbackBanner
+        v-if="isAnswerChecked"
+        :is-correct="isCorrect"
       >
-        <!-- Header: Result Status & Speaker Audio -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <CheckCircle2 v-if="isCorrect" class="w-6 h-6 sm:w-7 sm:h-7 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-            <XCircle v-else class="w-6 h-6 sm:w-7 sm:h-7 text-rose-600 dark:text-rose-400 flex-shrink-0" />
-            <span class="text-base sm:text-xl font-black tracking-tight" :class="isCorrect ? 'text-emerald-900 dark:text-emerald-100' : 'text-rose-900 dark:text-rose-100'">
-              {{ isCorrect ? 'Bagus Sekali! Benar! 🎉' : 'Kurang Tepat' }}
-            </span>
-          </div>
-
+        <template #action>
           <SpeakerButton :text="currentQuestion.expectedKana" size="md" />
-        </div>
+        </template>
 
-        <!-- Details: Direction-aware Answer Details -->
-        <!-- Case A: Kana to Number (User answered number, show correct number prominently) -->
-        <div v-if="direction === 'kana_to_number'" class="flex flex-col gap-1.5 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
-          <div class="flex items-baseline gap-2 flex-wrap">
-            <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">Angka yang benar:</span>
-            <span class="text-2xl sm:text-3xl font-black font-mono tracking-wider" :class="isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'">
-              {{ currentQuestion.expectedNumber }}
-            </span>
+        <template #details>
+          <!-- Case A: Kana to Number (User answered number, show correct number prominently) -->
+          <div v-if="direction === 'kana_to_number'" class="flex flex-col gap-1.5 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
+            <div class="flex items-baseline gap-2 flex-wrap">
+              <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">Angka yang benar:</span>
+              <span class="text-2xl sm:text-3xl font-black font-mono tracking-wider" :class="isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'">
+                {{ currentQuestion.expectedNumber }}
+              </span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium flex items-baseline gap-1.5 flex-wrap">
+              <span class="text-slate-400">Bacaan resmi:</span>
+              <span class="font-extrabold text-amber-600 dark:text-amber-400 font-jp text-sm sm:text-base">
+                {{ currentQuestion.expectedKana }}
+              </span>
+              <span v-if="currentQuestion.acceptedKanaList.length > 1" class="text-xs text-slate-400">
+                (Boleh juga: {{ currentQuestion.acceptedKanaList.slice(1).join(', ') }})
+              </span>
+            </div>
           </div>
-          <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium flex items-baseline gap-1.5 flex-wrap">
-            <span class="text-slate-400">Bacaan resmi:</span>
-            <span class="font-extrabold text-amber-600 dark:text-amber-400 font-jp text-sm sm:text-base">
-              {{ currentQuestion.expectedKana }}
-            </span>
-            <span v-if="currentQuestion.acceptedKanaList.length > 1" class="text-xs text-slate-400">
-              (Boleh juga: {{ currentQuestion.acceptedKanaList.slice(1).join(', ') }})
-            </span>
-          </div>
-        </div>
 
-        <!-- Case B: Number to Kana (User answered kana, show expected kana prominently) -->
-        <div v-else class="flex flex-col gap-1.5 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
-          <div class="flex items-baseline gap-2 flex-wrap">
-            <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">Bacaan resmi:</span>
-            <span class="text-xl sm:text-2xl font-black font-jp tracking-wide" :class="isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
-              {{ currentQuestion.expectedKana }}
-            </span>
-            <span v-if="currentQuestion.acceptedKanaList.length > 1" class="text-xs text-slate-400">
-              (Boleh juga: {{ currentQuestion.acceptedKanaList.slice(1).join(', ') }})
-            </span>
+          <!-- Case B: Number to Kana (User answered kana, show expected kana prominently) -->
+          <div v-else class="flex flex-col gap-1.5 pt-2 border-t border-slate-200/80 dark:border-slate-800/80">
+            <div class="flex items-baseline gap-2 flex-wrap">
+              <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400">Bacaan resmi:</span>
+              <span class="text-xl sm:text-2xl font-black font-jp tracking-wide" :class="isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
+                {{ currentQuestion.expectedKana }}
+              </span>
+              <span v-if="currentQuestion.acceptedKanaList.length > 1" class="text-xs text-slate-400">
+                (Boleh juga: {{ currentQuestion.acceptedKanaList.slice(1).join(', ') }})
+              </span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium flex items-baseline gap-1.5">
+              <span class="text-slate-400">Angka:</span>
+              <span class="font-bold font-mono text-sm sm:text-base text-slate-700 dark:text-slate-200">
+                {{ currentQuestion.expectedNumber }}
+              </span>
+            </div>
           </div>
-          <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium flex items-baseline gap-1.5">
-            <span class="text-slate-400">Angka:</span>
-            <span class="font-bold font-mono text-sm sm:text-base text-slate-700 dark:text-slate-200">
-              {{ currentQuestion.expectedNumber }}
-            </span>
-          </div>
-        </div>
-      </div>
+        </template>
+      </QuizFeedbackBanner>
     </div>
 
     <!-- 4. QUIZ COMPLETED / RESULTS SCREEN -->
@@ -485,24 +473,13 @@ onUnmounted(() => {
     </VirtualKeyboard>
   </div>
 
-  <!-- Fixed Bottom Navbar for Proceed Action (Like other modes) -->
-  <div 
-    v-if="isAnswerChecked && !isQuizFinished" 
-    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
-  >
-    <div class="max-w-md w-full flex justify-center">
-      <button 
-        type="button"
-        @click="handleProceed"
-        class="w-full sm:w-64 font-bold rounded-xl py-2.5 shadow-md hover:shadow-lg transition duration-200 flex justify-center items-center gap-2 cursor-pointer text-sm text-white"
-        :class="isCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'"
-      >
-        <span>{{ isLastQuestion ? 'Lihat Hasil Akhir' : 'Lanjut Soal Berikutnya' }}</span>
-        <span class="text-xs bg-white/20 px-2 py-0.5 rounded border border-white/30 font-mono">Enter</span>
-        <ArrowRight class="w-4 h-4" />
-      </button>
-    </div>
-  </div>
+  <!-- Reusable Bottom Action Navbar -->
+  <QuizActionNavbar
+    :show="isAnswerChecked && !isQuizFinished"
+    :status="isCorrect ? 'correct' : 'wrong'"
+    :is-last="isLastQuestion"
+    @proceed="handleProceed"
+  />
 </template>
 
 <style scoped>

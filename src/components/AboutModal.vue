@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
 import { 
   X, 
   Sparkles, 
@@ -19,45 +18,29 @@ import {
   Flame,
   Award
 } from '@lucide/vue';
+import BaseModal from './common/BaseModal.vue';
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'close'): void;
 }>();
-
-const handleKeyDown = (event: KeyboardEvent) => {
-  if (event.key === 'Escape' && props.isOpen) {
-    emit('close');
-  }
-};
-
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown);
-});
 </script>
 
 <template>
-  <Teleport to="body">
-    <div 
-      v-if="isOpen" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fadeIn"
-      @click.self="emit('close')"
-    >
-      <div 
-        class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden animate-scaleUp relative"
-      >
-        <!-- Modal Header -->
-        <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-white dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 flex-shrink-0">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/20">
-              🇯🇵
+  <BaseModal
+    :is-open="isOpen"
+    max-width="3xl"
+    :show-close-button="false"
+    @close="$emit('close')"
+  >
+    <template #header>
+      <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-white dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/20">
+            🇯🇵
             </div>
             <div>
               <h2 class="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
@@ -69,15 +52,16 @@ onUnmounted(() => {
           </div>
 
           <button 
-            @click="emit('close')" 
+            @click="$emit('close')" 
             class="w-9 h-9 rounded-full bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200 flex items-center justify-center transition cursor-pointer"
             title="Tutup"
           >
             <X class="w-5 h-5" />
           </button>
         </div>
+      </template>
 
-        <!-- Scrollable Modal Content Body -->
+      <!-- Scrollable Modal Content Body -->
         <div class="p-5 sm:p-6 overflow-y-auto space-y-6 sm:space-y-8 text-gray-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
           
           <!-- 1. HERO & TUJUAN UTAMA -->
@@ -346,37 +330,16 @@ onUnmounted(() => {
 
         </div>
 
-        <!-- Modal Footer Action -->
-        <div class="px-5 py-3.5 sm:px-6 sm:py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end flex-shrink-0">
-          <button
-            @click="emit('close')"
-            class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-2"
-          >
-            <span>Tutup & Mulai Belajar</span>
-          </button>
-        </div>
-
+    <!-- Modal Footer Action -->
+    <template #footer>
+      <div class="px-5 py-3.5 sm:px-6 sm:py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end flex-shrink-0">
+        <button
+          @click="$emit('close')"
+          class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-2"
+        >
+          <span>Tutup & Mulai Belajar</span>
+        </button>
       </div>
-    </div>
-  </Teleport>
+    </template>
+  </BaseModal>
 </template>
-
-<style scoped>
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.25s ease-out forwards;
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.animate-scaleUp {
-  animation: scaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-</style>

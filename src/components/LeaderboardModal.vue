@@ -8,6 +8,7 @@ import { wordsData } from '../data/words';
 import { kanjiN5Data } from '../data/kanji';
 import { useQuizStore } from '../stores/quizStore';
 import { useAuthStore } from '../stores/authStore';
+import BaseModal from './common/BaseModal.vue';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -162,14 +163,13 @@ watch(activeTab, () => {
 </script>
 
 <template>
-  <div 
-    v-if="isOpen" 
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 dark:bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300"
-    @click.self="emit('close')"
+  <BaseModal
+    :is-open="isOpen"
+    max-width="lg"
+    :show-close-button="false"
+    @close="emit('close')"
   >
-    <div 
-      class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden transform transition-all duration-300 scale-100 border border-gray-100 dark:border-slate-800 flex flex-col max-h-[85vh]"
-    >
+    <template #header>
       <!-- Header -->
       <div class="px-6 py-4 border-b border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/40 flex items-center justify-between flex-shrink-0">
         <h3 class="text-lg font-extrabold text-gray-800 dark:text-slate-100 flex items-center gap-2">
@@ -208,6 +208,7 @@ watch(activeTab, () => {
           <span>Huruf</span>
         </button>
       </div>
+    </template>
 
       <!-- Content Area -->
       <div class="p-6 flex-1 overflow-y-auto">
@@ -355,7 +356,8 @@ watch(activeTab, () => {
         </div>
       </div>
 
-      <!-- Footer -->
+    <!-- Footer -->
+    <template #footer>
       <div class="px-6 py-4 bg-gray-50 dark:bg-slate-800/40 border-t border-gray-100 dark:border-slate-800 flex justify-end flex-shrink-0">
         <button 
           @click="emit('close')"
@@ -364,6 +366,6 @@ watch(activeTab, () => {
           Tutup
         </button>
       </div>
-    </div>
-  </div>
+    </template>
+  </BaseModal>
 </template>
