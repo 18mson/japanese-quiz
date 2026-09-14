@@ -659,7 +659,7 @@ const goToHome = () => {
     <div 
       v-else 
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
-      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-3xl pb-32 md:pb-20' : 'max-w-2xl pb-48 md:pb-20')"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : 'max-w-2xl pb-48 md:pb-20')"
     >
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       

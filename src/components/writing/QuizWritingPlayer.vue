@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue';
 import { useMenulisQuiz } from '../../composables/useMenulisQuiz';
+import { useQuizStore } from '../../stores/quizStore';
 import KanaQuizTarget from './KanaQuizTarget.vue';
 import SpeakerButton from '../SpeakerButton.vue';
 import { 
@@ -30,6 +31,11 @@ const {
   proceedToNextQuestion,
   skipCharacter
 } = useMenulisQuiz();
+
+const quizStore = useQuizStore();
+const isLastQuestion = computed(() => {
+  return quizStore.currentQuestionIndex >= quizStore.questions.length - 1;
+});
 
 const successBannerText = computed(() => {
   const acc = Math.round((lastGradedResult.value?.accuracy || 1) * 100);
@@ -211,6 +217,25 @@ onUnmounted(() => {
         @mistake="handleMistake"
         @correct-stroke="handleCorrectStroke"
       />
+    </div>
+  </div>
+
+  <!-- Fixed Bottom Navbar for Proceed Action (Consistent across modes) -->
+  <div 
+    v-if="isQuestionFinished" 
+    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+  >
+    <div class="max-w-md w-full flex justify-center">
+      <button 
+        type="button"
+        @click="proceedToNextQuestion"
+        class="w-full sm:w-64 font-bold rounded-xl py-2.5 shadow-md hover:shadow-lg transition duration-200 flex justify-center items-center gap-2 cursor-pointer text-sm text-white"
+        :class="isCurrentCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'"
+      >
+        <span>{{ isLastQuestion ? 'Lihat Hasil Akhir' : 'Lanjut Soal Berikutnya' }}</span>
+        <span class="text-xs bg-white/20 px-2 py-0.5 rounded border border-white/30 font-mono">Enter</span>
+        <ArrowRight class="w-4 h-4" />
+      </button>
     </div>
   </div>
 </template>

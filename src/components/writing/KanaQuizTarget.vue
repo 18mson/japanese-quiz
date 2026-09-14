@@ -90,6 +90,11 @@ const isCombination = computed(() => charList.value.length > 1);
 const mainBoxSize = computed(() => (isCombination.value ? 220 : props.size));
 const smallBoxSize = computed(() => Math.max(148, Math.round(mainBoxSize.value * 0.67)));
 
+// Width offset for combination 2-character layout:
+// Shifting the second character (e.g. ゃ, ゅ, ょ) further to the right prevents visual crowding with the first kana
+const comboExtraWidth = 120;
+const combinationContainerWidth = computed(() => mainBoxSize.value + comboExtraWidth);
+
 const getBoxSize = (idx: number) => {
   if (!isCombination.value) return props.size;
   return idx === 0 ? mainBoxSize.value : smallBoxSize.value;
@@ -697,7 +702,7 @@ defineExpose({
         <div 
           class="relative select-none"
           :style="{ 
-            width: `${mainBoxSize + 90}px`, 
+            width: `${combinationContainerWidth}px`, 
             height: `${mainBoxSize}px` 
           }"
         >

@@ -6,6 +6,8 @@ const props = defineProps<{
   modelValue: string;
   disabled?: boolean;
   allowQuestionMark?: boolean;
+  hideKeys?: boolean;
+  status?: 'correct' | 'wrong' | null;
 }>();
 
 const emit = defineEmits<{
@@ -76,24 +78,40 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-xs mx-auto flex flex-col items-center select-none">
+  <div class="w-full max-w-xs sm:max-w-sm mx-auto flex flex-col items-center select-none">
     <!-- Value Display Box Above Numpad -->
     <div 
-      class="w-full bg-slate-900/95 dark:bg-slate-900 border-2 border-indigo-500/40 rounded-2xl p-3 mb-3 flex items-center justify-between shadow-inner relative"
+      class="w-full border-2 rounded-2xl p-3 mb-3 flex items-center justify-between shadow-inner relative transition-all"
+      :class="[
+        status === 'correct' 
+          ? 'bg-emerald-50/40 dark:bg-emerald-950/40 border-emerald-500' 
+          : (status === 'wrong'
+            ? 'bg-rose-50/40 dark:bg-rose-950/40 border-rose-500'
+            : 'bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-700')
+      ]"
     >
-      <div class="flex-1 text-center font-mono text-2xl sm:text-3xl font-black text-amber-300 tracking-widest min-h-[36px] flex items-center justify-center">
+      <div 
+        class="flex-1 text-center font-mono text-2xl sm:text-3xl font-black tracking-widest min-h-[36px] flex items-center justify-center"
+        :class="[
+          status === 'correct'
+            ? 'text-emerald-600 dark:text-emerald-400'
+            : (status === 'wrong'
+              ? 'text-rose-600 dark:text-rose-400'
+              : 'text-slate-900 dark:text-slate-100')
+        ]"
+      >
         <span v-if="currentVal">{{ currentVal }}</span>
-        <span v-else class="text-slate-600 font-sans text-sm font-normal">Ketik angka jawaban...</span>
+        <span v-else class="text-slate-400 dark:text-slate-500 font-sans text-sm font-normal">Ketik angka jawaban...</span>
         <!-- Blinking cursor indicator -->
-        <span class="inline-block w-0.5 h-6 bg-amber-400 ml-1 animate-pulse"></span>
+        <span v-if="!hideKeys && !disabled" class="inline-block w-0.5 h-6 bg-amber-400 ml-1 animate-pulse"></span>
       </div>
 
       <!-- Quick Clear Button -->
       <button
-        v-if="currentVal"
+        v-if="currentVal && !hideKeys && !disabled"
         type="button"
         @click="handleClear"
-        class="text-slate-400 hover:text-rose-400 p-1 rounded-lg transition"
+        class="text-slate-400 hover:text-rose-400 p-1 rounded-lg transition cursor-pointer"
         title="Hapus Semua"
       >
         <RotateCcw class="w-4 h-4" />
@@ -101,7 +119,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Numpad Grid (3 columns x 4 rows) -->
-    <div class="w-full grid grid-cols-3 gap-2 sm:gap-2.5 touch-manipulation">
+    <div v-if="!hideKeys" class="w-full grid grid-cols-3 gap-2 sm:gap-2.5 touch-manipulation animate-fadeIn">
       <!-- Row 1: 7, 8, 9 -->
       <button 
         type="button"
@@ -210,7 +228,7 @@ onUnmounted(() => {
     </div>
 
     <!-- Optional counter ? key if enabled -->
-    <div v-if="allowQuestionMark" class="w-full mt-2">
+    <div v-if="allowQuestionMark && !hideKeys" class="w-full mt-2 animate-fadeIn">
       <button 
         type="button"
         @click="handleDigit('?')"
