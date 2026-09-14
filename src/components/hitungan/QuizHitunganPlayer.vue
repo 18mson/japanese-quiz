@@ -175,7 +175,7 @@ onUnmounted(() => {
 <template>
   <div 
     class="w-full max-w-2xl mx-auto flex flex-col items-center justify-between text-slate-800 dark:text-slate-100 animate-fadeIn min-h-[460px] select-none transition-all"
-    :class="direction === 'number_to_kana' && !isAnswerChecked && !isQuizFinished ? 'pb-60 sm:pb-6' : 'pb-6'"
+    :class="direction === 'number_to_kana' && !isAnswerChecked && !isQuizFinished ? 'pb-60 sm:pb-6' : (isAnswerChecked && !isQuizFinished ? 'pb-24 sm:pb-24' : 'pb-6')"
   >
     <!-- Tutorial Modal (Opened anytime via "Lihat Pola") -->
     <HitunganTutorialModal 
@@ -310,8 +310,8 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <!-- MODE B: Kana to Number (Custom Onscreen NumberKeypad) -->
-        <div v-else class="w-full flex flex-col items-center">
+        <!-- MODE B: Kana to Number (Custom Onscreen NumberKeypad - Hidden when answered) -->
+        <div v-else-if="!isAnswerChecked" class="w-full flex flex-col items-center animate-fadeIn">
           <NumberKeypad 
             v-model="userInput"
             :disabled="isAnswerChecked"
@@ -320,7 +320,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <!-- 3. Visual Answer Feedback Banner -->
+      <!-- 3. Visual Answer Feedback Banner (Simple without inline button) -->
       <div 
         v-if="isAnswerChecked" 
         class="w-full rounded-2xl p-4 transition-all duration-300 flex flex-col gap-2 shadow-sm animate-scaleUp"
@@ -348,17 +348,6 @@ onUnmounted(() => {
             (Boleh juga: {{ currentQuestion.acceptedKanaList.slice(1).join(', ') }})
           </span>
         </div>
-
-        <!-- Advance Button -->
-        <button 
-          type="button"
-          @click="handleProceed"
-          class="w-full mt-1 py-2.5 rounded-xl font-black text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-          :class="isCorrect ? 'bg-emerald-600 hover:bg-emerald-500 text-white' : 'bg-rose-600 hover:bg-rose-500 text-white'"
-        >
-          <span>{{ questionNumber >= totalQuestions ? 'Lihat Hasil Akhir →' : 'Lanjut Soal Berikutnya (Enter / Spasi)' }}</span>
-          <ArrowRight class="w-4 h-4" />
-        </button>
       </div>
     </div>
 
@@ -454,6 +443,25 @@ onUnmounted(() => {
         </span>
       </template>
     </VirtualKeyboard>
+  </div>
+
+  <!-- Fixed Bottom Navbar for Proceed Action (Like other modes) -->
+  <div 
+    v-if="isAnswerChecked && !isQuizFinished" 
+    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+  >
+    <div class="max-w-md w-full flex justify-center">
+      <button 
+        type="button"
+        @click="handleProceed"
+        class="w-full sm:w-64 font-bold rounded-xl py-2.5 shadow-md hover:shadow-lg transition duration-200 flex justify-center items-center gap-2 cursor-pointer text-sm text-white"
+        :class="isCorrect ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-rose-600 hover:bg-rose-700'"
+      >
+        <span>{{ questionNumber >= totalQuestions ? 'Lihat Hasil Akhir' : 'Lanjut Soal Berikutnya' }}</span>
+        <span class="text-xs bg-white/20 px-2 py-0.5 rounded border border-white/30 font-mono">Enter</span>
+        <ArrowRight class="w-4 h-4" />
+      </button>
+    </div>
   </div>
 </template>
 
