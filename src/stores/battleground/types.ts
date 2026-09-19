@@ -3,6 +3,11 @@
 export type GameMode = 'battleground' | 'quiz_blitz';
 export type QuizCategory = 'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji';
 export type KanaCategory = 'all' | 'basic' | 'dakuten' | 'combination';
+export type BotDifficulty = 'easy' | 'medium' | 'hard';
+
+export function isBotPlayerId(playerId: string): boolean {
+  return typeof playerId === 'string' && playerId.startsWith('bot_');
+}
 
 export type PlayerStatus = 'alive' | 'eliminated' | 'spectator';
 export type RoomStatus = 'waiting' | 'in_progress' | 'finished';

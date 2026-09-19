@@ -81,7 +81,7 @@ export async function forceEvaluateWithTimeouts(
         player_id: pid,
         typed_input: payloadMeta,
         is_valid: false,
-        completion_time_ms: (activeRound.duration_seconds ?? 75) * 1000,
+        completion_time_ms: (activeRound.duration_seconds ?? 90) * 1000,
         status: 'timeout',
         completed_sentences: completedSentences,
         total_sentences: totalSentences,
@@ -211,6 +211,7 @@ async function runElimination(
   const elimWithRank = eliminatedThisRound.map(e => ({ ...e, rank: rankCounter-- }));
 
   for (const elim of elimWithRank) {
+    const standing = rankedPlayers.find(p => p.playerId === elim.playerId);
     await supabase
       .from('room_players')
       .update({
@@ -218,9 +219,24 @@ async function runElimination(
         eliminated_in_round: roundNum,
         elimination_reason: elim.reason,
         final_rank: elim.rank,
+        score: standing?.score ?? 0,
       })
       .eq('room_id', roomId)
       .eq('player_id', elim.playerId);
+  }
+
+  // Update score for all active players in DB & memory
+  for (const p of rankedPlayers) {
+    await supabase
+      .from('room_players')
+      .update({ score: p.score })
+      .eq('room_id', roomId)
+      .eq('player_id', p.playerId);
+
+    const memoryPlayer = alivePlayers.find(pl => pl.player_id === p.playerId);
+    if (memoryPlayer) {
+      memoryPlayer.score = p.score;
+    }
   }
 
   const isGameOver = !isDraw && survivors.length <= 1;

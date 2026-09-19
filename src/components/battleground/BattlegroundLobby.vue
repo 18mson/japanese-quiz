@@ -23,9 +23,11 @@ import {
   Clock,
   Trophy,
   Flame,
-  BookOpen
+  BookOpen,
+  Bot,
+  Trash2
 } from '@lucide/vue';
-import type { GameMode, QuizCategory, KanaCategory } from '../../stores/battleground/types';
+import { isBotPlayerId, type GameMode, type QuizCategory, type KanaCategory } from '../../stores/battleground/types';
 
 const store = useBattlegroundStore();
 const authStore = useAuthStore();
@@ -714,6 +716,52 @@ const emit = defineEmits<{ exit: [] }>();
         <span class="text-slate-400 font-medium">Durasi: {{ store.gameMode === 'quiz_blitz' ? '5 Menit (10s/soal)' : 'Eliminasi' }}</span>
       </div>
 
+      <!-- Bot Management Bar for Host -->
+      <div
+        v-if="store.isHost && store.players.length < 8"
+        class="p-3 bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-950/60 border border-indigo-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-fadeIn"
+      >
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-300 flex-shrink-0">
+            <Bot class="w-4 h-4" />
+          </div>
+          <div>
+            <div class="text-xs font-bold text-white flex items-center gap-1.5">
+              <span>Main Sendiri?</span>
+              <span class="text-[10px] bg-indigo-500/30 text-indigo-300 px-1.5 py-0.2 rounded font-bold">Lawan Bot AI</span>
+            </div>
+            <div class="text-[10px] text-slate-400">Pilih tingkat kesulitan untuk duel langsung:</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5 w-full sm:w-auto">
+          <button
+            @click="store.addBot('easy')"
+            :disabled="store.isLoading"
+            class="flex-1 sm:flex-none px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-emerald-500/40 hover:bg-emerald-500/20 text-emerald-300 text-[11px] font-bold transition cursor-pointer flex items-center justify-center gap-1 shadow-xs"
+            title="Bot Santai (~30 WPM / Akurasi 65%)"
+          >
+            <span>+ 🌸 Santai</span>
+          </button>
+          <button
+            @click="store.addBot('medium')"
+            :disabled="store.isLoading"
+            class="flex-1 sm:flex-none px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-amber-500/40 hover:bg-amber-500/20 text-amber-300 text-[11px] font-bold transition cursor-pointer flex items-center justify-center gap-1 shadow-xs"
+            title="Bot Normal (~45 WPM / Akurasi 82%)"
+          >
+            <span>+ ⚡ Normal</span>
+          </button>
+          <button
+            @click="store.addBot('hard')"
+            :disabled="store.isLoading"
+            class="flex-1 sm:flex-none px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-rose-500/40 hover:bg-rose-500/20 text-rose-300 text-[11px] font-bold transition cursor-pointer flex items-center justify-center gap-1 shadow-xs"
+            title="Bot Master (~70 WPM / Akurasi 95%)"
+          >
+            <span>+ 🔥 Master</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Player List (2-8 slots) -->
       <div>
         <div class="flex items-center justify-between mb-2.5">
@@ -741,11 +789,20 @@ const emit = defineEmits<{ exit: [] }>();
               <div class="font-bold text-xs sm:text-sm flex items-center gap-1.5 truncate">
                 <span>{{ player.player_name }}</span>
                 <span v-if="player.player_id === store.myPlayerId" class="text-[10px] bg-indigo-500/30 text-indigo-300 px-1 py-0.2 rounded font-normal">Kamu</span>
+                <span v-else-if="isBotPlayerId(player.player_id)" class="text-[10px] bg-purple-500/30 text-purple-300 border border-purple-500/40 px-1.5 py-0.2 rounded font-bold">🤖 BOT</span>
               </div>
             </div>
 
             <Crown v-if="player.player_id === store.hostPlayerId" class="w-4 h-4 text-amber-400 flex-shrink-0" />
-            <div class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 shadow-sm shadow-emerald-400/50" />
+            <button
+              v-if="store.isHost && isBotPlayerId(player.player_id)"
+              @click="store.removeBot(player.player_id)"
+              title="Keluarkan Bot"
+              class="p-1 rounded-lg hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 transition cursor-pointer flex-shrink-0"
+            >
+              <Trash2 class="w-3.5 h-3.5" />
+            </button>
+            <div v-else class="w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0 shadow-sm shadow-emerald-400/50" />
           </div>
 
           <!-- Empty Slot Placeholder -->

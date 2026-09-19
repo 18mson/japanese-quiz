@@ -73,8 +73,21 @@ function getStanding(playerId: string) {
   return data.value?.roundStandings?.find((s: any) => s.playerId === playerId) ?? null;
 }
 
-function msToStr(ms: number): string {
-  if (!ms || ms >= 75000) return 'Time Out';
+function getPlayerScore(playerId: string): number {
+  const standing = getStanding(playerId);
+  if (standing && typeof standing.score === 'number' && standing.score > 0) {
+    return standing.score;
+  }
+  const player = store.players.find(p => p.player_id === playerId);
+  if (player && typeof player.score === 'number' && player.score > 0) {
+    return player.score;
+  }
+  return standing?.score ?? player?.score ?? 0;
+}
+
+function msToStr(ms: number, status?: string): string {
+  if (status === 'timeout') return 'Time Out';
+  if (!ms || ms <= 0) return 'Time Out';
   return (ms / 1000).toFixed(2) + 's';
 }
 </script>
@@ -185,7 +198,7 @@ function msToStr(ms: number): string {
                   <span class="text-emerald-400 font-mono">✓{{ getStanding(player.player_id)?.correctChars ?? 0 }}</span>
                   <span class="text-rose-400 font-mono">✗{{ getStanding(player.player_id)?.wrongChars ?? 0 }}</span>
                   <span>•</span>
-                  <span class="font-mono text-slate-300">{{ msToStr(getStanding(player.player_id)!.completionTimeMs) }}</span>
+                  <span class="font-mono text-slate-300">{{ msToStr(getStanding(player.player_id)!.completionTimeMs, getStanding(player.player_id)?.status) }}</span>
                   <span>•</span>
                 </template>
                 <span v-if="player.eliminated_in_round" class="text-rose-400">Gugur R{{ player.eliminated_in_round }} ({{ reasonLabel(player.elimination_reason) }})</span>
@@ -196,7 +209,7 @@ function msToStr(ms: number): string {
               <span
                 class="text-base font-black text-amber-400"
               >
-                {{ player.score ?? getStanding(player.player_id)?.score ?? 0 }}
+                {{ getPlayerScore(player.player_id) }}
                 <span class="text-xs font-normal text-slate-400">pts</span>
               </span>
             </div>

@@ -43,6 +43,16 @@ import {
   submitQuizBlitzRoundApi,
   resetRoomApi,
 } from './battleground/roundService';
+import {
+  createBotPlayerApi,
+  removeBotPlayerApi,
+  startBotRoundSimulation,
+  stopAllBotSimulations,
+} from './battleground/battlegroundBotService';
+import {
+  isBotPlayerId,
+  type BotDifficulty,
+} from './battleground/types';
 
 export const useBattlegroundStore = defineStore('battleground', () => {
   const authStore = useAuthStore();
@@ -86,6 +96,12 @@ export const useBattlegroundStore = defineStore('battleground', () => {
 
   const alivePlayers = computed<RoomPlayer[]>(() =>
     players.value.filter(p => p.status === 'alive')
+  );
+  const botPlayers = computed<RoomPlayer[]>(() =>
+    players.value.filter(p => isBotPlayerId(p.player_id))
+  );
+  const aliveBots = computed<RoomPlayer[]>(() =>
+    alivePlayers.value.filter(p => isBotPlayerId(p.player_id))
   );
   const eliminatedPlayers = computed<RoomPlayer[]>(() =>
     players.value.filter(p => p.status === 'eliminated')
@@ -280,6 +296,18 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       event: 'round_preparing',
       payload: payloadData,
     });
+
+    if (isHost.value && aliveBots.value.length > 0) {
+      startBotRoundSimulation({
+        roomId: roomId.value,
+        activeRound: payloadData,
+        aliveBots: aliveBots.value,
+        realtimeChannel,
+        onLocalProgress: (prog) => {
+          playerProgress.value.set(prog.playerId, prog);
+        },
+      });
+    }
   }
 
   async function submitQuizBlitzAnswer(payload: {
@@ -486,6 +514,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     });
 
     realtimeChannel.on('broadcast', { event: 'round_results' }, ({ payload }: { payload: RoundResultPayload }) => {
+      stopAllBotSimulations();
       lastRoundResult.value = payload;
       for (const elim of payload.eliminatedPlayers) {
         const player = players.value.find(p => p.player_id === elim.playerId);
@@ -493,6 +522,14 @@ export const useBattlegroundStore = defineStore('battleground', () => {
           player.status = 'eliminated';
           player.elimination_reason = elim.reason;
           player.final_rank = elim.rank ?? null;
+        }
+      }
+      if (payload.roundStandings) {
+        for (const standing of payload.roundStandings) {
+          const p = players.value.find(pl => pl.player_id === standing.playerId);
+          if (p && typeof standing.score === 'number') {
+            p.score = standing.score;
+          }
         }
       }
       phase.value = 'round_result';
@@ -508,10 +545,19 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     });
 
     realtimeChannel.on('broadcast', { event: 'game_over' }, ({ payload }: { payload: GameOverPayload }) => {
+      stopAllBotSimulations();
       gameOverData.value = payload;
       if (payload.winnerPlayerId) {
         const winner = players.value.find(p => p.player_id === payload.winnerPlayerId);
         if (winner) winner.final_rank = 1;
+      }
+      if (payload.roundStandings) {
+        for (const standing of payload.roundStandings) {
+          const p = players.value.find(pl => pl.player_id === standing.playerId);
+          if (p && typeof standing.score === 'number') {
+            p.score = standing.score;
+          }
+        }
       }
       phase.value = 'game_over';
       clearCountdown();
@@ -739,6 +785,18 @@ export const useBattlegroundStore = defineStore('battleground', () => {
       event: 'round_preparing',
       payload: payloadData,
     });
+
+    if (isHost.value && aliveBots.value.length > 0) {
+      startBotRoundSimulation({
+        roomId: roomId.value,
+        activeRound: payloadData,
+        aliveBots: aliveBots.value,
+        realtimeChannel,
+        onLocalProgress: (prog) => {
+          playerProgress.value.set(prog.playerId, prog);
+        },
+      });
+    }
   }
 
   async function startNextRoundFromResult() {
@@ -835,6 +893,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   async function resetRoomForNextGame() {
+    stopAllBotSimulations();
     if (!isHost.value || !roomId.value) return;
     isLoading.value = true;
     try {
@@ -899,6 +958,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
   }
 
   async function leaveRoom() {
+    stopAllBotSimulations();
     clearCountdown();
     const rId = roomId.value;
     const pid = myPlayerId.value;
@@ -941,6 +1001,53 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     isLoading.value = false;
   }
 
+  async function addBot(difficulty: BotDifficulty = 'medium') {
+    if (!isHost.value || !roomId.value) return;
+    if (players.value.length >= 8) {
+      error.value = 'Room sudah penuh (Maksimal 8 pemain)!';
+      return;
+    }
+
+    isLoading.value = true;
+    error.value = null;
+    try {
+      const newBot = await createBotPlayerApi(roomId.value, difficulty, players.value);
+      if (!players.value.some(p => p.player_id === newBot.player_id)) {
+        players.value.push(newBot);
+      }
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'player_joined',
+        payload: { player: newBot },
+      });
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal menambahkan bot.';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function removeBot(botPlayerId: string) {
+    if (!isHost.value || !roomId.value || !isBotPlayerId(botPlayerId)) return;
+
+    isLoading.value = true;
+    error.value = null;
+    try {
+      await removeBotPlayerApi(roomId.value, botPlayerId);
+      players.value = players.value.filter(p => p.player_id !== botPlayerId);
+      playerProgress.value.delete(botPlayerId);
+      await realtimeChannel?.send({
+        type: 'broadcast',
+        event: 'player_left',
+        payload: { playerId: botPlayerId },
+      });
+    } catch (err: any) {
+      error.value = err?.message ?? 'Gagal menghapus bot.';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     gameMode,
     quizCategory,
@@ -968,6 +1075,8 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     myPlayerName,
     isHost,
     alivePlayers,
+    botPlayers,
+    aliveBots,
     eliminatedPlayers,
     myPlayer,
     iAmAlive,
@@ -989,5 +1098,7 @@ export const useBattlegroundStore = defineStore('battleground', () => {
     acceptPlayAgain,
     declinePlayAgain,
     leaveRoom,
+    addBot,
+    removeBot,
   };
 });
