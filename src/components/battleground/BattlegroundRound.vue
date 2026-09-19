@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // BattlegroundRound.vue
-// Layar typing aktif dengan indikator kesiapan mengetik & 1s typo penalty cooldown.
+// Layar typing aktif dengan reset kata saat typo tanpa popup blokir.
 
 import {
   ref, computed, watch, onMounted, onUnmounted, nextTick
@@ -48,10 +48,15 @@ function onViewportResize() {
   keyboardHeight.value = keyboard;
 }
 
-// ── Typo Penalty State (1 Second Cooldown) ────────────────────
-const isPenaltyActive = ref(false);
-const penaltyTimeLeft = ref('1.0');
-let penaltyInterval: ReturnType<typeof setInterval> | null = null;
+// ── Typo Flash & Crumble Animation Feedback ──────────────────
+const isWordResetting = ref(false);
+interface CrumblingGhost {
+  id: number;
+  unitIndex: number;
+  chars: string[];
+}
+const crumblingGhost = ref<CrumblingGhost | null>(null);
+let ghostTimeout: ReturnType<typeof setTimeout> | null = null;
 
 // ── Progress Broadcast Throttle ───────────────────────────────
 let progressThrottle: ReturnType<typeof setTimeout> | null = null;
@@ -128,7 +133,7 @@ const {
 
 // ── Input Handler ─────────────────────────────────────────────
 function focusInput() {
-  if (store.phase !== 'round_active' || isPenaltyActive.value || isSubmitted.value) return;
+  if (store.phase !== 'round_active' || isSubmitted.value || isWordResetting.value) return;
   nextTick(() => inputRef.value?.focus());
 }
 
@@ -198,7 +203,9 @@ watch(() => store.phase, (p) => {
     userInput.value = '';
     hasError.value = false;
     isSubmitted.value = false;
-    isPenaltyActive.value = false;
+    isWordResetting.value = false;
+    crumblingGhost.value = null;
+    if (ghostTimeout) clearTimeout(ghostTimeout);
     lockedAccepted.value = null;
     correctCharsCount.value = 0;
     wrongCharsCount.value = 0;
@@ -222,7 +229,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (progressThrottle) clearTimeout(progressThrottle);
-  if (penaltyInterval) clearInterval(penaltyInterval);
+  if (ghostTimeout) clearTimeout(ghostTimeout);
   if (prepTimer) clearInterval(prepTimer);
   window.visualViewport?.removeEventListener('resize', onViewportResize);
   window.visualViewport?.removeEventListener('scroll', onViewportResize);
@@ -230,7 +237,7 @@ onUnmounted(() => {
 });
 
 function handleInput(event: Event) {
-  if (isSubmitted.value || !store.iAmAlive || isPenaltyActive.value || isFrozen.value || store.phase !== 'round_active') return;
+  if (isSubmitted.value || !store.iAmAlive || isFrozen.value || isWordResetting.value || store.phase !== 'round_active') return;
   const input = event.target as HTMLInputElement;
   const typed = input.value;
   processTyped(typed);
@@ -239,12 +246,12 @@ function handleInput(event: Event) {
 
 function processTyped(typed: string) {
   focusInput();
-  if (!currentUnit.value || !store.activeRound || isPenaltyActive.value || isFrozen.value) return;
+  if (!currentUnit.value || !store.activeRound || isFrozen.value || isWordResetting.value) return;
 
   autoSkipHyphens();
 
   for (const char of typed) {
-    if (!currentUnit.value || isPenaltyActive.value || isFrozen.value) return;
+    if (!currentUnit.value || isFrozen.value || isWordResetting.value) return;
 
     if (char === ' ') {
       const unit = currentUnit.value;
@@ -257,7 +264,7 @@ function processTyped(typed: string) {
     advanceChar(char);
     autoSkipHyphens();
 
-    if (hasError.value || isPenaltyActive.value || isFrozen.value) return;
+    if (hasError.value || isFrozen.value) return;
   }
 }
 
@@ -270,7 +277,7 @@ function advanceChar(char: string) {
   if (lockedAccepted.value === null) {
     const match = unit.acceptedRomaji.find(r => r[0] === lc);
     if (!match) {
-      triggerError();
+      triggerError(lc);
       return;
     }
     lockedAccepted.value = match;
@@ -283,7 +290,7 @@ function advanceChar(char: string) {
     if (newMatch && newMatch.slice(0, activeSubIndex.value) === lockedAccepted.value!.slice(0, activeSubIndex.value)) {
       lockedAccepted.value = newMatch;
     } else {
-      triggerError();
+      triggerError(lc);
       return;
     }
   }
@@ -325,38 +332,49 @@ function advanceChar(char: string) {
   }
 }
 
-function triggerError() {
-  if (isPenaltyActive.value || isSubmitted.value || !store.iAmAlive) return;
+function triggerError(wrongChar: string = '') {
+  if (isSubmitted.value || !store.iAmAlive || isWordResetting.value) return;
 
   playPenaltyError();
   failedPowerUpUnits.value.add(activeUnitIndex.value);
-  hasError.value = true;
-  isPenaltyActive.value = true;
-  penaltyTimeLeft.value = '1.0';
   wrongCharsCount.value++;
+
+  // Blokir input sementara selama jeda animasi kata salah bergetar lalu gugur (500ms)
+  isWordResetting.value = true;
+  hasError.value = true;
+
+  // Tangkap huruf-huruf yang sudah sempat diketik pada kata ini (+ huruf yang salah)
+  const typedChars = (lockedAccepted.value ?? '').slice(0, activeSubIndex.value);
+  const lostChars = typedChars.length > 0
+    ? [...typedChars.split(''), ...(wrongChar ? [wrongChar] : [])]
+    : (wrongChar ? [wrongChar] : ['!']);
+
+  crumblingGhost.value = {
+    id: Date.now(),
+    unitIndex: activeUnitIndex.value,
+    chars: lostChars,
+  };
+
+  // Kosongkan input buffer keyboard agar ketikan liar selama jeda tidak numpuk
+  userInput.value = '';
+  if (inputRef.value) inputRef.value.value = '';
+
+  if (ghostTimeout) clearTimeout(ghostTimeout);
+  ghostTimeout = setTimeout(() => {
+    // Selesai jeda animasi bergetar & gugur (500ms): Reset kata kembali ke huruf pertama
+    correctCharsCount.value = Math.max(0, correctCharsCount.value - activeSubIndex.value);
+    lockedAccepted.value = null;
+    activeSubIndex.value = 0;
+    userInput.value = '';
+    if (inputRef.value) inputRef.value.value = '';
+    crumblingGhost.value = null;
+    isWordResetting.value = false;
+    hasError.value = false;
+    throttledProgressBroadcast();
+    focusInput();
+  }, 500);
+
   throttledProgressBroadcast();
-
-  lockedAccepted.value = null;
-  activeSubIndex.value = 0;
-
-  const startTime = Date.now();
-  const penaltyMs = 1000;
-
-  if (penaltyInterval) clearInterval(penaltyInterval);
-
-  penaltyInterval = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, penaltyMs - elapsed);
-    penaltyTimeLeft.value = (remaining / 1000).toFixed(1);
-
-    if (remaining <= 0) {
-      if (penaltyInterval) clearInterval(penaltyInterval);
-      penaltyInterval = null;
-      isPenaltyActive.value = false;
-      hasError.value = false;
-      focusInput();
-    }
-  }, 50);
 }
 
 async function handleComplete() {
@@ -437,7 +455,7 @@ function preventPaste(e: ClipboardEvent) {
           <Loader2 class="w-3 h-3 text-amber-400 animate-spin" />
           <span>Menunggu Ronde...</span>
         </div>
-        <div v-else-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted" class="px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+        <div v-else-if="store.phase === 'round_active' && !isSubmitted" class="px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] sm:text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
           <span class="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-emerald-400 animate-ping"></span>
           <span>🟢 SIAP MENGETIK!</span>
         </div>
@@ -558,6 +576,7 @@ function preventPaste(e: ClipboardEvent) {
               <span
                 v-else-if="idx === activeUnitIndex"
                 :class="[
+                  hasError ? 'animate-shake-unit !text-rose-400 !border-rose-400 !bg-rose-500/20' : '',
                   idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
                     ? getPowerUpHighlightClass(powerUpType, true)
                     : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400',
@@ -587,19 +606,39 @@ function preventPaste(e: ClipboardEvent) {
           :class="[
             'w-full max-w-lg mb-3 sm:mb-5 bg-white/5 rounded-xl sm:rounded-2xl p-3 sm:p-5 min-h-[50px] sm:min-h-[70px] flex flex-wrap items-center justify-center gap-x-0.5 gap-y-1 font-mono text-xl sm:text-2xl md:text-3xl transition-all duration-200 relative tracking-wider',
             isStormActive && !lightningFlashActive ? 'brightness-[0.05] opacity-10' : '',
-            store.phase === 'round_active' && !isPenaltyActive && !isSubmitted
-              ? 'border-2 border-emerald-500/80 bg-emerald-950/10 shadow-xl shadow-emerald-500/20 ring-4 ring-emerald-500/10'
-              : 'border border-white/10'
+            hasError
+              ? 'border-2 border-rose-500/80 bg-rose-950/20 shadow-xl shadow-rose-500/20 ring-4 ring-rose-500/20'
+              : (store.phase === 'round_active' && !isSubmitted
+                ? 'border-2 border-emerald-500/80 bg-emerald-950/10 shadow-xl shadow-emerald-500/20 ring-4 ring-emerald-500/10'
+                : 'border border-white/10')
           ]"
         >
           <template v-for="(unit, idx) in units" :key="idx">
             <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-bold">{{ unit.acceptedRomaji[0] }}</span>
 
-            <span v-else-if="idx === activeUnitIndex" class="inline-flex items-center">
-              <span class="text-white font-bold">{{ (lockedAccepted ?? '').slice(0, activeSubIndex) }}</span>
-              <span class="text-amber-300 underline underline-offset-4 bg-amber-400/25 px-1 sm:px-1.5 py-0.5 rounded-lg font-black animate-pulse text-xl sm:text-2xl md:text-3xl shadow-sm shadow-amber-400/30">
-                {{ (lockedAccepted ?? unit.acceptedRomaji[0])[activeSubIndex] ?? '' }}
+            <span v-else-if="idx === activeUnitIndex" class="inline-flex items-center relative">
+              <!-- Saat salah ketik: tampilkan huruf yang sudah diketik + huruf salah bergetar lalu gugur -->
+              <span
+                v-if="crumblingGhost && crumblingGhost.unitIndex === idx"
+                class="inline-flex items-center whitespace-nowrap pointer-events-none"
+              >
+                <span
+                  v-for="(ch, cIdx) in crumblingGhost.chars"
+                  :key="`${crumblingGhost.id}-${cIdx}`"
+                  class="falling-char font-mono font-black text-xl sm:text-2xl md:text-3xl"
+                  :style="{ animationDelay: `${cIdx * 35}ms` }"
+                >
+                  {{ ch }}
+                </span>
               </span>
+
+              <!-- Tampilan normal ketika sedang mengetik -->
+              <template v-else>
+                <span class="text-white font-bold">{{ (lockedAccepted ?? '').slice(0, activeSubIndex) }}</span>
+                <span class="text-amber-300 underline underline-offset-4 bg-amber-400/25 px-1 sm:px-1.5 py-0.5 rounded-lg font-black animate-pulse text-xl sm:text-2xl md:text-3xl shadow-sm shadow-amber-400/30">
+                  {{ (lockedAccepted ?? unit.acceptedRomaji[0])[activeSubIndex] ?? '' }}
+                </span>
+              </template>
             </span>
           </template>
         </div>
@@ -614,7 +653,7 @@ function preventPaste(e: ClipboardEvent) {
           autocorrect="off"
           autocapitalize="none"
           spellcheck="false"
-          :disabled="isSubmitted || !store.iAmAlive || store.phase !== 'round_active' || isPenaltyActive || isFrozen"
+          :disabled="isSubmitted || !store.iAmAlive || store.phase !== 'round_active' || isFrozen || isWordResetting"
           @input="handleInput"
           @paste.prevent="preventPaste"
           @keydown.prevent.space=""
@@ -623,7 +662,7 @@ function preventPaste(e: ClipboardEvent) {
         <!-- Typing status button indicator -->
         <div class="mt-1 sm:mt-2">
           <button
-            v-if="store.phase === 'round_active' && !isPenaltyActive && !isSubmitted && !isFrozen"
+            v-if="store.phase === 'round_active' && !isSubmitted && !isFrozen && !isWordResetting"
             @click.stop="focusInput"
             class="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 border border-emerald-400/50 rounded-xl text-xs sm:text-sm font-extrabold text-white transition shadow-lg shadow-emerald-600/30 flex items-center gap-2 cursor-pointer animate-pulse"
           >
@@ -659,7 +698,7 @@ function preventPaste(e: ClipboardEvent) {
 
     </div>
 
-    <!-- All Fullscreen Overlays (Freeze, Rewind, Storm, Countdown, Typo Penalty) -->
+    <!-- All Fullscreen Overlays (Freeze, Rewind, Storm, Countdown) -->
     <BattlegroundOverlays
       :is-frozen="isFrozen"
       :freeze-countdown="freezeCountdown"
@@ -669,13 +708,11 @@ function preventPaste(e: ClipboardEvent) {
       :lightning-flash-active="lightningFlashActive"
       :is-preparing="store.phase === 'round_preparing' && (store.activeRound?.round_number ?? 1) <= 1"
       :prep-countdown-seconds="prepCountdownSeconds"
-      :is-penalty-active="isPenaltyActive"
-      :penalty-time-left="penaltyTimeLeft"
     />
 
     <!-- MOBILE VIRTUAL KEYBOARD -->
     <div
-      v-if="store.phase === 'round_active' && !isSubmitted && store.iAmAlive && !isPenaltyActive && !isFrozen"
+      v-if="store.phase === 'round_active' && !isSubmitted && store.iAmAlive && !isFrozen"
       class="block sm:hidden fixed bottom-0 left-0 right-0 z-30"
     >
       <VirtualKeyboard theme="dark" :show-enter="false" @key="processTyped" />
@@ -694,5 +731,61 @@ function preventPaste(e: ClipboardEvent) {
 .marker-anim-leave-to {
   opacity: 0;
   transform: translate(-50%, -100%) scale(0.5);
+}
+
+/* Crumbling & Falling Typo Letters Animation */
+@keyframes char-crumble-fall {
+  0% {
+    transform: translate(0, 0) scale(1.05) rotate(0deg);
+    opacity: 1;
+    color: #fb7185; /* rose-400 */
+    text-shadow: 0 0 12px rgba(244, 63, 94, 0.95);
+  }
+  12% {
+    transform: translate(-5px, -3px) rotate(-8deg);
+    color: #f43f5e; /* rose-500 */
+  }
+  24% {
+    transform: translate(5px, 2px) rotate(8deg);
+    color: #e11d48; /* rose-600 */
+  }
+  36% {
+    transform: translate(-4px, 2px) rotate(-5deg);
+    color: #f43f5e;
+    opacity: 1;
+  }
+  48% {
+    transform: translate(3px, -1px) rotate(4deg);
+    opacity: 1;
+  }
+  60% {
+    transform: translate(1px, 8px) rotate(8deg) scale(0.95);
+    opacity: 0.9;
+  }
+  80% {
+    transform: translate(4px, 26px) rotate(20deg) scale(0.75);
+    opacity: 0.45;
+  }
+  100% {
+    transform: translate(6px, 44px) rotate(28deg) scale(0.5);
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+
+.falling-char {
+  display: inline-block;
+  animation: char-crumble-fall 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  pointer-events: none;
+}
+
+@keyframes shake-unit {
+  0%, 100% { transform: translateX(0); }
+  15%, 45%, 75% { transform: translateX(-4px); }
+  30%, 60%, 90% { transform: translateX(4px); }
+}
+
+.animate-shake-unit {
+  animation: shake-unit 0.35s ease-in-out;
 }
 </style>

@@ -160,26 +160,53 @@ export function playFreezeSound() {
   }
 }
 
-// ── SFX 5: Typing Error Penalty (Low Buzz Tone) ────────────────────────────
+// ── SFX 5: Typing Error Penalty (Crisp Arcade Error Buzz / Bonk) ───────────
 export function playPenaltyError() {
   if (isMutedState) return;
   try {
     const ctx = getAudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
+    const now = ctx.currentTime;
 
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(150, ctx.currentTime);
-    osc.frequency.setValueAtTime(110, ctx.currentTime + 0.08);
+    // Layer 1: Sharp transient attack pop (click/impact)
+    const popOsc = ctx.createOscillator();
+    const popGain = ctx.createGain();
+    popOsc.type = 'triangle';
+    popOsc.frequency.setValueAtTime(450, now);
+    popOsc.frequency.exponentialRampToValueAtTime(120, now + 0.04);
+    popGain.gain.setValueAtTime(0.35, now);
+    popGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+    popOsc.connect(popGain);
+    popGain.connect(ctx.destination);
+    popOsc.start(now);
+    popOsc.stop(now + 0.04);
 
-    gain.gain.setValueAtTime(0.25, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+    // Layer 2: Dual-tone dissonant error buzz (punchy mid frequencies audible on phone & laptop)
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const buzzGain = ctx.createGain();
 
-    osc.connect(gain);
-    gain.connect(ctx.destination);
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(320, now);
+    osc1.frequency.exponentialRampToValueAtTime(180, now + 0.18);
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.2);
+    osc2.type = 'square';
+    osc2.frequency.setValueAtTime(440, now);
+    osc2.frequency.exponentialRampToValueAtTime(260, now + 0.18);
+
+    buzzGain.gain.setValueAtTime(0.28, now);
+    buzzGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+    osc1.connect(buzzGain);
+    osc2.connect(buzzGain);
+    buzzGain.connect(ctx.destination);
+
+    osc1.start(now);
+    osc2.start(now);
+    osc1.stop(now + 0.22);
+    osc2.stop(now + 0.22);
   } catch (e) {
     console.warn('Audio play error:', e);
   }

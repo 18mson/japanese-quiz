@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // src/components/battleground/BattlegroundPlayersPanel.vue
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
-import { getPlayerColor } from '../../utils/playerColors';
 import { CheckCircle2, ShieldX } from '@lucide/vue';
+import BattlegroundAvatar from './BattlegroundAvatar.vue';
 
 defineProps<{
   mode: 'mobile' | 'desktop';
@@ -15,10 +15,6 @@ function getProgress(playerId: string): number {
   const p = store.playerProgress.get(playerId);
   if (!p) return 0;
   return p.progressPercentage;
-}
-
-function avatarColor(playerId: string): string {
-  return getPlayerColor(playerId, store.players).hex;
 }
 </script>
 
@@ -33,12 +29,12 @@ function avatarColor(playerId: string): string {
       :key="player.player_id"
       class="flex items-center gap-1.5 bg-white/5 rounded-full px-2 py-0.5 border border-white/10 flex-shrink-0 text-[10px]"
     >
-      <div
-        class="w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black text-white"
-        :style="`background: ${avatarColor(player.player_id)}`"
-      >
-        {{ player.player_name.slice(0, 1).toUpperCase() }}
-      </div>
+      <BattlegroundAvatar
+        :seed="player.avatar_seed"
+        :name="player.player_name"
+        custom-class="w-4 h-4 rounded-full text-[7px]"
+        border-class="border border-white/30"
+      />
       <span
         class="font-bold max-w-[60px] truncate"
         :class="player.player_id === store.myPlayerId ? 'text-amber-300' : 'text-slate-300'"
@@ -73,12 +69,12 @@ function avatarColor(playerId: string): string {
       class="bg-white/5 rounded-xl p-2.5 relative"
     >
       <div class="flex items-center gap-1.5 mb-1">
-        <div
-          class="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0"
-          :style="`background: ${avatarColor(player.player_id)}`"
-        >
-          {{ player.player_name.slice(0, 2).toUpperCase() }}
-        </div>
+        <BattlegroundAvatar
+          :seed="player.avatar_seed"
+          :name="player.player_name"
+          size="xs"
+          border-class="border border-white/20"
+        />
         <span class="text-xs font-bold truncate flex-1 min-w-0">
           {{ player.player_id === store.myPlayerId ? 'Kamu' : player.player_name }}
         </span>
@@ -121,9 +117,12 @@ function avatarColor(playerId: string): string {
         class="bg-white/[0.03] rounded-xl p-2.5 opacity-50"
       >
         <div class="flex items-center gap-1.5">
-          <div class="w-6 h-6 rounded-lg bg-slate-700 flex items-center justify-center text-[10px] font-black text-slate-500 flex-shrink-0">
-            {{ player.player_name.slice(0, 2).toUpperCase() }}
-          </div>
+          <BattlegroundAvatar
+            :seed="player.avatar_seed"
+            :name="player.player_name"
+            size="xs"
+            border-class="border border-white/10"
+          />
           <span class="text-xs text-slate-500 truncate flex-1">{{ player.player_name }}</span>
           <ShieldX class="w-3 h-3 text-rose-800 flex-shrink-0" />
         </div>

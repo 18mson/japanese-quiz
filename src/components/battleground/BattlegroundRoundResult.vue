@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
 import { playVictorySound, playDefeatSound, stopRoundBgm } from '../../utils/battleSoundManager';
 import { ShieldX, Timer, ChevronRight, Loader2 } from '@lucide/vue';
+import BattlegroundAvatar from './BattlegroundAvatar.vue';
 
 const store = useBattlegroundStore();
 
@@ -80,12 +81,13 @@ function msToStr(ms: number): string {
   return (ms / 1000).toFixed(2) + 's';
 }
 
-function avatarColor(name: string): string {
-  return `hsl(${(name.charCodeAt(0) * 47) % 360}, 60%, 40%)`;
-}
 
 function getPlayerName(playerId: string): string {
-  return store.players.find((p: any) => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
+  return store.players.find(p => p.player_id === playerId)?.player_name ?? playerId.slice(0, 8);
+}
+
+function getPlayerAvatarSeed(playerId: string): string | null {
+  return store.players.find(p => p.player_id === playerId)?.avatar_seed ?? null;
 }
 </script>
 
@@ -143,12 +145,12 @@ function getPlayerName(playerId: string): string {
           :key="elim.playerId"
           :class="['rounded-xl p-3 border flex items-center gap-3', reasonColor(elim.reason)]"
         >
-          <div
-            class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
-            :style="`background: ${avatarColor(getPlayerName(elim.playerId))}`"
-          >
-            {{ getPlayerName(elim.playerId).slice(0, 2).toUpperCase() }}
-          </div>
+          <BattlegroundAvatar
+            :seed="getPlayerAvatarSeed(elim.playerId)"
+            :name="getPlayerName(elim.playerId)"
+            size="sm"
+            border-class="border border-white/20"
+          />
           <div class="flex-1 min-w-0">
             <div class="font-bold text-sm truncate">
               {{ getPlayerName(elim.playerId) }}
@@ -180,10 +182,12 @@ function getPlayerName(playerId: string): string {
           ]"
         >
           <span class="text-slate-500 font-mono text-xs w-5 text-center">{{ idx + 1 }}</span>
-          <div
-            class="w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black flex-shrink-0"
-            :style="`background: ${avatarColor(getPlayerName(standing.playerId))}`"
-          >{{ getPlayerName(standing.playerId).slice(0, 2).toUpperCase() }}</div>
+          <BattlegroundAvatar
+            :seed="getPlayerAvatarSeed(standing.playerId)"
+            :name="getPlayerName(standing.playerId)"
+            size="xs"
+            border-class="border border-white/20"
+          />
           <div class="flex-1 min-w-0">
             <div class="font-semibold truncate text-white">
               {{ getPlayerName(standing.playerId) }}

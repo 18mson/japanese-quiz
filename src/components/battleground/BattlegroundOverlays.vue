@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // src/components/battleground/BattlegroundOverlays.vue
-import { Clock, Lock, AlertTriangle } from '@lucide/vue';
+import { Clock, Lock } from '@lucide/vue';
 
 defineProps<{
   isFrozen: boolean;
@@ -11,8 +11,6 @@ defineProps<{
   lightningFlashActive: boolean;
   isPreparing: boolean;
   prepCountdownSeconds: number;
-  isPenaltyActive: boolean;
-  penaltyTimeLeft: string;
 }>();
 
 function getRainStyle(n: number) {
@@ -134,22 +132,6 @@ function getSnowStyle(n: number) {
       </span>
     </div>
 
-    <!-- TYPO PENALTY 1-SECOND COOLDOWN OVERLAY -->
-    <div
-      v-if="isPenaltyActive"
-      class="absolute inset-0 z-50 bg-rose-950/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-fadeIn"
-    >
-      <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-2xl sm:rounded-3xl bg-rose-500/30 border-2 border-rose-500/60 flex items-center justify-center mb-3 sm:mb-4 text-rose-300 shadow-2xl shadow-rose-600/40 animate-pulse">
-        <AlertTriangle class="w-8 sm:w-10 h-8 sm:h-10 text-rose-400" />
-      </div>
-      <h2 class="text-2xl sm:text-3xl font-black text-white mb-1">TYPO DETECTED! ⚠️</h2>
-      <p class="text-rose-200 text-xs sm:text-sm mb-6 font-bold">Penalti 1 Detik Cooldown — Dilarang Mengetik!</p>
-      
-      <div class="text-6xl sm:text-7xl font-black font-mono text-white mb-2 tracking-tight">
-        {{ penaltyTimeLeft }}s
-      </div>
-      <span class="text-[10px] sm:text-xs text-rose-300/80 font-bold uppercase tracking-widest">Tunggu Cooldown Selesai...</span>
-    </div>
   </div>
 </template>
 

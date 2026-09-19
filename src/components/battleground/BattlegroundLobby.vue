@@ -28,6 +28,7 @@ import {
   Trash2
 } from '@lucide/vue';
 import { isBotPlayerId, type GameMode, type QuizCategory, type KanaCategory } from '../../stores/battleground/types';
+import BattlegroundAvatar from './BattlegroundAvatar.vue';
 
 const store = useBattlegroundStore();
 const authStore = useAuthStore();
@@ -778,12 +779,12 @@ const emit = defineEmits<{ exit: [] }>();
             :key="player.player_id"
             class="flex items-center gap-2.5 bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 transition animate-fadeIn"
           >
-            <div
-              class="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-black flex-shrink-0 shadow-inner"
-              :style="`background: hsl(${(player.player_name.charCodeAt(0) * 47) % 360}, 60%, 40%)`"
-            >
-              {{ player.player_name.slice(0, 2).toUpperCase() }}
-            </div>
+            <BattlegroundAvatar
+              :seed="player.avatar_seed"
+              :name="player.player_name"
+              size="sm"
+              border-class="border border-white/20"
+            />
 
             <div class="flex-1 min-w-0">
               <div class="font-bold text-xs sm:text-sm flex items-center gap-1.5 truncate">

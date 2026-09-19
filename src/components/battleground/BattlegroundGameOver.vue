@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import { useBattlegroundStore } from '../../stores/battlegroundStore';
 import { stopRoundBgm, playVictorySound, playDefeatSound } from '../../utils/battleSoundManager';
 import { Trophy, Swords, Home, RotateCcw, Loader2, Sparkles } from '@lucide/vue';
+import BattlegroundAvatar from './BattlegroundAvatar.vue';
 
 const store = useBattlegroundStore();
 const emit = defineEmits<{ exit: [] }>();
@@ -48,9 +49,6 @@ const winnerName = computed(() =>
   data.value?.winnerPlayerId ? getPlayerName(data.value.winnerPlayerId) : '—'
 );
 
-function avatarColor(name: string): string {
-  return `hsl(${(name.charCodeAt(0) * 47) % 360}, 60%, 40%)`;
-}
 
 function reasonLabel(reason: string | null): string {
   if (!reason) return '🏆 Pemenang';
@@ -146,12 +144,12 @@ function msToStr(ms: number, status?: string): string {
         </div>
       </div>
       <div v-else-if="winner" class="w-full mb-8 bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-2xl p-5 flex items-center gap-4 shadow-lg shadow-amber-500/10 animate-pop">
-        <div
-          class="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-black flex-shrink-0 shadow-inner"
-          :style="`background: ${avatarColor(winner.player_name)}`"
-        >
-          {{ winner.player_name.slice(0, 2).toUpperCase() }}
-        </div>
+        <BattlegroundAvatar
+          :seed="winner.avatar_seed"
+          :name="winner.player_name"
+          size="xl"
+          border-class="border-2 border-amber-400/60 shadow-lg shadow-amber-500/20"
+        />
         <div class="flex-1 min-w-0">
           <div class="text-xs text-amber-400 font-bold uppercase tracking-widest mb-0.5">Pemenang 🏆</div>
           <div class="text-xl font-extrabold truncate text-white">
@@ -181,10 +179,12 @@ function msToStr(ms: number, status?: string): string {
             <span class="text-lg w-8 text-center flex-shrink-0">
               {{ rankEmoji(player.final_rank) }}
             </span>
-            <div
-              class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0"
-              :style="`background: ${avatarColor(player.player_name)}`"
-            >{{ player.player_name.slice(0, 2).toUpperCase() }}</div>
+            <BattlegroundAvatar
+              :seed="player.avatar_seed"
+              :name="player.player_name"
+              size="sm"
+              border-class="border border-white/20"
+            />
             <div class="flex-1 min-w-0">
               <div class="font-bold text-sm truncate text-white">
                 {{ player.player_name }}
