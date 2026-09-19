@@ -53,10 +53,12 @@ export const checkIsCorrect = (userInputClean: string, targetRomaji: string | st
 };
 
 export const checkIsTypo = (userInputClean: string, targetRomaji: string | string[]): boolean => {
+  if (!userInputClean || userInputClean.trim() === '') return false;
   const targets = Array.isArray(targetRomaji) ? targetRomaji : [targetRomaji];
   return targets.some(t => {
     const normUser = normalizeRomajiForComparison(userInputClean);
     const normTarget = normalizeRomajiForComparison(t);
+    if (!normUser || !normTarget) return false;
     if (normUser === normTarget) return false;
     const dist = getLevenshteinDistance(normUser, normTarget);
     return dist === 1;

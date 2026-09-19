@@ -5,7 +5,7 @@
 };
 
 const mockStorage: Record<string, string> = {};
-global.localStorage = {
+(globalThis as any).localStorage = {
   getItem: (key: string) => mockStorage[key] || null,
   setItem: (key: string, val: string) => { mockStorage[key] = val; },
   removeItem: (key: string) => { delete mockStorage[key]; },
@@ -13,8 +13,19 @@ global.localStorage = {
   key: () => null
 } as any;
 
-global.WebSocket = class {} as any;
-(global as any).window = { AudioContext: class { createOscillator() { return { connect() {}, start() {}, stop() {} }; } createGain() { return { connect() {}, gain: { setValueAtTime() {}, exponentialRampToValueAtTime() {} } }; } destination: {} } } as any;
+(globalThis as any).WebSocket = class {} as any;
+const mockGain = {
+  setValueAtTime() {},
+  exponentialRampToValueAtTime() {}
+};
+(globalThis as any).window = { 
+  AudioContext: class { 
+    currentTime = 0;
+    createOscillator() { return { connect() {}, start() {}, stop() {}, frequency: mockGain }; } 
+    createGain() { return { connect() {}, gain: mockGain }; } 
+    destination = {};
+  } 
+} as any;
 
 import { setActivePinia, createPinia } from 'pinia';
 const { useQuizStore } = await import('../src/stores/quizStore');

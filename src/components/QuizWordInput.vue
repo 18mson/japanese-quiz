@@ -161,6 +161,12 @@ const isTypo = computed(() => {
             <template v-else-if="isTypo">Hampir! Salah ketik (+1 Poin)</template>
             <template v-else>Salah</template>
           </h3>
+          <p 
+            v-if="isTypo && quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down'"
+            class="text-xs font-bold text-amber-700 dark:text-amber-300 mt-0.5"
+          >
+            Turun 1 tingkatan: {{ quizStore.latestTierTransition.label }} (tidak di-reset ke 0)
+          </p>
           
           <div class="mt-2 space-y-1">
             <p v-if="!quizStore.isAnswerCorrect" class="text-sm">

@@ -69,6 +69,14 @@ const instructionText = computed(() => {
       <span>✨ {{ quizStore.latestTierTransition.label }} 🎉</span>
     </div>
 
+    <!-- Real-time Tier Downgrade Badge Overlay (e.g. Mahkota -> Hafal on Typo) -->
+    <div 
+      v-else-if="quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down'"
+      class="mb-2 px-3.5 py-1 rounded-full text-xs font-black shadow-md flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-400 cursor-default animate-pulse"
+    >
+      <span>⚠️ {{ quizStore.latestTierTransition.label }}</span>
+    </div>
+
     <!-- Reason Badge (Only shown for retry/perbaikan questions) -->
     <div 
       v-else-if="questionReason === 'repeat' && reasonLabel" 

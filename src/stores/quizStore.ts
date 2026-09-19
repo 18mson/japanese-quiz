@@ -242,7 +242,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (current) {
       isCorrectVal = checkIsCorrect(userAnswerClean, current.romaji);
-      isTypo = checkIsTypo(userAnswerClean, current.romaji);
+      isTypo = isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji);
 
       let hintsUsed = 0;
       if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
@@ -264,7 +264,7 @@ export const useQuizStore = defineStore('quiz', () => {
         }
       } else {
         playIncorrectSound();
-        pointsEarned = 0;
+        pointsEarned = isTypo ? 1 : 0;
         delete masteredChars.value[current.character];
       }
 
@@ -295,7 +295,8 @@ export const useQuizStore = defineStore('quiz', () => {
         isWordOrKanji,
         isCorrectVal,
         pointsEarned,
-        sessionCharAttempts.value[charKey]
+        sessionCharAttempts.value[charKey],
+        isTypo
       );
 
       const goalsStore = useGoalsStore();

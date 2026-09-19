@@ -247,32 +247,57 @@ export const useMasteryStore = defineStore('mastery', () => {
 
   const recordAnswerStreak = (
     charKey: string,
-    isWordOrKanji: boolean,
+    _isWordOrKanji: boolean,
     isCorrectVal: boolean,
     pointsEarned: number,
-    charSessionState?: { attempts: number; failed: boolean; initialStreak: number; streakEvaluated: boolean }
+    charSessionState?: { attempts: number; failed: boolean; initialStreak: number; streakEvaluated: boolean },
+    isTypo: boolean = false
   ) => {
     const oldStreak = userStreaks.value[charKey] || 0;
     let streakChanged = false;
     let newStreak = oldStreak;
 
-    if (isWordOrKanji && charSessionState) {
-      if (!isCorrectVal) {
-        if (oldStreak !== 0) {
+    if (!isCorrectVal) {
+      if (isTypo) {
+        // Soal yg sudah hafal (streak 3-4) atau mahkota (streak >= 5),
+        // lalu hanya typo atau salah 1 huruf:
+        // Cukup turun 1 tingkatan saja:
+        // - Mahkota (>= 5) -> Hafal (4)
+        // - Hafal (3-4) -> Proses (2)
+        // - Proses (1-2) -> Belum (0)
+        // - Belum (0) -> tetap 0
+        if (oldStreak >= 5) {
+          newStreak = 4;
+        } else if (oldStreak >= 3) {
+          newStreak = 2;
+        } else {
           newStreak = 0;
-          userStreaks.value[charKey] = 0;
-          streakChanged = true;
         }
-      } else if (isCorrectVal && !charSessionState.failed && !charSessionState.streakEvaluated) {
-        charSessionState.streakEvaluated = true;
-        newStreak = charSessionState.initialStreak + 1;
+      } else {
+        // Salah total atau dilewati -> reset ke 0
+        newStreak = 0;
+      }
+
+      if (newStreak !== oldStreak) {
         userStreaks.value[charKey] = newStreak;
         streakChanged = true;
       }
     } else {
-      newStreak = pointsEarned === 4 ? oldStreak + 1 : 0;
-      userStreaks.value[charKey] = newStreak;
-      streakChanged = true;
+      // isCorrectVal === true
+      if (charSessionState) {
+        if (!charSessionState.failed && !charSessionState.streakEvaluated) {
+          charSessionState.streakEvaluated = true;
+          newStreak = charSessionState.initialStreak + 1;
+          userStreaks.value[charKey] = newStreak;
+          streakChanged = true;
+        }
+      } else {
+        newStreak = pointsEarned === 4 ? oldStreak + 1 : oldStreak;
+        if (newStreak !== oldStreak) {
+          userStreaks.value[charKey] = newStreak;
+          streakChanged = true;
+        }
+      }
     }
 
     try {
