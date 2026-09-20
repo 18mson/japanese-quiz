@@ -7,9 +7,23 @@ export interface VersionEntry {
   highlights: string[];
 }
 
-export const APP_VERSION = '2.6.0';
+export const APP_VERSION = '2.7.0';
 
 export const VERSION_HISTORY: VersionEntry[] = [
+  {
+    version: '2.7.0',
+    tag: 'Badge Mastery & Gamification',
+    date: '20 Sep 2026',
+    type: 'major',
+    title: 'Sistem Koleksi Lencana, Profil Avatar & Bot Duel Online',
+    highlights: [
+      'Sistem Koleksi Lencana (29 Badges): Lencana progresif Bab 1–25, Shoshinsha, dan penguasaan 100% Hiragana, Katakana, serta Kanji N5 dengan efek siluet misteri.',
+      'Kustomisasi Avatar Profil: Pemain dapat memilih dan memasang lencana yang telah terbuka sebagai ikon avatar profil pribadi.',
+      'Pemisahan Modal Pengaturan (Settings): Halaman pengaturan baru dengan tata letak desktop 2 kolom responsif dan navigasi tab beranimasi halus (smooth sliding pill).',
+      'Bot AI Arena Duel Online: Penambahan lawan bot cerdas dengan profil dan perilaku adaptif pada mode multiplayer.',
+      'Visual Mahkota Penguasaan (Mastery Crown): Pembaruan ikon penguasaan karakter dan kata dengan varian mahkota emas (Crown fill) seragam.'
+    ]
+  },
   {
     version: '2.6.0',
     tag: 'Unified Component Architecture',
