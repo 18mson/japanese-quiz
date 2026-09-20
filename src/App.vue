@@ -24,14 +24,18 @@ import AboutModal from './components/AboutModal.vue';
 import ReferenceModal from './components/reference/ReferenceModal.vue';
 import PreviewCardModal from './components/preview/PreviewCardModal.vue';
 import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
+import ProfileBadgeModal from './components/ProfileBadgeModal.vue';
+import SettingsModal from './components/SettingsModal.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
-import { LogOut, ChevronDown, Keyboard, Check, Settings, Info, Sun, Moon, Monitor, BookMarked, Volume2, PenTool } from '@lucide/vue';
+import { useBadgeStore } from './stores/badgeStore';
+import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
+const badgeStore = useBadgeStore();
 
 const quizStarted = ref(false);
 const showAuthModal = ref(false);
@@ -40,6 +44,7 @@ const showMasteryGridModal = ref(false);
 const showAboutModal = ref(false);
 const showReferenceModal = ref(false);
 const showBattleground = ref(false);
+const showSettingsModal = ref(false);
 
 const showUserDropdown = ref(false);
 const userDropdownRef = ref<HTMLElement | null>(null);
@@ -53,6 +58,11 @@ const handleDocumentClick = (event: MouseEvent) => {
 const handleLogout = async () => {
   showUserDropdown.value = false;
   await authStore.logout();
+};
+
+const openBadgeModal = () => {
+  showUserDropdown.value = false;
+  badgeStore.openProfileBadgeModal();
 };
 
 
@@ -207,10 +217,10 @@ const goToHome = () => {
           <div class="relative" ref="userDropdownRef">
             <button 
               @click.stop="showUserDropdown = !showUserDropdown"
-              class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100/80 dark:hover:bg-indigo-900/70 border border-indigo-100 dark:border-indigo-800/80 px-3 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
+              class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100/80 dark:hover:bg-indigo-900/70 border border-indigo-100 dark:border-indigo-800/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
             >
-              <div class="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-extrabold text-xs">
-                {{ (authStore.displayUsername || 'U').charAt(0).toUpperCase() }}
+              <div class="w-6 h-6 rounded-lg bg-indigo-600/20 border border-indigo-400/40 text-white flex items-center justify-center font-extrabold text-xs overflow-hidden shadow-2xs">
+                <span class="text-xs select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
               </div>
               <span class="text-xs font-bold text-indigo-900 dark:text-indigo-200 truncate max-w-[100px] sm:max-w-[120px]">
                 {{ authStore.displayUsername }}
@@ -225,8 +235,8 @@ const goToHome = () => {
             >
               <!-- User Summary Header -->
               <div class="px-2 pb-2.5 mb-2 border-b border-gray-100 dark:border-slate-800 flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-extrabold text-sm shadow-xs flex-shrink-0">
-                  {{ (authStore.displayUsername || 'U').charAt(0).toUpperCase() }}
+                <div class="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-400/40 text-white flex items-center justify-center font-extrabold text-sm shadow-xs flex-shrink-0 overflow-hidden">
+                  <span class="text-base select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
                 </div>
                 <div class="flex flex-col min-w-0">
                   <span class="text-xs font-extrabold text-gray-900 dark:text-slate-100 truncate">
@@ -238,19 +248,48 @@ const goToHome = () => {
                 </div>
               </div>
 
+              <!-- Profile & Badge Collection Menu Item -->
+              <div class="px-1 mb-2">
+                <button
+                  @click="openBadgeModal"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold rounded-xl transition flex items-center justify-between cursor-pointer bg-gradient-to-r from-amber-500/15 via-indigo-500/10 to-purple-500/15 hover:from-amber-500/25 hover:to-purple-500/25 border border-amber-300/40 dark:border-amber-500/30 text-slate-800 dark:text-slate-100 shadow-2xs"
+                >
+                  <div class="flex items-center gap-2">
+                    <Award class="w-4 h-4 text-amber-500 flex-shrink-0" />
+                    <span>Profil & Koleksi Badge</span>
+                  </div>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black">
+                    Lvl {{ badgeStore.highestLevelReached }}
+                  </span>
+                </button>
+              </div>
+
               <!-- Settings Section: Theme Mode -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+              <div class="px-1 py-1">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 px-1">
                   <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                   <span>Tema Tampilan</span>
                 </div>
 
-                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                <div class="relative grid grid-cols-3 p-1 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-100 dark:border-slate-700/60">
+                  <!-- Sliding Pill Indicator -->
+                  <div 
+                    class="absolute inset-y-1 rounded-lg bg-white dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+                    :style="{
+                      width: 'calc((100% - 8px) / 3)',
+                      left: '4px',
+                      transform: `translateX(${
+                        settingsStore.themeMode === 'auto' ? '0%' :
+                        settingsStore.themeMode === 'dark' ? '100%' : '200%'
+                      })`
+                    }"
+                  ></div>
+
                   <button
                     @click="settingsStore.setThemeMode('auto')"
-                    class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+                    class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'auto' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Otomatis Ikuti Perangkat"
                   >
@@ -259,9 +298,9 @@ const goToHome = () => {
                   </button>
                   <button
                     @click="settingsStore.setThemeMode('dark')"
-                    class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+                    class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'dark' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Gelap"
                   >
@@ -270,9 +309,9 @@ const goToHome = () => {
                   </button>
                   <button
                     @click="settingsStore.setThemeMode('light')"
-                    class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
+                    class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'light' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Terang"
                   >
@@ -282,117 +321,18 @@ const goToHome = () => {
                 </div>
               </div>
 
-              <!-- Settings Section: Keyboard Height -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <Keyboard class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Ketinggian Keyboard</span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-1.5 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setKeyboardHeight('short')"
-                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer"
-                    :class="settingsStore.keyboardHeight === 'short' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                  >
-                    <Check v-if="settingsStore.keyboardHeight === 'short'" class="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-                    <span>Default</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setKeyboardHeight('tall')"
-                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer"
-                    :class="settingsStore.keyboardHeight === 'tall' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                  >
-                    <Check v-if="settingsStore.keyboardHeight === 'tall'" class="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-                    <span>Tinggi</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Settings Section: TTS Speech Rate -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Kecepatan Audio (TTS)</span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setSpeechRate(0.6)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 0.6 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="0.6x Lambat"
-                  >
-                    <span>0.6x</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setSpeechRate(0.9)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 0.9 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="0.9x Normal"
-                  >
-                    <span>0.9x</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setSpeechRate(1.2)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 1.2 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="1.2x Cepat"
-                  >
-                    <span>1.2x</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Settings Section: Handwriting Leniency -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Toleransi Menulis</span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('relaxed')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'relaxed' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Santai (Paling toleran, cocok untuk touchscreen)"
-                  >
-                    <span>Santai</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('standard')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'standard' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Standar (Toleransi seimbang)"
-                  >
-                    <span>Standar</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('strict')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'strict' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Ketat (Presisi bentuk lebih tinggi)"
-                  >
-                    <span>Ketat</span>
-                  </button>
-                </div>
+              <!-- More Settings Button -->
+              <div class="px-1 mt-1">
+                <button
+                  @click="showSettingsModal = true; showUserDropdown = false;"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                    <span>Pengaturan Lainnya</span>
+                  </div>
+                  <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
+                </button>
               </div>
 
               <!-- Divider -->
@@ -413,10 +353,12 @@ const goToHome = () => {
           <div class="relative" ref="userDropdownRef">
             <button 
               @click.stop="showUserDropdown = !showUserDropdown"
-              class="p-2 text-gray-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 rounded-xl transition border border-gray-200 dark:border-slate-700 cursor-pointer flex items-center gap-1 text-xs font-bold"
-              title="Pengaturan"
+              class="p-1.5 sm:px-2.5 sm:py-1.5 text-gray-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 rounded-xl transition border border-gray-200 dark:border-slate-700 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Pengaturan & Profil"
             >
-              <Settings class="w-4 h-4 text-gray-500 dark:text-slate-400" />
+              <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-slate-800 border border-indigo-200/60 dark:border-slate-700 flex items-center justify-center text-xs">
+                <span class="select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
+              </div>
               <ChevronDown class="w-3 h-3 text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="{ 'rotate-180': showUserDropdown }" />
             </button>
 
@@ -425,9 +367,24 @@ const goToHome = () => {
               v-if="showUserDropdown"
               class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 py-2.5 px-3 z-50 animate-fadeIn text-gray-800 dark:text-slate-200"
             >
+              <!-- Profile & Badges Menu Item for Guest -->
+              <div class="px-1 mb-2">
+                <button
+                  @click="openBadgeModal"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold rounded-xl transition flex items-center justify-between cursor-pointer bg-gradient-to-r from-amber-500/15 via-indigo-500/10 to-purple-500/15 hover:from-amber-500/25 hover:to-purple-500/25 border border-amber-300/40 dark:border-amber-500/30 text-slate-800 dark:text-slate-100 shadow-2xs"
+                >
+                  <div class="flex items-center gap-2">
+                    <Award class="w-4 h-4 text-amber-500 flex-shrink-0" />
+                    <span>Profil & Koleksi Badge</span>
+                  </div>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black">
+                    Lvl {{ badgeStore.highestLevelReached }}
+                  </span>
+                </button>
+              </div>
               <!-- Settings Section: Theme Mode -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
+              <div class="px-1 py-1">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 px-1">
                   <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
                   <span>Tema Tampilan</span>
                 </div>
@@ -469,117 +426,18 @@ const goToHome = () => {
                 </div>
               </div>
 
-              <!-- Settings Section: Keyboard Height -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <Keyboard class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Ketinggian Keyboard</span>
-                </div>
-
-                <div class="grid grid-cols-2 gap-1.5 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setKeyboardHeight('short')"
-                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer"
-                    :class="settingsStore.keyboardHeight === 'short' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                  >
-                    <Check v-if="settingsStore.keyboardHeight === 'short'" class="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-                    <span>Default</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setKeyboardHeight('tall')"
-                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 cursor-pointer"
-                    :class="settingsStore.keyboardHeight === 'tall' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                  >
-                    <Check v-if="settingsStore.keyboardHeight === 'tall'" class="w-3 h-3 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
-                    <span>Tall</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Settings Section: TTS Speech Rate -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Kecepatan Audio (TTS)</span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setSpeechRate(0.6)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 0.6 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="0.6x Lambat"
-                  >
-                    <span>0.6x</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setSpeechRate(0.9)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 0.9 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="0.9x Normal"
-                  >
-                    <span>0.9x</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setSpeechRate(1.2)"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.speechRate === 1.2 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="1.2x Cepat"
-                  >
-                    <span>1.2x</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Settings Section: Handwriting Leniency -->
-              <div class="px-2 py-1.5">
-                <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-2">
-                  <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
-                  <span>Toleransi Menulis</span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-1 bg-gray-50 dark:bg-slate-800/80 p-1 rounded-xl border border-gray-100 dark:border-slate-700/60">
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('relaxed')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'relaxed' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Santai (Paling toleran, cocok untuk touchscreen)"
-                  >
-                    <span>Santai</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('standard')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'standard' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Standar (Toleransi seimbang)"
-                  >
-                    <span>Standar</span>
-                  </button>
-                  <button
-                    @click="settingsStore.setWritingLeniencyMode('strict')"
-                    class="px-1.5 py-1.5 rounded-lg text-[10px] sm:text-[11px] font-bold transition flex items-center justify-center cursor-pointer"
-                    :class="settingsStore.writingLeniencyMode === 'strict' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
-                      : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
-                    title="Ketat (Presisi bentuk lebih tinggi)"
-                  >
-                    <span>Ketat</span>
-                  </button>
-                </div>
+              <!-- More Settings Button -->
+              <div class="px-1 mt-1">
+                <button
+                  @click="showSettingsModal = true; showUserDropdown = false;"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                    <span>Pengaturan Lainnya</span>
+                  </div>
+                  <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
+                </button>
               </div>
 
               <!-- Divider -->
@@ -628,6 +486,11 @@ const goToHome = () => {
       @close="showReferenceModal = false"
     />
     <LevelUpModal />
+    <ProfileBadgeModal />
+    <SettingsModal 
+      :is-open="showSettingsModal" 
+      @close="showSettingsModal = false" 
+    />
     <SyncConflictModal
       :is-open="authStore.showSyncConflictModal"
       :local-count="authStore.pendingLocalCount"

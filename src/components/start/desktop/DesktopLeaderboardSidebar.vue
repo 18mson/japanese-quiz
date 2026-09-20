@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { Trophy, Medal, ArrowUpRight } from '@lucide/vue';
 import { supabase } from '../../../lib/supabaseClient';
 import { hiraganaData } from '../../../data/hiragana';
@@ -17,6 +17,11 @@ const quizStore = useQuizStore();
 const authStore = useAuthStore();
 
 const activeTab = ref<'cumulative' | 'speed' | 'mastery'>('cumulative');
+const tabIndex = computed(() => {
+  if (activeTab.value === 'speed') return 1;
+  if (activeTab.value === 'mastery') return 2;
+  return 0;
+});
 const cumulativeList = ref<any[]>([]);
 const speedList = ref<any[]>([]);
 const masteryList = ref<any[]>([]);
@@ -184,13 +189,23 @@ watch(activeTab, () => {
     </div>
 
     <!-- Category Tabs -->
-    <div class="grid grid-cols-3 gap-1 bg-gray-100 dark:bg-slate-950 p-1 rounded-2xl border border-gray-200/70 dark:border-slate-800/80">
+    <div class="relative grid grid-cols-3 p-1 bg-gray-100 dark:bg-slate-950 rounded-2xl border border-gray-200/70 dark:border-slate-800/80">
+      <!-- Sliding Pill Indicator -->
+      <div 
+        class="absolute inset-y-1 rounded-xl bg-white dark:bg-slate-800 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+        :style="{
+          width: 'calc((100% - 8px) / 3)',
+          left: '4px',
+          transform: `translateX(${tabIndex * 100}%)`
+        }"
+      ></div>
+
       <button
         type="button"
         @click="activeTab = 'cumulative'"
-        class="py-1.5 px-1 rounded-xl text-[11px] font-black transition-all cursor-pointer text-center"
+        class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'cumulative' 
-          ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 shadow-xs' 
+          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Skor
@@ -198,9 +213,9 @@ watch(activeTab, () => {
       <button
         type="button"
         @click="activeTab = 'speed'"
-        class="py-1.5 px-1 rounded-xl text-[11px] font-black transition-all cursor-pointer text-center"
+        class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'speed' 
-          ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 shadow-xs' 
+          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Speed
@@ -208,9 +223,9 @@ watch(activeTab, () => {
       <button
         type="button"
         @click="activeTab = 'mastery'"
-        class="py-1.5 px-1 rounded-xl text-[11px] font-black transition-all cursor-pointer text-center"
+        class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'mastery' 
-          ? 'bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-300 shadow-xs' 
+          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Huruf
@@ -225,8 +240,10 @@ watch(activeTab, () => {
         <span class="text-xs font-semibold">Memuat peringkat...</span>
       </div>
 
-      <!-- Cumulative Tab Content -->
-      <template v-else-if="activeTab === 'cumulative'">
+      <Transition v-else name="tab-fade" mode="out-in">
+        <div :key="activeTab" class="flex flex-col gap-2">
+          <!-- Cumulative Tab Content -->
+          <template v-if="activeTab === 'cumulative'">
         <div 
           v-for="(player, idx) in cumulativeList" 
           :key="player.user_id || player.id || idx"
@@ -352,7 +369,9 @@ watch(activeTab, () => {
         <div v-if="masteryList.length === 0" class="text-center py-8 text-xs text-gray-400 dark:text-slate-500">
           Belum ada data penguasaan.
         </div>
-      </template>
+          </template>
+        </div>
+      </Transition>
     </div>
 
     <!-- CTA Button to Open Full Leaderboard Modal -->
@@ -366,3 +385,18 @@ watch(activeTab, () => {
     </button>
   </div>
 </template>
+
+<style scoped>
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, toRef } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { kanjiGroups } from '../../data/kanji';
+import { useTabIndicator } from '../../composables/useTabIndicator';
 import { 
   Sparkles, 
   ChevronDown, 
@@ -22,6 +23,7 @@ const props = defineProps<{
   statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown';
   availableLessons: string[];
   searchQuery: string;
+  isOpen?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -33,6 +35,22 @@ const emit = defineEmits<{
 
 const quizStore = useQuizStore();
 const openDropdown = ref<'subtype' | null>(null);
+
+const isOpenRef = toRef(props, 'isOpen');
+
+const categoryRef = toRef(props, 'category');
+const { 
+  setTabRef: setCategoryTabRef, 
+  indicatorStyle: categoryIndicatorStyle, 
+  isInitialized: isCategoryInitialized 
+} = useTabIndicator(categoryRef, { isOpen: isOpenRef });
+
+const statusFilterRef = toRef(props, 'statusFilter');
+const {
+  setTabRef: setStatusTabRef,
+  indicatorStyle: statusIndicatorStyle,
+  isInitialized: isStatusInitialized
+} = useTabIndicator(statusFilterRef, { isOpen: isOpenRef });
 
 const toggleDropdown = (type: 'subtype') => {
   openDropdown.value = openDropdown.value === type ? null : type;
@@ -123,44 +141,50 @@ const statusPills = [
     <!-- Category Switcher Tabs & Search Bar (Row 1) -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
       <!-- Category Switcher Tabs -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
+      <div class="relative grid grid-cols-2 sm:grid-cols-4 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
+        <!-- Sliding Pill Indicator -->
+        <div 
+          class="absolute rounded-xl bg-indigo-600 shadow-md shadow-indigo-500/20 pointer-events-none"
+          :class="isCategoryInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
+          :style="categoryIndicatorStyle"
+        ></div>
+
         <button 
           v-for="cat in (['hiragana', 'katakana', 'words', 'kanji'] as const)" 
           :key="cat"
+          :ref="setCategoryTabRef(cat)"
           type="button"
           @click="emit('update:category', cat); emit('update:subtype', 'all'); closeDropdowns();"
-          :class="[
-            'px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition cursor-pointer flex items-center justify-center gap-1.5',
-            category === cat 
-              ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none' 
-              : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-slate-700'
-          ]"
+          class="relative z-10 px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1.5 select-none"
+          :class="category === cat 
+            ? 'text-white font-black' 
+            : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white'"
         >
           <span>{{ cat === 'words' ? 'Kosakata' : (cat === 'kanji' ? 'Kanji N5' : cat) }}</span>
           <span 
             v-if="cat === 'hiragana'" 
-            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
             :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.hiraganaMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'katakana'" 
-            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
             :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.katakanaMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'words'" 
-            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
             :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.wordsMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'kanji'" 
-            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold"
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
             :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.kanjiMasteryStats.percentage }}%
@@ -283,40 +307,46 @@ const statusPills = [
         </div>
       </div>
 
-      <!-- Status Filter Horizontal Icon List -->
+      <!-- Status Filter Horizontal Tabs with Sliding Indicator -->
       <div class="flex flex-col items-start gap-1.5 min-w-0">
         <label class="text-xs sm:text-sm font-bold text-gray-600 dark:text-slate-300 flex items-center gap-1.5 px-0.5">
           <Award class="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" />
           <span>Status Penguasaan</span>
         </label>
 
-        <div class="flex items-center justify-start gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar py-0.5">
+        <div class="relative flex items-center bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-fit shrink-0 overflow-x-auto no-scrollbar max-w-full">
+          <!-- Sliding Pill Indicator -->
+          <div 
+            class="absolute rounded-xl bg-white dark:bg-slate-900 shadow-sm border border-gray-200/70 dark:border-slate-700/80 pointer-events-none"
+            :class="isStatusInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
+            :style="statusIndicatorStyle"
+          ></div>
+
           <button
             v-for="st in statusPills"
             :key="st.key"
+            :ref="setStatusTabRef(st.key)"
             type="button"
             @click="emit('update:statusFilter', st.key)"
             :title="st.label"
-            class="h-10 px-2.5 sm:px-3 rounded-xl flex items-center justify-center transition-all duration-300 ease-in-out cursor-pointer select-none border shrink-0"
+            class="relative z-10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-200 cursor-pointer select-none flex items-center gap-1.5 shrink-0"
             :class="statusFilter === st.key 
-              ? ['shadow-xs', st.activeClass] 
-              : 'bg-transparent border-gray-200 dark:border-slate-800 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 hover:border-gray-300 dark:hover:border-slate-700 hover:bg-gray-100/50 dark:hover:bg-slate-800/50'"
+              ? 'text-gray-900 dark:text-white font-extrabold' 
+              : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <component 
               :is="st.icon" 
-              class="w-4 h-4 shrink-0 transition-all duration-300 ease-in-out"
-              :class="statusFilter === st.key ? [st.activeIconClass, 'scale-110'] : ''" 
+              class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-transform duration-200"
+              :class="[
+                statusFilter === st.key ? 'scale-110' : 'opacity-70',
+                st.key === 'all' ? 'text-indigo-500 dark:text-indigo-400' :
+                st.key === 'new' ? 'text-slate-500 dark:text-slate-400' :
+                st.key === 'learning' ? 'text-amber-500 dark:text-amber-400' :
+                st.key === 'mastered' ? 'text-emerald-500 dark:text-emerald-400' :
+                'text-indigo-500 dark:text-indigo-400'
+              ]" 
             />
-            <span 
-              class="text-xs sm:text-sm font-extrabold whitespace-nowrap overflow-hidden transition-all duration-300 ease-in-out inline-block"
-              :style="{
-                maxWidth: statusFilter === st.key ? '80px' : '0px',
-                opacity: statusFilter === st.key ? 1 : 0,
-                marginLeft: statusFilter === st.key ? '6px' : '0px'
-              }"
-            >
-              {{ st.shortLabel }}
-            </span>
+            <span>{{ st.shortLabel }}</span>
           </button>
         </div>
       </div>

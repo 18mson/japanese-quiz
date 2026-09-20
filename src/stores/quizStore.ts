@@ -11,6 +11,7 @@ import { useHitunganStore } from './hitunganStore';
 import { prepareStandardQuestions, prepareWeakItemsQuestions } from '../utils/quizSessionBuilder';
 import { useQuizPreview } from '../composables/useQuizPreview';
 import { useKanjiLessonPanel } from '../composables/useKanjiLessonPanel';
+import { useBadgeStore } from './badgeStore';
 
 export const useQuizStore = defineStore('quiz', () => {
   const masteryStore = useMasteryStore();
@@ -360,8 +361,12 @@ export const useQuizStore = defineStore('quiz', () => {
     const goalsStore = useGoalsStore();
     goalsStore.checkAndTriggerCelebration();
 
-    if (masteryStore.currentUserLevel > levelBeforeQuiz.value) showLevelUpScreen.value = true;
-    else quizCompleted.value = true;
+    const badgeStore = useBadgeStore();
+    if (masteryStore.currentUserLevel > badgeStore.highestLevelReached) {
+      showLevelUpScreen.value = true;
+    } else {
+      quizCompleted.value = true;
+    }
   };
 
   const masteredCount = computed(() => Object.keys(masteredChars.value).length);

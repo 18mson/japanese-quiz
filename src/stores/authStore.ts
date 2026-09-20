@@ -35,6 +35,19 @@ export const useAuthStore = defineStore('auth', () => {
     return `${clean.toLowerCase()}.quiz@gmail.com`;
   };
 
+  const syncBadgesForCurrentUser = async () => {
+    if (!user.value) return;
+    try {
+      const { useBadgeStore } = await import('./badgeStore');
+      const { useMasteryStore } = await import('./masteryStore');
+      const badgeStore = useBadgeStore();
+      const masteryStore = useMasteryStore();
+      badgeStore.syncFromUser(user.value, masteryStore.currentUserLevel);
+    } catch (e) {
+      console.warn('Failed to sync badges for user:', e);
+    }
+  };
+
   const checkSession = async () => {
     loading.value = true;
     try {
@@ -42,6 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = session?.user ?? null;
       const quizStore = useQuizStore();
       await quizStore.loadStreaksFromStorage();
+      await syncBadgesForCurrentUser();
     } catch (err: any) {
       console.error('Error fetching session:', err);
     } finally {
@@ -79,6 +93,7 @@ export const useAuthStore = defineStore('auth', () => {
       } else if (serverCount > 0) {
         quizStore.applyServerStreaks(serverStreaks);
       }
+      await syncBadgesForCurrentUser();
     } catch (err) {
       console.error('Error during streak sync check:', err);
     }
@@ -95,6 +110,7 @@ export const useAuthStore = defineStore('auth', () => {
         // User selected NO: Local data overwrites server data
         await quizStore.syncLocalToServer(pendingUserId.value);
       }
+      await syncBadgesForCurrentUser();
     } catch (e) {
       console.error('Failed to resolve sync conflict:', e);
     } finally {

@@ -374,6 +374,7 @@ const nextPreviewItem = () => {
           v-model:statusFilter="activeStatusFilter"
           v-model:searchQuery="searchQuery"
           :available-lessons="availableLessons"
+          :is-open="isOpen"
         />
 
         <!-- Edit Mode Sub-bar for Quick Selection -->
@@ -414,64 +415,71 @@ const nextPreviewItem = () => {
 
         <!-- Interactive Grid Area -->
         <div class="p-3 sm:p-6 overflow-y-auto flex-1 bg-gray-50/50 dark:bg-slate-950/60 min-h-0 relative">
-          <div 
-            v-if="filteredItems.length > 0"
-            :class="[
-              'grid gap-2 sm:gap-3 pb-16',
-              activeCategory === 'words' 
-                ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
-                : activeCategory === 'kanji'
-                ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'
-                : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10'
-            ]"
-          >
-            <MasteryCard 
-              v-for="(item, index) in filteredItems" 
-              :key="activeCategory + '_' + item.character + '_' + (item.lesson || '') + '_' + (item.meaning || '') + '_' + index" 
-              :item="item" 
-              :category="activeCategory" 
-              :is-select-mode="isEditMode"
-              :is-selected="selectedCharacters.has(item.character)"
-              @click="openPreview(item, index)"
-              @toggle-select="handleToggleSelect(item.character)"
-            />
-          </div>
-
-          <!-- Empty State -->
-          <div v-else class="h-full min-h-[220px] text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 py-8">
-            <component 
-              :is="searchQuery.trim() ? SearchX : Sparkles" 
-              class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2" 
-              :class="{ 'animate-bounce': !searchQuery.trim() }" 
-            />
-            <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">
-              {{ searchQuery.trim() ? 'Tidak ada hasil pencarian' : 'Tidak ada karakter ditemui' }}
-            </h3>
-            <p class="text-xs text-gray-400 dark:text-slate-400 max-w-sm mt-1 px-4">
-              <template v-if="searchQuery.trim()">
-                Tidak ada karakter atau kosakata yang cocok dengan "<span class="font-semibold text-gray-700 dark:text-slate-200">{{ searchQuery }}</span>"<span v-if="activeSubtype !== 'all'"> pada kelompok ini</span>.
-              </template>
-              <template v-else>
-                Tidak ada item yang sesuai dengan filter yang dipilih saat ini.
-              </template>
-            </p>
-
-            <div v-if="searchQuery.trim()" class="flex flex-wrap items-center justify-center gap-2 mt-4">
-              <button 
-                v-if="activeSubtype !== 'all' && totalCategoryMatches > 0"
-                @click="activeSubtype = 'all'"
-                class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-sm flex items-center gap-1.5"
+          <Transition name="tab-fade" mode="out-in">
+            <div 
+              :key="activeCategory + '_' + activeSubtype + '_' + activeStatusFilter + (searchQuery ? '_' + searchQuery : '')"
+              class="w-full"
+            >
+              <div 
+                v-if="filteredItems.length > 0"
+                :class="[
+                  'grid gap-2 sm:gap-3 pb-16',
+                  activeCategory === 'words' 
+                    ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
+                    : activeCategory === 'kanji'
+                    ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'
+                    : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10'
+                ]"
               >
-                <span>Cari di Semua Kelompok ({{ totalCategoryMatches }} ditemukan)</span>
-              </button>
-              <button 
-                @click="searchQuery = ''"
-                class="px-3.5 py-1.5 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-xl text-xs font-bold transition cursor-pointer"
-              >
-                Hapus Pencarian
-              </button>
+                <MasteryCard 
+                  v-for="(item, index) in filteredItems" 
+                  :key="activeCategory + '_' + item.character + '_' + (item.lesson || '') + '_' + (item.meaning || '') + '_' + index" 
+                  :item="item" 
+                  :category="activeCategory" 
+                  :is-select-mode="isEditMode"
+                  :is-selected="selectedCharacters.has(item.character)"
+                  @click="openPreview(item, index)"
+                  @toggle-select="handleToggleSelect(item.character)"
+                />
+              </div>
+
+              <!-- Empty State -->
+              <div v-else class="h-full min-h-[220px] text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 py-8">
+                <component 
+                  :is="searchQuery.trim() ? SearchX : Sparkles" 
+                  class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2" 
+                  :class="{ 'animate-bounce': !searchQuery.trim() }" 
+                />
+                <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">
+                  {{ searchQuery.trim() ? 'Tidak ada hasil pencarian' : 'Tidak ada karakter ditemui' }}
+                </h3>
+                <p class="text-xs text-gray-400 dark:text-slate-400 max-w-sm mt-1 px-4">
+                  <template v-if="searchQuery.trim()">
+                    Tidak ada karakter atau kosakata yang cocok dengan "<span class="font-semibold text-gray-700 dark:text-slate-200">{{ searchQuery }}</span>"<span v-if="activeSubtype !== 'all'"> pada kelompok ini</span>.
+                  </template>
+                  <template v-else>
+                    Tidak ada item yang sesuai dengan filter yang dipilih saat ini.
+                  </template>
+                </p>
+
+                <div v-if="searchQuery.trim()" class="flex flex-wrap items-center justify-center gap-2 mt-4">
+                  <button 
+                    v-if="activeSubtype !== 'all' && totalCategoryMatches > 0"
+                    @click="activeSubtype = 'all'"
+                    class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-sm flex items-center gap-1.5"
+                  >
+                    <span>Cari di Semua Kelompok ({{ totalCategoryMatches }} ditemukan)</span>
+                  </button>
+                  <button 
+                    @click="searchQuery = ''"
+                    class="px-3.5 py-1.5 bg-gray-200 hover:bg-gray-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-xl text-xs font-bold transition cursor-pointer"
+                  >
+                    Hapus Pencarian
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </Transition>
         </div>
 
         <!-- Floating Action Bar for Bulk Edit (Inside modal relative container) -->
@@ -679,5 +687,18 @@ const nextPreviewItem = () => {
 .slide-up-leave-to {
   opacity: 0;
   transform: translateY(16px);
+}
+
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>

@@ -62,17 +62,26 @@ const handleSubmit = async () => {
   >
     <!-- Header / Tabs -->
     <template #header>
-      <div class="flex border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40">
+      <div class="relative flex border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40">
+        <!-- Sliding underline indicator -->
+        <div 
+          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+          :style="{
+            width: '50%',
+            transform: `translateX(${isLoginTab ? '0%' : '100%'})`
+          }"
+        ></div>
+
         <button 
-          class="flex-1 py-4 text-center text-sm font-bold border-b-2 transition-all cursor-pointer"
-          :class="isLoginTab ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
+          class="relative z-10 flex-1 py-4 text-center text-sm font-bold transition-colors duration-200 cursor-pointer select-none"
+          :class="isLoginTab ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
           @click="isLoginTab = true"
         >
           Masuk
         </button>
         <button 
-          class="flex-1 py-4 text-center text-sm font-bold border-b-2 transition-all cursor-pointer"
-          :class="!isLoginTab ? 'border-indigo-600 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
+          class="relative z-10 flex-1 py-4 text-center text-sm font-bold transition-colors duration-200 cursor-pointer select-none"
+          :class="!isLoginTab ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
           @click="isLoginTab = false"
         >
           Buat Akun
@@ -81,14 +90,16 @@ const handleSubmit = async () => {
     </template>
 
     <div class="p-6" @keydown.enter="handleSubmit">
-      <div class="text-center mb-6">
-        <h3 class="text-xl font-extrabold text-gray-800 dark:text-slate-100">
-          {{ isLoginTab ? 'Selamat Datang Kembali!' : 'Bergabung Kuis Bahasa Jepang' }}
-        </h3>
-        <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
-          {{ isLoginTab ? 'Masuk untuk menyinkronkan skor dan melihat papan peringkat.' : 'Buat akun untuk memantau perkembangan penguasaan Anda.' }}
-        </p>
-      </div>
+      <Transition name="tab-fade" mode="out-in">
+        <div :key="isLoginTab ? 'login' : 'register'" class="text-center mb-6">
+          <h3 class="text-xl font-extrabold text-gray-800 dark:text-slate-100">
+            {{ isLoginTab ? 'Selamat Datang Kembali!' : 'Bergabung Kuis Bahasa Jepang' }}
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
+            {{ isLoginTab ? 'Masuk untuk menyinkronkan skor dan melihat papan peringkat.' : 'Buat akun untuk memantau perkembangan penguasaan Anda.' }}
+          </p>
+        </div>
+      </Transition>
 
       <!-- Feedback Messages -->
       <div 
@@ -166,5 +177,18 @@ const handleSubmit = async () => {
 }
 .animate-shake {
   animation: shake 0.2s ease-in-out 2;
+}
+
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 </style>

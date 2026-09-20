@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuizStore } from '../../stores/quizStore';
-import { Check } from '@lucide/vue';
+import { Check, Crown } from '@lucide/vue';
 
 const props = withDefaults(
   defineProps<{
@@ -73,9 +73,11 @@ const handleClick = () => {
     <div class="absolute top-1 right-1.5 flex items-center gap-0.5">
       <span 
         v-if="quizStore.getMasteryTier(item.character) === 'crown'" 
-        class="text-xs" 
+        class="flex items-center drop-shadow-xs" 
         title="Crown (Streak 5+)"
-      >💎</span>
+      >
+        <Crown class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-500 dark:fill-amber-400 dark:text-amber-300" />
+      </span>
       <span 
         v-else-if="quizStore.getMasteryTier(item.character) === 'mastered'" 
         class="text-[9px] sm:text-[10px] font-black text-emerald-700 dark:text-emerald-300 bg-emerald-100/90 dark:bg-emerald-950/90 px-1 py-0.2 rounded-md border border-emerald-200 dark:border-emerald-800" 

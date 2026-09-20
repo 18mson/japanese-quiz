@@ -9,12 +9,14 @@ const props = withDefaults(
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     customClass?: string;
     borderClass?: string;
+    badgeIcon?: string | null;
   }>(),
   {
     seed: null,
     size: 'sm',
     customClass: '',
     borderClass: '',
+    badgeIcon: null,
   }
 );
 
@@ -54,9 +56,17 @@ const bgColor = computed(() => {
       'relative flex items-center justify-center flex-shrink-0 overflow-hidden shadow-md select-none bg-slate-800'
     ]"
   >
+    <!-- Badge Avatar Option -->
+    <div
+      v-if="badgeIcon || (seed && seed.startsWith('badge:'))"
+      class="w-full h-full flex items-center justify-center select-none bg-gradient-to-tr from-indigo-950 to-slate-900"
+    >
+      <span class="filter drop-shadow-sm select-none">{{ badgeIcon || seed?.replace('badge:', '') }}</span>
+    </div>
+
     <!-- DiceBear Bottts SVG Avatar (Mode Online Quiz) -->
     <img
-      v-if="!imgError"
+      v-else-if="!imgError"
       :src="avatarUrl"
       :alt="name"
       class="w-full h-full object-cover"

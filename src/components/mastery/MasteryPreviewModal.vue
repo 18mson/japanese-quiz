@@ -10,7 +10,8 @@ import {
   ChevronLeft, 
   ChevronRight,
   PenTool,
-  Type
+  Type,
+  Crown
 } from '@lucide/vue';
 
 const props = defineProps<{
@@ -202,7 +203,7 @@ onUnmounted(() => {
         <!-- Mastery Status Badge & Details -->
         <div class="mt-3 flex items-center justify-center gap-2 flex-wrap">
           <span 
-            class="text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1 border"
+            class="text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1.5 border"
             :class="[
               quizStore.getMasteryTier(item.character) === 'crown'
                 ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700'
@@ -213,8 +214,9 @@ onUnmounted(() => {
                 : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700'
             ]"
           >
+            <Crown v-if="quizStore.getMasteryTier(item.character) === 'crown'" class="w-3.5 h-3.5 fill-amber-400 text-amber-500 shrink-0" />
             <span>{{ 
-              quizStore.getMasteryTier(item.character) === 'crown' ? '💎 Crown (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
+              quizStore.getMasteryTier(item.character) === 'crown' ? 'Crown (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
               quizStore.getMasteryTier(item.character) === 'mastered' ? '✓ Hafal (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
               quizStore.getMasteryTier(item.character) === 'learning' ? '⚡ Proses (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
               '○ Belum Dipelajari (Streak 0)'

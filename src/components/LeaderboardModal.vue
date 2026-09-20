@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { supabase } from '../lib/supabaseClient';
 import { Trophy, Award } from '@lucide/vue';
 import { hiraganaData } from '../data/hiragana';
@@ -20,6 +20,11 @@ const quizStore = useQuizStore();
 const authStore = useAuthStore();
 
 const activeTab = ref<'cumulative' | 'speed' | 'mastery'>('cumulative');
+const tabIndex = computed(() => {
+  if (activeTab.value === 'speed') return 1;
+  if (activeTab.value === 'mastery') return 2;
+  return 0;
+});
 const cumulativeList = ref<any[]>([]);
 const speedList = ref<any[]>([]);
 const masteryList = ref<any[]>([]);
@@ -184,24 +189,33 @@ watch(activeTab, () => {
       </div>
 
       <!-- Navigation Tabs -->
-      <div class="flex border-b border-gray-100 dark:border-slate-800 flex-shrink-0">
+      <div class="relative flex border-b border-gray-100 dark:border-slate-800 flex-shrink-0 bg-gray-50/40 dark:bg-slate-900/40">
+        <!-- Sliding Underline Indicator -->
+        <div 
+          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+          :style="{
+            width: 'calc(100% / 3)',
+            transform: `translateX(${tabIndex * 100}%)`
+          }"
+        ></div>
+
         <button 
-          class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider"
-          :class="activeTab === 'cumulative' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider select-none"
+          :class="activeTab === 'cumulative' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'cumulative'"
         >
           Total Score
         </button>
         <button 
-          class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider"
-          :class="activeTab === 'speed' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider select-none"
+          :class="activeTab === 'speed' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'speed'"
         >
           Fastest Speed
         </button>
         <button 
-          class="flex-1 py-3 text-center text-xs font-bold border-b-2 transition-all cursor-pointer uppercase tracking-wider flex items-center justify-center gap-1"
-          :class="activeTab === 'mastery' ? 'border-indigo-600 dark:border-indigo-400 text-indigo-600 dark:text-indigo-400' : 'border-transparent text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider flex items-center justify-center gap-1 select-none"
+          :class="activeTab === 'mastery' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'mastery'"
         >
           <Award class="w-3.5 h-3.5 text-amber-500" />
@@ -221,9 +235,10 @@ watch(activeTab, () => {
           {{ errorMsg }}
         </div>
 
-        <div v-else>
-          <!-- Cumulative Rankings -->
-          <table v-if="activeTab === 'cumulative'" class="w-full text-left border-collapse">
+        <Transition v-else name="tab-fade" mode="out-in">
+          <div :key="activeTab">
+            <!-- Cumulative Rankings -->
+            <table v-if="activeTab === 'cumulative'" class="w-full text-left border-collapse">
             <thead>
               <tr class="border-b border-gray-100 dark:border-slate-800 text-[10px] font-bold text-gray-400 dark:text-slate-400 uppercase tracking-wider">
                 <th class="pb-3 w-12">Rank</th>
@@ -354,13 +369,14 @@ watch(activeTab, () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </Transition>
+    </div>
 
     <!-- Footer -->
     <template #footer>
       <div class="px-6 py-4 bg-gray-50 dark:bg-slate-800/40 border-t border-gray-100 dark:border-slate-800 flex justify-end flex-shrink-0">
         <button 
-          @click="emit('close')"
+          @click="emit('close')" 
           class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-md hover:shadow-lg"
         >
           Tutup
@@ -369,3 +385,18 @@ watch(activeTab, () => {
     </template>
   </BaseModal>
 </template>
+
+<style scoped>
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+</style>

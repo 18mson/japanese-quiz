@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, toRef } from 'vue';
 import { 
   X, 
   BookMarked, 
@@ -10,6 +10,7 @@ import {
   Loader2,
   Volume2
 } from '@lucide/vue';
+import { useTabIndicator } from '../../composables/useTabIndicator';
 import { useSettingsStore } from '../../stores/settingsStore';
 import TabKataBilangan from './TabKataBilangan.vue';
 import TabUngkapanWaktu from './TabUngkapanWaktu.vue';
@@ -48,6 +49,8 @@ const emit = defineEmits<{
 
 const settingsStore = useSettingsStore();
 const activeTab = ref<'kata_bilangan' | 'ungkapan_waktu' | 'kata_bantu_bilangan' | 'konjugasi_kata_kerja'>(props.initialTab);
+const isOpenRef = toRef(props, 'isOpen');
+const { setTabRef, indicatorStyle, isInitialized } = useTabIndicator(activeTab, { isOpen: isOpenRef });
 const isLoading = ref(false);
 
 // Local state for fetched data
@@ -171,63 +174,60 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <!-- 4 Main Navigation Tabs -->
-          <div class="px-3 sm:px-6 py-2.5 bg-gray-100/70 dark:bg-slate-950/70 border-b border-gray-200 dark:border-slate-800/80 flex items-center gap-1.5 sm:gap-2 overflow-x-auto flex-shrink-0 z-10">
-            <!-- Tab 1: Kata Bilangan -->
-            <button
-              @click="activeTab = 'kata_bilangan'"
-              :class="[
-                'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
-                activeTab === 'kata_bilangan'
-                  ? 'bg-amber-500/15 border-amber-500/40 text-amber-700 dark:text-amber-300 shadow-xs'
-                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
-              ]"
-            >
-              <Hash class="w-4 h-4" />
-              <span>Kata Bilangan</span>
-            </button>
+          <!-- 4 Main Navigation Tabs with Sliding Pill Indicator -->
+          <div class="px-3 sm:px-6 py-2.5 bg-gray-100/70 dark:bg-slate-950/70 border-b border-gray-200 dark:border-slate-800/80 flex items-center overflow-x-auto no-scrollbar flex-shrink-0 z-10">
+            <div class="relative flex items-center bg-gray-200/70 dark:bg-slate-900 p-1 rounded-2xl border border-gray-300/60 dark:border-slate-800 w-fit shrink-0">
+              <!-- Sliding Pill Indicator -->
+              <div 
+                class="absolute rounded-xl bg-indigo-600 shadow-md shadow-indigo-500/20 pointer-events-none"
+                :class="isInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
+                :style="indicatorStyle"
+              ></div>
 
-            <!-- Tab 2: Ungkapan Waktu -->
-            <button
-              @click="activeTab = 'ungkapan_waktu'"
-              :class="[
-                'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
-                activeTab === 'ungkapan_waktu'
-                  ? 'bg-cyan-500/15 border-cyan-500/40 text-cyan-700 dark:text-cyan-300 shadow-xs'
-                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
-              ]"
-            >
-              <Clock class="w-4 h-4" />
-              <span>Ungkapan Waktu</span>
-            </button>
+              <!-- Tab 1: Kata Bilangan -->
+              <button
+                :ref="setTabRef('kata_bilangan')"
+                @click="activeTab = 'kata_bilangan'"
+                class="relative z-10 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-colors duration-200 cursor-pointer flex items-center gap-2 shrink-0 select-none"
+                :class="activeTab === 'kata_bilangan' ? 'text-white font-black' : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'"
+              >
+                <Hash class="w-4 h-4" />
+                <span>Kata Bilangan</span>
+              </button>
 
-            <!-- Tab 3: Kata Bantu Bilangan -->
-            <button
-              @click="activeTab = 'kata_bantu_bilangan'"
-              :class="[
-                'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
-                activeTab === 'kata_bantu_bilangan'
-                  ? 'bg-violet-500/15 border-violet-500/40 text-violet-700 dark:text-violet-300 shadow-xs'
-                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
-              ]"
-            >
-              <Layers class="w-4 h-4" />
-              <span>Kata Bantu Bilangan</span>
-            </button>
+              <!-- Tab 2: Ungkapan Waktu -->
+              <button
+                :ref="setTabRef('ungkapan_waktu')"
+                @click="activeTab = 'ungkapan_waktu'"
+                class="relative z-10 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-colors duration-200 cursor-pointer flex items-center gap-2 shrink-0 select-none"
+                :class="activeTab === 'ungkapan_waktu' ? 'text-white font-black' : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'"
+              >
+                <Clock class="w-4 h-4" />
+                <span>Ungkapan Waktu</span>
+              </button>
 
-            <!-- Tab 4: Konjugasi Kata Kerja -->
-            <button
-              @click="activeTab = 'konjugasi_kata_kerja'"
-              :class="[
-                'px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition cursor-pointer flex items-center gap-2 shrink-0 border',
-                activeTab === 'konjugasi_kata_kerja'
-                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-700 dark:text-emerald-300 shadow-xs'
-                  : 'bg-white dark:bg-slate-900/60 border-gray-200 dark:border-slate-800/80 text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:border-gray-300 dark:hover:border-slate-700'
-              ]"
-            >
-              <BookOpen class="w-4 h-4" />
-              <span>Konjugasi Kata Kerja</span>
-            </button>
+              <!-- Tab 3: Kata Bantu Bilangan -->
+              <button
+                :ref="setTabRef('kata_bantu_bilangan')"
+                @click="activeTab = 'kata_bantu_bilangan'"
+                class="relative z-10 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-colors duration-200 cursor-pointer flex items-center gap-2 shrink-0 select-none"
+                :class="activeTab === 'kata_bantu_bilangan' ? 'text-white font-black' : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'"
+              >
+                <Layers class="w-4 h-4" />
+                <span>Kata Bantu Bilangan</span>
+              </button>
+
+              <!-- Tab 4: Konjugasi Kata Kerja -->
+              <button
+                :ref="setTabRef('konjugasi_kata_kerja')"
+                @click="activeTab = 'konjugasi_kata_kerja'"
+                class="relative z-10 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-colors duration-200 cursor-pointer flex items-center gap-2 shrink-0 select-none"
+                :class="activeTab === 'konjugasi_kata_kerja' ? 'text-white font-black' : 'text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'"
+              >
+                <BookOpen class="w-4 h-4" />
+                <span>Konjugasi Kata Kerja</span>
+              </button>
+            </div>
           </div>
 
           <!-- Content Body (Scrollable) -->
@@ -238,26 +238,30 @@ onUnmounted(() => {
               <span>Sinkronisasi...</span>
             </div>
 
-            <!-- Tab Views -->
-            <TabKataBilangan 
-              v-if="activeTab === 'kata_bilangan'" 
-              :data="bilangan" 
-            />
+            <!-- Tab Views with Smooth Transition -->
+            <Transition name="tab-fade" mode="out-in">
+              <div :key="activeTab">
+                <TabKataBilangan 
+                  v-if="activeTab === 'kata_bilangan'" 
+                  :data="bilangan" 
+                />
 
-            <TabUngkapanWaktu 
-              v-else-if="activeTab === 'ungkapan_waktu'" 
-              :data="waktu" 
-            />
+                <TabUngkapanWaktu 
+                  v-else-if="activeTab === 'ungkapan_waktu'" 
+                  :data="waktu" 
+                />
 
-            <TabKataBantuBilangan 
-              v-else-if="activeTab === 'kata_bantu_bilangan'" 
-              :data="counter" 
-            />
+                <TabKataBantuBilangan 
+                  v-else-if="activeTab === 'kata_bantu_bilangan'" 
+                  :data="counter" 
+                />
 
-            <TabKonjugasiKataKerja 
-              v-else-if="activeTab === 'konjugasi_kata_kerja'" 
-              :data="verba" 
-            />
+                <TabKonjugasiKataKerja 
+                  v-else-if="activeTab === 'konjugasi_kata_kerja'" 
+                  :data="verba" 
+                />
+              </div>
+            </Transition>
           </div>
 
           <!-- Footer Bar -->
@@ -283,4 +287,17 @@ onUnmounted(() => {
 .animate-fadeIn { animation: fadeIn 0.2s ease-out forwards; }
 @keyframes scaleUp { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 .animate-scaleUp { animation: scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
 </style>

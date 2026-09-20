@@ -4,6 +4,7 @@ import { BookOpen, Globe2, MessageCircle, X, Search } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { fetchLessonVocabulary, fetchLessonReferenceTables } from '../../services/lessonService';
 import { LessonVocabulary, LessonReferenceTable } from '../../types/lesson';
+import { useTabIndicator } from '../../composables/useTabIndicator';
 
 const props = defineProps<{
   isOpen: boolean;
@@ -16,6 +17,10 @@ const emit = defineEmits<{
 const quizStore = useQuizStore();
 const activeTab = ref<'kosakata' | 'frasa' | 'tabel'>('kosakata');
 const searchQuery = ref('');
+
+const { setTabRef, indicatorStyle, isInitialized } = useTabIndicator(activeTab, {
+  isOpen: computed(() => props.isOpen)
+});
 
 const vocabularyList = ref<LessonVocabulary[]>([]);
 const referenceTables = ref<LessonReferenceTable[]>([]);
@@ -123,44 +128,42 @@ const filteredTableRows = computed(() => {
         <!-- Tab Controls & Search -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4 flex-shrink-0">
           <!-- Tab Pills -->
-          <div class="flex items-center gap-1 bg-slate-950/70 p-1 rounded-2xl border border-slate-800 flex-shrink-0">
+          <div class="relative flex items-center gap-1 bg-slate-950/70 p-1 rounded-2xl border border-slate-800 flex-shrink-0">
+            <!-- Sliding Pill Indicator -->
+            <div 
+              class="absolute rounded-xl bg-indigo-600 shadow-md shadow-indigo-600/30 pointer-events-none"
+              :class="isInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
+              :style="indicatorStyle"
+            ></div>
+
             <button
+              :ref="setTabRef('kosakata')"
               type="button"
               @click="activeTab = 'kosakata'"
-              :class="[
-                'px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer',
-                activeTab === 'kosakata'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-200'
-              ]"
+              class="relative z-10 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors duration-200 flex items-center gap-1.5 cursor-pointer select-none"
+              :class="activeTab === 'kosakata' ? 'text-white font-extrabold' : 'text-slate-400 hover:text-slate-200'"
             >
               <BookOpen class="w-3.5 h-3.5" />
               <span>Kosakata ({{ vocabularyList.filter(v => v.category === 'kosakata').length }})</span>
             </button>
 
             <button
+              :ref="setTabRef('frasa')"
               type="button"
               @click="activeTab = 'frasa'"
-              :class="[
-                'px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer',
-                activeTab === 'frasa'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-200'
-              ]"
+              class="relative z-10 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors duration-200 flex items-center gap-1.5 cursor-pointer select-none"
+              :class="activeTab === 'frasa' ? 'text-white font-extrabold' : 'text-slate-400 hover:text-slate-200'"
             >
               <MessageCircle class="w-3.5 h-3.5" />
               <span>Frasa Percakapan ({{ vocabularyList.filter(v => v.category === 'renshuu_c_phrase').length }})</span>
             </button>
 
             <button
+              :ref="setTabRef('tabel')"
               type="button"
               @click="activeTab = 'tabel'"
-              :class="[
-                'px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer',
-                activeTab === 'tabel'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-400 hover:text-slate-200'
-              ]"
+              class="relative z-10 px-3 py-1.5 rounded-xl text-xs font-bold transition-colors duration-200 flex items-center gap-1.5 cursor-pointer select-none"
+              :class="activeTab === 'tabel' ? 'text-white font-extrabold' : 'text-slate-400 hover:text-slate-200'"
             >
               <Globe2 class="w-3.5 h-3.5" />
               <span>Negara & Bahasa ({{ referenceTables.length }})</span>
@@ -181,8 +184,10 @@ const filteredTableRows = computed(() => {
 
         <!-- Scrollable Tab Content Body -->
         <div class="flex-1 overflow-y-auto pr-1 space-y-2.5 max-h-[55vh]">
-          <!-- TAB 1: KOSAKATA -->
-          <div v-if="activeTab === 'kosakata'" class="space-y-2">
+          <Transition name="tab-fade" mode="out-in">
+            <div :key="activeTab">
+              <!-- TAB 1: KOSAKATA -->
+              <div v-if="activeTab === 'kosakata'" class="space-y-2">
             <div 
               v-for="item in filteredKosakata" 
               :key="item.id || item.order_index"
@@ -269,13 +274,15 @@ const filteredTableRows = computed(() => {
             </div>
           </div>
         </div>
+      </Transition>
+    </div>
 
         <!-- Footer -->
         <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between mt-3 text-[11px] text-slate-500">
           <span>Sumber: Terjemahan dan Keterangan Tata Bahasa N5</span>
           <button 
             type="button" 
-            @click="emit('close')"
+            @click="emit('close')" 
             class="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition cursor-pointer"
           >
             Tutup
@@ -295,5 +302,18 @@ const filteredTableRows = computed(() => {
 .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.95);
+}
+
+.tab-fade-enter-active,
+.tab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.tab-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+.tab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 </style>
