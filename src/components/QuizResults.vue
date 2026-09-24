@@ -74,8 +74,12 @@ const formatTimeSaved = (seconds: number) => {
 };
 
 const getProgressColor = (answer: any) => {
+  if (quizStore.questionType === 'sentences' || quizStore.sentenceStats) {
+    return answer.isCorrect ? '#10b981' : '#ef4444';
+  }
   const points = answer.pointsEarned || 0;
   if (points === 4) return '#10b981'; // Emerald
+  if (answer.isTypo) return '#f59e0b'; // Amber
   if (points >= 2) return '#6366f1'; // Indigo
   if (points === 1) return '#f59e0b'; // Amber
   return '#ef4444'; // Red
@@ -246,10 +250,10 @@ const hasTierChanges = computed(() => {
           :key="index"
           class="flex items-start p-3 sm:p-3.5 rounded-xl bg-gray-50/70 dark:bg-slate-800/70 border border-gray-150 dark:border-slate-700/80 transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm"
           :class="{ 
-            'border-l-4 border-emerald-500': answer.pointsEarned === 4 || answer.isCorrect, 
-            'border-l-4 border-indigo-500': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
-            'border-l-4 border-amber-500': answer.pointsEarned === 1,
-            'border-l-4 border-rose-500': !answer.isCorrect && (answer.pointsEarned === 0 || !answer.pointsEarned)
+            'border-l-4 border-emerald-500': answer.pointsEarned === 4, 
+            'border-l-4 border-amber-500': answer.isTypo || answer.pointsEarned === 1,
+            'border-l-4 border-indigo-500': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
+            'border-l-4 border-rose-500': !answer.isCorrect && !answer.isTypo && (answer.pointsEarned === 0 || !answer.pointsEarned)
           }"
         >
           <!-- SVG Circular Progress around Character / Index Number -->
@@ -290,14 +294,14 @@ const hasTierChanges = computed(() => {
                 :class="[
                   (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
                     ? (answer.isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400')
-                    : (answer.pointsEarned === 4 ? 'text-emerald-600 dark:text-emerald-400' : (answer.pointsEarned >= 1 ? 'text-indigo-600 dark:text-indigo-400' : 'text-rose-600 dark:text-rose-400'))
+                    : (answer.pointsEarned === 4 ? 'text-emerald-600 dark:text-emerald-400' : (answer.isTypo ? 'text-amber-600 dark:text-amber-400' : (answer.pointsEarned >= 1 ? 'text-indigo-600 dark:text-indigo-400' : 'text-rose-600 dark:text-rose-400')))
                 ]"
               >
                 <template v-if="quizStore.questionType === 'sentences' || quizStore.sentenceStats">
                   {{ answer.isCorrect ? (answer.isTypo ? 'Selesai (Typo)' : 'Selesai') : 'Belum Tepat' }}
                 </template>
                 <template v-else>
-                  {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah') }}
+                  {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.isTypo ? 'Salah Ketik' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah')) }}
                 </template>
               </span>
               
@@ -307,8 +311,8 @@ const hasTierChanges = computed(() => {
                 class="text-xs font-bold px-1.5 py-0.5 rounded" 
                 :class="{ 
                   'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300': answer.pointsEarned === 4, 
-                  'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300': answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
-                  'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300': answer.pointsEarned === 1, 
+                  'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300': answer.isTypo || answer.pointsEarned === 1,
+                  'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
                   'bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300': answer.pointsEarned === 0 
                 }"
               >
@@ -333,11 +337,11 @@ const hasTierChanges = computed(() => {
             </div>
 
             <span class="text-xs text-gray-700 dark:text-slate-300 mt-1 leading-normal break-words">
-              <template v-if="answer.isCorrect">
+              <template v-if="answer.isCorrect && !answer.isTypo">
                 {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-gray-200/70 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs text-gray-900 dark:text-slate-100 font-medium">{{ answer.userRomaji }}</code>
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 px-1.5 py-0.5 rounded text-xs font-medium">{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded text-xs font-semibold">{{ answer.correctRomaji }}</code>
+                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded text-xs font-medium" v-if="answer.isTypo">{{ answer.userRomaji }}</code><code class="font-mono bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 px-1.5 py-0.5 rounded text-xs font-medium" v-else>{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded text-xs font-semibold">{{ answer.correctRomaji }}</code>
               </template>
             </span>
             <span v-if="answer.meaning" class="text-xs text-gray-500 dark:text-slate-400 italic mt-0.5 leading-snug break-words">

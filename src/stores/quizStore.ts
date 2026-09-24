@@ -249,23 +249,30 @@ export const useQuizStore = defineStore('quiz', () => {
       if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
       if (showReadingHint.value) hintsUsed++;
 
-      const isFirstTry = !attemptedChars.value[current.character];
-      attemptedChars.value[current.character] = true;
+      const isInitialRound = currentQuestionIndex.value < initialQuestionCount.value;
 
       let pointsEarned = 0;
+      let basePoints = 4;
+      if (hintsUsed === 1) basePoints = 3;
+      else if (hintsUsed >= 2) basePoints = 2;
+
       if (isCorrectVal) {
         playCorrectSound();
-        if (hintsUsed === 0) pointsEarned = 4;
-        else if (hintsUsed === 1) pointsEarned = 3;
-        else pointsEarned = 2;
-
-        if (isFirstTry) {
+        pointsEarned = basePoints;
+        masteredChars.value[current.character] = true;
+        if (isInitialRound) {
           firstTryCorrectCount.value++;
-          masteredChars.value[current.character] = true;
+        }
+      } else if (isTypo) {
+        playCorrectSound();
+        pointsEarned = Math.max(1, basePoints - 1);
+        delete masteredChars.value[current.character];
+        if (isInitialRound) {
+          firstTryCorrectCount.value++;
         }
       } else {
         playIncorrectSound();
-        pointsEarned = isTypo ? 1 : 0;
+        pointsEarned = 0;
         delete masteredChars.value[current.character];
       }
 
@@ -319,7 +326,7 @@ export const useQuizStore = defineStore('quiz', () => {
         hintsUsed
       });
 
-      if (!isCorrectVal) {
+      if (!isCorrectVal && !isTypo) {
         questions.value = [...questions.value, buildRepeatedQuestion(current)];
       }
     }

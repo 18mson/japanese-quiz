@@ -70,7 +70,7 @@ console.log('--- 1. HIRAGANA TYPING MODE ---');
   quizStore.submitAnswer('ko');
   assert(masteryStore.userStreaks['か'] === 4, 'Hiragana Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
   assert(quizStore.userAnswers[0].isTypo === true, 'userAnswers mencatat isTypo === true');
-  assert(quizStore.userAnswers[0].pointsEarned === 1, 'Jawaban typo mendapat 1 poin');
+  assert(quizStore.userAnswers[0].pointsEarned === 3, 'Jawaban typo mendapat 3 poin');
 
   // Case 1.2: Hiragana Hafal (streak 3) -> typo 'so' (dist 1) -> harus turun ke Proses (streak 2), bukan 0!
   quizStore.selectedAnswer = null;

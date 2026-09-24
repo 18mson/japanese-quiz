@@ -158,7 +158,7 @@ const isTypo = computed(() => {
 
           <h3 class="text-2xl font-bold tracking-tight">
             <template v-if="quizStore.isAnswerCorrect">Benar!</template>
-            <template v-else-if="isTypo">Hampir! Salah ketik (+1 Poin)</template>
+            <template v-else-if="isTypo">Hampir! Salah ketik (+3 Poin)</template>
             <template v-else>Salah</template>
           </h3>
           <p 

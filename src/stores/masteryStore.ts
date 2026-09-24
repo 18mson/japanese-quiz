@@ -257,27 +257,29 @@ export const useMasteryStore = defineStore('mastery', () => {
     let streakChanged = false;
     let newStreak = oldStreak;
 
-    if (!isCorrectVal) {
-      if (isTypo) {
-        // Soal yg sudah hafal (streak 3-4) atau mahkota (streak >= 5),
-        // lalu hanya typo atau salah 1 huruf:
-        // Cukup turun 1 tingkatan saja:
-        // - Mahkota (>= 5) -> Hafal (4)
-        // - Hafal (3-4) -> Proses (2)
-        // - Proses (1-2) -> Belum (0)
-        // - Belum (0) -> tetap 0
-        if (oldStreak >= 5) {
-          newStreak = 4;
-        } else if (oldStreak >= 3) {
-          newStreak = 2;
-        } else {
-          newStreak = 0;
-        }
+    if (isTypo) {
+      // Soal yg sudah hafal (streak 3-4) atau mahkota (streak >= 5),
+      // lalu hanya typo atau salah 1 huruf:
+      // Cukup turun 1 tingkatan saja:
+      // - Mahkota (>= 5) -> Hafal (4)
+      // - Hafal (3-4) -> Proses (2)
+      // - Proses (1-2) -> Belum (0)
+      // - Belum (0) -> tetap 0
+      if (oldStreak >= 5) {
+        newStreak = 4;
+      } else if (oldStreak >= 3) {
+        newStreak = 2;
       } else {
-        // Salah total atau dilewati -> reset ke 0
         newStreak = 0;
       }
 
+      if (newStreak !== oldStreak) {
+        userStreaks.value[charKey] = newStreak;
+        streakChanged = true;
+      }
+    } else if (!isCorrectVal) {
+      // Salah total atau dilewati -> reset ke 0
+      newStreak = 0;
       if (newStreak !== oldStreak) {
         userStreaks.value[charKey] = newStreak;
         streakChanged = true;
