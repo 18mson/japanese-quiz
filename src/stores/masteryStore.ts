@@ -257,7 +257,7 @@ export const useMasteryStore = defineStore('mastery', () => {
     let streakChanged = false;
     let newStreak = oldStreak;
 
-    if (isTypo) {
+    if (isTypo && !isCorrectVal) {
       // Soal yg sudah hafal (streak 3-4) atau mahkota (streak >= 5),
       // lalu hanya typo atau salah 1 huruf:
       // Cukup turun 1 tingkatan saja:

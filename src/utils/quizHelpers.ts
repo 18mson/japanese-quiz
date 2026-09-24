@@ -54,12 +54,16 @@ export const checkIsCorrect = (userInputClean: string, targetRomaji: string | st
 
 export const checkIsTypo = (userInputClean: string, targetRomaji: string | string[]): boolean => {
   if (!userInputClean || userInputClean.trim() === '') return false;
+  // If the user's input already matches any valid romaji target, it is 100% correct, never a typo
+  if (checkIsCorrect(userInputClean, targetRomaji)) return false;
+
   const targets = Array.isArray(targetRomaji) ? targetRomaji : [targetRomaji];
+  const normUser = normalizeRomajiForComparison(userInputClean);
+  if (!normUser) return false;
+
   return targets.some(t => {
-    const normUser = normalizeRomajiForComparison(userInputClean);
     const normTarget = normalizeRomajiForComparison(t);
-    if (!normUser || !normTarget) return false;
-    if (normUser === normTarget) return false;
+    if (!normTarget || normUser === normTarget) return false;
     const dist = getLevenshteinDistance(normUser, normTarget);
     return dist === 1;
   });

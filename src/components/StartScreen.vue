@@ -152,6 +152,11 @@ const handleKeydown = (event: KeyboardEvent) => {
     return;
   }
 
+  // Prevent start screen keyboard navigation if modals are open
+  if (isReferenceModalOpen.value || isHitunganTutorialOpen.value) {
+    return;
+  }
+
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(event.key)) {
     isKeyboardNav.value = true;
   }
@@ -218,7 +223,7 @@ const handleKeydown = (event: KeyboardEvent) => {
       }
     } else if (event.key === 'Enter') {
       event.preventDefault();
-      focusedSection.value = 'duration';
+      handleStart();
     }
   }
   // Duration & Start Section

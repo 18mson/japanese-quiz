@@ -243,7 +243,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (current) {
       isCorrectVal = checkIsCorrect(userAnswerClean, current.romaji);
-      isTypo = isTypingMode.value && checkIsTypo(userAnswerClean, current.romaji);
+      isTypo = isTypingMode.value && !isCorrectVal && checkIsTypo(userAnswerClean, current.romaji);
 
       let hintsUsed = 0;
       if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
