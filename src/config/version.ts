@@ -7,9 +7,24 @@ export interface VersionEntry {
   highlights: string[];
 }
 
-export const APP_VERSION = '2.7.0';
+export const APP_VERSION = '2.8.0';
 
 export const VERSION_HISTORY: VersionEntry[] = [
+  {
+    version: '2.8.0',
+    tag: 'Aizome & Light Mode Refinement',
+    date: '29 Sep 2026',
+    type: 'minor',
+    title: 'Harmonisasi Light Mode, Palet Tradisional Jepang & Penyelarasan Goresan',
+    highlights: [
+      'Penyelarasan Light Mode & Palet Aizome: Integrasi warna Aizome Indigo (#1B365D), Torii Vermilion, dan nuansa kertas washi yang bersih dan harmonis di seluruh layar.',
+      'Desain Bersih Quiz Results: Kartu rekap perubahan tier, akurasi, dan ringkasan soal kini adaptif penuh di Light Mode menggantikan blok hitam slate pekat.',
+      'Tinta Kaligrafi & Urutan Goresan: Warna goresan aktif kini menggunakan tinta Aizome Indigo dengan stempel merah Torii, serta canvas Genkouyoushi bergaris pandu rapi di Light Mode.',
+      'Presisi Ukuran Huruf Tab Teks & Goresan: Skala visual huruf Jepang pada tab Teks disetarakan presisi 1-to-1 dengan kotak animasi goresan tanpa pergeseran layout.',
+      'Standardisasi Ikon Vektor Flat: Mengganti emoji mentah pada hasil kuis, babak pengulangan, dan badge dengan ikon flat Lucide (Crown, CheckCircle2, RotateCcw).',
+      'Perbaikan Notifikasi Lencana Bab: Memastikan popup klaim lencana bab 2, 3, dan seterusnya terbuka lancar saat pemain naik level.'
+    ]
+  },
   {
     version: '2.7.0',
     tag: 'Badge Mastery & Gamification',
