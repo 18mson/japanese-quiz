@@ -233,17 +233,17 @@ onUnmounted(() => {
     <div 
       :class="[
         boxSizeClass,
-        'aspect-square shrink-0 bg-slate-900/95 dark:bg-slate-950/90 border border-slate-700/80 dark:border-slate-800 rounded-xl p-1 shadow-inner flex items-center justify-center relative overflow-hidden'
+        'aspect-square shrink-0 bg-white dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-1 shadow-xs dark:shadow-inner flex items-center justify-center relative overflow-hidden transition-colors'
       ]"
     >
       <!-- Background Guide Grid Lines (Traditional Japanese Genkouyoushi Square) -->
       <svg class="absolute inset-0 w-full h-full pointer-events-none p-1" viewBox="0 0 109 109">
         <!-- Outer Box -->
-        <rect x="1" y="1" width="107" height="107" fill="none" stroke="rgba(148, 163, 184, 0.15)" stroke-width="1" />
+        <rect x="1" y="1" width="107" height="107" fill="none" class="stroke-slate-200 dark:stroke-slate-800" stroke-width="1" />
         <!-- Horizontal Center Dashed Line -->
-        <line x1="1" y1="54.5" x2="108" y2="54.5" stroke="rgba(148, 163, 184, 0.2)" stroke-width="1" stroke-dasharray="3,3" />
+        <line x1="1" y1="54.5" x2="108" y2="54.5" class="stroke-slate-200/90 dark:stroke-slate-700/40" stroke-width="1" stroke-dasharray="3,3" />
         <!-- Vertical Center Dashed Line -->
-        <line x1="54.5" y1="1" x2="54.5" y2="108" stroke="rgba(148, 163, 184, 0.2)" stroke-width="1" stroke-dasharray="3,3" />
+        <line x1="54.5" y1="1" x2="54.5" y2="108" class="stroke-slate-200/90 dark:stroke-slate-700/40" stroke-width="1" stroke-dasharray="3,3" />
       </svg>
 
       <!-- If has stroke data: render progressive KanjiVG stroke animation -->
@@ -253,7 +253,7 @@ onUnmounted(() => {
         viewBox="0 0 109 109"
       >
         <!-- 1. Background Ghost Guide Paths (Faint outline of entire character) -->
-        <g class="opacity-25 dark:opacity-35">
+        <g class="opacity-20 dark:opacity-35">
           <path
             v-for="(d, idx) in strokes"
             :key="'guide-' + idx"
@@ -275,8 +275,8 @@ onUnmounted(() => {
             :ref="(el) => { if (el) pathRefs[idx] = el as SVGPathElement; }"
             :d="d"
             fill="none"
-            stroke="#fbbf24"
-            class="drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+            stroke="currentColor"
+            class="text-aizome dark:text-amber-400 drop-shadow-[0_1px_2px_rgba(27,54,93,0.25)] dark:drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
             :style="{
               strokeWidth: '5.6',
               strokeLinecap: 'round',
@@ -294,7 +294,7 @@ onUnmounted(() => {
             cx="13"
             cy="13"
             r="8.5"
-            fill="#d97706"
+            class="fill-torii dark:fill-amber-500"
           />
           <text
             x="13"
@@ -315,16 +315,16 @@ onUnmounted(() => {
         v-else 
         class="relative z-10 flex flex-col items-center justify-center animate-fadeIn text-center"
       >
-        <span class="text-3xl sm:text-4xl min-[400px]:text-4xl font-black text-amber-300 font-jp drop-shadow-md">
+        <span class="text-3xl sm:text-4xl min-[400px]:text-4xl font-black text-aizome dark:text-amber-300 font-jp drop-shadow-xs">
           {{ char }}
         </span>
       </div>
     </div>
 
     <!-- Character Label Under Box -->
-    <div class="mt-1 flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-400 font-jp">
+    <div class="mt-1.5 flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-700 dark:text-slate-400 font-jp">
       <span>{{ char }}</span>
-      <span v-if="hasStrokes" class="text-[9.5px] font-sans text-amber-400/80">({{ strokes.length }})</span>
+      <span v-if="hasStrokes" class="text-[9.5px] font-sans text-torii dark:text-amber-400/90 font-bold">({{ strokes.length }})</span>
     </div>
   </div>
 </template>

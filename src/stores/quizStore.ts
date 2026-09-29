@@ -398,7 +398,7 @@ export const useQuizStore = defineStore('quiz', () => {
     } else {
       const unmastered = questions.value.filter(q => !masteredChars.value[q.character]);
       if (unmastered.length > 0) {
-        questions.value = [...questions.value, ...unmastered.map(q => ({ ...q, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }))];
+        questions.value = [...questions.value, ...unmastered.map(q => ({ ...q, questionReason: 'repeat', reasonLabel: 'Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false }))];
         currentQuestionIndex.value++;
         initQuestionHints();
       } else {

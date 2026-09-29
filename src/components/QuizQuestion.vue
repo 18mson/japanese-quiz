@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Lightbulb, BookOpen } from '@lucide/vue';
+import { Lightbulb, BookOpen, RotateCcw } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 
@@ -64,9 +64,10 @@ const instructionText = computed(() => {
     <!-- Reason Badge (Only shown for retry/perbaikan questions) -->
     <div 
       v-if="questionReason === 'repeat' && reasonLabel" 
-      class="mb-2 px-3.5 py-1 rounded-full text-xs tracking-tight shadow-sm flex items-center gap-1.5 border bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold animate-pulse"
+      class="mb-2 px-3 py-1 rounded-full text-xs font-bold shadow-xs flex items-center gap-1.5 border bg-white/95 text-rose-700 border-rose-300/90 dark:bg-slate-900/95 dark:text-rose-300 dark:border-rose-700/80 animate-fadeIn select-none"
     >
-      <span>{{ reasonLabel }}</span>
+      <RotateCcw class="w-3.5 h-3.5 text-rose-500 shrink-0" />
+      <span>{{ reasonLabel.replace(/^[\p{Emoji}\p{Symbol}\s]+/gu, '') }}</span>
     </div>
 
     <!-- Question Character / Word Area -->

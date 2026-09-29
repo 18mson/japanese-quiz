@@ -116,7 +116,7 @@ onUnmounted(() => {
   >
     <div 
       :class="[
-        'w-full max-h-[92vh] overflow-y-auto bg-slate-900/95 border border-slate-700/80 rounded-3xl p-4 sm:p-6 text-center shadow-2xl relative flex flex-col items-center transition-all duration-300',
+        'w-full max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-3xl p-4 sm:p-6 text-center shadow-2xl relative flex flex-col items-center transition-all duration-300',
         hasExamples ? 'max-w-md md:max-w-2xl lg:max-w-3xl' : 'max-w-md'
       ]"
     >
@@ -124,39 +124,39 @@ onUnmounted(() => {
       <!-- Top Mode & Lesson Badges -->
       <div class="flex items-center justify-center gap-2 flex-wrap mb-3">
         <div class="flex items-center gap-1.5 px-3 py-1 bg-torii/15 border border-torii/30 rounded-full text-torii text-xs font-bold uppercase tracking-wider">
-          <Sparkles class="w-3.5 h-3.5 text-amber-400" />
+          <Sparkles class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
           <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : (quizStore.questionType === 'kanji' ? 'Kanji N5 Baru' : 'Huruf Baru') }})</span>
           <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kosakata Baru' : (quizStore.questionType === 'kanji' ? 'Kanji N5 Baru' : 'Huruf Baru') }}</span>
         </div>
 
         <span 
           v-if="currentItem?.type && quizStore.questionType !== 'words' && quizStore.questionType !== 'kanji'" 
-          class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 capitalize"
+          class="text-xs px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-500/30 capitalize"
         >
           {{ currentItem.type === 'basic' ? 'Dasar' : currentItem.type === 'dakuten' ? 'Dakuten' : currentItem.type === 'combination' ? 'Kombinasi' : currentItem.type }}
         </span>
 
         <span 
           v-if="currentItem?.lesson" 
-          class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-300 font-bold border border-slate-700"
+          class="text-xs px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border border-slate-200 dark:border-slate-700"
         >
           {{ currentItem.lesson }}
         </span>
         <span 
           v-if="currentItem?.category_word" 
-          class="text-xs px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30"
+          class="text-xs px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-500/30"
         >
           {{ currentItem.category_word }}
         </span>
       </div>
 
       <!-- Card Display Container -->
-      <div v-if="currentItem" class="w-full bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 sm:p-5 flex flex-col items-center shadow-inner relative">
+      <div v-if="currentItem" class="w-full bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60 rounded-2xl p-4 sm:p-5 flex flex-col items-center shadow-inner relative">
         
         <!-- 2-Column Responsive Layout for Kanji with Examples -->
         <div v-if="hasExamples" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5 w-full items-stretch">
           <!-- Left Column: Kanji Stroke Order, Readings & Meaning -->
-          <div class="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-slate-900/60 rounded-2xl border border-slate-700/50 text-center">
+          <div class="flex flex-col items-center justify-center p-3.5 sm:p-4 bg-white dark:bg-slate-900/60 rounded-2xl border border-slate-200 dark:border-slate-700/50 text-center">
             <!-- Animated Stroke Order Display -->
             <div class="w-full py-1 flex justify-center">
               <KanjiAnimator 
@@ -169,59 +169,59 @@ onUnmounted(() => {
             <!-- Furigana / Kana reading if different from character -->
             <div 
               v-if="currentItem.kana && currentItem.kana !== charText"
-              class="text-lg sm:text-xl font-bold text-slate-200 font-jp tracking-wider mb-0.5 mt-1.5"
+              class="text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-200 font-jp tracking-wider mb-0.5 mt-1.5"
             >
               {{ currentItem.kana }}
             </div>
 
             <!-- Onyomi & Kunyomi box for Kanji -->
             <div v-if="currentItem.onyomi || currentItem.kunyomi" class="flex flex-col gap-1 w-full mt-2">
-              <div v-if="currentItem.onyomi && currentItem.onyomi.length > 0" class="flex items-center justify-center gap-1.5 text-xs text-slate-300">
-                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">On</span>
+              <div v-if="currentItem.onyomi && currentItem.onyomi.length > 0" class="flex items-center justify-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-500/30 uppercase">On</span>
                 <span class="font-jp font-bold">{{ currentItem.onyomi.join(', ') }}</span>
               </div>
-              <div v-if="currentItem.kunyomi && currentItem.kunyomi.length > 0" class="flex items-center justify-center gap-1.5 text-xs text-slate-300">
-                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">Kun</span>
+              <div v-if="currentItem.kunyomi && currentItem.kunyomi.length > 0" class="flex items-center justify-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 uppercase">Kun</span>
                 <span class="font-jp font-bold">{{ currentItem.kunyomi.join(', ') }}</span>
               </div>
             </div>
 
             <!-- Meaning / Arti Bahasa Indonesia -->
-            <div v-if="currentItem.meaning" class="mt-2.5 w-full px-4 py-2 bg-emerald-950/40 border border-emerald-800/60 rounded-xl text-center shadow-inner">
-              <span class="text-[10px] uppercase tracking-wider font-bold text-emerald-400 block mb-0.5">Arti:</span>
-              <p class="text-sm sm:text-base text-emerald-200 font-semibold italic">
+            <div v-if="currentItem.meaning" class="mt-2.5 w-full px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-center shadow-xs">
+              <span class="text-[10px] uppercase tracking-wider font-bold text-emerald-700 dark:text-emerald-400 block mb-0.5">Arti:</span>
+              <p class="text-sm sm:text-base text-emerald-900 dark:text-emerald-200 font-semibold italic">
                 "{{ currentItem.meaning }}"
               </p>
             </div>
           </div>
 
           <!-- Right Column: Contoh Kotoba (Kosakata) di Sebelahnya pada Mode Desktop -->
-          <div class="flex flex-col justify-between p-3.5 sm:p-4 bg-slate-900/90 border border-slate-700/80 rounded-2xl text-left h-full">
+          <div class="flex flex-col justify-between p-3.5 sm:p-4 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700/80 rounded-2xl text-left h-full">
             <div>
-              <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+              <div class="text-[11px] font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                 <span class="flex items-center gap-1.5">
-                  <BookMarked class="w-3.5 h-3.5 text-amber-400" />
+                  <BookMarked class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                   <span>Contoh Kotoba:</span>
                 </span>
-                <span class="text-[10px] text-slate-400 font-normal">Klik untuk dengar 🔊</span>
+                <span class="text-[10px] text-slate-500 dark:text-slate-400 font-normal">Klik untuk dengar 🔊</span>
               </div>
               <div class="space-y-2">
                 <div 
                   v-for="(ex, idx) in currentItem.examples" 
                   :key="idx"
                   @click="speak(ex.word)"
-                  class="flex items-center justify-between text-xs bg-slate-800/90 hover:bg-slate-750 p-2.5 rounded-xl border border-slate-700/60 cursor-pointer transition group gap-2 shadow-2xs hover:border-torii/40"
+                  class="flex items-center justify-between text-xs bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/90 dark:hover:bg-slate-750 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/60 cursor-pointer transition group gap-2 shadow-2xs hover:border-torii/40"
                 >
                   <div class="flex items-center gap-2 min-w-0">
-                    <span class="font-black text-white font-jp text-sm sm:text-base group-hover:text-torii-light transition-colors shrink-0">{{ ex.word }}</span>
-                    <span class="text-slate-400 font-jp text-xs truncate">({{ ex.kana }})</span>
+                    <span class="font-black text-slate-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-torii dark:group-hover:text-torii-light transition-colors shrink-0">{{ ex.word }}</span>
+                    <span class="text-slate-500 dark:text-slate-400 font-jp text-xs truncate">({{ ex.kana }})</span>
                   </div>
-                  <span class="text-emerald-300 font-semibold text-xs truncate shrink-0 max-w-[140px] sm:max-w-[190px] text-right">{{ ex.meaning }}</span>
+                  <span class="text-emerald-700 dark:text-emerald-300 font-semibold text-xs truncate shrink-0 max-w-[140px] sm:max-w-[190px] text-right">{{ ex.meaning }}</span>
                 </div>
               </div>
             </div>
 
-            <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 flex items-center justify-between">
+            <div class="mt-3 pt-2.5 border-t border-slate-200 dark:border-slate-800 text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between">
               <span>Kosakata kontekstual N5</span>
               <span class="text-torii font-medium">Uji urutan goresan</span>
             </div>
@@ -242,7 +242,7 @@ onUnmounted(() => {
           <!-- Furigana / Kana reading if different from character -->
           <div 
             v-if="currentItem.kana && currentItem.kana !== charText"
-            class="text-lg sm:text-xl font-bold text-slate-200 font-jp tracking-wider mb-0.5 mt-1.5"
+            class="text-lg sm:text-xl font-bold text-slate-800 dark:text-slate-200 font-jp tracking-wider mb-0.5 mt-1.5"
           >
             {{ currentItem.kana }}
           </div>
@@ -256,24 +256,24 @@ onUnmounted(() => {
           </div>
 
           <!-- Meaning / Arti Bahasa Indonesia -->
-          <div v-if="currentItem.meaning" class="mt-2.5 w-full px-4 py-2 bg-emerald-950/40 border border-emerald-800/60 rounded-xl text-center shadow-inner">
-            <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-400 block mb-0.5">Arti:</span>
-            <p class="text-sm sm:text-base text-emerald-200 font-semibold italic">
+          <div v-if="currentItem.meaning" class="mt-2.5 w-full px-4 py-2 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-center shadow-xs">
+            <span class="text-[11px] uppercase tracking-wider font-bold text-emerald-700 dark:text-emerald-400 block mb-0.5">Arti:</span>
+            <p class="text-sm sm:text-base text-emerald-900 dark:text-emerald-200 font-semibold italic">
               "{{ currentItem.meaning }}"
             </p>
           </div>
         </div>
 
-        <div class="mt-4 pt-3 border-t border-slate-700/50 w-full flex justify-between items-center text-xs text-slate-400 font-semibold">
+        <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-700/50 w-full flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 font-semibold">
           <span class="flex items-center gap-1">
-            <Eye class="w-3.5 h-3.5 text-teal-400" /> Flashcard {{ currentCardIndex + 1 }} dari {{ itemsToPreview.length }}
+            <Eye class="w-3.5 h-3.5 text-aizome dark:text-teal-400" /> Flashcard {{ currentCardIndex + 1 }} dari {{ itemsToPreview.length }}
           </span>
-          <span class="text-slate-500">Tekan Enter ↵</span>
+          <span class="text-slate-400 dark:text-slate-500">Tekan Enter ↵</span>
         </div>
       </div>
 
       <!-- Bottom Progress Bar for Wave -->
-      <div class="w-full h-1.5 bg-slate-800 rounded-full my-4 overflow-hidden">
+      <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full my-4 overflow-hidden">
         <div 
           class="h-full bg-gradient-to-r from-amber-400 to-torii transition-all duration-300"
           :style="{ width: `${((currentCardIndex + 1) / itemsToPreview.length) * 100}%` }"

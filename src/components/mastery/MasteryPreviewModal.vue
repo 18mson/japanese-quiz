@@ -11,7 +11,9 @@ import {
   ChevronRight,
   PenTool,
   Type,
-  Crown
+  Crown,
+  CheckCircle2,
+  Circle
 } from '@lucide/vue';
 
 const props = defineProps<{
@@ -79,15 +81,15 @@ onUnmounted(() => {
 
         <div class="flex items-center gap-1.5">
           <!-- Toggle View Mode Button -->
-          <div class="flex items-center bg-gray-100 dark:bg-slate-800 p-0.5 rounded-xl border border-gray-200 dark:border-slate-700">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700">
             <button
               type="button"
               @click="viewMode = 'stroke'"
               :class="[
                 'p-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 text-[11px] font-bold',
                 viewMode === 'stroke' 
-                  ? 'bg-amber-500 text-slate-950 shadow-xs' 
-                  : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'
+                  ? 'bg-aizome dark:bg-torii text-white shadow-xs' 
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               ]"
               title="Animasi Urutan Goresan (Stroke Order)"
             >
@@ -100,8 +102,8 @@ onUnmounted(() => {
               :class="[
                 'p-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 text-[11px] font-bold',
                 viewMode === 'text' 
-                  ? 'bg-indigo-600 dark:bg-torii text-white shadow-xs' 
-                  : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'
+                  ? 'bg-aizome dark:bg-torii text-white shadow-xs' 
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               ]"
               title="Teks Statis Besar"
             >
@@ -112,7 +114,7 @@ onUnmounted(() => {
 
           <button 
             @click="emit('close')"
-            class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-gray-500 dark:text-slate-300 flex items-center justify-center transition cursor-pointer"
+            class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white flex items-center justify-center transition cursor-pointer border border-slate-200/80 dark:border-slate-700"
             title="Tutup (Esc)"
           >
             <X class="w-4 h-4" />
@@ -121,7 +123,7 @@ onUnmounted(() => {
       </div>
 
       <!-- Main Character Card Container -->
-      <div class="w-full bg-gray-50 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700/70 rounded-2xl p-4 sm:p-5 flex flex-col items-center shadow-inner relative">
+      <div class="w-full bg-slate-50/80 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70 rounded-2xl p-4 sm:p-5 flex flex-col items-center shadow-inner relative">
         
         <!-- Mode 1: Animated Stroke Order -->
         <div v-if="viewMode === 'stroke'" class="w-full py-1">
@@ -132,13 +134,27 @@ onUnmounted(() => {
           />
         </div>
 
-        <!-- Mode 2: Static Large Character Display -->
+        <!-- Mode 2: Static Large Character Display (Matched with Stroke Tab Size & Height) -->
         <div 
           v-else
-          class="font-black text-gray-900 dark:text-amber-300 drop-shadow-sm my-4 font-jp leading-tight text-center select-all animate-fadeIn"
-          :class="(item.character || '').length > 6 ? 'text-3xl sm:text-4xl' : ((item.character || '').length > 3 ? 'text-4xl sm:text-5xl' : 'text-6xl sm:text-7xl')"
+          class="w-full py-1 min-h-[170px] sm:min-h-[200px] flex items-center justify-center animate-fadeIn select-all"
         >
-          {{ item.character }}
+          <div 
+            class="font-black text-aizome dark:text-amber-300 drop-shadow-xs font-jp leading-none text-center"
+            :class="[
+              (item.character || '').length > 6 
+                ? 'text-2xl sm:text-3xl' 
+                : (item.character || '').length > 3 
+                ? 'text-4xl sm:text-5xl' 
+                : (item.character || '').length === 3
+                ? 'text-5xl sm:text-6xl'
+                : (item.character || '').length === 2
+                ? 'text-6xl min-[380px]:text-7xl sm:text-8xl'
+                : 'text-[96px] min-[380px]:text-[112px] sm:text-[124px]'
+            ]"
+          >
+            {{ item.character }}
+          </div>
         </div>
 
         <!-- Furigana / Kana reading -->
@@ -203,23 +219,26 @@ onUnmounted(() => {
         <!-- Mastery Status Badge & Details -->
         <div class="mt-3 flex items-center justify-center gap-2 flex-wrap">
           <span 
-            class="text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1.5 border"
+            class="text-xs px-2.5 py-1 rounded-full font-bold flex items-center gap-1.5 border shadow-2xs"
             :class="[
               quizStore.getMasteryTier(item.character) === 'crown'
-                ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700'
+                ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700/80'
                 : quizStore.getMasteryTier(item.character) === 'mastered'
-                ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
+                ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700/80'
                 : quizStore.getMasteryTier(item.character) === 'learning'
-                ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700'
-                : 'bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 border-gray-200 dark:border-slate-700'
+                ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700/80'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700'
             ]"
           >
-            <Crown v-if="quizStore.getMasteryTier(item.character) === 'crown'" class="w-3.5 h-3.5 fill-amber-400 text-amber-500 shrink-0" />
+            <Crown v-if="quizStore.getMasteryTier(item.character) === 'crown'" class="w-3.5 h-3.5 fill-amber-400/30 text-amber-500 shrink-0" />
+            <CheckCircle2 v-else-if="quizStore.getMasteryTier(item.character) === 'mastered'" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <Sparkles v-else-if="quizStore.getMasteryTier(item.character) === 'learning'" class="w-3.5 h-3.5 text-amber-500 shrink-0" />
+            <Circle v-else class="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <span>{{ 
               quizStore.getMasteryTier(item.character) === 'crown' ? 'Crown (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
-              quizStore.getMasteryTier(item.character) === 'mastered' ? '✓ Hafal (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
-              quizStore.getMasteryTier(item.character) === 'learning' ? '⚡ Proses (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
-              '○ Belum Dipelajari (Streak 0)'
+              quizStore.getMasteryTier(item.character) === 'mastered' ? 'Hafal (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
+              quizStore.getMasteryTier(item.character) === 'learning' ? 'Proses (Streak ' + quizStore.getMasteryStreak(item.character) + ')' :
+              'Belum Dipelajari (Streak 0)'
             }}</span>
           </span>
 
@@ -260,7 +279,7 @@ onUnmounted(() => {
       <!-- Bottom Close Button -->
       <button
         @click="emit('close')"
-        class="w-full mt-3 py-2.5 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 rounded-xl font-bold text-xs sm:text-sm transition cursor-pointer"
+        class="w-full mt-3 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 rounded-xl font-bold text-xs sm:text-sm transition cursor-pointer shadow-2xs"
       >
         Selesai / Tutup
       </button>

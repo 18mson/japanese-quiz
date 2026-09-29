@@ -119,7 +119,7 @@ export const getTierFromStreak = (streak: number): MasteryTierKey => {
 };
 
 export const buildRepeatedQuestion = (current: any): any => {
-  let repeated = { ...current, questionReason: 'repeat', reasonLabel: '🔁 Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false };
+  let repeated = { ...current, questionReason: 'repeat', reasonLabel: 'Babak Perbaikan: Ulang Sampai Benar', isFirstAppearance: false };
   if (current.type === 'kanji') {
     const entry = kanjiWritingEntriesMap[current.character];
     if (entry && entry.prompts.length > 1) {

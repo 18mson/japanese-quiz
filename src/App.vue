@@ -31,7 +31,7 @@ import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useBadgeStore } from './stores/badgeStore';
-import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders } from '@lucide/vue';
+import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders, RotateCcw } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -189,8 +189,9 @@ const goToHome = () => {
           <span class="text-slate-400 dark:text-slate-500 font-normal">
             ({{ Math.min(quizStore.initialQuestionCount, quizStore.userAnswers.length) }}/{{ quizStore.initialQuestionCount }})
           </span>
-          <span v-if="quizStore.isMistakeRound" class="text-rose-600 dark:text-rose-400 font-bold text-[11px] bg-rose-50 dark:bg-rose-950/50 px-1.5 py-0.5 rounded border border-rose-200 dark:border-rose-800/60">
-            🎯 Babak Perbaikan
+          <span v-if="quizStore.isMistakeRound" class="inline-flex items-center gap-1 text-[11px] font-bold text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/70 px-2 py-0.5 rounded-md border border-rose-200/90 dark:border-rose-800/70 shadow-2xs select-none">
+            <RotateCcw class="w-3 h-3 text-rose-500 dark:text-rose-400 shrink-0" />
+            <span>Babak Perbaikan</span>
           </span>
         </div>
 

@@ -208,7 +208,7 @@ defineExpose({
         <button
           type="button"
           @click="togglePlayPause"
-          class="p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
+          class="p-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-850 dark:hover:bg-slate-800 dark:text-amber-300 border border-slate-200 dark:border-slate-700/80 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
           :title="isPlaying ? 'Jeda Animasi (Pause)' : 'Putar Animasi (Play)'"
         >
           <Pause v-if="isPlaying" class="w-3.5 h-3.5 fill-current" />
@@ -219,7 +219,7 @@ defineExpose({
         <button
           type="button"
           @click="handleManualReplay"
-          class="p-1.5 rounded-lg bg-slate-800/95 hover:bg-slate-700 text-amber-400 dark:text-amber-300 border border-slate-700/80 dark:border-slate-800 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
+          class="p-1.5 rounded-lg bg-white hover:bg-slate-100 text-slate-700 dark:bg-slate-850 dark:hover:bg-slate-800 dark:text-amber-300 border border-slate-200 dark:border-slate-700/80 transition active:scale-95 cursor-pointer shadow-xs flex items-center justify-center"
           title="Ulangi Dari Awal (Restart)"
         >
           <RotateCcw class="w-3.5 h-3.5" />
