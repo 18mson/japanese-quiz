@@ -65,7 +65,7 @@ const handleSubmit = async () => {
       <div class="relative flex border-b border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-800/40">
         <!-- Sliding underline indicator -->
         <div 
-          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-torii transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
           :style="{
             width: '50%',
             transform: `translateX(${isLoginTab ? '0%' : '100%'})`
@@ -74,14 +74,14 @@ const handleSubmit = async () => {
 
         <button 
           class="relative z-10 flex-1 py-4 text-center text-sm font-bold transition-colors duration-200 cursor-pointer select-none"
-          :class="isLoginTab ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
+          :class="isLoginTab ? 'text-indigo-600 dark:text-torii font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
           @click="isLoginTab = true"
         >
           Masuk
         </button>
         <button 
           class="relative z-10 flex-1 py-4 text-center text-sm font-bold transition-colors duration-200 cursor-pointer select-none"
-          :class="!isLoginTab ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
+          :class="!isLoginTab ? 'text-indigo-600 dark:text-torii font-black' : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'"
           @click="isLoginTab = false"
         >
           Buat Akun
@@ -127,8 +127,8 @@ const handleSubmit = async () => {
           <input 
             v-model="emailOrUsername" 
             type="text" 
-            placeholder="contoh: joshua atau josh@email.com"
-            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
+            placeholder="contoh: joshua atau josh@email.com" 
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-torii/20 focus:border-indigo-500 dark:focus:border-torii transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
           />
         </div>
 
@@ -139,15 +139,15 @@ const handleSubmit = async () => {
           <input 
             v-model="password" 
             type="password" 
-            placeholder="••••••••"
-            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
+            placeholder="••••••••" 
+            class="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-torii/20 focus:border-indigo-500 dark:focus:border-torii transition-all font-medium text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
           />
         </div>
 
         <button 
           @click="handleSubmit" 
           :disabled="authStore.loading"
-          class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:shadow-indigo-500/20 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
+          class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:shadow-indigo-500/20 dark:hover:shadow-torii/20 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2 mt-6"
         >
           <span v-if="authStore.loading" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
           <span>{{ isLoginTab ? 'Masuk' : 'Daftar' }}</span>

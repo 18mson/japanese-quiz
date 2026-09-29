@@ -369,7 +369,7 @@ export const useQuizStore = defineStore('quiz', () => {
     goalsStore.checkAndTriggerCelebration();
 
     const badgeStore = useBadgeStore();
-    if (masteryStore.currentUserLevel > badgeStore.highestLevelReached) {
+    if (badgeStore.hasUnclaimedLevels || masteryStore.currentUserLevel > levelBeforeQuiz.value) {
       showLevelUpScreen.value = true;
     } else {
       quizCompleted.value = true;

@@ -59,7 +59,7 @@ const writingLeniencyIndex = computed(() => {
     <template #header>
       <div class="px-5 py-4 sm:px-6 sm:py-4.5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0 bg-white dark:bg-slate-900">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800/80 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-2xs shrink-0">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-torii/15 border border-indigo-100 dark:border-torii/30 flex items-center justify-center text-indigo-600 dark:text-torii shadow-2xs shrink-0">
             <Sliders class="w-5 h-5" />
           </div>
           <div>
@@ -90,7 +90,7 @@ const writingLeniencyIndex = computed(() => {
       <div class="bg-gray-50/80 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-200/70 dark:border-slate-800 flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">
-            <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+            <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
             <span>Tema Tampilan</span>
           </div>
           <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-3">
@@ -101,7 +101,7 @@ const writingLeniencyIndex = computed(() => {
         <div class="relative grid grid-cols-3 p-1 bg-white dark:bg-slate-800/90 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
           <!-- Sliding Pill Indicator -->
           <div 
-            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-slate-600 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
             :style="{
               width: 'calc((100% - 8px) / 3)',
               left: '4px',
@@ -113,7 +113,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setThemeMode('auto')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer select-none"
             :class="settingsStore.themeMode === 'auto' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
             title="Otomatis Ikuti Sistem"
           >
@@ -124,7 +124,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setThemeMode('dark')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer select-none"
             :class="settingsStore.themeMode === 'dark' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
             title="Mode Gelap"
           >
@@ -135,7 +135,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setThemeMode('light')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer select-none"
             :class="settingsStore.themeMode === 'light' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
             title="Mode Terang"
           >
@@ -150,10 +150,10 @@ const writingLeniencyIndex = computed(() => {
         <div>
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300">
-              <Keyboard class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <Keyboard class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
               <span>Ketinggian Keyboard Virtual</span>
             </div>
-            <span class="text-[10px] uppercase font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-1.5 py-0.5 rounded">Touchscreen</span>
+            <span class="text-[10px] uppercase font-bold text-indigo-600 dark:text-torii bg-indigo-50 dark:bg-torii/15 px-1.5 py-0.5 rounded">Touchscreen</span>
           </div>
           <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-3">
             Pilihan luas tombol keyboard on-screen saat latihan mengetik.
@@ -163,7 +163,7 @@ const writingLeniencyIndex = computed(() => {
         <div class="relative grid grid-cols-2 p-1 bg-white dark:bg-slate-800/90 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
           <!-- Sliding Pill Indicator -->
           <div 
-            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-slate-600 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
             :style="{
               width: 'calc((100% - 8px) / 2)',
               left: '4px',
@@ -175,20 +175,20 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setKeyboardHeight('short')"
             class="relative z-10 px-3 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer select-none"
             :class="settingsStore.keyboardHeight === 'short' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
-            <Check v-if="settingsStore.keyboardHeight === 'short'" class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+            <Check v-if="settingsStore.keyboardHeight === 'short'" class="w-3.5 h-3.5 text-indigo-600 dark:text-torii flex-shrink-0" />
             <span>Default (Standar)</span>
           </button>
           <button
             @click="settingsStore.setKeyboardHeight('tall')"
             class="relative z-10 px-3 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex items-center justify-center gap-1.5 cursor-pointer select-none"
             :class="settingsStore.keyboardHeight === 'tall' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
-            <Check v-if="settingsStore.keyboardHeight === 'tall'" class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 flex-shrink-0" />
+            <Check v-if="settingsStore.keyboardHeight === 'tall'" class="w-3.5 h-3.5 text-indigo-600 dark:text-torii flex-shrink-0" />
             <span>Tinggi (Lebih Lega)</span>
           </button>
         </div>
@@ -198,7 +198,7 @@ const writingLeniencyIndex = computed(() => {
       <div class="bg-gray-50/80 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-200/70 dark:border-slate-800 flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">
-            <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+            <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
             <span>Kecepatan Audio Pengucapan (TTS)</span>
           </div>
           <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-3">
@@ -209,7 +209,7 @@ const writingLeniencyIndex = computed(() => {
         <div class="relative grid grid-cols-3 p-1 bg-white dark:bg-slate-800/90 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
           <!-- Sliding Pill Indicator -->
           <div 
-            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-slate-600 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
             :style="{
               width: 'calc((100% - 8px) / 3)',
               left: '4px',
@@ -221,7 +221,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setSpeechRate(0.6)"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.speechRate === 0.6 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>0.6x</span>
@@ -231,7 +231,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setSpeechRate(0.9)"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.speechRate === 0.9 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>0.9x</span>
@@ -241,7 +241,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setSpeechRate(1.2)"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.speechRate === 1.2 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>1.2x</span>
@@ -254,7 +254,7 @@ const writingLeniencyIndex = computed(() => {
       <div class="bg-gray-50/80 dark:bg-slate-800/50 p-4 rounded-2xl border border-gray-200/70 dark:border-slate-800 flex flex-col justify-between">
         <div>
           <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1">
-            <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+            <PenTool class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
             <span>Toleransi Menulis Huruf (Canvas)</span>
           </div>
           <p class="text-[11px] text-gray-500 dark:text-slate-400 mb-3">
@@ -265,7 +265,7 @@ const writingLeniencyIndex = computed(() => {
         <div class="relative grid grid-cols-3 p-1 bg-white dark:bg-slate-800/90 rounded-xl border border-gray-200/70 dark:border-slate-700/60">
           <!-- Sliding Pill Indicator -->
           <div 
-            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+            class="absolute inset-y-1 rounded-lg bg-indigo-50 dark:bg-slate-700 border border-indigo-100 dark:border-slate-600 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
             :style="{
               width: 'calc((100% - 8px) / 3)',
               left: '4px',
@@ -277,7 +277,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setWritingLeniencyMode('relaxed')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.writingLeniencyMode === 'relaxed' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>Santai</span>
@@ -287,7 +287,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setWritingLeniencyMode('standard')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.writingLeniencyMode === 'standard' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>Standar</span>
@@ -297,7 +297,7 @@ const writingLeniencyIndex = computed(() => {
             @click="settingsStore.setWritingLeniencyMode('strict')"
             class="relative z-10 px-2 py-2 rounded-lg text-xs font-bold transition-colors duration-200 flex flex-col items-center justify-center cursor-pointer select-none"
             :class="settingsStore.writingLeniencyMode === 'strict' 
-              ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+              ? 'text-indigo-600 dark:text-torii-light font-black' 
               : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           >
             <span>Ketat</span>
@@ -311,7 +311,7 @@ const writingLeniencyIndex = computed(() => {
       <div class="mt-6 pt-4 border-t border-gray-100 dark:border-slate-800 flex justify-end">
         <button
           @click="emit('close')"
-          class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
+          class="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
         >
           Tutup & Simpan Preferensi
         </button>

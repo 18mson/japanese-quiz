@@ -70,7 +70,7 @@ const searchMatchesDuration = computed(() => {
     <!-- Header & Subtab Switcher -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-gray-200 dark:border-slate-800/80">
       <div class="flex items-center gap-2.5 w-full sm:w-auto">
-        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-600 dark:text-cyan-400 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-cyan-500/10 dark:bg-torii/15 border border-cyan-500/20 dark:border-torii/30 flex items-center justify-center text-cyan-600 dark:text-torii shrink-0">
           <Clock class="w-5 h-5" />
         </div>
         <div>
@@ -88,7 +88,7 @@ const searchMatchesDuration = computed(() => {
             :class="[
               'px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5',
               activeSubTab === 'kalender' 
-                ? 'bg-cyan-600 text-white shadow-xs' 
+                ? 'bg-cyan-600 dark:bg-torii text-white shadow-xs' 
                 : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
@@ -100,7 +100,7 @@ const searchMatchesDuration = computed(() => {
             :class="[
               'px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5',
               activeSubTab === 'durasi' 
-                ? 'bg-cyan-600 text-white shadow-xs' 
+                ? 'bg-cyan-600 dark:bg-torii text-white shadow-xs' 
                 : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             ]"
           >
@@ -116,7 +116,7 @@ const searchMatchesDuration = computed(() => {
             v-model="searchQuery" 
             type="text" 
             placeholder="Cari waktu..."
-            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500/40 transition"
+            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-cyan-500 dark:focus:border-torii focus:ring-1 focus:ring-cyan-500/40 dark:focus:ring-torii/30 transition"
           />
         </div>
       </div>
@@ -126,7 +126,7 @@ const searchMatchesDuration = computed(() => {
     <div v-if="searchQuery.trim()" class="space-y-4">
       <div class="flex items-center justify-between text-xs text-gray-500 dark:text-slate-400 px-1">
         <span>Hasil pencarian "{{ searchQuery }}":</span>
-        <button @click="searchQuery = ''" class="text-cyan-600 dark:text-cyan-400 hover:underline">Reset pencarian</button>
+        <button @click="searchQuery = ''" class="text-cyan-600 dark:text-torii hover:underline">Reset pencarian</button>
       </div>
 
       <div v-if="(searchMatchesCalendar?.length || 0) + (searchMatchesDuration?.length || 0) > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -138,7 +138,7 @@ const searchMatchesDuration = computed(() => {
         >
           <div class="flex items-center justify-between text-[11px] text-gray-500 dark:text-slate-400 mb-1">
             <span class="capitalize px-1.5 py-0.5 rounded bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700/60 font-semibold">{{ item.group }}</span>
-            <span class="text-cyan-600 dark:text-cyan-400 font-bold">Kalender</span>
+            <span class="text-cyan-600 dark:text-torii-light font-bold">Kalender</span>
           </div>
           <div class="flex items-center justify-between gap-1.5 mt-0.5">
             <span class="text-base font-bold font-jp text-gray-900 dark:text-white">{{ item.japanese }}</span>
@@ -174,7 +174,7 @@ const searchMatchesDuration = computed(() => {
       <!-- Tabel 1: Hari / Pagi / Malam (3 Kolom Berdampingan) -->
       <div class="space-y-2.5">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+          <span class="w-2 h-2 rounded-full bg-cyan-500 dark:bg-torii"></span>
           <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">
             1. Perubahan Harian: Hari, Pagi, Malam
           </h4>
@@ -184,9 +184,9 @@ const searchMatchesDuration = computed(() => {
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 text-cyan-700 dark:text-cyan-300 font-bold">Hari (日)</th>
+                <th class="px-4 py-3 text-cyan-700 dark:text-matcha font-bold">Hari (日)</th>
                 <th class="px-4 py-3 text-amber-700 dark:text-amber-300 font-bold">Pagi (朝)</th>
-                <th class="px-4 py-3 text-indigo-700 dark:text-indigo-300 font-bold">Malam (晩 / 夜)</th>
+                <th class="px-4 py-3 text-indigo-700 dark:text-torii-light font-bold">Malam (晩 / 夜)</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60">
@@ -234,7 +234,7 @@ const searchMatchesDuration = computed(() => {
       <!-- Tabel 2: Minggu / Bulan / Tahun (3 Kolom Berdampingan) -->
       <div class="space-y-2.5 pt-2">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+          <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-torii"></span>
           <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">
             2. Perubahan Periode: Minggu, Bulan, Tahun
           </h4>
@@ -244,7 +244,7 @@ const searchMatchesDuration = computed(() => {
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 text-violet-700 dark:text-violet-300 font-bold">Minggu (週)</th>
+                <th class="px-4 py-3 text-violet-700 dark:text-torii font-bold">Minggu (週)</th>
                 <th class="px-4 py-3 text-emerald-700 dark:text-emerald-300 font-bold">Bulan (月)</th>
                 <th class="px-4 py-3 text-rose-700 dark:text-rose-300 font-bold">Tahun (年)</th>
               </tr>
@@ -345,7 +345,7 @@ const searchMatchesDuration = computed(() => {
         <div class="space-y-2.5">
           <div class="flex items-center justify-between px-1">
             <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+              <span class="w-2 h-2 rounded-full bg-cyan-500 dark:bg-torii"></span>
               <h4 class="text-xs sm:text-sm font-bold text-gray-800 dark:text-slate-200 uppercase tracking-wider">Durasi Menit (〜分)</h4>
             </div>
             <span class="text-[11px] text-gray-500 dark:text-slate-400">Pola 〜ふん / 〜ぷん</span>
@@ -398,8 +398,8 @@ const searchMatchesDuration = computed(() => {
             <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
               <tr>
                 <th class="px-3 py-3 text-gray-600 dark:text-slate-400 w-16 font-bold">Jangka</th>
-                <th class="px-3 py-3 text-cyan-700 dark:text-cyan-300 font-bold">Hari (〜日間)</th>
-                <th class="px-3 py-3 text-violet-700 dark:text-violet-300 font-bold">Minggu (〜週間)</th>
+                <th class="px-3 py-3 text-cyan-700 dark:text-matcha font-bold">Hari (〜日間)</th>
+                <th class="px-3 py-3 text-violet-700 dark:text-torii font-bold">Minggu (〜週間)</th>
                 <th class="px-3 py-3 text-emerald-700 dark:text-emerald-300 font-bold">Bulan (〜ヶ月間)</th>
                 <th class="px-3 py-3 text-amber-700 dark:text-amber-300 font-bold">Tahun (〜年間)</th>
               </tr>

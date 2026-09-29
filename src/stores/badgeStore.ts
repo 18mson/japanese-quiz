@@ -6,6 +6,7 @@ import { useMasteryStore } from './masteryStore';
 
 const STORAGE_KEY_HIGHEST_LEVEL = 'japanese_quiz_highest_level';
 const STORAGE_KEY_AVATAR_BADGE = 'japanese_quiz_avatar_badge';
+const STORAGE_KEY_CLAIMED_LEVEL = 'japanese_quiz_claimed_level';
 
 export const useBadgeStore = defineStore('badge', () => {
   const getInitialHighestLevel = (): number => {
@@ -26,6 +27,22 @@ export const useBadgeStore = defineStore('badge', () => {
     return base;
   };
 
+  const getInitialClaimedLevel = (): number => {
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY_CLAIMED_LEVEL);
+      if (saved) {
+        const val = parseInt(saved, 10);
+        if (!isNaN(val) && val >= 1) return val;
+      }
+    }
+    // If not previously saved in localStorage, default to 2 if user already claimed level 2, otherwise 1
+    const highest = getInitialHighestLevel();
+    if (highest >= 2) {
+      return 2;
+    }
+    return 1;
+  };
+
   const getInitialAvatarBadge = (): string => {
     if (typeof localStorage !== 'undefined') {
       const saved = localStorage.getItem(STORAGE_KEY_AVATAR_BADGE);
@@ -37,6 +54,7 @@ export const useBadgeStore = defineStore('badge', () => {
   };
 
   const highestLevelReached = ref<number>(getInitialHighestLevel());
+  const claimedLevel = ref<number>(getInitialClaimedLevel());
   const selectedAvatarBadgeId = ref<string>(getInitialAvatarBadge());
   const showProfileBadgeModal = ref<boolean>(false);
 
@@ -121,28 +139,60 @@ export const useBadgeStore = defineStore('badge', () => {
     return BADGE_LIST.find(b => b.levelRequired === level && b.category !== 'alphabet');
   };
 
+  const effectiveLevel = computed(() => {
+    try {
+      const masteryStore = useMasteryStore();
+      return Math.max(highestLevelReached.value, masteryStore.currentUserLevel);
+    } catch {
+      return highestLevelReached.value;
+    }
+  });
+
+  const hasUnclaimedLevels = computed(() => {
+    return effectiveLevel.value > claimedLevel.value;
+  });
+
+  const nextUnclaimedLevel = computed(() => {
+    if (hasUnclaimedLevels.value) {
+      return claimedLevel.value + 1;
+    }
+    return null;
+  });
+
+  const hasMoreThanOneUnclaimed = computed(() => {
+    return (effectiveLevel.value - claimedLevel.value) > 1;
+  });
+
   // Actions
   const claimLevel = async (level: number) => {
+    if (level > claimedLevel.value) {
+      claimedLevel.value = level;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY_CLAIMED_LEVEL, level.toString());
+      }
+    }
+
     if (level > highestLevelReached.value) {
       highestLevelReached.value = level;
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEY_HIGHEST_LEVEL, level.toString());
       }
-      
-      // Also sync to Supabase user metadata if logged in
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.user) {
-          await supabase.auth.updateUser({
-            data: {
-              highest_level: level,
-              avatar_badge: selectedAvatarBadgeId.value
-            }
-          });
-        }
-      } catch (err) {
-        console.warn('Failed to sync highest_level to user metadata:', err);
+    }
+    
+    // Also sync to Supabase user metadata if logged in
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.auth.updateUser({
+          data: {
+            highest_level: highestLevelReached.value,
+            claimed_level: claimedLevel.value,
+            avatar_badge: selectedAvatarBadgeId.value
+          }
+        });
       }
+    } catch (err) {
+      console.warn('Failed to sync highest_level/claimed_level to user metadata:', err);
     }
   };
 
@@ -181,6 +231,7 @@ export const useBadgeStore = defineStore('badge', () => {
     if (!user) return;
     const metaHighest = user.user_metadata?.highest_level;
     const metaAvatar = user.user_metadata?.avatar_badge;
+    const metaClaimed = user.user_metadata?.claimed_level;
 
     let candidateLevel = highestLevelReached.value;
     if (typeof metaHighest === 'number' && metaHighest > candidateLevel) {
@@ -194,6 +245,13 @@ export const useBadgeStore = defineStore('badge', () => {
       highestLevelReached.value = candidateLevel;
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem(STORAGE_KEY_HIGHEST_LEVEL, candidateLevel.toString());
+      }
+    }
+
+    if (typeof metaClaimed === 'number' && metaClaimed > claimedLevel.value) {
+      claimedLevel.value = metaClaimed;
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY_CLAIMED_LEVEL, metaClaimed.toString());
       }
     }
 
@@ -215,6 +273,11 @@ export const useBadgeStore = defineStore('badge', () => {
 
   return {
     highestLevelReached,
+    claimedLevel,
+    effectiveLevel,
+    hasUnclaimedLevels,
+    nextUnclaimedLevel,
+    hasMoreThanOneUnclaimed,
     selectedAvatarBadgeId,
     showProfileBadgeModal,
     allBadges,

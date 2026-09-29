@@ -3,6 +3,7 @@ import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Sparkles, X, ArrowRight } from '@lucide/vue';
 import { getRandomCorrectFeedback, getRandomRetryFeedback } from '../utils/feedbackMessages';
+import TierTransitionBadge from './common/TierTransitionBadge.vue';
 
 const quizStore = useQuizStore();
 const focusedIndex = ref(0);
@@ -102,7 +103,7 @@ onUnmounted(() => {
 const getOptionClass = (option: string, index: number) => {
   if (quizStore.selectedAnswer === null) {
     if (isKeyboardNav.value && index === focusedIndex.value) {
-      return 'border-indigo-500 dark:border-indigo-400 bg-indigo-50/70 dark:bg-slate-700/80 ring-4 ring-indigo-400/50 dark:ring-indigo-500/50 scale-[1.02] shadow-md z-10';
+      return 'border-indigo-500 dark:border-torii bg-indigo-50/70 dark:bg-slate-800 ring-4 ring-indigo-400/50 dark:ring-torii/40 scale-[1.02] shadow-md z-10';
     }
     return '';
   }
@@ -113,11 +114,11 @@ const getOptionClass = (option: string, index: number) => {
     : correctRomaji === option;
   
   if (isCorrect) {
-    return 'border-emerald-500 bg-emerald-100 text-emerald-900 dark:bg-emerald-950/90 dark:text-emerald-200 dark:border-emerald-500 font-extrabold shadow-sm';
+    return 'border-emerald-500 bg-emerald-100 text-emerald-900 dark:bg-matcha/20 dark:text-matcha-light dark:border-matcha font-extrabold shadow-sm';
   }
   
   if (option === quizStore.selectedAnswer && !isCorrect) {
-    return 'border-rose-500 bg-rose-100 text-rose-900 dark:bg-rose-950/90 dark:text-rose-200 dark:border-rose-500 font-extrabold shadow-sm';
+    return 'border-rose-500 bg-rose-100 text-rose-900 dark:bg-torii/20 dark:text-torii-light dark:border-torii font-extrabold shadow-sm';
   }
   
   return 'opacity-50 dark:opacity-40 cursor-not-allowed';
@@ -136,7 +137,7 @@ const isLastQuestion = computed(() => {
         <button 
           v-for="(option, index) in quizStore.options" 
           :key="'desktop-' + option"
-          class="relative p-3 sm:p-4 text-base sm:text-lg font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-700/80 rounded-xl cursor-pointer transition-all duration-150 flex justify-center items-center min-h-14 sm:min-h-16 hover:border-indigo-500 dark:hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-750 focus:outline-none shadow-xs"
+          class="relative p-3 sm:p-4 text-base sm:text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer transition-all duration-150 flex justify-center items-center min-h-14 sm:min-h-16 hover:border-indigo-500 dark:hover:border-torii hover:bg-indigo-50 dark:hover:bg-slate-800 focus:outline-none shadow-xs"
           :class="getOptionClass(option, index)"
           @click="deactivateKeyboardNav(); submitOption(option);"
           :disabled="quizStore.selectedAnswer !== null"
@@ -145,7 +146,7 @@ const isLastQuestion = computed(() => {
           <span 
             v-if="quizStore.selectedAnswer === null"
             class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded transition-colors"
-            :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400'"
+            :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 dark:bg-torii text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-400'"
           >
             {{ index + 1 }}
           </span>
@@ -157,13 +158,15 @@ const isLastQuestion = computed(() => {
       <!-- Desktop Post Answer Feedback Banner -->
       <div class="w-full" v-if="quizStore.selectedAnswer !== null">
         <div class="pb-4">
-          <div v-if="quizStore.isAnswerCorrect" class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-emerald-100 text-emerald-900 dark:bg-emerald-950/80 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800 animate-fadeIn flex items-center justify-center gap-2 shadow-xs">
-            <Sparkles class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+          <div v-if="quizStore.isAnswerCorrect" class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-emerald-100 text-emerald-900 dark:bg-matcha/15 dark:text-matcha-light border border-emerald-200 dark:border-matcha/40 animate-fadeIn flex items-center justify-center gap-2 flex-wrap shadow-xs">
+            <Sparkles class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
+            <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
           </div>
-          <div v-else class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-rose-950/80 dark:text-rose-200 border border-rose-200 dark:border-rose-800 animate-fadeIn flex items-center justify-center gap-2 shadow-xs">
-            <X class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-rose-400 flex-shrink-0" />
+          <div v-else class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/15 dark:text-torii-light border border-rose-200 dark:border-torii/40 animate-fadeIn flex items-center justify-center gap-2 flex-wrap shadow-xs">
+            <X class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-torii flex-shrink-0" />
             <span>Salah. Jawaban yang benar adalah "{{ Array.isArray(quizStore.currentQuestion?.romaji) ? quizStore.currentQuestion?.romaji.join(' atau ') : quizStore.currentQuestion?.romaji }}"</span>
+            <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
           </div>
         </div>
       </div>
@@ -174,13 +177,15 @@ const isLastQuestion = computed(() => {
       <div class="max-w-md mx-auto w-full flex flex-col gap-2">
         <!-- Post-answer Feedback Banner on Mobile -->
         <div v-if="quizStore.selectedAnswer !== null" class="w-full animate-fadeIn">
-          <div v-if="quizStore.isAnswerCorrect" class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-emerald-100 text-emerald-900 dark:bg-emerald-950/90 dark:text-emerald-200 border border-emerald-300/80 dark:border-emerald-800 flex items-center justify-center gap-1.5 shadow-xs">
-            <Sparkles class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+          <div v-if="quizStore.isAnswerCorrect" class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-emerald-100 text-emerald-900 dark:bg-matcha/20 dark:text-matcha-light border border-emerald-300/80 dark:border-matcha/40 flex items-center justify-center gap-1.5 flex-wrap shadow-xs">
+            <Sparkles class="w-3.5 h-3.5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
+            <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
           </div>
-          <div v-else class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-rose-950/90 dark:text-rose-200 border border-rose-300/80 dark:border-rose-800 flex items-center justify-center gap-1.5 shadow-xs">
-            <X class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400 flex-shrink-0" />
+          <div v-else class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/20 dark:text-torii-light border border-rose-300/80 dark:border-torii/40 flex items-center justify-center gap-1.5 flex-wrap shadow-xs">
+            <X class="w-3.5 h-3.5 text-rose-600 dark:text-torii flex-shrink-0" />
             <span>Jawaban benar: {{ Array.isArray(quizStore.currentQuestion?.romaji) ? quizStore.currentQuestion?.romaji.join(' / ') : quizStore.currentQuestion?.romaji }}</span>
+            <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
           </div>
         </div>
 
@@ -189,7 +194,7 @@ const isLastQuestion = computed(() => {
           <button 
             v-for="(option, index) in quizStore.options" 
             :key="'mobile-' + option"
-            class="relative py-3.5 px-2 text-lg font-bold bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-700/80 rounded-2xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[62px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-700 focus:outline-none shadow-xs"
+            class="relative py-3.5 px-2 text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-2xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[62px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-800 focus:outline-none shadow-xs"
             :class="getOptionClass(option, index)"
             @click="deactivateKeyboardNav(); submitOption(option);"
             :disabled="quizStore.selectedAnswer !== null"
@@ -210,7 +215,7 @@ const isLastQuestion = computed(() => {
         <!-- Next Question Action Button on Mobile when answered -->
         <div v-if="quizStore.selectedAnswer !== null" class="w-full pt-0.5 animate-fadeIn">
           <button 
-            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl py-3 px-4 shadow-md hover:shadow-lg transition duration-150 flex justify-center items-center gap-2 cursor-pointer text-base active:scale-98"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white font-bold rounded-xl py-3 px-4 shadow-md hover:shadow-lg transition duration-150 flex justify-center items-center gap-2 cursor-pointer text-base active:scale-98"
             @click="quizStore.nextQuestion"
           >
             <span>{{ isLastQuestion ? 'Lihat Hasil' : 'Soal Berikutnya' }}</span>

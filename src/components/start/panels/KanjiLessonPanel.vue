@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { ChevronLeft, ChevronRight } from '@lucide/vue';
+import { ChevronLeft, ChevronRight, Sparkles } from '@lucide/vue';
 import { useQuizStore } from '../../../stores/quizStore';
 import { kanjiLessonList } from '../../../data/kanjiWritingPrompts';
 
@@ -93,20 +93,20 @@ watch(kanjiPageSize, (newSize) => {
 </script>
 
 <template>
-  <div class="bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
+  <div class="bg-slate-50/80 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 min-w-0">
-        <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs font-jp">
+        <div class="w-7 h-7 rounded-lg bg-emerald-600 dark:bg-matcha text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs font-jp">
           漢
         </div>
         <div>
-          <div class="text-xs font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1.5">
+          <div class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
             <span>Target Menulis:</span>
-            <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300">
+            <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-matcha-light border border-transparent dark:border-slate-700">
               {{ quizStore.currentKanjiLessonLabel }}
             </span>
           </div>
-          <div class="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
             {{ quizStore.currentKanjiLessonStats.mastered }} / {{ quizStore.currentKanjiLessonStats.total }} kanji dikuasai ({{ quizStore.currentKanjiLessonStats.percentage }}%)
           </div>
         </div>
@@ -122,11 +122,14 @@ watch(kanjiPageSize, (newSize) => {
         :class="[
           'py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1 sm:gap-1.5 shadow-2xs',
           quizStore.selectedKanjiLessonNumber === 0
-            ? 'bg-emerald-600 text-white border-emerald-500 font-black shadow-xs scale-[1.02]'
-            : 'bg-white/90 dark:bg-slate-800/90 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+            ? 'bg-emerald-600 dark:bg-matcha text-white border-emerald-500 dark:border-matcha font-black shadow-xs scale-[1.02]'
+            : 'bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/80 dark:border-slate-800'
         ]"
       >
-        <span class="whitespace-nowrap">✨ Semua</span>
+        <span class="whitespace-nowrap flex items-center gap-1">
+          <Sparkles class="w-3.5 h-3.5 shrink-0" />
+          <span>Semua</span>
+        </span>
         <span class="hidden sm:inline text-[10px] opacity-80">(1–25)</span>
       </button>
 
@@ -153,8 +156,8 @@ watch(kanjiPageSize, (newSize) => {
           :class="[
             'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
             quizStore.selectedKanjiLessonNumber === les.lessonNumber
-              ? 'bg-emerald-600 text-white border-emerald-500 font-black shadow-xs scale-[1.02]'
-              : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+              ? 'bg-emerald-600 dark:bg-matcha text-white border-emerald-500 dark:border-matcha font-black shadow-xs scale-[1.02]'
+              : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-800'
           ]"
         >
           <span class="truncate font-semibold text-[11px] sm:text-xs">

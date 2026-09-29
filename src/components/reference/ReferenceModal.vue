@@ -122,19 +122,19 @@ onUnmounted(() => {
           class="max-w-5xl w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[90vh] max-h-[880px] animate-scaleUp relative text-slate-800 dark:text-slate-100"
         >
           <!-- Top Decorative Glows -->
-          <div class="absolute -right-16 -top-16 w-48 h-48 bg-indigo-600/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
-          <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -right-16 -top-16 w-48 h-48 bg-torii/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-16 -bottom-16 w-48 h-48 bg-matcha/10 rounded-full blur-3xl pointer-events-none"></div>
 
           <!-- Header Bar -->
-          <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-gray-50 via-indigo-50/50 to-gray-50 dark:from-slate-900 dark:via-indigo-950/80 dark:to-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between shadow-xs flex-shrink-0 relative z-10">
+          <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-gray-50 via-indigo-50/50 to-gray-50 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 border-b border-gray-200 dark:border-slate-800 flex items-center justify-between shadow-xs flex-shrink-0 relative z-10">
             <div class="flex items-center gap-2.5 sm:gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 border border-indigo-100 dark:border-indigo-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 shadow-inner flex-shrink-0">
-                <BookMarked class="w-5 h-5 text-indigo-600 dark:text-amber-300" />
+              <div class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-torii/15 border border-indigo-100 dark:border-torii/30 flex items-center justify-center text-indigo-600 dark:text-torii shadow-inner flex-shrink-0">
+                <BookMarked class="w-5 h-5 text-indigo-600 dark:text-torii" />
               </div>
               <div>
                 <div class="flex items-center gap-2">
                   <h2 class="text-base sm:text-xl font-black text-gray-900 dark:text-white tracking-tight">Furoku (付録)</h2>
-                  <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 font-bold border border-indigo-200 dark:border-indigo-500/30">Referensi Cepat</span>
+                  <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-torii/15 text-indigo-700 dark:text-torii-light font-bold border border-indigo-200 dark:border-torii/30">Referensi Cepat</span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5 hidden sm:block">
                   Buku saku lampiran: kata bilangan, ungkapan waktu, kata bantu bilangan, dan konjugasi kata kerja.
@@ -145,7 +145,7 @@ onUnmounted(() => {
             <div class="flex items-center gap-2.5">
               <!-- Quick TTS Speed Toggle -->
               <div class="hidden sm:flex items-center gap-1 bg-gray-100 dark:bg-slate-950/80 border border-gray-200 dark:border-slate-700/60 p-1 rounded-xl shadow-inner">
-                <Volume2 class="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 ml-1 mr-0.5" />
+                <Volume2 class="w-3.5 h-3.5 text-indigo-500 dark:text-torii ml-1 mr-0.5" />
                 <button
                   v-for="rate in ([0.6, 0.9, 1.2] as const)"
                   :key="rate"
@@ -154,7 +154,7 @@ onUnmounted(() => {
                   :class="[
                     'px-2 py-0.5 rounded-lg text-[11px] font-bold transition cursor-pointer',
                     settingsStore.speechRate === rate
-                      ? 'bg-indigo-600 text-white shadow-xs font-black'
+                      ? 'bg-indigo-600 dark:bg-torii text-white shadow-xs font-black'
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
                   ]"
                   :title="`Kecepatan Suara ${rate}x`"
@@ -179,7 +179,7 @@ onUnmounted(() => {
             <div class="relative flex items-center bg-gray-200/70 dark:bg-slate-900 p-1 rounded-2xl border border-gray-300/60 dark:border-slate-800 w-fit shrink-0">
               <!-- Sliding Pill Indicator -->
               <div 
-                class="absolute rounded-xl bg-indigo-600 shadow-md shadow-indigo-500/20 pointer-events-none"
+                class="absolute rounded-xl bg-indigo-600 dark:bg-torii shadow-md shadow-indigo-500/20 dark:shadow-torii/30 pointer-events-none"
                 :class="isInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
                 :style="indicatorStyle"
               ></div>
@@ -234,7 +234,7 @@ onUnmounted(() => {
           <div class="p-3.5 sm:p-6 overflow-y-auto flex-1 bg-gray-50/60 dark:bg-slate-950/50 min-h-0 relative">
             <!-- Loading Indicator Overlay (Non-blocking) -->
             <div v-if="isLoading" class="absolute top-2 right-4 flex items-center gap-1.5 text-xs text-gray-500 dark:text-slate-400">
-              <Loader2 class="w-3.5 h-3.5 animate-spin text-indigo-500 dark:text-indigo-400" />
+              <Loader2 class="w-3.5 h-3.5 animate-spin text-indigo-500 dark:text-torii" />
               <span>Sinkronisasi...</span>
             </div>
 

@@ -113,10 +113,10 @@ const secondCharVerticalOffset = computed(() => {
 });
 
 // Theme-adaptive grid guide line colors (light & dark mode)
-const gridOuterColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.12)' : 'rgba(100, 116, 139, 0.20)');
-const gridMainColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.18)' : 'rgba(100, 116, 139, 0.28)');
-const gridDiagColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.05)' : 'rgba(100, 116, 139, 0.12)');
-const gridSmallColor = computed(() => settingsStore.isDarkMode ? 'rgba(148, 163, 184, 0.15)' : 'rgba(100, 116, 139, 0.25)');
+const gridOuterColor = computed(() => settingsStore.isDarkMode ? 'rgba(158, 156, 167, 0.12)' : 'rgba(100, 116, 139, 0.20)');
+const gridMainColor = computed(() => settingsStore.isDarkMode ? 'rgba(158, 156, 167, 0.18)' : 'rgba(100, 116, 139, 0.28)');
+const gridDiagColor = computed(() => settingsStore.isDarkMode ? 'rgba(158, 156, 167, 0.05)' : 'rgba(100, 116, 139, 0.12)');
+const gridSmallColor = computed(() => settingsStore.isDarkMode ? 'rgba(158, 156, 167, 0.15)' : 'rgba(100, 116, 139, 0.25)');
 
 const activeCharIndex = ref(0);
 const boxContainerRefs = ref<HTMLElement[]>([]);
@@ -541,7 +541,7 @@ const initWriterQuiz = async () => {
     const strokeColor = isDark ? '#38bdf8' : '#0284c7';
     const drawingColor = isDark ? '#818cf8' : '#4f46e5';
     const highlightColor = isDark ? '#34d399' : '#059669';
-    const outlineColor = isDark ? 'rgba(148, 163, 184, 0.28)' : 'rgba(100, 116, 139, 0.30)';
+    const outlineColor = isDark ? 'rgba(158, 156, 167, 0.28)' : 'rgba(100, 116, 139, 0.30)';
 
     const writer = createQuizHanziWriter(container, ch, size, {
       padding,
@@ -658,7 +658,7 @@ defineExpose({
       class="relative rounded-3xl transition-all duration-300 bg-slate-50/90 dark:bg-slate-950 flex items-center justify-center p-2 sm:p-3.5 shadow-xs dark:shadow-md"
       :class="[
         isEntireCombinationComplete ? 'border-2 border-emerald-500/80 ring-2 ring-emerald-500/20 shadow-emerald-950/20 dark:shadow-emerald-950/40' :
-        'border-2 border-indigo-200 dark:border-indigo-500/70 ring-2 ring-indigo-500/10 dark:ring-indigo-500/20 shadow-indigo-950/10 dark:shadow-indigo-950/50'
+        'border-2 border-indigo-200 dark:border-torii/70 ring-2 ring-indigo-500/10 dark:ring-torii/20 shadow-indigo-950/10 dark:shadow-slate-950/50'
       ]"
     >
       <!-- Single Character Mode (Centered large box) -->
@@ -795,7 +795,7 @@ defineExpose({
         v-if="isLoading" 
         class="absolute inset-0 bg-white/85 dark:bg-slate-950/80 backdrop-blur-xs flex flex-col items-center justify-center gap-2 z-40 rounded-3xl"
       >
-        <Loader2 class="w-6 h-6 text-indigo-600 dark:text-indigo-400 animate-spin" />
+        <Loader2 class="w-6 h-6 text-indigo-600 dark:text-torii animate-spin" />
         <span class="text-xs font-bold text-slate-600 dark:text-slate-400">Menyiapkan huruf...</span>
       </div>
     </div>

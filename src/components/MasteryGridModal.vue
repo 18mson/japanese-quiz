@@ -314,16 +314,16 @@ const nextPreviewItem = () => {
       >
         
         <!-- Modal Header -->
-        <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 text-white flex items-center justify-between shadow-md flex-shrink-0 relative overflow-hidden">
-          <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-indigo-900 via-indigo-850 to-indigo-900 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border-b border-indigo-950/40 dark:border-slate-800 text-white flex items-center justify-between shadow-md flex-shrink-0 relative overflow-hidden">
+          <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 dark:bg-torii/10 rounded-full blur-2xl pointer-events-none"></div>
           
           <div class="flex items-center gap-2.5 sm:gap-3 relative z-10">
-            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
+            <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/10 dark:bg-torii/15 backdrop-blur-md border border-white/20 dark:border-torii/30 flex items-center justify-center text-amber-300 dark:text-torii shadow-inner flex-shrink-0">
               <Award class="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div>
-              <h2 class="text-base sm:text-xl font-black tracking-tight">Peta Penguasaan Huruf</h2>
-              <p class="hidden sm:block text-xs text-indigo-200 mt-0.5 font-medium">
+              <h2 class="text-base sm:text-xl font-black tracking-tight text-white dark:text-slate-100">Peta Penguasaan Huruf</h2>
+              <p class="hidden sm:block text-xs text-indigo-200 dark:text-slate-400 mt-0.5 font-medium">
                 Pantau tingkat ingatan karakter dan latih huruf yang masih lemah.
               </p>
             </div>
@@ -338,12 +338,12 @@ const nextPreviewItem = () => {
                 'px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs',
                 isEditMode 
                   ? 'bg-amber-400 hover:bg-amber-300 text-amber-950 font-black shadow-md ring-2 ring-amber-300/60' 
-                  : 'bg-white/10 hover:bg-white/20 text-white'
+                  : 'bg-white/10 hover:bg-white/20 dark:bg-slate-850 dark:hover:bg-slate-800 dark:border dark:border-slate-700/80 text-white dark:text-slate-200'
               ]"
               :title="isEditMode ? 'Keluar dari Mode Edit' : 'Pilih dan ubah status penguasaan secara massal'"
             >
               <Check v-if="isEditMode" class="w-3.5 h-3.5" />
-              <Edit3 v-else class="w-3.5 h-3.5 text-amber-300" />
+              <Edit3 v-else class="w-3.5 h-3.5 text-amber-300 dark:text-torii" />
               <span class="hidden xs:inline">{{ isEditMode ? 'Selesai Edit' : 'Edit Status' }}</span>
               <span class="xs:hidden">{{ isEditMode ? 'Selesai' : 'Edit' }}</span>
             </button>
@@ -351,7 +351,7 @@ const nextPreviewItem = () => {
             <button 
               v-if="unmasteredCount > 0 && !isEditMode"
               @click="handleStartWeakQuiz"
-              class="px-3 sm:px-4 py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer animate-pulse-slow"
+              class="px-3 sm:px-4 py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 dark:from-torii dark:to-amber-500 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer animate-pulse-slow"
             >
               <Zap class="w-3.5 h-3.5 fill-white" />
               <span>Latih {{ unmasteredCount }} Lemah</span>
@@ -359,7 +359,7 @@ const nextPreviewItem = () => {
 
             <button 
               @click="emit('close'); closeDropdowns();"
-              class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition cursor-pointer"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/10 hover:bg-white/20 dark:bg-slate-850 dark:hover:bg-slate-800 dark:border dark:border-slate-700/80 text-white dark:text-slate-300 flex items-center justify-center transition cursor-pointer"
             >
               <X class="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -380,13 +380,13 @@ const nextPreviewItem = () => {
         <!-- Edit Mode Sub-bar for Quick Selection -->
         <div 
           v-if="isEditMode" 
-          class="px-3 sm:px-6 py-2 bg-indigo-50/90 dark:bg-indigo-950/40 border-b border-indigo-100 dark:border-indigo-900/60 flex items-center justify-between gap-2 flex-wrap text-xs flex-shrink-0 animate-fadeIn"
+          class="px-3 sm:px-6 py-2 bg-indigo-50/90 dark:bg-slate-800/80 border-b border-indigo-100 dark:border-slate-800 flex items-center justify-between gap-2 flex-wrap text-xs flex-shrink-0 animate-fadeIn"
         >
           <div class="flex items-center gap-2">
-            <span class="font-bold text-indigo-900 dark:text-indigo-200">
+            <span class="font-bold text-indigo-900 dark:text-slate-100">
               Mode Edit Penguasaan
             </span>
-            <span class="px-2 py-0.5 rounded-full bg-indigo-200/70 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 font-extrabold text-[11px]">
+            <span class="px-2 py-0.5 rounded-full bg-indigo-200/70 dark:bg-torii/20 text-indigo-800 dark:text-torii-light font-extrabold text-[11px]">
               {{ selectedCharacters.size }} dipilih
             </span>
           </div>
@@ -396,9 +396,9 @@ const nextPreviewItem = () => {
               type="button"
               v-if="filteredItems.length > 0"
               @click="toggleSelectAllVisible"
-              class="px-2.5 py-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-indigo-600 rounded-lg text-gray-700 dark:text-slate-200 font-bold transition flex items-center gap-1 cursor-pointer text-xs"
+              class="px-2.5 py-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-indigo-300 dark:hover:border-slate-600 rounded-lg text-gray-700 dark:text-slate-200 font-bold transition flex items-center gap-1 cursor-pointer text-xs"
             >
-              <CheckSquare class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+              <CheckSquare class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
               <span>{{ isAllVisibleSelected ? 'Batal Pilih Semua' : `Pilih Semua yang Tampil (${filteredItems.length})` }}</span>
             </button>
 
@@ -447,7 +447,7 @@ const nextPreviewItem = () => {
               <div v-else class="h-full min-h-[220px] text-center flex flex-col items-center justify-center text-gray-500 dark:text-slate-400 py-8">
                 <component 
                   :is="searchQuery.trim() ? SearchX : Sparkles" 
-                  class="w-10 h-10 text-indigo-300 dark:text-indigo-500 mb-2" 
+                  class="w-10 h-10 text-indigo-300 dark:text-slate-600 mb-2" 
                   :class="{ 'animate-bounce': !searchQuery.trim() }" 
                 />
                 <h3 class="text-base font-bold text-gray-700 dark:text-slate-200">
@@ -466,7 +466,7 @@ const nextPreviewItem = () => {
                   <button 
                     v-if="activeSubtype !== 'all' && totalCategoryMatches > 0"
                     @click="activeSubtype = 'all'"
-                    class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-sm flex items-center gap-1.5"
+                    class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-sm flex items-center gap-1.5"
                   >
                     <span>Cari di Semua Kelompok ({{ totalCategoryMatches }} ditemukan)</span>
                   </button>
@@ -536,8 +536,8 @@ const nextPreviewItem = () => {
         </Transition>
 
         <!-- Notice Banner for 0% Belum but incomplete mastery -->
-        <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl text-xs text-indigo-700 dark:text-indigo-300 font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
-          <Sparkles class="w-4 h-4 text-indigo-500 shrink-0" />
+        <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 dark:bg-torii/10 border border-indigo-500/20 dark:border-torii/20 rounded-2xl text-xs text-indigo-700 dark:text-torii-light font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
+          <Sparkles class="w-4 h-4 text-indigo-500 dark:text-torii shrink-0" />
           <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : (activeCategory === 'kanji' ? 'Semua kanji di kelompok ini sudah dipelajari — terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
         </div>
 
@@ -550,7 +550,7 @@ const nextPreviewItem = () => {
             <button
               v-if="activeSubtype !== 'all' || activeStatusFilter !== 'all' || searchQuery.trim() !== ''"
               @click="activeSubtype = 'all'; activeStatusFilter = 'all'; searchQuery = '';"
-              class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 hover:underline cursor-pointer ml-1"
+              class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-torii-light hover:text-indigo-700 dark:hover:text-torii hover:underline cursor-pointer ml-1"
             >
               <RotateCcw class="w-3 h-3" />
               <span>{{ searchQuery.trim() ? (activeSubtype !== 'all' || activeStatusFilter !== 'all' ? 'Reset Semua' : 'Hapus Pencarian') : 'Reset Filter' }}</span>
@@ -600,8 +600,8 @@ const nextPreviewItem = () => {
                 : targetTier === 'crown' 
                 ? 'bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400'
                 : targetTier === 'mastered'
-                ? 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400'
-                : 'bg-indigo-100 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400'
+                ? 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-matcha'
+                : 'bg-indigo-100 dark:bg-torii/15 text-indigo-600 dark:text-torii'
             ]"
           >
             <AlertTriangle v-if="targetTier === 'new'" class="w-6 h-6" />
@@ -621,7 +621,7 @@ const nextPreviewItem = () => {
         <div class="p-3.5 bg-gray-50 dark:bg-slate-800/60 rounded-2xl border border-gray-100 dark:border-slate-800 mb-4 text-xs space-y-2">
           <div class="flex justify-between items-center text-gray-600 dark:text-slate-300">
             <span>Target Status:</span>
-            <span class="font-extrabold text-indigo-600 dark:text-indigo-300">
+            <span class="font-extrabold text-indigo-600 dark:text-torii-light">
               {{ tierLabelsMap[targetTier] }}
             </span>
           </div>
@@ -641,7 +641,7 @@ const nextPreviewItem = () => {
           </div>
           <div 
             v-else 
-            class="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-800 dark:text-indigo-300 text-[11px] leading-relaxed border border-indigo-200/60 dark:border-indigo-800/40"
+            class="p-2.5 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-800 dark:text-slate-200 text-[11px] leading-relaxed border border-indigo-200/60 dark:border-slate-700"
           >
             ℹ️ Streak karakter ini akan disetel ke 1 (Sedang Belajar).
           </div>

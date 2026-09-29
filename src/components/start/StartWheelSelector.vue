@@ -138,8 +138,8 @@ function getCardStyle(index: number) {
       :class="[
         'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[440px] sm:min-h-[460px] flex flex-col justify-between select-none touch-none overscroll-contain cursor-pointer',
         isKeyboardNav && focusedSection === 'mode'
-          ? 'border-indigo-400/80 dark:border-indigo-500/70 shadow-md ring-2 ring-indigo-400/40'
-          : 'border-gray-200 dark:border-slate-800 shadow-sm'
+          ? 'border-aizome dark:border-torii shadow-md ring-2 ring-aizome/40 dark:ring-torii/40'
+          : 'border-slate-200/90 dark:border-slate-800 shadow-sm'
       ]"
     >
       <!-- Top Right Inside Badge: "Pilih Mode" -->
@@ -190,10 +190,8 @@ function getCardStyle(index: number) {
             :class="[
               'absolute left-0 right-0 w-full max-w-[300px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out cursor-pointer text-left overflow-hidden',
               index === activeModeIndex
-                ? mode.id === 'battleground'
-                  ? 'bg-rose-50/90 dark:bg-slate-800/90 border-2 border-rose-500 text-gray-900 dark:text-slate-100 shadow-xl shadow-rose-500/15 p-3.5 sm:p-5 rounded-3xl ring-4 ring-rose-500/20'
-                  : 'bg-indigo-50/70 dark:bg-slate-800/90 border-2 border-indigo-600 dark:border-indigo-500 text-gray-900 dark:text-slate-100 shadow-xl shadow-indigo-500/15 p-3.5 sm:p-5 rounded-3xl ring-4 ring-indigo-500/20'
-                : 'bg-gray-50/90 dark:bg-slate-800/40 border border-gray-200 dark:border-slate-700/60 text-gray-400 dark:text-slate-400 p-2.5 sm:p-3 hover:border-gray-300 dark:hover:border-slate-600 hover:bg-white dark:hover:bg-slate-800 rounded-2xl'
+                ? 'bg-white dark:bg-slate-900 border-2 border-aizome dark:border-torii text-slate-900 dark:text-slate-100 shadow-xl shadow-aizome/10 dark:shadow-torii/15 p-3.5 sm:p-5 rounded-3xl ring-4 ring-aizome/10 dark:ring-torii/20'
+                : 'bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 p-2.5 sm:p-3 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-850 rounded-2xl'
             ]"
           >
             <!-- Card Header (Title & optional Badge) -->
@@ -202,13 +200,13 @@ function getCardStyle(index: number) {
                 :class="[
                   'tracking-tight transition-all duration-500 truncate flex items-center gap-1.5',
                   index === activeModeIndex 
-                    ? mode.id === 'battleground' ? 'text-base sm:text-2xl font-black text-rose-950 dark:text-rose-200' : 'text-base sm:text-2xl font-black text-indigo-950 dark:text-indigo-200'
-                    : 'text-xs sm:text-base font-bold text-gray-500 dark:text-slate-400'
+                    ? 'text-base sm:text-2xl font-black text-slate-900 dark:text-slate-100'
+                    : 'text-xs sm:text-base font-bold text-slate-500 dark:text-slate-400'
                 ]"
               >
                 <span>{{ mode.title }}</span>
               </h3>
-              <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
+              <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-aizome dark:bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
                 {{ mode.badge }}
               </span>
             </div>
@@ -224,12 +222,12 @@ function getCardStyle(index: number) {
               }"
             >
               <!-- Description -->
-              <p class="text-xs text-gray-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
+              <p class="text-xs text-slate-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
                 {{ getModeDescription(mode, characterType, selectedHitunganTab) }}
               </p>
 
               <!-- Sub-types buttons (Horizontal list under desc) -->
-              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-gray-100 dark:border-slate-700/60 flex-wrap">
+              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-slate-100 dark:border-slate-700/60 flex-wrap">
                 <button
                   v-for="sub in mode.subTypes"
                   :key="sub.key"
@@ -238,8 +236,8 @@ function getCardStyle(index: number) {
                   :class="[
                     'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
                     characterType === sub.key
-                      ? 'bg-gray-900 dark:bg-slate-100 text-white dark:text-slate-900 shadow-md'
-                      : 'bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-200 dark:hover:bg-slate-700 border border-transparent dark:border-slate-700/50'
+                      ? 'bg-aizome dark:bg-slate-100 text-white dark:text-slate-900 shadow-md'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent dark:border-slate-700/50'
                   ]"
                 >
                   <span>{{ sub.label }}</span>
@@ -253,7 +251,7 @@ function getCardStyle(index: number) {
       </div>
 
       <!-- Bottom Info Slot inside mode box (Panels) -->
-      <div class="w-full pt-3.5 mt-2 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-3 relative z-20 min-h-[58px] justify-center">
+      <div class="w-full pt-3.5 mt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-3 relative z-20 min-h-[58px] justify-center">
         <slot />
       </div>
     </div>

@@ -37,12 +37,12 @@ const handleClick = () => {
     :class="[
       'rounded-2xl p-2 sm:p-3 flex flex-col items-center justify-center border transition-all duration-200 relative group select-none text-center min-h-[72px] sm:min-h-[84px] cursor-pointer hover:-translate-y-1 hover:shadow-lg active:scale-95',
       isSelectMode && isSelected
-        ? 'ring-2 ring-indigo-500 dark:ring-indigo-400 border-indigo-500 dark:border-indigo-400 shadow-md bg-indigo-50/90 dark:bg-indigo-950/80 scale-[1.02]'
+        ? 'ring-2 ring-torii dark:ring-torii border-torii dark:border-torii shadow-md bg-indigo-50/90 dark:bg-torii/20 scale-[1.02]'
         : isSelectMode
-        ? 'hover:ring-1 hover:ring-indigo-300 dark:hover:ring-indigo-700'
+        ? 'hover:ring-1 hover:ring-indigo-300 dark:hover:ring-slate-600'
         : '',
       !isSelectMode && quizStore.getMasteryTier(item.character) === 'crown' 
-        ? 'bg-gradient-to-b from-indigo-50 to-purple-50 dark:from-indigo-950/80 dark:to-purple-950/80 border-indigo-300 dark:border-indigo-700 shadow-sm ring-1 ring-indigo-400/30' 
+        ? 'bg-gradient-to-b from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-800 border-amber-300 dark:border-amber-500/50 shadow-sm ring-1 ring-amber-400/30' 
         : !isSelectMode && quizStore.getMasteryTier(item.character) === 'mastered'
         ? 'bg-gradient-to-b from-emerald-50 to-teal-50 dark:from-emerald-950/80 dark:to-teal-950/80 border-emerald-300 dark:border-emerald-700 shadow-sm'
         : !isSelectMode && quizStore.getMasteryTier(item.character) === 'learning'
@@ -59,13 +59,13 @@ const handleClick = () => {
     >
       <div 
         v-if="isSelected"
-        class="w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-xs animate-scaleUp"
+        class="w-5 h-5 rounded-full bg-indigo-600 dark:bg-torii text-white flex items-center justify-center shadow-xs animate-scaleUp"
       >
         <Check class="w-3.5 h-3.5 stroke-[3]" />
       </div>
       <div 
         v-else 
-        class="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-slate-600 bg-white/80 dark:bg-slate-850/80 group-hover:border-indigo-400 transition-colors"
+        class="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-slate-600 bg-white/80 dark:bg-slate-850/80 group-hover:border-indigo-400 dark:group-hover:border-torii transition-colors"
       ></div>
     </div>
 
@@ -95,7 +95,7 @@ const handleClick = () => {
       :class="[
         'font-bold tracking-tight text-center leading-tight my-0.5 font-jp',
         category === 'words' ? 'text-base sm:text-lg text-gray-800 dark:text-slate-100' : 'text-2xl sm:text-3xl text-gray-800 dark:text-slate-100',
-        quizStore.getMasteryTier(item.character) === 'crown' ? 'text-indigo-900 dark:text-indigo-100 drop-shadow-xs' : '',
+        quizStore.getMasteryTier(item.character) === 'crown' ? 'text-amber-900 dark:text-amber-200 drop-shadow-xs' : '',
         quizStore.getMasteryTier(item.character) === 'mastered' ? 'text-emerald-950 dark:text-emerald-100' : '',
         quizStore.getMasteryTier(item.character) === 'learning' ? 'text-amber-950 dark:text-amber-100' : '',
         quizStore.getMasteryTier(item.character) === 'new' ? 'text-gray-400 dark:text-slate-400' : ''

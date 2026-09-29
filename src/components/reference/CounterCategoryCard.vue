@@ -39,8 +39,8 @@ const handleRowClick = (text: string) => {
     >
       <div class="flex items-center gap-3 min-w-0">
         <!-- Counter Kanji Badge -->
-        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600/10 to-indigo-600/15 dark:from-violet-600/20 dark:to-indigo-600/20 border border-violet-500/20 dark:border-violet-500/30 flex flex-col items-center justify-center text-center shrink-0 shadow-inner">
-          <span class="text-xl font-black font-jp text-violet-700 dark:text-amber-300 leading-none">{{ cat.counter }}</span>
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-600/10 to-indigo-600/15 dark:from-slate-800 dark:to-slate-800 border border-violet-500/20 dark:border-slate-700 flex flex-col items-center justify-center text-center shrink-0 shadow-inner">
+          <span class="text-xl font-black font-jp text-violet-700 dark:text-torii leading-none">{{ cat.counter }}</span>
           <span class="text-[10px] font-bold text-gray-500 dark:text-slate-400 font-jp leading-tight mt-0.5">{{ cat.counter_reading }}</span>
         </div>
 
@@ -60,7 +60,7 @@ const handleRowClick = (text: string) => {
 
       <!-- Toggle Button & Indicator -->
       <div class="flex items-center gap-2 shrink-0 ml-2">
-        <span class="text-[11px] text-violet-600 dark:text-violet-400 font-bold hidden sm:inline">
+        <span class="text-[11px] text-violet-600 dark:text-torii font-bold hidden sm:inline">
           {{ isExpanded ? 'Tutup' : 'Lihat' }}
         </span>
         <div class="w-7 h-7 rounded-lg bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-500 dark:text-slate-400 transition group-hover:text-gray-900 dark:group-hover:text-white">
@@ -79,7 +79,7 @@ const handleRowClick = (text: string) => {
         <table class="w-full text-left text-xs sm:text-sm">
           <thead class="bg-gray-100/90 dark:bg-slate-900/90 text-gray-500 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
             <tr>
-              <th class="px-3 py-2 w-14 text-cyan-700 dark:text-cyan-300 font-bold">Angka</th>
+              <th class="px-3 py-2 w-14 text-cyan-700 dark:text-slate-300 font-bold">Angka</th>
               <th class="px-3 py-2 text-amber-700 dark:text-amber-300 font-bold">Pengucapan</th>
               <th class="px-3 py-2 text-right text-gray-500 dark:text-slate-400 font-bold">Catatan</th>
             </tr>
@@ -118,7 +118,7 @@ const handleRowClick = (text: string) => {
                 >
                   Pola Bunyi
                 </span>
-                <span v-else-if="val.value === '?'" class="text-[10px] px-1.5 py-0.5 rounded font-black bg-cyan-100 dark:bg-cyan-500/20 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-500/30">
+                <span v-else-if="val.value === '?'" class="text-[10px] px-1.5 py-0.5 rounded font-black bg-cyan-100 dark:bg-torii/15 text-cyan-700 dark:text-torii-light border border-cyan-200 dark:border-torii/30">
                   Tanya
                 </span>
                 <span v-else class="text-[11px] text-gray-400 dark:text-slate-500 font-medium">Normal</span>
@@ -129,12 +129,12 @@ const handleRowClick = (text: string) => {
       </div>
 
       <!-- Formula Guide for Combined Ages (21-99) -->
-      <div v-if="cat.category === 'usia dan umur'" class="p-3 rounded-xl bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/30 text-xs text-violet-900 dark:text-violet-200 space-y-1.5">
-        <div class="font-bold text-violet-800 dark:text-violet-300 flex items-center gap-1.5">
+      <div v-if="cat.category === 'usia dan umur'" class="p-3 rounded-xl bg-violet-50 dark:bg-torii/10 border border-violet-200 dark:border-torii/20 text-xs text-violet-900 dark:text-slate-200 space-y-1.5">
+        <div class="font-bold text-violet-800 dark:text-torii-light flex items-center gap-1.5">
           <span>💡 Rumus Umur Gabungan (21–99 Tahun):</span>
         </div>
         <p class="leading-relaxed text-gray-700 dark:text-slate-300">
-          Pola umum: <code class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 text-violet-700 dark:text-violet-300 font-bold border border-violet-100 dark:border-slate-700">[Puluhan] + [Satuan 1–9]</code>
+          Pola umum: <code class="px-1.5 py-0.5 rounded bg-white dark:bg-slate-800 text-violet-700 dark:text-torii-light font-bold border border-violet-100 dark:border-slate-700">[Puluhan] + [Satuan 1–9]</code>
         </p>
         <ul class="list-disc list-inside space-y-0.5 text-[11px] text-gray-600 dark:text-slate-400 pl-1">
           <li>Berakhiran <strong>1</strong> ➔ selalu menjadi <span class="text-amber-700 dark:text-amber-300 font-jp font-bold">〜いっさい</span> (misal 21: にじゅういっさい, 31: さんじゅういっさい)</li>

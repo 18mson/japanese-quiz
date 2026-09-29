@@ -134,22 +134,22 @@ const hasTierChanges = computed(() => {
     <!-- Speed Achievement Celebration Banner -->
     <div 
       v-if="quizStore.speedAchievement && quizStore.speedAchievement.isFaster" 
-      class="mb-2 p-3 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 border border-indigo-400/30 rounded-2xl text-white shadow-md relative overflow-hidden flex-shrink-0 animate-fadeIn"
+      class="mb-2 p-3 bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border border-indigo-400/30 dark:border-amber-500/30 rounded-2xl text-white shadow-md relative overflow-hidden flex-shrink-0 animate-fadeIn"
     >
       <div class="flex items-center gap-3 relative z-10">
-        <div class="w-9 h-9 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-white/10 dark:bg-amber-500/15 backdrop-blur-md border border-white/20 dark:border-amber-500/30 flex items-center justify-center text-amber-300 shadow-inner flex-shrink-0">
           <Zap class="w-5 h-5 animate-pulse" />
         </div>
         <div class="text-left flex-1">
           <div class="flex items-center gap-2">
-            <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-indigo-950 px-2 py-0.5 rounded-full">
+            <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-stone-950 px-2 py-0.5 rounded-full">
               {{ quizStore.speedAchievement.rankText }}
             </span>
-            <span class="text-xs text-indigo-200 font-bold">
+            <span class="text-xs text-indigo-200 dark:text-amber-200 font-bold">
               +{{ quizStore.speedAchievement.bonusPoints }} Bonus Poin Kecepatan!
             </span>
           </div>
-          <h4 class="text-xs font-black text-white mt-0.5">
+          <h4 class="text-xs font-black text-white dark:text-stone-100 mt-0.5">
             Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat Dari Estimasi Target! 🚀
           </h4>
         </div>
@@ -294,7 +294,7 @@ const hasTierChanges = computed(() => {
                 :class="[
                   (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
                     ? (answer.isCorrect ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400')
-                    : (answer.pointsEarned === 4 ? 'text-emerald-600 dark:text-emerald-400' : (answer.isTypo ? 'text-amber-600 dark:text-amber-400' : (answer.pointsEarned >= 1 ? 'text-indigo-600 dark:text-indigo-400' : 'text-rose-600 dark:text-rose-400')))
+                    : (answer.pointsEarned === 4 ? 'text-emerald-600 dark:text-matcha' : (answer.isTypo ? 'text-amber-600 dark:text-amber-400' : (answer.pointsEarned >= 1 ? 'text-indigo-600 dark:text-torii-light' : 'text-rose-600 dark:text-rose-400')))
                 ]"
               >
                 <template v-if="quizStore.questionType === 'sentences' || quizStore.sentenceStats">
@@ -310,9 +310,9 @@ const hasTierChanges = computed(() => {
                 v-if="quizStore.questionType !== 'sentences' && !quizStore.sentenceStats"
                 class="text-xs font-bold px-1.5 py-0.5 rounded" 
                 :class="{ 
-                  'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300': answer.pointsEarned === 4, 
+                  'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-matcha': answer.pointsEarned === 4, 
                   'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300': answer.isTypo || answer.pointsEarned === 1,
-                  'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-800 dark:text-indigo-300': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
+                  'bg-indigo-100 dark:bg-torii/15 text-indigo-800 dark:text-torii-light': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
                   'bg-rose-100 dark:bg-rose-950/80 text-rose-800 dark:text-rose-300': answer.pointsEarned === 0 
                 }"
               >
@@ -325,13 +325,13 @@ const hasTierChanges = computed(() => {
               </span>
 
               <!-- Hints badge -->
-              <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-100 dark:bg-violet-950/80 text-violet-800 dark:text-violet-300 px-1.5 py-0.5 rounded flex items-center gap-1">
-                <Lightbulb class="w-3 h-3 text-violet-800 dark:text-violet-300" />
+              <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-100 dark:bg-amber-950/60 text-violet-800 dark:text-amber-300 px-1.5 py-0.5 rounded flex items-center gap-1">
+                <Lightbulb class="w-3 h-3 text-violet-800 dark:text-amber-300" />
                 <span>{{ answer.hintsUsed }} Petunjuk</span>
               </span>
 
               <!-- Kana reading badge -->
-              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2 py-0.5 rounded-full border border-indigo-100/50 dark:border-indigo-800 font-jp">
+              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-600 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 px-2 py-0.5 rounded-full border border-indigo-100/50 dark:border-slate-700 font-jp">
                 {{ answer.kana }}
               </span>
             </div>
@@ -360,7 +360,7 @@ const hasTierChanges = computed(() => {
           class="py-2.5 px-4 rounded-xl transition-all shadow hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-1.5 flex-shrink-0 border text-sm font-bold"
           :class="[
             isKeyboardNav && focusedButtonIndex === 0
-              ? 'ring-2 ring-indigo-400 dark:ring-indigo-400 border-indigo-400 bg-indigo-50 dark:bg-slate-700 scale-[1.05]'
+              ? 'ring-2 ring-indigo-400 dark:ring-torii border-indigo-400 dark:border-torii bg-indigo-50 dark:bg-slate-700 scale-[1.05]'
               : 'bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700'
           ]"
           @click="deactivateKeyboardNav(); emit('home');"
@@ -372,10 +372,10 @@ const hasTierChanges = computed(() => {
         
         <!-- Try Again Button (Index 1) -->
         <button 
-          class="flex-1 py-2.5 px-5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center flex items-center justify-center gap-1.5"
+          class="flex-1 py-2.5 px-5 bg-indigo-600 dark:bg-torii text-white rounded-xl text-sm font-bold hover:bg-indigo-700 dark:hover:bg-torii-hover transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 cursor-pointer text-center flex items-center justify-center gap-1.5"
           :class="[
             isKeyboardNav && focusedButtonIndex === 1
-              ? 'ring-2 ring-indigo-400/90 dark:ring-indigo-300 border-indigo-400 scale-[1.02] bg-indigo-700'
+              ? 'ring-2 ring-indigo-400/90 dark:ring-torii-light border-indigo-400 dark:border-torii scale-[1.02] bg-indigo-700 dark:bg-torii-hover'
               : ''
           ]"
           @click="deactivateKeyboardNav(); quizStore.restartQuiz();"

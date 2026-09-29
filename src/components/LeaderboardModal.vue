@@ -192,7 +192,7 @@ watch(activeTab, () => {
       <div class="relative flex border-b border-gray-100 dark:border-slate-800 flex-shrink-0 bg-gray-50/40 dark:bg-slate-900/40">
         <!-- Sliding Underline Indicator -->
         <div 
-          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+          class="absolute bottom-0 h-0.5 bg-indigo-600 dark:bg-torii transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
           :style="{
             width: 'calc(100% / 3)',
             transform: `translateX(${tabIndex * 100}%)`
@@ -201,21 +201,21 @@ watch(activeTab, () => {
 
         <button 
           class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider select-none"
-          :class="activeTab === 'cumulative' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          :class="activeTab === 'cumulative' ? 'text-indigo-600 dark:text-torii font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'cumulative'"
         >
           Total Score
         </button>
         <button 
           class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider select-none"
-          :class="activeTab === 'speed' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          :class="activeTab === 'speed' ? 'text-indigo-600 dark:text-torii font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'speed'"
         >
           Fastest Speed
         </button>
         <button 
           class="relative z-10 flex-1 py-3 text-center text-xs font-bold transition-colors duration-200 cursor-pointer uppercase tracking-wider flex items-center justify-center gap-1 select-none"
-          :class="activeTab === 'mastery' ? 'text-indigo-600 dark:text-indigo-400 font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
+          :class="activeTab === 'mastery' ? 'text-indigo-600 dark:text-torii font-black' : 'text-gray-400 dark:text-slate-400 hover:text-gray-600 dark:hover:text-slate-200'"
           @click="activeTab = 'mastery'"
         >
           <Award class="w-3.5 h-3.5 text-amber-500" />
@@ -227,7 +227,7 @@ watch(activeTab, () => {
       <!-- Content Area -->
       <div class="p-6 flex-1 overflow-y-auto">
         <div v-if="loading" class="flex flex-col items-center justify-center py-12">
-          <span class="w-8 h-8 border-4 border-indigo-200 dark:border-indigo-900 border-t-indigo-600 dark:border-t-indigo-400 rounded-full animate-spin"></span>
+          <span class="w-8 h-8 border-4 border-indigo-200 dark:border-slate-800 border-t-indigo-600 dark:border-t-torii rounded-full animate-spin"></span>
           <p class="text-xs text-gray-500 dark:text-slate-400 mt-3 font-semibold">Loading leaderboard...</p>
         </div>
 
@@ -264,7 +264,7 @@ watch(activeTab, () => {
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   {{ formatUsername(row.username) }}
                 </td>
-                <td class="py-3.5 font-mono text-sm text-indigo-600 dark:text-indigo-400 font-extrabold text-right">
+                <td class="py-3.5 font-mono text-sm text-indigo-600 dark:text-torii font-extrabold text-right">
                   {{ row.total_score }}
                 </td>
                 <td class="py-3.5 font-mono text-xs text-gray-500 dark:text-slate-400 text-right">
@@ -305,7 +305,7 @@ watch(activeTab, () => {
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   {{ formatUsername(row.username) }}
                 </td>
-                <td class="py-3.5 font-mono text-sm text-teal-600 dark:text-teal-400 font-extrabold text-right">
+                <td class="py-3.5 font-mono text-sm text-teal-600 dark:text-matcha font-extrabold text-right">
                   {{ row.duration_seconds.toFixed(1) }}s
                 </td>
                 <td class="py-3.5 font-mono text-xs text-gray-500 dark:text-slate-400 text-right">
@@ -349,15 +349,15 @@ watch(activeTab, () => {
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
                   <div class="flex items-center gap-2">
                     <span>{{ formatUsername(row.username) }}</span>
-                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 rounded text-[10px] font-extrabold">Kamu</span>
+                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-torii/15 text-indigo-700 dark:text-torii-light rounded text-[10px] font-extrabold">Kamu</span>
                   </div>
                 </td>
                 <td class="py-3.5 text-right">
                   <div class="inline-flex items-center justify-end gap-2">
                     <div class="w-16 sm:w-24 bg-gray-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden hidden sm:block">
-                      <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full" :style="{ width: `${row.percentage}%` }"></div>
+                      <div class="bg-gradient-to-r from-torii to-matcha h-full rounded-full" :style="{ width: `${row.percentage}%` }"></div>
                     </div>
-                    <span class="font-mono text-sm font-black text-indigo-600 dark:text-indigo-400">{{ row.percentage }}%</span>
+                    <span class="font-mono text-sm font-black text-indigo-600 dark:text-matcha">{{ row.percentage }}%</span>
                   </div>
                 </td>
               </tr>
@@ -377,7 +377,7 @@ watch(activeTab, () => {
       <div class="px-6 py-4 bg-gray-50 dark:bg-slate-800/40 border-t border-gray-100 dark:border-slate-800 flex justify-end flex-shrink-0">
         <button 
           @click="emit('close')" 
-          class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-md hover:shadow-lg"
+          class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-md hover:shadow-lg dark:shadow-torii/20"
         >
           Tutup
         </button>

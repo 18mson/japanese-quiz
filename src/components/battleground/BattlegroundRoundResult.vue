@@ -225,7 +225,7 @@ function getPlayerAvatarSeed(playerId: string): string | null {
         <button
           @click="store.startNextRoundFromResult()"
           :disabled="store.isLoading || nextRoundCountdown > 0"
-          class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition-all shadow-lg cursor-pointer"
+          class="w-full py-3.5 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-torii/30 cursor-pointer"
         >
           <Loader2 v-if="store.isLoading" class="w-4 h-4 animate-spin" />
           <ChevronRight v-else class="w-4 h-4" />

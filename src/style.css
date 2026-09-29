@@ -3,9 +3,55 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --bg-main: #F8FAFC;
+    --card-surface: #ffffff;
+    --border-divider: #E2E8F0;
+    --text-primary: #0F172A;
+    --text-muted: #64748B;
+    --accent-aizome: #1B365D;
+    --accent-aizome-hover: #142A4A;
+    --accent-torii: #E05A47;
+    --accent-torii-light: #F87171;
+    --accent-matcha: #10B981;
+    --accent-matcha-light: #34D399;
+  }
+
+  html.dark {
+    color-scheme: dark;
+    --bg-main: #1C1C21;
+    --card-surface: #1C1C21;
+    --border-divider: #2C2C34;
+    --text-primary: #EDEAE4;
+    --text-muted: #9E9CA3;
+    --accent-torii: #E05A47;
+    --accent-torii-light: #F87171;
+    --accent-matcha: #10B981;
+    --accent-matcha-light: #34D399;
+  }
+
   body {
-    @apply font-sans bg-gray-50 text-gray-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200;
+    @apply font-sans bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  html.dark ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  html.dark ::-webkit-scrollbar-track {
+    background: #1C1C21;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: #2C2C34;
+    border-radius: 9999px;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: #3E3D48;
   }
 
   /* Prevent unwanted outline on cursor clicks and touch interactions */
@@ -28,7 +74,7 @@
   }
 
   .btn-primary {
-    @apply bg-primary text-white hover:bg-primary/90;
+    @apply bg-primary text-white hover:bg-primary/90 dark:bg-torii dark:hover:bg-torii-hover;
   }
 
   .btn-secondary {

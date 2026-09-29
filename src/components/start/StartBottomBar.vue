@@ -29,16 +29,16 @@ const quizStore = useQuizStore();
     :class="[
       'fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md transition-all duration-200 p-3 sm:p-4 shadow-lg flex flex-col items-center justify-center cursor-pointer',
       isKeyboardNav && focusedSection === 'duration'
-        ? 'border-t-2 border-t-indigo-400 dark:border-t-indigo-500/70 shadow-md'
+        ? 'border-t-2 border-t-torii dark:border-t-torii shadow-md'
         : 'border-t border-gray-200/80 dark:border-slate-800 shadow-lg'
     ]"
   >
     <!-- Renshuu Mode: Progress Card (Replaces Duration Presets) -->
-    <div v-if="characterType === 'renshuu'" class="w-full max-w-3xl mb-3 bg-white dark:bg-slate-900 border border-violet-500/40 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col gap-2 animate-fadeIn">
+    <div v-if="characterType === 'renshuu'" class="w-full max-w-3xl mb-3 bg-white dark:bg-slate-900 border border-torii/40 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col gap-2 animate-fadeIn">
       <div class="flex items-center justify-between gap-2">
         <div class="flex items-center gap-2 min-w-0">
-          <span class="w-2.5 h-2.5 rounded-full bg-violet-500 animate-pulse flex-shrink-0"></span>
-          <span class="text-xs sm:text-sm font-black text-violet-700 dark:text-violet-300 truncate">
+          <span class="w-2.5 h-2.5 rounded-full bg-torii animate-pulse flex-shrink-0"></span>
+          <span class="text-xs sm:text-sm font-black text-torii dark:text-torii-light truncate">
             Pelajaran {{ quizStore.currentLessonNumber }}: Renshuu
           </span>
         </div>
@@ -50,7 +50,7 @@ const quizStore = useQuizStore();
       <!-- Progress Bar -->
       <div class="w-full h-3 bg-gray-100 dark:bg-slate-950 rounded-full overflow-hidden border border-gray-200 dark:border-slate-800 p-0.5 shadow-inner">
         <div 
-          class="h-full bg-gradient-to-r from-violet-600 via-indigo-500 to-emerald-400 rounded-full transition-all duration-500"
+          class="h-full bg-gradient-to-r from-torii via-amber-500 to-matcha rounded-full transition-all duration-500"
           :style="{ width: `${quizStore.renshuuProgressStats.progressPercent}%` }"
         ></div>
       </div>
@@ -61,12 +61,12 @@ const quizStore = useQuizStore();
       <!-- Session Info Pill -->
       <div 
         v-if="selectedLevel !== 'battleground' && characterType !== 'renshuu'" 
-        class="flex items-center gap-2 text-[11px] sm:text-xs text-gray-500 dark:text-slate-400 font-medium"
+        class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium"
       >
-        <span v-if="['hiragana', 'katakana', 'mix'].includes(characterType)" class="text-indigo-600 dark:text-indigo-400 font-bold">
+        <span v-if="['hiragana', 'katakana', 'mix'].includes(characterType)" class="text-aizome dark:text-torii-light font-bold">
           Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
         </span>
-        <span v-else-if="characterType === 'kanji'" class="text-emerald-600 dark:text-emerald-400 font-bold">
+        <span v-else-if="characterType === 'kanji'" class="text-matcha dark:text-matcha font-bold">
           Target: {{ quizStore.currentKanjiLessonLabel }} ({{ quizStore.currentKanjiLessonStats.total }} Kanji N5)
         </span>
         <span v-else-if="activeModeId === 'hitungan'" class="text-amber-600 dark:text-amber-400 font-bold">
@@ -86,9 +86,9 @@ const quizStore = useQuizStore();
             : activeModeId === 'hitungan'
               ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/25 text-slate-950 font-black'
               : characterType === 'renshuu'
-                ? 'bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 shadow-violet-500/25'
-                : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-500/25',
-          isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-indigo-400/60 shadow-lg' : ''
+                ? 'bg-gradient-to-r from-aizome via-slate-800 to-aizome-hover hover:from-aizome-hover hover:to-slate-900 dark:from-torii dark:via-rose-600 dark:to-amber-700 shadow-aizome/20 dark:shadow-torii/25'
+                : 'bg-aizome hover:bg-aizome-hover dark:bg-torii dark:hover:bg-torii-hover dark:shadow-torii/30 shadow-aizome/20',
+          isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-aizome/60 dark:ring-torii-light/60 shadow-lg' : ''
         ]"
         @click="emit('interact'); emit('start');"
         :disabled="isLoading"

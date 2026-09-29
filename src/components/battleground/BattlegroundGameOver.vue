@@ -272,7 +272,7 @@ function msToStr(ms: number, status?: string): string {
           <button
             @click="store.acceptPlayAgain()"
             :disabled="store.isLoading"
-            class="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-600/30 cursor-pointer"
+            class="w-full py-3 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition shadow-lg shadow-torii/30 cursor-pointer"
           >
             <RotateCcw class="w-4 h-4" />
             Ikut Main Lagi

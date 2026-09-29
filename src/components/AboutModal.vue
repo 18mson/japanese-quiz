@@ -43,13 +43,13 @@ defineEmits<{
     <template #header>
       <div class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-indigo-50/50 via-purple-50/30 to-white dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 flex-shrink-0">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/20">
+          <div class="w-10 h-10 rounded-2xl bg-indigo-600 dark:bg-torii text-white flex items-center justify-center text-xl shadow-md shadow-indigo-500/20 dark:shadow-torii/20">
             🇯🇵
             </div>
             <div>
               <h2 class="text-base sm:text-lg font-black text-gray-900 dark:text-slate-100 tracking-tight flex items-center gap-2">
                 <span>Tentang Nihongo Master</span>
-                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 rounded-full uppercase tracking-wider">v{{ APP_VERSION }}</span>
+                <span class="px-2 py-0.5 text-[10px] font-extrabold bg-indigo-100 dark:bg-torii/15 text-indigo-700 dark:text-torii-light rounded-full uppercase tracking-wider">v{{ APP_VERSION }}</span>
               </h2>
               <p class="text-xs text-gray-500 dark:text-slate-400 font-medium">Platform Belajar Mengetik & Vocabulary Jepang Interaktif</p>
             </div>
@@ -120,72 +120,72 @@ defineEmits<{
           <!-- 2. DETAIL MODE-MODE PERMAINAN -->
           <div class="space-y-4">
             <div class="flex items-center gap-2 border-b border-gray-100 dark:border-slate-800 pb-2">
-              <Gamepad2 class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <Gamepad2 class="w-5 h-5 text-indigo-600 dark:text-torii" />
               <h3 class="text-sm sm:text-base font-black text-gray-900 dark:text-slate-100 tracking-tight">Detail Mode Permainan</h3>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
               <!-- Mode 1: Multiple Choice -->
-              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-indigo-200 dark:hover:border-indigo-500/50 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-indigo-200 dark:hover:border-torii/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-indigo-500 text-white flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-xl bg-indigo-500 dark:bg-torii text-white flex items-center justify-center">
                       <Layers class="w-4 h-4" />
                     </div>
                     <span class="font-black text-gray-900 dark:text-slate-100 text-sm">1. Pilihan Ganda</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 rounded-md">Dasar</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-indigo-100 dark:bg-torii/15 text-indigo-800 dark:text-torii-light rounded-md">Dasar</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Latihan pilihan ganda cepat untuk pengenalan visual karakter <strong>Hiragana</strong> dan <strong>Katakana</strong> dasar.
                 </p>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                   <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" /> Fitur Kunci:
+                    <CheckCircle2 class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" /> Fitur Kunci:
                   </div>
                   <p>Membantu pemula mengenali bentuk huruf Kana sebelum melangkah ke mode mengetik.</p>
                 </div>
               </div>
 
               <!-- Mode 2: Keyboard Typing -->
-              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-blue-200 dark:hover:border-blue-500/50 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-blue-200 dark:hover:border-torii/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-blue-500 text-white flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-xl bg-blue-500 dark:bg-torii text-white flex items-center justify-center">
                       <Keyboard class="w-4 h-4" />
                     </div>
                     <span class="font-black text-gray-900 dark:text-slate-100 text-sm">2. Ketik Kana</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 rounded-md">Kana & Kanji</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-blue-100 dark:bg-torii/15 text-blue-800 dark:text-torii-light rounded-md">Kana & Kanji</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Melatih muscle memory mengetik Romaji untuk Kana dan <strong>Kosakata Kanji N5 (Minna no Nihongo)</strong>.
                 </p>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                   <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Fitur Kunci:
+                    <CheckCircle2 class="w-3.5 h-3.5 text-blue-600 dark:text-torii" /> Fitur Kunci:
                   </div>
                   <p>Mendukung Keyboard Virtual custom dan Keyboard Fisik laptop/PC.</p>
                 </div>
               </div>
 
               <!-- Mode 3: Sentence Typing -->
-              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-purple-200 dark:hover:border-purple-500/50 transition">
+              <div class="bg-slate-50 dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/80 rounded-2xl p-4 space-y-2.5 hover:border-purple-200 dark:hover:border-matcha/50 transition">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-xl bg-purple-600 dark:bg-matcha text-white flex items-center justify-center">
                       <BookOpen class="w-4 h-4" />
                     </div>
                     <span class="font-black text-gray-900 dark:text-slate-100 text-sm">3. Kotoba & Pola</span>
                   </div>
-                  <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 rounded-md">Kalimat N5</span>
+                  <span class="px-2 py-0.5 text-[10px] font-bold bg-purple-100 dark:bg-matcha/15 text-purple-800 dark:text-matcha rounded-md">Kalimat N5</span>
                 </div>
                 <p class="text-xs text-gray-600 dark:text-slate-300 leading-relaxed">
                   Mengetik kalimat Jepang lengkap secara real-time dengan bantuan romaji aktif & mesin parsing Wanakana.
                 </p>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-2.5 border border-gray-200 dark:border-slate-700 text-[11px] text-gray-500 dark:text-slate-400 space-y-1">
                   <div class="font-bold text-gray-700 dark:text-slate-300 flex items-center gap-1">
-                    <CheckCircle2 class="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" /> Fitur Kunci:
+                    <CheckCircle2 class="w-3.5 h-3.5 text-purple-600 dark:text-matcha" /> Fitur Kunci:
                   </div>
                   <p>Smart Romaji Prompting + Penalti Typo 1.0s Cooldown jika salah menekan tombol.</p>
                 </div>
@@ -269,7 +269,7 @@ defineEmits<{
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <!-- Engine Mengetik Pintar -->
               <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-extrabold text-xs sm:text-sm">
+                <div class="flex items-center gap-2 text-indigo-600 dark:text-torii font-extrabold text-xs sm:text-sm">
                   <Keyboard class="w-4 h-4" />
                   <span>Pro Typing Engine</span>
                 </div>
@@ -310,7 +310,7 @@ defineEmits<{
 
               <!-- Durasi & Cloud Sync -->
               <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 space-y-2 shadow-xs">
-                <div class="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-extrabold text-xs sm:text-sm">
+                <div class="flex items-center gap-2 text-purple-600 dark:text-matcha font-extrabold text-xs sm:text-sm">
                   <Clock class="w-4 h-4" />
                   <span>Sesi Kuis & Sync Cloud</span>
                 </div>
@@ -327,12 +327,12 @@ defineEmits<{
           <div class="space-y-4">
             <div class="flex items-center justify-between border-b border-gray-100 dark:border-slate-800 pb-2 flex-wrap gap-2">
               <div class="flex items-center gap-2">
-                <GitBranch class="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                <GitBranch class="w-5 h-5 text-indigo-600 dark:text-torii" />
                 <h3 class="text-sm sm:text-base font-black text-gray-900 dark:text-slate-100 tracking-tight">
                   Sistem Versi & Catatan Rilis
                 </h3>
               </div>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-indigo-100 dark:bg-torii/15 text-indigo-700 dark:text-torii-light border border-indigo-200/60 dark:border-torii/30">
                 Versi Saat Ini: v{{ APP_VERSION }}
               </span>
             </div>
@@ -431,7 +431,7 @@ defineEmits<{
       <div class="px-5 py-3.5 sm:px-6 sm:py-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 flex items-center justify-end flex-shrink-0">
         <button
           @click="$emit('close')"
-          class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-2"
+          class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition shadow-xs dark:shadow-torii/20 cursor-pointer flex items-center gap-2"
         >
           <span>Tutup & Mulai Belajar</span>
         </button>

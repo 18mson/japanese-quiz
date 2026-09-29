@@ -203,8 +203,8 @@ const filteredVerbs = computed(() => {
           <thead class="bg-gray-100/95 dark:bg-slate-950/90 text-gray-700 dark:text-slate-300 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10 backdrop-blur-md">
             <tr>
               <th class="px-3.5 py-3 text-emerald-700 dark:text-emerald-400 min-w-[170px]">Bentuk ます (Masu)</th>
-              <th class="px-3 py-3 text-cyan-700 dark:text-cyan-300">Bentuk て (Te)</th>
-              <th class="px-3 py-3 text-indigo-700 dark:text-indigo-300">Bentuk Kamus (Jisho)</th>
+              <th class="px-3 py-3 text-cyan-700 dark:text-matcha">Bentuk て (Te)</th>
+              <th class="px-3 py-3 text-indigo-700 dark:text-torii-light">Bentuk Kamus (Jisho)</th>
               <th class="px-3 py-3 text-rose-700 dark:text-rose-300">Bentuk ない (Nai)</th>
               <th class="px-3 py-3 text-amber-700 dark:text-amber-300">Bentuk た (Ta)</th>
               <th class="px-3.5 py-3 text-gray-700 dark:text-slate-300 min-w-[140px]">Arti Indonesia</th>
@@ -234,14 +234,14 @@ const filteredVerbs = computed(() => {
 
               <!-- Bentuk Te -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-cyan-800 dark:text-cyan-200 font-jp text-xs sm:text-sm bg-cyan-50 dark:bg-cyan-950/40 px-2 py-1 rounded-lg border border-cyan-200 dark:border-cyan-800/40 inline-block">
+                <span class="font-bold text-cyan-800 dark:text-matcha font-jp text-xs sm:text-sm bg-cyan-50 dark:bg-matcha/15 px-2 py-1 rounded-lg border border-cyan-200 dark:border-matcha/30 inline-block">
                   {{ v.te }}
                 </span>
               </td>
 
               <!-- Bentuk Kamus -->
               <td class="px-3 py-2.5">
-                <span class="font-bold text-indigo-800 dark:text-indigo-200 font-jp text-xs sm:text-sm bg-indigo-50 dark:bg-indigo-950/40 px-2 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/40 inline-block">
+                <span class="font-bold text-indigo-800 dark:text-torii-light font-jp text-xs sm:text-sm bg-indigo-50 dark:bg-torii/15 px-2 py-1 rounded-lg border border-indigo-200 dark:border-torii/30 inline-block">
                   {{ v.kamus }}
                 </span>
               </td>

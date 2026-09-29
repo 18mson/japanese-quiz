@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // src/components/battleground/BattlegroundAvatar.vue
 import { ref, computed } from 'vue';
+import BadgeIcon from '../common/BadgeIcon.vue';
+import { BADGE_LIST } from '../../data/badges';
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +31,13 @@ const sizeClasses = {
   lg: 'w-12 h-12 rounded-xl text-base',
   xl: 'w-14 h-14 rounded-2xl text-lg',
 };
+
+const badgeMatch = computed(() => {
+  const val = props.badgeIcon || (props.seed?.startsWith('badge:') ? props.seed.replace('badge:', '') : null);
+  if (!val) return null;
+  const found = BADGE_LIST.find(b => b.id === val || b.icon === val);
+  return found ? found.id : null;
+});
 
 const avatarUrl = computed(() => {
   const base = props.seed || props.name.replace(/^[\p{Emoji}\p{Symbol}\s]+/gu, '').trim() || props.name || 'player';
@@ -59,9 +68,10 @@ const bgColor = computed(() => {
     <!-- Badge Avatar Option -->
     <div
       v-if="badgeIcon || (seed && seed.startsWith('badge:'))"
-      class="w-full h-full flex items-center justify-center select-none bg-gradient-to-tr from-indigo-950 to-slate-900"
+      class="w-full h-full flex items-center justify-center select-none bg-slate-100 dark:bg-slate-900"
     >
-      <span class="filter drop-shadow-sm select-none">{{ badgeIcon || seed?.replace('badge:', '') }}</span>
+      <BadgeIcon v-if="badgeMatch" :badge-id="badgeMatch" :size="size === 'xs' ? 'sm' : size" />
+      <span v-else class="filter drop-shadow-sm select-none">{{ badgeIcon || seed?.replace('badge:', '') }}</span>
     </div>
 
     <!-- DiceBear Bottts SVG Avatar (Mode Online Quiz) -->

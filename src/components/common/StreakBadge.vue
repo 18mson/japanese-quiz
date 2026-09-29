@@ -49,20 +49,20 @@ const sizeClasses = computed(() => {
 <template>
   <div
     v-if="showAlways || streak > 0"
-    class="flex items-center font-bold bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 text-amber-700 dark:text-amber-300 shadow-xs transition select-none"
+    class="flex items-center font-bold bg-amber-50 dark:bg-torii/15 border border-amber-200 dark:border-torii/30 text-amber-700 dark:text-torii-light shadow-xs transition select-none"
     :class="[
       sizeClasses.badge,
       pulse && streak > 0 ? 'animate-pulse' : ''
     ]"
   >
     <Flame
-      class="fill-amber-500 text-amber-500 dark:fill-amber-400 dark:text-amber-400 shrink-0"
+      class="fill-amber-500 text-amber-500 dark:fill-torii dark:text-torii shrink-0"
       :class="sizeClasses.icon"
     />
     <span :class="sizeClasses.count">{{ streak }}</span>
     <span
       v-if="label"
-      class="text-amber-700/80 dark:text-amber-300/80 font-normal"
+      class="text-amber-700/80 dark:text-torii-light/90 font-normal"
       :class="sizeClasses.label"
     >
       {{ label }}

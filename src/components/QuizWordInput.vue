@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Check, X, AlertTriangle } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
+import TierTransitionBadge from './common/TierTransitionBadge.vue';
 
 const quizStore = useQuizStore();
 const userInput = computed({
@@ -113,7 +114,7 @@ const isTypo = computed(() => {
         type="text"
         inputmode="none"
         placeholder="Type romaji here..."
-        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-indigo-900/40 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
           'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
           'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50': isAnswered && !quizStore.isAnswerCorrect
@@ -146,14 +147,19 @@ const isTypo = computed(() => {
         ]"
       >
         <div class="flex flex-col items-center gap-2">
-          <!-- Checkmark/cross icon -->
-          <div 
-            class="w-12 h-12 rounded-full flex items-center justify-center text-white mb-2 shadow-md transition-transform scale-100 duration-500 animate-icon-pop"
-            :class="quizStore.isAnswerCorrect ? 'bg-emerald-500' : (isTypo ? 'bg-amber-500' : 'bg-rose-500')"
-          >
-            <Check v-if="quizStore.isAnswerCorrect" class="w-6 h-6 stroke-[3px]" />
-            <AlertTriangle v-else-if="isTypo" class="w-6 h-6 stroke-[2.5px]" />
-            <X v-else class="w-6 h-6 stroke-[3px]" />
+          <!-- Checkmark/cross icon & Mastery Tier Transition Toast Row -->
+          <div class="flex items-center justify-center gap-2.5 sm:gap-3 mb-2 flex-wrap">
+            <div 
+              class="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md transition-transform scale-100 duration-500 animate-icon-pop shrink-0"
+              :class="quizStore.isAnswerCorrect ? 'bg-emerald-500' : (isTypo ? 'bg-amber-500' : 'bg-rose-500')"
+            >
+              <Check v-if="quizStore.isAnswerCorrect" class="w-6 h-6 stroke-[3px]" />
+              <AlertTriangle v-else-if="isTypo" class="w-6 h-6 stroke-[2.5px]" />
+              <X v-else class="w-6 h-6 stroke-[3px]" />
+            </div>
+
+            <!-- Tier Transition Badge (Hafal / Crown / Proses / Turun) beside the result icon -->
+            <TierTransitionBadge :transition="quizStore.latestTierTransition" />
           </div>
 
           <h3 class="text-2xl font-bold tracking-tight">
@@ -163,9 +169,9 @@ const isTypo = computed(() => {
           </h3>
           <p 
             v-if="isTypo && quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down'"
-            class="text-xs font-bold text-amber-700 dark:text-amber-300 mt-0.5"
+            class="text-xs font-semibold text-amber-700 dark:text-amber-300 mt-0.5"
           >
-            Turun 1 tingkatan: {{ quizStore.latestTierTransition.label }} (tidak di-reset ke 0)
+            Turun 1 tingkatan (tidak di-reset ke 0)
           </p>
           
           <div class="mt-2 space-y-1">
@@ -173,7 +179,7 @@ const isTypo = computed(() => {
               Jawabanmu: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 dark:bg-amber-900/70 text-amber-900 dark:text-amber-100' : 'bg-rose-100 dark:bg-rose-900/70 text-rose-900 dark:text-rose-100'">{{ userInput || '(dilewati)' }}</span>
             </p>
             <p class="text-base font-semibold">
-              Romaji yang benar: <span class="font-mono bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-2 py-0.5 rounded text-indigo-700 dark:text-indigo-300 shadow-sm">{{ correctRomajiDisplay }}</span>
+              Romaji yang benar: <span class="font-mono bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-2 py-0.5 rounded text-indigo-700 dark:text-torii-light shadow-sm">{{ correctRomajiDisplay }}</span>
             </p>
           </div>
         </div>

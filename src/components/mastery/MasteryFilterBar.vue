@@ -130,8 +130,8 @@ const statusPills = [
     label: 'Crown / Mahir (Streak 5+)', 
     shortLabel: 'Crown',
     icon: Crown,
-    activeClass: 'bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700',
-    activeIconClass: 'text-indigo-600 dark:text-indigo-400'
+    activeClass: 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700/60',
+    activeIconClass: 'text-amber-600 dark:text-amber-400'
   }
 ] as const;
 </script>
@@ -144,7 +144,7 @@ const statusPills = [
       <div class="relative grid grid-cols-2 sm:grid-cols-4 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
         <!-- Sliding Pill Indicator -->
         <div 
-          class="absolute rounded-xl bg-indigo-600 shadow-md shadow-indigo-500/20 pointer-events-none"
+          class="absolute rounded-xl bg-indigo-600 dark:bg-torii shadow-md shadow-indigo-500/20 dark:shadow-torii/30 pointer-events-none"
           :class="isCategoryInitialized ? 'transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]' : 'transition-none'"
           :style="categoryIndicatorStyle"
         ></div>
@@ -164,28 +164,28 @@ const statusPills = [
           <span 
             v-if="cat === 'hiragana'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
-            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.hiraganaMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'katakana'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
-            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.katakanaMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'words'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
-            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.wordsMasteryStats.percentage }}%
           </span>
           <span 
             v-else-if="cat === 'kanji'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
-            :class="category === cat ? 'bg-indigo-700 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.kanjiMasteryStats.percentage }}%
           </span>
@@ -200,7 +200,7 @@ const statusPills = [
           @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
           type="text"
           :placeholder="searchPlaceholder"
-          class="w-full h-10 pl-9 pr-9 bg-gray-50 hover:bg-gray-100/70 focus:bg-white dark:bg-slate-800/90 dark:hover:bg-slate-800 dark:focus:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 dark:text-slate-100 text-xs sm:text-sm font-medium rounded-xl outline-none transition placeholder:text-gray-400 dark:placeholder:text-slate-500 shadow-xs"
+          class="w-full h-10 pl-9 pr-9 bg-gray-50 hover:bg-gray-100/70 focus:bg-white dark:bg-slate-800/90 dark:hover:bg-slate-800 dark:focus:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 focus:border-indigo-500 dark:focus:border-torii focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-torii/20 text-gray-800 dark:text-slate-100 text-xs sm:text-sm font-medium rounded-xl outline-none transition placeholder:text-gray-400 dark:placeholder:text-slate-500 shadow-xs"
         />
         <button
           v-if="searchQuery"
@@ -219,7 +219,7 @@ const statusPills = [
       <!-- Kelompok Filter Dropdown -->
       <div class="flex flex-col gap-1.5 relative w-full sm:w-64 lg:w-72 shrink-0">
         <label class="text-xs sm:text-sm font-bold text-gray-600 dark:text-slate-300 flex items-center gap-1.5 px-0.5">
-          <Layers class="w-4 h-4 text-indigo-500 dark:text-indigo-400 shrink-0" />
+          <Layers class="w-4 h-4 text-indigo-500 dark:text-torii shrink-0" />
           <span>Kelompok / Bab</span>
         </label>
 
@@ -227,7 +227,7 @@ const statusPills = [
         <button
           type="button"
           @click.stop="toggleDropdown('subtype')"
-          class="w-full bg-gray-50 hover:bg-gray-100/80 dark:bg-slate-800/90 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 dark:text-slate-100 text-sm font-bold rounded-xl py-2 pl-3.5 pr-3.5 transition cursor-pointer flex items-center justify-between text-left shadow-xs select-none h-10"
+          class="w-full bg-gray-50 hover:bg-gray-100/80 dark:bg-slate-800/90 dark:hover:bg-slate-800 border border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 focus:border-indigo-500 dark:focus:border-torii focus:ring-2 focus:ring-indigo-500/20 dark:focus:ring-torii/20 text-gray-800 dark:text-slate-100 text-sm font-bold rounded-xl py-2 pl-3.5 pr-3.5 transition cursor-pointer flex items-center justify-between text-left shadow-xs select-none h-10"
         >
           <span class="truncate">{{ activeSubtypeLabel }}</span>
           <ChevronDown class="w-4 h-4 text-gray-400 dark:text-slate-400 transition-transform duration-200 shrink-0 ml-2" :class="{ 'rotate-180': openDropdown === 'subtype' }" />
@@ -243,11 +243,11 @@ const statusPills = [
             @click="emit('update:subtype', 'all'); closeDropdowns();"
             class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
             :class="subtype === 'all' 
-              ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
+              ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
               : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
           >
             <span class="truncate">{{ category === 'words' ? 'Semua Pelajaran (Semua Bab)' : (category === 'kanji' ? 'Semua Kelompok (105 Kanji)' : 'Semua Kelompok') }}</span>
-            <Check v-if="subtype === 'all'" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
+            <Check v-if="subtype === 'all'" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
           </button>
 
           <!-- Kanji Groups -->
@@ -259,11 +259,11 @@ const statusPills = [
               @click="emit('update:subtype', grp.key); closeDropdowns();"
               class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
               :class="subtype === grp.key 
-                ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
                 : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
             >
               <span class="truncate">{{ grp.label }}</span>
-              <Check v-if="subtype === grp.key" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
+              <Check v-if="subtype === grp.key" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
             </button>
           </template>
 
@@ -280,11 +280,11 @@ const statusPills = [
               @click="emit('update:subtype', sub.key); closeDropdowns();"
               class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
               :class="subtype === sub.key 
-                ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
                 : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
             >
               <span class="truncate">{{ sub.label }}</span>
-              <Check v-if="subtype === sub.key" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
+              <Check v-if="subtype === sub.key" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
             </button>
           </template>
 
@@ -297,11 +297,11 @@ const statusPills = [
               @click="emit('update:subtype', les); closeDropdowns();"
               class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
               :class="subtype === les 
-                ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
                 : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
             >
               <span class="truncate">{{ les }}</span>
-              <Check v-if="subtype === les" class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0 ml-2" />
+              <Check v-if="subtype === les" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
             </button>
           </template>
         </div>
@@ -339,11 +339,11 @@ const statusPills = [
               class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 transition-transform duration-200"
               :class="[
                 statusFilter === st.key ? 'scale-110' : 'opacity-70',
-                st.key === 'all' ? 'text-indigo-500 dark:text-indigo-400' :
+                st.key === 'all' ? 'text-indigo-500 dark:text-torii' :
                 st.key === 'new' ? 'text-slate-500 dark:text-slate-400' :
                 st.key === 'learning' ? 'text-amber-500 dark:text-amber-400' :
                 st.key === 'mastered' ? 'text-emerald-500 dark:text-emerald-400' :
-                'text-indigo-500 dark:text-indigo-400'
+                'text-amber-500 dark:text-amber-400'
               ]" 
             />
             <span>{{ st.shortLabel }}</span>

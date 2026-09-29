@@ -26,6 +26,7 @@ import PreviewCardModal from './components/preview/PreviewCardModal.vue';
 import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
 import ProfileBadgeModal from './components/ProfileBadgeModal.vue';
 import SettingsModal from './components/SettingsModal.vue';
+import BadgeIcon from './components/common/BadgeIcon.vue';
 import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
@@ -118,6 +119,13 @@ onMounted(async () => {
   settingsStore.applyTheme();
   await authStore.checkSession();
   await quizStore.loadStreaksFromStorage();
+
+  // If user has unclaimed level badges from previous sessions, trigger the celebration popup
+  if (badgeStore.hasUnclaimedLevels && !quizStarted.value) {
+    setTimeout(() => {
+      quizStore.showLevelUpScreen = true;
+    }, 500);
+  }
 });
 
 onUnmounted(() => {
@@ -145,7 +153,7 @@ const goToHome = () => {
 </script>
 
 <template>
-  <div class="h-full w-screen bg-slate-50 dark:bg-slate-950 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
+  <div class="h-full w-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
     <!-- Top Global App Bar (Hidden when Battleground is active) -->
     <header v-if="!showBattleground" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2">
@@ -155,18 +163,18 @@ const goToHome = () => {
         </div>
         <button 
             @click="showAboutModal = true"
-            class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-indigo-900/40 hover:text-indigo-600 dark:hover:text-indigo-400 border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+            class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-torii/10 dark:hover:bg-slate-750 hover:text-torii dark:hover:text-torii-light border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
             title="Tentang Aplikasi"
           >
-          <Info class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+          <Info class="w-3.5 h-3.5 text-torii dark:text-torii-light" />
         </button>
 
         <button 
           @click="showReferenceModal = true"
-          class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-violet-50 dark:hover:bg-violet-950/50 hover:text-violet-600 dark:hover:text-violet-300 border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+          class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-matcha/10 dark:hover:bg-slate-750 hover:text-matcha dark:hover:text-matcha-light border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
           title="Furoku (付録) - Referensi & Lampiran"
         >
-          <BookMarked class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+          <BookMarked class="w-3.5 h-3.5 text-matcha dark:text-matcha-light" />
           <span class="hidden sm:inline">Furoku</span>
         </button>
       </div>
@@ -174,7 +182,7 @@ const goToHome = () => {
       <!-- Desktop Quiz Progress Bar (Centering perfectly via absolute positioning) -->
       <div 
         v-if="quizStarted && !quizStore.quizCompleted && !quizStore.isHitunganFinished" 
-        class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 lg:gap-4 px-3.5 py-1 bg-slate-50 dark:bg-slate-800/90 rounded-xl border border-gray-200/80 dark:border-slate-700/60 shadow-2xs animate-fadeIn z-10"
+        class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 lg:gap-4 px-3.5 py-1 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-gray-200/80 dark:border-slate-800 shadow-2xs animate-fadeIn z-10"
       >
         <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
           <span>Soal {{ quizStore.currentQuestionIndex + 1 }}</span>
@@ -187,15 +195,15 @@ const goToHome = () => {
         </div>
 
         <!-- Progress Bar Line -->
-        <div class="w-24 sm:w-32 lg:w-48 h-2 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden shadow-inner">
+        <div class="w-24 sm:w-32 lg:w-48 h-2 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
           <div 
-            class="h-full bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 ease-in-out rounded-full" 
+            class="h-full bg-indigo-600 dark:bg-matcha transition-all duration-300 ease-in-out rounded-full" 
             :style="{ width: `${quizStore.progress}%` }"
           ></div>
         </div>
 
         <!-- Score Counter -->
-        <div class="flex items-center gap-1 text-xs font-extrabold text-indigo-600 dark:text-indigo-400 whitespace-nowrap">
+        <div class="flex items-center gap-1 text-xs font-extrabold text-indigo-600 dark:text-torii whitespace-nowrap">
           <span>Score:</span>
           <span>{{ quizStore.score }}</span>
         </div>
@@ -207,7 +215,7 @@ const goToHome = () => {
         class="hidden md:block absolute bottom-0 left-0 right-0 h-0.5 bg-transparent overflow-hidden pointer-events-none"
       >
         <div 
-          class="h-full bg-indigo-600 dark:bg-indigo-400 transition-all duration-300 ease-in-out" 
+          class="h-full bg-indigo-600 dark:bg-matcha transition-all duration-300 ease-in-out" 
           :style="{ width: `${quizStore.progress}%` }"
         ></div>
       </div>
@@ -217,15 +225,15 @@ const goToHome = () => {
           <div class="relative" ref="userDropdownRef">
             <button 
               @click.stop="showUserDropdown = !showUserDropdown"
-              class="flex items-center gap-2 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100/80 dark:hover:bg-indigo-900/70 border border-indigo-100 dark:border-indigo-800/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
+              class="flex items-center gap-2 bg-gray-50 dark:bg-slate-850 hover:bg-gray-100/80 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
             >
-              <div class="w-6 h-6 rounded-lg bg-indigo-600/20 border border-indigo-400/40 text-white flex items-center justify-center font-extrabold text-xs overflow-hidden shadow-2xs">
-                <span class="text-xs select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
+              <div class="w-6 h-6 rounded-lg bg-aizome/10 dark:bg-torii/20 border border-aizome/20 dark:border-torii/40 flex items-center justify-center font-extrabold text-xs overflow-hidden shadow-2xs p-0.5">
+                <BadgeIcon :badge-id="badgeStore.activeAvatarBadge.id" class="w-4 h-4" />
               </div>
-              <span class="text-xs font-bold text-indigo-900 dark:text-indigo-200 truncate max-w-[100px] sm:max-w-[120px]">
+              <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate max-w-[100px] sm:max-w-[120px]">
                 {{ authStore.displayUsername }}
               </span>
-              <ChevronDown class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 transition-transform duration-200" :class="{ 'rotate-180': showUserDropdown }" />
+              <ChevronDown class="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': showUserDropdown }" />
             </button>
 
             <!-- Dropdown Menu -->
@@ -235,8 +243,8 @@ const goToHome = () => {
             >
               <!-- User Summary Header -->
               <div class="px-2 pb-2.5 mb-2 border-b border-gray-100 dark:border-slate-800 flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-indigo-600/20 border border-indigo-400/40 text-white flex items-center justify-center font-extrabold text-sm shadow-xs flex-shrink-0 overflow-hidden">
-                  <span class="text-base select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
+                <div class="w-9 h-9 rounded-xl bg-aizome/10 dark:bg-torii/20 border border-aizome/20 dark:border-torii/40 text-white flex items-center justify-center font-extrabold text-sm shadow-xs flex-shrink-0 overflow-hidden p-1">
+                  <BadgeIcon :badge-id="badgeStore.activeAvatarBadge.id" class="w-6 h-6" />
                 </div>
                 <div class="flex flex-col min-w-0">
                   <span class="text-xs font-extrabold text-gray-900 dark:text-slate-100 truncate">
@@ -258,7 +266,7 @@ const goToHome = () => {
                     <Award class="w-4 h-4 text-amber-500 flex-shrink-0" />
                     <span>Profil & Koleksi Badge</span>
                   </div>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black">
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 dark:bg-torii dark:text-white font-black">
                     Lvl {{ badgeStore.highestLevelReached }}
                   </span>
                 </button>
@@ -267,14 +275,14 @@ const goToHome = () => {
               <!-- Settings Section: Theme Mode -->
               <div class="px-1 py-1">
                 <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 px-1">
-                  <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
                   <span>Tema Tampilan</span>
                 </div>
 
                 <div class="relative grid grid-cols-3 p-1 bg-gray-50 dark:bg-slate-800/80 rounded-xl border border-gray-100 dark:border-slate-700/60">
                   <!-- Sliding Pill Indicator -->
                   <div 
-                    class="absolute inset-y-1 rounded-lg bg-white dark:bg-slate-700 border border-indigo-100 dark:border-indigo-500/30 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
+                    class="absolute inset-y-1 rounded-lg bg-white dark:bg-slate-700 border border-indigo-100 dark:border-slate-600 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
                     :style="{
                       width: 'calc((100% - 8px) / 3)',
                       left: '4px',
@@ -289,7 +297,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('auto')"
                     class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'auto' 
-                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-torii-light font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Otomatis Ikuti Perangkat"
                   >
@@ -300,7 +308,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('dark')"
                     class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'dark' 
-                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-torii-light font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Gelap"
                   >
@@ -311,7 +319,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('light')"
                     class="relative z-10 px-2 py-1.5 rounded-lg text-[11px] font-bold transition-colors duration-200 flex items-center justify-center gap-1 cursor-pointer select-none"
                     :class="settingsStore.themeMode === 'light' 
-                      ? 'text-indigo-600 dark:text-indigo-300 font-extrabold' 
+                      ? 'text-indigo-600 dark:text-torii-light font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Terang"
                   >
@@ -328,7 +336,7 @@ const goToHome = () => {
                   class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
                 >
                   <div class="flex items-center gap-2">
-                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
                     <span>Pengaturan Lainnya</span>
                   </div>
                   <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
@@ -353,11 +361,11 @@ const goToHome = () => {
           <div class="relative" ref="userDropdownRef">
             <button 
               @click.stop="showUserDropdown = !showUserDropdown"
-              class="p-1.5 sm:px-2.5 sm:py-1.5 text-gray-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-slate-800 rounded-xl transition border border-gray-200 dark:border-slate-700 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              class="p-1.5 sm:px-2.5 sm:py-1.5 text-gray-600 dark:text-slate-300 hover:text-aizome dark:hover:text-torii-light hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition border border-gray-200 dark:border-slate-700 cursor-pointer flex items-center gap-1.5 text-xs font-bold"
               title="Pengaturan & Profil"
             >
-              <div class="w-6 h-6 rounded-lg bg-indigo-50 dark:bg-slate-800 border border-indigo-200/60 dark:border-slate-700 flex items-center justify-center text-xs">
-                <span class="select-none">{{ badgeStore.activeAvatarBadge.icon }}</span>
+              <div class="w-6 h-6 rounded-lg bg-aizome/10 dark:bg-slate-800 border border-aizome/20 dark:border-slate-700 flex items-center justify-center text-xs p-0.5">
+                <BadgeIcon :badge-id="badgeStore.activeAvatarBadge.id" class="w-4 h-4" />
               </div>
               <ChevronDown class="w-3 h-3 text-gray-400 dark:text-slate-500 transition-transform duration-200" :class="{ 'rotate-180': showUserDropdown }" />
             </button>
@@ -377,7 +385,7 @@ const goToHome = () => {
                     <Award class="w-4 h-4 text-amber-500 flex-shrink-0" />
                     <span>Profil & Koleksi Badge</span>
                   </div>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black">
+                  <span class="text-[10px] px-1.5 py-0.5 rounded-md bg-amber-400 text-slate-950 dark:bg-torii dark:text-white font-black">
                     Lvl {{ badgeStore.highestLevelReached }}
                   </span>
                 </button>
@@ -385,7 +393,7 @@ const goToHome = () => {
               <!-- Settings Section: Theme Mode -->
               <div class="px-1 py-1">
                 <div class="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 px-1">
-                  <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <Moon class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
                   <span>Tema Tampilan</span>
                 </div>
 
@@ -394,7 +402,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('auto')"
                     class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
                     :class="settingsStore.themeMode === 'auto' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-xs border border-indigo-100 dark:border-slate-600 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Otomatis Ikuti Perangkat"
                   >
@@ -405,7 +413,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('dark')"
                     class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
                     :class="settingsStore.themeMode === 'dark' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-xs border border-indigo-100 dark:border-slate-600 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Gelap"
                   >
@@ -416,7 +424,7 @@ const goToHome = () => {
                     @click="settingsStore.setThemeMode('light')"
                     class="px-2 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 cursor-pointer"
                     :class="settingsStore.themeMode === 'light' 
-                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-indigo-300 shadow-xs border border-indigo-100 dark:border-indigo-500/30 font-extrabold' 
+                      ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-xs border border-indigo-100 dark:border-slate-600 font-extrabold' 
                       : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
                     title="Mode Terang"
                   >
@@ -433,7 +441,7 @@ const goToHome = () => {
                   class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
                 >
                   <div class="flex items-center gap-2">
-                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+                    <Sliders class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
                     <span>Pengaturan Lainnya</span>
                   </div>
                   <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
@@ -446,7 +454,7 @@ const goToHome = () => {
               <!-- Login CTA inside dropdown -->
               <button 
                 @click="showAuthModal = true; showUserDropdown = false;"
-                class="w-full px-2.5 py-2 text-center text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition shadow-xs cursor-pointer"
+                class="w-full px-2.5 py-2 text-center text-xs font-bold bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl transition shadow-xs cursor-pointer"
               >
                 Masuk / Daftar
               </button>
@@ -455,7 +463,7 @@ const goToHome = () => {
 
           <button 
             @click="showAuthModal = true"
-            class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
+            class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
           >
             Masuk / Daftar
           </button>
@@ -531,7 +539,7 @@ const goToHome = () => {
         :class="[
           quizStore.selectedMode === 'writing' || quizStore.selectedMode === 'hitungan'
             ? 'bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
-            : 'bg-white dark:bg-slate-900 rounded-2xl shadow-md p-3 sm:p-6 border border-gray-100 dark:border-slate-800 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]'
+            : 'bg-transparent border-0 shadow-none p-1 sm:p-2 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]'
         ]"
         v-if="!quizStore.quizCompleted"
       >

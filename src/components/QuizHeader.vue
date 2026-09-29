@@ -18,12 +18,12 @@ const questionNumber = computed(() => {
         <span v-if="quizStore.isMistakeRound" class="text-rose-600 dark:text-rose-400 font-bold ml-1">🎯 (Babak Perbaikan)</span>
       </span>
 
-      <span class="font-extrabold text-indigo-600 dark:text-indigo-400">Score: {{ quizStore.score }}</span>
+      <span class="font-extrabold text-indigo-600 dark:text-torii">Score: {{ quizStore.score }}</span>
     </div>
 
     <!-- Session Progress Bar -->
     <div class="w-full h-2.5 bg-gray-200 dark:bg-slate-800 rounded-full overflow-hidden shadow-inner">
-      <div class="h-full bg-indigo-600 dark:bg-indigo-500 transition-all duration-300 ease-in-out rounded-full" :style="{ width: `${quizStore.progress}%` }"></div>
+      <div class="h-full bg-indigo-600 dark:bg-matcha transition-all duration-300 ease-in-out rounded-full" :style="{ width: `${quizStore.progress}%` }"></div>
     </div>
   </header>
 </template>

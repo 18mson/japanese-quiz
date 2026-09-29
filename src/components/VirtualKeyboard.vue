@@ -110,23 +110,28 @@ function handleEnter() {
 const isDark = computed(() => props.theme === 'dark' || (props.theme === 'auto' && settingsStore.isDarkMode));
 
 const containerClass = computed(() => isDark.value
-  ? 'bg-slate-950/98 backdrop-blur-xl border-t border-slate-800/90 text-white shadow-2xl'
+  ? 'bg-slate-950/98 backdrop-blur-xl border-t border-slate-800/90 text-slate-100 shadow-2xl'
   : 'bg-white/98 backdrop-blur-xl border-t border-slate-200/90 text-slate-900 shadow-[0_-8px_30px_rgba(0,0,0,0.12)]'
 );
 
 const keyBaseClass = computed(() => isDark.value
-  ? 'bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border-slate-700/60 active:bg-indigo-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(99,102,241,0.6)]'
+  ? 'bg-slate-900/90 hover:bg-slate-800/90 text-slate-100 border-slate-800/70 active:bg-torii active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(224,90,71,0.6)]'
   : 'bg-slate-100 hover:bg-slate-200/80 text-slate-800 border-slate-200/80 active:bg-indigo-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(79,70,229,0.5)] shadow-xs'
 );
 
 const backspaceClass = computed(() => isDark.value
-  ? 'bg-slate-800/90 hover:bg-rose-900/60 text-rose-400 border-rose-500/30 active:bg-rose-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(244,63,94,0.6)]'
+  ? 'bg-slate-900/90 hover:bg-torii/20 text-torii-light border-torii/30 active:bg-torii active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(224,90,71,0.6)]'
   : 'bg-rose-50 hover:bg-rose-100 text-rose-600 border-rose-200 active:bg-rose-600 active:text-white active:scale-90 active:shadow-[0_0_12px_rgba(225,29,72,0.5)] shadow-xs'
 );
 
 const enterClass = computed(() => isDark.value
-  ? 'bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-500/50 active:bg-indigo-700 active:scale-90 shadow-md shadow-indigo-600/30 font-bold'
+  ? 'bg-torii hover:bg-torii-hover text-white border-torii/50 active:bg-torii-600 active:scale-90 shadow-md shadow-torii/30 font-bold'
   : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-600 active:bg-indigo-800 active:scale-90 shadow-md shadow-indigo-600/20 font-bold'
+);
+
+const activeKeyClass = computed(() => isDark.value
+  ? '!scale-90 !bg-torii !text-white !ring-2 !ring-torii-light shadow-md'
+  : '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md'
 );
 </script>
 
@@ -153,7 +158,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === key ? activeKeyClass : ''
         ]"
       >
         {{ key }}
@@ -173,7 +178,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === key ? activeKeyClass : ''
         ]"
       >
         {{ key }}
@@ -192,7 +197,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === ',' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === ',' ? activeKeyClass : ''
         ]"
         title="Comma"
       >
@@ -210,7 +215,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === key ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === key ? activeKeyClass : ''
         ]"
       >
         {{ key }}
@@ -226,7 +231,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           backspaceClass,
           keyHeightClass,
-          activeKey === 'backspace' ? '!scale-90 !bg-rose-600 !text-white !ring-2 !ring-rose-400 shadow-md' : ''
+          activeKey === 'backspace' ? '!scale-90 !bg-torii !text-white !ring-2 !ring-torii-light shadow-md' : ''
         ]"
         title="Backspace"
       >
@@ -245,7 +250,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === '-' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === '-' ? activeKeyClass : ''
         ]"
       >
         -
@@ -259,7 +264,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           keyBaseClass,
           keyHeightClass,
-          activeKey === ' ' ? '!scale-90 !bg-indigo-600 !text-white !ring-2 !ring-indigo-400 shadow-md' : ''
+          activeKey === ' ' ? activeKeyClass : ''
         ]"
       >
         SPACE
@@ -274,7 +279,7 @@ const enterClass = computed(() => isDark.value
         :class="[
           enterClass,
           keyHeightClass,
-          activeKey === 'enter' ? '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg' : ''
+          activeKey === 'enter' ? (isDark ? '!scale-90 !bg-torii-600 !ring-2 !ring-torii-light shadow-lg' : '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg') : ''
         ]"
       >
         <span>{{ enterLabel }}</span>

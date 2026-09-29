@@ -245,13 +245,13 @@ onUnmounted(() => {
 .numpad-key {
   height: 3.5rem;
   border-radius: 1rem;
-  background-color: rgb(30 41 59 / 0.9);
-  color: rgb(241 245 249);
+  background-color: #1C1C21;
+  color: #EDEAE4;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 1.5rem;
   line-height: 2rem;
   font-weight: 700;
-  border: 1px solid rgb(51 65 85 / 0.8);
+  border: 1px solid #2C2C34;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -271,11 +271,11 @@ onUnmounted(() => {
 }
 
 .numpad-key:hover {
-  background-color: rgb(51 65 85);
+  background-color: #2C2C34;
 }
 
 .numpad-key:active {
-  background-color: rgb(79 70 229);
+  background-color: #E05A47;
   color: #ffffff;
   transform: scale(0.95);
 }
@@ -284,7 +284,7 @@ onUnmounted(() => {
   height: 3.5rem;
   border-radius: 1rem;
   font-weight: 700;
-  border: 1px solid rgb(51 65 85 / 0.8);
+  border: 1px solid #2C2C34;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;

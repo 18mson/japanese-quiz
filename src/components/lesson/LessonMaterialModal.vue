@@ -112,8 +112,8 @@ onUnmounted(() => {
         class="w-full max-w-xl bg-slate-900/95 border border-violet-500/30 rounded-3xl p-5 sm:p-6 shadow-2xl shadow-violet-950/60 flex flex-col justify-between relative overflow-hidden text-slate-100 max-h-[92vh]"
       >
         <!-- Background Neon Glows -->
-        <div class="absolute -top-24 -right-24 w-60 h-60 bg-violet-600/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -top-24 -right-24 w-60 h-60 bg-torii/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <!-- ============================================================ -->
         <!-- RENSHUU: BUNKEI POLA KALIMAT CAROUSEL                        -->
@@ -122,10 +122,10 @@ onUnmounted(() => {
           <!-- Card Header & Badge -->
           <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-3.5 flex-shrink-0">
             <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-violet-500/20 text-violet-400 border border-violet-500/30 flex items-center justify-center font-bold text-sm shadow-xs">
+              <div class="w-8 h-8 rounded-xl bg-torii/15 text-torii border border-torii/30 flex items-center justify-center font-bold text-sm shadow-xs">
                 <BookOpen class="w-4 h-4" />
               </div>
-              <span class="text-xs sm:text-sm font-extrabold text-violet-300 tracking-wide">
+              <span class="text-xs sm:text-sm font-extrabold text-torii-light tracking-wide">
                 📖 Pola {{ currentBunkei.point_number || (currentCardIndex + 1) }} / {{ totalBunkei }}
               </span>
             </div>
@@ -135,7 +135,7 @@ onUnmounted(() => {
               <button
                 type="button"
                 @click="isReferenceModalOpen = true"
-                class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer"
+                class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-torii-light border border-torii/30 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer"
                 title="Buka Kosakata & Referensi"
               >
                 <span>📚 Referensi</span>
@@ -304,7 +304,7 @@ onUnmounted(() => {
               v-else
               type="button"
               @click="handleStartPractice"
-              class="px-6 py-2.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white transition flex items-center gap-2 shadow-xl shadow-violet-600/40 cursor-pointer animate-pulse"
+              class="px-6 py-2.5 rounded-xl text-xs font-extrabold bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 text-white transition flex items-center gap-2 shadow-xl shadow-torii/30 cursor-pointer animate-pulse"
             >
               <Play class="w-4 h-4 fill-white" />
               <span>Mulai Latihan</span>
@@ -319,12 +319,12 @@ onUnmounted(() => {
           <!-- Card Header & Badge -->
           <div class="flex items-center justify-between pb-3 border-b border-slate-800/80 mb-4">
             <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center font-bold text-sm shadow-xs">
+              <div class="w-8 h-8 rounded-xl bg-torii/15 text-torii border border-torii/30 flex items-center justify-center font-bold text-sm shadow-xs">
                 <MessageSquare class="w-4 h-4" />
               </div>
               <div>
                 <div class="text-[11px] font-bold text-slate-400">Pelajaran {{ quizStore.currentLessonNumber }}</div>
-                <div class="text-xs sm:text-sm font-black text-indigo-300">
+                <div class="text-xs sm:text-sm font-black text-torii-light">
                   Percakapan (会話)
                 </div>
               </div>
@@ -334,13 +334,13 @@ onUnmounted(() => {
               <button
                 type="button"
                 @click="isReferenceModalOpen = true"
-                class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-indigo-300 border border-indigo-500/30 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer"
+                class="px-2.5 py-1 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-torii-light border border-torii/30 text-[11px] font-bold transition flex items-center gap-1.5 cursor-pointer"
                 title="Buka Kosakata & Referensi"
               >
                 <span>📚 Referensi</span>
               </button>
 
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-torii/15 text-torii-light border border-torii/30">
                 {{ quizStore.kaiwaData.lines?.length || 9 }} Baris Dialog
               </span>
             </div>
@@ -349,21 +349,21 @@ onUnmounted(() => {
           <!-- Dialog Title & Context Display -->
           <div class="flex-1 flex flex-col justify-center items-center text-center py-4 px-2 space-y-4">
             <!-- Japanese Title Box -->
-            <div class="w-full bg-slate-950/70 border border-indigo-500/25 rounded-2xl p-4 sm:p-5 shadow-inner">
-              <div class="text-2xl sm:text-3xl font-black text-indigo-300 font-jp tracking-wide mb-1">
+            <div class="w-full bg-slate-950/70 border border-torii/25 rounded-2xl p-4 sm:p-5 shadow-inner">
+              <div class="text-2xl sm:text-3xl font-black text-torii-light font-jp tracking-wide mb-1">
                 {{ quizStore.kaiwaData.title }}
               </div>
               <div v-if="quizStore.kaiwaData.title_romaji" class="text-xs sm:text-sm font-semibold text-slate-400">
                 {{ quizStore.kaiwaData.title_romaji }}
               </div>
-              <div v-if="quizStore.kaiwaData.title_meaning" class="text-xs sm:text-sm font-bold text-indigo-400 mt-1">
+              <div v-if="quizStore.kaiwaData.title_meaning" class="text-xs sm:text-sm font-bold text-torii mt-1">
                 "{{ quizStore.kaiwaData.title_meaning }}"
               </div>
             </div>
 
             <!-- Context Note Box -->
-            <div v-if="quizStore.kaiwaData.context_note" class="bg-indigo-950/30 border border-indigo-800/40 rounded-xl p-3.5 max-w-md text-left">
-              <div class="text-[11px] font-bold uppercase tracking-wider text-indigo-400 mb-1 flex items-center gap-1.5">
+            <div v-if="quizStore.kaiwaData.context_note" class="bg-stone-900/60 border border-slate-700/60 rounded-xl p-3.5 max-w-md text-left">
+              <div class="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-1 flex items-center gap-1.5">
                 <Sparkles class="w-3.5 h-3.5" />
                 <span>Situasi / Konteks Percakapan:</span>
               </div>
@@ -378,7 +378,7 @@ onUnmounted(() => {
             <button
               type="button"
               @click="handleStartPractice"
-              class="w-full sm:w-auto px-7 py-3 rounded-2xl text-sm font-extrabold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white transition flex items-center justify-center gap-2 shadow-xl shadow-indigo-600/40 cursor-pointer animate-pulse"
+              class="w-full sm:w-auto px-7 py-3 rounded-2xl text-sm font-extrabold bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 text-white transition flex items-center justify-center gap-2 shadow-xl shadow-torii/30 cursor-pointer animate-pulse"
             >
               <Play class="w-4 h-4 fill-white" />
               <span>Mulai Mengetik Percakapan</span>

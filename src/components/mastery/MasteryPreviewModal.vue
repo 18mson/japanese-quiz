@@ -72,7 +72,7 @@ onUnmounted(() => {
       
       <!-- Header / Category Badge & Mode Switcher -->
       <div class="w-full flex items-center justify-between mb-3.5">
-        <div class="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-500/30 rounded-full text-indigo-700 dark:text-indigo-300 text-xs font-bold capitalize">
+        <div class="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 dark:bg-torii/15 border border-indigo-200 dark:border-torii/30 rounded-full text-indigo-700 dark:text-torii-light text-xs font-bold capitalize">
           <Sparkles class="w-3.5 h-3.5 text-amber-500 shrink-0" />
           <span>{{ category === 'words' ? (item.lesson || 'Kanji & Kotoba') : (category + ' ' + (item.type === 'basic' ? 'Dasar' : item.type === 'dakuten' ? 'Dakuten' : item.type === 'combination' ? 'Kombinasi' : '')) }}</span>
         </div>
@@ -100,7 +100,7 @@ onUnmounted(() => {
               :class="[
                 'p-1.5 rounded-lg transition cursor-pointer flex items-center gap-1 text-[11px] font-bold',
                 viewMode === 'text' 
-                  ? 'bg-indigo-600 text-white shadow-xs' 
+                  ? 'bg-indigo-600 dark:bg-torii text-white shadow-xs' 
                   : 'text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200'
               ]"
               title="Teks Statis Besar"
@@ -151,7 +151,7 @@ onUnmounted(() => {
 
         <!-- Romaji & Audio Speaker (For Kana & Words) -->
         <div v-if="category !== 'kanji'" class="flex items-center justify-center gap-2.5 my-1 flex-wrap">
-          <span class="text-sm sm:text-base font-extrabold text-indigo-600 dark:text-indigo-400 tracking-wider uppercase">
+          <span class="text-sm sm:text-base font-extrabold text-indigo-600 dark:text-torii-light tracking-wider uppercase">
             {{ Array.isArray(item.romaji) ? item.romaji.join(' / ') : item.romaji }}
           </span>
           <SpeakerButton :text="textToSpeak" size="md" />
@@ -169,9 +169,9 @@ onUnmounted(() => {
             <span class="font-black font-jp text-amber-900 dark:text-amber-200 tracking-wide text-sm">{{ item.kunyomi.join('、') }}</span>
           </div>
 
-          <div v-if="item.onyomi?.length" class="flex items-center justify-between px-3 py-1.5 bg-blue-50 dark:bg-blue-950/40 rounded-xl border border-blue-200/80 dark:border-blue-800/50 text-xs">
-            <span class="font-bold text-blue-700 dark:text-blue-400">Onyomi (On):</span>
-            <span class="font-black font-jp text-blue-900 dark:text-blue-200 tracking-wide text-sm">{{ item.onyomi.join('、') }}</span>
+          <div v-if="item.onyomi?.length" class="flex items-center justify-between px-3 py-1.5 bg-blue-50 dark:bg-torii/15 rounded-xl border border-blue-200/80 dark:border-torii/30 text-xs">
+            <span class="font-bold text-blue-700 dark:text-torii">Onyomi (On):</span>
+            <span class="font-black font-jp text-blue-900 dark:text-torii-light tracking-wide text-sm">{{ item.onyomi.join('、') }}</span>
           </div>
         </div>
 
@@ -185,7 +185,7 @@ onUnmounted(() => {
 
         <!-- Examples (Contoh Kotoba Terkait untuk Kanji) -->
         <div v-if="category === 'kanji' && item.examples?.length" class="mt-2.5 w-full bg-white dark:bg-slate-900/70 p-2.5 rounded-xl border border-gray-200 dark:border-slate-700 text-left">
-          <span class="text-[10px] uppercase font-black text-indigo-600 dark:text-indigo-400 flex items-center gap-1 mb-1.5">
+          <span class="text-[10px] uppercase font-black text-indigo-600 dark:text-torii flex items-center gap-1 mb-1.5">
             <Sparkles class="w-3 h-3" />
             <span>Contoh Kosakata Terkait:</span>
           </span>
@@ -206,7 +206,7 @@ onUnmounted(() => {
             class="text-xs px-2.5 py-1 rounded-full font-extrabold flex items-center gap-1.5 border"
             :class="[
               quizStore.getMasteryTier(item.character) === 'crown'
-                ? 'bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700'
+                ? 'bg-amber-50 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700'
                 : quizStore.getMasteryTier(item.character) === 'mastered'
                 ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700'
                 : quizStore.getMasteryTier(item.character) === 'learning'

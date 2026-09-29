@@ -251,7 +251,7 @@ onUnmounted(() => {
             v-if="direction === 'kana_to_number'"
             type="button"
             @click="speak(currentQuestion.expectedKana)"
-            class="p-2 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition cursor-pointer flex-shrink-0"
+            class="p-2 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-torii hover:bg-indigo-100 dark:hover:bg-slate-700 transition cursor-pointer flex-shrink-0"
             title="Dengarkan Ulang"
           >
             <Volume2 class="w-5 h-5 sm:w-6 sm:h-6" />

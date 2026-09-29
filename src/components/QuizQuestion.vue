@@ -61,44 +61,28 @@ const instructionText = computed(() => {
 
 <template>
   <div class="flex flex-col items-center my-2 w-full flex-shrink-0">
-    <!-- Real-time Tier Upgrade Badge Overlay (< 100ms instant feedback) -->
-    <div 
-      v-if="quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'up'"
-      class="mb-2 px-3.5 py-1 rounded-full text-xs font-black shadow-lg flex items-center gap-1.5 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 text-slate-950 border border-yellow-200 cursor-default"
-    >
-      <span>✨ {{ quizStore.latestTierTransition.label }} 🎉</span>
-    </div>
-
-    <!-- Real-time Tier Downgrade Badge Overlay (e.g. Mahkota -> Hafal on Typo) -->
-    <div 
-      v-else-if="quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down'"
-      class="mb-2 px-3.5 py-1 rounded-full text-xs font-black shadow-md flex items-center gap-1.5 bg-amber-500/15 border border-amber-500/40 text-amber-600 dark:text-amber-400 cursor-default animate-pulse"
-    >
-      <span>⚠️ {{ quizStore.latestTierTransition.label }}</span>
-    </div>
-
     <!-- Reason Badge (Only shown for retry/perbaikan questions) -->
     <div 
-      v-else-if="questionReason === 'repeat' && reasonLabel" 
+      v-if="questionReason === 'repeat' && reasonLabel" 
       class="mb-2 px-3.5 py-1 rounded-full text-xs tracking-tight shadow-sm flex items-center gap-1.5 border bg-gradient-to-r from-rose-500 to-amber-500 text-white border-rose-300 font-extrabold animate-pulse"
     >
       <span>{{ reasonLabel }}</span>
     </div>
 
-    <!-- Big Question Card -->
+    <!-- Question Character / Word Area -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50/50 to-indigo-100/30 dark:from-indigo-950/40 dark:to-slate-800/80 border border-indigo-100/50 dark:border-slate-700/80 rounded-2xl mb-2.5 shadow-sm transition-all duration-300 ease-out hover:translate-y-[-2px] hover:shadow-md px-6 py-4',
+        'flex flex-col items-center justify-center bg-transparent border-0 shadow-none mb-3 px-4 py-2 transition-all duration-300',
         isWord 
-          ? 'w-full max-w-md min-h-[100px] sm:min-h-[120px]' 
-          : 'w-full max-w-xs sm:max-w-sm min-h-[110px] sm:min-h-[130px]'
+          ? 'w-full max-w-md' 
+          : 'w-full max-w-xs sm:max-w-sm'
       ]"
     >
       <div class="flex flex-col items-center text-center w-full">
         <!-- Display Character/Word -->
         <span 
           :class="[
-            'text-gray-900 dark:text-white font-black tracking-wide transition-all duration-300 leading-none font-jp drop-shadow-xs whitespace-nowrap select-none',
+            'text-gray-900 dark:text-slate-100 font-black tracking-wide transition-all duration-300 leading-none font-jp drop-shadow-xs whitespace-nowrap select-none',
             isWord 
               ? (character.length > 6 ? 'text-3xl sm:text-4xl' : (character.length > 3 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'))
               : (character.length >= 2 ? 'text-5xl sm:text-6xl' : 'text-6xl sm:text-7xl')
@@ -113,13 +97,13 @@ const instructionText = computed(() => {
           <template v-if="hasValidReadingHint">
             <button 
               v-if="!showReadingHint"
-              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
               @click="showReadingHint = true"
             >
-              <Lightbulb class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+              <Lightbulb class="w-3 h-3 text-indigo-600 dark:text-torii" />
               <span>Reading Hint</span>
             </button>
-            <span v-else class="text-xs font-semibold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+            <span v-else class="text-xs font-semibold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
               Reading: <span class="font-jp">{{ currentKana }}</span>
             </span>
           </template>
@@ -128,13 +112,13 @@ const instructionText = computed(() => {
           <template v-if="currentMeaning">
             <button 
               v-if="!showMeaningHint"
-              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 hover:border-indigo-300 text-indigo-600 dark:text-indigo-400 rounded-full border border-indigo-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+              class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
               @click="quizStore.openMeaningHint()"
             >
-              <BookOpen class="w-3 h-3 text-indigo-600 dark:text-indigo-400" />
+              <BookOpen class="w-3 h-3 text-indigo-600 dark:text-torii" />
               <span>Petunjuk Arti</span>
             </button>
-            <span v-else class="text-xs font-medium text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border border-teal-100 dark:border-teal-800 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+            <span v-else class="text-xs font-medium text-teal-700 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
               Arti: {{ currentMeaning }}
             </span>
           </template>

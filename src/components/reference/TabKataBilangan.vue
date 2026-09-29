@@ -184,7 +184,7 @@ const handleRowClick = (text: string) => {
         :class="[
           'px-3 py-1.5 rounded-xl font-bold transition cursor-pointer shrink-0 border',
           activeCategory === 'puluhan'
-            ? 'bg-indigo-500/15 dark:bg-indigo-500/20 border-indigo-500/30 dark:border-indigo-500/40 text-indigo-700 dark:text-indigo-300 shadow-xs'
+            ? 'bg-indigo-500/15 dark:bg-torii/20 border-indigo-500/30 dark:border-torii/40 text-indigo-700 dark:text-torii-light shadow-xs'
             : 'bg-gray-100 dark:bg-slate-900/60 border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-800'
         ]"
       >
@@ -223,7 +223,7 @@ const handleRowClick = (text: string) => {
         :class="[
           'px-3 py-1.5 rounded-xl font-bold transition cursor-pointer shrink-0 border',
           activeCategory === 'besar'
-            ? 'bg-violet-500/15 dark:bg-violet-500/20 border-violet-500/30 dark:border-violet-500/40 text-violet-700 dark:text-violet-300 shadow-xs'
+            ? 'bg-violet-500/15 dark:bg-emerald-500/20 border-violet-500/30 dark:border-emerald-500/40 text-violet-700 dark:text-emerald-300 shadow-xs'
             : 'bg-gray-100 dark:bg-slate-900/60 border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-800'
         ]"
       >
@@ -236,7 +236,7 @@ const handleRowClick = (text: string) => {
         :class="[
           'px-3 py-1.5 rounded-xl font-bold transition cursor-pointer shrink-0 border',
           activeCategory === 'desimal_pecahan'
-            ? 'bg-cyan-500/15 dark:bg-cyan-500/20 border-cyan-500/30 dark:border-cyan-500/40 text-cyan-700 dark:text-cyan-300 shadow-xs'
+            ? 'bg-cyan-500/15 dark:bg-matcha/20 border-cyan-500/30 dark:border-matcha/40 text-cyan-700 dark:text-matcha shadow-xs'
             : 'bg-gray-100 dark:bg-slate-900/60 border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200 hover:bg-gray-200 dark:hover:bg-slate-800'
         ]"
       >
@@ -255,7 +255,7 @@ const handleRowClick = (text: string) => {
         <table class="w-full text-left text-xs sm:text-sm">
           <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
             <tr>
-              <th class="px-4 py-3 w-28 sm:w-36 text-cyan-700 dark:text-cyan-300">Nilai Angka</th>
+              <th class="px-4 py-3 w-28 sm:w-36 text-cyan-700 dark:text-slate-300">Nilai Angka</th>
               <th class="px-4 py-3 text-amber-700 dark:text-amber-300">Bahasa Jepang (Hiragana)</th>
               <th class="px-4 py-3 hidden sm:table-cell text-gray-500 dark:text-slate-400">Romaji</th>
               <th class="px-4 py-3 text-right w-16 text-gray-500 dark:text-slate-400">Suara</th>
@@ -398,7 +398,7 @@ const handleRowClick = (text: string) => {
       <!-- ============================================================ -->
       <div v-if="activeCategory === 'all' || activeCategory === 'puluhan'" class="space-y-3">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-indigo-400"></span>
+          <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-torii"></span>
           <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
             2. Puluhan (20 - 90)
           </h4>
@@ -408,7 +408,7 @@ const handleRowClick = (text: string) => {
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 w-24 sm:w-32 text-indigo-700 dark:text-indigo-300">Nilai</th>
+                <th class="px-4 py-3 w-24 sm:w-32 text-indigo-700 dark:text-torii-light">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>
                 <th class="px-4 py-3 hidden sm:table-cell text-gray-500 dark:text-slate-400">Romaji</th>
                 <th class="px-4 py-3 text-right w-16 text-gray-500 dark:text-slate-400">Suara</th>
@@ -421,11 +421,11 @@ const handleRowClick = (text: string) => {
                 @click="handleRowClick(u.japanese)"
                 class="hover:bg-gray-50 dark:hover:bg-slate-800/60 transition cursor-pointer group"
               >
-                <td class="px-4 py-2.5 font-extrabold text-sm sm:text-base text-gray-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-300">
+                <td class="px-4 py-2.5 font-extrabold text-sm sm:text-base text-gray-700 dark:text-slate-300 group-hover:text-indigo-600 dark:group-hover:text-torii-light">
                   {{ u.value }}
                 </td>
                 <td class="px-4 py-2.5">
-                  <div class="font-bold font-jp text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-200">
+                  <div class="font-bold font-jp text-sm sm:text-base text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-torii-light">
                     {{ u.japanese }}
                   </div>
                   <div class="text-[11px] text-gray-500 dark:text-slate-400 font-mono sm:hidden mt-0.5">
@@ -594,7 +594,7 @@ const handleRowClick = (text: string) => {
       <!-- ============================================================ -->
       <div v-if="activeCategory === 'all' || activeCategory === 'besar'" class="space-y-3">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-violet-500 dark:bg-violet-400"></span>
+          <span class="w-2 h-2 rounded-full bg-violet-500 dark:bg-emerald-400"></span>
           <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
             5. Puluhan Ribu ke Atas (万 / 億)
           </h4>
@@ -604,7 +604,7 @@ const handleRowClick = (text: string) => {
           <table class="w-full text-left text-xs sm:text-sm">
             <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
               <tr>
-                <th class="px-4 py-3 w-36 sm:w-44 text-violet-700 dark:text-violet-300">Nilai</th>
+                <th class="px-4 py-3 w-36 sm:w-44 text-violet-700 dark:text-emerald-300">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>
                 <th class="px-4 py-3 hidden sm:table-cell text-gray-500 dark:text-slate-400">Romaji</th>
                 <th class="px-4 py-3 text-right w-16 text-gray-500 dark:text-slate-400">Suara</th>
@@ -617,11 +617,11 @@ const handleRowClick = (text: string) => {
                 @click="handleRowClick(u.japanese)"
                 class="hover:bg-gray-50 dark:hover:bg-slate-800/60 transition cursor-pointer group"
               >
-                <td class="px-4 py-3 font-extrabold text-sm sm:text-base text-violet-700 dark:text-violet-300">
+                <td class="px-4 py-3 font-extrabold text-sm sm:text-base text-violet-700 dark:text-emerald-300">
                   {{ u.value.toLocaleString('id-ID') }}
                 </td>
                 <td class="px-4 py-3">
-                  <div class="font-bold font-jp text-base sm:text-lg text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-violet-200">
+                  <div class="font-bold font-jp text-base sm:text-lg text-gray-900 dark:text-white group-hover:text-violet-600 dark:group-hover:text-emerald-200">
                     {{ u.japanese }}
                   </div>
                   <div class="text-[11px] text-gray-500 dark:text-slate-400 font-mono sm:hidden mt-0.5">
@@ -646,7 +646,7 @@ const handleRowClick = (text: string) => {
       <!-- ============================================================ -->
       <div v-if="activeCategory === 'all' || activeCategory === 'desimal_pecahan'" class="space-y-3">
         <div class="flex items-center gap-2 px-1">
-          <span class="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400"></span>
+          <span class="w-2 h-2 rounded-full bg-cyan-500 dark:bg-matcha"></span>
           <h4 class="text-xs sm:text-sm font-bold text-gray-900 dark:text-slate-200 uppercase tracking-wider">
             6. Contoh Desimal & Pecahan
           </h4>
@@ -655,8 +655,8 @@ const handleRowClick = (text: string) => {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Tabel Desimal -->
           <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
-            <div class="px-4 py-2.5 bg-gray-50 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold text-cyan-700 dark:text-cyan-300">
-              <Sparkles class="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
+            <div class="px-4 py-2.5 bg-gray-50 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold text-cyan-700 dark:text-matcha">
+              <Sparkles class="w-4 h-4 text-cyan-600 dark:text-matcha" />
               <span>Desimal (小数 - Shousuu)</span>
             </div>
             <table class="w-full text-left text-xs sm:text-sm">
@@ -667,10 +667,10 @@ const handleRowClick = (text: string) => {
                   @click="handleRowClick(d.japanese)"
                   class="hover:bg-gray-50 dark:hover:bg-slate-800/60 transition cursor-pointer group"
                 >
-                  <td class="px-4 py-3 w-20 font-black text-cyan-600 dark:text-cyan-400 text-sm sm:text-base">
+                  <td class="px-4 py-3 w-20 font-black text-cyan-600 dark:text-matcha text-sm sm:text-base">
                     {{ d.value }}
                   </td>
-                  <td class="px-4 py-3 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-cyan-600 dark:group-hover:text-cyan-200">
+                  <td class="px-4 py-3 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-cyan-600 dark:group-hover:text-matcha">
                     {{ d.japanese }}
                   </td>
                   <td class="px-4 py-3 text-right w-14" @click.stop>
@@ -683,8 +683,8 @@ const handleRowClick = (text: string) => {
 
           <!-- Tabel Pecahan -->
           <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
-            <div class="px-4 py-2.5 bg-gray-50 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold text-indigo-700 dark:text-indigo-300">
-              <Sparkles class="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+            <div class="px-4 py-2.5 bg-gray-50 dark:bg-slate-950/90 border-b border-gray-200 dark:border-slate-800 flex items-center gap-2 text-xs font-bold text-indigo-700 dark:text-torii-light">
+              <Sparkles class="w-4 h-4 text-indigo-600 dark:text-torii" />
               <span>Pecahan (分数 - Bunsuu)</span>
             </div>
             <table class="w-full text-left text-xs sm:text-sm">
@@ -695,10 +695,10 @@ const handleRowClick = (text: string) => {
                   @click="handleRowClick(f.japanese)"
                   class="hover:bg-gray-50 dark:hover:bg-slate-800/60 transition cursor-pointer group"
                 >
-                  <td class="px-4 py-3 w-20 font-black text-indigo-600 dark:text-indigo-400 text-sm sm:text-base">
+                  <td class="px-4 py-3 w-20 font-black text-indigo-600 dark:text-torii text-sm sm:text-base">
                     {{ f.value }}
                   </td>
-                  <td class="px-4 py-3 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-indigo-600 dark:group-hover:text-indigo-200">
+                  <td class="px-4 py-3 font-bold text-gray-900 dark:text-white font-jp text-sm sm:text-base group-hover:text-indigo-600 dark:group-hover:text-torii-light">
                     {{ f.japanese }}
                   </td>
                   <td class="px-4 py-3 text-right w-14" @click.stop>

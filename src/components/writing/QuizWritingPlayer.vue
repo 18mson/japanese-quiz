@@ -47,7 +47,7 @@ const tierLabels: Record<string, { label: string; badgeBg: string }> = {
   new: { label: '🔴 Huruf Baru', badgeBg: 'bg-rose-500/15 border-rose-500/30 text-rose-700 dark:text-rose-300' },
   learning: { label: '🟡 Dalam Belajar', badgeBg: 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300' },
   mastered: { label: '🟢 Hafalan Retensi', badgeBg: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-800 dark:text-emerald-300' },
-  crown: { label: '👑 Mahkota', badgeBg: 'bg-violet-500/15 border-violet-500/30 text-violet-800 dark:text-violet-300' }
+  crown: { label: '👑 Mahkota', badgeBg: 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300' }
 };
 
 const handleKeyDown = (e: KeyboardEvent) => {
@@ -97,7 +97,7 @@ onUnmounted(() => {
         <div v-if="currentChar.category === 'kanji'" class="flex flex-col items-center gap-2 w-full">
           <div class="text-3xl sm:text-4xl lg:text-5xl font-bold font-jp tracking-wider text-slate-800 dark:text-slate-100 flex items-center justify-center flex-wrap gap-x-1">
             <span v-if="currentChar.prefixKana" class="text-slate-400 dark:text-slate-500 font-normal">{{ currentChar.prefixKana }}</span>
-            <span class="font-black underline decoration-indigo-500 dark:decoration-indigo-400 decoration-4 underline-offset-8 text-indigo-600 dark:text-indigo-400 px-1">
+            <span class="font-black underline decoration-torii decoration-4 underline-offset-8 text-torii dark:text-torii-light px-1">
               {{ currentChar.targetKana }}
             </span>
             <span v-if="currentChar.suffixKana" class="text-slate-400 dark:text-slate-500 font-normal">{{ currentChar.suffixKana }}</span>
@@ -113,13 +113,13 @@ onUnmounted(() => {
 
             <!-- SETELAH DIJAWAB (SUDAH ADA HASIL): Tampilkan teks kanji lengkap & arti kanjinya -->
             <div v-else class="flex items-center gap-2 flex-wrap justify-center text-sm sm:text-base animate-fadeIn">
-              <span class="font-jp font-black text-indigo-600 dark:text-indigo-400 text-base sm:text-lg">
+              <span class="font-jp font-black text-torii dark:text-torii-light text-base sm:text-lg">
                 {{ currentChar.fullWord }}
               </span>
               <span class="font-bold text-slate-700 dark:text-slate-300">
                 · {{ currentChar.wordMeaning }}
               </span>
-              <span v-if="currentChar.kanjiMeaning" class="text-xs text-emerald-700 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80">
+              <span v-if="currentChar.kanjiMeaning" class="text-xs text-emerald-700 dark:text-matcha font-bold px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80">
                 {{ currentChar.character }}: {{ currentChar.kanjiMeaning }}
               </span>
             </div>

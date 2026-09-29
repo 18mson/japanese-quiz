@@ -401,8 +401,8 @@ export const TIER_CONFIG: Record<BadgeTier, { label: string; color: string; bgBa
   },
   shogun: {
     label: 'Shogun (Legenda Nihongo)',
-    color: 'text-amber-400 dark:text-amber-300',
-    bgBadge: 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-300 border-amber-400/40',
+    color: 'text-amber-600 dark:text-amber-300',
+    bgBadge: 'bg-gradient-to-r from-amber-500/20 to-purple-500/20 text-amber-700 dark:text-amber-300 border-amber-400/40',
     border: 'border-amber-400/50 shadow-amber-500/20'
   }
 };

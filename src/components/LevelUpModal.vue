@@ -5,12 +5,21 @@ import { useQuizStore } from '../stores/quizStore';
 import { useBadgeStore } from '../stores/badgeStore';
 import { TIER_CONFIG } from '../data/badges';
 import BaseModal from './common/BaseModal.vue';
+import BadgeIcon from './common/BadgeIcon.vue';
 
 const quizStore = useQuizStore();
 const badgeStore = useBadgeStore();
 
+const currentDisplayLevel = computed(() => {
+  return badgeStore.nextUnclaimedLevel || quizStore.currentUserLevel;
+});
+
+const previousDisplayLevel = computed(() => {
+  return Math.max(1, currentDisplayLevel.value - 1);
+});
+
 const newBadge = computed(() => {
-  return badgeStore.getBadgeByLevel(quizStore.currentUserLevel) || badgeStore.allBadges[0];
+  return badgeStore.getBadgeByLevel(currentDisplayLevel.value) || badgeStore.allBadges[0];
 });
 
 const tier = computed(() => {
@@ -18,9 +27,17 @@ const tier = computed(() => {
 });
 
 const claimLevelUp = async () => {
-  await badgeStore.claimLevel(quizStore.currentUserLevel);
+  const levelToClaim = currentDisplayLevel.value;
+  await badgeStore.claimLevel(levelToClaim);
+
+  if (badgeStore.hasUnclaimedLevels) {
+    return;
+  }
+
   quizStore.showLevelUpScreen = false;
-  quizStore.quizCompleted = true;
+  if (quizStore.endTime > 0) {
+    quizStore.quizCompleted = true;
+  }
 };
 </script>
 
@@ -55,22 +72,23 @@ const claimLevelUp = async () => {
       <div class="flex items-center justify-center gap-4 w-full bg-white/5 py-2.5 px-4 rounded-2xl border border-white/10">
         <div class="flex flex-col items-center">
           <span class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Sebelumnya</span>
-          <span class="text-lg font-black text-gray-300">Level {{ Math.max(1, quizStore.currentUserLevel - 1) }}</span>
+          <span class="text-lg font-black text-gray-300">Level {{ previousDisplayLevel }}</span>
         </div>
         <div class="text-lg text-amber-400 animate-pulse font-black">➔</div>
         <div class="flex flex-col items-center">
           <span class="text-[10px] text-amber-400 uppercase font-bold tracking-wider">Level Baru</span>
-          <span class="text-xl font-black text-amber-300 drop-shadow-sm">Level {{ quizStore.currentUserLevel }}</span>
+          <span class="text-xl font-black text-amber-300 drop-shadow-sm">Level {{ currentDisplayLevel }}</span>
         </div>
       </div>
 
       <!-- Unlocked Badge Card Showcase -->
       <div class="w-full mt-2 p-4 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 border border-amber-400/40 shadow-xl relative group">
         <!-- Glow Effect behind badge icon -->
-        <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl bg-gradient-to-tr from-amber-500/30 via-yellow-400/20 to-transparent border-2 border-amber-400/60 flex items-center justify-center shadow-lg shadow-amber-500/20 mb-3 relative">
-          <span class="text-4xl sm:text-5xl select-none filter drop-shadow-lg transform transition-transform group-hover:scale-110">
-            {{ newBadge.icon }}
-          </span>
+        <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-2xl bg-gradient-to-tr from-amber-500/30 via-yellow-400/20 to-transparent border-2 border-amber-400/60 flex items-center justify-center shadow-lg shadow-amber-500/20 mb-3 relative p-2">
+          <BadgeIcon 
+            :badge-id="newBadge.id" 
+            class="w-14 h-14 sm:w-16 sm:h-16 transform transition-transform group-hover:scale-110"
+          />
           <div class="absolute -top-2 -right-2 bg-amber-400 text-slate-950 font-black text-[10px] px-1.5 py-0.5 rounded-md shadow">
             BARU!
           </div>
@@ -96,8 +114,9 @@ const claimLevelUp = async () => {
         </div>
       </div>
       
-      <p class="text-[11px] text-teal-300 font-medium mt-1 flex items-center gap-1">
-        <span>✨ Badge ini sekarang telah ditambahkan ke koleksi profilmu!</span>
+      <p class="text-[11px] text-teal-300 font-medium mt-1 flex items-center gap-1.5">
+        <Sparkles class="w-3.5 h-3.5 shrink-0" />
+        <span>Badge ini sekarang telah ditambahkan ke koleksi profilmu!</span>
       </p>
       
       <button 
@@ -105,7 +124,7 @@ const claimLevelUp = async () => {
         class="w-full mt-2 py-3.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-500 text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider transition duration-200 shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2"
       >
         <Award class="w-4 h-4 text-slate-950" />
-        <span>Klaim Badge & Lihat Hasil</span>
+        <span>{{ badgeStore.hasMoreThanOneUnclaimed ? 'Klaim Badge & Lanjut' : (quizStore.endTime > 0 ? 'Klaim Badge & Lihat Hasil' : 'Klaim Badge & Selesai') }}</span>
       </button>
     </div>
   </BaseModal>

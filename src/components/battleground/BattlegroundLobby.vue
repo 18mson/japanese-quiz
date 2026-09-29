@@ -435,7 +435,7 @@ const emit = defineEmits<{ exit: [] }>();
           <button
             @click="handleCreate"
             :disabled="store.isLoading"
-            class="w-full py-3 bg-gradient-to-r from-indigo-600 via-indigo-500 to-violet-600 hover:from-indigo-500 hover:to-violet-500 disabled:opacity-50 rounded-2xl font-extrabold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-600/30 text-sm cursor-pointer mt-1"
+            class="w-full py-3 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 disabled:opacity-50 rounded-2xl font-extrabold text-white flex items-center justify-center gap-2 transition-all shadow-lg shadow-torii/30 text-sm cursor-pointer mt-1"
           >
             <Loader2 v-if="store.isLoading" class="w-4 h-4 animate-spin" />
             <Plus v-else class="w-4 h-4" />
@@ -720,16 +720,16 @@ const emit = defineEmits<{ exit: [] }>();
       <!-- Bot Management Bar for Host -->
       <div
         v-if="store.isHost && store.players.length < 8"
-        class="p-3 bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-950/60 border border-indigo-500/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-fadeIn"
+        class="p-3 bg-gradient-to-r from-indigo-950/60 via-purple-950/40 to-slate-950/60 dark:from-slate-900 dark:via-[#1A1A20] dark:to-slate-900 border border-indigo-500/30 dark:border-torii/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 animate-fadeIn"
       >
         <div class="flex items-center gap-2">
-          <div class="w-7 h-7 rounded-lg bg-indigo-500/20 border border-indigo-500/40 flex items-center justify-center text-indigo-300 flex-shrink-0">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500/20 dark:bg-torii/15 border border-indigo-500/40 dark:border-torii/30 flex items-center justify-center text-indigo-300 dark:text-torii flex-shrink-0">
             <Bot class="w-4 h-4" />
           </div>
           <div>
             <div class="text-xs font-bold text-white flex items-center gap-1.5">
               <span>Main Sendiri?</span>
-              <span class="text-[10px] bg-indigo-500/30 text-indigo-300 px-1.5 py-0.2 rounded font-bold">Lawan Bot AI</span>
+              <span class="text-[10px] bg-indigo-500/30 dark:bg-torii/20 text-indigo-300 dark:text-torii-light px-1.5 py-0.2 rounded font-bold">Lawan Bot AI</span>
             </div>
             <div class="text-[10px] text-slate-400">Pilih tingkat kesulitan untuk duel langsung:</div>
           </div>

@@ -62,7 +62,7 @@ const rightCategories = computed(() => filteredCategories.value.filter((_, i) =>
     <!-- Header Controls & Actions -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900/60 p-3 sm:p-4 rounded-2xl border border-gray-200 dark:border-slate-800/80 shadow-xs">
       <div class="flex items-center gap-2.5 w-full sm:w-auto">
-        <div class="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-violet-500/10 dark:bg-torii/15 border border-violet-500/20 dark:border-torii/30 flex items-center justify-center text-violet-600 dark:text-torii shrink-0">
           <Layers class="w-5 h-5" />
         </div>
         <div>
@@ -87,7 +87,7 @@ const rightCategories = computed(() => filteredCategories.value.filter((_, i) =>
             v-model="searchQuery" 
             type="text" 
             placeholder="Cari counter / benda..."
-            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/40 transition"
+            class="w-full pl-9 pr-3.5 py-1.5 bg-gray-50 dark:bg-slate-950/70 border border-gray-200 dark:border-slate-700/70 rounded-xl text-xs sm:text-sm text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:border-violet-500 dark:focus:border-torii focus:ring-1 focus:ring-violet-500/40 dark:focus:ring-torii/30 transition"
           />
         </div>
       </div>
@@ -138,11 +138,11 @@ const rightCategories = computed(() => filteredCategories.value.filter((_, i) =>
     </div>
 
     <!-- Note Box -->
-    <div v-if="data.note" class="p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-start gap-3 text-xs sm:text-sm text-indigo-200 shadow-sm">
-      <AlertCircle class="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
+    <div v-if="data.note" class="p-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/30 flex items-start gap-3 text-xs sm:text-sm text-amber-900 dark:text-amber-200 shadow-xs">
+      <AlertCircle class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
       <div class="space-y-1">
-        <span class="font-extrabold text-indigo-300 block">Keterangan Tambahan Counter:</span>
-        <p class="leading-relaxed text-indigo-200/90">{{ data.note }}</p>
+        <span class="font-extrabold text-amber-800 dark:text-amber-300 block">Keterangan Tambahan Counter:</span>
+        <p class="leading-relaxed text-amber-900/90 dark:text-amber-200/90">{{ data.note }}</p>
       </div>
     </div>
   </div>

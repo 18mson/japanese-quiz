@@ -32,12 +32,12 @@ defineEmits<{
 
 const buttonColorClass = computed(() => {
   if (props.status === 'correct') {
-    return 'bg-emerald-600 hover:bg-emerald-700';
+    return 'bg-emerald-600 hover:bg-emerald-700 dark:bg-matcha dark:hover:bg-matcha-hover';
   }
   if (props.status === 'wrong') {
     return 'bg-rose-600 hover:bg-rose-700';
   }
-  return 'bg-indigo-600 hover:bg-indigo-700';
+  return 'bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover';
 });
 
 const resolvedLabel = computed(() => {
@@ -64,7 +64,7 @@ const resolvedLabel = computed(() => {
           </button>
           <button 
             type="button"
-            class="px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-sm flex-1 max-w-[200px] cursor-pointer"
+            class="px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white font-semibold rounded-xl transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg text-sm flex-1 max-w-[200px] cursor-pointer"
             :disabled="submitDisabled"
             @click="$emit('submit')"
           >

@@ -115,7 +115,7 @@ watch(() => props.selectedTab, () => {
 </script>
 
 <template>
-  <div class="bg-gradient-to-r from-amber-50/80 via-orange-50/60 to-rose-50/80 dark:from-amber-950/50 dark:via-orange-950/30 dark:to-rose-950/50 border border-amber-300/80 dark:border-amber-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
+  <div class="bg-gradient-to-r from-amber-50/80 via-orange-50/60 to-rose-50/80 dark:bg-none dark:bg-slate-900 border border-amber-300/80 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
     <!-- Wave Chips Selector with Prev/Next Navigation + Pattern Modal Trigger -->
     <div class="flex items-center gap-1 sm:gap-1.5 w-full">
       <!-- Prev Button -->
@@ -124,7 +124,7 @@ watch(() => props.selectedTab, () => {
         type="button"
         @click.stop="prevWaves"
         :disabled="!canPrevWaves"
-        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-amber-800/80 bg-white/80 dark:bg-slate-800/80 text-amber-900 dark:text-amber-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-amber-900/40 transition cursor-pointer shrink-0 shadow-2xs"
+        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-amber-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
         title="Level Sebelumnya"
       >
         <ChevronLeft class="w-3.5 h-3.5" />
@@ -141,7 +141,7 @@ watch(() => props.selectedTab, () => {
             'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
             selectedWaveKey === wave.wave_key
               ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
-              : 'bg-white/85 dark:bg-slate-800/85 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700'
+              : 'bg-white/85 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700/80'
           ]"
         >
           <span class="truncate font-semibold text-[11px] sm:text-xs">
@@ -162,19 +162,19 @@ watch(() => props.selectedTab, () => {
         type="button"
         @click.stop="nextWaves"
         :disabled="!canNextWaves"
-        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-amber-800/80 bg-white/80 dark:bg-slate-800/80 text-amber-900 dark:text-amber-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-amber-900/40 transition cursor-pointer shrink-0 shadow-2xs"
+        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-amber-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
         title="Level Berikutnya"
       >
         <ChevronRight class="w-3.5 h-3.5" />
       </button>
 
-      <div class="w-px h-6 bg-amber-200 dark:bg-amber-800/60 shrink-0 mx-0.5"></div>
+      <div class="w-px h-6 bg-amber-200 dark:bg-slate-800 shrink-0 mx-0.5"></div>
 
       <!-- Preview Pattern Button -->
       <button
         type="button"
         @click.stop="emit('openTutorial', currentWave)"
-        class="py-2 px-2.5 sm:px-3 rounded-xl bg-white/90 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/80 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-amber-900/40 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
+        class="py-2 px-2.5 sm:px-3 rounded-xl bg-white/90 dark:bg-slate-800/90 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-slate-700 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-slate-700 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
         title="Buka Penjelasan Pola & Pengecualian"
       >
         <BookOpen class="w-3.5 h-3.5 text-amber-500" />
@@ -184,12 +184,12 @@ watch(() => props.selectedTab, () => {
     </div>
 
     <!-- Direction Selector -->
-    <div class="flex items-center justify-between pt-1 border-t border-amber-200/60 dark:border-amber-800/50 flex-wrap gap-1.5">
-      <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 dark:text-amber-300">
+    <div class="flex items-center justify-between pt-1 border-t border-amber-200/60 dark:border-slate-800 flex-wrap gap-1.5">
+      <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 dark:text-slate-400">
         Arah Latihan:
       </span>
 
-      <div class="flex items-center gap-1 bg-white/70 dark:bg-slate-900/70 p-0.5 rounded-xl border border-amber-200 dark:border-amber-800/60">
+      <div class="flex items-center gap-1 bg-white/70 dark:bg-slate-950/80 p-0.5 rounded-xl border border-amber-200 dark:border-slate-800">
         <button
           type="button"
           @click.stop="selectDirection('number_to_kana')"

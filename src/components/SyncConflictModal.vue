@@ -41,10 +41,10 @@ const emit = defineEmits<{
       <div class="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-200 dark:border-slate-700 space-y-3">
         <div class="flex items-center justify-between text-xs font-semibold text-gray-600 dark:text-slate-300">
           <div class="flex items-center gap-2">
-            <HardDrive class="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+            <HardDrive class="w-4 h-4 text-indigo-500 dark:text-torii" />
             <span>Data Lokal (Perangkat Ini)</span>
           </div>
-          <span class="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 rounded-full font-bold">
+          <span class="px-2 py-0.5 bg-indigo-100 dark:bg-torii/15 text-indigo-700 dark:text-torii-light rounded-full font-bold">
             {{ localCount }} Item
           </span>
         </div>
@@ -80,7 +80,7 @@ const emit = defineEmits<{
         <button 
           @click="emit('resolve', true)"
           :disabled="loading"
-          class="py-3 px-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition shadow-md hover:shadow-indigo-500/20 flex flex-col items-center justify-center gap-1 cursor-pointer disabled:opacity-50"
+          class="py-3 px-3 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white font-bold rounded-xl text-xs transition shadow-md hover:shadow-indigo-500/20 dark:hover:shadow-torii/20 flex flex-col items-center justify-center gap-1 cursor-pointer disabled:opacity-50"
         >
           <div class="flex items-center gap-1">
             <span>Ya</span>

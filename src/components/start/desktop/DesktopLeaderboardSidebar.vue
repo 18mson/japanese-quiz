@@ -180,7 +180,7 @@ watch(activeTab, () => {
       <button
         type="button"
         @click="emit('openLeaderboard')"
-        class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-0.5 cursor-pointer"
+        class="text-xs font-bold text-torii hover:text-torii-hover flex items-center gap-0.5 cursor-pointer"
         title="Buka Peringkat Penuh"
       >
         <span>Detail</span>
@@ -189,7 +189,7 @@ watch(activeTab, () => {
     </div>
 
     <!-- Category Tabs -->
-    <div class="relative grid grid-cols-3 p-1 bg-gray-100 dark:bg-slate-950 rounded-2xl border border-gray-200/70 dark:border-slate-800/80">
+    <div class="relative grid grid-cols-3 p-1 bg-gray-100 dark:bg-slate-950 rounded-2xl border border-gray-200/70 dark:border-slate-800">
       <!-- Sliding Pill Indicator -->
       <div 
         class="absolute inset-y-1 rounded-xl bg-white dark:bg-slate-800 shadow-xs transition-transform duration-250 ease-[cubic-bezier(0.16,1,0.3,1)] pointer-events-none"
@@ -205,7 +205,7 @@ watch(activeTab, () => {
         @click="activeTab = 'cumulative'"
         class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'cumulative' 
-          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+          ? 'text-torii dark:text-torii-light font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Skor
@@ -215,7 +215,7 @@ watch(activeTab, () => {
         @click="activeTab = 'speed'"
         class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'speed' 
-          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+          ? 'text-torii dark:text-torii-light font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Speed
@@ -225,7 +225,7 @@ watch(activeTab, () => {
         @click="activeTab = 'mastery'"
         class="relative z-10 py-1.5 px-1 rounded-xl text-[11px] font-black transition-colors duration-200 cursor-pointer text-center select-none"
         :class="activeTab === 'mastery' 
-          ? 'text-indigo-600 dark:text-indigo-300 font-black' 
+          ? 'text-torii dark:text-torii-light font-black' 
           : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
       >
         Huruf
@@ -250,7 +250,7 @@ watch(activeTab, () => {
           class="flex items-center justify-between p-2.5 rounded-2xl transition-all"
           :class="[
             isCurrentPlayer(player) 
-              ? 'bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800' 
+              ? 'bg-torii/10 dark:bg-torii/15 border border-torii/30 dark:border-torii/40 text-slate-900 dark:text-slate-100' 
               : 'bg-slate-50/70 dark:bg-slate-800/40 border border-gray-100 dark:border-slate-800/70 hover:border-gray-200 dark:hover:border-slate-700'
           ]"
         >
@@ -268,12 +268,12 @@ watch(activeTab, () => {
             </div>
             <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate">
               {{ formatUsername(player.username) }}
-              <span v-if="isCurrentPlayer(player)" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-normal ml-0.5">(Kamu)</span>
+              <span v-if="isCurrentPlayer(player)" class="text-[10px] text-torii font-semibold ml-0.5">(Kamu)</span>
             </span>
           </div>
 
           <div class="text-right shrink-0">
-            <span class="text-xs font-black font-mono text-indigo-600 dark:text-indigo-400">
+            <span class="text-xs font-black font-mono text-torii">
               {{ player.total_score?.toLocaleString() || 0 }}
             </span>
             <span class="text-[10px] text-slate-400 block -mt-0.5">pts</span>
@@ -293,7 +293,7 @@ watch(activeTab, () => {
           class="flex items-center justify-between p-2.5 rounded-2xl transition-all"
           :class="[
             isCurrentPlayer(player) 
-              ? 'bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800' 
+              ? 'bg-torii/10 dark:bg-torii/15 border border-torii/30 dark:border-torii/40 text-slate-900 dark:text-slate-100' 
               : 'bg-slate-50/70 dark:bg-slate-800/40 border border-gray-100 dark:border-slate-800/70 hover:border-gray-200 dark:hover:border-slate-700'
           ]"
         >
@@ -311,12 +311,12 @@ watch(activeTab, () => {
             </div>
             <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate">
               {{ formatUsername(player.username) }}
-              <span v-if="isCurrentPlayer(player)" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-normal ml-0.5">(Kamu)</span>
+              <span v-if="isCurrentPlayer(player)" class="text-[10px] text-torii font-semibold ml-0.5">(Kamu)</span>
             </span>
           </div>
 
           <div class="text-right shrink-0">
-            <span class="text-xs font-black font-mono text-emerald-600 dark:text-emerald-400">
+            <span class="text-xs font-black font-mono text-matcha">
               {{ player.speed_seconds }}s
             </span>
             <span class="text-[10px] text-slate-400 block -mt-0.5">{{ player.score }} pts</span>
@@ -336,7 +336,7 @@ watch(activeTab, () => {
           class="flex items-center justify-between p-2.5 rounded-2xl transition-all"
           :class="[
             Boolean(authStore.user?.id && player.isCurrentUser) 
-              ? 'bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800' 
+              ? 'bg-torii/10 dark:bg-torii/15 border border-torii/30 dark:border-torii/40 text-slate-900 dark:text-slate-100' 
               : 'bg-slate-50/70 dark:bg-slate-800/40 border border-gray-100 dark:border-slate-800/70 hover:border-gray-200 dark:hover:border-slate-700'
           ]"
         >
@@ -354,12 +354,12 @@ watch(activeTab, () => {
             </div>
             <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate">
               {{ formatUsername(player.username) }}
-              <span v-if="authStore.user?.id && player.isCurrentUser" class="text-[10px] text-indigo-600 dark:text-indigo-400 font-normal ml-0.5">(Kamu)</span>
+              <span v-if="authStore.user?.id && player.isCurrentUser" class="text-[10px] text-torii font-semibold ml-0.5">(Kamu)</span>
             </span>
           </div>
 
           <div class="text-right shrink-0">
-            <span class="text-xs font-black font-mono text-purple-600 dark:text-purple-400">
+            <span class="text-xs font-black font-mono text-matcha">
               {{ player.percentage }}%
             </span>
             <span class="text-[10px] text-slate-400 block -mt-0.5">dikuasai</span>
@@ -378,9 +378,9 @@ watch(activeTab, () => {
     <button
       type="button"
       @click="emit('openLeaderboard')"
-      class="w-full py-2.5 px-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 text-amber-700 dark:text-amber-300 font-bold text-xs border border-amber-200/80 dark:border-amber-800/80 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
+      class="w-full py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-bold text-xs border border-gray-200/80 dark:border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
     >
-      <Trophy class="w-4 h-4" />
+      <Trophy class="w-4 h-4 text-amber-500" />
       <span>Buka Leaderboard Penuh</span>
     </button>
   </div>

@@ -123,7 +123,7 @@ onUnmounted(() => {
       
       <!-- Top Mode & Lesson Badges -->
       <div class="flex items-center justify-center gap-2 flex-wrap mb-3">
-        <div class="flex items-center gap-1.5 px-3 py-1 bg-indigo-500/20 border border-indigo-500/30 rounded-full text-indigo-300 text-xs font-bold uppercase tracking-wider">
+        <div class="flex items-center gap-1.5 px-3 py-1 bg-torii/15 border border-torii/30 rounded-full text-torii text-xs font-bold uppercase tracking-wider">
           <Sparkles class="w-3.5 h-3.5 text-amber-400" />
           <span v-if="quizStore.showMicroPreviewModal">Micro Preview ({{ quizStore.questionType === 'words' ? 'Kanji Baru' : (quizStore.questionType === 'kanji' ? 'Kanji N5 Baru' : 'Huruf Baru') }})</span>
           <span v-else>Preview {{ quizStore.questionType === 'words' ? 'Kosakata Baru' : (quizStore.questionType === 'kanji' ? 'Kanji N5 Baru' : 'Huruf Baru') }}</span>
@@ -138,7 +138,7 @@ onUnmounted(() => {
 
         <span 
           v-if="currentItem?.lesson" 
-          class="text-xs px-3 py-1 rounded-full bg-violet-500/20 text-violet-300 font-bold border border-violet-500/30"
+          class="text-xs px-3 py-1 rounded-full bg-slate-800 text-slate-300 font-bold border border-slate-700"
         >
           {{ currentItem.lesson }}
         </span>
@@ -210,10 +210,10 @@ onUnmounted(() => {
                   v-for="(ex, idx) in currentItem.examples" 
                   :key="idx"
                   @click="speak(ex.word)"
-                  class="flex items-center justify-between text-xs bg-slate-800/90 hover:bg-slate-750 p-2.5 rounded-xl border border-slate-700/60 cursor-pointer transition group gap-2 shadow-2xs hover:border-indigo-500/50"
+                  class="flex items-center justify-between text-xs bg-slate-800/90 hover:bg-slate-750 p-2.5 rounded-xl border border-slate-700/60 cursor-pointer transition group gap-2 shadow-2xs hover:border-torii/40"
                 >
                   <div class="flex items-center gap-2 min-w-0">
-                    <span class="font-black text-white font-jp text-sm sm:text-base group-hover:text-indigo-300 transition-colors shrink-0">{{ ex.word }}</span>
+                    <span class="font-black text-white font-jp text-sm sm:text-base group-hover:text-torii-light transition-colors shrink-0">{{ ex.word }}</span>
                     <span class="text-slate-400 font-jp text-xs truncate">({{ ex.kana }})</span>
                   </div>
                   <span class="text-emerald-300 font-semibold text-xs truncate shrink-0 max-w-[140px] sm:max-w-[190px] text-right">{{ ex.meaning }}</span>
@@ -223,7 +223,7 @@ onUnmounted(() => {
 
             <div class="mt-3 pt-2.5 border-t border-slate-800 text-[10px] text-slate-400 flex items-center justify-between">
               <span>Kosakata kontekstual N5</span>
-              <span class="text-indigo-400 font-medium">Uji urutan goresan</span>
+              <span class="text-torii font-medium">Uji urutan goresan</span>
             </div>
           </div>
         </div>
@@ -249,7 +249,7 @@ onUnmounted(() => {
 
           <!-- Romaji & Pronunciation (when not kanji or as fallback) -->
           <div class="flex items-center justify-center gap-2.5 my-1 flex-wrap">
-            <span class="text-sm sm:text-base font-extrabold text-indigo-400 tracking-wider uppercase">
+            <span class="text-sm sm:text-base font-extrabold text-torii tracking-wider uppercase">
               {{ Array.isArray(currentItem.romaji) ? currentItem.romaji.join(' / ') : currentItem.romaji }}
             </span>
             <SpeakerButton :text="textToSpeak" size="md" />
@@ -275,7 +275,7 @@ onUnmounted(() => {
       <!-- Bottom Progress Bar for Wave -->
       <div class="w-full h-1.5 bg-slate-800 rounded-full my-4 overflow-hidden">
         <div 
-          class="h-full bg-gradient-to-r from-amber-400 to-indigo-500 transition-all duration-300"
+          class="h-full bg-gradient-to-r from-amber-400 to-torii transition-all duration-300"
           :style="{ width: `${((currentCardIndex + 1) / itemsToPreview.length) * 100}%` }"
         ></div>
       </div>
@@ -283,7 +283,7 @@ onUnmounted(() => {
       <!-- Action Button -->
       <button 
         @click="handleNextCard"
-        class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-2xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-600/30 hover:scale-[1.02] cursor-pointer"
+        class="w-full py-3.5 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 active:brightness-95 text-white rounded-2xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition shadow-lg shadow-torii/25 hover:scale-[1.01] active:scale-[0.99] cursor-pointer"
       >
         <span>{{ isLastCard ? 'Mulai Quiz Soal Ini' : 'Lanjut Flashcard Berikutnya' }}</span>
         <ArrowRight class="w-4 h-4" />

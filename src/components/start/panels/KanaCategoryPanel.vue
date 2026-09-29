@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { Sparkles } from '@lucide/vue';
 
 export type KanaCategoryType = 'all' | 'basic' | 'dakuten' | 'combination';
 
@@ -14,7 +15,7 @@ const emit = defineEmits<{
 }>();
 
 const kanaCategoryOptions = [
-  { key: 'all', label: 'Semua', badge: '✨', desc: 'Semua variasi huruf' },
+  { key: 'all', label: 'Semua', badge: '全', desc: 'Semua variasi huruf' },
   { key: 'basic', label: 'Dasar', badge: 'あ', desc: '46 huruf dasar (seion)' },
   { key: 'dakuten', label: 'Dakuten', badge: 'が', desc: '25 huruf ga, za, da, ba, pa' },
   { key: 'combination', label: 'Kombinasi', badge: 'きゃ', desc: '33/36 huruf gabungan (youon)' },
@@ -32,20 +33,21 @@ const selectCategory = (key: KanaCategoryType) => {
 </script>
 
 <template>
-  <div class="bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/80 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full animate-fadeIn">
+  <div class="bg-slate-50/80 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full animate-fadeIn">
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 min-w-0">
-        <div class="w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs">
-          {{ modelValue === 'all' ? '✨' : (modelValue === 'basic' ? 'あ' : (modelValue === 'dakuten' ? 'が' : 'きゃ')) }}
+        <div class="w-7 h-7 rounded-lg bg-aizome dark:bg-torii text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs">
+          <Sparkles v-if="modelValue === 'all'" class="w-3.5 h-3.5" />
+          <span v-else class="font-jp text-xs font-bold">{{ modelValue === 'basic' ? 'あ' : (modelValue === 'dakuten' ? 'が' : 'きゃ') }}</span>
         </div>
         <div>
-          <div class="text-xs font-bold text-gray-900 dark:text-slate-100 flex items-center gap-1.5">
+          <div class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
             <span>Kategori Huruf:</span>
-            <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300">
+            <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-aizome/10 dark:bg-slate-800 text-aizome dark:text-torii-light border border-aizome/15 dark:border-slate-700">
               {{ characterType === 'hiragana' ? 'Hiragana' : (characterType === 'katakana' ? 'Katakana' : 'Mix Kana') }}
             </span>
           </div>
-          <div class="text-[11px] text-gray-500 dark:text-slate-400 font-medium">
+          <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
             {{ selectedCategoryDesc }}
           </div>
         </div>
@@ -62,11 +64,12 @@ const selectCategory = (key: KanaCategoryType) => {
         :class="[
           'py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
           modelValue === cat.key
-            ? 'bg-indigo-600 text-white border-indigo-500 font-black shadow-xs scale-[1.02]'
-            : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-700/80'
+            ? 'bg-aizome dark:bg-torii text-white border-aizome dark:border-torii font-black shadow-xs scale-[1.02]'
+            : 'bg-white dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
         ]"
       >
-        <span class="font-jp text-xs opacity-90">{{ cat.badge }}</span>
+        <Sparkles v-if="cat.key === 'all'" class="w-3.5 h-3.5 shrink-0 opacity-90" />
+        <span v-else class="font-jp text-xs opacity-90 font-bold">{{ cat.badge }}</span>
         <span class="text-[11px] sm:text-xs truncate">{{ cat.label }}</span>
       </button>
     </div>
