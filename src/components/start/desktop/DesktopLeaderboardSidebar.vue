@@ -258,8 +258,8 @@ watch(activeTab, () => {
             <div class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
               :class="[
                 idx === 0 ? 'text-amber-500 bg-amber-500/15' :
-                idx === 1 ? 'text-slate-400 bg-slate-400/15' :
-                idx === 2 ? 'text-amber-700 bg-amber-700/15' :
+                idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                idx === 2 ? 'text-amber-700 dark:text-amber-500 bg-amber-700/15' :
                 'text-slate-400 font-mono text-[11px]'
               ]"
             >
@@ -301,8 +301,8 @@ watch(activeTab, () => {
             <div class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
               :class="[
                 idx === 0 ? 'text-amber-500 bg-amber-500/15' :
-                idx === 1 ? 'text-slate-400 bg-slate-400/15' :
-                idx === 2 ? 'text-amber-700 bg-amber-700/15' :
+                idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                idx === 2 ? 'text-amber-700 dark:text-amber-500 bg-amber-700/15' :
                 'text-slate-400 font-mono text-[11px]'
               ]"
             >
@@ -332,7 +332,7 @@ watch(activeTab, () => {
       <template v-else-if="activeTab === 'mastery'">
         <div 
           v-for="(player, idx) in masteryList" 
-          :key="player.id || idx"
+          :key="player.id || idx" 
           class="flex items-center justify-between p-2.5 rounded-2xl transition-all"
           :class="[
             Boolean(authStore.user?.id && player.isCurrentUser) 
@@ -344,8 +344,8 @@ watch(activeTab, () => {
             <div class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
               :class="[
                 idx === 0 ? 'text-amber-500 bg-amber-500/15' :
-                idx === 1 ? 'text-slate-400 bg-slate-400/15' :
-                idx === 2 ? 'text-amber-700 bg-amber-700/15' :
+                idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                idx === 2 ? 'text-amber-700 dark:text-amber-500 bg-amber-700/15' :
                 'text-slate-400 font-mono text-[11px]'
               ]"
             >

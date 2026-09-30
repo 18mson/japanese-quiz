@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { supabase } from '../lib/supabaseClient';
-import { Trophy, Award } from '@lucide/vue';
+import { Trophy, Award, Medal } from '@lucide/vue';
 import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
@@ -36,6 +36,12 @@ const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.l
 const formatUsername = (name: string | null | undefined): string => {
   if (!name) return 'Pemain';
   return name.includes('@') ? name.split('@')[0] : name;
+};
+
+const isCurrentPlayer = (player: any): boolean => {
+  if (player?.isCurrentUser) return true;
+  if (!authStore.user?.id) return false;
+  return player?.user_id === authStore.user.id || player?.id === authStore.user.id;
 };
 
 const fetchCumulative = async () => {
@@ -251,18 +257,28 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in cumulativeList" 
                 :key="idx" 
-                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
+                class="border-b border-gray-100 dark:border-slate-800/60 last:border-none transition-colors"
+                :class="isCurrentPlayer(row) ? 'bg-indigo-50/70 dark:bg-torii/15' : 'hover:bg-gray-50/50 dark:hover:bg-slate-800/40'"
               >
                 <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
-                    <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
-                    <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
-                    <Medal v-else-if="idx === 2" class="w-5 h-5 text-amber-700 fill-amber-700/20" />
-                    <span v-else>#{{ idx + 1 }}</span>
+                    <div v-if="idx < 3" class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
+                      :class="[
+                        idx === 0 ? 'text-amber-500 bg-amber-500/15' :
+                        idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                        'text-amber-700 dark:text-amber-500 bg-amber-700/15'
+                      ]"
+                    >
+                      <Medal class="w-3.5 h-3.5 fill-current" />
+                    </div>
+                    <span v-else class="text-xs font-bold text-gray-400 dark:text-slate-500 font-mono">#{{ idx + 1 }}</span>
                   </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
-                  {{ formatUsername(row.username) }}
+                  <div class="flex items-center gap-1.5">
+                    <span>{{ formatUsername(row.username) }}</span>
+                    <span v-if="isCurrentPlayer(row)" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-torii/20 text-indigo-700 dark:text-torii-light rounded text-[10px] font-extrabold">Kamu</span>
+                  </div>
                 </td>
                 <td class="py-3.5 font-mono text-sm text-indigo-600 dark:text-torii font-extrabold text-right">
                   {{ row.total_score }}
@@ -294,16 +310,28 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in speedList" 
                 :key="row.id" 
-                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
+                class="border-b border-gray-100 dark:border-slate-800/60 last:border-none transition-colors"
+                :class="isCurrentPlayer(row) ? 'bg-indigo-50/70 dark:bg-torii/15' : 'hover:bg-gray-50/50 dark:hover:bg-slate-800/40'"
               >
                 <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
-                    <Zap v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
-                    <span v-else>#{{ idx + 1 }}</span>
+                    <div v-if="idx < 3" class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
+                      :class="[
+                        idx === 0 ? 'text-amber-500 bg-amber-500/15' :
+                        idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                        'text-amber-700 dark:text-amber-500 bg-amber-700/15'
+                      ]"
+                    >
+                      <Medal class="w-3.5 h-3.5 fill-current" />
+                    </div>
+                    <span v-else class="text-xs font-bold text-gray-400 dark:text-slate-500 font-mono">#{{ idx + 1 }}</span>
                   </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
-                  {{ formatUsername(row.username) }}
+                  <div class="flex items-center gap-1.5">
+                    <span>{{ formatUsername(row.username) }}</span>
+                    <span v-if="isCurrentPlayer(row)" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-torii/20 text-indigo-700 dark:text-torii-light rounded text-[10px] font-extrabold">Kamu</span>
+                  </div>
                 </td>
                 <td class="py-3.5 font-mono text-sm text-teal-600 dark:text-matcha font-extrabold text-right">
                   {{ row.duration_seconds.toFixed(1) }}s
@@ -336,28 +364,35 @@ watch(activeTab, () => {
               <tr 
                 v-for="(row, idx) in masteryList" 
                 :key="row.id || idx" 
-                class="border-b border-gray-50 dark:border-slate-800/60 last:border-none hover:bg-gray-50/50 dark:hover:bg-slate-800/40 transition-colors"
+                class="border-b border-gray-100 dark:border-slate-800/60 last:border-none transition-colors"
+                :class="isCurrentPlayer(row) ? 'bg-indigo-50/70 dark:bg-torii/15' : 'hover:bg-gray-50/50 dark:hover:bg-slate-800/40'"
               >
                 <td class="py-3.5 font-extrabold text-sm text-gray-500 dark:text-slate-400">
                   <div class="flex items-center">
-                    <Medal v-if="idx === 0" class="w-5 h-5 text-amber-500 fill-amber-500/20" />
-                    <Medal v-else-if="idx === 1" class="w-5 h-5 text-slate-400 fill-slate-400/20" />
-                    <Medal v-else-if="idx === 2" class="w-5 h-5 text-amber-700 fill-amber-700/20" />
-                    <span v-else>#{{ idx + 1 }}</span>
+                    <div v-if="idx < 3" class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0"
+                      :class="[
+                        idx === 0 ? 'text-amber-500 bg-amber-500/15' :
+                        idx === 1 ? 'text-slate-500 dark:text-slate-300 bg-slate-200/80 dark:bg-slate-400/15' :
+                        'text-amber-700 dark:text-amber-500 bg-amber-700/15'
+                      ]"
+                    >
+                      <Medal class="w-3.5 h-3.5 fill-current" />
+                    </div>
+                    <span v-else class="text-xs font-bold text-gray-400 dark:text-slate-500 font-mono">#{{ idx + 1 }}</span>
                   </div>
                 </td>
                 <td class="py-3.5 font-bold text-sm text-gray-800 dark:text-slate-100">
-                  <div class="flex items-center gap-2">
+                  <div class="flex items-center gap-1.5">
                     <span>{{ formatUsername(row.username) }}</span>
-                    <span v-if="row.isCurrentUser" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-torii/15 text-indigo-700 dark:text-torii-light rounded text-[10px] font-extrabold">Kamu</span>
+                    <span v-if="isCurrentPlayer(row)" class="px-1.5 py-0.5 bg-indigo-100 dark:bg-torii/20 text-indigo-700 dark:text-torii-light rounded text-[10px] font-extrabold">Kamu</span>
                   </div>
                 </td>
                 <td class="py-3.5 text-right">
                   <div class="inline-flex items-center justify-end gap-2">
-                    <div class="w-16 sm:w-24 bg-gray-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden hidden sm:block">
+                    <div class="w-16 sm:w-24 bg-gray-200/80 dark:bg-slate-800 rounded-full h-2 overflow-hidden hidden sm:block">
                       <div class="bg-gradient-to-r from-torii to-matcha h-full rounded-full" :style="{ width: `${row.percentage}%` }"></div>
                     </div>
-                    <span class="font-mono text-sm font-black text-indigo-600 dark:text-matcha">{{ row.percentage }}%</span>
+                    <span class="font-mono text-sm font-black text-emerald-600 dark:text-matcha">{{ row.percentage }}%</span>
                   </div>
                 </td>
               </tr>

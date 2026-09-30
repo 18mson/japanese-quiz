@@ -150,7 +150,7 @@ const hasTierChanges = computed(() => {
             </span>
           </div>
           <h4 class="text-xs font-black text-slate-900 dark:text-stone-100 mt-0.5">
-            Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat Dari Estimasi Target! 🚀
+            Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat Dari Estimasi Target!
           </h4>
         </div>
       </div>

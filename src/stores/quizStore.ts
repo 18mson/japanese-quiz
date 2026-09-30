@@ -357,10 +357,10 @@ export const useQuizStore = defineStore('quiz', () => {
 
     if (timeSavedSeconds > 0) {
       const bonusPoints = Math.round(timeSavedSeconds * 0.5);
-      let rankText = timeSavedSeconds >= 60 ? '🚀 Speed Demon!' : timeSavedSeconds >= 30 ? '⚡ Lightning Fast!' : '⚡ Selesai Lebih Cepat!';
+      let rankText = timeSavedSeconds >= 60 ? 'Speed Demon!' : timeSavedSeconds >= 30 ? 'Lightning Fast!' : 'Selesai Lebih Cepat!';
       speedAchievement.value = { timeSavedSeconds, bonusPoints, isFaster: true, rankText };
     } else {
-      speedAchievement.value = { timeSavedSeconds: 0, bonusPoints: 0, isFaster: false, rankText: '🎯 Steady & Consistent' };
+      speedAchievement.value = { timeSavedSeconds: 0, bonusPoints: 0, isFaster: false, rankText: 'Steady & Consistent' };
     }
 
     submitToLeaderboard(finalSubmissionScore);
