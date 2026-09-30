@@ -19,7 +19,7 @@ const quizStore = useQuizStore();
         </div>
         <div>
           <h3 class="text-xs font-black uppercase tracking-wider text-aizome dark:text-torii">
-            Penguasaan Huruf
+            Penguasaan
           </h3>
           <div class="text-sm font-black text-slate-900 dark:text-slate-100">
             {{ quizStore.overallMasteryStats.mastered }} <span class="text-xs font-semibold text-slate-400">/ {{ quizStore.overallMasteryStats.total }}</span>

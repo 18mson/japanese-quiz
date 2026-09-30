@@ -7,14 +7,28 @@ export interface VersionEntry {
   highlights: string[];
 }
 
-export const APP_VERSION = '2.8.0';
+export const APP_VERSION = '2.8.1';
 
 export const VERSION_HISTORY: VersionEntry[] = [
+  {
+    version: '2.8.1',
+    tag: 'Celebration & Theme Alignment',
+    date: '30 Sep 2026',
+    type: 'minor',
+    title: 'Penyelarasan Tema Modal Naik Level, Toast Target Harian & Kosakata Bab 7',
+    highlights: [
+      'Penyelarasan Modal Naik Level: Redesain popup naik level yang adaptif penuh terhadap Light & Dark mode dengan latar washi blur, kontras teks judul emas, dan showcase kartu badge yang elegan.',
+      'Reposisi & Tema Toast Target Harian: Toast perayaan target harian kini berpindah ke posisi atas layar (top-center) dengan animasi luncur halus serta aksen gradien Torii & Aizome.',
+      'Harmonisasi Bar Target Harian: Penyesuaian pill target harian pada header utama agar selaras dengan palet Light Mode tanpa blok hitam pekat.',
+      'Kelengkapan Kosakata Bab 7: Menambahkan kosakata alat tulis resmi Minna no Nihongo Bab 7 (ホッチキス, セロテープ, けしゴム, かみ).',
+      'Penyederhanaan Label Sidebar: Memperbarui judul kartu ringkasan progres di sidebar desktop menjadi "Penguasaan".'
+    ]
+  },
   {
     version: '2.8.0',
     tag: 'Aizome & Light Mode Refinement',
     date: '29 Sep 2026',
-    type: 'minor',
+    type: 'major',
     title: 'Harmonisasi Light Mode, Palet Tradisional Jepang & Penyelarasan Goresan',
     highlights: [
       'Penyelarasan Light Mode & Palet Aizome: Integrasi warna Aizome Indigo (#1B365D), Torii Vermilion, dan nuansa kertas washi yang bersih dan harmonis di seluruh layar.',

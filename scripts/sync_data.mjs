@@ -87,7 +87,20 @@ const baseAdditionalWords = [
   { kanji: '半', kana: 'はん', romaji: ['han'], meaning: 'setengah (jam)', category: 'Keterangan Waktu', lesson: 'Pelajaran 4' },
   { kanji: '～時', kana: '～じ', romaji: ['ji', '~ji', '-ji'], meaning: 'jam ~, pukul ~', category: 'Kata Bantu Bilangan', lesson: 'Pelajaran 4' },
   { kanji: '～分', kana: '～ふん', romaji: ['fun', 'pun', '~fun', '~pun', '-fun', '-pun'], meaning: 'menit', category: 'Kata Bantu Bilangan', lesson: 'Pelajaran 4' },
-  { kanji: '夜', kana: 'よる', romaji: ['yoru'], meaning: 'malam', category: 'Keterangan Waktu', lesson: 'Pelajaran 4' }
+  { kanji: '夜', kana: 'よる', romaji: ['yoru'], meaning: 'malam', category: 'Keterangan Waktu', lesson: 'Pelajaran 4' },
+  { kanji: 'パソコン', kana: 'パソコン', romaji: ['pasokon'], meaning: 'komputer, PC, laptop', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'スプーン', kana: 'スプーン', romaji: ['supuun', 'supun'], meaning: 'sendok', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'ナイフ', kana: 'ナイフ', romaji: ['naifu'], meaning: 'pisau', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'フォーク', kana: 'フォーク', romaji: ['fooku', 'foku'], meaning: 'garpu', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'はさみ', kana: 'はさみ', romaji: ['hasami'], meaning: 'gunting', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'ケータイ', kana: 'ケータイ', romaji: ['keetai', 'ketai'], meaning: 'HP, telepon genggam', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'メール', kana: 'メール', romaji: ['meeru', 'meru'], meaning: 'e-mail, surel', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: '年賀状', kana: 'ねんがじょう', romaji: ['nengajou', 'nengajo'], meaning: 'kartu tahun baru', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'パンチ', kana: 'パンチ', romaji: ['panchi'], meaning: 'pelubang kertas', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'ホッチキス', kana: 'ホッチキス', romaji: ['hotchikisu', 'hocchikisu'], meaning: 'stapler, hektar', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'セロテープ', kana: 'セロテープ', romaji: ['seroteepu', 'serotepu'], meaning: 'selotip', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'けしゴム', kana: 'けしゴム', romaji: ['keshigomu'], meaning: 'penghapus', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'かみ', kana: 'かみ', romaji: ['kami'], meaning: 'kertas', category: 'Kata Benda', lesson: 'Pelajaran 7' }
 ];
 
 async function main() {
