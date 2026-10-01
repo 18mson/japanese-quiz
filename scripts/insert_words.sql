@@ -232,6 +232,7 @@ INSERT INTO public.quiz_items (category, "character", romaji, kana, meaning, typ
 ('words', 'セロテープ', ARRAY['seroteepu', 'serotepu'], 'セロテープ', 'selotip', 'word', false, 'Pelajaran 7'),
 ('words', 'けしゴム', ARRAY['keshigomu'], 'けしゴム', 'penghapus', 'word', false, 'Pelajaran 7'),
 ('words', 'かみ', ARRAY['kami'], 'かみ', 'kertas', 'word', false, 'Pelajaran 7'),
+('words', 'プレゼント', ARRAY['purezento'], 'プレゼント', 'hadiah, kado', 'word', false, 'Pelajaran 7'),
 ('words', 'ハンサムな', ARRAY['hansamu', 'hansamuna'], 'ハンサム', 'tampan, gagah, ganteng', 'word', true, 'Pelajaran 8'),
 ('words', 'きれいな', ARRAY['kirei', 'kireina'], 'きれい', 'cantik, bersih', 'word', true, 'Pelajaran 8'),
 ('words', '静かな', ARRAY['shizuka', 'shizukana'], 'しずか', 'sunyi, tenang', 'word', true, 'Pelajaran 8'),

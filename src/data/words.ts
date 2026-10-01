@@ -276,6 +276,7 @@ export const wordsData: JapaneseWord[] = [
   { character: 'セロテープ', kana: 'セロテープ', romaji: ['seroteepu', 'serotepu'], meaning: 'selotip', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'けしゴム', kana: 'けしゴム', romaji: ['keshigomu'], meaning: 'penghapus', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'かみ', kana: 'かみ', romaji: ['kami'], meaning: 'kertas', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
+  { character: 'プレゼント', kana: 'プレゼント', romaji: ['purezento'], meaning: 'hadiah, kado', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'ハンサムな', kana: 'ハンサム', romaji: ['hansamu', 'hansamuna'], meaning: 'tampan, gagah, ganteng', type: 'word', lesson: 'Pelajaran 8', category_word: 'Kata Sifat-na' },
   { character: 'きれいな', kana: 'きれい', romaji: ['kirei', 'kireina'], meaning: 'cantik, bersih', type: 'word', lesson: 'Pelajaran 8', category_word: 'Kata Sifat-na' },
   { character: '静かな', kana: 'しずか', romaji: ['shizuka', 'shizukana'], meaning: 'sunyi, tenang', type: 'word', lesson: 'Pelajaran 8', category_word: 'Kata Sifat-na' },

@@ -100,7 +100,8 @@ const baseAdditionalWords = [
   { kanji: 'ホッチキス', kana: 'ホッチキス', romaji: ['hotchikisu', 'hocchikisu'], meaning: 'stapler, hektar', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'セロテープ', kana: 'セロテープ', romaji: ['seroteepu', 'serotepu'], meaning: 'selotip', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'けしゴム', kana: 'けしゴム', romaji: ['keshigomu'], meaning: 'penghapus', category: 'Kata Benda', lesson: 'Pelajaran 7' },
-  { kanji: 'かみ', kana: 'かみ', romaji: ['kami'], meaning: 'kertas', category: 'Kata Benda', lesson: 'Pelajaran 7' }
+  { kanji: 'かみ', kana: 'かみ', romaji: ['kami'], meaning: 'kertas', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'プレゼント', kana: 'プレゼント', romaji: ['purezento'], meaning: 'hadiah, kado', category: 'Kata Benda', lesson: 'Pelajaran 7' }
 ];
 
 async function main() {
