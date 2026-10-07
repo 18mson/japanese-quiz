@@ -116,23 +116,24 @@ function handleRetry() {
         </div>
       </div>
 
-      <!-- Right Header: Chapter Topics (Keterangan bab saja) -->
-      <div class="flex items-center gap-1.5 max-w-[200px] sm:max-w-none">
+      <!-- Right Header: Chapter Topics (Keterangan bab, ringkas di mobile) -->
+      <div class="flex items-center gap-1 sm:gap-1.5 max-w-[140px] sm:max-w-none justify-end">
         <template v-if="dailyStore.session">
           <div 
             v-for="ch in dailyStore.session.chapter_ids" 
             :key="ch"
-            class="flex items-center px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[11px] sm:text-xs font-bold text-slate-800 dark:text-slate-200 shadow-2xs truncate"
+            class="flex items-center px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-[10px] sm:text-xs font-bold text-slate-800 dark:text-slate-200 shadow-2xs truncate"
             :title="`Bab ${ch}: ${getChapterTitle(ch)}`"
           >
-            <span class="truncate">{{ getChapterTitle(ch) }}</span>
+            <span class="hidden sm:inline truncate">{{ getChapterTitle(ch) }}</span>
+            <span class="sm:hidden font-black">Bab {{ ch }}</span>
           </div>
         </template>
       </div>
     </header>
 
     <!-- Main Content Area (Centered vertically between header and footer) -->
-    <main class="flex-1 w-full max-w-5xl lg:max-w-6xl mx-auto px-3 sm:px-6 py-4 flex flex-col justify-center items-center relative">
+    <main class="flex-1 w-full max-w-5xl lg:max-w-6xl mx-auto px-1.5 sm:px-6 py-2 sm:py-4 flex flex-col justify-center items-center relative">
       <!-- 1. NOT AUTHENTICATED -->
       <div v-if="!authStore.user" class="my-auto w-full max-w-md mx-auto bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center animate-fadeIn">
         <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
@@ -232,15 +233,15 @@ function handleRetry() {
           :recycled="dailyStore.recycledNotice" 
         />
 
-        <!-- Question Dots Progress Strip -->
-        <div class="w-full max-w-2xl mx-auto mb-3 flex items-center justify-center gap-1.5 sm:gap-2 overflow-x-auto py-1">
+        <!-- Question Dots Progress Strip (Compact & responsive on mobile) -->
+        <div class="w-full max-w-2xl mx-auto mb-2 sm:mb-3 flex items-center justify-center gap-1 sm:gap-2 overflow-x-auto py-1 px-1">
           <button
             v-for="(q, idx) in dailyStore.questions"
             :key="q.daily_question_id"
             type="button"
             @click="dailyStore.jumpToQuestion(idx)"
             :class="[
-              'h-7 sm:h-8 min-w-[28px] sm:min-w-[32px] px-1 rounded-xl text-xs font-black transition-all flex items-center justify-center cursor-pointer select-none border',
+              'h-7 w-7 sm:h-8 sm:w-8 min-w-[26px] sm:min-w-[32px] p-0 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-black transition-all flex items-center justify-center cursor-pointer select-none border shrink-0',
               dailyStore.currentIndex === idx
                 ? 'ring-2 ring-indigo-500/70 dark:ring-torii scale-110 shadow-xs'
                 : 'opacity-80 hover:opacity-100',
