@@ -14,6 +14,7 @@ import LevelUpModal from './components/LevelUpModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 import BattlegroundMode from './components/BattlegroundMode.vue';
+import DailyPracticeMode from './components/daily/DailyPracticeMode.vue';
 import KaiwaPlayer from './components/KaiwaPlayer.vue';
 import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
@@ -45,6 +46,7 @@ const showMasteryGridModal = ref(false);
 const showAboutModal = ref(false);
 const showReferenceModal = ref(false);
 const showBattleground = ref(false);
+const showDailyPractice = ref(false);
 const showSettingsModal = ref(false);
 
 const showUserDropdown = ref(false);
@@ -84,6 +86,22 @@ const closeBattleground = () => {
   }
 };
 
+const openDailyPractice = () => {
+  showDailyPractice.value = true;
+  localStorage.setItem('active_screen', 'daily');
+  if (!window.location.pathname.includes('/daily')) {
+    history.pushState(null, '', '/daily');
+  }
+};
+
+const closeDailyPractice = () => {
+  showDailyPractice.value = false;
+  localStorage.removeItem('active_screen');
+  if (window.location.pathname.includes('/daily') || window.location.search.includes('mode=daily')) {
+    history.pushState(null, '', '/');
+  }
+};
+
 const checkRouteState = () => {
   const pathname = window.location.pathname;
   const searchParams = new URLSearchParams(window.location.search);
@@ -96,6 +114,14 @@ const checkRouteState = () => {
     savedScreen === 'battleground'
   ) {
     showBattleground.value = true;
+  }
+  if (
+    pathname.includes('/daily') ||
+    searchParams.get('mode') === 'daily' ||
+    hash === '#daily' ||
+    savedScreen === 'daily'
+  ) {
+    showDailyPractice.value = true;
   }
   if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
     showAboutModal.value = true;
@@ -149,13 +175,14 @@ const goToHome = () => {
   quizStore.isWavePreviewActive = false;
   quizStore.showMicroPreviewModal = false;
   closeBattleground();
+  closeDailyPractice();
 };
 </script>
 
 <template>
   <div class="h-full w-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
-    <!-- Top Global App Bar (Hidden when Battleground is active) -->
-    <header v-if="!showBattleground" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <!-- Top Global App Bar (Hidden when Battleground or Daily Practice is active) -->
+    <header v-if="!showBattleground && !showDailyPractice" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
           <span class="text-xl">🇯🇵</span>
@@ -519,6 +546,12 @@ const goToHome = () => {
       class="flex-1 w-full h-full z-30"
       @exit="closeBattleground"
     />
+    <DailyPracticeMode
+      v-else-if="showDailyPractice"
+      class="flex-1 w-full h-full z-30"
+      @exit="closeDailyPractice"
+      @open-auth="showAuthModal = true"
+    />
     <StartScreen 
       v-else-if="!quizStarted" 
       @start="startQuiz" 
@@ -527,6 +560,7 @@ const goToHome = () => {
       @open-about="showAboutModal = true"
       @open-battleground="openBattleground"
       @open-furoku="showReferenceModal = true"
+      @open-daily-practice="openDailyPractice"
     />
     <div 
       v-else 

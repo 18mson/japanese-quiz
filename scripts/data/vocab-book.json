@@ -1,0 +1,2492 @@
+{
+ "meta": {
+  "source": "Minna no Nihongo Shokyu I, edisi ke-2, Terjemahan dan Keterangan Tata Bahasa (Bahasa Indonesia), bagian 'I. Kosa Kata' tiap pelajaran (PDF hal. 30-73)",
+  "scope": "Pelajaran 1-8, kosakata saja (ungkapan percakapan tidak disertakan)",
+  "fields": {
+   "jp": "tulisan seperti di buku (kana saja bila buku tidak mencantumkan kanji)",
+   "kana": "bacaan",
+   "id": "arti ringkas",
+   "alt": "kanji/varian lazim yang TIDAK ada di buku; diterima sebagai jawaban, tapi bukan tulisan utama"
+  },
+  "usage": "Pencocokan gating per pasangan (jp/alt, kana). Kata dengan lesson <= bab template boleh dipakai. Homofon dibedakan oleh arti (はし sumpit bab 7 vs 橋 bab 23).",
+  "caveat": "Ditranskripsi manual dari gambar halaman; cek acak terhadap buku tetap disarankan."
+ },
+ "words": [
+  {
+   "lesson": 1,
+   "jp": "わたし",
+   "kana": "わたし",
+   "id": "saya",
+   "alt": [
+    "私"
+   ]
+  },
+  {
+   "lesson": 1,
+   "jp": "あなた",
+   "kana": "あなた",
+   "id": "Anda",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "あの人",
+   "kana": "あのひと",
+   "id": "orang itu",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "あの方",
+   "kana": "あのかた",
+   "id": "beliau",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "さん",
+   "kana": "さん",
+   "id": "Sdr./Bapak/Ibu (akhiran)",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "ちゃん",
+   "kana": "ちゃん",
+   "id": "akhiran untuk anak",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "人",
+   "kana": "じん",
+   "id": "orang ~ (kewarganegaraan)",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "先生",
+   "kana": "せんせい",
+   "id": "guru, dosen",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "教師",
+   "kana": "きょうし",
+   "id": "guru, dosen",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "学生",
+   "kana": "がくせい",
+   "id": "mahasiswa",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "会社員",
+   "kana": "かいしゃいん",
+   "id": "karyawan perusahaan",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "社員",
+   "kana": "しゃいん",
+   "id": "karyawan perusahaan",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "銀行員",
+   "kana": "ぎんこういん",
+   "id": "pegawai bank",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "医者",
+   "kana": "いしゃ",
+   "id": "dokter",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "研究者",
+   "kana": "けんきゅうしゃ",
+   "id": "peneliti",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "大学",
+   "kana": "だいがく",
+   "id": "universitas",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "病院",
+   "kana": "びょういん",
+   "id": "rumah sakit",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "だれ",
+   "kana": "だれ",
+   "id": "siapa",
+   "alt": [
+    "誰"
+   ]
+  },
+  {
+   "lesson": 1,
+   "jp": "どなた",
+   "kana": "どなた",
+   "id": "siapa (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "歳",
+   "kana": "さい",
+   "id": "tahun (umur)",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "何歳",
+   "kana": "なんさい",
+   "id": "umur berapa",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "おいくつ",
+   "kana": "おいくつ",
+   "id": "umur berapa (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "はい",
+   "kana": "はい",
+   "id": "ya",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "いいえ",
+   "kana": "いいえ",
+   "id": "tidak",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "アメリカ",
+   "kana": "アメリカ",
+   "id": "Amerika Serikat",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "イギリス",
+   "kana": "イギリス",
+   "id": "Inggris",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "インド",
+   "kana": "インド",
+   "id": "India",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "インドネシア",
+   "kana": "インドネシア",
+   "id": "Indonesia",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "韓国",
+   "kana": "かんこく",
+   "id": "Korea Selatan",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "タイ",
+   "kana": "タイ",
+   "id": "Thailand",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "中国",
+   "kana": "ちゅうごく",
+   "id": "Cina",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "ドイツ",
+   "kana": "ドイツ",
+   "id": "Jerman",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "日本",
+   "kana": "にほん",
+   "id": "Jepang",
+   "alt": []
+  },
+  {
+   "lesson": 1,
+   "jp": "ブラジル",
+   "kana": "ブラジル",
+   "id": "Brasil",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "これ",
+   "kana": "これ",
+   "id": "ini",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "それ",
+   "kana": "それ",
+   "id": "itu (dekat lawan bicara)",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "あれ",
+   "kana": "あれ",
+   "id": "itu (jauh)",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "この",
+   "kana": "この",
+   "id": "~ ini",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "その",
+   "kana": "その",
+   "id": "~ itu",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "あの",
+   "kana": "あの",
+   "id": "~ itu (jauh)",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "本",
+   "kana": "ほん",
+   "id": "buku",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "辞書",
+   "kana": "じしょ",
+   "id": "kamus",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "雑誌",
+   "kana": "ざっし",
+   "id": "majalah",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "新聞",
+   "kana": "しんぶん",
+   "id": "koran",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "ノート",
+   "kana": "ノート",
+   "id": "buku tulis",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "手帳",
+   "kana": "てちょう",
+   "id": "buku agenda",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "名刺",
+   "kana": "めいし",
+   "id": "kartu nama",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "カード",
+   "kana": "カード",
+   "id": "kartu",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "鉛筆",
+   "kana": "えんぴつ",
+   "id": "pensil",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "ボールペン",
+   "kana": "ボールペン",
+   "id": "bolpoin",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "シャープペンシル",
+   "kana": "シャープペンシル",
+   "id": "pensil mekanik",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "かぎ",
+   "kana": "かぎ",
+   "id": "kunci",
+   "alt": [
+    "鍵"
+   ]
+  },
+  {
+   "lesson": 2,
+   "jp": "時計",
+   "kana": "とけい",
+   "id": "jam",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "傘",
+   "kana": "かさ",
+   "id": "payung",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "かばん",
+   "kana": "かばん",
+   "id": "tas",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "CD",
+   "kana": "シーディー",
+   "id": "CD",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "テレビ",
+   "kana": "テレビ",
+   "id": "televisi",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "ラジオ",
+   "kana": "ラジオ",
+   "id": "radio",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "カメラ",
+   "kana": "カメラ",
+   "id": "kamera",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "コンピューター",
+   "kana": "コンピューター",
+   "id": "komputer",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "車",
+   "kana": "くるま",
+   "id": "mobil",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "机",
+   "kana": "つくえ",
+   "id": "meja",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "いす",
+   "kana": "いす",
+   "id": "kursi",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "チョコレート",
+   "kana": "チョコレート",
+   "id": "coklat",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "コーヒー",
+   "kana": "コーヒー",
+   "id": "kopi",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "お土産",
+   "kana": "おみやげ",
+   "id": "oleh-oleh",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "英語",
+   "kana": "えいご",
+   "id": "bahasa Inggris",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "日本語",
+   "kana": "にほんご",
+   "id": "bahasa Jepang",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "語",
+   "kana": "ご",
+   "id": "bahasa ~",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "何",
+   "kana": "なん",
+   "id": "apa",
+   "alt": []
+  },
+  {
+   "lesson": 2,
+   "jp": "そう",
+   "kana": "そう",
+   "id": "begitu",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "ここ",
+   "kana": "ここ",
+   "id": "sini",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "そこ",
+   "kana": "そこ",
+   "id": "situ",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "あそこ",
+   "kana": "あそこ",
+   "id": "sana",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "どこ",
+   "kana": "どこ",
+   "id": "mana",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "こちら",
+   "kana": "こちら",
+   "id": "sini (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "そちら",
+   "kana": "そちら",
+   "id": "situ (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "あちら",
+   "kana": "あちら",
+   "id": "sana (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "どちら",
+   "kana": "どちら",
+   "id": "mana (sopan)",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "教室",
+   "kana": "きょうしつ",
+   "id": "ruang kelas",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "食堂",
+   "kana": "しょくどう",
+   "id": "kantin",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "事務所",
+   "kana": "じむしょ",
+   "id": "kantor",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "会議室",
+   "kana": "かいぎしつ",
+   "id": "ruang rapat",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "受付",
+   "kana": "うけつけ",
+   "id": "meja informasi",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "ロビー",
+   "kana": "ロビー",
+   "id": "lobi",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "部屋",
+   "kana": "へや",
+   "id": "kamar",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "トイレ",
+   "kana": "トイレ",
+   "id": "toilet",
+   "alt": [
+    "お手洗い"
+   ]
+  },
+  {
+   "lesson": 3,
+   "jp": "階段",
+   "kana": "かいだん",
+   "id": "tangga",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "エレベーター",
+   "kana": "エレベーター",
+   "id": "lift",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "エスカレーター",
+   "kana": "エスカレーター",
+   "id": "eskalator",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "自動販売機",
+   "kana": "じどうはんばいき",
+   "id": "mesin jual otomatis",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "電話",
+   "kana": "でんわ",
+   "id": "telepon",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "国",
+   "kana": "くに",
+   "id": "negara",
+   "alt": [
+    "お国"
+   ]
+  },
+  {
+   "lesson": 3,
+   "jp": "会社",
+   "kana": "かいしゃ",
+   "id": "perusahaan",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "うち",
+   "kana": "うち",
+   "id": "rumah",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "靴",
+   "kana": "くつ",
+   "id": "sepatu",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "ネクタイ",
+   "kana": "ネクタイ",
+   "id": "dasi",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "ワイン",
+   "kana": "ワイン",
+   "id": "anggur",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "売り場",
+   "kana": "うりば",
+   "id": "tempat penjualan",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "地下",
+   "kana": "ちか",
+   "id": "bawah tanah",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "階",
+   "kana": "かい",
+   "id": "lantai",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "何階",
+   "kana": "なんがい",
+   "id": "lantai berapa",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "円",
+   "kana": "えん",
+   "id": "yen",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "いくら",
+   "kana": "いくら",
+   "id": "berapa",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "百",
+   "kana": "ひゃく",
+   "id": "ratus",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "千",
+   "kana": "せん",
+   "id": "ribu",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "万",
+   "kana": "まん",
+   "id": "puluh ribu",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "イタリア",
+   "kana": "イタリア",
+   "id": "Italia",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "スイス",
+   "kana": "スイス",
+   "id": "Swiss",
+   "alt": []
+  },
+  {
+   "lesson": 3,
+   "jp": "フランス",
+   "kana": "フランス",
+   "id": "Perancis",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "起きます",
+   "kana": "おきます",
+   "id": "bangun",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "寝ます",
+   "kana": "ねます",
+   "id": "tidur",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "働きます",
+   "kana": "はたらきます",
+   "id": "bekerja",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "休みます",
+   "kana": "やすみます",
+   "id": "beristirahat",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "勉強します",
+   "kana": "べんきょうします",
+   "id": "belajar",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "終わります",
+   "kana": "おわります",
+   "id": "selesai",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "デパート",
+   "kana": "デパート",
+   "id": "toserba",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "銀行",
+   "kana": "ぎんこう",
+   "id": "bank",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "郵便局",
+   "kana": "ゆうびんきょく",
+   "id": "kantor pos",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "図書館",
+   "kana": "としょかん",
+   "id": "perpustakaan",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "美術館",
+   "kana": "びじゅつかん",
+   "id": "gedung kesenian",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "今",
+   "kana": "いま",
+   "id": "sekarang",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "時",
+   "kana": "じ",
+   "id": "jam, pukul",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "分",
+   "kana": "ふん",
+   "id": "menit",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "半",
+   "kana": "はん",
+   "id": "setengah",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "何時",
+   "kana": "なんじ",
+   "id": "jam berapa",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "何分",
+   "kana": "なんぷん",
+   "id": "berapa menit",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "午前",
+   "kana": "ごぜん",
+   "id": "a.m.",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "午後",
+   "kana": "ごご",
+   "id": "p.m.",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "朝",
+   "kana": "あさ",
+   "id": "pagi",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "昼",
+   "kana": "ひる",
+   "id": "siang",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "晩",
+   "kana": "ばん",
+   "id": "malam",
+   "alt": [
+    "夜"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "おととい",
+   "kana": "おととい",
+   "id": "kemarin lusa",
+   "alt": [
+    "一昨日"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "きのう",
+   "kana": "きのう",
+   "id": "kemarin",
+   "alt": [
+    "昨日"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "きょう",
+   "kana": "きょう",
+   "id": "hari ini",
+   "alt": [
+    "今日"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "あした",
+   "kana": "あした",
+   "id": "besok",
+   "alt": [
+    "明日"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "あさって",
+   "kana": "あさって",
+   "id": "lusa",
+   "alt": [
+    "明後日"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "けさ",
+   "kana": "けさ",
+   "id": "tadi pagi",
+   "alt": [
+    "今朝"
+   ]
+  },
+  {
+   "lesson": 4,
+   "jp": "今晩",
+   "kana": "こんばん",
+   "id": "malam ini",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "休み",
+   "kana": "やすみ",
+   "id": "istirahat, libur",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "昼休み",
+   "kana": "ひるやすみ",
+   "id": "istirahat siang",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "試験",
+   "kana": "しけん",
+   "id": "ujian",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "会議",
+   "kana": "かいぎ",
+   "id": "rapat",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "映画",
+   "kana": "えいが",
+   "id": "film",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "毎朝",
+   "kana": "まいあさ",
+   "id": "setiap pagi",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "毎晩",
+   "kana": "まいばん",
+   "id": "setiap malam",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "毎日",
+   "kana": "まいにち",
+   "id": "setiap hari",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "月曜日",
+   "kana": "げつようび",
+   "id": "Senin",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "火曜日",
+   "kana": "かようび",
+   "id": "Selasa",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "水曜日",
+   "kana": "すいようび",
+   "id": "Rabu",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "木曜日",
+   "kana": "もくようび",
+   "id": "Kamis",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "金曜日",
+   "kana": "きんようび",
+   "id": "Jumat",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "土曜日",
+   "kana": "どようび",
+   "id": "Sabtu",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "日曜日",
+   "kana": "にちようび",
+   "id": "Minggu",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "何曜日",
+   "kana": "なんようび",
+   "id": "hari apa",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "から",
+   "kana": "から",
+   "id": "dari",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "まで",
+   "kana": "まで",
+   "id": "sampai",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "番号",
+   "kana": "ばんごう",
+   "id": "nomor",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "何番",
+   "kana": "なんばん",
+   "id": "nomor berapa",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "ニューヨーク",
+   "kana": "ニューヨーク",
+   "id": "New York",
+   "alt": []
+  },
+  {
+   "lesson": 4,
+   "jp": "ロンドン",
+   "kana": "ロンドン",
+   "id": "London",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "行きます",
+   "kana": "いきます",
+   "id": "pergi",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "来ます",
+   "kana": "きます",
+   "id": "datang",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "帰ります",
+   "kana": "かえります",
+   "id": "pulang",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "学校",
+   "kana": "がっこう",
+   "id": "sekolah",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "スーパー",
+   "kana": "スーパー",
+   "id": "pasar swalayan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "駅",
+   "kana": "えき",
+   "id": "stasiun",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "飛行機",
+   "kana": "ひこうき",
+   "id": "pesawat",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "船",
+   "kana": "ふね",
+   "id": "kapal",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "電車",
+   "kana": "でんしゃ",
+   "id": "kereta listrik",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "地下鉄",
+   "kana": "ちかてつ",
+   "id": "kereta bawah tanah",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "新幹線",
+   "kana": "しんかんせん",
+   "id": "Shinkansen",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "バス",
+   "kana": "バス",
+   "id": "bus",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "タクシー",
+   "kana": "タクシー",
+   "id": "taksi",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "自転車",
+   "kana": "じてんしゃ",
+   "id": "sepeda",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "歩いて",
+   "kana": "あるいて",
+   "id": "berjalan kaki",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "人",
+   "kana": "ひと",
+   "id": "orang",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "友達",
+   "kana": "ともだち",
+   "id": "teman",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "彼",
+   "kana": "かれ",
+   "id": "dia (laki-laki)",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "彼女",
+   "kana": "かのじょ",
+   "id": "dia (perempuan)",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "家族",
+   "kana": "かぞく",
+   "id": "keluarga",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "一人で",
+   "kana": "ひとりで",
+   "id": "sendirian",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "先週",
+   "kana": "せんしゅう",
+   "id": "minggu lalu",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "今週",
+   "kana": "こんしゅう",
+   "id": "minggu ini",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "来週",
+   "kana": "らいしゅう",
+   "id": "minggu depan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "先月",
+   "kana": "せんげつ",
+   "id": "bulan lalu",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "今月",
+   "kana": "こんげつ",
+   "id": "bulan ini",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "来月",
+   "kana": "らいげつ",
+   "id": "bulan depan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "去年",
+   "kana": "きょねん",
+   "id": "tahun lalu",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "今年",
+   "kana": "ことし",
+   "id": "tahun ini",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "来年",
+   "kana": "らいねん",
+   "id": "tahun depan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "年",
+   "kana": "ねん",
+   "id": "tahun",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "何年",
+   "kana": "なんねん",
+   "id": "tahun berapa",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "月",
+   "kana": "がつ",
+   "id": "bulan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "何月",
+   "kana": "なんがつ",
+   "id": "bulan apa",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "一日",
+   "kana": "ついたち",
+   "id": "tanggal 1",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "二日",
+   "kana": "ふつか",
+   "id": "tanggal 2",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "三日",
+   "kana": "みっか",
+   "id": "tanggal 3",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "四日",
+   "kana": "よっか",
+   "id": "tanggal 4",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "五日",
+   "kana": "いつか",
+   "id": "tanggal 5",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "六日",
+   "kana": "むいか",
+   "id": "tanggal 6",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "七日",
+   "kana": "なのか",
+   "id": "tanggal 7",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "八日",
+   "kana": "ようか",
+   "id": "tanggal 8",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "九日",
+   "kana": "ここのか",
+   "id": "tanggal 9",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "十日",
+   "kana": "とおか",
+   "id": "tanggal 10",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "十四日",
+   "kana": "じゅうよっか",
+   "id": "tanggal 14",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "二十日",
+   "kana": "はつか",
+   "id": "tanggal 20",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "二十四日",
+   "kana": "にじゅうよっか",
+   "id": "tanggal 24",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "日",
+   "kana": "にち",
+   "id": "tanggal, hari",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "何日",
+   "kana": "なんにち",
+   "id": "tanggal berapa",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "いつ",
+   "kana": "いつ",
+   "id": "kapan",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "誕生日",
+   "kana": "たんじょうび",
+   "id": "hari ulang tahun",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "普通",
+   "kana": "ふつう",
+   "id": "biasa",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "急行",
+   "kana": "きゅうこう",
+   "id": "ekspres",
+   "alt": []
+  },
+  {
+   "lesson": 5,
+   "jp": "特急",
+   "kana": "とっきゅう",
+   "id": "super ekspres",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "食べます",
+   "kana": "たべます",
+   "id": "makan",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "飲みます",
+   "kana": "のみます",
+   "id": "minum",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "吸います",
+   "kana": "すいます",
+   "id": "mengisap (rokok)",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "見ます",
+   "kana": "みます",
+   "id": "melihat, menonton",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "聞きます",
+   "kana": "ききます",
+   "id": "mendengar",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "読みます",
+   "kana": "よみます",
+   "id": "membaca",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "書きます",
+   "kana": "かきます",
+   "id": "menulis",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "買います",
+   "kana": "かいます",
+   "id": "membeli",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "撮ります",
+   "kana": "とります",
+   "id": "mengambil (foto)",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "します",
+   "kana": "します",
+   "id": "melakukan",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "会います",
+   "kana": "あいます",
+   "id": "bertemu",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ごはん",
+   "kana": "ごはん",
+   "id": "nasi",
+   "alt": [
+    "ご飯"
+   ]
+  },
+  {
+   "lesson": 6,
+   "jp": "朝ごはん",
+   "kana": "あさごはん",
+   "id": "sarapan",
+   "alt": [
+    "朝ご飯"
+   ]
+  },
+  {
+   "lesson": 6,
+   "jp": "昼ごはん",
+   "kana": "ひるごはん",
+   "id": "makan siang",
+   "alt": [
+    "昼ご飯"
+   ]
+  },
+  {
+   "lesson": 6,
+   "jp": "晩ごはん",
+   "kana": "ばんごはん",
+   "id": "makan malam",
+   "alt": [
+    "晩ご飯"
+   ]
+  },
+  {
+   "lesson": 6,
+   "jp": "パン",
+   "kana": "パン",
+   "id": "roti",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "卵",
+   "kana": "たまご",
+   "id": "telur",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "肉",
+   "kana": "にく",
+   "id": "daging",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "魚",
+   "kana": "さかな",
+   "id": "ikan",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "野菜",
+   "kana": "やさい",
+   "id": "sayur",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "果物",
+   "kana": "くだもの",
+   "id": "buah",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "水",
+   "kana": "みず",
+   "id": "air",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "お茶",
+   "kana": "おちゃ",
+   "id": "teh Jepang",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "紅茶",
+   "kana": "こうちゃ",
+   "id": "teh",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "牛乳",
+   "kana": "ぎゅうにゅう",
+   "id": "susu",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ミルク",
+   "kana": "ミルク",
+   "id": "susu",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ジュース",
+   "kana": "ジュース",
+   "id": "jus",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ビール",
+   "kana": "ビール",
+   "id": "bir",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "お酒",
+   "kana": "おさけ",
+   "id": "minuman keras",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "たばこ",
+   "kana": "たばこ",
+   "id": "rokok",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "手紙",
+   "kana": "てがみ",
+   "id": "surat",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "レポート",
+   "kana": "レポート",
+   "id": "laporan",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "写真",
+   "kana": "しゃしん",
+   "id": "foto",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ビデオ",
+   "kana": "ビデオ",
+   "id": "kaset video",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "店",
+   "kana": "みせ",
+   "id": "toko",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "庭",
+   "kana": "にわ",
+   "id": "halaman",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "宿題",
+   "kana": "しゅくだい",
+   "id": "pekerjaan rumah",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "テニス",
+   "kana": "テニス",
+   "id": "tenis",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "サッカー",
+   "kana": "サッカー",
+   "id": "sepak bola",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "お花見",
+   "kana": "おはなみ",
+   "id": "hanami",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "何",
+   "kana": "なに",
+   "id": "apa",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "いっしょに",
+   "kana": "いっしょに",
+   "id": "bersama-sama",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ちょっと",
+   "kana": "ちょっと",
+   "id": "sebentar",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "いつも",
+   "kana": "いつも",
+   "id": "selalu",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "時々",
+   "kana": "ときどき",
+   "id": "kadang-kadang",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "それから",
+   "kana": "それから",
+   "id": "setelah itu",
+   "alt": []
+  },
+  {
+   "lesson": 6,
+   "jp": "ええ",
+   "kana": "ええ",
+   "id": "ya",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "切ります",
+   "kana": "きります",
+   "id": "memotong",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "送ります",
+   "kana": "おくります",
+   "id": "mengirim",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "あげます",
+   "kana": "あげます",
+   "id": "memberikan",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "もらいます",
+   "kana": "もらいます",
+   "id": "menerima",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "貸します",
+   "kana": "かします",
+   "id": "meminjamkan",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "借ります",
+   "kana": "かります",
+   "id": "meminjam",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "教えます",
+   "kana": "おしえます",
+   "id": "mengajar",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "習います",
+   "kana": "ならいます",
+   "id": "belajar",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "かけます",
+   "kana": "かけます",
+   "id": "menelepon",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "手",
+   "kana": "て",
+   "id": "tangan",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "はし",
+   "kana": "はし",
+   "id": "sumpit",
+   "alt": [
+    "箸"
+   ]
+  },
+  {
+   "lesson": 7,
+   "jp": "スプーン",
+   "kana": "スプーン",
+   "id": "sendok",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "ナイフ",
+   "kana": "ナイフ",
+   "id": "pisau",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "フォーク",
+   "kana": "フォーク",
+   "id": "garpu",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "はさみ",
+   "kana": "はさみ",
+   "id": "gunting",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "パソコン",
+   "kana": "パソコン",
+   "id": "komputer",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "ケータイ",
+   "kana": "ケータイ",
+   "id": "HP",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "メール",
+   "kana": "メール",
+   "id": "e-mail",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "年賀状",
+   "kana": "ねんがじょう",
+   "id": "kartu tahun baru",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "パンチ",
+   "kana": "パンチ",
+   "id": "pelubang kertas",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "ホッチキス",
+   "kana": "ホッチキス",
+   "id": "staplar",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "セロテープ",
+   "kana": "セロテープ",
+   "id": "selotip",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "消しゴム",
+   "kana": "けしゴム",
+   "id": "penghapus karet",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "紙",
+   "kana": "かみ",
+   "id": "kertas",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "花",
+   "kana": "はな",
+   "id": "bunga",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "シャツ",
+   "kana": "シャツ",
+   "id": "kemeja",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "プレゼント",
+   "kana": "プレゼント",
+   "id": "kado",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "荷物",
+   "kana": "にもつ",
+   "id": "barang",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "お金",
+   "kana": "おかね",
+   "id": "uang",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "切符",
+   "kana": "きっぷ",
+   "id": "karcis",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "クリスマス",
+   "kana": "クリスマス",
+   "id": "Natal",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "父",
+   "kana": "ちち",
+   "id": "ayah",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "母",
+   "kana": "はは",
+   "id": "ibu",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "お父さん",
+   "kana": "おとうさん",
+   "id": "ayah (orang lain)",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "お母さん",
+   "kana": "おかあさん",
+   "id": "ibu (orang lain)",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "もう",
+   "kana": "もう",
+   "id": "sudah",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "まだ",
+   "kana": "まだ",
+   "id": "belum",
+   "alt": []
+  },
+  {
+   "lesson": 7,
+   "jp": "これから",
+   "kana": "これから",
+   "id": "mulai sekarang",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "ハンサム",
+   "kana": "ハンサム",
+   "id": "tampan",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "きれい",
+   "kana": "きれい",
+   "id": "cantik, bersih",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "静か",
+   "kana": "しずか",
+   "id": "tenang",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "にぎやか",
+   "kana": "にぎやか",
+   "id": "ramai",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "有名",
+   "kana": "ゆうめい",
+   "id": "terkenal",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "親切",
+   "kana": "しんせつ",
+   "id": "baik hati",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "元気",
+   "kana": "げんき",
+   "id": "sehat",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "暇",
+   "kana": "ひま",
+   "id": "senggang",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "便利",
+   "kana": "べんり",
+   "id": "praktis",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "すてき",
+   "kana": "すてき",
+   "id": "bagus",
+   "alt": [
+    "素敵"
+   ]
+  },
+  {
+   "lesson": 8,
+   "jp": "大きい",
+   "kana": "おおきい",
+   "id": "besar",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "小さい",
+   "kana": "ちいさい",
+   "id": "kecil",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "新しい",
+   "kana": "あたらしい",
+   "id": "baru",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "古い",
+   "kana": "ふるい",
+   "id": "lama, tua",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "いい",
+   "kana": "いい",
+   "id": "baik, bagus",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "悪い",
+   "kana": "わるい",
+   "id": "buruk",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "暑い",
+   "kana": "あつい",
+   "id": "panas (udara)",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "熱い",
+   "kana": "あつい",
+   "id": "panas (benda)",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "寒い",
+   "kana": "さむい",
+   "id": "dingin (udara)",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "冷たい",
+   "kana": "つめたい",
+   "id": "dingin (benda)",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "難しい",
+   "kana": "むずかしい",
+   "id": "sulit",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "易しい",
+   "kana": "やさしい",
+   "id": "mudah",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "高い",
+   "kana": "たかい",
+   "id": "mahal, tinggi",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "安い",
+   "kana": "やすい",
+   "id": "murah",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "低い",
+   "kana": "ひくい",
+   "id": "rendah",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "おもしろい",
+   "kana": "おもしろい",
+   "id": "menarik",
+   "alt": [
+    "面白い"
+   ]
+  },
+  {
+   "lesson": 8,
+   "jp": "おいしい",
+   "kana": "おいしい",
+   "id": "enak",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "忙しい",
+   "kana": "いそがしい",
+   "id": "sibuk",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "楽しい",
+   "kana": "たのしい",
+   "id": "senang",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "白い",
+   "kana": "しろい",
+   "id": "putih",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "黒い",
+   "kana": "くろい",
+   "id": "hitam",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "赤い",
+   "kana": "あかい",
+   "id": "merah",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "青い",
+   "kana": "あおい",
+   "id": "biru",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "桜",
+   "kana": "さくら",
+   "id": "sakura",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "山",
+   "kana": "やま",
+   "id": "gunung",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "町",
+   "kana": "まち",
+   "id": "kota",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "食べ物",
+   "kana": "たべもの",
+   "id": "makanan",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "所",
+   "kana": "ところ",
+   "id": "tempat",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "寮",
+   "kana": "りょう",
+   "id": "asrama",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "レストラン",
+   "kana": "レストラン",
+   "id": "restoran",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "生活",
+   "kana": "せいかつ",
+   "id": "kehidupan",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "仕事",
+   "kana": "しごと",
+   "id": "pekerjaan",
+   "alt": [
+    "お仕事"
+   ]
+  },
+  {
+   "lesson": 8,
+   "jp": "どう",
+   "kana": "どう",
+   "id": "bagaimana",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "どんな",
+   "kana": "どんな",
+   "id": "yang bagaimana",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "とても",
+   "kana": "とても",
+   "id": "sangat",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "あまり",
+   "kana": "あまり",
+   "id": "kurang begitu",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "そして",
+   "kana": "そして",
+   "id": "kemudian, dan",
+   "alt": []
+  },
+  {
+   "lesson": 8,
+   "jp": "富士山",
+   "kana": "ふじさん",
+   "id": "Gunung Fuji",
+   "alt": []
+  }
+ ]
+}

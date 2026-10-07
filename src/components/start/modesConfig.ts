@@ -1,7 +1,7 @@
 // src/components/start/modesConfig.ts
 import type { Component } from 'vue';
-import { 
-  Layers, Keyboard, PenTool, BookOpen, Calculator, Swords 
+import {
+  Layers, Keyboard, PenTool, BookOpen, Calculator, Swords, CalendarDays
 } from '@lucide/vue';
 
 export interface QuizModeSubType {
@@ -27,6 +27,19 @@ export interface QuizModeDef {
 }
 
 export const modesList: QuizModeDef[] = [
+  {
+    id: 'daily',
+    title: 'Latihan Harian',
+    levelTag: 'Harian (日課)',
+    level: 'n5',
+    defaultType: 'daily',
+    badge: 'BETA',
+    desc: 'Tantangan 5–10 kalimat acak harian dengan input suara & ketik.',
+    icon: CalendarDays,
+    discGradient: 'from-amber-600 via-rose-600 to-indigo-800',
+    discShadow: 'shadow-amber-500/25',
+    discPulse: 'bg-amber-400',
+  },
   {
     id: 'multiple_choice',
     title: 'Pilihan Ganda',
@@ -132,6 +145,9 @@ export const modesList: QuizModeDef[] = [
 ];
 
 export function getModeDescription(mode: QuizModeDef, characterType: string, hitunganTab: string): string {
+  if (mode.id === 'daily') {
+    return 'Latihan 5–10 kalimat acak harian dengan input suara & ketik.';
+  }
   if (mode.id === 'sentence_typing') {
     if (characterType === 'words') return 'Latihan mengetik kosakata berhuruf Kanji';
     if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play';

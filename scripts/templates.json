@@ -1,0 +1,1217 @@
+{
+ "meta": {
+  "version": 1,
+  "scope": "Minna no Nihongo Shokyu I, bab 1-8",
+  "files": "templates.json (pola) + pools.json (kata untuk slot). Letakkan di scripts/ dan scripts/data/.",
+  "placeholders": {
+   "{SLOT}": "Di pola jp = field jp (atau kana pada varian kana). Di id_text = field id.",
+   "{SLOT.2}": "Triplet kedua (jp2/kana2/id2), dipakai pool pasangan seperti na_np, i_np, donna.",
+   "{SLOT.stem}": "Akar kata sifat-i (stem / stem_kana), mis. 高 + くないです.",
+   "{SLOT.loc}": "Field khusus id (pool place_dem): 'di sini' dst."
+  },
+  "rules": [
+   "slots: nama slot -> nama pool. Array nama pool = gabungan beberapa pool.",
+   "Pool boleh punya include (menarik pool lain) dan exclude (daftar jp yang dibuang).",
+   "Pool verb/phrase menyimpan MASU-STEM (mis. ご飯を食べ); template menambahkan ます/ません/ました/ましょう.",
+   "kana: katakana TIDAK diubah ke hiragana (ノート tetap ノート).",
+   "jp_kana: wajib bila pola punya kanji tetap di luar slot (朝, 今, 何, 誕生日). Isinya versi hiragana penuh.",
+   "jp_alt: pola jawaban valid tambahan (mis. ではありません).",
+   "Jawaban yang dihasilkan = jp + jp_alt + varian kana penuh (jp_kana atau jp dengan kana tiap slot).",
+   "droppable (di item pool): bila pola diawali {SLOT}は dan itemnya droppable (わたし), tambahkan varian tanpa subjek.",
+   "compat: [[S, A]] hanya gabungkan item S dan A bila cats(S) berpotongan dengan ok(A). id_cat pada A mengganti terjemahan sesuai cat yang cocok (mis. 高い: mahal / tinggi).",
+   "distinct: [[A, B]] item slot A dan B tidak boleh sama (jp).",
+   "id_text: huruf pertama kalimat dikapitalkan oleh generator; semua id di pool ditulis huruf kecil kecuali nama.",
+   "must_tags: tag yang WAJIB terdeteksi detector pada kalimat hasil. Tag lain boleh muncul selama masih di allowedTags bab itu.",
+   "extra: dihitung otomatis. true bila must_tags memuat tag dari introduces_extra (bab <= lesson). Pola extra sebaiknya diverifikasi dengan halaman 文型 buku.",
+   "Gating kosakata: setiap kata slot WAJIB ada di tabel kosakata bab <= lesson template. Kata yang tidak ditemukan dibuang dan dilaporkan, bukan dilanjutkan.",
+   "grammar_tags yang disimpan ke DB berasal dari detectTags(jp_text), bukan dari must_tags."
+  ]
+ },
+ "templates": [
+  {
+   "tid": "L1-T1",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "OCC": "occupation"
+   },
+   "jp": "{P}は{OCC}です。",
+   "id_text": "{P} {OCC}.",
+   "must_tags": [
+    "PARTICLE_WA",
+    "COPULA_DESU"
+   ]
+  },
+  {
+   "tid": "L1-T2",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "OCC": "occupation"
+   },
+   "jp": "{P}は{OCC}じゃありません。",
+   "jp_alt": [
+    "{P}は{OCC}ではありません。"
+   ],
+   "id_text": "{P} bukan {OCC}.",
+   "must_tags": [
+    "PARTICLE_WA",
+    "NEG_JA_ARIMASEN"
+   ]
+  },
+  {
+   "tid": "L1-T3",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_ask",
+    "OCC": "occupation"
+   },
+   "jp": "{P}は{OCC}ですか。",
+   "id_text": "apakah {P} {OCC}?",
+   "must_tags": [
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L1-T4",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "OCC": "occupation"
+   },
+   "jp": "{P}も{OCC}です。",
+   "id_text": "{P} juga {OCC}.",
+   "must_tags": [
+    "PARTICLE_MO"
+   ]
+  },
+  {
+   "tid": "L1-T5",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "NAT": "nationality"
+   },
+   "jp": "{P}は{NAT}です。",
+   "id_text": "{P} {NAT}.",
+   "must_tags": [
+    "PARTICLE_WA",
+    "COPULA_DESU"
+   ]
+  },
+  {
+   "tid": "L1-T6",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_ask",
+    "NAT": "nationality"
+   },
+   "jp": "{P}は{NAT}ですか。",
+   "id_text": "apakah {P} {NAT}?",
+   "must_tags": [
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L1-T7",
+   "lesson": 1,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "NAT": "nationality"
+   },
+   "jp": "{P}は{NAT}じゃありません。",
+   "jp_alt": [
+    "{P}は{NAT}ではありません。"
+   ],
+   "id_text": "{P} bukan {NAT}.",
+   "must_tags": [
+    "NEG_JA_ARIMASEN"
+   ]
+  },
+  {
+   "tid": "L2-T1",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "N": "things"
+   },
+   "jp": "{D}は{N}です。",
+   "id_text": "{D} {N}.",
+   "must_tags": [
+    "DEM_THING",
+    "COPULA_DESU"
+   ]
+  },
+  {
+   "tid": "L2-T2",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "NN": "noun_of_noun"
+   },
+   "jp": "{D}は{NN}です。",
+   "id_text": "{D} {NN}.",
+   "must_tags": [
+    "DEM_THING",
+    "PARTICLE_NO"
+   ]
+  },
+  {
+   "tid": "L2-T3",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "O": "owner",
+    "N": "things"
+   },
+   "jp": "{D}は{O}の{N}です。",
+   "id_text": "{D} {N} {O}.",
+   "must_tags": [
+    "DEM_THING",
+    "PARTICLE_NO"
+   ]
+  },
+  {
+   "tid": "L2-T4",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "A": "dem_adnom",
+    "N": "things",
+    "O": "owner"
+   },
+   "jp": "{A}{N}は{O}のです。",
+   "id_text": "{N} {A} milik {O}.",
+   "must_tags": [
+    "DEM_ADNOM",
+    "NO_PRONOUN"
+   ]
+  },
+  {
+   "tid": "L2-T5",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "N": "things"
+   },
+   "jp": "{D}は{N}じゃありません。",
+   "jp_alt": [
+    "{D}は{N}ではありません。"
+   ],
+   "id_text": "{D} bukan {N}.",
+   "must_tags": [
+    "DEM_THING",
+    "NEG_JA_ARIMASEN"
+   ]
+  },
+  {
+   "tid": "L2-T6",
+   "lesson": 2,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "N": "things"
+   },
+   "jp": "{D}は{N}ですか。",
+   "id_text": "apakah {D} {N}?",
+   "must_tags": [
+    "DEM_THING",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L3-T1",
+   "lesson": 3,
+   "extra": false,
+   "slots": {
+    "D": "place_dem",
+    "PL": "place_L3"
+   },
+   "jp": "{D}は{PL}です。",
+   "id_text": "{D} adalah {PL}.",
+   "must_tags": [
+    "DEM_PLACE",
+    "COPULA_DESU"
+   ]
+  },
+  {
+   "tid": "L3-T2",
+   "lesson": 3,
+   "extra": false,
+   "slots": {
+    "I": [
+     "place_L3",
+     "thing_L3"
+    ],
+    "D": "place_dem"
+   },
+   "jp": "{I}は{D}です。",
+   "id_text": "{I} ada {D.loc}.",
+   "must_tags": [
+    "DEM_PLACE"
+   ]
+  },
+  {
+   "tid": "L3-T3",
+   "lesson": 3,
+   "extra": true,
+   "slots": {
+    "I": [
+     "place_L3",
+     "thing_L3"
+    ]
+   },
+   "jp": "{I}はどこですか。",
+   "id_text": "di mana {I}?",
+   "must_tags": [
+    "WH_DOKO",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L3-T4",
+   "lesson": 3,
+   "extra": false,
+   "slots": {
+    "D": "place_dem",
+    "PL": "place_L3"
+   },
+   "jp": "{D}は{PL}ですか。",
+   "id_text": "apakah {D} {PL}?",
+   "must_tags": [
+    "DEM_PLACE",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L3-T5",
+   "lesson": 3,
+   "extra": false,
+   "slots": {
+    "D": "place_dem",
+    "PL": "place_L3"
+   },
+   "jp": "{D}は{PL}じゃありません。",
+   "jp_alt": [
+    "{D}は{PL}ではありません。"
+   ],
+   "id_text": "{D} bukan {PL}.",
+   "must_tags": [
+    "DEM_PLACE",
+    "NEG_JA_ARIMASEN"
+   ]
+  },
+  {
+   "tid": "L4-T1",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "C": "clock"
+   },
+   "jp": "今{C}です。",
+   "jp_kana": "いま{C}です。",
+   "id_text": "sekarang pukul {C}.",
+   "must_tags": [
+    "TIME_CLOCK"
+   ]
+  },
+  {
+   "tid": "L4-T2",
+   "lesson": 4,
+   "extra": true,
+   "slots": {},
+   "jp": "今何時ですか。",
+   "jp_kana": "いまなんじですか。",
+   "id_text": "sekarang jam berapa?",
+   "must_tags": [
+    "WH_NANJI",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L4-T3",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "R": "range",
+    "V": "span_verb"
+   },
+   "jp": "{P}は{R}{V}ます。",
+   "id_text": "{P} {V} {R}.",
+   "must_tags": [
+    "VERB_MASU",
+    "PARTICLE_KARA_MADE"
+   ]
+  },
+  {
+   "tid": "L4-T4",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "H": "hour_morning"
+   },
+   "jp": "{P}は朝{H}に起きます。",
+   "jp_kana": "{P}はあさ{H}におきます。",
+   "id_text": "{P} bangun pukul {H}.",
+   "must_tags": [
+    "VERB_MASU",
+    "PARTICLE_NI_TIME"
+   ]
+  },
+  {
+   "tid": "L4-T5",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "H": "hour_night"
+   },
+   "jp": "{P}は{H}に寝ます。",
+   "jp_kana": "{P}は{H}にねます。",
+   "id_text": "{P} tidur pukul {H}.",
+   "must_tags": [
+    "VERB_MASU",
+    "PARTICLE_NI_TIME"
+   ]
+  },
+  {
+   "tid": "L4-T6",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "T": "past_time",
+    "V": "daily_verb"
+   },
+   "jp": "{P}は{T}{V}ました。",
+   "id_text": "{T} {P} {V}.",
+   "must_tags": [
+    "VERB_MASHITA"
+   ]
+  },
+  {
+   "tid": "L4-T7",
+   "lesson": 4,
+   "extra": true,
+   "slots": {
+    "P": "person_any",
+    "T": "past_time",
+    "V": "daily_verb"
+   },
+   "jp": "{P}は{T}{V}ませんでした。",
+   "id_text": "{T} {P} tidak {V}.",
+   "must_tags": [
+    "VERB_MASENDESHITA"
+   ]
+  },
+  {
+   "tid": "L4-T8",
+   "lesson": 4,
+   "extra": true,
+   "slots": {
+    "P": "person_any",
+    "H": "hour_morning"
+   },
+   "jp": "{P}は朝{H}に起きません。",
+   "jp_kana": "{P}はあさ{H}におきません。",
+   "id_text": "{P} tidak bangun pukul {H}.",
+   "must_tags": [
+    "VERB_MASEN",
+    "PARTICLE_NI_TIME"
+   ]
+  },
+  {
+   "tid": "L4-T9",
+   "lesson": 4,
+   "extra": false,
+   "slots": {
+    "P": "person_ask",
+    "H": "hour_morning"
+   },
+   "jp": "{P}は朝{H}に起きますか。",
+   "jp_kana": "{P}はあさ{H}におきますか。",
+   "id_text": "apakah {P} bangun pukul {H}?",
+   "must_tags": [
+    "VERB_MASU",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L5-T1",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "D": "dest_go"
+   },
+   "jp": "{P}は{D}へ行きます。",
+   "jp_kana": "{P}は{D}へいきます。",
+   "id_text": "{P} pergi ke {D}.",
+   "must_tags": [
+    "PARTICLE_HE",
+    "VERB_MASU"
+   ]
+  },
+  {
+   "tid": "L5-T2",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "D": "dest_return"
+   },
+   "jp": "{P}は{D}へ帰ります。",
+   "jp_kana": "{P}は{D}へかえります。",
+   "id_text": "{P} pulang ke {D}.",
+   "must_tags": [
+    "PARTICLE_HE",
+    "VERB_MASU"
+   ]
+  },
+  {
+   "tid": "L5-T3",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "TR": "transport_local",
+    "D": "dest_return_local"
+   },
+   "jp": "{P}は{TR}で{D}へ帰ります。",
+   "jp_kana": "{P}は{TR}で{D}へかえります。",
+   "id_text": "{P} pulang ke {D} naik {TR}.",
+   "must_tags": [
+    "PARTICLE_DE_TRANSPORT",
+    "PARTICLE_HE"
+   ]
+  },
+  {
+   "tid": "L5-T4",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "TR": "transport_long",
+    "D": "dest_return_long"
+   },
+   "jp": "{P}は{TR}で{D}へ帰ります。",
+   "jp_kana": "{P}は{TR}で{D}へかえります。",
+   "id_text": "{P} pulang ke {D} naik {TR}.",
+   "must_tags": [
+    "PARTICLE_DE_TRANSPORT",
+    "PARTICLE_HE"
+   ]
+  },
+  {
+   "tid": "L5-T5",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "C": "companion",
+    "D": "dest_come"
+   },
+   "jp": "{P}は{C}と{D}へ来ました。",
+   "jp_kana": "{P}は{C}と{D}へきました。",
+   "id_text": "{P} datang ke {D} bersama {C}.",
+   "must_tags": [
+    "PARTICLE_TO_WITH",
+    "PARTICLE_HE",
+    "VERB_MASHITA"
+   ],
+   "distinct": [
+    [
+     "P",
+     "C"
+    ]
+   ]
+  },
+  {
+   "tid": "L5-T6",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "T": "time_future",
+    "D": "dest_go"
+   },
+   "jp": "{P}は{T}{D}へ行きます。",
+   "jp_kana": "{P}は{T}{D}へいきます。",
+   "id_text": "{T} {P} pergi ke {D}.",
+   "must_tags": [
+    "PARTICLE_HE",
+    "VERB_MASU"
+   ]
+  },
+  {
+   "tid": "L5-T7",
+   "lesson": 5,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "T": "time_past",
+    "D": "dest_go"
+   },
+   "jp": "{P}は{T}{D}へ行きました。",
+   "jp_kana": "{P}は{T}{D}へいきました。",
+   "id_text": "{T} {P} pergi ke {D}.",
+   "must_tags": [
+    "PARTICLE_HE",
+    "VERB_MASHITA"
+   ]
+  },
+  {
+   "tid": "L5-T8",
+   "lesson": 5,
+   "extra": true,
+   "slots": {
+    "P": "person_any"
+   },
+   "jp": "{P}はどこへも行きません。",
+   "jp_kana": "{P}はどこへもいきません。",
+   "id_text": "{P} tidak pergi ke mana-mana.",
+   "must_tags": [
+    "VERB_MASEN",
+    "PARTICLE_HE"
+   ],
+   "note": "どこへも bisa ditolak detector; jika begitu, hapus template ini."
+  },
+  {
+   "tid": "L5-T9",
+   "lesson": 5,
+   "extra": true,
+   "slots": {
+    "P": "person_ask",
+    "D": "dest_go"
+   },
+   "jp": "{P}はいつ{D}へ行きますか。",
+   "jp_kana": "{P}はいつ{D}へいきますか。",
+   "id_text": "kapan {P} pergi ke {D}?",
+   "must_tags": [
+    "WH_ITSU",
+    "PARTICLE_HE",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L5-T10",
+   "lesson": 5,
+   "extra": true,
+   "slots": {
+    "P": "person_any",
+    "DT": "date"
+   },
+   "jp": "{P}の誕生日は{DT}です。",
+   "jp_kana": "{P}のたんじょうびは{DT}です。",
+   "id_text": "ulang tahun {P} adalah tanggal {DT}.",
+   "must_tags": [
+    "DATE_EXPR",
+    "PARTICLE_NO"
+   ]
+  },
+  {
+   "tid": "L6-T1",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}は{OV}ます。",
+   "id_text": "{P} {OV}.",
+   "must_tags": [
+    "PARTICLE_WO",
+    "VERB_MASU"
+   ]
+  },
+  {
+   "tid": "L6-T2",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "F": "freq",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}は{F}{OV}ます。",
+   "id_text": "{P} {F} {OV}.",
+   "must_tags": [
+    "PARTICLE_WO",
+    "VERB_MASU"
+   ],
+   "compat": [
+    [
+     "OV",
+     "F"
+    ]
+   ]
+  },
+  {
+   "tid": "L6-T3",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "PA": "place_action"
+   },
+   "jp": "{P}は{PA}ます。",
+   "id_text": "{P} {PA}.",
+   "must_tags": [
+    "PARTICLE_DE_PLACE",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L6-T4",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "OV": "obj_verb"
+   },
+   "jp": "いっしょに{OV}ませんか。",
+   "id_text": "maukah Anda {OV} bersama?",
+   "must_tags": [
+    "VERB_MASENKA",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L6-T5",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "D": "dest_go"
+   },
+   "jp": "いっしょに{D}へ行きませんか。",
+   "jp_kana": "いっしょに{D}へいきませんか。",
+   "id_text": "maukah Anda pergi ke {D} bersama?",
+   "must_tags": [
+    "VERB_MASENKA",
+    "PARTICLE_HE"
+   ]
+  },
+  {
+   "tid": "L6-T6",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "OV": "obj_verb"
+   },
+   "jp": "{OV}ましょう。",
+   "id_text": "ayo {OV}.",
+   "must_tags": [
+    "VERB_MASHOU",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L6-T7",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "D": "dest_go"
+   },
+   "jp": "{D}へ行きましょう。",
+   "jp_kana": "{D}へいきましょう。",
+   "id_text": "ayo pergi ke {D}.",
+   "must_tags": [
+    "VERB_MASHOU",
+    "PARTICLE_HE"
+   ]
+  },
+  {
+   "tid": "L6-T8",
+   "lesson": 6,
+   "extra": false,
+   "slots": {},
+   "jp": "ちょっと休みましょう。",
+   "jp_kana": "ちょっとやすみましょう。",
+   "id_text": "mari istirahat sebentar.",
+   "must_tags": [
+    "VERB_MASHOU"
+   ]
+  },
+  {
+   "tid": "L6-T9",
+   "lesson": 6,
+   "extra": true,
+   "slots": {
+    "P": "person_ask",
+    "V": "verb_basic"
+   },
+   "jp": "{P}は何を{V}ますか。",
+   "jp_kana": "{P}はなにを{V}ますか。",
+   "id_text": "apa yang {P} {V}?",
+   "must_tags": [
+    "PARTICLE_WO",
+    "WH_NAN",
+    "QUESTION_KA"
+   ]
+  },
+  {
+   "tid": "L6-T10",
+   "lesson": 6,
+   "extra": true,
+   "slots": {
+    "P": "person_any",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}は{OV}ません。",
+   "id_text": "{P} tidak {OV}.",
+   "must_tags": [
+    "VERB_MASEN",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L6-T11",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "T": "past_time",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}は{T}{OV}ました。",
+   "id_text": "{T} {P} {OV}.",
+   "must_tags": [
+    "VERB_MASHITA",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L6-T12",
+   "lesson": 6,
+   "extra": false,
+   "slots": {
+    "P": "person_ask",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}は{OV}ますか。",
+   "id_text": "apakah {P} {OV}?",
+   "must_tags": [
+    "QUESTION_KA",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L7-T1",
+   "lesson": 7,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "MA": "means_action"
+   },
+   "jp": "{P}は{MA}ます。",
+   "id_text": "{P} {MA}.",
+   "must_tags": [
+    "PARTICLE_DE_MEANS",
+    "PARTICLE_WO"
+   ]
+  },
+  {
+   "tid": "L7-T2",
+   "lesson": 7,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "R": "recipient",
+    "G": "gift"
+   },
+   "jp": "{P}は{R}に{G}をあげます。",
+   "id_text": "{P} memberikan {G} kepada {R}.",
+   "must_tags": [
+    "GIVE_AGEMASU",
+    "PARTICLE_NI_RECIPIENT"
+   ],
+   "distinct": [
+    [
+     "P",
+     "R"
+    ]
+   ]
+  },
+  {
+   "tid": "L7-T3",
+   "lesson": 7,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "R": "recipient",
+    "G": "gift"
+   },
+   "jp": "{P}は{R}に{G}をもらいました。",
+   "id_text": "{P} menerima {G} dari {R}.",
+   "must_tags": [
+    "RECEIVE_MORAIMASU",
+    "PARTICLE_NI_RECIPIENT"
+   ],
+   "distinct": [
+    [
+     "P",
+     "R"
+    ]
+   ]
+  },
+  {
+   "tid": "L7-T4",
+   "lesson": 7,
+   "extra": true,
+   "slots": {
+    "P": "person_ask",
+    "R": "recipient"
+   },
+   "jp": "{P}は{R}に何をあげますか。",
+   "jp_kana": "{P}は{R}になにをあげますか。",
+   "id_text": "apa yang {P} berikan kepada {R}?",
+   "must_tags": [
+    "GIVE_AGEMASU",
+    "WH_NAN",
+    "QUESTION_KA"
+   ],
+   "distinct": [
+    [
+     "P",
+     "R"
+    ]
+   ]
+  },
+  {
+   "tid": "L7-T5",
+   "lesson": 7,
+   "extra": true,
+   "slots": {
+    "P": "person_any",
+    "OV": "obj_verb"
+   },
+   "jp": "{P}はもう{OV}ました。",
+   "id_text": "{P} sudah {OV}.",
+   "must_tags": [
+    "MOU_MASHITA",
+    "VERB_MASHITA"
+   ]
+  },
+  {
+   "tid": "L7-T6",
+   "lesson": 7,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "R": "recipient",
+    "NV": "ni_verb"
+   },
+   "jp": "{P}は{R}に{NV}ます。",
+   "id_text": "{P} {NV} {R}.",
+   "must_tags": [
+    "PARTICLE_NI_RECIPIENT",
+    "PARTICLE_WO"
+   ],
+   "distinct": [
+    [
+     "P",
+     "R"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T1",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_i"
+   },
+   "jp": "{S}は{A}です。",
+   "id_text": "{S} {A}.",
+   "must_tags": [
+    "PARTICLE_WA",
+    "ADJ_I"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T2",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_na"
+   },
+   "jp": "{S}は{A}です。",
+   "id_text": "{S} {A}.",
+   "must_tags": [
+    "PARTICLE_WA",
+    "ADJ_NA"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T3",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "X": "na_np"
+   },
+   "jp": "{X}は{X.2}です。",
+   "id_text": "{X} adalah {X.2}.",
+   "must_tags": [
+    "ADJ_NA",
+    "ADJ_NOUN_MOD"
+   ]
+  },
+  {
+   "tid": "L8-T4",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "X": "i_np"
+   },
+   "jp": "{X}は{X.2}です。",
+   "id_text": "{X} adalah {X.2}.",
+   "must_tags": [
+    "ADJ_I",
+    "ADJ_NOUN_MOD"
+   ]
+  },
+  {
+   "tid": "L8-T5",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "D": "dem_thing",
+    "A": "adj_i",
+    "N": "things"
+   },
+   "jp": "{D}は{A}{N}です。",
+   "id_text": "{D} {N} {A}.",
+   "must_tags": [
+    "DEM_THING",
+    "ADJ_I",
+    "ADJ_NOUN_MOD"
+   ],
+   "compat": [
+    [
+     "N",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T6",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_i"
+   },
+   "jp": "{S}は{A.stem}くないです。",
+   "jp_alt": [
+    "{S}は{A.stem}くありません。"
+   ],
+   "id_text": "{S} tidak {A}.",
+   "must_tags": [
+    "ADJ_NEG",
+    "ADJ_I"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T7",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_na"
+   },
+   "jp": "{S}は{A}じゃありません。",
+   "jp_alt": [
+    "{S}は{A}ではありません。"
+   ],
+   "id_text": "{S} tidak {A}.",
+   "must_tags": [
+    "ADJ_NEG",
+    "ADJ_NA"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T8",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_i"
+   },
+   "jp": "{S}はとても{A}です。",
+   "id_text": "{S} sangat {A}.",
+   "must_tags": [
+    "ADV_TOTEMO_AMARI",
+    "ADJ_I"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T9",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_na"
+   },
+   "jp": "{S}はとても{A}です。",
+   "id_text": "{S} sangat {A}.",
+   "must_tags": [
+    "ADV_TOTEMO_AMARI",
+    "ADJ_NA"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T10",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_i"
+   },
+   "jp": "{S}はあまり{A.stem}くないです。",
+   "jp_alt": [
+    "{S}はあまり{A.stem}くありません。"
+   ],
+   "id_text": "{S} tidak begitu {A}.",
+   "must_tags": [
+    "ADV_TOTEMO_AMARI",
+    "ADJ_NEG"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T11",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "S": "subj_L8",
+    "A": "adj_na"
+   },
+   "jp": "{S}はあまり{A}じゃありません。",
+   "jp_alt": [
+    "{S}はあまり{A}ではありません。"
+   ],
+   "id_text": "{S} tidak begitu {A}.",
+   "must_tags": [
+    "ADV_TOTEMO_AMARI",
+    "ADJ_NEG"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T12",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "S": "subj_L8_ask",
+    "A": "adj_i"
+   },
+   "jp": "{S}は{A}ですか。",
+   "id_text": "apakah {S} {A}?",
+   "must_tags": [
+    "QUESTION_KA",
+    "ADJ_I"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T13",
+   "lesson": 8,
+   "extra": false,
+   "slots": {
+    "S": "subj_L8_ask",
+    "A": "adj_na"
+   },
+   "jp": "{S}は{A}ですか。",
+   "id_text": "apakah {S} {A}?",
+   "must_tags": [
+    "QUESTION_KA",
+    "ADJ_NA"
+   ],
+   "compat": [
+    [
+     "S",
+     "A"
+    ]
+   ]
+  },
+  {
+   "tid": "L8-T14",
+   "lesson": 8,
+   "extra": true,
+   "slots": {
+    "X": "donna"
+   },
+   "jp": "{X}はどんな{X.2}ですか。",
+   "id_text": "{X} {X.2} seperti apa?",
+   "must_tags": [
+    "WH_DONNA",
+    "QUESTION_KA"
+   ]
+  }
+ ]
+}

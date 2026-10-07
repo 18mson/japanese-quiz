@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Target, BookOpen, Trophy } from '@lucide/vue';
+import { Target, BookOpen, Trophy, CalendarDays } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import DailyGoalProgressBar from '../goals/DailyGoalProgressBar.vue';
 
@@ -15,6 +15,7 @@ const emit = defineEmits<{
   (e: 'openLeaderboard'): void;
   (e: 'openFuroku'): void;
   (e: 'openReference'): void;
+  (e: 'openDailyPractice'): void;
   (e: 'interact'): void;
 }>();
 
@@ -56,6 +57,16 @@ const onAction = (action: () => void) => {
     <!-- Action Buttons: Daily Target, Referensi, Peringkat & Grid -->
     <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
       <DailyGoalProgressBar class="hidden xs:flex" />
+
+      <button 
+        type="button"
+        @click.stop="onAction(() => emit('openDailyPractice'))"
+        class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-amber-50/90 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-700/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 shadow-2xs"
+        title="Latihan Kalimat Harian (日課) • Input Suara & Ketik"
+      >
+        <CalendarDays class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+        <span class="hidden md:inline">Latihan Harian</span>
+      </button>
 
       <button 
         v-if="selectedLevel === 'n5'"

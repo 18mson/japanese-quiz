@@ -1,0 +1,399 @@
+{
+  "meta": {
+    "source": "Minna no Nihongo Shokyu I Honsatsu (daftar isi / 目次, hal. 6-206 buku)",
+    "lessons": 25,
+    "how_to_read": "introduces = pola yang contoh kalimatnya TERLIHAT di daftar isi buku. introduces_extra = pola standar kurikulum bab tsb yang tidak tampil di daftar isi (dari pengetahuan umum seri ini, mohon dicek dengan halaman 文型 di buku). Tag yang diizinkan di bab N = gabungan introduces + introduces_extra bab 1..N.",
+    "detector_notes": [
+      "Partikel が dipetakan ke PARTICLE_GA_OBJ (diizinkan mulai bab 9); kalimat keberadaan (います/あります) di bab 10 juga memakai が dan itu sah.",
+      "Kalimat dengan konstruksi yang tidak ada di kamus tag ini dianggap unknown dan ditolak.",
+      "book_examples dipakai sebagai test case detector dan referensi gaya template, bukan sebagai soal yang ditampilkan ke user."
+    ]
+  },
+  "tags": {
+    "COPULA_DESU": "N1 は N2 です",
+    "PARTICLE_WA": "partikel topik は",
+    "NEG_JA_ARIMASEN": "N じゃ ありません (negatif kalimat nominal)",
+    "QUESTION_KA": "kalimat tanya ～か",
+    "PARTICLE_MO": "N も (juga)",
+    "HONORIFIC_SAN": "～さん",
+    "DEM_THING": "これ / それ / あれ",
+    "DEM_ADNOM": "この / その / あの + N",
+    "PARTICLE_NO": "N1 の N2 (milik / keterangan)",
+    "NO_PRONOUN": "N の (milik tanpa nomina, mis. わたしの)",
+    "SOU_DESU": "そうです / そうじゃ ありません",
+    "WH_NAN": "なん / なに ですか",
+    "DEM_PLACE": "ここ / そこ / あそこ",
+    "WH_DOKO": "どこ",
+    "DEM_DIRECTION": "こちら / そちら / あちら / どちら",
+    "PRICE_IKURA": "いくら (harga)",
+    "TIME_CLOCK": "～時～分 (jam)",
+    "VERB_MASU": "V ます (non-lampau)",
+    "VERB_MASEN": "V ません",
+    "VERB_MASHITA": "V ました",
+    "VERB_MASENDESHITA": "V ませんでした",
+    "PARTICLE_KARA_MADE": "～から～まで",
+    "PARTICLE_NI_TIME": "waktu に V",
+    "PARTICLE_NE": "～ね",
+    "PARTICLE_TO_AND": "N1 と N2",
+    "WH_NANJI": "なんじ / なんぷん",
+    "PARTICLE_HE": "tempat へ 行きます / 来ます / 帰ります",
+    "PARTICLE_DE_TRANSPORT": "kendaraan で",
+    "PARTICLE_TO_WITH": "orang と (bersama)",
+    "WH_ITSU": "いつ",
+    "DATE_EXPR": "tanggal dan hari",
+    "PARTICLE_WO": "objek を",
+    "PARTICLE_DE_PLACE": "tempat で V (lokasi kegiatan)",
+    "VERB_MASENKA": "V ませんか (ajakan)",
+    "VERB_MASHOU": "V ましょう",
+    "PARTICLE_DE_MEANS": "alat / bahasa で V",
+    "GIVE_AGEMASU": "あげます",
+    "RECEIVE_MORAIMASU": "もらいます",
+    "PARTICLE_NI_RECIPIENT": "penerima に",
+    "MOU_MASHITA": "もう V ました / まだ",
+    "ADJ_I": "kata sifat-i",
+    "ADJ_NA": "kata sifat-na",
+    "ADJ_NOUN_MOD": "adj + N (きれいな花 / 高い山)",
+    "ADJ_NEG": "negatif kata sifat (くないです / じゃありません)",
+    "ADV_TOTEMO_AMARI": "とても / あまり",
+    "WH_DONNA": "どんな N",
+    "PARTICLE_GA_OBJ": "N が 好き / わかる / ある",
+    "ADV_AMOUNT": "少し / よく / たくさん / 全然 dst.",
+    "KARA_REASON": "～から (alasan)",
+    "WH_DOUSHITE": "どうして",
+    "ARIMASU_IMASU": "あります / います (keberadaan)",
+    "LOCATION_NI_EXIST": "tempat に あります / います",
+    "POSITION_NOUN": "上 / 下 / 前 / 後ろ / 中 / 隣 dst.",
+    "PARTICLE_YA": "N1 や N2",
+    "COUNTER": "pencacah (つ, 人, 枚 dst.)",
+    "DURATION": "durasi (1年, 2時間 dst.)",
+    "ADV_GURAI": "ぐらい",
+    "DAKE_ONLY": "だけ",
+    "PAST_NOUN_NA": "N / na-adj でした / じゃ ありませんでした",
+    "PAST_ADJ_I": "i-adj かったです / くなかったです",
+    "COMPARE_YORI": "A は B より adj",
+    "COMPARE_HOU": "A の ほうが B より adj",
+    "SUPERLATIVE_ICHIBAN": "いちばん",
+    "WH_DOCHIRA": "どちら / どっち (perbandingan)",
+    "WANT_HOSHII": "N が 欲しいです",
+    "WANT_TAI": "V たいです",
+    "PURPOSE_NI_IKU": "V(語幹) / N に 行きます / 来ます / 帰ります",
+    "TE_FORM": "bentuk て",
+    "TE_KUDASAI": "V て ください",
+    "TE_IMASU_PROGRESSIVE": "V て います (sedang)",
+    "TE_MASHOUKA": "V ましょうか (menawarkan)",
+    "TE_MO_II": "V ても いいです",
+    "TE_WA_IKEMASEN": "V ては いけません",
+    "TE_IMASU_STATE": "V て います (keadaan, mis. 持っています / 住んでいます)",
+    "TE_SEQUENCE": "V て、V て、V (urutan)",
+    "TE_KARA": "V て から",
+    "ADJ_TE": "adj て (menyambung kata sifat)",
+    "PARTICLE_GA_WA_SUBJECT": "N1 は N2 が adj",
+    "NAI_FORM": "bentuk ない",
+    "NAIDE_KUDASAI": "V ないで ください",
+    "NAKEREBA_NARANAI": "V なければ なりません",
+    "NAKUTE_MO_II": "V なくても いいです",
+    "DICT_FORM": "bentuk kamus",
+    "KOTO_GA_DEKIRU": "V(kamus) ことが できます",
+    "SHUMI_KOTO": "趣味は V(kamus) ことです",
+    "MAE_NI": "V(kamus) まえに / N の まえに",
+    "TA_FORM": "bentuk た",
+    "TA_KOTO_GA_ARU": "V た ことが あります",
+    "TARI_TARI": "V たり、V たり します",
+    "NARIMASU": "adj / N + なります",
+    "PLAIN_STYLE": "ragam biasa / casual (だ, じゃない, だった, V biasa)",
+    "TO_OMOIMASU": "～と 思います",
+    "TO_IIMASU": "～と 言いました",
+    "DESHOU": "～でしょう (dugaan / konfirmasi)",
+    "REL_CLAUSE": "klausa pewatas nomina (V biasa + N)",
+    "TOKI": "～とき、～",
+    "TO_CONDITIONAL": "～と、～ (kondisi pasti)",
+    "KUREMASU": "くれます",
+    "TE_AGEMASU": "V て あげます",
+    "TE_MORAIMASU": "V て もらいます",
+    "TE_KUREMASU": "V て くれます",
+    "TARA_COND": "～たら、～",
+    "TEMO_CONCESSIVE": "～ても、～",
+    "MOSHI": "もし～たら"
+  },
+  "lessons": [
+    {
+      "lesson": 1,
+      "title_id": "Perkenalan diri: ～は～です",
+      "introduces": ["COPULA_DESU", "PARTICLE_WA", "NEG_JA_ARIMASEN", "QUESTION_KA", "PARTICLE_MO", "HONORIFIC_SAN"],
+      "introduces_extra": [],
+      "book_examples": [
+        "わたしはマイク・ミラーです。",
+        "サントスさんは学生じゃありません。",
+        "ミラーさんは会社員ですか。",
+        "サントスさんも会社員です。"
+      ]
+    },
+    {
+      "lesson": 2,
+      "title_id": "Benda dan kepemilikan: これ/それ/あれ, この/その/あの, ～の",
+      "introduces": ["DEM_THING", "DEM_ADNOM", "PARTICLE_NO", "NO_PRONOUN"],
+      "introduces_extra": ["SOU_DESU", "WH_NAN"],
+      "book_examples": [
+        "これは辞書です。",
+        "これはコンピューターの本です。",
+        "それはわたしの傘です。",
+        "この傘はわたしのです。"
+      ]
+    },
+    {
+      "lesson": 3,
+      "title_id": "Tempat dan arah: ここ/そこ/あそこ",
+      "introduces": ["DEM_PLACE"],
+      "introduces_extra": ["WH_DOKO", "DEM_DIRECTION", "PRICE_IKURA"],
+      "book_examples": [
+        "ここは食堂です。",
+        "電話はあそこです。"
+      ]
+    },
+    {
+      "lesson": 4,
+      "title_id": "Waktu dan kegiatan sehari-hari: kata kerja ～ます",
+      "introduces": ["TIME_CLOCK", "VERB_MASU", "VERB_MASHITA", "PARTICLE_KARA_MADE", "PARTICLE_NI_TIME"],
+      "introduces_extra": ["VERB_MASEN", "VERB_MASENDESHITA", "PARTICLE_NE", "PARTICLE_TO_AND", "WH_NANJI"],
+      "book_examples": [
+        "今4時5分です。",
+        "わたしは9時から5時まで働きます。",
+        "わたしは朝6時に起きます。",
+        "わたしはきのう勉強しました。"
+      ]
+    },
+    {
+      "lesson": 5,
+      "title_id": "Pergi, datang, pulang: ～へ, kendaraan で, ～と",
+      "introduces": ["PARTICLE_HE", "PARTICLE_DE_TRANSPORT", "PARTICLE_TO_WITH"],
+      "introduces_extra": ["WH_ITSU", "DATE_EXPR"],
+      "book_examples": [
+        "わたしは京都へ行きます。",
+        "わたしはタクシーでうちへ帰ります。",
+        "わたしは家族と日本へ来ました。"
+      ]
+    },
+    {
+      "lesson": 6,
+      "title_id": "Kata kerja dengan objek: ～を, ajakan ～ませんか/～ましょう",
+      "introduces": ["PARTICLE_WO", "PARTICLE_DE_PLACE", "VERB_MASENKA", "VERB_MASHOU"],
+      "introduces_extra": [],
+      "book_examples": [
+        "わたしはジュースを飲みます。",
+        "わたしは駅で新聞を買います。",
+        "いっしょに神戸へ行きませんか。",
+        "ちょっと休みましょう。"
+      ]
+    },
+    {
+      "lesson": 7,
+      "title_id": "Alat, memberi dan menerima: ～で, あげます/もらいます",
+      "introduces": ["PARTICLE_DE_MEANS", "GIVE_AGEMASU", "RECEIVE_MORAIMASU", "PARTICLE_NI_RECIPIENT"],
+      "introduces_extra": ["MOU_MASHITA"],
+      "book_examples": [
+        "わたしはワープロで手紙を書きます。",
+        "わたしは木村さんに花をあげます。",
+        "わたしはカリナさんにチョコレートをもらいました。"
+      ]
+    },
+    {
+      "lesson": 8,
+      "title_id": "Kata sifat-i dan kata sifat-na",
+      "introduces": ["ADJ_NA", "ADJ_I", "ADJ_NOUN_MOD"],
+      "introduces_extra": ["ADJ_NEG", "ADV_TOTEMO_AMARI", "WH_DONNA"],
+      "book_examples": [
+        "桜はきれいです。",
+        "富士山は高いです。",
+        "桜はきれいな花です。",
+        "富士山は高い山です。"
+      ]
+    },
+    {
+      "lesson": 9,
+      "title_id": "Suka, paham, bisa, dan alasan: ～が, ～から",
+      "introduces": ["PARTICLE_GA_OBJ", "ADV_AMOUNT", "KARA_REASON"],
+      "introduces_extra": ["WH_DOUSHITE"],
+      "book_examples": [
+        "わたしはイタリア料理が好きです。",
+        "わたしは日本語が少しわかります。",
+        "きょうは子どもの誕生日ですから、早く帰ります。"
+      ]
+    },
+    {
+      "lesson": 10,
+      "title_id": "Keberadaan: あります/います dan kata posisi",
+      "introduces": ["ARIMASU_IMASU", "LOCATION_NI_EXIST", "POSITION_NOUN"],
+      "introduces_extra": ["PARTICLE_YA"],
+      "book_examples": [
+        "あそこに佐藤さんがいます。",
+        "机の上に写真があります。",
+        "家族はニューヨークにいます。",
+        "東京ディズニーランドは千葉県にあります。"
+      ]
+    },
+    {
+      "lesson": 11,
+      "title_id": "Bilangan, pencacah, dan durasi",
+      "introduces": ["COUNTER", "DURATION"],
+      "introduces_extra": ["ADV_GURAI", "DAKE_ONLY"],
+      "book_examples": [
+        "会議室にテーブルが7つあります。",
+        "わたしは日本に1年います。"
+      ]
+    },
+    {
+      "lesson": 12,
+      "title_id": "Lampau kalimat nominal/adj dan perbandingan",
+      "introduces": ["PAST_NOUN_NA", "PAST_ADJ_I", "COMPARE_YORI", "SUPERLATIVE_ICHIBAN"],
+      "introduces_extra": ["COMPARE_HOU", "WH_DOCHIRA"],
+      "book_examples": [
+        "きのうは雨でした。",
+        "きのうは寒かったです。",
+        "北海道は九州より大きいです。",
+        "わたしは1年で夏がいちばん好きです。"
+      ]
+    },
+    {
+      "lesson": 13,
+      "title_id": "Keinginan dan tujuan: ほしい, ～たい, ～に行く",
+      "introduces": ["WANT_HOSHII", "WANT_TAI", "PURPOSE_NI_IKU"],
+      "introduces_extra": [],
+      "book_examples": [
+        "わたしはパソコンが欲しいです。",
+        "わたしはてんぷらを食べたいです。",
+        "わたしはフランスへ料理を習いに行きます。"
+      ]
+    },
+    {
+      "lesson": 14,
+      "title_id": "Bentuk て: permintaan dan sedang berlangsung",
+      "introduces": ["TE_FORM", "TE_KUDASAI", "TE_IMASU_PROGRESSIVE"],
+      "introduces_extra": ["TE_MASHOUKA"],
+      "book_examples": [
+        "ちょっと待ってください。",
+        "ミラーさんは今電話をかけています。"
+      ]
+    },
+    {
+      "lesson": 15,
+      "title_id": "Izin, larangan, dan keadaan: ～てもいいです, ～ています",
+      "introduces": ["TE_MO_II", "TE_IMASU_STATE"],
+      "introduces_extra": ["TE_WA_IKEMASEN"],
+      "book_examples": [
+        "写真を撮ってもいいです。",
+        "サントスさんはパソコンを持っています。"
+      ]
+    },
+    {
+      "lesson": 16,
+      "title_id": "Rangkaian kegiatan dan penyambung: ～て、～てから, adj て",
+      "introduces": ["TE_SEQUENCE", "TE_KARA", "ADJ_TE", "PARTICLE_GA_WA_SUBJECT"],
+      "introduces_extra": [],
+      "book_examples": [
+        "朝ジョギングをして、シャワーを浴びて、会社へ行きます。",
+        "コンサートが終わってから、レストランで食事をしました。",
+        "大阪は食べ物がおいしいです。",
+        "このパソコンは軽くて、便利です。"
+      ]
+    },
+    {
+      "lesson": 17,
+      "title_id": "Bentuk ない: larangan dan kewajiban",
+      "introduces": ["NAI_FORM", "NAIDE_KUDASAI", "NAKEREBA_NARANAI", "NAKUTE_MO_II"],
+      "introduces_extra": [],
+      "book_examples": [
+        "ここで写真を撮らないでください。",
+        "パスポートを見せなければなりません。",
+        "レポートは出さなくてもいいです。"
+      ]
+    },
+    {
+      "lesson": 18,
+      "title_id": "Bentuk kamus: kemampuan, hobi, dan ～まえに",
+      "introduces": ["DICT_FORM", "KOTO_GA_DEKIRU", "SHUMI_KOTO", "MAE_NI"],
+      "introduces_extra": [],
+      "book_examples": [
+        "ミラーさんは漢字を読むことができます。",
+        "わたしの趣味は映画を見ることです。",
+        "寝るまえに、日記を書きます。"
+      ]
+    },
+    {
+      "lesson": 19,
+      "title_id": "Bentuk た: pengalaman, ～たり～たり, ～くなります",
+      "introduces": ["TA_FORM", "TA_KOTO_GA_ARU", "TARI_TARI", "NARIMASU"],
+      "introduces_extra": [],
+      "book_examples": [
+        "相撲を見たことがあります。",
+        "休みの日はテニスをしたり、散歩に行ったりします。",
+        "これからだんだん暑くなります。"
+      ]
+    },
+    {
+      "lesson": 20,
+      "title_id": "Ragam biasa (casual)",
+      "introduces": ["PLAIN_STYLE"],
+      "introduces_extra": [],
+      "book_examples": [
+        "サントスさんはパーティーに来なかった。",
+        "日本は物価が高い。",
+        "沖縄の海はきれいだった。",
+        "きょうは僕の誕生日だ。"
+      ]
+    },
+    {
+      "lesson": 21,
+      "title_id": "Pendapat dan kutipan: ～と思います, ～と言いました",
+      "introduces": ["TO_OMOIMASU", "TO_IIMASU"],
+      "introduces_extra": ["DESHOU"],
+      "book_examples": [
+        "あした雨が降ると思います。",
+        "首相は来月アメリカへ行くと言いました。"
+      ]
+    },
+    {
+      "lesson": 22,
+      "title_id": "Klausa pewatas nomina",
+      "introduces": ["REL_CLAUSE"],
+      "introduces_extra": [],
+      "book_examples": [
+        "これはミラーさんが作ったケーキです。",
+        "あそこにいる人はミラーさんです。",
+        "きのう習ったことばを忘れました。",
+        "買い物に行く時間がありません。"
+      ]
+    },
+    {
+      "lesson": 23,
+      "title_id": "～とき dan ～と (kondisi pasti)",
+      "introduces": ["TOKI", "TO_CONDITIONAL"],
+      "introduces_extra": [],
+      "book_examples": [
+        "図書館で本を借りるとき、カードが要ります。",
+        "このボタンを押すと、お釣りが出ます。"
+      ]
+    },
+    {
+      "lesson": 24,
+      "title_id": "Memberi dan menerima tindakan: くれます, ～てあげます/～てもらいます/～てくれます",
+      "introduces": ["KUREMASU", "TE_AGEMASU", "TE_MORAIMASU", "TE_KUREMASU"],
+      "introduces_extra": [],
+      "book_examples": [
+        "佐藤さんはわたしにクリスマスカードをくれました。",
+        "わたしは木村さんに本を貸してあげました。",
+        "わたしは山田さんに病院の電話番号を教えてもらいました。",
+        "母はわたしにセーターを送ってくれました。"
+      ]
+    },
+    {
+      "lesson": 25,
+      "title_id": "Pengandaian: ～たら, ～ても",
+      "introduces": ["TARA_COND", "TEMO_CONCESSIVE"],
+      "introduces_extra": ["MOSHI"],
+      "book_examples": [
+        "雨が降ったら、出かけません。",
+        "雨が降っても、出かけます。"
+      ]
+    }
+  ]
+}

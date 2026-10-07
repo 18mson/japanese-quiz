@@ -206,7 +206,15 @@ function getCardStyle(index: number) {
               >
                 <span>{{ mode.title }}</span>
               </h3>
-              <span v-if="mode.badge" class="text-[8px] sm:text-[10px] font-extrabold bg-aizome dark:bg-rose-600 text-white px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0">
+              <span 
+                v-if="mode.badge" 
+                :class="[
+                  'text-[8px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0 uppercase',
+                  mode.badge.toLowerCase() === 'beta'
+                    ? 'bg-amber-400 text-amber-950 shadow-sm'
+                    : 'bg-aizome dark:bg-rose-600 text-white'
+                ]"
+              >
                 {{ mode.badge }}
               </span>
             </div>

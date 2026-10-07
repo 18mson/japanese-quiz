@@ -21,7 +21,7 @@ import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
 import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
 import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
 
-const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice']);
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
@@ -44,8 +44,10 @@ const selectedHitunganWaveKey = ref<string>('basic_1_10');
 const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
 
 // Carousel / Wheel State
-const activeModeIndex = ref(0);
-const prevActiveModeIndex = ref(0);
+const defaultModeIndex = modesList.findIndex(m => m.id === 'multiple_choice');
+const initialModeIndex = defaultModeIndex !== -1 ? defaultModeIndex : 0;
+const activeModeIndex = ref(initialModeIndex);
+const prevActiveModeIndex = ref(initialModeIndex);
 const scrollDirection = ref<'down' | 'up'>('down');
 const activeMode = computed(() => modesList[activeModeIndex.value]);
 
@@ -111,6 +113,10 @@ const launchHitunganQuiz = (wave?: HitunganWaveDef) => {
 };
 
 const handleStart = async () => {
+  if (activeMode.value.id === 'daily') {
+    emit('openDailyPractice');
+    return;
+  }
   if (activeMode.value.id === 'hitungan') {
     const wave = currentHitunganWave.value;
     const prog = quizStore.hitunganProgressMap[wave.wave_key];
@@ -289,6 +295,7 @@ watch(characterTypes, (newVal) => {
         @open-leaderboard="emit('openLeaderboard')"
         @open-furoku="emit('openFuroku')"
         @open-reference="isReferenceModalOpen = true"
+        @open-daily-practice="emit('openDailyPractice')"
         @interact="deactivateKeyboardNav"
       />
     </div>
