@@ -71,9 +71,19 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
     return Math.round((correctCount.value / totalQuestions.value) * 100);
   });
 
+  const canAddChapter = computed(() => {
+    if (!session.value) return false;
+    const chapters = session.value.chapter_ids || [];
+    return chapters.length < 2;
+  });
+
+  const allCurrentQuestionsCorrect = computed(() => {
+    return questions.value.length > 0 && questions.value.every(q => q.is_correct);
+  });
+
   const isSessionCompleted = computed(() => {
     if (!session.value) return false;
-    return session.value.status === 'completed' || quotaExhausted.value;
+    return (session.value.status === 'completed' || quotaExhausted.value) && !canAddChapter.value;
   });
 
   const currentRevealedAnswer = computed(() => {
@@ -185,15 +195,16 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
       recycledNotice.value = !!data.recycled;
       resetsAt.value = data.session.resets_at || getNextResetWIB().toISOString();
 
-      // Cek apakah sesi sudah selesai (misal semua soal sudah benar)
+      // Cek apakah sesi sudah selesai (misal semua soal sudah benar dan sudah 2 bab)
       const allCorrect = questions.value.length > 0 && questions.value.every(q => q.is_correct);
-      if (data.session.status === 'completed' || allCorrect) {
+      const isFullQuota = (data.session.chapter_ids || []).length >= 2;
+      if (data.session.status === 'completed' || (allCorrect && isFullQuota)) {
         quotaExhausted.value = true;
       } else {
         quotaExhausted.value = false;
         // Cari soal pertama yang belum benar
         const firstUnfinished = questions.value.findIndex(q => !q.is_correct);
-        currentIndex.value = firstUnfinished >= 0 ? firstUnfinished : 0;
+        currentIndex.value = firstUnfinished >= 0 ? firstUnfinished : (questions.value.length > 0 ? questions.value.length - 1 : 0);
       }
 
       return true;
@@ -344,6 +355,8 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
     progressPercent,
     isSessionCompleted,
     currentRevealedAnswer,
+    canAddChapter,
+    allCurrentQuestionsCorrect,
 
     // Actions
     toggleAutoKana,

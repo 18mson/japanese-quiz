@@ -8,6 +8,7 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { corsHeaders } from '../_shared/cors.ts';
 import {
+  MAX_CHAPTERS_PER_DAY,
   MAX_ATTEMPTS_BEFORE_REVEAL,
   RATE_LIMIT_SUBMITS_PER_HOUR
 } from '../_shared/constants.ts';
@@ -115,7 +116,8 @@ Deno.serve(async (req: Request) => {
           id,
           user_id,
           session_date,
-          status
+          status,
+          chapter_ids
         ),
         sentence_questions!inner (
           jp_text,
@@ -204,7 +206,12 @@ Deno.serve(async (req: Request) => {
 
       const isSessionCompleted = uncorrectCount === 0;
 
-      if (isSessionCompleted) {
+      // Cek apakah seluruh kuota bab harian (maksimal MAX_CHAPTERS_PER_DAY) sudah terpakai
+      const sessionChapters = (dq.daily_sessions?.chapter_ids || []) as number[];
+      const isFullQuotaUsed = sessionChapters.length >= MAX_CHAPTERS_PER_DAY;
+      const isQuotaExhausted = isSessionCompleted && isFullQuotaUsed;
+
+      if (isQuotaExhausted) {
         await adminClient
           .from('daily_sessions')
           .update({
@@ -219,7 +226,8 @@ Deno.serve(async (req: Request) => {
           correct: true,
           attempts: newAttempts,
           session_completed: isSessionCompleted,
-          quota_exhausted: isSessionCompleted,
+          quota_exhausted: isQuotaExhausted,
+          can_add_chapter: isSessionCompleted && !isFullQuotaUsed,
           resets_at: resetsAt,
           correct_answer: dq.sentence_questions?.jp_text
         }),

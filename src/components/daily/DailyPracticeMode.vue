@@ -21,6 +21,8 @@ const dailyStore = useDailyPracticeStore();
 const authStore = useAuthStore();
 
 const isReviewing = ref(false);
+const isAddingSecondChapter = ref(false);
+const isChapterCompletionScreen = ref(false);
 
 onMounted(async () => {
   if (authStore.user) {
@@ -32,6 +34,21 @@ async function handleStartChapterSession(chapterIds: number[]) {
   const success = await dailyStore.startNewSession(chapterIds);
   if (success) {
     isReviewing.value = false;
+    isAddingSecondChapter.value = false;
+    isChapterCompletionScreen.value = false;
+  }
+}
+
+async function handleAddSecondChapter(chapterIds: number[]) {
+  const newChapter = chapterIds[0];
+  if (!newChapter) return;
+  const currentChapters = dailyStore.session?.chapter_ids || [];
+  const updatedChapters = [...currentChapters, newChapter];
+  const success = await dailyStore.startNewSession(updatedChapters);
+  if (success) {
+    isAddingSecondChapter.value = false;
+    isReviewing.value = false;
+    isChapterCompletionScreen.value = false;
   }
 }
 
@@ -46,13 +63,20 @@ const allQuestionsCompleted = computed(() => {
 function handleNext() {
   if (dailyStore.currentIndex < dailyStore.totalQuestions - 1) {
     dailyStore.nextQuestion();
-  } else if (allQuestionsCompleted.value || dailyStore.isSessionCompleted) {
-    dailyStore.quotaExhausted = true;
+  } else if (allQuestionsCompleted.value) {
+    isChapterCompletionScreen.value = true;
+    if (!dailyStore.canAddChapter) {
+      dailyStore.quotaExhausted = true;
+    }
   }
 }
 
 function handleFinish() {
-  dailyStore.quotaExhausted = true;
+  if (!dailyStore.canAddChapter) {
+    dailyStore.quotaExhausted = true;
+  } else {
+    isChapterCompletionScreen.value = true;
+  }
 }
 
 function handleRetry() {
@@ -155,17 +179,30 @@ function handleRetry() {
         </button>
       </div>
 
-      <!-- 4. QUOTA EXHAUSTED / SESSION COMPLETED -->
+      <!-- 4. CHAPTER PICKER UNTUK BAB KE-2 / BAB TAMBAHAN -->
+      <ChapterPicker
+        v-else-if="isAddingSecondChapter"
+        :loading="dailyStore.loading"
+        :existing-chapters="dailyStore.session?.chapter_ids || []"
+        :is-adding-extra="true"
+        @start="handleAddSecondChapter"
+        @cancel="isAddingSecondChapter = false"
+      />
+
+      <!-- 5. QUOTA EXHAUSTED / CHAPTER COMPLETED VIEW -->
       <QuotaExhaustedView
-        v-else-if="dailyStore.quotaExhausted && !isReviewing"
+        v-else-if="(dailyStore.quotaExhausted || isChapterCompletionScreen || (allQuestionsCompleted && !isReviewing)) && !isReviewing"
         :resets-at="dailyStore.resetsAt"
         :total-questions="dailyStore.totalQuestions"
         :correct-count="dailyStore.correctCount"
+        :can-add-chapter="dailyStore.canAddChapter"
+        :chapters-used="dailyStore.session?.chapter_ids || []"
         @exit="emit('exit')"
-        @review="isReviewing = true"
+        @review="() => { isReviewing = true; isChapterCompletionScreen = false; }"
+        @add-chapter="isAddingSecondChapter = true"
       />
 
-      <!-- 5. CHAPTER PICKER (SESSION NOT STARTED YET) -->
+      <!-- 6. CHAPTER PICKER AWAL (BELUM ADA SESI) -->
       <ChapterPicker
         v-else-if="!dailyStore.session"
         :loading="dailyStore.loading"

@@ -10,7 +10,8 @@ import { corsHeaders } from '../_shared/cors.ts';
 import {
   QUESTIONS_PER_CHAPTER,
   FOCUS_PER_CHAPTER,
-  MAX_CHAPTERS_PER_DAY
+  MAX_CHAPTERS_PER_DAY,
+  MAX_ATTEMPTS_BEFORE_REVEAL
 } from '../_shared/constants.ts';
 import { todayWIB, nextResetISO } from '../_shared/time.ts';
 
@@ -21,6 +22,144 @@ function shuffle<T>(arr: T[]): T[] {
     [res[i], res[j]] = [res[j], res[i]];
   }
   return res;
+}
+
+async function pickQuestionsForChapters(
+  adminClient: any,
+  userId: string,
+  chapters: number[],
+  alreadyUsedQuestionIds: Set<string> = new Set()
+): Promise<{
+  chosenQuestions: any[];
+  isPoolLow: boolean;
+  isRecycled: boolean;
+  error?: string;
+}> {
+  // Ambil semua id soal yang pernah dilihat user
+  const { data: seenRecords } = await adminClient
+    .from('daily_questions')
+    .select('question_id, attempts, is_correct, created_at')
+    .eq('user_id', userId);
+
+  const seenMap = new Map<string, any>();
+  (seenRecords || []).forEach((r: any) => {
+    seenMap.set(r.question_id, r);
+  });
+  const seenIds = new Set(seenMap.keys());
+
+  const chosenQuestionsPerChapter: any[] = [];
+  let isPoolLowOverall = false;
+  let isRecycledOverall = false;
+  const globalChosenQuestionIds = new Set<string>(alreadyUsedQuestionIds);
+
+  for (const ch of chapters) {
+    const { data: allApprovedInChapter } = await adminClient
+      .from('sentence_questions')
+      .select('id, chapter_id, id_text, is_focus', { count: 'exact' })
+      .eq('chapter_id', ch)
+      .eq('status', 'approved');
+
+    if (!allApprovedInChapter || allApprovedInChapter.length === 0) {
+      return {
+        chosenQuestions: [],
+        isPoolLow: false,
+        isRecycled: false,
+        error: `Bab ${ch} tidak memiliki bank soal yang disetujui (approved)`
+      };
+    }
+
+    const unseenInChapter = allApprovedInChapter.filter(
+      (q: any) => !seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id)
+    );
+    if (unseenInChapter.length < QUESTIONS_PER_CHAPTER) {
+      isPoolLowOverall = true;
+    }
+
+    const focusUnseen = shuffle(unseenInChapter.filter((q: any) => q.is_focus));
+    const nonFocusUnseen = shuffle(unseenInChapter.filter((q: any) => !q.is_focus));
+
+    let reviewEarlierUnseen: any[] = [];
+    if (ch > 1) {
+      const { data: earlierApproved } = await adminClient
+        .from('sentence_questions')
+        .select('id, chapter_id, id_text, is_focus')
+        .lt('chapter_id', ch)
+        .eq('status', 'approved');
+
+      if (earlierApproved && earlierApproved.length > 0) {
+        reviewEarlierUnseen = shuffle(
+          earlierApproved.filter((q: any) => !seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id))
+        );
+      }
+    }
+
+    const chapterSelected: any[] = [];
+
+    // a. FOKUS
+    const focusPicks = focusUnseen.splice(0, FOCUS_PER_CHAPTER);
+    for (const p of focusPicks) {
+      chapterSelected.push(p);
+      globalChosenQuestionIds.add(p.id);
+    }
+
+    // b. REVIEW
+    const reviewCandidates = [...reviewEarlierUnseen, ...nonFocusUnseen];
+    while (chapterSelected.length < QUESTIONS_PER_CHAPTER && reviewCandidates.length > 0) {
+      const candidate = reviewCandidates.shift();
+      if (candidate && !globalChosenQuestionIds.has(candidate.id)) {
+        chapterSelected.push(candidate);
+        globalChosenQuestionIds.add(candidate.id);
+      }
+    }
+
+    // c. Sisa FOKUS
+    while (chapterSelected.length < QUESTIONS_PER_CHAPTER && focusUnseen.length > 0) {
+      const candidate = focusUnseen.shift();
+      if (candidate && !globalChosenQuestionIds.has(candidate.id)) {
+        chapterSelected.push(candidate);
+        globalChosenQuestionIds.add(candidate.id);
+      }
+    }
+
+    // d. DAUR ULANG
+    if (chapterSelected.length < QUESTIONS_PER_CHAPTER) {
+      isRecycledOverall = true;
+      const seenInThisChapter = allApprovedInChapter.filter(
+        (q: any) => seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id)
+      );
+
+      seenInThisChapter.sort((a: any, b: any) => {
+        const statsA = seenMap.get(a.id) || { attempts: 0, is_correct: true, created_at: '' };
+        const statsB = seenMap.get(b.id) || { attempts: 0, is_correct: true, created_at: '' };
+
+        const aWrong = statsA.is_correct ? 0 : 1;
+        const bWrong = statsB.is_correct ? 0 : 1;
+        if (bWrong !== aWrong) return bWrong - aWrong;
+
+        if (statsB.attempts !== statsA.attempts) {
+          return statsB.attempts - statsA.attempts;
+        }
+
+        return new Date(statsA.created_at).getTime() - new Date(statsB.created_at).getTime();
+      });
+
+      while (chapterSelected.length < QUESTIONS_PER_CHAPTER && seenInThisChapter.length > 0) {
+        const recycledPick = seenInThisChapter.shift();
+        if (recycledPick && !globalChosenQuestionIds.has(recycledPick.id)) {
+          chapterSelected.push(recycledPick);
+          globalChosenQuestionIds.add(recycledPick.id);
+        }
+      }
+    }
+
+    chosenQuestionsPerChapter.push(...chapterSelected);
+  }
+
+  return {
+    chosenQuestions: chosenQuestionsPerChapter,
+    isPoolLow: isPoolLowOverall,
+    isRecycled: isRecycledOverall
+  };
 }
 
 Deno.serve(async (req: Request) => {
@@ -109,7 +248,7 @@ Deno.serve(async (req: Request) => {
     const today = todayWIB();
     const resetsAt = nextResetISO();
 
-    // 1. Cek sesi eksisting hari ini (Idempotensi)
+    // 1. Cek sesi eksisting hari ini (Idempotensi atau Tambah Bab)
     const { data: existingSession } = await adminClient
       .from('daily_sessions')
       .select('id, session_date, chapter_ids, status, completed_at')
@@ -118,6 +257,70 @@ Deno.serve(async (req: Request) => {
       .maybeSingle();
 
     if (existingSession) {
+      const existingChapters = (existingSession.chapter_ids || []) as number[];
+      const newChapters = chapter_ids.filter((c: number) => !existingChapters.includes(c));
+
+      // Jika ada bab baru yang ingin ditambahkan ke sesi hari ini
+      if (newChapters.length > 0) {
+        if (existingChapters.length + newChapters.length > MAX_CHAPTERS_PER_DAY) {
+          return new Response(
+            JSON.stringify({
+              error: `Kuota maksimal bab harian (${MAX_CHAPTERS_PER_DAY} bab) telah tercapai.`
+            }),
+            { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        // Ambil soal yang sudah ada di sesi ini untuk di-exclude
+        const { data: currentSessionQuestions } = await adminClient
+          .from('daily_questions')
+          .select('question_id')
+          .eq('session_id', existingSession.id);
+
+        const sessionQuestionIds = new Set<string>((currentSessionQuestions || []).map((q: any) => q.question_id));
+
+        const selectionResult = await pickQuestionsForChapters(
+          adminClient,
+          user.id,
+          newChapters,
+          sessionQuestionIds
+        );
+
+        if (selectionResult.error) {
+          return new Response(
+            JSON.stringify({ error: selectionResult.error }),
+            { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const newQuestionsToInsert = selectionResult.chosenQuestions.map((q: any) => ({
+          session_id: existingSession.id,
+          user_id: user.id,
+          question_id: q.id,
+          chapter_id: q.chapter_id,
+          is_correct: false,
+          attempts: 0,
+          revealed: false
+        }));
+
+        if (newQuestionsToInsert.length > 0) {
+          await adminClient.from('daily_questions').insert(newQuestionsToInsert);
+        }
+
+        const updatedChapters = [...existingChapters, ...newChapters];
+        await adminClient
+          .from('daily_sessions')
+          .update({
+            chapter_ids: updatedChapters,
+            status: 'active',
+            completed_at: null
+          })
+          .eq('id', existingSession.id);
+
+        existingSession.chapter_ids = updatedChapters;
+        existingSession.status = 'active';
+      }
+
       // Ambil seluruh soal untuk sesi ini
       const { data: existingQuestions } = await adminClient
         .from('daily_questions')
@@ -170,126 +373,17 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Sesi baru: Pemilihan soal untuk tiap bab
-    // Ambil semua id soal yang pernah dilihat user
-    const { data: seenRecords } = await adminClient
-      .from('daily_questions')
-      .select('question_id, attempts, is_correct, created_at')
-      .eq('user_id', user.id);
-
-    const seenMap = new Map<string, any>();
-    (seenRecords || []).forEach((r: any) => {
-      seenMap.set(r.question_id, r);
-    });
-    const seenIds = new Set(seenMap.keys());
-
-    const chosenQuestionsPerChapter: any[] = [];
-    let isPoolLowOverall = false;
-    let isRecycledOverall = false;
-    const globalChosenQuestionIds = new Set<string>();
-
-    for (const ch of chapter_ids) {
-      // Cek total soal approved bab ini
-      const { data: allApprovedInChapter, count: totalCount } = await adminClient
-        .from('sentence_questions')
-        .select('id, chapter_id, id_text, is_focus', { count: 'exact' })
-        .eq('chapter_id', ch)
-        .eq('status', 'approved');
-
-      if (!allApprovedInChapter || allApprovedInChapter.length === 0) {
-        return new Response(
-          JSON.stringify({ error: `Bab ${ch} tidak memiliki bank soal yang disetujui (approved)` }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Filter soal belum dilihat di bab ini
-      const unseenInChapter = allApprovedInChapter.filter(q => !seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id));
-      if (unseenInChapter.length < QUESTIONS_PER_CHAPTER) {
-        isPoolLowOverall = true;
-      }
-
-      const focusUnseen = shuffle(unseenInChapter.filter(q => q.is_focus));
-      const nonFocusUnseen = shuffle(unseenInChapter.filter(q => !q.is_focus));
-
-      // Review unseen dari bab < ch (jika ada)
-      let reviewEarlierUnseen: any[] = [];
-      if (ch > 1) {
-        const { data: earlierApproved } = await adminClient
-          .from('sentence_questions')
-          .select('id, chapter_id, id_text, is_focus')
-          .lt('chapter_id', ch)
-          .eq('status', 'approved');
-
-        if (earlierApproved && earlierApproved.length > 0) {
-          reviewEarlierUnseen = shuffle(
-            earlierApproved.filter(q => !seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id))
-          );
-        }
-      }
-
-      const chapterSelected: any[] = [];
-
-      // a. FOKUS: is_focus=true di bab ch, belum dilihat, maksimal FOCUS_PER_CHAPTER (3)
-      const focusPicks = focusUnseen.splice(0, FOCUS_PER_CHAPTER);
-      for (const p of focusPicks) {
-        chapterSelected.push(p);
-        globalChosenQuestionIds.add(p.id);
-      }
-
-      // b. REVIEW: belum pernah dilihat, dari (bab < ch) ATAU (bab = ch dan is_focus=false), isi sampai total 5
-      const reviewCandidates = [...reviewEarlierUnseen, ...nonFocusUnseen];
-      while (chapterSelected.length < QUESTIONS_PER_CHAPTER && reviewCandidates.length > 0) {
-        const candidate = reviewCandidates.shift();
-        if (candidate && !globalChosenQuestionIds.has(candidate.id)) {
-          chapterSelected.push(candidate);
-          globalChosenQuestionIds.add(candidate.id);
-        }
-      }
-
-      // c. Jika masih kurang: tambah sisa soal fokus bab ch yang belum dilihat, lalu review
-      while (chapterSelected.length < QUESTIONS_PER_CHAPTER && focusUnseen.length > 0) {
-        const candidate = focusUnseen.shift();
-        if (candidate && !globalChosenQuestionIds.has(candidate.id)) {
-          chapterSelected.push(candidate);
-          globalChosenQuestionIds.add(candidate.id);
-        }
-      }
-
-      // d. Jika masih kurang: DAUR ULANG soal yang pernah dilihat di bab ch
-      if (chapterSelected.length < QUESTIONS_PER_CHAPTER) {
-        isRecycledOverall = true;
-        // Ambil soal yang pernah dilihat di bab ch
-        const seenInThisChapter = allApprovedInChapter.filter(
-          q => seenIds.has(q.id) && !globalChosenQuestionIds.has(q.id)
-        );
-
-        // Urutkan: pernah salah / attempts tertinggi dulu, lalu paling lama tidak muncul
-        seenInThisChapter.sort((a, b) => {
-          const statsA = seenMap.get(a.id) || { attempts: 0, is_correct: true, created_at: '' };
-          const statsB = seenMap.get(b.id) || { attempts: 0, is_correct: true, created_at: '' };
-
-          const aWrong = statsA.is_correct ? 0 : 1;
-          const bWrong = statsB.is_correct ? 0 : 1;
-          if (bWrong !== aWrong) return bWrong - aWrong;
-
-          if (statsB.attempts !== statsA.attempts) {
-            return statsB.attempts - statsA.attempts;
-          }
-
-          return new Date(statsA.created_at).getTime() - new Date(statsB.created_at).getTime();
-        });
-
-        while (chapterSelected.length < QUESTIONS_PER_CHAPTER && seenInThisChapter.length > 0) {
-          const recycledPick = seenInThisChapter.shift();
-          if (recycledPick && !globalChosenQuestionIds.has(recycledPick.id)) {
-            chapterSelected.push(recycledPick);
-            globalChosenQuestionIds.add(recycledPick.id);
-          }
-        }
-      }
-
-      chosenQuestionsPerChapter.push(...chapterSelected);
+    const selectionResult = await pickQuestionsForChapters(adminClient, user.id, chapter_ids);
+    if (selectionResult.error) {
+      return new Response(
+        JSON.stringify({ error: selectionResult.error }),
+        { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
+
+    const chosenQuestionsPerChapter = selectionResult.chosenQuestions;
+    const isPoolLowOverall = selectionResult.isPoolLow;
+    const isRecycledOverall = selectionResult.isRecycled;
 
     // 3. Simpan session dan questions secara atomik
     const { data: newSession, error: sessionInsertError } = await adminClient

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted, onUnmounted } from 'vue';
+import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { 
   Mic, MicOff, Send, X, AlertCircle, 
   ChevronRight, ChevronLeft, Eye,
@@ -33,6 +33,7 @@ const emit = defineEmits<{
   (e: 'toggleAutoKana'): void;
 }>();
 
+const inputRef = ref<HTMLInputElement | null>(null);
 const inputText = ref('');
 const inputMethod = ref<'text' | 'voice'>('text');
 const isShaking = ref(false);
@@ -96,6 +97,9 @@ watch(
     } else {
       inputText.value = '';
       lastAnswerGiven.value = '';
+      nextTick(() => {
+        inputRef.value?.focus();
+      });
     }
   },
   { immediate: true }
@@ -128,6 +132,9 @@ function toggleKanaMode() {
       }
     } catch {}
   }
+  nextTick(() => {
+    inputRef.value?.focus();
+  });
 }
 
 function convertRomaji(text: string): string {
@@ -190,6 +197,9 @@ function toggleMic() {
 function handleClear() {
   inputText.value = '';
   resetTranscript();
+  nextTick(() => {
+    inputRef.value?.focus();
+  });
 }
 
 function handleSubmit() {
@@ -216,7 +226,7 @@ function handleSubmit() {
   emit('submit', trimmed, inputMethod.value);
 }
 
-// Trigger efek getar (shake) jika salah
+// Trigger efek getar (shake) dan pulihkan fokus ke input jika salah
 watch(
   () => props.question.attempts,
   (newAttempts, oldAttempts) => {
@@ -225,6 +235,21 @@ watch(
       setTimeout(() => {
         isShaking.value = false;
       }, 500);
+      nextTick(() => {
+        inputRef.value?.focus();
+      });
+    }
+  }
+);
+
+// Pastikan saat request submit selesai dan jawaban belum benar, input langsung kembali fokus
+watch(
+  () => props.submitting,
+  (isSubmitting, wasSubmitting) => {
+    if (wasSubmitting && !isSubmitting && !props.question.is_correct) {
+      nextTick(() => {
+        inputRef.value?.focus();
+      });
     }
   }
 );
@@ -276,6 +301,11 @@ function handleGlobalKeydown(e: KeyboardEvent) {
 
 onMounted(() => {
   window.addEventListener('keydown', handleGlobalKeydown);
+  if (!props.question.is_correct) {
+    nextTick(() => {
+      inputRef.value?.focus();
+    });
+  }
 });
 
 onUnmounted(() => {
@@ -430,15 +460,17 @@ onUnmounted(() => {
           </span>
 
           <input
+            ref="inputRef"
             type="text"
             :value="inputText"
             @input="handleInput"
             @compositionstart="handleCompositionStart"
             @compositionend="handleCompositionEnd"
             @keydown.enter.prevent="handleInputEnter"
-            :disabled="question.is_correct || submitting"
+            :disabled="question.is_correct"
+            :readonly="submitting"
             :placeholder="question.is_correct ? 'Soal sudah terjawab benar' : (isListening ? 'Mendengarkan...' : 'Ketik kalimat atau tekan mic...')"
-            class="col-start-1 row-start-1 w-full pl-4 pr-11 py-3.5 sm:py-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:font-normal placeholder:font-sans placeholder:text-sm sm:placeholder:text-base placeholder:tracking-normal font-normal text-xl sm:text-2xl md:text-3xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-torii/50 transition-all font-japanese leading-relaxed"
+            class="col-start-1 row-start-1 w-full pl-4 pr-11 py-3.5 sm:py-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:font-normal placeholder:font-sans placeholder:text-xl sm:placeholder:text-2xl md:placeholder:text-3xl placeholder:tracking-normal font-normal text-xl sm:text-2xl md:text-3xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-torii/50 transition-all font-japanese leading-relaxed"
           />
 
           <!-- Clear button -->
@@ -556,12 +588,6 @@ onUnmounted(() => {
 input::placeholder {
   font-weight: 400 !important;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  font-size: 0.95rem !important;
   letter-spacing: normal !important;
-}
-@media (min-width: 640px) {
-  input::placeholder {
-    font-size: 1.05rem !important;
-  }
 }
 </style>
