@@ -13,7 +13,7 @@ import {
   RATE_LIMIT_SUBMITS_PER_HOUR
 } from '../_shared/constants.ts';
 import { todayWIB, nextResetISO } from '../_shared/time.ts';
-import { checkAnswerMatch } from '../_shared/normalize.ts';
+import { checkAnswerMatch, checkAnswerWithDetails } from '../_shared/normalize.ts';
 
 Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') {
@@ -172,9 +172,12 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // 3. Evaluasi jawaban dengan normalizeAnswer
+    // 3. Evaluasi jawaban dengan checkAnswerWithDetails
     const acceptedAnswers = dq.sentence_questions?.jp_answers || [];
-    const isMatch = checkAnswerMatch(submittedText, acceptedAnswers);
+    const evaluation = checkAnswerWithDetails(submittedText, acceptedAnswers);
+    const isMatch = evaluation.isMatch;
+    const isTolerance = evaluation.isTolerance;
+    const matchedTarget = evaluation.matchedTarget || dq.sentence_questions?.jp_text;
     const newAttempts = dq.attempts + 1;
 
     // Catat ke answer_log
@@ -187,7 +190,7 @@ Deno.serve(async (req: Request) => {
 
     // 4. Update status soal & sesi
     if (isMatch) {
-      // Jawaban BENAR
+      // Jawaban BENAR (baik exact maupun toleransi 1 kata)
       await adminClient
         .from('daily_questions')
         .update({
@@ -224,6 +227,9 @@ Deno.serve(async (req: Request) => {
       return new Response(
         JSON.stringify({
           correct: true,
+          is_tolerance: isTolerance,
+          matched_target: matchedTarget,
+          user_answer: submittedText,
           attempts: newAttempts,
           session_completed: isSessionCompleted,
           quota_exhausted: isQuotaExhausted,

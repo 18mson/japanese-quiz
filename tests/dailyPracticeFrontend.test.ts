@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert';
 import { getTodayWIB, getNextResetWIB, formatRemainingTime } from '../src/utils/dailyTime.ts';
 import { useSpeechAnswer } from '../src/composables/useSpeechAnswer.ts';
+import { tokenizeSentenceWithHints } from '../src/utils/sentenceHints.ts';
 import { toHiragana } from 'wanakana';
 
 test('Daily Practice Frontend Test Suite', async (t) => {
@@ -168,4 +169,24 @@ test('Daily Practice Frontend Test Suite', async (t) => {
     const isAllCompleted = sessionQuestions.every(q => q.is_correct);
     assert.strictEqual(isAllCompleted, true, 'Sesi harus berstatus completed jika semua soal terjawab benar');
   });
+
+  // ============================================================
+  // 6. Sentence Hints Tokenization (sentenceHints.ts)
+  // ============================================================
+  await t.test('8. tokenizeSentenceWithHints mengenali kata kunci vocab dan mengabaikan catatan kurung', () => {
+    const sentence = 'Eskalator ada di sana (jauh dari kita berdua).';
+    const segments = tokenizeSentenceWithHints(sentence);
+
+    const hinted = segments.filter(s => s.hint);
+    assert.strictEqual(hinted.length, 2, 'Harus ada tepat 2 kata ber-hint');
+    assert.strictEqual(hinted[0].text, 'Eskalator');
+    assert.strictEqual(hinted[0].hint?.japanese, 'エスカレーター');
+    assert.strictEqual(hinted[1].text, 'di sana');
+    assert.strictEqual(hinted[1].hint?.japanese, 'あそこ');
+
+    // Catatan kurung tidak boleh mengandung hint
+    const inParen = segments.find(s => s.text.includes('jauh'));
+    assert.strictEqual(inParen?.hint, undefined, 'Kata di dalam tanda kurung tidak boleh ber-hint');
+  });
 });
+

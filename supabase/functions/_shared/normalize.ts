@@ -96,13 +96,134 @@ export function foldLongVowels(str: string): string {
 /**
  * Memeriksa apakah jawaban user cocok dengan salah satu accepted answer (jp_answers)
  * Menguji kecocokan secara ketat (strict) maupun longgar (loose Katakana->Hiragana)
- * Termasuk toleransi varian '私' vs 'わたし', partikel 'わ' vs 'は', dan vokal panjang.
  */
-export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]): boolean {
-  if (!userAnswer || !acceptedAnswers || acceptedAnswers.length === 0) return false;
+export const JP_MARKERS = [
+  'ではありませんでした', 'じゃありませんでした',
+  'ではありません', 'じゃありません',
+  'でしたか', 'ましたか', 'でした', 'ました', 'ません', 'ましょう',
+  'てください', 'ないでください', 'たいです', 'たくないです',
+  'です', 'ます', 'から', 'まで', 'より', 'さん',
+  'は', 'が', 'を', 'に', 'で', 'へ', 'と', 'も', 'か', 'ね', 'よ'
+];
+
+/**
+ * Memecah kalimat Jepang menjadi potongan kata/token morfem
+ * menggunakan partikel, penutup predikat, serta transisi aksara (Kanji/Katakana/Hiragana).
+ */
+export function tokenizeJapaneseMarkers(str: string): string[] {
+  if (!str) return [];
+  const sortedMarkers = [...JP_MARKERS].sort((a, b) => b.length - a.length);
+  const markerPattern = sortedMarkers.join('|');
+  const tokenRegex = new RegExp(
+    `(${markerPattern}|[\\u4e00-\\u9faf]+|[\\u30a0-\\u30ffー]+|[a-zA-Z0-9]+|.)`,
+    'g'
+  );
+
+  const rawMatches = str.match(tokenRegex) || [];
+  const tokens: string[] = [];
+  let buffer = '';
+
+  for (const part of rawMatches) {
+    if (sortedMarkers.includes(part)) {
+      if (buffer) {
+        tokens.push(buffer);
+        buffer = '';
+      }
+      tokens.push(part);
+    } else if (/^[\u4e00-\u9faf]+$/.test(part) || /^[\u30a0-\u30ffー]+$/.test(part)) {
+      if (buffer) {
+        tokens.push(buffer);
+        buffer = '';
+      }
+      tokens.push(part);
+    } else {
+      buffer += part;
+    }
+  }
+  if (buffer) {
+    tokens.push(buffer);
+  }
+
+  return tokens.filter(t => t.trim().length > 0);
+}
+
+/**
+ * Menghitung selisih token (Levenshtein distance pada array token)
+ * untuk mendeteksi apakah hanya ada 1 kata/token yang salah.
+ */
+export function countTokenErrors(tokensA: string[], tokensB: string[]): number {
+  const m = tokensA.length;
+  const n = tokensB.length;
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const a = foldKatakanaToHiragana(tokensA[i - 1]);
+      const b = foldKatakanaToHiragana(tokensB[j - 1]);
+      const cost = (a === b) ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,       // deletion
+        dp[i][j - 1] + 1,       // insertion
+        dp[i - 1][j - 1] + cost  // substitution
+      );
+    }
+  }
+
+  return dp[m][n];
+}
+
+/**
+ * Menghitung Levenshtein distance (jumlah edit/salah karakter) antara dua string.
+ */
+export function countCharErrors(strA: string, strB: string): number {
+  const a = foldKatakanaToHiragana(strA);
+  const b = foldKatakanaToHiragana(strB);
+  const m = a.length;
+  const n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+
+  const dp: number[][] = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = (a[i - 1] === b[j - 1]) ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,       // deletion
+        dp[i][j - 1] + 1,       // insertion
+        dp[i - 1][j - 1] + cost  // substitution
+      );
+    }
+  }
+  return dp[m][n];
+}
+
+export interface AnswerCheckResult {
+  isMatch: boolean;
+  isTolerance: boolean;
+  matchedTarget?: string;
+}
+
+/**
+ * Memeriksa kecocokan jawaban dengan rincian (exact vs toleransi 1 kata salah / <= 30% salah).
+ */
+export function checkAnswerWithDetails(
+  userAnswer: string,
+  acceptedAnswers: string[]
+): AnswerCheckResult {
+  if (!userAnswer || !acceptedAnswers || acceptedAnswers.length === 0) {
+    return { isMatch: false, isTolerance: false };
+  }
 
   const userNorm = normalizeAnswer(userAnswer);
-  if (!userNorm.strict && !userNorm.loose) return false;
+  if (!userNorm.strict && !userNorm.loose) {
+    return { isMatch: false, isTolerance: false };
+  }
 
   // Siapkan varian toleransi 私 <-> わたし untuk user answer
   const userVariants = [userNorm];
@@ -113,7 +234,7 @@ export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]):
     userVariants.push(normalizeAnswer(userAnswer.replace(/わたし/g, '私')));
   }
 
-  // Toleransi partikel topik: pembelajar sering mengetik romaji 'wa' -> 'わ', padahal partikel ditulis 'は'
+  // Toleransi partikel topik: 'わ' -> 'は'
   if (userNorm.strict.includes('わ')) {
     const waReplaced = userAnswer
       .replace(/わたし/g, '__WATASHI__')
@@ -123,11 +244,12 @@ export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]):
     userVariants.push(normalizeAnswer(waReplaced.replace(/わたし/g, '私')));
   }
 
-  // Toleransi partikel objek: pembelajar sering mengetik romaji 'o' -> 'お', padahal partikel ditulis 'を'
+  // Toleransi partikel objek: 'お' -> 'を'
   if (userNorm.strict.includes('お')) {
     userVariants.push(normalizeAnswer(userAnswer.replace(/お/g, 'を')));
   }
 
+  // 1. Cek Exact & Phonetic Match
   for (const acc of acceptedAnswers) {
     const accNorm = normalizeAnswer(acc);
     const accLooseNoChouon = accNorm.loose.replace(/ー/g, '');
@@ -143,10 +265,46 @@ export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]):
         (uvLooseNoChouon && uvLooseNoChouon === accLooseNoChouon) ||
         (uvFolded && uvFolded === accFolded)
       ) {
-        return true;
+        return { isMatch: true, isTolerance: false, matchedTarget: acc };
       }
     }
   }
 
-  return false;
+  // 2. Cek Toleransi: Boleh 1 Kata Salah ATAU Maksimal 30% dari Kalimat Salah
+  const userTokens = tokenizeJapaneseMarkers(userNorm.strict);
+  for (const acc of acceptedAnswers) {
+    const accNorm = normalizeAnswer(acc);
+    const accTokens = tokenizeJapaneseMarkers(accNorm.strict);
+
+    // a. Toleransi berbasis token (kata): 1 kata salah ATAU <= 30% kata salah
+    if (accTokens.length >= 2) {
+      const tokenErrCount = countTokenErrors(userTokens, accTokens);
+      const tokenErrRatio = tokenErrCount / accTokens.length;
+      if (tokenErrCount === 1 || tokenErrRatio <= 0.30) {
+        return { isMatch: true, isTolerance: true, matchedTarget: acc };
+      }
+    }
+
+    // b. Toleransi berbasis karakter: <= 30% karakter salah
+    if (accNorm.strict.length >= 4) {
+      const charErrCount = countCharErrors(userNorm.strict, accNorm.strict);
+      const charErrRatio = charErrCount / accNorm.strict.length;
+      if (charErrRatio <= 0.30) {
+        return { isMatch: true, isTolerance: true, matchedTarget: acc };
+      }
+    }
+  }
+
+  return { isMatch: false, isTolerance: false };
 }
+
+/**
+ * Memeriksa apakah jawaban user cocok dengan salah satu accepted answer (jp_answers)
+ * Menguji kecocokan secara ketat (strict) maupun longgar (loose Katakana->Hiragana)
+ * Termasuk toleransi varian '私' vs 'わたし', partikel 'わ' vs 'は', vokal panjang,
+ * dan toleransi 1 kata yang salah.
+ */
+export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]): boolean {
+  return checkAnswerWithDetails(userAnswer, acceptedAnswers).isMatch;
+}
+

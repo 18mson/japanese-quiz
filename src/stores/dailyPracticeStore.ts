@@ -20,6 +20,9 @@ export interface DailyQuestionData {
   attempts: number;
   revealed?: boolean;
   correct_answer?: string;
+  is_tolerance?: boolean;
+  user_answer?: string;
+  matched_target?: string;
 }
 
 export interface SubmitAnswerResponse {
@@ -30,6 +33,9 @@ export interface SubmitAnswerResponse {
   resets_at?: string;
   reveal_answer?: string;
   correct_answer?: string;
+  is_tolerance?: boolean;
+  user_answer?: string;
+  matched_target?: string;
 }
 
 export const useDailyPracticeStore = defineStore('dailyPractice', () => {
@@ -262,13 +268,19 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
         session_completed: !!data.session_completed,
         quota_exhausted: !!data.quota_exhausted,
         resets_at: data.resets_at,
-        reveal_answer: data.reveal_answer
+        reveal_answer: data.reveal_answer,
+        is_tolerance: !!data.is_tolerance,
+        user_answer: data.user_answer,
+        matched_target: data.matched_target
       };
 
       // Update data soal lokal
       q.attempts = res.attempts;
       if (res.correct) {
         q.is_correct = true;
+        q.is_tolerance = res.is_tolerance;
+        q.user_answer = res.user_answer || submittedText;
+        q.matched_target = res.matched_target;
         const answerText = data.correct_answer || submittedText;
         if (answerText) {
           q.correct_answer = answerText;

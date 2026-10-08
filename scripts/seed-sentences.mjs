@@ -52,7 +52,8 @@ function parseArgs() {
     links: '',
     templatesOnly: false,
     dryRun: false,
-    strict: false
+    strict: false,
+    lessons: []
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -62,6 +63,15 @@ function parseArgs() {
     else if (args[i] === '--templates-only') options.templatesOnly = true;
     else if (args[i] === '--dry-run') options.dryRun = true;
     else if (args[i] === '--strict') options.strict = true;
+    else if (args[i] === '--lessons') {
+      const val = args[++i] || '';
+      if (val.includes('-')) {
+        const [start, end] = val.split('-').map(Number);
+        options.lessons = Array.from({ length: end - start + 1 }, (_, k) => start + k);
+      } else {
+        options.lessons = val.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n));
+      }
+    }
   }
 
   return options;
@@ -138,14 +148,21 @@ async function main() {
   /** @type {any[]} */
   const questionsToUpsert = [];
 
-  // A. Generate Template Questions (Bab 1 s.d. 8)
-  console.log('\n[1/2] Menghasilkan Soal dari Generator Template (Target 150 per bab)...');
+  // A. Generate Template Questions
+  const targetLessons = opts.lessons.length > 0 ? opts.lessons : [1, 2, 3, 4, 5, 6, 7, 8];
+  console.log(`\n[1/2] Menghasilkan Soal dari Generator Template untuk Bab ${targetLessons.join(', ')} (Target 150 per bab)...`);
   /** @type {Record<number, Record<string, number>>} */
   const allTemplateStats = {};
+  /** @type {Record<number, Array<{ tid: string, reason: string }>>} */
+  const allSkippedTemplates = {};
+  /** @type {Record<number, any[]>} */
+  const questionsByLesson = {};
   const discardedWordsSet = new Set();
-  for (let lesson = 1; lesson <= 8; lesson++) {
-    const { questions: generated, templateStats } = generateQuestionsForLesson(lesson, tokenizer, 150, 10, discardedWordsSet);
+  for (const lesson of targetLessons) {
+    const { questions: generated, templateStats, skippedTemplates } = generateQuestionsForLesson(lesson, tokenizer, 150, 10, discardedWordsSet);
     allTemplateStats[lesson] = templateStats;
+    allSkippedTemplates[lesson] = skippedTemplates;
+    questionsByLesson[lesson] = generated;
     for (const q of generated) {
       questionsToUpsert.push({
         id_text: q.id_text,
@@ -163,7 +180,7 @@ async function main() {
       if (q.is_focus) focusCounts[lesson] = (focusCounts[lesson] || 0) + 1;
     }
   }
-  console.log(`✓ Dihasilkan ${questionsToUpsert.length} soal template untuk Bab 1 s.d. 8.`);
+  console.log(`✓ Dihasilkan ${questionsToUpsert.length} soal template.`);
 
 
   // B. Process Tatoeba files jika file disediakan
@@ -315,6 +332,38 @@ async function main() {
     for (const [tplId, count] of Object.entries(stats)) {
       console.log(`    ${tplId}: ${count} soal`);
     }
+  }
+
+  console.log('\nTemplate yang Di-Skip Beserta Alasan:');
+  let hasAnySkipped = false;
+  for (const [lesson, skippedList] of Object.entries(allSkippedTemplates)) {
+    if (skippedList && skippedList.length > 0) {
+      hasAnySkipped = true;
+      console.log(`- Bab ${lesson}:`);
+      for (const s of skippedList) {
+        console.log(`    ${s.tid}: ${s.reason}`);
+      }
+    }
+  }
+  if (!hasAnySkipped) {
+    console.log('  (Tidak ada template yang di-skip)');
+  }
+
+  console.log('\n5 Sampel Acak Soal per Bab:');
+  for (const lesson of targetLessons) {
+    const list = questionsByLesson[lesson] || [];
+    console.log(`\n========================================`);
+    console.log(`>>> Bab ${lesson} (${list.length} soal total) <<<`);
+    console.log(`========================================`);
+    // Shuffle copy
+    const shuffled = [...list].sort(() => 0.5 - Math.random());
+    const samples = shuffled.slice(0, 5);
+    samples.forEach((q, idx) => {
+      console.log(`\n[Sampel ${idx + 1}] (${q.source_ref})`);
+      console.log(`  id_text     : "${q.id_text}"`);
+      console.log(`  jp_answers  : ${JSON.stringify(q.jp_answers)}`);
+      console.log(`  grammar_tags: ${JSON.stringify(q.grammar_tags)}`);
+    });
   }
 
   console.log('\nAlasan Penolakan Soal Tatoeba Terbanyak:');

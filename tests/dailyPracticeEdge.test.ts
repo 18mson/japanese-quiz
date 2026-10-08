@@ -3,9 +3,13 @@ import assert from 'node:assert';
 import {
   normalizeAnswer,
   checkAnswerMatch,
+  checkAnswerWithDetails,
+  tokenizeJapaneseMarkers,
+  countTokenErrors,
   kanjiToDigits,
   foldKatakanaToHiragana
 } from '../supabase/functions/_shared/normalize.ts';
+import { computeAnswerDiff } from '../src/utils/answerDiff.ts';
 import { normalizeAnswer as templateNormalizeAnswer } from '../scripts/template-generator.mjs';
 import { todayWIB, nextResetISO } from '../supabase/functions/_shared/time.ts';
 import {
@@ -96,6 +100,45 @@ test('Daily Practice Edge Functions Test Suite', async (t) => {
     assert.strictEqual(checkAnswerMatch('これわちょこれえとですか', acceptedChocolate), true);
     assert.strictEqual(checkAnswerMatch('これわちょこれーとですか', acceptedChocolate), true);
     assert.strictEqual(checkAnswerMatch('これわチョコレートですか', acceptedChocolate), true);
+  });
+
+  await t.test('4b. Toleransi jika hanya 1 kata salah ATAU <= 30% dari kalimat salah (is_tolerance = true)', () => {
+    const target = ['エスカレーターはあそこです', 'エスカレーターはあそこです。'];
+
+    // 1. Exact match -> isMatch: true, isTolerance: false
+    const exactRes = checkAnswerWithDetails('エスカレーターはあそこです', target);
+    assert.strictEqual(exactRes.isMatch, true);
+    assert.strictEqual(exactRes.isTolerance, false);
+
+    // 2. 1 kata salah pada penutup (でした bukannya です) -> isMatch: true, isTolerance: true
+    const toleranceRes1 = checkAnswerWithDetails('エスカレーターはあそこでした', target);
+    assert.strictEqual(toleranceRes1.isMatch, true);
+    assert.strictEqual(toleranceRes1.isTolerance, true);
+
+    // 3. 1 kata salah pada partikel (が bukannya は) -> isMatch: true, isTolerance: true
+    const toleranceRes2 = checkAnswerWithDetails('エスカレーターがあそこです', target);
+    assert.strictEqual(toleranceRes2.isMatch, true);
+    assert.strictEqual(toleranceRes2.isTolerance, true);
+
+    // 4. Toleransi <= 30% karakter salah (misal: "あそこは事務所です" vs "あそこは事務所ですか" -> 1 char / 10 = 10% <= 30%)
+    const targetJimusho = ['あそこは事務所ですか'];
+    const resCharTolerance = checkAnswerWithDetails('あそこは事務所です', targetJimusho);
+    assert.strictEqual(resCharTolerance.isMatch, true);
+    assert.strictEqual(resCharTolerance.isTolerance, true);
+
+    // 5. Kalimat salah lebih dari 30% dan lebih dari 1 kata -> isMatch: false
+    const multiErrorRes = checkAnswerWithDetails('ここは学校でした', targetJimusho);
+    assert.strictEqual(multiErrorRes.isMatch, false);
+
+    // 6. Diff karakter untuk highlight: huruf benar isCorrect = true, huruf salah isCorrect = false
+    const diff = computeAnswerDiff('エスカレーターはあそこでした', 'エスカレーターはあそこです');
+    assert.strictEqual(diff.length >= 2, true);
+    // Bagian 'エスカレーターはあそこ' harus isCorrect = true
+    const matchSeg = diff.find(s => s.text.includes('エスカレーター'));
+    assert.strictEqual(matchSeg?.isCorrect, true);
+    // Bagian yang salah ('でした' atau variasinya)
+    const wrongSeg = diff.find(s => !s.isCorrect);
+    assert.strictEqual(wrongSeg !== undefined, true);
   });
 
   // ============================================================

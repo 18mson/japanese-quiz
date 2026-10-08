@@ -62,18 +62,38 @@ export function useSpeechAnswer() {
     }
   }
 
+  let silenceTimeout: ReturnType<typeof setTimeout> | null = null;
+  const SILENCE_TIMEOUT_MS = 2200; // 2.2 detik hening setelah bicara sebelum otomatis stop
+
+  function clearSilenceTimer() {
+    if (silenceTimeout) {
+      clearTimeout(silenceTimeout);
+      silenceTimeout = null;
+    }
+  }
+
+  function resetSilenceTimer() {
+    clearSilenceTimer();
+    silenceTimeout = setTimeout(() => {
+      // Hentikan rekaman setelah jeda hening yang cukup
+      stopListening();
+    }, SILENCE_TIMEOUT_MS);
+  }
+
   function initRecognition() {
     if (!SpeechRecognitionConstructor) return null;
     const recognition = new SpeechRecognitionConstructor();
     recognition.lang = 'ja-JP';
     recognition.interimResults = true;
     recognition.maxAlternatives = 3;
-    recognition.continuous = false;
+    // Gunakan continuous: true agar tidak terputus saat jeda bicara sejenak
+    recognition.continuous = true;
 
     recognition.onstart = () => {
       isListening.value = true;
       error.value = null;
       errorCode.value = null;
+      clearSilenceTimer();
     };
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
@@ -92,18 +112,24 @@ export function useSpeechAnswer() {
       if (finalStr) {
         transcript.value = (transcript.value + ' ' + finalStr).trim();
         interimTranscript.value = '';
+        // Mulai hitung mundur jeda hening setelah kalimat/kata selesai diucapkan
+        resetSilenceTimer();
       } else {
         interimTranscript.value = interimStr;
+        // Jika masih dalam proses bicara (interim), batalkan silence timer sementara
+        clearSilenceTimer();
       }
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      clearSilenceTimer();
       errorCode.value = event.error;
       error.value = mapErrorMessage(event.error);
       isListening.value = false;
     };
 
     recognition.onend = () => {
+      clearSilenceTimer();
       isListening.value = false;
       interimTranscript.value = '';
     };
@@ -140,6 +166,7 @@ export function useSpeechAnswer() {
   }
 
   function stopListening() {
+    clearSilenceTimer();
     if (recognitionInstance && isListening.value) {
       try {
         recognitionInstance.stop();
@@ -149,6 +176,7 @@ export function useSpeechAnswer() {
   }
 
   function resetTranscript() {
+    clearSilenceTimer();
     transcript.value = '';
     interimTranscript.value = '';
     error.value = null;
