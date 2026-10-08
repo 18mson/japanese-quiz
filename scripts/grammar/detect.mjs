@@ -198,6 +198,9 @@ export function detectTags(tokens) {
       } else {
         tags.add('PARTICLE_NO');
       }
+    } else if (t.surface_form === '木の下' || t.surface_form === '木の上') {
+      // Kuromoji membaca 木の下 sebagai satu token nama (木ノ下), sehingga PARTICLE_NO terlewat
+      tags.add('PARTICLE_NO');
     }
   }
 
@@ -420,6 +423,14 @@ export function detectTags(tokens) {
     const t = tokens[i];
     if (t.surface_form === 'で' && t.pos === '助詞' && t.pos_detail_1 === '格助詞') {
       const prev = tokens[i - 1];
+      const next = tokens[i + 1];
+      // Abaikan bila 'で' berfungsi sebagai lingkup/scope waktu atau superlatif (misal: 1年で一番, 世界で一番)
+      const timeScopeUnits = ['年', '月', '週', '日', '分', '秒', '時間', 'か月', '週間', '回'];
+      const isTimeScope = prev && (timeScopeUnits.includes(prev.basic_form) || timeScopeUnits.includes(prev.surface_form));
+      const isSuperlativeScope = next && (next.surface_form === '一番' || next.basic_form === '一番');
+      if (isTimeScope || isSuperlativeScope) {
+        continue;
+      }
       if (prev && !transportWords.includes(prev.surface_form)) {
         const meansWords = [
           'ワープロ', '日本語', '英語', 'はし', 'スプーン', 'フォーク',
@@ -567,10 +578,42 @@ export function detectTags(tokens) {
     }
   }
 
-  const positionWords = ['上', '下', '前', '後ろ', '中', '外', '隣', '近く', '間'];
-  for (const t of tokens) {
-    if (positionWords.includes(t.surface_form)) {
+  // MAE_NI (Bab 18): ～る前に / [Aktivitas]の前に berarti "sebelum (melakukan sesuatu)".
+  // Pengecualian: [Nomina tempat/benda] の 前に ... あります/います adalah POSITION_NOUN (Bab 10), BUKAN MAE_NI.
+  let hasMaeNi = false;
+  for (let i = 0; i < len; i++) {
+    const t = tokens[i];
+    if ((t.surface_form === '前' || t.surface_form === 'まえ') && tokens[i + 1]?.surface_form === 'に') {
+      if (hasExistVerb) {
+        // Pada kalimat keberadaan fisik (あります/います), '前に' adalah posisi spasial (POSITION_NOUN), bukan MAE_NI
+        continue;
+      }
+      const prev = tokens[i - 1];
+      if (prev && prev.pos === '動詞' && (prev.conjugated_form === '基本形' || prev.surface_form === prev.basic_form)) {
+        hasMaeNi = true;
+        tags.add('DICT_FORM');
+      } else if (prev && prev.surface_form === 'の') {
+        const nounBefore = tokens[i - 2];
+        const isActivity = nounBefore && (
+          nounBefore.pos_detail_1 === 'サ変接続' ||
+          ['食事', '勉強', '仕事', '出発', '旅行', '会議', '授業', '水泳', '運転', '試合'].includes(nounBefore.surface_form)
+        );
+        if (isActivity) {
+          hasMaeNi = true;
+        }
+      }
+    }
+  }
+
+  const positionWords = ['上', '下', '後ろ', '中', '外', '隣', '近く', '間'];
+  for (let i = 0; i < len; i++) {
+    const t = tokens[i];
+    if (positionWords.includes(t.surface_form) || t.surface_form === '木の下' || t.surface_form === '木の上') {
       tags.add('POSITION_NOUN');
+    } else if (t.surface_form === '前' || t.surface_form === 'まえ') {
+      if (hasExistVerb || !hasMaeNi) {
+        tags.add('POSITION_NOUN');
+      }
     }
   }
 
@@ -767,7 +810,7 @@ export function detectTags(tokens) {
     tags.add('SHUMI_KOTO');
     hasShumiKoto = true;
   }
-  if (fullText.includes('まえに') || fullText.includes('前に')) {
+  if (hasMaeNi) {
     tags.add('MAE_NI');
   }
 

@@ -141,6 +141,28 @@ test('Daily Practice Edge Functions Test Suite', async (t) => {
     assert.strictEqual(wrongSeg !== undefined, true);
   });
 
+  await t.test('4c. Toleransi Khusus Mode Suara (Distorsi Mic) vs Mode Tulisan (Hanya Typo Huruf)', () => {
+    // Kasus Screenshot Pengguna: "今朝、あの人を勉強しましたか？"
+    // Target DB: "あの人は今朝勉強しました" / "あの人はけさ勉強しました"
+    const targetKesa = ['あの人は今朝勉強しました', 'あの人はけさ勉強しました'];
+    const userVoice = '今朝、あの人を勉強しましたか？';
+
+    // Pada mode suara: harus lolos toleransi (isMatch: true, isTolerance: true)
+    // karena 11 dari 12 karakter inti benar (>90% benar), dan hanya partikel/akhiran mic yang berbeda
+    const voiceRes = checkAnswerWithDetails(userVoice, targetKesa, 'voice');
+    assert.strictEqual(voiceRes.isMatch, true, 'Mode suara harus mentoleransi distorsi mic pada urutan kata & partikel');
+    assert.strictEqual(voiceRes.isTolerance, true);
+
+    // Pada mode tulisan: harus TIDAK lolos (isMatch: false) karena bukan sekadar typo 1-2 huruf
+    const textRes = checkAnswerWithDetails(userVoice, targetKesa, 'text');
+    assert.strictEqual(textRes.isMatch, false, 'Mode tulisan TIDAK boleh mentoleransi pertukaran kata liar');
+
+    // Mode tulisan: typo 1 huruf tetap lolos
+    const typoText = checkAnswerWithDetails('あの人は今朝勉強しましだ', targetKesa, 'text');
+    assert.strictEqual(typoText.isMatch, true);
+    assert.strictEqual(typoText.isTolerance, true);
+  });
+
   // ============================================================
   // 2. Utilitas Waktu Asia/Jakarta (WIB)
   // ============================================================

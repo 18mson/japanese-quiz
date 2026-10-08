@@ -133,7 +133,7 @@ function handleRetry() {
     </header>
 
     <!-- Main Content Area (Centered vertically between header and footer) -->
-    <main class="flex-1 w-full max-w-5xl lg:max-w-6xl mx-auto px-1.5 sm:px-6 py-2 sm:py-4 flex flex-col justify-center items-center relative">
+    <main class="flex-1 w-full max-w-6xl xl:max-w-7xl mx-auto px-1.5 sm:px-6 py-2 sm:py-4 flex flex-col justify-center items-center relative">
       <!-- 1. NOT AUTHENTICATED -->
       <div v-if="!authStore.user" class="my-auto w-full max-w-md mx-auto bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center animate-fadeIn">
         <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">

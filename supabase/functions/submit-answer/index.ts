@@ -174,7 +174,7 @@ Deno.serve(async (req: Request) => {
 
     // 3. Evaluasi jawaban dengan checkAnswerWithDetails
     const acceptedAnswers = dq.sentence_questions?.jp_answers || [];
-    const evaluation = checkAnswerWithDetails(submittedText, acceptedAnswers);
+    const evaluation = checkAnswerWithDetails(submittedText, acceptedAnswers, input_method);
     const isMatch = evaluation.isMatch;
     const isTolerance = evaluation.isTolerance;
     const matchedTarget = evaluation.matchedTarget || dq.sentence_questions?.jp_text;

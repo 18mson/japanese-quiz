@@ -203,6 +203,28 @@ export function countCharErrors(strA: string, strB: string): number {
   return dp[m][n];
 }
 
+/**
+ * Menghitung persentase karakter target yang ditemukan pada string pengguna
+ * (Bag-of-Characters overlap), tahan terhadap pemindahan/pertukaran urutan kata
+ * seperti topik dan keterangan waktu dalam bahasa Jepang.
+ */
+export function checkCharacterOverlap(userStr: string, targetStr: string): number {
+  const uChars = foldKatakanaToHiragana(userStr).replace(/[、。！？\s]/g, '').split('');
+  const targetChars = foldKatakanaToHiragana(targetStr).replace(/[、。！？\s]/g, '').split('');
+  if (targetChars.length === 0) return 0;
+
+  const uPool = [...uChars];
+  let matched = 0;
+  for (const c of targetChars) {
+    const idx = uPool.indexOf(c);
+    if (idx !== -1) {
+      matched++;
+      uPool.splice(idx, 1);
+    }
+  }
+  return matched / targetChars.length;
+}
+
 export interface AnswerCheckResult {
   isMatch: boolean;
   isTolerance: boolean;
@@ -210,11 +232,14 @@ export interface AnswerCheckResult {
 }
 
 /**
- * Memeriksa kecocokan jawaban dengan rincian (exact vs toleransi 1 kata salah / <= 30% salah).
+ * Memeriksa kecocokan jawaban dengan rincian (exact vs toleransi).
+ * - Mode voice: mentoleransi distorsi mikrofon (salah 1-2 kata ATAU minimal 60% huruf benar).
+ * - Mode text: hanya mentoleransi typo huruf (1-2 huruf typo).
  */
 export function checkAnswerWithDetails(
   userAnswer: string,
-  acceptedAnswers: string[]
+  acceptedAnswers: string[],
+  inputMethod: 'text' | 'voice' = 'text'
 ): AnswerCheckResult {
   if (!userAnswer || !acceptedAnswers || acceptedAnswers.length === 0) {
     return { isMatch: false, isTolerance: false };
@@ -249,7 +274,25 @@ export function checkAnswerWithDetails(
     userVariants.push(normalizeAnswer(userAnswer.replace(/お/g, 'を')));
   }
 
-  // 1. Cek Exact & Phonetic Match
+  // Khusus mode voice: toleransi distorsi STT umum
+  if (inputMethod === 'voice') {
+    // 1. Mic sering merekam 'を' (o) saat pengguna mengucapkan partikel topik 'は' (wa)
+    if (userNorm.strict.includes('を')) {
+      userVariants.push(normalizeAnswer(userAnswer.replace(/を/g, 'は')));
+    }
+    // 2. Mic sering menambahkan 'か' / '？' di akhir kalimat pernyataan
+    const baseVariants = [...userVariants];
+    for (const v of baseVariants) {
+      if (/[か？?]+$/.test(v.strict)) {
+        const stripped = v.strict.replace(/[か？?]+$/, '');
+        if (stripped) {
+          userVariants.push(normalizeAnswer(stripped));
+        }
+      }
+    }
+  }
+
+  // 1. Cek Exact & Phonetic Match (berlaku di semua mode)
   for (const acc of acceptedAnswers) {
     const accNorm = normalizeAnswer(acc);
     const accLooseNoChouon = accNorm.loose.replace(/ー/g, '');
@@ -270,27 +313,53 @@ export function checkAnswerWithDetails(
     }
   }
 
-  // 2. Cek Toleransi: Boleh 1 Kata Salah ATAU Maksimal 30% dari Kalimat Salah
-  const userTokens = tokenizeJapaneseMarkers(userNorm.strict);
+  // 2. Cek Toleransi Sesuai Mode Input
   for (const acc of acceptedAnswers) {
     const accNorm = normalizeAnswer(acc);
     const accTokens = tokenizeJapaneseMarkers(accNorm.strict);
+    const accLen = accNorm.strict.length;
 
-    // a. Toleransi berbasis token (kata): 1 kata salah ATAU <= 30% kata salah
-    if (accTokens.length >= 2) {
-      const tokenErrCount = countTokenErrors(userTokens, accTokens);
-      const tokenErrRatio = tokenErrCount / accTokens.length;
-      if (tokenErrCount === 1 || tokenErrRatio <= 0.30) {
-        return { isMatch: true, isTolerance: true, matchedTarget: acc };
-      }
-    }
+    for (const uv of userVariants) {
+      const uTokens = tokenizeJapaneseMarkers(uv.strict);
+      const uLen = uv.strict.length;
 
-    // b. Toleransi berbasis karakter: <= 30% karakter salah
-    if (accNorm.strict.length >= 4) {
-      const charErrCount = countCharErrors(userNorm.strict, accNorm.strict);
-      const charErrRatio = charErrCount / accNorm.strict.length;
-      if (charErrRatio <= 0.30) {
-        return { isMatch: true, isTolerance: true, matchedTarget: acc };
+      if (inputMethod === 'voice') {
+        // --- MODE SUARA ---
+        // A. Salah 1-2 kata (token error <= 2 ATAU rasio error kata <= 40%)
+        if (accTokens.length >= 2) {
+          const tokenErrCount = countTokenErrors(uTokens, accTokens);
+          const tokenErrRatio = tokenErrCount / accTokens.length;
+          if (tokenErrCount <= 2 || tokenErrRatio <= 0.40) {
+            return { isMatch: true, isTolerance: true, matchedTarget: acc };
+          }
+        }
+
+        // B. Minimal 60% hurufnya benar via Levenshtein distance (similarity >= 60%)
+        if (accLen >= 3) {
+          const charErrCount = countCharErrors(uv.strict, accNorm.strict);
+          const maxLen = Math.max(uLen, accLen);
+          const charSimilarity = 1 - (charErrCount / maxLen);
+          if (charSimilarity >= 0.60) {
+            return { isMatch: true, isTolerance: true, matchedTarget: acc };
+          }
+        }
+
+        // C. Minimal 60% hurufnya benar via Karakter Overlap (toleransi susunan kata tertukar)
+        const charOverlap = checkCharacterOverlap(uv.strict, accNorm.strict);
+        const lenRatio = uLen / accLen;
+        if (charOverlap >= 0.60 && lenRatio >= 0.55 && lenRatio <= 1.65) {
+          return { isMatch: true, isTolerance: true, matchedTarget: acc };
+        }
+      } else {
+        // --- MODE TULISAN ---
+        // Hanya toleransi typo huruf (1 huruf typo, atau 2 huruf jika kalimat panjang dan error <= 20%)
+        if (accLen >= 4) {
+          const charErrCount = countCharErrors(uv.strict, accNorm.strict);
+          const charErrRatio = charErrCount / accLen;
+          if (charErrCount === 1 || (charErrCount === 2 && charErrRatio <= 0.20)) {
+            return { isMatch: true, isTolerance: true, matchedTarget: acc };
+          }
+        }
       }
     }
   }

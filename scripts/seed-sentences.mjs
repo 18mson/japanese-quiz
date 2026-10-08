@@ -159,7 +159,8 @@ async function main() {
   const questionsByLesson = {};
   const discardedWordsSet = new Set();
   for (const lesson of targetLessons) {
-    const { questions: generated, templateStats, skippedTemplates } = generateQuestionsForLesson(lesson, tokenizer, 150, 10, discardedWordsSet);
+    const targetCount = (lesson >= 9 && lesson <= 12) ? 250 : 150;
+    const { questions: generated, templateStats, skippedTemplates } = generateQuestionsForLesson(lesson, tokenizer, targetCount, 10, discardedWordsSet);
     allTemplateStats[lesson] = templateStats;
     allSkippedTemplates[lesson] = skippedTemplates;
     questionsByLesson[lesson] = generated;
@@ -440,6 +441,58 @@ async function main() {
       process.stdout.write(`  ... ${successCount}/${questionsToUpsert.length} tersimpan\r`);
     }
     console.log(`\n✓ Berhasil menyimpan ${successCount} soal ke database secara idempoten!`);
+
+    // F. Rekonsiliasi Status Soal: Tandai soal lama sebagai 'draft' bila source_ref tidak lagi dihasilkan
+    console.log(`\nMelakukan rekonsiliasi status soal untuk bab yang di-seed [${targetLessons.join(', ')}]...`);
+    const seededChapterRefs = new Set(questionsToUpsert.map(q => q.source_ref));
+    
+    const { data: currentDbApproved, error: fetchErr } = await supabase
+      .from('sentence_questions')
+      .select('id, chapter_id, source_ref, jp_text, id_text')
+      .in('chapter_id', targetLessons)
+      .eq('status', 'approved')
+      .range(0, 9999);
+
+    if (fetchErr) {
+      console.error('❌ Gagal memeriksa soal lama untuk rekonsiliasi:', fetchErr.message || fetchErr);
+    } else if (currentDbApproved) {
+      const staleQuestions = currentDbApproved.filter(row => !seededChapterRefs.has(row.source_ref));
+      if (staleQuestions.length > 0) {
+        console.log(`Ditemukan ${staleQuestions.length} soal lama yang tidak lagi dihasilkan. Menandai sebagai 'draft'...`);
+        const staleIds = staleQuestions.map(s => s.id);
+        const updateChunkSize = 100;
+        let draftSuccess = 0;
+        for (let i = 0; i < staleIds.length; i += updateChunkSize) {
+          const chunkIds = staleIds.slice(i, i + updateChunkSize);
+          const { error: updErr } = await supabase
+            .from('sentence_questions')
+            .update({ status: 'draft' })
+            .in('id', chunkIds);
+          if (updErr) {
+            console.error(`❌ Gagal update draft batch ${i + 1}-${i + chunkIds.length}:`, updErr.message || updErr);
+          } else {
+            draftSuccess += chunkIds.length;
+          }
+        }
+        console.log(`✓ Sebanyak ${draftSuccess} soal lama dinonaktifkan ke status 'draft'.`);
+
+        console.log('\n10 Contoh soal yang dinonaktifkan:');
+        staleQuestions.slice(0, 10).forEach((sq, idx) => {
+          console.log(`  ${idx + 1}. [Bab ${sq.chapter_id}] (${sq.source_ref}): ${sq.jp_text} -> ${sq.id_text}`);
+        });
+
+        const withPen = staleQuestions.filter(s => s.jp_text.includes('ペン'));
+        const withNado = staleQuestions.filter(s => s.jp_text.includes('など'));
+        if (withPen.length > 0 || withNado.length > 0) {
+          console.log(`\nSoal usang yang mengandung 'ペン' (${withPen.length}) atau 'など' (${withNado.length}):`);
+          [...withPen, ...withNado].slice(0, 10).forEach(s => {
+            console.log(`  - [Bab ${s.chapter_id}] (${s.source_ref}): ${s.jp_text}`);
+          });
+        }
+      } else {
+        console.log('✓ Semua soal di database sesuai dengan hasil generasi (0 soal usang).');
+      }
+    }
   }
 
   console.log('\n=== SEED SELESAI ===');

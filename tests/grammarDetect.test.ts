@@ -156,5 +156,23 @@ test('Grammar Detector Suite', async (t) => {
     assert.ok(res.tags.has('PARTICLE_GA_OBJ'));
     assert.ok(res.tags.has('ADV_AMOUNT'));
   });
+
+  await t.test('10. Unit Test Spesifik: Pembedaan POSITION_NOUN vs MAE_NI pada 前', () => {
+    // 駅の前にポストがあります -> POSITION_NOUN, tanpa MAE_NI
+    const resEki = detectTags(tokenizer.tokenize('駅の前にポストがあります') as any);
+    assert.ok(resEki.tags.has('POSITION_NOUN'), '駅の前にポストがあります harus memiliki POSITION_NOUN');
+    assert.ok(!resEki.tags.has('MAE_NI'), '駅の前にポストがあります TIDAK boleh memiliki MAE_NI');
+
+    // ドアの前に犬がいます -> POSITION_NOUN, tanpa MAE_NI
+    const resInu = detectTags(tokenizer.tokenize('ドアの前に犬がいます') as any);
+    assert.ok(resInu.tags.has('POSITION_NOUN'), 'ドアの前に犬がいます harus memiliki POSITION_NOUN');
+    assert.ok(!resInu.tags.has('MAE_NI'), 'ドアの前に犬がいます TIDAK boleh memiliki MAE_NI');
+
+    // 食事の前に手を洗います -> MAE_NI, tanpa POSITION_NOUN
+    const resShokuji = detectTags(tokenizer.tokenize('食事の前に手を洗います') as any);
+    assert.ok(resShokuji.tags.has('MAE_NI'), '食事の前に手を洗います harus memiliki MAE_NI');
+    assert.ok(!resShokuji.tags.has('POSITION_NOUN'), '食事の前に手を洗います TIDAK boleh memiliki POSITION_NOUN');
+  });
 });
+
 

@@ -105,8 +105,9 @@ export async function runCli() {
 
   for (const lesson of targetLessons) {
     const discardedSet = new Set();
-    const result = generateQuestionsForLesson(lesson, tokenizer, targetPerLesson, 10, discardedSet, vocabIndex);
-    allSummary.push({ lesson, result });
+    const currentTarget = (lesson >= 9 && lesson <= 12) ? 250 : targetPerLesson;
+    const result = generateQuestionsForLesson(lesson, tokenizer, currentTarget, 10, discardedSet, vocabIndex);
+    allSummary.push({ lesson, target: currentTarget, result });
 
     for (const w of result.discardedWords) globalDiscarded.add(w);
     for (const s of result.skippedTemplates) globalSkipped.push({ lesson, ...s });
@@ -121,7 +122,7 @@ export async function runCli() {
     const activeCount = Object.values(item.result.templateStats).filter(c => c > 0).length;
     const totalTpl = Object.keys(item.result.templateStats).length;
     console.log(
-      `${String(item.lesson).padStart(3)}  |  ${targetPerLesson}   | ${String(item.result.questions.length).padStart(20)} | ${activeCount}/${totalTpl} template aktif`
+      `${String(item.lesson).padStart(3)}  |  ${String(item.target || targetPerLesson).padStart(5)} | ${String(item.result.questions.length).padStart(20)} | ${activeCount}/${totalTpl} template aktif`
     );
   }
 

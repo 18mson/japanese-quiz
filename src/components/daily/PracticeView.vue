@@ -380,10 +380,25 @@ function toggleMic() {
   if (isListening.value) {
     stopListening();
   } else {
+    inputText.value = '';
     resetTranscript();
     startListening();
   }
 }
+
+const displayedVoiceTranscript = computed(() => {
+  return (interimTranscript.value || transcript.value || inputText.value || '').trim();
+});
+
+const showVoiceTranscriptPopup = computed(() => {
+  return (
+    activeInputMode.value === 'voice' &&
+    !props.question.is_correct &&
+    isListening.value &&
+    !props.submitting &&
+    displayedVoiceTranscript.value.length > 0
+  );
+});
 
 function handleClear() {
   inputText.value = '';
@@ -695,7 +710,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-full max-w-4xl lg:max-w-5xl mx-auto flex flex-col gap-3 sm:gap-6 animate-fadeIn my-auto relative px-10 sm:px-16 lg:px-20">
+  <div class="w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl mx-auto flex flex-col gap-3 sm:gap-6 animate-fadeIn my-auto relative px-4 sm:px-8 lg:px-12">
     <!-- Left Navigation Paddle (Fixed at Left Edge) -->
     <button
       type="button"
@@ -774,7 +789,7 @@ onUnmounted(() => {
 
         <!-- Morphing Container dengan Animasi Memanjang / Memendek & Efek Blur -->
         <div 
-          class="question-morph-wrapper relative mx-auto flex items-center justify-center max-w-3xl w-full"
+          class="question-morph-wrapper relative mx-auto flex items-center justify-center max-w-4xl xl:max-w-5xl w-full"
           :style="containerHeightStyle"
         >
           <!-- Dynamic Ambient Blur saat transisi pergantian soal (Menyatu mulus dengan background) -->
@@ -795,7 +810,7 @@ onUnmounted(() => {
           >
             <h2 
               :key="question.daily_question_id"
-              class="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed max-w-3xl mx-auto break-words text-center w-full"
+              class="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed max-w-4xl xl:max-w-5xl mx-auto break-words text-center w-full"
             >
               <template v-for="(seg, idx) in sentenceSegments" :key="idx">
                 <!-- Segmen Kata yang Memiliki Hint (Clickable) -->
@@ -854,7 +869,7 @@ onUnmounted(() => {
 
       <!-- Answer Morphing Container dengan Animasi Memanjang / Memendek & Efek Blur (Sama Persis dengan Soal) -->
       <div 
-        class="answer-morph-wrapper relative mx-auto flex items-center justify-center max-w-4xl w-full"
+        class="answer-morph-wrapper relative mx-auto flex items-center justify-center max-w-5xl lg:max-w-6xl xl:max-w-7xl w-full"
         :style="answerContainerHeightStyle"
       >
         <!-- Dynamic Ambient Blur saat transisi pergantian/muncul/hilang jawaban (Menyatu mulus dengan background) -->
@@ -878,7 +893,7 @@ onUnmounted(() => {
           <div
             v-if="hasVisibleAnswer"
             :key="answerKey"
-            class="answer-content-inner relative z-10 flex flex-col items-center justify-center px-1 sm:px-3 max-w-4xl w-full"
+            class="answer-content-inner relative z-10 flex flex-col items-center justify-center px-1 sm:px-3 max-w-5xl lg:max-w-6xl xl:max-w-7xl w-full"
           >
             <!-- Konten Jawaban Terjawab Benar -->
             <div 
@@ -886,7 +901,7 @@ onUnmounted(() => {
               class="flex items-center justify-center gap-2.5 sm:gap-4 w-full"
             >
               <SpeakerButton :text="displayedSpeakableText" size="md" class="shrink-0" />
-              <span class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center sm:text-left">
+              <span class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-snug sm:leading-normal break-words text-center sm:text-left">
                 <FuriganaText 
                   :text="displayedSpeakableText" 
                   :diff-user-answer="question.is_tolerance ? (question.user_answer || lastAnswerGiven || '') : ''"
@@ -904,7 +919,7 @@ onUnmounted(() => {
                 <span>Kunci Jawaban Terbuka:</span>
                 <SpeakerButton :text="revealedAnswer || ''" size="sm" />
               </div>
-              <div class="text-2xl sm:text-4xl md:text-5xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center">
+              <div class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-snug sm:leading-normal break-words text-center">
                 <FuriganaText :text="revealedAnswer || ''" />
               </div>
               <div class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500 mt-0.5">
@@ -941,31 +956,6 @@ onUnmounted(() => {
                 <span>Mode Suara</span>
               </div>
             </transition>
-          </button>
-        </div>
-      </transition>
-
-      <!-- ================= LIVE TRANSCRIPT CARD (VOICE MODE) ================= -->
-      <transition name="fade-collapse">
-        <div 
-          v-if="activeInputMode === 'voice' && !question.is_correct && (transcript || interimTranscript || inputText)" 
-          class="max-w-md w-full px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-indigo-100 dark:border-slate-800 shadow-md backdrop-blur-md flex items-center justify-between gap-3 text-center transition-all animate-fadeIn"
-        >
-          <div class="flex items-center gap-2 overflow-hidden text-left flex-1 min-w-0">
-            <span class="text-[11px] font-bold text-indigo-600 dark:text-torii uppercase shrink-0">Suara:</span>
-            <span class="font-japanese font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate">
-              {{ transcript || interimTranscript || inputText }}
-            </span>
-          </div>
-          <button
-            v-if="inputText.trim() && !submitting"
-            type="button"
-            @click="handleSubmit"
-            class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white flex items-center justify-center shrink-0 cursor-pointer shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-            title="Kirim Sekarang"
-            aria-label="Kirim Jawaban"
-          >
-            <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5" />
           </button>
         </div>
       </transition>
@@ -1067,6 +1057,34 @@ onUnmounted(() => {
           </div>
         </div>
       </transition>
+
+      <!-- ================= FLOATING POPUP TRANSCRIPT (VOICE MODE) ================= -->
+      <!-- Posisinya floating / absolute di bawah caption agar sama sekali tidak menggeser layout / elemen lain -->
+      <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-full max-w-md px-4 flex justify-center pointer-events-none z-50">
+        <transition name="voice-popup-scale">
+          <div 
+            v-if="showVoiceTranscriptPopup" 
+            class="w-full px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-indigo-100 dark:border-slate-800 shadow-xl backdrop-blur-md flex items-center justify-between gap-3 text-center pointer-events-auto"
+          >
+            <div class="flex items-center gap-2 overflow-hidden text-left flex-1 min-w-0">
+              <span class="text-[11px] font-bold text-indigo-600 dark:text-torii uppercase shrink-0">Suara:</span>
+              <span class="font-japanese font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate">
+                {{ displayedVoiceTranscript }}
+              </span>
+            </div>
+            <button
+              v-if="displayedVoiceTranscript && !submitting"
+              type="button"
+              @click="handleSubmit"
+              class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white flex items-center justify-center shrink-0 cursor-pointer shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
+              title="Kirim Sekarang"
+              aria-label="Kirim Jawaban"
+            >
+              <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5" />
+            </button>
+          </div>
+        </transition>
+      </div>
     </div>
 </div>
 </template>
@@ -1316,5 +1334,23 @@ input::placeholder {
 .caption-swap-leave-to {
   opacity: 0;
   transform: translateY(2px);
+}
+
+/* Voice popup floating transcript animation (zero layout shift) */
+.voice-popup-scale-enter-active {
+  transition: opacity 0.22s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.voice-popup-scale-leave-active {
+  transition: opacity 0.16s ease-in, transform 0.16s cubic-bezier(0.4, 0, 1, 1);
+}
+.voice-popup-scale-enter-from,
+.voice-popup-scale-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+}
+.voice-popup-scale-enter-to,
+.voice-popup-scale-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 </style>
