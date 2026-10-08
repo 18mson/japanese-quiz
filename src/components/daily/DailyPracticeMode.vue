@@ -266,10 +266,11 @@ function handleRetry() {
           :submitting="dailyStore.submitting"
           :revealed-answer="dailyStore.currentRevealedAnswer"
           :auto-kana="dailyStore.autoKana"
+          :is-reviewing="isReviewing"
           @submit="handleSubmit"
           @next="handleNext"
           @prev="dailyStore.prevQuestion"
-          @finish="handleFinish"
+          @finish="isReviewing ? (isReviewing = false) : handleFinish()"
           @toggle-auto-kana="dailyStore.toggleAutoKana"
         />
       </div>

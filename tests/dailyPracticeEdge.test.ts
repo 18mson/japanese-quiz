@@ -90,6 +90,12 @@ test('Daily Practice Edge Functions Test Suite', async (t) => {
 
     const acceptedStudent = ['私は学生です', 'わたしはがくせいです'];
     assert.strictEqual(checkAnswerMatch('わたしわがくせいです', acceptedStudent), true);
+
+    // Kasus kata serapan katakana berhuruf biasa / romaji ('ちょこれえと', 'ちょこれーと' vs 'チョコレート')
+    const acceptedChocolate = ['これはチョコレートですか', 'これはちょこれーとですか'];
+    assert.strictEqual(checkAnswerMatch('これわちょこれえとですか', acceptedChocolate), true);
+    assert.strictEqual(checkAnswerMatch('これわちょこれーとですか', acceptedChocolate), true);
+    assert.strictEqual(checkAnswerMatch('これわチョコレートですか', acceptedChocolate), true);
   });
 
   // ============================================================

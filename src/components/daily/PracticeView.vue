@@ -19,9 +19,11 @@ const props = withDefaults(
     submitting: boolean;
     revealedAnswer: string | null;
     autoKana: boolean;
+    isReviewing?: boolean;
   }>(),
   {
-    allCompleted: false
+    allCompleted: false,
+    isReviewing: false
   }
 );
 
@@ -109,69 +111,17 @@ watch(
 watch(
   () => props.question.is_correct,
   (newVal, oldVal) => {
-    if (newVal && !oldVal) {
+    if (newVal && !oldVal && !props.isReviewing) {
       triggerAdvanceToast();
     }
   }
 );
 
 const isComposing = ref(false);
-const kanaMode = ref<'hiragana' | 'katakana'>('hiragana');
-
-function toggleKanaMode() {
-  const nextMode = kanaMode.value === 'hiragana' ? 'katakana' : 'hiragana';
-  kanaMode.value = nextMode;
-
-  // Jika sudah ada teks di input, bantu ubah kana sesuai mode baru
-  if (inputText.value && wanakanaModule) {
-    try {
-      if (nextMode === 'katakana') {
-        inputText.value = wanakanaModule.toKatakana(inputText.value);
-      } else {
-        inputText.value = wanakanaModule.toHiragana(inputText.value);
-      }
-    } catch {}
-  }
-  nextTick(() => {
-    inputRef.value?.focus();
-  });
-}
-
-function convertRomaji(text: string): string {
-  if (!wanakanaModule) return text;
-  // Jika tidak mengandung huruf Latin (A-Z/a-z), jangan disentuh agar IME Jepang/Kanji tidak terganggu
-  if (!/[a-zA-Z]/.test(text)) {
-    return text;
-  }
-
-  try {
-    if (kanaMode.value === 'katakana') {
-      return wanakanaModule.toKatakana(text, { IMEMode: true });
-    } else {
-      // toKana: huruf kecil jadi hiragana, huruf besar jadi katakana, kanji & katakana asli tetap utuh
-      return wanakanaModule.toKana(text, { IMEMode: true });
-    }
-  } catch {
-    return text;
-  }
-}
 
 function handleInput(e: Event) {
   const target = e.target as HTMLInputElement;
-  let val = target.value;
-
-  // Jika sedang proses composition IME (keyboard Jepang asli), jangan timpa input
-  if (isComposing.value) {
-    inputText.value = val;
-    inputMethod.value = 'text';
-    return;
-  }
-
-  if (props.autoKana && wanakanaModule) {
-    val = convertRomaji(val);
-  }
-
-  inputText.value = val;
+  inputText.value = target.value;
   inputMethod.value = 'text';
 }
 
@@ -203,18 +153,14 @@ function handleClear() {
 }
 
 function handleSubmit() {
-  let trimmed = inputText.value.trim();
+  const trimmed = inputText.value.trim();
   if (!trimmed || props.submitting || props.question.is_correct) return;
 
-  // Pastikan huruf n di akhir atau karakter pending terkonversi sempurna jika masih ada romaji
-  if (props.autoKana && wanakanaModule && /[a-zA-Z]/.test(trimmed)) {
+  // Jika user mengetik huruf alfabet latin (romaji), konversikan ke kana untuk validasi ke backend
+  let answerToSend = trimmed;
+  if (wanakanaModule && /[a-zA-Z]/.test(trimmed)) {
     try {
-      if (kanaMode.value === 'katakana') {
-        trimmed = wanakanaModule.toKatakana(trimmed);
-      } else {
-        trimmed = wanakanaModule.toKana(trimmed);
-      }
-      inputText.value = trimmed;
+      answerToSend = wanakanaModule.toKana(trimmed);
     } catch {}
   }
 
@@ -223,7 +169,7 @@ function handleSubmit() {
   }
 
   lastAnswerGiven.value = trimmed;
-  emit('submit', trimmed, inputMethod.value);
+  emit('submit', answerToSend, inputMethod.value);
 }
 
 // Trigger efek getar (shake) dan pulihkan fokus ke input jika salah
@@ -273,9 +219,22 @@ const canShowAudio = computed(() => {
 });
 
 const isLastQuestion = computed(() => props.questionIndex >= props.totalQuestions - 1);
-const canAdvance = computed(() => props.question.is_correct || props.question.attempts >= 3);
+const canAdvance = computed(() => {
+  if (props.isReviewing) {
+    return true;
+  }
+  return props.question.is_correct || props.question.attempts >= 3;
+});
 
 function handleAdvance() {
+  if (props.isReviewing) {
+    if (isLastQuestion.value) {
+      emit('finish');
+    } else {
+      emit('next');
+    }
+    return;
+  }
   if (isLastQuestion.value && props.allCompleted) {
     emit('finish');
   } else {
@@ -292,6 +251,17 @@ function handleInputEnter() {
 }
 
 function handleGlobalKeydown(e: KeyboardEvent) {
+  if (props.isReviewing) {
+    if (e.key === 'ArrowRight' || e.key === 'Enter') {
+      e.preventDefault();
+      handleAdvance();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (props.questionIndex > 0) emit('prev');
+    }
+    return;
+  }
+
   // Hanya trigger tombol selanjutnya jika soalnya SUDAH terjawab benar
   if (e.key === 'Enter' && props.question.is_correct && !props.submitting) {
     e.preventDefault();
@@ -352,15 +322,15 @@ onUnmounted(() => {
       <button
         type="button"
         @click="handleAdvance"
-        :disabled="questionIndex >= totalQuestions - 1 && !(isLastQuestion && allCompleted)"
+        :disabled="!isReviewing && questionIndex >= totalQuestions - 1 && !(isLastQuestion && allCompleted)"
         :class="[
           'w-8 h-8 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-full shadow-md sm:shadow-2xl flex items-center justify-center transition-all cursor-pointer backdrop-blur-md hover:scale-110 active:scale-95',
           canAdvance
             ? 'bg-emerald-500 hover:bg-emerald-600 text-white ring-2 sm:ring-4 ring-emerald-400/50 shadow-emerald-500/30 border border-emerald-400'
             : 'bg-white/95 dark:bg-slate-800/95 border border-slate-200/90 dark:border-slate-700/90 text-slate-700 dark:text-slate-200 disabled:opacity-20 disabled:pointer-events-none'
         ]"
-        :title="isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Soal Berikutnya'"
-        :aria-label="isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Soal Berikutnya'"
+        :title="isReviewing ? (isLastQuestion ? 'Selesai Tinjau' : 'Soal Berikutnya') : (isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Soal Berikutnya')"
+        :aria-label="isReviewing ? (isLastQuestion ? 'Selesai Tinjau' : 'Soal Berikutnya') : (isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Soal Berikutnya')"
       >
         <ChevronRight class="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />
       </button>
@@ -445,8 +415,11 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Bottom Input & Controls Container (Mobile-Optimized & Responsive) -->
-    <div class="w-full max-w-xl sm:max-w-3xl md:max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-lg sm:shadow-xl p-2 sm:p-4 flex flex-col gap-2 transition-all duration-150">
+    <!-- Bottom Input & Controls Container (Mobile-Optimized & Responsive) - Hidden in Review Mode -->
+    <div 
+      v-if="!isReviewing"
+      class="w-full max-w-xl sm:max-w-3xl md:max-w-4xl mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-lg sm:shadow-xl p-2 sm:p-4 flex flex-col gap-2 transition-all duration-150"
+    >
       <!-- Input bar with Clear button, Mic & Submit/Advance Button -->
       <div class="relative flex items-center gap-1.5 sm:gap-2.5 md:gap-3 w-full">
         <!-- Dynamic Auto-Expanding Input Container (min-w-0 agar fleksibel menyusut di HP) -->
@@ -485,21 +458,6 @@ onUnmounted(() => {
           </button>
         </div>
 
-        <!-- Kana Mode Switcher (Hiragana あ / Katakana ア) -->
-        <button
-          type="button"
-          @click="toggleKanaMode"
-          :disabled="question.is_correct || submitting"
-          :class="[
-            'h-10 w-9.5 sm:h-auto sm:w-auto px-2 sm:px-3 py-2 sm:py-3.5 md:py-4 rounded-xl sm:rounded-2xl border transition-all duration-200 flex items-center justify-center cursor-pointer flex-shrink-0 select-none shadow-2xs font-japanese font-black text-sm sm:text-base md:text-lg min-w-[36px] sm:min-w-[46px]',
-            kanaMode === 'katakana'
-              ? 'bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/70 dark:hover:bg-amber-900/80 text-amber-800 dark:text-amber-300 border-amber-300 dark:border-amber-700 ring-2 ring-amber-400/30'
-              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-700 dark:text-torii-light border-slate-200 dark:border-slate-700'
-          ]"
-          :title="`Mode Kana: ${kanaMode === 'katakana' ? 'Katakana (ア)' : 'Hiragana (あ)'} - Klik untuk ubah mode tulisan`"
-        >
-          <span>{{ kanaMode === 'katakana' ? 'ア' : 'あ' }}</span>
-        </button>
 
         <!-- Mic Button -->
         <button

@@ -74,9 +74,29 @@ export function normalizeAnswer(text: string): NormalizedResult {
 }
 
 /**
+ * Melipat vokal panjang (chouonpu dan vokal kembar) untuk menyamakan ejaan romaji & katakana
+ * Contoh: ちょこれえと / ちょこれーと -> ちょこれと, こおひい / こーひー -> こひ
+ */
+export function foldLongVowels(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/ー/g, '')
+    // e + え -> e
+    .replace(/([えけせてねへめれげぜでべぺぇ])え/g, '$1')
+    // o + お / う -> o
+    .replace(/([おこそとのほもよろごぞどぼぽぉょ])(お|う)/g, '$1')
+    // a + あ -> a
+    .replace(/([あかさたなはまやらわがざだばぱぁゃゎ])あ/g, '$1')
+    // i + い -> i
+    .replace(/([いきしちにひみりぎじぢびぴぃ])い/g, '$1')
+    // u + う -> u
+    .replace(/([うくすつぬふむゆるぐずづぶぷぅゅ])う/g, '$1');
+}
+
+/**
  * Memeriksa apakah jawaban user cocok dengan salah satu accepted answer (jp_answers)
  * Menguji kecocokan secara ketat (strict) maupun longgar (loose Katakana->Hiragana)
- * Termasuk toleransi varian '私' vs 'わたし'.
+ * Termasuk toleransi varian '私' vs 'わたし', partikel 'わ' vs 'は', dan vokal panjang.
  */
 export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]): boolean {
   if (!userAnswer || !acceptedAnswers || acceptedAnswers.length === 0) return false;
@@ -103,15 +123,25 @@ export function checkAnswerMatch(userAnswer: string, acceptedAnswers: string[]):
     userVariants.push(normalizeAnswer(waReplaced.replace(/わたし/g, '私')));
   }
 
+  // Toleransi partikel objek: pembelajar sering mengetik romaji 'o' -> 'お', padahal partikel ditulis 'を'
+  if (userNorm.strict.includes('お')) {
+    userVariants.push(normalizeAnswer(userAnswer.replace(/お/g, 'を')));
+  }
+
   for (const acc of acceptedAnswers) {
     const accNorm = normalizeAnswer(acc);
     const accLooseNoChouon = accNorm.loose.replace(/ー/g, '');
+    const accFolded = foldLongVowels(accNorm.loose);
+
     for (const uv of userVariants) {
       const uvLooseNoChouon = uv.loose.replace(/ー/g, '');
+      const uvFolded = foldLongVowels(uv.loose);
+
       if (
         uv.strict === accNorm.strict || 
         uv.loose === accNorm.loose ||
-        (uvLooseNoChouon && uvLooseNoChouon === accLooseNoChouon)
+        (uvLooseNoChouon && uvLooseNoChouon === accLooseNoChouon) ||
+        (uvFolded && uvFolded === accFolded)
       ) {
         return true;
       }
