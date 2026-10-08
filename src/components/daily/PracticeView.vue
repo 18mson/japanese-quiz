@@ -222,7 +222,7 @@ const mainActionButtonClasses = computed(() => {
   const base = 'flex items-center justify-center cursor-pointer select-none transition-all duration-300 relative z-10 ';
   
   if (mainActionState.value === 'advance') {
-    return base + 'h-12 sm:h-14 px-8 sm:px-12 rounded-2xl font-black text-sm sm:text-base bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 ring-4 ring-emerald-400/40 shadow-lg min-w-[200px] sm:min-w-[240px]';
+    return base + 'h-12 sm:h-14 px-5 sm:px-12 rounded-2xl font-black text-xs sm:text-base bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 ring-4 ring-emerald-400/40 shadow-lg min-w-[180px] sm:min-w-[240px] max-w-full';
   }
   
   if (mainActionState.value === 'send') {
@@ -988,7 +988,7 @@ onUnmounted(() => {
               @keydown.enter.prevent="handleInputEnter"
               :readonly="submitting"
               placeholder="Ketik kalimat bahasa Jepang..."
-              class="w-full h-12 sm:h-14 pl-4 pr-10 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 font-japanese text-base sm:text-xl md:text-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-torii/50 transition-all shadow-xs leading-relaxed"
+              class="w-full h-12 sm:h-14 pl-3.5 sm:pl-4 pr-9 sm:pr-10 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base font-japanese text-base sm:text-xl md:text-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-torii/50 transition-all shadow-xs leading-relaxed"
             />
             <!-- Clear button -->
             <button
@@ -1041,23 +1041,32 @@ onUnmounted(() => {
       </div>
 
       <!-- ================= SLOT BAWAH: VOICE STATUS CAPTION ================= -->
-      <div v-if="!question.is_correct && activeInputMode === 'voice'" class="text-center text-xs font-medium min-h-[20px] transition-all duration-200">
-        <span v-if="isListening" class="text-rose-500 dark:text-rose-400 font-bold flex items-center gap-1.5 justify-center animate-pulse">
-          <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-          Mendengarkan... Silakan bicara kalimat Jepang
-        </span>
-        <span v-else-if="submitting" class="text-indigo-600 dark:text-torii font-bold flex items-center gap-1.5 justify-center">
-          <div class="w-3.5 h-3.5 border-2 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin"></div>
-          Memeriksa jawaban...
-        </span>
-        <span v-else-if="speechError" class="text-rose-500 dark:text-rose-400 flex items-center gap-1.5 justify-center">
-          <AlertCircle class="w-3.5 h-3.5 shrink-0" />
-          <span>{{ speechError }}</span>
-        </span>
-        <span v-else class="text-slate-400 dark:text-slate-500">
-          Tekan mic untuk berbicara bahasa Jepang
-        </span>
-      </div>
+      <transition name="caption-fade">
+        <div 
+          v-if="!question.is_correct && activeInputMode === 'voice'" 
+          class="text-center text-xs font-medium overflow-hidden"
+        >
+          <div class="min-h-[20px] flex items-center justify-center">
+            <transition name="caption-swap" mode="out-in">
+              <span v-if="isListening" key="listening" class="text-rose-500 dark:text-rose-400 font-bold flex items-center gap-1.5 justify-center animate-pulse">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                Mendengarkan... Silakan bicara kalimat Jepang
+              </span>
+              <span v-else-if="submitting" key="submitting" class="text-indigo-600 dark:text-torii font-bold flex items-center gap-1.5 justify-center">
+                <div class="w-3.5 h-3.5 border-2 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin"></div>
+                Memeriksa jawaban...
+              </span>
+              <span v-else-if="speechError" key="error" class="text-rose-500 dark:text-rose-400 flex items-center gap-1.5 justify-center">
+                <AlertCircle class="w-3.5 h-3.5 shrink-0" />
+                <span>{{ speechError }}</span>
+              </span>
+              <span v-else key="idle" class="text-slate-400 dark:text-slate-500">
+                Tekan mic untuk berbicara bahasa Jepang
+              </span>
+            </transition>
+          </div>
+        </div>
+      </transition>
     </div>
 </div>
 </template>
@@ -1269,5 +1278,43 @@ input::placeholder {
   opacity: 1;
   max-height: 80px;
   transform: translateY(0);
+}
+
+/* Voice status caption smooth fade & collapse */
+.caption-fade-enter-active {
+  transition: opacity 0.22s ease-out, max-height 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+.caption-fade-leave-active {
+  transition: opacity 0.18s ease-in, max-height 0.22s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s ease-in;
+  overflow: hidden;
+}
+.caption-fade-enter-from,
+.caption-fade-leave-to {
+  opacity: 0;
+  max-height: 0 !important;
+  transform: translateY(-4px);
+}
+.caption-fade-enter-to,
+.caption-fade-leave-from {
+  opacity: 1;
+  max-height: 36px;
+  transform: translateY(0);
+}
+
+/* Caption inner text swap */
+.caption-swap-enter-active {
+  transition: opacity 0.18s ease-out, transform 0.18s ease-out;
+}
+.caption-swap-leave-active {
+  transition: opacity 0.12s ease-in, transform 0.12s ease-in;
+}
+.caption-swap-enter-from {
+  opacity: 0;
+  transform: translateY(-2px);
+}
+.caption-swap-leave-to {
+  opacity: 0;
+  transform: translateY(2px);
 }
 </style>

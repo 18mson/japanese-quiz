@@ -211,7 +211,7 @@ function handleRetry() {
       />
 
       <!-- 6. ACTIVE SESSION / PRACTICE RUNNER (OR REVIEW MODE) -->
-      <div v-else-if="dailyStore.currentQuestion" class="flex-1 flex flex-col justify-between">
+      <div v-else-if="dailyStore.currentQuestion" class="flex-1 w-full flex flex-col justify-between">
         <!-- Review Mode Banner -->
         <div v-if="isReviewing" class="w-full max-w-2xl mx-auto mb-3 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 rounded-2xl px-4 py-2.5 flex items-center justify-between text-xs font-bold text-indigo-900 dark:text-indigo-200">
           <div class="flex items-center gap-2">
