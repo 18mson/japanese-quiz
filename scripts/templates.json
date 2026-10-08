@@ -1900,8 +1900,7 @@
    "jp": "{P}は{X}だけ{X.2}ます。",
    "id_text": "{P} hanya {X.2} {X}.",
    "must_tags": [
-    "DAKE_ONLY",
-    "PARTICLE_WO"
+    "DAKE_ONLY"
    ]
   },
   {

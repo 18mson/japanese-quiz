@@ -3,13 +3,12 @@ import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { 
   Mic, MicOff, Send, X, AlertCircle, 
   ChevronRight, ChevronLeft, Eye,
-  CheckCircle2, Sparkles, Keyboard
+  CheckCircle2, Keyboard
 } from '@lucide/vue';
 import { useSpeechAnswer } from '../../composables/useSpeechAnswer';
 import SpeakerButton from '../SpeakerButton.vue';
 import FuriganaText from '../common/FuriganaText.vue';
 import { tokenizeSentenceWithHints } from '../../utils/sentenceHints';
-import { computeAnswerDiff } from '../../utils/answerDiff';
 import type { DailyQuestionData } from '../../stores/dailyPracticeStore';
 
 const props = withDefaults(
@@ -61,6 +60,83 @@ function handleGlobalPointerDown(e: MouseEvent | TouchEvent) {
   }
 }
 
+// ============================================================
+// ANIMASI BLUR & FLUID MORPH RESIZE SAAT PERGANTIAN SOAL
+// ============================================================
+const isMorphing = ref(false);
+const blurPillStyle = ref<Record<string, string>>({});
+const containerHeightStyle = ref<Record<string, string>>({
+  minHeight: 'auto',
+  transition: 'none'
+});
+
+function onQuestionBeforeLeave(el: Element) {
+  const htmlEl = el as HTMLElement;
+  const rect = htmlEl.getBoundingClientRect();
+  isMorphing.value = true;
+  blurPillStyle.value = {
+    width: `${rect.width + 48}px`,
+    height: `${rect.height + 24}px`,
+    opacity: '1',
+    transition: 'none'
+  };
+  containerHeightStyle.value = {
+    minHeight: `${rect.height}px`,
+    transition: 'none'
+  };
+}
+
+function onQuestionLeave(el: Element, done: () => void) {
+  const htmlEl = el as HTMLElement;
+  htmlEl.classList.add('question-blur-leave');
+  setTimeout(() => {
+    done();
+  }, 150);
+}
+
+function onQuestionBeforeEnter(el: Element) {
+  const htmlEl = el as HTMLElement;
+  htmlEl.classList.add('question-blur-enter-prep');
+}
+
+function onQuestionEnter(el: Element, done: () => void) {
+  const htmlEl = el as HTMLElement;
+
+  // Ukur dimensi alami teks baru (kontainer tetap w-full max-w-3xl sehingga tidak menghimpit teks jadi 2 baris)
+  const newRect = htmlEl.getBoundingClientRect();
+
+  // Animasikan blur pill memanjang / memendek ke ukuran baru
+  requestAnimationFrame(() => {
+    blurPillStyle.value = {
+      width: `${newRect.width + 48}px`,
+      height: `${newRect.height + 24}px`,
+      opacity: '0',
+      transition: 'width 0.36s cubic-bezier(0.22, 1, 0.36, 1), height 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.36s ease-out'
+    };
+
+    containerHeightStyle.value = {
+      minHeight: `${newRect.height}px`,
+      transition: 'min-height 0.36s cubic-bezier(0.22, 1, 0.36, 1)'
+    };
+
+    htmlEl.classList.remove('question-blur-enter-prep');
+    htmlEl.classList.add('question-blur-enter-active');
+
+    setTimeout(() => {
+      htmlEl.classList.remove('question-blur-enter-active');
+      done();
+    }, 360);
+  });
+}
+
+function onQuestionAfterEnter() {
+  isMorphing.value = false;
+  containerHeightStyle.value = {
+    minHeight: 'auto',
+    transition: 'none'
+  };
+}
+
 // Lazy loaded wanakana instance
 let wanakanaModule: any = null;
 onMounted(async () => {
@@ -88,15 +164,6 @@ let autoSubmitTimer: ReturnType<typeof setTimeout> | null = null;
 
 // Pola regex penutup kalimat bahasa Jepang (predikat sopan, bentuk lampau, ajakan, permohonan, dsb.)
 const JAPANESE_SENTENCE_ENDING_REGEX = /(です|でした|ですか|でしたか|ではありません|じゃありません|じゃありませんでした|ではありませんでした|ます|ました|ますか|ましたか|ません|ませんでした|ましょう|ましょうか|てください|ないでください|たいです|たくないです|だ|だった)[。！？.,!?\s]*$/;
-
-// Computed Diff Karakter untuk Toleransi 1 Kata Salah:
-// Huruf benar diwarnai biru/primary, huruf salah diwarnai hitam tanpa outline.
-const answerDiffSegments = computed(() => {
-  if (!props.question.is_correct || !props.question.is_tolerance) return [];
-  const userAns = props.question.user_answer || lastAnswerGiven.value || '';
-  const targetAns = props.question.matched_target || props.question.correct_answer || speakableText.value || '';
-  return computeAnswerDiff(userAns, targetAns);
-});
 
 function switchToKeyboardMode() {
   if (isListening.value) {
@@ -319,9 +386,165 @@ const speakableText = computed(() => {
   return '';
 });
 
-const canShowAudio = computed(() => {
+// Cache teks jawaban agar saat transisi keluar (slide down saat next soal), teks tidak kosong tiba-tiba
+const displayedSpeakableText = ref('');
+watch(
+  speakableText,
+  (val) => {
+    if (val) {
+      displayedSpeakableText.value = val;
+    }
+  },
+  { immediate: true }
+);
+
+
+
+// ============================================================
+// ANIMASI BLUR & FLUID MORPH RESIZE SAAT PERGANTIAN/MUNCUL/HILANG JAWABAN
+// (Sama persis dengan animasi soal)
+// ============================================================
+const isAnswerMorphing = ref(false);
+const answerBlurPillStyle = ref<Record<string, string>>({});
+const answerContainerHeightStyle = ref<Record<string, string>>({
+  maxHeight: (props.question.is_correct || !!props.revealedAnswer) ? 'none' : '0px',
+  marginTop: (props.question.is_correct || !!props.revealedAnswer) ? '1.25rem' : '0px',
+  overflow: (props.question.is_correct || !!props.revealedAnswer) ? 'visible' : 'hidden',
+  transition: 'none'
+});
+
+const hasVisibleAnswer = computed(() => {
   return (props.question.is_correct || !!props.revealedAnswer) && !!speakableText.value;
 });
+
+const answerKey = computed(() => {
+  return `${props.question.daily_question_id}-${props.question.is_correct ? 'c' : 'r'}-${displayedSpeakableText.value}`;
+});
+
+function onAnswerBeforeLeave(el: Element) {
+  const htmlEl = el as HTMLElement;
+  const rect = htmlEl.getBoundingClientRect();
+  isAnswerMorphing.value = true;
+  answerBlurPillStyle.value = {
+    width: `${rect.width + 48}px`,
+    height: `${rect.height + 28}px`,
+    opacity: '1',
+    transition: 'none'
+  };
+  answerContainerHeightStyle.value = {
+    maxHeight: `${rect.height}px`,
+    marginTop: '1.25rem',
+    overflow: 'hidden',
+    transition: 'none'
+  };
+}
+
+function onAnswerLeave(el: Element, done: () => void) {
+  const htmlEl = el as HTMLElement;
+  if (!hasVisibleAnswer.value) {
+    // "ADA JADI HILANG" -> transisi ke soal yang BELUM dijawab
+    htmlEl.classList.add('answer-blur-leave-collapse');
+    requestAnimationFrame(() => {
+      answerBlurPillStyle.value = {
+        width: '60px',
+        height: '20px',
+        opacity: '0',
+        transition: 'all 0.28s cubic-bezier(0.4, 0, 0.2, 1)'
+      };
+      answerContainerHeightStyle.value = {
+        maxHeight: '0px',
+        marginTop: '0px',
+        overflow: 'hidden',
+        transition: 'max-height 0.32s cubic-bezier(0.22, 1, 0.36, 1), margin-top 0.32s cubic-bezier(0.22, 1, 0.36, 1)'
+      };
+    });
+    setTimeout(() => {
+      done();
+    }, 320);
+  } else {
+    // "ADA JADI BERUBAH" -> transisi ke soal lain yang SUDAH dijawab
+    htmlEl.classList.add('answer-blur-leave');
+    setTimeout(() => {
+      done();
+    }, 150);
+  }
+}
+
+function onAnswerAfterLeave() {
+  if (!hasVisibleAnswer.value) {
+    isAnswerMorphing.value = false;
+    answerContainerHeightStyle.value = {
+      maxHeight: '0px',
+      marginTop: '0px',
+      overflow: 'hidden',
+      transition: 'none'
+    };
+  }
+}
+
+function onAnswerBeforeEnter(el: Element) {
+  const htmlEl = el as HTMLElement;
+  htmlEl.classList.add('answer-blur-enter-prep');
+  
+  // Jika sebelumnya belum aktif (HILANG JADI ADA)
+  if (!isAnswerMorphing.value) {
+    isAnswerMorphing.value = true;
+    answerBlurPillStyle.value = {
+      width: '100px',
+      height: '36px',
+      opacity: '0.8',
+      transition: 'none'
+    };
+    answerContainerHeightStyle.value = {
+      maxHeight: '0px',
+      marginTop: '0px',
+      overflow: 'hidden',
+      transition: 'none'
+    };
+  }
+}
+
+function onAnswerEnter(el: Element, done: () => void) {
+  const htmlEl = el as HTMLElement;
+  const newRect = htmlEl.getBoundingClientRect();
+  const targetWidth = newRect.width > 0 ? newRect.width + 48 : 280;
+  const targetHeight = newRect.height > 0 ? newRect.height + 28 : 80;
+
+  requestAnimationFrame(() => {
+    answerBlurPillStyle.value = {
+      width: `${targetWidth}px`,
+      height: `${targetHeight}px`,
+      opacity: '0',
+      transition: 'width 0.38s cubic-bezier(0.22, 1, 0.36, 1), height 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.38s ease-out'
+    };
+
+    answerContainerHeightStyle.value = {
+      maxHeight: `${targetHeight + 20}px`,
+      marginTop: '1.25rem',
+      overflow: 'hidden',
+      transition: 'max-height 0.38s cubic-bezier(0.16, 1, 0.3, 1), margin-top 0.38s cubic-bezier(0.16, 1, 0.3, 1)'
+    };
+
+    htmlEl.classList.remove('answer-blur-enter-prep');
+    htmlEl.classList.add('answer-blur-enter-active');
+
+    setTimeout(() => {
+      htmlEl.classList.remove('answer-blur-enter-active');
+      done();
+    }, 380);
+  });
+}
+
+function onAnswerAfterEnter() {
+  isAnswerMorphing.value = false;
+  answerContainerHeightStyle.value = {
+    maxHeight: 'none',
+    marginTop: '1.25rem',
+    overflow: 'visible',
+    transition: 'none'
+  };
+}
+
 
 const isLastQuestion = computed(() => props.questionIndex >= props.totalQuestions - 1);
 const canAdvance = computed(() => {
@@ -418,22 +641,6 @@ onUnmounted(() => {
 
     <!-- Right Navigation Paddle (Fixed at Right Edge) with Toast Popup (Muncul 2s saat baru saja benar) -->
     <div class="fixed right-1.5 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-30 flex flex-col items-end">
-      <!-- Toast Popup Floating Above Right Paddle -->
-      <transition name="toast-pop">
-        <div 
-          v-if="showAdvanceToast"
-          class="absolute bottom-full mb-2 sm:mb-3 right-0 flex flex-col items-end pointer-events-none select-none z-40 whitespace-nowrap"
-        >
-          <div class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg sm:rounded-xl bg-emerald-600 dark:bg-emerald-500 text-white font-black text-[11px] sm:text-xs shadow-xl flex items-center gap-1 sm:gap-1.5 border border-emerald-400/40">
-            <Sparkles class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-200" />
-            <span>{{ isLastQuestion && allCompleted ? 'Selesai! (Enter)' : 'Lanjut (Enter)' }}</span>
-            <ChevronRight class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-          </div>
-          <!-- Little arrow pointing down to button -->
-          <div class="w-0 h-0 border-x-4 sm:border-x-6 border-x-transparent border-t-4 sm:border-t-6 border-t-emerald-600 dark:border-t-emerald-500 mr-2 sm:mr-5"></div>
-        </div>
-      </transition>
-
       <button
         type="button"
         @click="handleAdvance"
@@ -454,10 +661,21 @@ onUnmounted(() => {
     <!-- Question Content (Expansive full-width text) -->
     <div 
       :class="[
-        'w-full flex flex-col items-center text-center transition-all duration-300 py-2 sm:py-5',
+        'w-full flex flex-col items-center text-center transition-all duration-300 py-2 sm:py-5 relative',
         isShaking ? 'animate-shake' : ''
       ]"
     >
+      <!-- Popup Toast Jawaban Benar (Floating di atas seperti popup hints, tidak menggeser layout di bawahnya) -->
+      <transition name="toast-pop-top">
+        <div 
+          v-if="question.is_correct" 
+          class="absolute -top-3 sm:-top-5 md:-top-6 left-1/2 -translate-x-1/2 z-40 pointer-events-none select-none flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-emerald-500 text-white font-black text-[11px] sm:text-xs md:text-sm shadow-xl shadow-emerald-500/25 border border-emerald-400/60 whitespace-nowrap"
+        >
+          <CheckCircle2 class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+          <span>Jawaban Anda Benar! (正解)</span>
+        </div>
+      </transition>
+
       <!-- Question meta row -->
       <div class="flex items-center justify-center gap-2 mb-2 sm:mb-4">
         <span class="text-[11px] sm:text-xs font-bold text-slate-400">
@@ -480,139 +698,175 @@ onUnmounted(() => {
       </div>
 
       <!-- Indonesian prompt text (Hero Typography) -->
-      <div class="my-1.5 sm:my-3 px-1 sm:px-3 w-full">
-        <span class="text-[11px] sm:text-xs md:text-sm font-black text-indigo-600 dark:text-torii uppercase tracking-widest block mb-1.5 sm:mb-3">
+      <div class="my-1.5 sm:my-3 px-1 sm:px-3 w-full flex flex-col items-center">
+        <span class="text-[11px] sm:text-xs md:text-sm font-black text-indigo-600 dark:text-torii uppercase tracking-widest block mb-1.5 sm:mb-3 select-none">
           Terjemahkan ke Bahasa Jepang
         </span>
-        <h2 class="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed max-w-3xl mx-auto break-words">
-          <template v-for="(seg, idx) in sentenceSegments" :key="idx">
-            <!-- Segmen Kata yang Memiliki Hint (Clickable) -->
-            <span 
-              v-if="seg.hint"
-              class="relative inline-block hint-container"
+
+        <!-- Morphing Container dengan Animasi Memanjang / Memendek & Efek Blur -->
+        <div 
+          class="question-morph-wrapper relative mx-auto flex items-center justify-center max-w-3xl w-full"
+          :style="containerHeightStyle"
+        >
+          <!-- Dynamic Ambient Blur saat transisi pergantian soal (Menyatu mulus dengan background) -->
+          <div 
+            v-if="isMorphing" 
+            class="morph-backdrop-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-100/60 dark:bg-slate-900/50 backdrop-blur-xl pointer-events-none"
+            :style="blurPillStyle"
+          ></div>
+
+          <transition 
+            name="question-blur-morph" 
+            mode="out-in"
+            @before-leave="onQuestionBeforeLeave"
+            @leave="onQuestionLeave"
+            @before-enter="onQuestionBeforeEnter"
+            @enter="onQuestionEnter"
+            @after-enter="onQuestionAfterEnter"
+          >
+            <h2 
+              :key="question.daily_question_id"
+              class="text-xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-slate-100 tracking-tight leading-relaxed max-w-3xl mx-auto break-words text-center w-full"
             >
-              <button
-                type="button"
-                @click.stop="toggleHint(idx)"
-                :class="[
-                  'inline transition-all font-inherit text-inherit pb-0.5 cursor-pointer rounded-lg px-1 -mx-0.5 border-b-2 border-dashed align-baseline',
-                  activeHintIndex === idx
-                    ? 'text-indigo-600 dark:text-torii border-indigo-600 dark:border-torii bg-indigo-50/80 dark:bg-indigo-950/70 shadow-xs'
-                    : 'border-indigo-300/80 dark:border-indigo-600/70 hover:text-indigo-600 dark:hover:text-torii hover:border-indigo-500 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
-                ]"
-                :title="`Klik untuk melihat petunjuk terjemahan: ${seg.text}`"
-              >
-                {{ seg.text }}
-              </button>
-
-              <!-- Popover / Toast di Atas Kata -->
-              <transition name="hint-pop">
-                <div 
-                  v-if="activeHintIndex === idx"
-                  class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 sm:mb-2.5 z-50 pointer-events-auto"
-                  @click.stop
+              <template v-for="(seg, idx) in sentenceSegments" :key="idx">
+                <!-- Segmen Kata yang Memiliki Hint (Clickable) -->
+                <span 
+                  v-if="seg.hint"
+                  class="relative inline-block hint-container"
                 >
-                  <div class="bg-slate-900/95 dark:bg-slate-800/95 text-white backdrop-blur-md rounded-2xl px-3.5 py-2 shadow-2xl border border-slate-700/80 flex items-center gap-2.5 whitespace-nowrap">
-                    <div class="flex flex-col items-center">
-                      <span class="text-base sm:text-xl font-japanese font-black tracking-wide text-amber-300">
-                        {{ seg.hint.japanese }}
-                      </span>
-                      <span v-if="seg.hint.romaji || (seg.hint.kana !== seg.hint.japanese)" class="text-[11px] sm:text-xs text-slate-300 font-sans font-medium">
-                        {{ seg.hint.romaji || seg.hint.kana }}
-                      </span>
+                  <button
+                    type="button"
+                    @click.stop="toggleHint(idx)"
+                    :class="[
+                      'inline transition-all font-inherit text-inherit pb-0.5 cursor-pointer rounded-lg px-1 -mx-0.5 border-b-2 border-dashed align-baseline',
+                      activeHintIndex === idx
+                        ? 'text-indigo-600 dark:text-torii border-indigo-600 dark:border-torii bg-indigo-50/80 dark:bg-indigo-950/70 shadow-xs'
+                        : 'border-indigo-300/80 dark:border-indigo-600/70 hover:text-indigo-600 dark:hover:text-torii hover:border-indigo-500 hover:bg-slate-100/60 dark:hover:bg-slate-800/60'
+                    ]"
+                    :title="`Klik untuk melihat petunjuk terjemahan: ${seg.text}`"
+                  >
+                    {{ seg.text }}
+                  </button>
+
+                  <!-- Popover / Toast di Atas Kata -->
+                  <transition name="hint-pop">
+                    <div 
+                      v-if="activeHintIndex === idx"
+                      class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 sm:mb-2.5 z-50 pointer-events-auto"
+                      @click.stop
+                    >
+                      <div class="bg-slate-900/95 dark:bg-slate-800/95 text-white backdrop-blur-md rounded-2xl px-3.5 py-2 shadow-2xl border border-slate-700/80 flex items-center gap-2.5 whitespace-nowrap">
+                        <div class="flex flex-col items-center">
+                          <span class="text-base sm:text-xl font-japanese font-black tracking-wide text-amber-300">
+                            {{ seg.hint.japanese }}
+                          </span>
+                          <span v-if="seg.hint.romaji || (seg.hint.kana !== seg.hint.japanese)" class="text-[11px] sm:text-xs text-slate-300 font-sans font-medium">
+                            {{ seg.hint.romaji || seg.hint.kana }}
+                          </span>
+                        </div>
+                        <!-- Audio speaker button mini -->
+                        <SpeakerButton :text="seg.hint.japanese" size="sm" class="shrink-0" />
+                      </div>
+                      <!-- Arrow tip pointing down to word -->
+                      <div class="w-0 h-0 border-x-5 border-x-transparent border-t-5 border-t-slate-900/95 dark:border-t-slate-800/95 mx-auto"></div>
                     </div>
-                    <!-- Audio speaker button mini -->
-                    <SpeakerButton :text="seg.hint.japanese" size="sm" class="shrink-0" />
-                  </div>
-                  <!-- Arrow tip pointing down to word -->
-                  <div class="w-0 h-0 border-x-5 border-x-transparent border-t-5 border-t-slate-900/95 dark:border-t-slate-800/95 mx-auto"></div>
-                </div>
-              </transition>
-            </span>
+                  </transition>
+                </span>
 
-            <!-- Segmen Teks Biasa -->
-            <span v-else>{{ seg.text }}</span>
-          </template>
-        </h2>
+                <!-- Segmen Teks Biasa -->
+                <span v-else>{{ seg.text }}</span>
+              </template>
+            </h2>
+          </transition>
+        </div>
       </div>
 
-      <!-- Penanda Jawaban Benar (Banner Sukses Eksplisit) -->
-      <transition name="toast-pop">
-        <div 
-          v-if="question.is_correct" 
-          class="mt-2.5 sm:mt-4 flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl bg-emerald-500 text-white font-black text-xs sm:text-base shadow-md sm:shadow-lg shadow-emerald-500/25 border border-emerald-400/60"
-        >
-          <CheckCircle2 class="w-4 h-4 sm:w-6 sm:h-6 shrink-0" />
-          <span>Jawaban Anda Benar! (正解)</span>
-        </div>
-      </transition>
 
-      <!-- Audio playback banner & Answer text -->
+
+      <!-- Answer Morphing Container dengan Animasi Memanjang / Memendek & Efek Blur (Sama Persis dengan Soal) -->
       <div 
-        v-if="canShowAudio" 
-        class="mt-3.5 sm:mt-6 flex flex-col items-center justify-center gap-2.5 sm:gap-4 px-1 sm:px-3 max-w-4xl w-full animate-fadeIn"
+        class="answer-morph-wrapper relative mx-auto flex items-center justify-center max-w-4xl w-full"
+        :style="answerContainerHeightStyle"
       >
-        <!-- Jika toleransi 1 kata: Highlight huruf benar (biru) vs salah (hitam tanpa outline) -->
+        <!-- Dynamic Ambient Blur saat transisi pergantian/muncul/hilang jawaban (Menyatu mulus dengan background) -->
         <div 
-          v-if="question.is_tolerance && answerDiffSegments.length > 0" 
-          class="flex flex-col items-center gap-1 mb-1 text-center"
+          v-if="isAnswerMorphing" 
+          class="morph-backdrop-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-100/60 dark:bg-slate-900/50 backdrop-blur-xl pointer-events-none z-0"
+          :style="answerBlurPillStyle"
+        ></div>
+
+        <transition 
+          name="answer-blur-morph" 
+          mode="out-in"
+          @before-leave="onAnswerBeforeLeave"
+          @leave="onAnswerLeave"
+          @after-leave="onAnswerAfterLeave"
+          @before-enter="onAnswerBeforeEnter"
+          @enter="onAnswerEnter"
+          @after-enter="onAnswerAfterEnter"
         >
-          <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">Jawaban Anda:</span>
-          <div class="text-xl sm:text-3xl md:text-4xl font-japanese font-black tracking-wide leading-relaxed break-words">
-            <span 
-              v-for="(seg, idx) in answerDiffSegments" 
-              :key="idx"
-              :class="seg.isCorrect ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100'"
-            >{{ seg.text }}</span>
+          <!-- ELEMEN JAWABAN (Muncul jika soal sudah benar atau kunci terbuka) -->
+          <div
+            v-if="hasVisibleAnswer"
+            :key="answerKey"
+            class="answer-content-inner relative z-10 flex flex-col items-center justify-center px-1 sm:px-3 max-w-4xl w-full"
+          >
+            <!-- Konten Jawaban Terjawab Benar -->
+            <div 
+              v-if="question.is_correct || !revealedAnswer"
+              class="flex items-center justify-center gap-2.5 sm:gap-4 w-full"
+            >
+              <SpeakerButton :text="displayedSpeakableText" size="md" class="shrink-0" />
+              <span class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center sm:text-left">
+                <FuriganaText 
+                  :text="displayedSpeakableText" 
+                  :diff-user-answer="question.is_tolerance ? (question.user_answer || lastAnswerGiven || '') : ''"
+                />
+              </span>
+            </div>
+
+            <!-- Konten Kunci Jawaban Terbuka -->
+            <div 
+              v-else
+              class="flex flex-col items-center justify-center gap-1.5 sm:gap-2 w-full"
+            >
+              <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400">
+                <Eye class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>Kunci Jawaban Terbuka:</span>
+                <SpeakerButton :text="revealedAnswer || ''" size="sm" />
+              </div>
+              <div class="text-2xl sm:text-4xl md:text-5xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center">
+                <FuriganaText :text="revealedAnswer || ''" />
+              </div>
+              <div class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500 mt-0.5">
+                Pelajari struktur kalimat di atas, lalu lanjutkan ke soal berikutnya.
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div class="flex items-center justify-center gap-2.5 sm:gap-4 w-full">
-          <SpeakerButton :text="speakableText" size="md" class="shrink-0" />
-          <span class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center sm:text-left">
-            <FuriganaText :text="speakableText" />
-          </span>
-        </div>
-      </div>
-
-      <!-- Revealed Answer -->
-      <div 
-        v-else-if="revealedAnswer" 
-        class="mt-3.5 sm:mt-6 flex flex-col items-center justify-center gap-1.5 sm:gap-2 px-1 sm:px-3 max-w-4xl w-full animate-fadeIn"
-      >
-        <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400">
-          <Eye class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-          <span>Kunci Jawaban Terbuka:</span>
-          <SpeakerButton :text="revealedAnswer" size="sm" />
-        </div>
-        <div class="text-2xl sm:text-4xl md:text-5xl font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-relaxed break-words text-center">
-          <FuriganaText :text="revealedAnswer" />
-        </div>
-        <div class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500 mt-0.5">
-          Pelajari struktur kalimat di atas, lalu lanjutkan ke soal berikutnya.
-        </div>
+        </transition>
       </div>
     </div>
 
     <!-- Bottom Input & Controls Container - Hidden in Review Mode -->
     <div 
       v-if="!isReviewing"
-      class="w-full max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto flex flex-col items-center gap-3 transition-all duration-300 relative z-20 pb-2"
+      class="w-full max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto flex flex-col items-center justify-center min-h-[144px] gap-3 transition-all duration-300 relative z-20 pb-2"
     >
-      <!-- STATE 1: JIKA SOAL SUDAH TERJAWAB BENAR (question.is_correct) -->
-      <div v-if="question.is_correct" class="w-full flex justify-center animate-fadeIn">
-        <button
-          type="button"
-          @click="handleAdvance"
-          class="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl font-black text-sm sm:text-base transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none shadow-lg bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 ring-4 ring-emerald-400/40"
-        >
-          <span>{{ isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Lanjut ke Soal Berikutnya' }}</span>
-          <ChevronRight class="w-5 h-5" />
-        </button>
-      </div>
+      <transition name="action-swap" mode="out-in">
+        <!-- STATE 1: JIKA SOAL SUDAH TERJAWAB BENAR (question.is_correct) -->
+        <div v-if="question.is_correct" key="btn-advance" class="w-full flex justify-center">
+          <button
+            type="button"
+            @click="handleAdvance"
+            class="h-12 sm:h-14 px-8 sm:px-12 rounded-2xl font-black text-sm sm:text-base transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none shadow-lg bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 ring-4 ring-emerald-400/40"
+          >
+            <span>{{ isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Lanjut ke Soal Berikutnya' }}</span>
+            <ChevronRight class="w-5 h-5" />
+          </button>
+        </div>
 
-      <!-- STATE 2: LATIHAN BERJALAN (SOAL BELUM BENAR) -->
-      <div v-else class="w-full flex flex-col items-center gap-2.5 sm:gap-3 transition-all duration-300">
+        <!-- STATE 2: LATIHAN BERJALAN (SOAL BELUM BENAR) -->
+        <div v-else key="input-controls" class="w-full flex flex-col items-center gap-2.5 sm:gap-3 transition-all duration-300">
         
         <!-- ================= SLOT ATAS ================= -->
         <!-- Mode Voice: Tombol icon keyboard kecil (berada di atas tombol mic) -->
@@ -774,10 +1028,10 @@ onUnmounted(() => {
             </button>
           </div>
         </div>
-
       </div>
-    </div>
+    </transition>
   </div>
+</div>
 </template>
 
 <style scoped>
@@ -818,6 +1072,16 @@ onUnmounted(() => {
   transform: translateY(8px) scale(0.95);
 }
 
+.toast-pop-top-enter-active,
+.toast-pop-top-leave-active {
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast-pop-top-enter-from,
+.toast-pop-top-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -8px) scale(0.92);
+}
+
 .hint-pop-enter-active,
 .hint-pop-leave-active {
   transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -832,5 +1096,95 @@ input::placeholder {
   font-weight: 400 !important;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   letter-spacing: normal !important;
+}
+
+/* Efek Blur & Unblur saat berganti soal */
+.question-blur-leave {
+  filter: blur(14px);
+  opacity: 0.15;
+  transform: scale(0.98);
+  transition: filter 0.15s ease-in, opacity 0.15s ease-in, transform 0.15s ease-in;
+}
+
+.question-blur-enter-prep {
+  filter: blur(14px);
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+.question-blur-enter-active {
+  filter: blur(0px);
+  opacity: 1;
+  transform: scale(1);
+  transition: filter 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s ease-out, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Morph container styling */
+.question-morph-wrapper {
+  transform-origin: center center;
+  will-change: min-height;
+}
+
+.morph-backdrop-glow {
+  transform-origin: center center;
+  will-change: width, height, opacity;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0) 80%);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 35%, rgba(0, 0, 0, 0) 80%);
+}
+
+/* Answer blur animation (Sama persis dengan soal) */
+.answer-blur-leave {
+  filter: blur(14px);
+  opacity: 0;
+  transform: scale(0.97);
+  transition: filter 0.15s ease-in, opacity 0.15s ease-in, transform 0.15s ease-in;
+}
+
+.answer-blur-leave-collapse {
+  filter: blur(16px);
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+  transition: filter 0.22s ease-in, opacity 0.22s ease-in, transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.answer-blur-enter-prep {
+  filter: blur(16px);
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.answer-blur-enter-active {
+  filter: blur(0px);
+  opacity: 1;
+  transform: scale(1);
+  transition: 
+    filter 0.36s cubic-bezier(0.16, 1, 0.3, 1), 
+    opacity 0.3s ease-out, 
+    transform 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Answer morph container styling */
+.answer-morph-wrapper {
+  transform-origin: center top;
+  will-change: max-height, margin-top;
+}
+
+/* Transisi Swap Tombol Lanjutkan & Input Controls */
+.action-swap-enter-active {
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.action-swap-leave-active {
+  transition: opacity 0.15s ease-in, transform 0.15s ease-in;
+}
+
+.action-swap-enter-from {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+}
+
+.action-swap-leave-to {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
 }
 </style>

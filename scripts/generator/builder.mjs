@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getAllowedTagsForLesson } from '../grammar/tags.mjs';
-import { detectTags } from '../grammar/detect.mjs';
+import { detectTags, sanitizeTextForGrammar } from '../grammar/detect.mjs';
 import { resolvePool } from './pools.mjs';
 import { checkItemGating, VOCAB_INDEX } from './vocab.mjs';
 import { buildJpAnswers } from './utils.mjs';
@@ -250,7 +250,8 @@ export function generateAllCombinationsForTemplate(tpl, tokenizer, lessonNumber,
     }
 
     // 6. KUROMOJI GRAMMAR ASSERTION
-    const tokens = tokenizer.tokenize(jpText);
+    const sanitizedJp = sanitizeTextForGrammar(jpText);
+    const tokens = tokenizer.tokenize(sanitizedJp);
     const { tags, unknown } = detectTags(tokens);
 
     // Assertion A: must_tags ⊆ tags

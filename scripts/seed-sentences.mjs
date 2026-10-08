@@ -11,7 +11,7 @@ if (typeof globalThis.WebSocket === 'undefined') {
 
 import { createClient } from '@supabase/supabase-js';
 import { LESSONS, getAllowedTagsForLesson, getLessonIntroduces } from './grammar/tags.mjs';
-import { detectTags } from './grammar/detect.mjs';
+import { detectTags, sanitizeTextForGrammar } from './grammar/detect.mjs';
 import { generateQuestionsForLesson } from './template-generator.mjs';
 
 
@@ -248,7 +248,7 @@ async function main() {
       }
 
       // Tokenisasi dengan kuromoji
-      const tokens = tokenizer.tokenize(mainJp);
+      const tokens = tokenizer.tokenize(sanitizeTextForGrammar(mainJp));
       const { tags, unknown } = detectTags(tokens);
 
       if (unknown.length > 0) {
@@ -415,12 +415,25 @@ async function main() {
     let successCount = 0;
     for (let i = 0; i < questionsToUpsert.length; i += chunkSize) {
       const chunk = questionsToUpsert.slice(i, i + chunkSize);
-      const { error } = await supabase
-        .from('sentence_questions')
-        .upsert(chunk, { onConflict: 'source,source_ref' });
+      let error = null;
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const res = await supabase
+            .from('sentence_questions')
+            .upsert(chunk, { onConflict: 'source,source_ref' });
+          error = res.error;
+          if (!error) break;
+        } catch (e) {
+          error = e;
+        }
+        if (attempt < 3) {
+          console.warn(`  ⚠️ Retry batch ${i + 1}-${i + chunk.length} (percobaan ke-${attempt + 1})...`);
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
 
       if (error) {
-        console.error(`❌ Gagal upsert batch ${i + 1}-${i + chunk.length}:`, error.message);
+        console.error(`❌ Gagal upsert batch ${i + 1}-${i + chunk.length}:`, error.message || error);
         break;
       }
       successCount += chunk.length;

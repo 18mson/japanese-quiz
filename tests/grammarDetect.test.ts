@@ -105,5 +105,56 @@ test('Grammar Detector Suite', async (t) => {
     assert.ok(resTime.tags.has('PARTICLE_NI_TIME'), 'Harus mendeteksi PARTICLE_NI_TIME pada waktu');
     assert.ok(!resTime.tags.has('PARTICLE_NI_RECIPIENT'), 'TIDAK boleh mendeteksi PARTICLE_NI_RECIPIENT pada waktu');
   });
+
+  await t.test('7. Unit Test Spesifik: Keberadaan います (ARIMASU_IMASU & LOCATION_NI_EXIST) vs Progresif', () => {
+    // あそこに佐藤さんがいます -> harus lolos ARIMASU_IMASU & LOCATION_NI_EXIST
+    const resSato = detectTags(tokenizer.tokenize('あそこに佐藤さんがいます') as any);
+    assert.ok(resSato.tags.has('ARIMASU_IMASU'), 'あそこに佐藤さんがいます harus memiliki ARIMASU_IMASU');
+    assert.ok(resSato.tags.has('LOCATION_NI_EXIST'), 'あそこに佐藤さんがいます harus memiliki LOCATION_NI_EXIST');
+
+    // 教室に先生がいます -> harus lolos ARIMASU_IMASU & LOCATION_NI_EXIST
+    const resSensei = detectTags(tokenizer.tokenize('教室に先生がいます') as any);
+    assert.ok(resSensei.tags.has('ARIMASU_IMASU'), '教室に先生がいます harus memiliki ARIMASU_IMASU');
+    assert.ok(resSensei.tags.has('LOCATION_NI_EXIST'), '教室に先生がいます harus memiliki LOCATION_NI_EXIST');
+
+    // 猫は公園にいます -> harus lolos ARIMASU_IMASU & LOCATION_NI_EXIST
+    const resNeko = detectTags(tokenizer.tokenize('猫は公園にいます') as any);
+    assert.ok(resNeko.tags.has('ARIMASU_IMASU'), '猫は公園にいます harus memiliki ARIMASU_IMASU');
+    assert.ok(resNeko.tags.has('LOCATION_NI_EXIST'), '猫は公園にいます harus memiliki LOCATION_NI_EXIST');
+
+    // 勉強しています -> TIDAK boleh ARIMASU_IMASU (ini bentuk progresif bab 14)
+    const resBenkyou = detectTags(tokenizer.tokenize('勉強しています') as any);
+    assert.ok(!resBenkyou.tags.has('ARIMASU_IMASU'), '勉強しています TIDAK boleh memiliki ARIMASU_IMASU');
+    assert.ok(resBenkyou.tags.has('TE_IMASU_PROGRESSIVE'), '勉強しています harus memiliki TE_IMASU_PROGRESSIVE');
+  });
+
+  await t.test('8. Unit Test Spesifik: Negatif Lampau N/Na-adj dan Adj-i', () => {
+    // きのうは雨じゃありませんでした -> PAST_NOUN_NA (+ NEG_JA_ARIMASEN), TANPA VERB_MASENDESHITA
+    const resAme = detectTags(tokenizer.tokenize('きのうは雨じゃありませんでした') as any);
+    assert.ok(resAme.tags.has('PAST_NOUN_NA'), 'きのうは雨じゃありませんでした harus memiliki PAST_NOUN_NA');
+    assert.ok(resAme.tags.has('NEG_JA_ARIMASEN'), 'きのうは雨じゃありませんでした harus memiliki NEG_JA_ARIMASEN');
+    assert.ok(!resAme.tags.has('VERB_MASENDESHITA'), 'きのうは雨じゃありませんでした TIDAK boleh memiliki VERB_MASENDESHITA');
+    assert.ok(!resAme.tags.has('ARIMASU_IMASU'), 'きのうは雨じゃありませんでした TIDAK boleh memiliki ARIMASU_IMASU');
+
+    // 先週は楽しくなかったです -> PAST_ADJ_I (+ ADJ_NEG), TANPA COPULA_DESU
+    const resTanoshii = detectTags(tokenizer.tokenize('先週は楽しくなかったです') as any);
+    assert.ok(resTanoshii.tags.has('PAST_ADJ_I'), '先週は楽しくなかったです harus memiliki PAST_ADJ_I');
+    assert.ok(resTanoshii.tags.has('ADJ_NEG'), '先週は楽しくなかったです harus memiliki ADJ_NEG');
+    assert.ok(!resTanoshii.tags.has('COPULA_DESU'), '先週は楽しくなかったです TIDAK boleh memiliki COPULA_DESU');
+
+    // Varian ku arimasendeshita
+    const resTanoshiiAlt = detectTags(tokenizer.tokenize('先週は楽しくありませんでした') as any);
+    assert.ok(resTanoshiiAlt.tags.has('PAST_ADJ_I'), '先週は楽しくありませんでした harus memiliki PAST_ADJ_I');
+    assert.ok(resTanoshiiAlt.tags.has('ADJ_NEG'), '先週は楽しくありませんでした harus memiliki ADJ_NEG');
+    assert.ok(!resTanoshiiAlt.tags.has('COPULA_DESU'), '先週は楽しくありませんでした TIDAK boleh memiliki COPULA_DESU');
+    assert.ok(!resTanoshiiAlt.tags.has('VERB_MASENDESHITA'), '先週は楽しくありませんでした TIDAK boleh memiliki VERB_MASENDESHITA');
+  });
+
+  await t.test('9. Unit Test Spesifik: Kata Kana-Saja (かたかな) Tidak Boleh Menghasilkan QUESTION_KA', () => {
+    const res = detectTags(tokenizer.tokenize('ミラーさんはかたかながよくわかります') as any);
+    assert.ok(!res.tags.has('QUESTION_KA'), 'かたかな TIDAK boleh menghasilkan QUESTION_KA');
+    assert.ok(res.tags.has('PARTICLE_GA_OBJ'));
+    assert.ok(res.tags.has('ADV_AMOUNT'));
+  });
 });
 

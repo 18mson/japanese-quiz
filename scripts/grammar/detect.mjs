@@ -15,6 +15,20 @@ import { TAGS } from './tags.mjs';
  */
 
 /**
+ * Lindungi kata kana-saja (かたかな, ひらがな, ローマじ) sebelum tokenisasi
+ * agar Kuromoji tidak memecahnya menjadi partikel palsu (seperti か, た, か, な).
+ * @param {string} text
+ * @returns {string}
+ */
+export function sanitizeTextForGrammar(text) {
+  if (!text) return text;
+  return text
+    .replace(/かたかな/g, 'カタカナ')
+    .replace(/ひらがな/g, 'ヒラガナ')
+    .replace(/ローマじ/g, 'ローマ字');
+}
+
+/**
  * Deteksi grammar tags dan unknown constructs dari token Kuromoji.
  * Aturan konservatif: setiap struktur yang tidak dikenali masuk ke `unknown`.
  * 
@@ -107,6 +121,8 @@ export function detectTags(tokens) {
     }
   }
 
+
+
   // QUESTION_KA
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
@@ -117,6 +133,13 @@ export function detectTags(tokens) {
         if (prev2 && prev2.surface_form === 'ませ') {
           continue; // VERB_MASENKA
         }
+      }
+      // Lindungi serpihan かたかな (か + た + か + な)
+      if (tokens[i + 1]?.surface_form === 'た' && tokens[i + 2]?.surface_form === 'か' && tokens[i + 3]?.surface_form === 'な') {
+        continue;
+      }
+      if (tokens[i - 2]?.surface_form === 'か' && tokens[i - 1]?.surface_form === 'た' && tokens[i + 1]?.surface_form === 'な') {
+        continue;
       }
       tags.add('QUESTION_KA');
     }
@@ -136,7 +159,15 @@ export function detectTags(tokens) {
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
     if (t.basic_form === 'です' && t.surface_form === 'です') {
-      tags.add('COPULA_DESU');
+      const prev = tokens[i - 1];
+      // Adj-i + くなかったです / くありませんでした => TANPA COPULA_DESU
+      const isAdjNegDesu = prev && (
+        (prev.surface_form === 'た' && tokens[i - 2]?.surface_form === 'なかっ') ||
+        prev.surface_form === 'ない'
+      );
+      if (!isAdjNegDesu) {
+        tags.add('COPULA_DESU');
+      }
     }
   }
 
@@ -243,13 +274,22 @@ export function detectTags(tokens) {
     // ません / ませんでした / ませんか
     if (t.surface_form === 'ませ' && tokens[i + 1]?.surface_form === 'ん') {
       const prev = tokens[i - 1];
-      if (prev && prev.pos === '動詞') {
-        if (tokens[i + 2]?.surface_form === 'か') {
-          tags.add('VERB_MASENKA');
-        } else if (tokens[i + 2]?.surface_form === 'でし' && tokens[i + 3]?.surface_form === 'た') {
-          tags.add('VERB_MASENDESHITA');
-        } else {
-          tags.add('VERB_MASEN');
+      if (prev && (prev.pos === '動詞' || prev.pos === '助動詞')) {
+        const prev2 = tokens[i - 2];
+        const isCopulaOrAdjNeg = prev.basic_form === 'ある' && prev2 && (
+          prev2.surface_form === 'じゃ' ||
+          prev2.surface_form === 'では' ||
+          prev2.surface_form.endsWith('く') ||
+          prev2.pos === '形容詞'
+        );
+        if (!isCopulaOrAdjNeg) {
+          if (tokens[i + 2]?.surface_form === 'か') {
+            tags.add('VERB_MASENKA');
+          } else if (tokens[i + 2]?.surface_form === 'でし' && tokens[i + 3]?.surface_form === 'た') {
+            tags.add('VERB_MASENDESHITA');
+          } else {
+            tags.add('VERB_MASEN');
+          }
         }
       }
     }
@@ -437,6 +477,9 @@ export function detectTags(tokens) {
       if (t.conjugated_form && t.conjugated_form.includes('連用タ接続') || t.surface_form.endsWith('かっ')) {
         tags.add('PAST_ADJ_I');
       }
+      if (tokens[i + 1]?.surface_form === 'なかっ' || (tokens[i + 1]?.surface_form === 'あり' && tokens[i + 2]?.surface_form === 'ませ')) {
+        tags.add('PAST_ADJ_I');
+      }
     }
     const naAdjs = ['暇', 'きれい', '静か', '有名', '親切', '元気', '便利', 'にぎやか', 'ハンサム'];
     if (t.pos_detail_1 === '形容動詞語幹' || naAdjs.includes(t.surface_form)) {
@@ -448,7 +491,7 @@ export function detectTags(tokens) {
     }
   }
 
-  if (fullText.includes('くない') || fullText.includes('くありませ') || (tags.has('ADJ_NA') && (fullText.includes('じゃありませ') || fullText.includes('ではありませ')))) {
+  if (fullText.includes('くない') || fullText.includes('くありませ') || fullText.includes('くなかった') || (tags.has('ADJ_NA') && (fullText.includes('じゃありませ') || fullText.includes('ではありませ')))) {
     tags.add('ADJ_NEG');
   }
   if (hasSurface('とても') || hasSurface('あまり')) {
@@ -492,10 +535,28 @@ export function detectTags(tokens) {
   // --- LESSON 10 ---
   // ARIMASU_IMASU & LOCATION_NI_EXIST & POSITION_NOUN & PARTICLE_YA
   let hasExistVerb = false;
-  for (const t of tokens) {
-    if ((t.basic_form === 'ある' || (t.basic_form === 'いる' && t.surface_form !== 'い')) && (t.pos === '動詞' || t.pos_detail_1 === '自立')) {
-      tags.add('ARIMASU_IMASU');
-      hasExistVerb = true;
+  for (let i = 0; i < len; i++) {
+    const t = tokens[i];
+    if (t.basic_form === 'ある' && (t.pos === '動詞' || t.pos === '助動詞' || t.pos_detail_1 === '自立')) {
+      const prev = tokens[i - 1];
+      const isPartNeg = prev && (
+        prev.surface_form === 'じゃ' ||
+        prev.surface_form === 'では' ||
+        prev.surface_form.endsWith('く') ||
+        prev.pos === '形容詞'
+      );
+      if (!isPartNeg) {
+        tags.add('ARIMASU_IMASU');
+        hasExistVerb = true;
+      }
+    } else if (t.basic_form === 'いる' && (t.pos === '動詞' || t.pos_detail_1 === '自立')) {
+      // kata kerja いる (います/いません/いました/いますか) yang BUKAN mengikuti bentuk て/で (itu progresif, bab 14)
+      const prev = tokens[i - 1];
+      const isTeOrDe = prev && (prev.surface_form === 'て' || prev.surface_form === 'で') && prev.pos === '助詞';
+      if (!isTeOrDe) {
+        tags.add('ARIMASU_IMASU');
+        hasExistVerb = true;
+      }
     }
   }
   if (hasExistVerb) {
@@ -546,7 +607,16 @@ export function detectTags(tokens) {
   if (hasSurface('だけ')) tags.add('DAKE_ONLY');
 
   // --- LESSON 12 ---
-  // PAST_NOUN_NA: N / na-adj でした / だった
+  // PAST_NOUN_NA: N / na-adj でした / だった / じゃありませんでした / ではありませんでした
+  if (
+    fullText.includes('じゃありませんでした') ||
+    fullText.includes('ではありませんでした') ||
+    fullText.includes('じゃ ありませんでした') ||
+    fullText.includes('では ありませんでした')
+  ) {
+    tags.add('PAST_NOUN_NA');
+    tags.add('NEG_JA_ARIMASEN');
+  }
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
     if (t.surface_form === 'でし' && tokens[i + 1]?.surface_form === 'た') {
