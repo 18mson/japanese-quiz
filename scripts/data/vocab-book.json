@@ -3828,6 +3828,111 @@
       "alt": [
         "残念です"
       ]
+    },
+    {
+      "lesson": 10,
+      "jp": "フィルム",
+      "kana": "フィルム",
+      "id": "film (kamera)",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "東京ディズニーランド",
+      "kana": "とうきょうディズニーランド",
+      "id": "Tokyo Disneyland",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "一番下",
+      "kana": "いちばんした",
+      "id": "paling bawah",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "玄関",
+      "kana": "げんかん",
+      "id": "pintu masuk",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "風呂場",
+      "kana": "ふろば",
+      "id": "kamar mandi",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "洗面所",
+      "kana": "せんめんじょ",
+      "id": "tempat cuci tangan",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "台所",
+      "kana": "だいどころ",
+      "id": "dapur",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "居間",
+      "kana": "いま",
+      "id": "ruang tamu",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "寝室",
+      "kana": "しんしつ",
+      "id": "kamar tidur",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "廊下",
+      "kana": "ろうか",
+      "id": "koridor",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "どうも すみません",
+      "kana": "どうも すみません",
+      "id": "Terima kasih banyak.",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "ナンプラー",
+      "kana": "ナンプラー",
+      "id": "kecap ikan",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "ベランダ",
+      "kana": "ベランダ",
+      "id": "teras",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "～や ～など",
+      "kana": "～や ～など",
+      "id": "～ dan ～ dan lain-lain",
+      "alt": []
+    },
+    {
+      "lesson": 10,
+      "jp": "アジアストア",
+      "kana": "アジアストア",
+      "id": "pasar swalayan fiksi (Toko Asia)",
+      "alt": []
     }
   ]
 }
