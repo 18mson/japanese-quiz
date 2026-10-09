@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import { supabase } from '../lib/supabaseClient';
 import { useAuthStore } from './authStore';
 import { getTodayWIB, getNextResetWIB } from '../utils/dailyTime';
+import { checkAnswerWithDetails } from '../utils/answerChecker';
 
 export interface DailySessionData {
   id: string;
@@ -20,6 +21,7 @@ export interface DailyQuestionData {
   attempts: number;
   revealed?: boolean;
   correct_answer?: string;
+  jp_answers?: string[];
   is_tolerance?: boolean;
   user_answer?: string;
   matched_target?: string;
@@ -193,7 +195,8 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
           is_correct: q.is_correct ?? false,
           attempts: q.attempts ?? 0,
           revealed: q.revealed ?? false,
-          correct_answer: q.correct_answer
+          correct_answer: q.correct_answer,
+          jp_answers: q.jp_answers || (q.correct_answer ? [q.correct_answer] : [])
         };
       });
 
@@ -224,7 +227,9 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
   }
 
   /**
-   * Mengirim jawaban untuk soal yang sedang aktif ke Edge Function `submit-answer`.
+   * Mengirim jawaban untuk soal yang sedang aktif:
+   * 1. Evaluasi instan di lokal (0ms) untuk responsivitas suara & UX maksimal.
+   * 2. Background sync ke Edge Function `submit-answer` secara asynchronous.
    */
   async function submitCurrentAnswer(
     submittedText: string,
@@ -238,6 +243,70 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
 
     if (submitting.value) return null;
 
+    const acceptedAnswers = q.jp_answers || (q.correct_answer ? [q.correct_answer] : []);
+
+    // Jika memiliki kunci jawaban lokal, lakukan evaluasi instan (0ms)
+    if (acceptedAnswers.length > 0) {
+      const localResult = checkAnswerWithDetails(submittedText, acceptedAnswers, inputMethod);
+      const isMatch = localResult.isMatch;
+      const isTolerance = localResult.isTolerance;
+      const matchedTarget = localResult.matchedTarget || q.correct_answer;
+
+      q.attempts++;
+      if (isMatch) {
+        q.is_correct = true;
+        q.is_tolerance = isTolerance;
+        q.user_answer = submittedText;
+        q.matched_target = matchedTarget;
+        if (q.correct_answer) {
+          revealedAnswers.value[q.daily_question_id] = q.correct_answer;
+        }
+      } else if (q.attempts >= 3) {
+        q.revealed = true;
+        if (q.correct_answer) {
+          revealedAnswers.value[q.daily_question_id] = q.correct_answer;
+        }
+      }
+
+      // Sinkronisasi data ke Supabase di background (non-blocking)
+      supabase.functions.invoke('submit-answer', {
+        body: {
+          daily_question_id: q.daily_question_id,
+          submitted_text: submittedText,
+          answer_text: submittedText,
+          input_method: inputMethod
+        }
+      }).then(({ data, error: syncErr }) => {
+        if (!syncErr && data) {
+          if (data.resets_at) resetsAt.value = data.resets_at;
+          if (data.correct_answer && !q.correct_answer) {
+            q.correct_answer = data.correct_answer;
+            revealedAnswers.value[q.daily_question_id] = data.correct_answer;
+          }
+          if (data.reveal_answer && !q.revealed) {
+            q.revealed = true;
+            revealedAnswers.value[q.daily_question_id] = data.reveal_answer;
+          }
+        }
+      }).catch(err => {
+        console.warn('Background sync submit-answer failed:', err);
+      });
+
+      return {
+        correct: isMatch,
+        attempts: q.attempts,
+        session_completed: false,
+        quota_exhausted: false,
+        resets_at: resetsAt.value || undefined,
+        reveal_answer: q.revealed ? (q.correct_answer || revealedAnswers.value[q.daily_question_id]) : undefined,
+        correct_answer: q.correct_answer,
+        is_tolerance: isTolerance,
+        user_answer: submittedText,
+        matched_target: matchedTarget
+      };
+    }
+
+    // Fallback jika tidak ada kunci lokal (fetch ke backend)
     submitting.value = true;
     error.value = null;
 
@@ -253,12 +322,6 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
 
       if (fnError || !data) {
         let msg = fnError?.message || data?.error || 'Gagal memeriksa jawaban.';
-        if (fnError && (fnError as any).context) {
-          try {
-            const errJson = await (fnError as any).context.json();
-            if (errJson?.error) msg = errJson.error;
-          } catch {}
-        }
         throw new Error(msg);
       }
 
@@ -266,7 +329,7 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
         correct: !!data.correct,
         attempts: data.attempts ?? (q.attempts + 1),
         session_completed: !!data.session_completed,
-        quota_exhausted: !!data.quota_exhausted,
+        quota_exhausted: false, // Ditahan agar tidak premature redirect di soal terakhir
         resets_at: data.resets_at,
         reveal_answer: data.reveal_answer,
         is_tolerance: !!data.is_tolerance,
@@ -274,7 +337,6 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
         matched_target: data.matched_target
       };
 
-      // Update data soal lokal
       q.attempts = res.attempts;
       if (res.correct) {
         q.is_correct = true;
@@ -295,13 +357,6 @@ export const useDailyPracticeStore = defineStore('dailyPractice', () => {
 
       if (res.resets_at) {
         resetsAt.value = res.resets_at;
-      }
-
-      if (res.session_completed || res.quota_exhausted) {
-        quotaExhausted.value = true;
-        if (session.value) {
-          session.value.status = 'completed';
-        }
       }
 
       return res;

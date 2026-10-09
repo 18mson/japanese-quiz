@@ -344,14 +344,12 @@ Deno.serve(async (req: Request) => {
           daily_question_id: q.id,
           chapter_id: q.chapter_id,
           id_text: q.sentence_questions?.id_text || '',
+          correct_answer: q.sentence_questions?.jp_text || '',
+          jp_answers: q.sentence_questions?.jp_answers || (q.sentence_questions?.jp_text ? [q.sentence_questions.jp_text] : []),
           is_correct: q.is_correct,
           attempts: q.attempts,
           revealed: q.revealed || false
         };
-        // Jika sudah pernah dijawab benar atau sudah di-reveal, sertakan jawaban resminya
-        if (q.is_correct || q.revealed || q.attempts >= MAX_ATTEMPTS_BEFORE_REVEAL) {
-          item.correct_answer = q.sentence_questions?.jp_text || '';
-        }
         return item;
       });
 
@@ -476,17 +474,22 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    // Bentuk map id_text dari chosenQuestionsPerChapter
-    const idTextMap = new Map<string, string>();
-    chosenQuestionsPerChapter.forEach(q => idTextMap.set(q.id, q.id_text));
+    // Bentuk map detail dari chosenQuestionsPerChapter
+    const questionDetailMap = new Map<string, any>();
+    chosenQuestionsPerChapter.forEach(q => questionDetailMap.set(q.id, q));
 
-    const finalQuestions = insertedQuestions.map(iq => ({
-      daily_question_id: iq.id,
-      chapter_id: iq.chapter_id,
-      id_text: idTextMap.get(iq.question_id) || '',
-      is_correct: iq.is_correct,
-      attempts: iq.attempts
-    }));
+    const finalQuestions = insertedQuestions.map(iq => {
+      const qDetail = questionDetailMap.get(iq.question_id);
+      return {
+        daily_question_id: iq.id,
+        chapter_id: iq.chapter_id,
+        id_text: qDetail?.id_text || '',
+        correct_answer: qDetail?.jp_text || '',
+        jp_answers: qDetail?.jp_answers || (qDetail?.jp_text ? [qDetail.jp_text] : []),
+        is_correct: iq.is_correct,
+        attempts: iq.attempts
+      };
+    });
 
     return new Response(
       JSON.stringify({

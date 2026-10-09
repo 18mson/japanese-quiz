@@ -105,7 +105,7 @@ export async function runCli() {
 
   for (const lesson of targetLessons) {
     const discardedSet = new Set();
-    const currentTarget = (lesson >= 9 && lesson <= 12) ? 250 : targetPerLesson;
+    const currentTarget = (lesson >= 9 && lesson <= 12) ? 255 : targetPerLesson;
     const result = generateQuestionsForLesson(lesson, tokenizer, currentTarget, 10, discardedSet, vocabIndex);
     allSummary.push({ lesson, target: currentTarget, result });
 

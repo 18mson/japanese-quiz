@@ -211,7 +211,7 @@
     {
       "lesson": 9,
       "title_id": "Suka, paham, bisa, dan alasan: ～が, ～から",
-      "introduces": ["PARTICLE_GA_OBJ", "ADV_AMOUNT", "KARA_REASON"],
+      "introduces": ["PARTICLE_GA_OBJ", "ADV_AMOUNT", "KARA_REASON", "ARIMASU_IMASU"],
       "introduces_extra": ["WH_DOUSHITE"],
       "book_examples": [
         "わたしはイタリア料理が好きです。",

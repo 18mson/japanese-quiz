@@ -173,6 +173,70 @@ test('Grammar Detector Suite', async (t) => {
     assert.ok(resShokuji.tags.has('MAE_NI'), '食事の前に手を洗います harus memiliki MAE_NI');
     assert.ok(!resShokuji.tags.has('POSITION_NOUN'), '食事の前に手を洗います TIDAK boleh memiliki POSITION_NOUN');
   });
+
+  await t.test('11. Unit Test Spesifik: Pembedaan ADJ_I vs Bentuk Keterangan (連用形 + 動詞)', () => {
+    // 早く帰ります -> TANPA ADJ_I
+    const resHayaku = detectTags(tokenizer.tokenize('早く帰ります') as any);
+    assert.ok(!resHayaku.tags.has('ADJ_I'), '早く帰ります TIDAK boleh memiliki ADJ_I');
+
+    // よくわかります -> TANPA ADJ_I (tetap ADV_AMOUNT)
+    const resYoku = detectTags(tokenizer.tokenize('よくわかります') as any);
+    assert.ok(!resYoku.tags.has('ADJ_I'), 'よくわかります TIDAK boleh memiliki ADJ_I');
+    assert.ok(resYoku.tags.has('ADV_AMOUNT'), 'よくわかります harus memiliki ADV_AMOUNT');
+
+    // 暑くなかったです -> ADJ_I, ADJ_NEG, PAST_ADJ_I
+    const resAtsuku = detectTags(tokenizer.tokenize('暑くなかったです') as any);
+    assert.ok(resAtsuku.tags.has('ADJ_I'), '暑くなかったです harus memiliki ADJ_I');
+    assert.ok(resAtsuku.tags.has('ADJ_NEG'), '暑くなかったです harus memiliki ADJ_NEG');
+    assert.ok(resAtsuku.tags.has('PAST_ADJ_I'), '暑くなかったです harus memiliki PAST_ADJ_I');
+
+    // 先週は楽しくありませんでした -> ADJ_I, ADJ_NEG, PAST_ADJ_I
+    const resTanoshii = detectTags(tokenizer.tokenize('先週は楽しくありませんでした') as any);
+    assert.ok(resTanoshii.tags.has('ADJ_I'), '先週は楽しくありませんでした harus memiliki ADJ_I');
+    assert.ok(resTanoshii.tags.has('ADJ_NEG'), '先週は楽しくありませんでした harus memiliki ADJ_NEG');
+    assert.ok(resTanoshii.tags.has('PAST_ADJ_I'), '先週は楽しくありませんでした harus memiliki PAST_ADJ_I');
+
+    // 富士山は高い山です -> ADJ_I, ADJ_NOUN_MOD
+    const resFuji = detectTags(tokenizer.tokenize('富士山は高い山です') as any);
+    assert.ok(resFuji.tags.has('ADJ_I'), '富士山は高い山です harus memiliki ADJ_I');
+    assert.ok(resFuji.tags.has('ADJ_NOUN_MOD'), '富士山は高い山です harus memiliki ADJ_NOUN_MOD');
+
+    // この本は面白いです -> ADJ_I
+    const resOmoshiroi = detectTags(tokenizer.tokenize('この本は面白いです') as any);
+    assert.ok(resOmoshiroi.tags.has('ADJ_I'), 'この本は面白いです harus memiliki ADJ_I');
+  });
+
+  await t.test('12. Unit Test Spesifik: Kuromoji 木の下 / 木の上 (PARTICLE_NO + POSITION_NOUN)', () => {
+    // 木の下に猫がいます -> PARTICLE_NO, POSITION_NOUN, ARIMASU_IMASU, LOCATION_NI_EXIST
+    const resKiShita = detectTags(tokenizer.tokenize('木の下に猫がいます') as any);
+    assert.ok(resKiShita.tags.has('PARTICLE_NO'), '木の下に猫がいます harus memiliki PARTICLE_NO');
+    assert.ok(resKiShita.tags.has('POSITION_NOUN'), '木の下に猫がいます harus memiliki POSITION_NOUN');
+    assert.ok(resKiShita.tags.has('ARIMASU_IMASU'), '木の下に猫がいます harus memiliki ARIMASU_IMASU');
+    assert.ok(resKiShita.tags.has('LOCATION_NI_EXIST'), '木の下に猫がいます harus memiliki LOCATION_NI_EXIST');
+
+    // 木の上に猫がいます -> PARTICLE_NO, POSITION_NOUN, ARIMASU_IMASU, LOCATION_NI_EXIST
+    const resKiUe = detectTags(tokenizer.tokenize('木の上に猫がいます') as any);
+    assert.ok(resKiUe.tags.has('PARTICLE_NO'), '木の上に猫がいます harus memiliki PARTICLE_NO');
+    assert.ok(resKiUe.tags.has('POSITION_NOUN'), '木の上に猫がいます harus memiliki POSITION_NOUN');
+    assert.ok(resKiUe.tags.has('ARIMASU_IMASU'), '木の上に猫がいます harus memiliki ARIMASU_IMASU');
+    assert.ok(resKiUe.tags.has('LOCATION_NI_EXIST'), '木の上に猫がいます harus memiliki LOCATION_NI_EXIST');
+  });
+
+  await t.test('13. Unit Test Spesifik: Lingkup Superlatif 1年で / 果物で vs PARTICLE_DE_PLACE', () => {
+    // 1年で春がいちばん好きです -> SUPERLATIVE_ICHIBAN, TANPA PARTICLE_DE_PLACE
+    const resNen = detectTags(tokenizer.tokenize('1年で春がいちばん好きです') as any);
+    assert.ok(resNen.tags.has('SUPERLATIVE_ICHIBAN'), '1年で春がいちばん好きです harus memiliki SUPERLATIVE_ICHIBAN');
+    assert.ok(!resNen.tags.has('PARTICLE_DE_PLACE'), '1年で春がいちばん好きです TIDAK boleh memiliki PARTICLE_DE_PLACE');
+
+    // 果物でりんごがいちばん好きです -> SUPERLATIVE_ICHIBAN, TANPA PARTICLE_DE_PLACE
+    const resKudamono = detectTags(tokenizer.tokenize('果物でりんごがいちばん好きです') as any);
+    assert.ok(resKudamono.tags.has('SUPERLATIVE_ICHIBAN'), '果物でりんごがいちばん好きです harus memiliki SUPERLATIVE_ICHIBAN');
+    assert.ok(!resKudamono.tags.has('PARTICLE_DE_PLACE'), '果物でりんごがいちばん好きです TIDAK boleh memiliki PARTICLE_DE_PLACE');
+
+    // 駅で新聞を買います -> PARTICLE_DE_PLACE tetap ada
+    const resEki = detectTags(tokenizer.tokenize('駅で新聞を買います') as any);
+    assert.ok(resEki.tags.has('PARTICLE_DE_PLACE'), '駅で新聞を買います harus memiliki PARTICLE_DE_PLACE');
+  });
 });
 
 

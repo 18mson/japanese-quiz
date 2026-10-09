@@ -118,14 +118,14 @@ async function main() {
                      process.env.VITE_SUPABASE_ANON_KEY;
 
   let supabase = null;
-  if (!opts.dryRun) {
-    if (!supabaseUrl || !serviceKey) {
-      console.warn('⚠️ WARNING: Supabase URL atau Key tidak ditemukan di .env.');
+  if (!supabaseUrl || !serviceKey) {
+    console.warn('⚠️ WARNING: Supabase URL atau Key tidak ditemukan di .env.');
+    if (!opts.dryRun) {
       console.warn('Beralih ke mode --dry-run (simulasi tanpa simpan ke database).\n');
       opts.dryRun = true;
-    } else {
-      supabase = createClient(supabaseUrl, serviceKey);
     }
+  } else {
+    supabase = createClient(supabaseUrl, serviceKey);
   }
 
   /** @type {Record<number, number>} */
@@ -149,8 +149,8 @@ async function main() {
   const questionsToUpsert = [];
 
   // A. Generate Template Questions
-  const targetLessons = opts.lessons.length > 0 ? opts.lessons : [1, 2, 3, 4, 5, 6, 7, 8];
-  console.log(`\n[1/2] Menghasilkan Soal dari Generator Template untuk Bab ${targetLessons.join(', ')} (Target 150 per bab)...`);
+  const targetLessons = opts.lessons.length > 0 ? opts.lessons : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  console.log(`\n[1/2] Menghasilkan Soal dari Generator Template untuk Bab ${targetLessons.join(', ')}...`);
   /** @type {Record<number, Record<string, number>>} */
   const allTemplateStats = {};
   /** @type {Record<number, Array<{ tid: string, reason: string }>>} */
@@ -159,7 +159,7 @@ async function main() {
   const questionsByLesson = {};
   const discardedWordsSet = new Set();
   for (const lesson of targetLessons) {
-    const targetCount = (lesson >= 9 && lesson <= 12) ? 250 : 150;
+    const targetCount = (lesson === 9 || lesson === 10) ? 255 : ((lesson === 11 || lesson === 12) ? 250 : 150);
     const { questions: generated, templateStats, skippedTemplates } = generateQuestionsForLesson(lesson, tokenizer, targetCount, 10, discardedWordsSet);
     allTemplateStats[lesson] = templateStats;
     allSkippedTemplates[lesson] = skippedTemplates;
@@ -181,7 +181,8 @@ async function main() {
       if (q.is_focus) focusCounts[lesson] = (focusCounts[lesson] || 0) + 1;
     }
   }
-  console.log(`✓ Dihasilkan ${questionsToUpsert.length} soal template.`);
+
+  console.log(`✓ Dihasilkan/disiapkan ${questionsToUpsert.length} soal template.`);
 
 
   // B. Process Tatoeba files jika file disediakan
@@ -441,24 +442,80 @@ async function main() {
       process.stdout.write(`  ... ${successCount}/${questionsToUpsert.length} tersimpan\r`);
     }
     console.log(`\n✓ Berhasil menyimpan ${successCount} soal ke database secara idempoten!`);
+  }
 
-    // F. Rekonsiliasi Status Soal: Tandai soal lama sebagai 'draft' bila source_ref tidak lagi dihasilkan
-    console.log(`\nMelakukan rekonsiliasi status soal untuk bab yang di-seed [${targetLessons.join(', ')}]...`);
+  // F. Rekonsiliasi Status Soal: Tandai soal lama sebagai 'draft' bila source_ref tidak lagi dihasilkan
+  if (supabase) {
+    console.log(`\n======================================================`);
+    console.log(`       REKONSILIASI STATUS SOAL BAB ${targetLessons.join(', ')}`);
+    console.log(`======================================================`);
+    if (opts.dryRun) {
+      console.log(`[MODE DRY-RUN] Memeriksa soal yang akan dinonaktifkan tanpa mengubah database...`);
+    }
+
     const seededChapterRefs = new Set(questionsToUpsert.map(q => q.source_ref));
     
-    const { data: currentDbApproved, error: fetchErr } = await supabase
-      .from('sentence_questions')
-      .select('id, chapter_id, source_ref, jp_text, id_text')
-      .in('chapter_id', targetLessons)
-      .eq('status', 'approved')
-      .range(0, 9999);
+    let currentDbApproved = [];
+    let from = 0;
+    const pageSize = 1000;
+    let fetchError = null;
+    while (true) {
+      const { data: page, error } = await supabase
+        .from('sentence_questions')
+        .select('id, chapter_id, source_ref, jp_text, id_text')
+        .in('chapter_id', targetLessons)
+        .eq('status', 'approved')
+        .range(from, from + pageSize - 1);
+      if (error) {
+        fetchError = error;
+        console.error('❌ Gagal memeriksa soal lama untuk rekonsiliasi:', error.message || error);
+        break;
+      }
+      if (!page || page.length === 0) break;
+      currentDbApproved.push(...page);
+      if (page.length < pageSize) break;
+      from += pageSize;
+    }
 
-    if (fetchErr) {
-      console.error('❌ Gagal memeriksa soal lama untuk rekonsiliasi:', fetchErr.message || fetchErr);
-    } else if (currentDbApproved) {
+    if (fetchError) {
+      console.error('❌ Gagal memeriksa soal lama untuk rekonsiliasi:', fetchError.message || fetchError);
+    } else {
       const staleQuestions = currentDbApproved.filter(row => !seededChapterRefs.has(row.source_ref));
-      if (staleQuestions.length > 0) {
-        console.log(`Ditemukan ${staleQuestions.length} soal lama yang tidak lagi dihasilkan. Menandai sebagai 'draft'...`);
+      
+      // Kelompokkan per bab
+      const staleByChapter = {};
+      for (const ch of targetLessons) {
+        staleByChapter[ch] = [];
+      }
+      for (const row of staleQuestions) {
+        if (!staleByChapter[row.chapter_id]) staleByChapter[row.chapter_id] = [];
+        staleByChapter[row.chapter_id].push(row);
+      }
+
+      console.log(`\nRingkasan Soal Usang yang Tidak Dihasilkan Generator:`);
+      console.log(`Bab   | Soal Approved DB | Soal Generator | Akan Dinonaktifkan (Draft)`);
+      console.log(`------+------------------+----------------+---------------------------`);
+      for (const ch of targetLessons) {
+        const approvedCount = currentDbApproved.filter(r => r.chapter_id === ch).length;
+        const genCount = questionsToUpsert.filter(r => r.chapter_id === ch).length;
+        const staleCount = (staleByChapter[ch] || []).length;
+        console.log(`${String(ch).padStart(4)}  | ${String(approvedCount).padStart(16)} | ${String(genCount).padStart(14)} | ${String(staleCount).padStart(25)}`);
+      }
+      console.log(`Total usang: ${staleQuestions.length} baris.`);
+
+      // Tampilkan 10 contoh per bab untuk bab yang memiliki soal usang
+      for (const ch of targetLessons) {
+        const list = staleByChapter[ch] || [];
+        if (list.length > 0) {
+          console.log(`\n>>> 10 Contoh Soal Dinonaktifkan di Bab ${ch} (${list.length} total) <<<`);
+          list.slice(0, 10).forEach((sq, idx) => {
+            console.log(`  ${idx + 1}. [Bab ${sq.chapter_id}] (${sq.source_ref}): ${sq.jp_text} -> ${sq.id_text}`);
+          });
+        }
+      }
+
+      if (!opts.dryRun && staleQuestions.length > 0) {
+        console.log(`\nMenonaktifkan ${staleQuestions.length} soal usang ke status 'draft' di Supabase...`);
         const staleIds = staleQuestions.map(s => s.id);
         const updateChunkSize = 100;
         let draftSuccess = 0;
@@ -474,23 +531,11 @@ async function main() {
             draftSuccess += chunkIds.length;
           }
         }
-        console.log(`✓ Sebanyak ${draftSuccess} soal lama dinonaktifkan ke status 'draft'.`);
-
-        console.log('\n10 Contoh soal yang dinonaktifkan:');
-        staleQuestions.slice(0, 10).forEach((sq, idx) => {
-          console.log(`  ${idx + 1}. [Bab ${sq.chapter_id}] (${sq.source_ref}): ${sq.jp_text} -> ${sq.id_text}`);
-        });
-
-        const withPen = staleQuestions.filter(s => s.jp_text.includes('ペン'));
-        const withNado = staleQuestions.filter(s => s.jp_text.includes('など'));
-        if (withPen.length > 0 || withNado.length > 0) {
-          console.log(`\nSoal usang yang mengandung 'ペン' (${withPen.length}) atau 'など' (${withNado.length}):`);
-          [...withPen, ...withNado].slice(0, 10).forEach(s => {
-            console.log(`  - [Bab ${s.chapter_id}] (${s.source_ref}): ${s.jp_text}`);
-          });
-        }
-      } else {
-        console.log('✓ Semua soal di database sesuai dengan hasil generasi (0 soal usang).');
+        console.log(`✓ Sebanyak ${draftSuccess} soal lama berhasil dinonaktifkan ke status 'draft'.`);
+      } else if (opts.dryRun && staleQuestions.length > 0) {
+        console.log(`\n[DRY-RUN] Tidak ada perubahan yang disimpan ke database.`);
+      } else if (staleQuestions.length === 0) {
+        console.log(`\n✓ Semua soal di database sesuai dengan hasil generasi (0 soal usang).`);
       }
     }
   }

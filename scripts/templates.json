@@ -1408,6 +1408,34 @@
    ]
   },
   {
+   "tid": "L9-T13",
+   "lesson": 9,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "N": "have_obj"
+   },
+   "jp": "{P}は{N}があります。",
+   "id_text": "{P} punya {N}.",
+   "must_tags": [
+    "PARTICLE_GA_OBJ"
+   ]
+  },
+  {
+   "tid": "L9-T14",
+   "lesson": 9,
+   "extra": false,
+   "slots": {
+    "P": "person_any",
+    "N": "have_obj"
+   },
+   "jp": "{P}は{N}がありません。",
+   "id_text": "{P} tidak punya {N}.",
+   "must_tags": [
+    "PARTICLE_GA_OBJ"
+   ]
+  },
+  {
    "tid": "L9-T15",
    "lesson": 9,
    "extra": false,

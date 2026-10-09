@@ -204,6 +204,12 @@ export function detectTags(tokens) {
     }
   }
 
+  // Lindungi jika Kuromoji membaca [nomina]の[kata posisi] (seperti 木の下) sebagai satu token
+  const positionPhrasePattern = /の(上|うえ|下|した|前|まえ|後ろ|うしろ|右|みぎ|左|ひだり|中|なか|外|そと|隣|となり|近く|ちかく|間|あいだ)/;
+  if (positionPhrasePattern.test(fullText)) {
+    tags.add('PARTICLE_NO');
+  }
+
   // SOU_DESU: そうです / そうじゃありません
   if (fullText.includes('そうです') || fullText.includes('そうじゃありません') || fullText.includes('そうじゃ ありません')) {
     tags.add('SOU_DESU');
@@ -419,16 +425,18 @@ export function detectTags(tokens) {
   }
 
   // PARTICLE_DE_PLACE & PARTICLE_DE_MEANS
+  const hasSuperlative = hasSurface('いちばん') || hasSurface('一番') || fullText.includes('いちばん') || fullText.includes('一番');
+  const hasActionVerb = tokens.some(tk => tk.pos === '動詞' && !['ある', 'いる', 'なる'].includes(tk.basic_form));
+
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
     if (t.surface_form === 'で' && t.pos === '助詞' && t.pos_detail_1 === '格助詞') {
       const prev = tokens[i - 1];
       const next = tokens[i + 1];
-      // Abaikan bila 'で' berfungsi sebagai lingkup/scope waktu atau superlatif (misal: 1年で一番, 世界で一番)
+      // Abaikan bila 'で' berfungsi sebagai lingkup/scope waktu atau superlatif (misal: 1年で一番, 世界で一番, 果物でいちばん)
       const timeScopeUnits = ['年', '月', '週', '日', '分', '秒', '時間', 'か月', '週間', '回'];
       const isTimeScope = prev && (timeScopeUnits.includes(prev.basic_form) || timeScopeUnits.includes(prev.surface_form));
-      const isSuperlativeScope = next && (next.surface_form === '一番' || next.basic_form === '一番');
-      if (isTimeScope || isSuperlativeScope) {
+      if (hasSuperlative || isTimeScope) {
         continue;
       }
       if (prev && !transportWords.includes(prev.surface_form)) {
@@ -439,7 +447,7 @@ export function detectTags(tokens) {
         ];
         if (meansWords.includes(prev.surface_form)) {
           tags.add('PARTICLE_DE_MEANS');
-        } else {
+        } else if (hasActionVerb) {
           tags.add('PARTICLE_DE_PLACE');
         }
       }
@@ -480,16 +488,32 @@ export function detectTags(tokens) {
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
     if (t.pos === '形容詞' && t.pos_detail_1 === '自立') {
-      tags.add('ADJ_I');
       const next = tokens[i + 1];
-      if (next && next.pos === '名詞') {
-        tags.add('ADJ_NOUN_MOD');
-      }
-      if (t.conjugated_form && t.conjugated_form.includes('連用タ接続') || t.surface_form.endsWith('かっ')) {
-        tags.add('PAST_ADJ_I');
-      }
-      if (tokens[i + 1]?.surface_form === 'なかっ' || (tokens[i + 1]?.surface_form === 'あり' && tokens[i + 2]?.surface_form === 'ませ')) {
-        tags.add('PAST_ADJ_I');
+      const next2 = tokens[i + 2];
+
+      const isRenyouTe = (t.conjugated_form && t.conjugated_form.includes('連用テ接続')) || t.surface_form.endsWith('く');
+      // Periksa apakah ～く diikuti bentuk negatif: ない / なかった / ありません / ありませんでした
+      const isFollowedByNegative = next && (
+        next.basic_form === 'ない' ||
+        next.surface_form === 'ない' ||
+        next.surface_form.startsWith('なか') ||
+        (next.basic_form === 'ある' && next2 && next2.surface_form === 'ませ')
+      );
+      const isFollowedByVerb = next && next.pos === '動詞';
+      // Token 形容詞 dengan bentuk 連用テ接続 (～く) yang LANGSUNG diikuti kata kerja (動詞) = adverbia: JANGAN menghasilkan ADJ_I
+      const isAdverbial = isRenyouTe && isFollowedByVerb && !isFollowedByNegative;
+
+      if (!isAdverbial) {
+        tags.add('ADJ_I');
+        if (next && next.pos === '名詞') {
+          tags.add('ADJ_NOUN_MOD');
+        }
+        if ((t.conjugated_form && t.conjugated_form.includes('連用タ接続')) || t.surface_form.endsWith('かっ')) {
+          tags.add('PAST_ADJ_I');
+        }
+        if (tokens[i + 1]?.surface_form === 'なかっ' || (tokens[i + 1]?.surface_form === 'あり' && tokens[i + 2]?.surface_form === 'ませ')) {
+          tags.add('PAST_ADJ_I');
+        }
       }
     }
     const naAdjs = ['暇', 'きれい', '静か', '有名', '親切', '元気', '便利', 'にぎやか', 'ハンサム'];
@@ -535,7 +559,7 @@ export function detectTags(tokens) {
     const t = tokens[i];
     if (t.surface_form === 'から' && t.pos === '助詞') {
       const prev = tokens[i - 1];
-      if (prev && (prev.surface_form === 'です' || prev.surface_form === 'だ' || prev.pos === '動詞' || prev.pos === '形容詞')) {
+      if (prev && prev.surface_form !== 'て' && prev.surface_form !== 'で' && (prev.surface_form === 'です' || prev.surface_form === 'だ' || prev.pos === '動詞' || prev.pos === '形容詞' || prev.pos === '助動詞' || t.pos_detail_1 === '接続助詞')) {
         tags.add('KARA_REASON');
       }
     }
@@ -561,6 +585,10 @@ export function detectTags(tokens) {
         hasExistVerb = true;
       }
     } else if (t.basic_form === 'いる' && (t.pos === '動詞' || t.pos_detail_1 === '自立')) {
+      // Abaikan bila 'い' adalah bagian dari kata tanya 'いつ' (kuromoji sering memecah いつ menjadi い(動詞) + つ)
+      if (t.surface_form === 'い' && tokens[i + 1]?.surface_form === 'つ') {
+        continue;
+      }
       // kata kerja いる (います/いません/いました/いますか) yang BUKAN mengikuti bentuk て/で (itu progresif, bab 14)
       const prev = tokens[i - 1];
       const isTeOrDe = prev && (prev.surface_form === 'て' || prev.surface_form === 'で') && prev.pos === '助詞';
@@ -605,7 +633,10 @@ export function detectTags(tokens) {
     }
   }
 
-  const positionWords = ['上', '下', '後ろ', '中', '外', '隣', '近く', '間'];
+  const positionWords = [
+    '上', '下', '後ろ', '中', '外', '隣', '近く', '間', '右', '左',
+    'うえ', 'した', 'うしろ', 'なか', 'そと', 'となり', 'ちかく', 'あいだ', 'みぎ', 'ひだり'
+  ];
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
     if (positionWords.includes(t.surface_form) || t.surface_form === '木の下' || t.surface_form === '木の上') {
@@ -614,6 +645,19 @@ export function detectTags(tokens) {
       if (hasExistVerb || !hasMaeNi) {
         tags.add('POSITION_NOUN');
       }
+    }
+  }
+
+  // Lindungi [nomina]の[kata posisi] jika dibaca satu token oleh Kuromoji (misal 木の下)
+  if (positionPhrasePattern.test(fullText)) {
+    const match = fullText.match(positionPhrasePattern);
+    const matchedWord = match ? match[1] : '';
+    if (matchedWord === '前' || matchedWord === 'まえ') {
+      if (hasExistVerb || !hasMaeNi) {
+        tags.add('POSITION_NOUN');
+      }
+    } else {
+      tags.add('POSITION_NOUN');
     }
   }
 

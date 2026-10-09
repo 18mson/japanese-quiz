@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { 
   ArrowLeft, CalendarDays, Lock, LogIn, RotateCcw, 
   AlertTriangle, Sparkles 
@@ -52,30 +52,37 @@ async function handleAddSecondChapter(chapterIds: number[]) {
   }
 }
 
+// Jika sesi yang dimuat sudah berstatus selesai sejak awal buka, tampilkan QuotaExhaustedView
+watch(
+  () => [dailyStore.quotaExhausted, dailyStore.session?.status] as const,
+  ([exhausted, status]) => {
+    if (exhausted && status === 'completed' && !isReviewing.value) {
+      isChapterCompletionScreen.value = true;
+    }
+  },
+  { immediate: true }
+);
+
 async function handleSubmit(text: string, inputMethod: 'text' | 'voice') {
   await dailyStore.submitCurrentAnswer(text, inputMethod);
 }
 
 const allQuestionsCompleted = computed(() => {
-  return dailyStore.questions.length > 0 && dailyStore.questions.every(q => q.is_correct);
+  return dailyStore.questions.length > 0 && dailyStore.questions.every(q => q.is_correct || q.attempts >= 3 || q.revealed);
 });
 
 function handleNext() {
   if (dailyStore.currentIndex < dailyStore.totalQuestions - 1) {
     dailyStore.nextQuestion();
   } else if (allQuestionsCompleted.value) {
-    isChapterCompletionScreen.value = true;
-    if (!dailyStore.canAddChapter) {
-      dailyStore.quotaExhausted = true;
-    }
+    handleFinish();
   }
 }
 
 function handleFinish() {
+  isChapterCompletionScreen.value = true;
   if (!dailyStore.canAddChapter) {
     dailyStore.quotaExhausted = true;
-  } else {
-    isChapterCompletionScreen.value = true;
   }
 }
 
@@ -192,7 +199,7 @@ function handleRetry() {
 
       <!-- 5. QUOTA EXHAUSTED / CHAPTER COMPLETED VIEW -->
       <QuotaExhaustedView
-        v-else-if="(dailyStore.quotaExhausted || isChapterCompletionScreen || (allQuestionsCompleted && !isReviewing)) && !isReviewing"
+        v-else-if="isChapterCompletionScreen && !isReviewing"
         :resets-at="dailyStore.resetsAt"
         :total-questions="dailyStore.totalQuestions"
         :correct-count="dailyStore.correctCount"

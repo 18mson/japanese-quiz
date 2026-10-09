@@ -10,12 +10,14 @@ const props = withDefaults(
     customClass?: string;
     rtClass?: string;
     diffUserAnswer?: string;
+    isAllCorrect?: boolean;
   }>(),
   {
     showFurigana: true,
     customClass: '',
     rtClass: 'text-[0.42em] sm:text-[0.45em] font-semibold text-indigo-600/90 dark:text-torii-light/90',
     diffUserAnswer: '',
+    isAllCorrect: false,
   }
 );
 
@@ -96,13 +98,15 @@ const processedSegments = computed(() => {
         v-if="seg.isRuby && showFurigana" 
         :class="[
           'ruby-word select-text transition-colors duration-200',
-          diffUserAnswer 
-            ? (seg.isRubyMatched ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100')
-            : ''
+          isAllCorrect
+            ? 'text-blue-600 dark:text-blue-400'
+            : (diffUserAnswer 
+                ? (seg.isRubyMatched ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100')
+                : '')
         ]"
       >
         {{ seg.rubyText }}
-        <rt :class="['select-none leading-none tracking-normal font-sans', rtClass]">
+        <rt :class="['select-none leading-none tracking-normal font-sans', isAllCorrect ? 'text-blue-500/90 dark:text-blue-300/90' : rtClass]">
           {{ seg.reading }}
         </rt>
       </ruby>
@@ -114,9 +118,11 @@ const processedSegments = computed(() => {
           :key="pIdx"
           :class="[
             'transition-colors duration-200',
-            diffUserAnswer 
-              ? (part.isMatched ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100')
-              : ''
+            isAllCorrect
+              ? 'text-blue-600 dark:text-blue-400'
+              : (diffUserAnswer 
+                  ? (part.isMatched ? 'text-blue-600 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100')
+                  : '')
           ]"
         >{{ part.text }}</span>
       </template>

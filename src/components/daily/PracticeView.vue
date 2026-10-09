@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { 
-  Mic, MicOff, Send, X, AlertCircle, 
-  ChevronRight, ChevronLeft, Eye,
-  CheckCircle2, Keyboard
+  ChevronRight, ChevronLeft, Eye, CheckCircle2
 } from '@lucide/vue';
 import { useSpeechAnswer } from '../../composables/useSpeechAnswer';
+import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import SpeakerButton from '../SpeakerButton.vue';
 import FuriganaText from '../common/FuriganaText.vue';
+import DailyActionInputBar from './DailyActionInputBar.vue';
 import { tokenizeSentenceWithHints } from '../../utils/sentenceHints';
 import type { DailyQuestionData } from '../../stores/dailyPracticeStore';
 
@@ -36,12 +36,20 @@ const emit = defineEmits<{
   (e: 'toggleAutoKana'): void;
 }>();
 
-const inputRef = ref<HTMLInputElement | null>(null);
+const actionInputBarRef = ref<{ focusInput: () => void } | null>(null);
 const inputText = ref('');
 const inputMethod = ref<'text' | 'voice'>('text');
 const activeInputMode = ref<'voice' | 'keyboard'>('voice');
 const isShaking = ref(false);
 const lastAnswerGiven = ref('');
+
+const { speak } = useTextToSpeech();
+
+function focusInput() {
+  nextTick(() => {
+    actionInputBarRef.value?.focusInput();
+  });
+}
 
 // Tokenized segments dengan word hints untuk kalimat bahasa Indonesia
 const activeHintIndex = ref<number | null>(null);
@@ -159,98 +167,22 @@ const {
   resetTranscript,
 } = useSpeechAnswer();
 
-const isSpinningMic = ref(false);
 let autoSubmitTimer: ReturnType<typeof setTimeout> | null = null;
-
-// Pola regex penutup kalimat bahasa Jepang (predikat sopan, bentuk lampau, ajakan, permohonan, dsb.)
 const JAPANESE_SENTENCE_ENDING_REGEX = /(です|でした|ですか|でしたか|ではありません|じゃありません|じゃありませんでした|ではありませんでした|ます|ました|ますか|ましたか|ません|ませんでした|ましょう|ましょうか|てください|ないでください|たいです|たくないです|だ|だった)[。！？.,!?\s]*$/;
 
-function switchToKeyboardMode() {
-  if (isListening.value) {
-    stopListening();
-  }
-  activeInputMode.value = 'keyboard';
-  nextTick(() => {
-    inputRef.value?.focus();
-  });
-}
-
-function switchToVoiceMode() {
-  isSpinningMic.value = true;
-  setTimeout(() => {
-    isSpinningMic.value = false;
-  }, 450);
-  activeInputMode.value = 'voice';
-}
-
-function toggleInputMode() {
-  if (activeInputMode.value === 'voice') {
-    switchToKeyboardMode();
-  } else {
-    switchToVoiceMode();
-  }
-}
+// Soal dianggap selesai jika sudah dijawab benar, sudah 3x salah, atau kunci jawaban terbuka
+const isQuestionCompleted = computed(() => {
+  return props.question.is_correct || props.question.attempts >= 3 || !!props.revealedAnswer;
+});
 
 // State dan aksi tombol utama yang bertransformasi (Lanjut / Kirim / Mic)
 const mainActionState = computed<'advance' | 'send' | 'mic'>(() => {
-  if (props.question.is_correct) return 'advance';
+  if (isQuestionCompleted.value) return 'advance';
   if (activeInputMode.value === 'keyboard') return 'send';
   return 'mic';
 });
 
-const isMainActionDisabled = computed(() => {
-  if (mainActionState.value === 'advance') {
-    return !canAdvance.value;
-  }
-  if (mainActionState.value === 'send') {
-    return !inputText.value.trim() || props.submitting;
-  }
-  return props.submitting;
-});
 
-function handleMainActionClick() {
-  if (mainActionState.value === 'advance') {
-    handleAdvance();
-  } else if (mainActionState.value === 'send') {
-    handleSubmit();
-  } else {
-    toggleMic();
-  }
-}
-
-const mainActionButtonClasses = computed(() => {
-  const base = 'flex items-center justify-center cursor-pointer select-none transition-all duration-300 relative z-10 ';
-  
-  if (mainActionState.value === 'advance') {
-    return base + 'h-12 sm:h-14 px-5 sm:px-12 rounded-2xl font-black text-xs sm:text-base bg-emerald-500 hover:bg-emerald-600 text-white active:scale-95 ring-4 ring-emerald-400/40 shadow-lg min-w-[180px] sm:min-w-[240px] max-w-full';
-  }
-  
-  if (mainActionState.value === 'send') {
-    const isReady = inputText.value.trim() && !props.submitting;
-    const color = isReady
-      ? 'bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white active:scale-95 shadow-md ring-2 ring-indigo-400/30'
-      : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed border border-slate-300/40 dark:border-slate-700/40 shadow-xs';
-    return base + `h-12 sm:h-14 px-4 sm:px-6 rounded-2xl font-extrabold text-sm sm:text-base shrink-0 min-w-[48px] sm:min-w-[90px] ${color}`;
-  }
-  
-  // Voice mode (Mic)
-  const isSpin = isSpinningMic.value ? 'animate-micSpin ' : '';
-  const micColor = isListening.value
-    ? 'bg-rose-500 hover:bg-rose-600 text-white ring-4 sm:ring-8 ring-rose-400/40 shadow-rose-500/30 scale-105'
-    : 'bg-gradient-to-tr from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 dark:from-torii dark:to-torii-hover text-white hover:scale-105 active:scale-95 ring-4 ring-indigo-500/20 dark:ring-torii/20 shadow-xl';
-    
-  return base + `w-16 h-16 sm:w-20 sm:h-20 rounded-full shrink-0 ${isSpin} ${micColor}`;
-});
-
-const mainActionButtonTitle = computed(() => {
-  if (mainActionState.value === 'advance') {
-    return isLastQuestion.value && props.allCompleted ? 'Selesaikan Latihan' : 'Lanjut ke Soal Berikutnya';
-  }
-  if (mainActionState.value === 'send') {
-    return 'Kirim Jawaban';
-  }
-  return isListening.value ? 'Hentikan rekaman mic' : 'Tekan untuk berbicara bahasa Jepang';
-});
 
 /**
  * Deteksi akhir kalimat Jepang secara instan:
@@ -339,9 +271,7 @@ watch(
         activeInputMode.value = 'voice';
       } else {
         activeInputMode.value = 'keyboard';
-        nextTick(() => {
-          inputRef.value?.focus();
-        });
+        focusInput();
       }
     }
   },
@@ -358,23 +288,17 @@ watch(
   }
 );
 
-const isComposing = ref(false);
+watch(activeInputMode, (mode) => {
+  if (mode === 'keyboard' && isListening.value) {
+    stopListening();
+  }
+});
 
-function handleInput(e: Event) {
-  const target = e.target as HTMLInputElement;
-  inputText.value = target.value;
-  inputMethod.value = 'text';
-}
-
-function handleCompositionStart() {
-  isComposing.value = true;
-}
-
-function handleCompositionEnd(e: CompositionEvent) {
-  isComposing.value = false;
-  const target = e.target as HTMLInputElement;
-  inputText.value = target.value;
-}
+watch(inputText, () => {
+  if (activeInputMode.value === 'keyboard') {
+    inputMethod.value = 'text';
+  }
+});
 
 function toggleMic() {
   if (isListening.value) {
@@ -390,27 +314,15 @@ const displayedVoiceTranscript = computed(() => {
   return (interimTranscript.value || transcript.value || inputText.value || '').trim();
 });
 
-const showVoiceTranscriptPopup = computed(() => {
-  return (
-    activeInputMode.value === 'voice' &&
-    !props.question.is_correct &&
-    isListening.value &&
-    !props.submitting &&
-    displayedVoiceTranscript.value.length > 0
-  );
-});
-
 function handleClear() {
   inputText.value = '';
   resetTranscript();
-  nextTick(() => {
-    inputRef.value?.focus();
-  });
+  focusInput();
 }
 
 function handleSubmit() {
   const trimmed = inputText.value.trim();
-  if (!trimmed || props.submitting || props.question.is_correct) return;
+  if (!trimmed || props.submitting || isQuestionCompleted.value) return;
 
   // Jika user mengetik huruf alfabet latin (romaji), konversikan ke kana untuk validasi ke backend
   let answerToSend = trimmed;
@@ -432,14 +344,12 @@ function handleSubmit() {
 watch(
   () => props.question.attempts,
   (newAttempts, oldAttempts) => {
-    if (newAttempts > oldAttempts && !props.question.is_correct) {
+    if (newAttempts > (oldAttempts || 0) && !props.question.is_correct && !isQuestionCompleted.value) {
       isShaking.value = true;
       setTimeout(() => {
         isShaking.value = false;
       }, 500);
-      nextTick(() => {
-        inputRef.value?.focus();
-      });
+      focusInput();
     }
   }
 );
@@ -448,10 +358,24 @@ watch(
 watch(
   () => props.submitting,
   (isSubmitting, wasSubmitting) => {
-    if (wasSubmitting && !isSubmitting && !props.question.is_correct) {
-      nextTick(() => {
-        inputRef.value?.focus();
-      });
+    if (wasSubmitting && !isSubmitting && !isQuestionCompleted.value) {
+      focusInput();
+    }
+  }
+);
+
+// Auto-play audio pengucapan benar otomatis saat salah 3x atau kunci terbuka
+watch(
+  () => [props.question.attempts, props.revealedAnswer, props.question.is_correct],
+  ([attempts, revealed, isCorrect], oldVals) => {
+    const oldAttempts = oldVals ? (oldVals[0] as number) : 0;
+    if (!isCorrect && ((attempts as number) >= 3 || !!revealed)) {
+      if ((attempts as number) > oldAttempts || !!revealed) {
+        const audioText = (revealed as string) || props.question.correct_answer || '';
+        if (audioText) {
+          speak(audioText);
+        }
+      }
     }
   }
 );
@@ -498,7 +422,7 @@ const answerContainerHeightStyle = ref<Record<string, string>>({
 });
 
 const hasVisibleAnswer = computed(() => {
-  return (props.question.is_correct || !!props.revealedAnswer) && !!speakableText.value;
+  return (props.question.is_correct || !!props.revealedAnswer || props.question.attempts >= 3) && !!speakableText.value;
 });
 
 const answerKey = computed(() => {
@@ -635,7 +559,7 @@ const canAdvance = computed(() => {
   if (props.isReviewing) {
     return true;
   }
-  return props.question.is_correct || props.question.attempts >= 3;
+  return isQuestionCompleted.value;
 });
 
 function handleAdvance() {
@@ -654,13 +578,7 @@ function handleAdvance() {
   }
 }
 
-function handleInputEnter() {
-  if (props.question.is_correct) {
-    handleAdvance();
-  } else {
-    handleSubmit();
-  }
-}
+
 
 function handleGlobalKeydown(e: KeyboardEvent) {
   if (props.isReviewing) {
@@ -688,9 +606,7 @@ onMounted(() => {
     activeInputMode.value = 'keyboard';
   }
   if (!props.question.is_correct && activeInputMode.value === 'keyboard') {
-    nextTick(() => {
-      inputRef.value?.focus();
-    });
+    focusInput();
   }
 });
 
@@ -904,6 +820,7 @@ onUnmounted(() => {
               <span class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-snug sm:leading-normal break-words text-center sm:text-left">
                 <FuriganaText 
                   :text="displayedSpeakableText" 
+                  :is-all-correct="question.is_correct && !question.is_tolerance"
                   :diff-user-answer="question.is_tolerance ? (question.user_answer || lastAnswerGiven || '') : ''"
                 />
               </span>
@@ -917,10 +834,10 @@ onUnmounted(() => {
               <div class="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-amber-600 dark:text-amber-400">
                 <Eye class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>Kunci Jawaban Terbuka:</span>
-                <SpeakerButton :text="revealedAnswer || ''" size="sm" />
+                <SpeakerButton :text="revealedAnswer || question.correct_answer || ''" size="sm" />
               </div>
               <div class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.25rem] font-japanese font-black text-slate-900 dark:text-slate-100 tracking-wide leading-snug sm:leading-normal break-words text-center">
-                <FuriganaText :text="revealedAnswer || ''" />
+                <FuriganaText :text="revealedAnswer || question.correct_answer || ''" />
               </div>
               <div class="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500 mt-0.5">
                 Pelajari struktur kalimat di atas, lalu lanjutkan ke soal berikutnya.
@@ -931,161 +848,27 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Bottom Input & Controls Container - Hidden in Review Mode -->
-    <div 
+    <!-- Bottom Input & Controls Container (Reusable Action Bar) - Hidden in Review Mode -->
+    <DailyActionInputBar
       v-if="!isReviewing"
-      class="w-full max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto flex flex-col items-center justify-center min-h-[144px] gap-2.5 sm:gap-3.5 transition-all duration-300 relative z-20 pb-2"
-    >
-      <!-- ================= SLOT ATAS: UNIFIED TOGGLE SWITCHER ================= -->
-      <transition name="fade-collapse">
-        <div v-if="!question.is_correct" class="flex items-center justify-center">
-          <button
-            v-if="isSpeechSupported"
-            type="button"
-            @click="toggleInputMode"
-            class="group px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 border border-slate-200/90 dark:border-slate-700/90 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5 shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
-            :title="activeInputMode === 'voice' ? 'Beralih ke ketik keyboard' : 'Beralih kembali ke mode suara'"
-          >
-            <transition name="mode-toggle-swap" mode="out-in">
-              <div v-if="activeInputMode === 'voice'" key="mode-keyboard" class="flex items-center gap-1.5">
-                <Keyboard class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-torii transition-colors" />
-                <span>Ketik Jawaban</span>
-              </div>
-              <div v-else key="mode-voice" class="flex items-center gap-1.5">
-                <Mic class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 dark:text-torii group-hover:rotate-12 transition-transform duration-300" />
-                <span>Mode Suara</span>
-              </div>
-            </transition>
-          </button>
-        </div>
-      </transition>
-
-      <!-- ================= SLOT UTAMA: EXPANDABLE INPUT + TRANSFORMING BUTTON ================= -->
-      <div class="relative flex items-center justify-center w-full max-w-lg sm:max-w-xl mx-auto gap-2 sm:gap-3 transition-all duration-300">
-        <!-- FRAMELESS INPUT BAR (MENGEMBANG DARI KIRI TOMBOL) -->
-        <transition name="input-slide-expand">
-          <div 
-            v-if="activeInputMode === 'keyboard' && !question.is_correct" 
-            class="relative flex-1 min-w-0 flex items-center"
-          >
-            <input
-              ref="inputRef"
-              type="text"
-              :value="inputText"
-              @input="handleInput"
-              @compositionstart="handleCompositionStart"
-              @compositionend="handleCompositionEnd"
-              @keydown.enter.prevent="handleInputEnter"
-              :readonly="submitting"
-              placeholder="Ketik kalimat bahasa Jepang..."
-              class="w-full h-12 sm:h-14 pl-3.5 sm:pl-4 pr-9 sm:pr-10 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base font-japanese text-base sm:text-xl md:text-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 dark:focus:ring-torii/50 transition-all shadow-xs leading-relaxed"
-            />
-            <!-- Clear button -->
-            <button
-              v-if="inputText"
-              type="button"
-              @click="handleClear"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer transition z-10"
-              title="Hapus ketikan"
-            >
-              <X class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </button>
-          </div>
-        </transition>
-
-        <!-- THE SINGLE MORPHING MAIN ACTION BUTTON -->
-        <div class="relative flex items-center justify-center">
-          <!-- Ripple Wave Animation saat isListening -->
-          <div v-if="!question.is_correct && activeInputMode === 'voice' && isListening" class="absolute w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-rose-500/20 animate-ping pointer-events-none"></div>
-          <div v-if="!question.is_correct && activeInputMode === 'voice' && isListening" class="absolute w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-rose-500/30 animate-pulse pointer-events-none"></div>
-
-          <button
-            type="button"
-            @click="handleMainActionClick"
-            :disabled="isMainActionDisabled"
-            :class="mainActionButtonClasses"
-            :title="mainActionButtonTitle"
-          >
-            <transition name="btn-content-swap" mode="out-in">
-              <!-- STATE 1: JIKA SOAL SUDAH TERJAWAB BENAR (LANJUT) -->
-              <div v-if="question.is_correct" key="advance-content" class="flex items-center justify-center gap-2 whitespace-nowrap">
-                <span>{{ isLastQuestion && allCompleted ? 'Selesaikan Latihan' : 'Lanjut ke Soal Berikutnya' }}</span>
-                <ChevronRight class="w-5 h-5 shrink-0" />
-              </div>
-
-              <!-- STATE 2: MODE KEYBOARD (KIRIM) -->
-              <div v-else-if="activeInputMode === 'keyboard'" key="send-content" class="flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap">
-                <div v-if="submitting" class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <Send v-else class="w-4 h-4 shrink-0" />
-                <span class="hidden sm:inline">Kirim</span>
-              </div>
-
-              <!-- STATE 3: MODE VOICE (MIC) -->
-              <div v-else key="mic-content" class="flex items-center justify-center">
-                <Mic v-if="!isListening" class="w-7 h-7 sm:w-9 sm:h-9" />
-                <MicOff v-else class="w-7 h-7 sm:w-9 sm:h-9 text-white animate-pulse" />
-              </div>
-            </transition>
-          </button>
-        </div>
-      </div>
-
-      <!-- ================= SLOT BAWAH: VOICE STATUS CAPTION ================= -->
-      <transition name="caption-fade">
-        <div 
-          v-if="!question.is_correct && activeInputMode === 'voice'" 
-          class="text-center text-xs font-medium overflow-hidden"
-        >
-          <div class="min-h-[20px] flex items-center justify-center">
-            <transition name="caption-swap" mode="out-in">
-              <span v-if="isListening" key="listening" class="text-rose-500 dark:text-rose-400 font-bold flex items-center gap-1.5 justify-center animate-pulse">
-                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-                Mendengarkan... Silakan bicara kalimat Jepang
-              </span>
-              <span v-else-if="submitting" key="submitting" class="text-indigo-600 dark:text-torii font-bold flex items-center gap-1.5 justify-center">
-                <div class="w-3.5 h-3.5 border-2 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin"></div>
-                Memeriksa jawaban...
-              </span>
-              <span v-else-if="speechError" key="error" class="text-rose-500 dark:text-rose-400 flex items-center gap-1.5 justify-center">
-                <AlertCircle class="w-3.5 h-3.5 shrink-0" />
-                <span>{{ speechError }}</span>
-              </span>
-              <span v-else key="idle" class="text-slate-400 dark:text-slate-500">
-                Tekan mic untuk berbicara bahasa Jepang
-              </span>
-            </transition>
-          </div>
-        </div>
-      </transition>
-
-      <!-- ================= FLOATING POPUP TRANSCRIPT (VOICE MODE) ================= -->
-      <!-- Posisinya floating / absolute di bawah caption agar sama sekali tidak menggeser layout / elemen lain -->
-      <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-full max-w-md px-4 flex justify-center pointer-events-none z-50">
-        <transition name="voice-popup-scale">
-          <div 
-            v-if="showVoiceTranscriptPopup" 
-            class="w-full px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-indigo-100 dark:border-slate-800 shadow-xl backdrop-blur-md flex items-center justify-between gap-3 text-center pointer-events-auto"
-          >
-            <div class="flex items-center gap-2 overflow-hidden text-left flex-1 min-w-0">
-              <span class="text-[11px] font-bold text-indigo-600 dark:text-torii uppercase shrink-0">Suara:</span>
-              <span class="font-japanese font-bold text-base sm:text-lg text-slate-900 dark:text-slate-100 truncate">
-                {{ displayedVoiceTranscript }}
-              </span>
-            </div>
-            <button
-              v-if="displayedVoiceTranscript && !submitting"
-              type="button"
-              @click="handleSubmit"
-              class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white flex items-center justify-center shrink-0 cursor-pointer shadow-md hover:scale-105 active:scale-95 transition-all duration-200"
-              title="Kirim Sekarang"
-              aria-label="Kirim Jawaban"
-            >
-              <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5" />
-            </button>
-          </div>
-        </transition>
-      </div>
-    </div>
+      ref="actionInputBarRef"
+      v-model="inputText"
+      :input-mode="activeInputMode"
+      :action-state="mainActionState"
+      :is-listening="isListening"
+      :submitting="submitting"
+      :is-completed="isQuestionCompleted"
+      :is-last-question="isLastQuestion"
+      :all-completed="allCompleted"
+      :voice-transcript="displayedVoiceTranscript"
+      :voice-error="speechError"
+      :is-speech-supported="isSpeechSupported"
+      @update:input-mode="(mode) => activeInputMode = mode"
+      @submit="handleSubmit"
+      @advance="handleAdvance"
+      @toggle-mic="toggleMic"
+      @clear="handleClear"
+    />
 </div>
 </template>
 
