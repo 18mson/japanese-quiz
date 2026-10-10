@@ -75,22 +75,16 @@ const handleKeydown = (e: KeyboardEvent) => {
   }
 };
 
-// Watch for modal visibility changes and card index updates
+// Watch for card index changes to play audio hint when switching cards
 watch(
-  [
-    () => quizStore.isWavePreviewActive, 
-    () => quizStore.showMicroPreviewModal, 
-    () => currentCardIndex.value,
-    () => currentItem.value
-  ],
-  ([waveActive, microActive]) => {
-    if (waveActive || microActive) {
+  () => currentCardIndex.value,
+  () => {
+    if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal) {
       setTimeout(() => {
         playAudioHint();
-      }, 120);
+      }, 150);
     }
-  },
-  { immediate: true }
+  }
 );
 
 onMounted(() => {
@@ -99,7 +93,7 @@ onMounted(() => {
   if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal) {
     setTimeout(() => {
       playAudioHint();
-    }, 150);
+    }, 200);
   }
 });
 

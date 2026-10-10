@@ -15,10 +15,10 @@ const props = withDefaults(
   }
 );
 
-const { isCurrentTextSpeaking, isSupported, hasJapaneseVoice, speak, stop } = useTextToSpeech();
+const { isCurrentTextSpeaking, isSupported, speak, stop } = useTextToSpeech();
 
 const isPlaying = computed(() => isCurrentTextSpeaking(props.text));
-const isAvailable = computed(() => isSupported.value && hasJapaneseVoice.value);
+const isAvailable = computed(() => isSupported.value);
 
 const handleClick = (e: MouseEvent) => {
   e.stopPropagation();

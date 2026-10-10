@@ -12,6 +12,8 @@ const userInput = computed({
 });
 const inputRef = ref<HTMLInputElement | null>(null);
 
+const isTouchDevice = ref(false);
+
 const focusInput = () => {
   nextTick(() => {
     if (inputRef.value && quizStore.selectedAnswer === null) {
@@ -41,7 +43,7 @@ const handleEnter = () => {
 
 const handleKeydown = (event: KeyboardEvent) => {
   if (quizStore.quizCompleted || quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal || quizStore.justClosedPreview) return;
-  if (Date.now() - quizStore.previewClosedTimestamp < 500) return;
+  if (Date.now() - quizStore.previewClosedTimestamp < 300) return;
 
   const target = event.target as HTMLElement | null;
   if (target && target !== inputRef.value && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
@@ -51,16 +53,46 @@ const handleKeydown = (event: KeyboardEvent) => {
   if (event.key === 'Enter') {
     event.preventDefault();
     handleEnter();
+    return;
+  }
+
+  // Auto-focus and capture characters when user types directly on physical keyboard (MacBook/PC)
+  if (quizStore.selectedAnswer === null) {
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      if (document.activeElement !== inputRef.value) {
+        inputRef.value?.focus();
+        userInput.value += event.key;
+        event.preventDefault();
+      }
+    } else if (event.key === 'Backspace' && document.activeElement !== inputRef.value) {
+      if (userInput.value.length > 0) {
+        userInput.value = userInput.value.slice(0, -1);
+      }
+      inputRef.value?.focus();
+      event.preventDefault();
+    }
+  }
+};
+
+const handleGlobalClick = (event: MouseEvent) => {
+  if (quizStore.selectedAnswer === null && !quizStore.isWavePreviewActive && !quizStore.showMicroPreviewModal) {
+    const target = event.target as HTMLElement | null;
+    if (target && !target.closest('button') && !target.closest('a') && !target.closest('.interactive-control')) {
+      focusInput();
+    }
   }
 };
 
 onMounted(() => {
+  isTouchDevice.value = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
   focusInput();
   window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('click', handleGlobalClick);
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('click', handleGlobalClick);
 });
 
 // Refocus input and clear on next question
@@ -68,6 +100,22 @@ watch(() => quizStore.currentQuestionIndex, () => {
   userInput.value = '';
   focusInput();
 });
+
+// Watch preview modal dismissals to refocus input automatically
+watch(
+  [
+    () => quizStore.isWavePreviewActive, 
+    () => quizStore.showMicroPreviewModal, 
+    () => quizStore.justClosedPreview
+  ], 
+  ([waveActive, microActive, justClosed]) => {
+    if (!waveActive && !microActive && !justClosed) {
+      setTimeout(() => {
+        focusInput();
+      }, 80);
+    }
+  }
+);
 
 const handleVirtualKey = (char: string) => {
   if (isAnswered.value) return;
@@ -112,7 +160,7 @@ const isTypo = computed(() => {
         ref="inputRef"
         v-model="userInput"
         type="text"
-        inputmode="none"
+        :inputmode="isTouchDevice ? 'none' : 'text'"
         placeholder="Type romaji here..."
         class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
