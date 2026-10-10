@@ -21,8 +21,8 @@ const emit = defineEmits<{
 
 const maxAllowed = computed(() => Math.max(1, 2 - props.existingChapters.length));
 
-const ACTIVE_CHAPTERS = [1, 2, 3, 4, 5, 6, 7, 8];
-const UPCOMING_CHAPTERS = Array.from({ length: 17 }, (_, i) => i + 9); // Bab 9-25
+const ACTIVE_CHAPTERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const UPCOMING_CHAPTERS = Array.from({ length: 13 }, (_, i) => i + 13); // Bab 13-25
 
 // Cari bab aktif pertama yang belum dikerjakan
 function getInitialChapter(): number[] {
@@ -99,7 +99,7 @@ function handleStart() {
       <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
         Bab Tersedia (Minna no Nihongo I)
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[340px] sm:max-h-[380px] overflow-y-auto pr-1">
         <button
           v-for="ch in ACTIVE_CHAPTERS"
           :key="ch"
@@ -153,7 +153,7 @@ function handleStart() {
     <!-- Upcoming Chapters preview (Bab 9-25) -->
     <div class="mb-5">
       <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-        <span>Bab Lanjutan (Bab 9–25)</span>
+        <span>Bab Lanjutan (Bab 13–25)</span>
         <span class="text-[10px] lowercase font-normal bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full text-slate-500">
           Segera hadir
         </span>

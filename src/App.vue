@@ -106,22 +106,21 @@ const checkRouteState = () => {
   const pathname = window.location.pathname;
   const searchParams = new URLSearchParams(window.location.search);
   const hash = window.location.hash;
-  const savedScreen = localStorage.getItem('active_screen');
-  if (
-    pathname.includes('/battleground') ||
+
+  const isBattlegroundRoute = pathname.includes('/battleground') ||
     searchParams.get('mode') === 'battleground' ||
-    hash === '#battleground' ||
-    savedScreen === 'battleground'
-  ) {
-    showBattleground.value = true;
-  }
-  if (
-    pathname.includes('/daily') ||
+    hash === '#battleground';
+
+  const isDailyRoute = pathname.includes('/daily') ||
     searchParams.get('mode') === 'daily' ||
-    hash === '#daily' ||
-    savedScreen === 'daily'
-  ) {
-    showDailyPractice.value = true;
+    hash === '#daily';
+
+  showBattleground.value = isBattlegroundRoute;
+  showDailyPractice.value = isDailyRoute;
+
+  // Bersihkan active_screen tersimpan jika membuka root home screen agar tidak auto-redirect
+  if (!isBattlegroundRoute && !isDailyRoute) {
+    localStorage.removeItem('active_screen');
   }
   if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
     showAboutModal.value = true;

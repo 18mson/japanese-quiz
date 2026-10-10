@@ -24,8 +24,19 @@ const isReviewing = ref(false);
 const isAddingSecondChapter = ref(false);
 const isChapterCompletionScreen = ref(false);
 
+// Watch auth user: saat user terautentikasi (termasuk setelah reload/refresh), otomatis pulihkan sesi harian hari ini
+watch(
+  () => authStore.user,
+  async (newUser) => {
+    if (newUser && !dailyStore.session && !dailyStore.loading) {
+      await dailyStore.checkTodaySession();
+    }
+  },
+  { immediate: true }
+);
+
 onMounted(async () => {
-  if (authStore.user) {
+  if (authStore.user && !dailyStore.session && !dailyStore.loading) {
     await dailyStore.checkTodaySession();
   }
 });
@@ -52,11 +63,11 @@ async function handleAddSecondChapter(chapterIds: number[]) {
   }
 }
 
-// Jika sesi yang dimuat sudah berstatus selesai sejak awal buka, tampilkan QuotaExhaustedView
+// Jika sesi yang dimuat sudah berstatus selesai atau seluruh soal telah terjawab, tampilkan QuotaExhaustedView
 watch(
-  () => [dailyStore.quotaExhausted, dailyStore.session?.status] as const,
-  ([exhausted, status]) => {
-    if (exhausted && status === 'completed' && !isReviewing.value) {
+  () => [dailyStore.quotaExhausted, dailyStore.session?.status, allQuestionsCompleted.value] as const,
+  ([exhausted, status, completed]) => {
+    if ((exhausted || status === 'completed' || completed) && !isReviewing.value && dailyStore.session) {
       isChapterCompletionScreen.value = true;
     }
   },
@@ -141,8 +152,14 @@ function handleRetry() {
 
     <!-- Main Content Area (Centered vertically between header and footer) -->
     <main class="flex-1 w-full max-w-6xl xl:max-w-7xl mx-auto px-1.5 sm:px-6 py-2 sm:py-4 flex flex-col justify-center items-center relative">
-      <!-- 1. NOT AUTHENTICATED -->
-      <div v-if="!authStore.user" class="my-auto w-full max-w-md mx-auto bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center animate-fadeIn">
+      <!-- 1. LOADING STATE (Auth check in progress ATAU Daily store is loading) -->
+      <div v-if="authStore.loading || (dailyStore.loading && !dailyStore.session)" class="my-auto flex flex-col items-center justify-center py-12 text-slate-500 dark:text-slate-400">
+        <div class="w-10 h-10 border-4 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin mb-3"></div>
+        <span class="text-xs sm:text-sm font-bold">Menyiapkan Latihan Kalimat Harian...</span>
+      </div>
+
+      <!-- 2. NOT AUTHENTICATED -->
+      <div v-else-if="!authStore.user" class="my-auto w-full max-w-md mx-auto bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl p-6 sm:p-8 flex flex-col items-center text-center animate-fadeIn">
         <div class="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
           <Lock class="w-7 h-7" />
         </div>
@@ -162,10 +179,10 @@ function handleRetry() {
         </button>
       </div>
 
-      <!-- 2. LOADING STATE -->
+      <!-- 3. ADDITIONAL LOADING STATE (saat menambahkan bab ke-2) -->
       <div v-else-if="dailyStore.loading" class="my-auto flex flex-col items-center justify-center py-12 text-slate-500 dark:text-slate-400">
         <div class="w-10 h-10 border-4 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin mb-3"></div>
-        <span class="text-xs sm:text-sm font-bold">Menyiapkan Latihan Kalimat Harian...</span>
+        <span class="text-xs sm:text-sm font-bold">Menyiapkan Soal Harian...</span>
       </div>
 
       <!-- 3. ERROR STATE -->
