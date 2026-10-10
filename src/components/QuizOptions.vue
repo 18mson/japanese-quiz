@@ -133,27 +133,30 @@ const isLastQuestion = computed(() => {
   <div class="w-full">
     <!-- Desktop Options Grid (Shown on sm: and up inside the card) -->
     <div class="hidden sm:block w-full">
-      <div class="grid grid-cols-3 gap-2.5 sm:gap-4 mb-3 w-full">
-        <button 
-          v-for="(option, index) in quizStore.options" 
-          :key="'desktop-' + option"
-          class="relative p-3 sm:p-4 text-base sm:text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer transition-all duration-150 flex justify-center items-center min-h-14 sm:min-h-16 hover:border-indigo-500 dark:hover:border-torii hover:bg-indigo-50 dark:hover:bg-slate-800 focus:outline-none shadow-xs"
-          :class="getOptionClass(option, index)"
-          @click="deactivateKeyboardNav(); submitOption(option);"
-          :disabled="quizStore.selectedAnswer !== null"
-        >
-          <!-- Shortcut Badge -->
-          <span 
-            v-if="quizStore.selectedAnswer === null"
-            class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded transition-colors"
-            :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 dark:bg-torii text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-400'"
+      <!-- Desktop Options Grid (Shown on sm: and up inside the card) -->
+      <transition name="question-blur" mode="out-in">
+        <div :key="quizStore.currentQuestionIndex" class="grid grid-cols-3 gap-2.5 sm:gap-4 mb-3 w-full">
+          <button 
+            v-for="(option, index) in quizStore.options" 
+            :key="'desktop-' + option"
+            class="relative p-3 sm:p-4 text-base sm:text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-xl cursor-pointer transition-all duration-150 flex justify-center items-center min-h-14 sm:min-h-16 hover:border-indigo-500 dark:hover:border-torii hover:bg-indigo-50 dark:hover:bg-slate-800 focus:outline-none shadow-xs"
+            :class="getOptionClass(option, index)"
+            @click="deactivateKeyboardNav(); submitOption(option);"
+            :disabled="quizStore.selectedAnswer !== null"
           >
-            {{ index + 1 }}
-          </span>
+            <!-- Shortcut Badge -->
+            <span 
+              v-if="quizStore.selectedAnswer === null"
+              class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded transition-colors"
+              :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 dark:bg-torii text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-400 dark:text-slate-400'"
+            >
+              {{ index + 1 }}
+            </span>
 
-          <span>{{ option }}</span>
-        </button>
-      </div>
+            <span>{{ option }}</span>
+          </button>
+        </div>
+      </transition>
 
       <!-- Desktop Post Answer Feedback Banner -->
       <div class="w-full" v-if="quizStore.selectedAnswer !== null">
@@ -190,27 +193,29 @@ const isLastQuestion = computed(() => {
         </div>
 
         <!-- Options Grid on Mobile (Thumb reach zone) -->
-        <div class="grid grid-cols-3 gap-2 w-full">
-          <button 
-            v-for="(option, index) in quizStore.options" 
-            :key="'mobile-' + option"
-            class="relative py-3.5 px-2 text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-2xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[62px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-800 focus:outline-none shadow-xs"
-            :class="getOptionClass(option, index)"
-            @click="deactivateKeyboardNav(); submitOption(option);"
-            :disabled="quizStore.selectedAnswer !== null"
-          >
-            <!-- Shortcut Badge -->
-            <span 
-              v-if="quizStore.selectedAnswer === null"
-              class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded"
-              :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400'"
+        <transition name="question-blur" mode="out-in">
+          <div :key="quizStore.currentQuestionIndex" class="grid grid-cols-3 gap-2 w-full">
+            <button 
+              v-for="(option, index) in quizStore.options" 
+              :key="'mobile-' + option"
+              class="relative py-3.5 px-2 text-lg font-bold bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border-2 border-gray-200 dark:border-slate-800 rounded-2xl cursor-pointer transition-all duration-100 flex justify-center items-center min-h-[62px] active:scale-95 active:bg-indigo-50 dark:active:bg-slate-800 focus:outline-none shadow-xs"
+              :class="getOptionClass(option, index)"
+              @click="deactivateKeyboardNav(); submitOption(option);"
+              :disabled="quizStore.selectedAnswer !== null"
             >
-              {{ index + 1 }}
-            </span>
+              <!-- Shortcut Badge -->
+              <span 
+                v-if="quizStore.selectedAnswer === null"
+                class="absolute top-1.5 left-2 text-[10px] font-mono font-bold px-1.5 py-0.2 rounded"
+                :class="isKeyboardNav && index === focusedIndex ? 'bg-indigo-600 text-white' : 'bg-gray-100 dark:bg-slate-700 text-gray-400 dark:text-slate-400'"
+              >
+                {{ index + 1 }}
+              </span>
 
-            <span class="truncate">{{ option }}</span>
-          </button>
-        </div>
+              <span class="truncate">{{ option }}</span>
+            </button>
+          </div>
+        </transition>
 
         <!-- Next Question Action Button on Mobile when answered -->
         <div v-if="quizStore.selectedAnswer !== null" class="w-full pt-0.5 animate-fadeIn">

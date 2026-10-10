@@ -513,93 +513,95 @@ function preventPaste(e: ClipboardEvent) {
       >
 
         <!-- Sentence (Japanese) display with active character pointer, Power-Up Highlight & Live Progress Markers -->
-        <div class="pt-7 sm:pt-9 mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-7 sm:gap-y-9 min-h-[60px] sm:min-h-[80px] w-full max-w-xl relative overflow-visible font-jp">
-          <!-- Left Edge Markers (Players on previous sentences - Opacity 50%) -->
-          <div v-if="leftEdgeMarkers.length > 0" class="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
-            <div
-              v-for="marker in leftEdgeMarkers"
-              :key="marker.playerId"
-              class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
-              :class="marker.colorDef.bgClass"
-              :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
-              :title="`${marker.playerName} (Kalimat Sebelum)`"
-            >
-              <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
-                {{ marker.playerName.charAt(0) }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Right Edge Markers (Players on future sentences - Opacity 50%) -->
-          <div v-if="rightEdgeMarkers.length > 0" class="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
-            <div
-              v-for="marker in rightEdgeMarkers"
-              :key="marker.playerId"
-              class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
-              :class="marker.colorDef.bgClass"
-              :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
-              :title="`${marker.playerName} (Kalimat Depan)`"
-            >
-              <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
-                {{ marker.playerName.charAt(0) }}
-              </span>
-            </div>
-          </div>
-
-          <!-- Same Sentence Live Player Markers -->
-          <TransitionGroup name="marker-anim">
-            <div
-              v-for="marker in sameSentenceMarkers"
-              :key="marker.playerId"
-              class="absolute pointer-events-none z-25 transition-all duration-400 cubic-bezier(0.34,1.56,0.64,1) flex flex-col items-center"
-              :style="getMarkerPositionStyle(marker)"
-            >
+        <transition name="question-blur" mode="out-in">
+          <div :key="currentSentenceIndex" class="pt-7 sm:pt-9 mb-3 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold tracking-wide text-center flex flex-wrap items-center justify-center gap-x-1.5 sm:gap-x-2 gap-y-7 sm:gap-y-9 min-h-[60px] sm:min-h-[80px] w-full max-w-xl relative overflow-visible font-jp">
+            <!-- Left Edge Markers (Players on previous sentences - Opacity 50%) -->
+            <div v-if="leftEdgeMarkers.length > 0" class="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
               <div
-                class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-lg animate-bounce border-2 border-white/90 flex-shrink-0"
-                :class="[marker.colorDef.bgClass, marker.colorDef.glowClass]"
-                :title="`${marker.playerName} (Karakter ${marker.activeUnitIndex + 1})`"
+                v-for="marker in leftEdgeMarkers"
+                :key="marker.playerId"
+                class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
+                :class="marker.colorDef.bgClass"
+                :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
+                :title="`${marker.playerName} (Kalimat Sebelum)`"
               >
-                <span class="text-[9px] sm:text-[10px] font-black text-white leading-none select-none uppercase shadow-sm">
+                <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
                   {{ marker.playerName.charAt(0) }}
                 </span>
               </div>
             </div>
-          </TransitionGroup>
 
-          <template v-for="(unit, idx) in units" :key="idx">
-            <div
-              :ref="(el) => setUnitRef(el, idx)"
-              class="relative inline-flex flex-col items-center font-jp"
-            >
-              <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold font-jp">{{ unit.kana }}</span>
-
-              <span
-                v-else-if="idx === activeUnitIndex"
-                :class="[
-                  hasError ? 'animate-shake-unit !text-rose-400 !border-rose-400 !bg-rose-500/20' : '',
-                  idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
-                    ? getPowerUpHighlightClass(powerUpType, true)
-                    : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400',
-                  'font-jp'
-                ]"
+            <!-- Right Edge Markers (Players on future sentences - Opacity 50%) -->
+            <div v-if="rightEdgeMarkers.length > 0" class="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 flex flex-col gap-1 z-25 opacity-50 transition-opacity pointer-events-none">
+              <div
+                v-for="marker in rightEdgeMarkers"
+                :key="marker.playerId"
+                class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-md transition-all duration-300 animate-bounce border-2 border-white/90"
+                :class="marker.colorDef.bgClass"
+                :style="{ transform: `translateY(-${marker.stackIndex * 20}px)` }"
+                :title="`${marker.playerName} (Kalimat Depan)`"
               >
-                {{ unit.kana }}
-              </span>
-
-              <span
-                v-else
-                :class="[
-                  idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
-                    ? getPowerUpHighlightClass(powerUpType, false)
-                    : 'text-slate-400/70 font-medium',
-                  'font-jp'
-                ]"
-              >
-                {{ unit.kana }}
-              </span>
+                <span class="text-[9px] sm:text-[10px] font-black text-white leading-none uppercase">
+                  {{ marker.playerName.charAt(0) }}
+                </span>
+              </div>
             </div>
-          </template>
-        </div>
+
+            <!-- Same Sentence Live Player Markers -->
+            <TransitionGroup name="marker-anim">
+              <div
+                v-for="marker in sameSentenceMarkers"
+                :key="marker.playerId"
+                class="absolute pointer-events-none z-25 transition-all duration-400 cubic-bezier(0.34,1.56,0.64,1) flex flex-col items-center"
+                :style="getMarkerPositionStyle(marker)"
+              >
+                <div
+                  class="w-5 sm:w-6 h-5 sm:h-6 rounded-full flex items-center justify-center shadow-lg animate-bounce border-2 border-white/90 flex-shrink-0"
+                  :class="[marker.colorDef.bgClass, marker.colorDef.glowClass]"
+                  :title="`${marker.playerName} (Karakter ${marker.activeUnitIndex + 1})`"
+                >
+                  <span class="text-[9px] sm:text-[10px] font-black text-white leading-none select-none uppercase shadow-sm">
+                    {{ marker.playerName.charAt(0) }}
+                  </span>
+                </div>
+              </div>
+            </TransitionGroup>
+
+            <template v-for="(unit, idx) in units" :key="idx">
+              <div
+                :ref="(el) => setUnitRef(el, idx)"
+                class="relative inline-flex flex-col items-center font-jp"
+              >
+                <span v-if="idx < activeUnitIndex" class="text-emerald-400 font-extrabold font-jp">{{ unit.kana }}</span>
+
+                <span
+                  v-else-if="idx === activeUnitIndex"
+                  :class="[
+                    hasError ? 'animate-shake-unit !text-rose-400 !border-rose-400 !bg-rose-500/20' : '',
+                    idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
+                      ? getPowerUpHighlightClass(powerUpType, true)
+                      : 'text-amber-300 font-black bg-amber-400/25 px-1.5 sm:px-2 py-0.5 rounded-lg sm:rounded-xl animate-pulse shadow-lg shadow-amber-400/20 underline underline-offset-4 sm:underline-offset-8 decoration-amber-400',
+                    'font-jp'
+                  ]"
+                >
+                  {{ unit.kana }}
+                </span>
+
+                <span
+                  v-else
+                  :class="[
+                    idx === powerUpUnitIndex && !claimedPowerUpUnits.has(idx) && !failedPowerUpUnits.has(idx)
+                      ? getPowerUpHighlightClass(powerUpType, false)
+                      : 'text-slate-400/70 font-medium',
+                    'font-jp'
+                  ]"
+                >
+                  {{ unit.kana }}
+                </span>
+              </div>
+            </template>
+          </div>
+        </transition>
 
         <!-- Typed romaji display (shows completed characters + ONLY 1 upcoming character) -->
         <div

@@ -236,73 +236,82 @@ const remainingSecFormatted = computed(() => {
       <div v-else-if="question" class="w-full flex flex-col items-center justify-between h-full min-h-0">
         
         <!-- Big Japanese Prompt Card -->
-        <div class="w-full relative p-5 sm:p-7 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 shadow-xl flex flex-col items-center justify-center text-center mb-3 sm:mb-4 flex-shrink-0">
-          
-          <!-- Speed Points Earned Floating Badge -->
-          <div
-            v-if="answered && pointsEarned !== null"
-            :class="[
-              'absolute -top-3.5 px-3 py-1 rounded-full text-xs sm:text-sm font-black flex items-center gap-1 shadow-lg',
-              pointsEarned > 0
-                ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/40'
-                : 'bg-rose-500 text-white shadow-rose-500/40'
-            ]"
+        <transition name="question-blur" mode="out-in">
+          <div 
+            :key="store.activeRound?.sentence_id || store.activeRound?.round_number"
+            class="w-full relative p-5 sm:p-7 rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 shadow-xl flex flex-col items-center justify-center text-center mb-3 sm:mb-4 flex-shrink-0"
           >
-            <Sparkles v-if="pointsEarned > 0" class="w-4 h-4 fill-slate-950" />
-            <span>{{ pointsEarned > 0 ? `+${pointsEarned} Poin Kecepatan!` : 'Salah (0 pts)' }}</span>
-          </div>
+            <!-- Speed Points Earned Floating Badge -->
+            <div
+              v-if="answered && pointsEarned !== null"
+              :class="[
+                'absolute -top-3.5 px-3 py-1 rounded-full text-xs sm:text-sm font-black flex items-center gap-1 shadow-lg',
+                pointsEarned > 0
+                  ? 'bg-emerald-500 text-slate-950 shadow-emerald-500/40'
+                  : 'bg-rose-500 text-white shadow-rose-500/40'
+              ]"
+            >
+              <Sparkles v-if="pointsEarned > 0" class="w-4 h-4 fill-slate-950" />
+              <span>{{ pointsEarned > 0 ? `+${pointsEarned} Poin Kecepatan!` : 'Salah (0 pts)' }}</span>
+            </div>
 
-          <div class="text-xs text-indigo-400 font-bold uppercase tracking-wider mb-1">
-            {{ question.questionText }}
-          </div>
+            <div class="text-xs text-indigo-400 font-bold uppercase tracking-wider mb-1">
+              {{ question.questionText }}
+            </div>
 
-          <!-- Japanese Main Prompt (Large & High Contrast) -->
-          <div class="text-4xl sm:text-6xl font-black text-white tracking-wide my-1.5 drop-shadow-md font-jp">
-            {{ question.prompt }}
-          </div>
+            <!-- Japanese Main Prompt (Large & High Contrast) -->
+            <div class="text-4xl sm:text-6xl font-black text-white tracking-wide my-1.5 drop-shadow-md font-jp">
+              {{ question.prompt }}
+            </div>
 
-          <!-- SubPrompt / Reading Hint if available -->
-          <div v-if="question.subPrompt" class="text-xs sm:text-sm font-semibold text-slate-400 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700 mt-1 font-jp">
-            {{ question.subPrompt }}
+            <!-- SubPrompt / Reading Hint if available -->
+            <div v-if="question.subPrompt" class="text-xs sm:text-sm font-semibold text-slate-400 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700 mt-1 font-jp">
+              {{ question.subPrompt }}
+            </div>
           </div>
-        </div>
+        </transition>
 
         <!-- 4–6 Responsive Choice Buttons -->
-        <div :class="[
-          'w-full grid gap-2 sm:gap-3 flex-1 min-h-0',
-          question.options.length > 4 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'
-        ]">
-          <button
-            v-for="(opt, idx) in question.options"
-            :key="idx"
-            type="button"
-            @click="handleOptionSelect(idx, opt)"
-            :disabled="answered || !isQuestionActive"
+        <transition name="question-blur" mode="out-in">
+          <div 
+            :key="store.activeRound?.sentence_id || store.activeRound?.round_number"
             :class="[
-              'relative p-3.5 sm:p-4 rounded-2xl font-black text-sm sm:text-base transition-all duration-150 flex items-center justify-between border shadow-sm cursor-pointer select-none text-left min-h-[52px] sm:min-h-[60px]',
-              answered
-                ? idx === question.correctOptionIndex
-                  ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 ring-2 ring-emerald-400/50'
-                  : idx === selectedOptionIndex
-                  ? 'bg-rose-500/20 border-rose-400 text-rose-300 ring-2 ring-rose-400/50'
-                  : 'bg-slate-900/40 border-slate-800/60 text-slate-500 opacity-60'
-                : 'bg-slate-900 hover:bg-indigo-950/60 active:scale-[0.98] border-slate-800 hover:border-indigo-500 text-slate-100'
+              'w-full grid gap-2 sm:gap-3 flex-1 min-h-0',
+              question.options.length > 4 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'
             ]"
           >
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="w-6 h-6 rounded-lg bg-white/10 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
-                {{ idx + 1 }}
-              </span>
-              <span class="truncate">{{ opt }}</span>
-            </div>
+            <button
+              v-for="(opt, idx) in question.options"
+              :key="idx"
+              type="button"
+              @click="handleOptionSelect(idx, opt)"
+              :disabled="answered || !isQuestionActive"
+              :class="[
+                'relative p-3.5 sm:p-4 rounded-2xl font-black text-sm sm:text-base transition-all duration-150 flex items-center justify-between border shadow-sm cursor-pointer select-none text-left min-h-[52px] sm:min-h-[60px]',
+                answered
+                  ? idx === question.correctOptionIndex
+                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 ring-2 ring-emerald-400/50'
+                    : idx === selectedOptionIndex
+                    ? 'bg-rose-500/20 border-rose-400 text-rose-300 ring-2 ring-rose-400/50'
+                    : 'bg-slate-900/40 border-slate-800/60 text-slate-500 opacity-60'
+                  : 'bg-slate-900 hover:bg-indigo-950/60 active:scale-[0.98] border-slate-800 hover:border-indigo-500 text-slate-100'
+              ]"
+            >
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-6 h-6 rounded-lg bg-white/10 text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  {{ idx + 1 }}
+                </span>
+                <span class="truncate">{{ opt }}</span>
+              </div>
 
-            <!-- Result Feedback Icon -->
-            <div v-if="answered" class="flex-shrink-0 ml-2">
-              <CheckCircle2 v-if="idx === question.correctOptionIndex" class="w-5 h-5 text-emerald-400" />
-              <XCircle v-else-if="idx === selectedOptionIndex" class="w-5 h-5 text-rose-400" />
-            </div>
-          </button>
-        </div>
+              <!-- Result Feedback Icon -->
+              <div v-if="answered" class="flex-shrink-0 ml-2">
+                <CheckCircle2 v-if="idx === question.correctOptionIndex" class="w-5 h-5 text-emerald-400" />
+                <XCircle v-else-if="idx === selectedOptionIndex" class="w-5 h-5 text-rose-400" />
+              </div>
+            </button>
+          </div>
+        </transition>
 
       </div>
     </div>

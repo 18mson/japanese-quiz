@@ -229,39 +229,43 @@ onUnmounted(() => {
     <div v-if="!isQuizFinished && currentQuestion" class="w-full flex-1 flex flex-col justify-between items-center gap-4">
       <!-- 1. Question Card Display -->
       <div class="w-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-5 sm:p-7 md:p-8 shadow-sm text-center relative flex flex-col items-center justify-center min-h-[160px] sm:min-h-[190px]">
-        <!-- Direction Badge -->
-        <div class="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
-          {{ direction === 'number_to_kana' ? 'Angka ➔ Ketik Kana' : 'Kana ➔ Numpad Angka' }}
-        </div>
+        <transition name="question-blur" mode="out-in">
+          <div :key="currentQuestion?.displayPrompt" class="w-full flex flex-col items-center justify-center">
+            <!-- Direction Badge -->
+            <div class="text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+              {{ direction === 'number_to_kana' ? 'Angka ➔ Ketik Kana' : 'Kana ➔ Numpad Angka' }}
+            </div>
 
-        <!-- Main Prompt -->
-        <div 
-          class="font-black text-slate-900 dark:text-slate-100 font-jp my-1 flex items-center justify-center gap-3 max-w-full px-2"
-          :class="[
-            currentQuestion.displayPrompt.length > 12 
-              ? 'text-2xl sm:text-3xl md:text-4xl' 
-              : (currentQuestion.displayPrompt.length > 6 
-                ? 'text-3xl sm:text-4xl md:text-5xl' 
-                : 'text-4xl sm:text-5xl md:text-6xl')
-          ]"
-        >
-          <span class="break-keep tracking-wide text-center">{{ currentQuestion.displayPrompt }}</span>
-          <!-- Audio button on prompt for kana_to_number -->
-          <button 
-            v-if="direction === 'kana_to_number'"
-            type="button"
-            @click="speak(currentQuestion.expectedKana)"
-            class="p-2 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-torii hover:bg-indigo-100 dark:hover:bg-slate-700 transition cursor-pointer flex-shrink-0"
-            title="Dengarkan Ulang"
-          >
-            <Volume2 class="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-        </div>
+            <!-- Main Prompt -->
+            <div 
+              class="font-black text-slate-900 dark:text-slate-100 font-jp my-1 flex items-center justify-center gap-3 max-w-full px-2"
+              :class="[
+                currentQuestion.displayPrompt.length > 12 
+                  ? 'text-2xl sm:text-3xl md:text-4xl' 
+                  : (currentQuestion.displayPrompt.length > 6 
+                    ? 'text-3xl sm:text-4xl md:text-5xl' 
+                    : 'text-4xl sm:text-5xl md:text-6xl')
+              ]"
+            >
+              <span class="break-keep tracking-wide text-center">{{ currentQuestion.displayPrompt }}</span>
+              <!-- Audio button on prompt for kana_to_number -->
+              <button 
+                v-if="direction === 'kana_to_number'"
+                type="button"
+                @click="speak(currentQuestion.expectedKana)"
+                class="p-2 rounded-xl bg-indigo-50 dark:bg-slate-800 text-indigo-600 dark:text-torii hover:bg-indigo-100 dark:hover:bg-slate-700 transition cursor-pointer flex-shrink-0"
+                title="Dengarkan Ulang"
+              >
+                <Volume2 class="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
 
-        <!-- Subprompt / Clue -->
-        <div v-if="currentQuestion.displaySubprompt" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
-          {{ currentQuestion.displaySubprompt }}
-        </div>
+            <!-- Subprompt / Clue -->
+            <div v-if="currentQuestion.displaySubprompt" class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
+              {{ currentQuestion.displaySubprompt }}
+            </div>
+          </div>
+        </transition>
       </div>
 
       <!-- 2. Input / Numpad Section -->
