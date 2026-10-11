@@ -54,23 +54,30 @@ const handleNextCard = () => {
     currentCardIndex.value = 0;
   } else {
     currentCardIndex.value++;
-    // Play sound immediately on next card
-    setTimeout(() => {
-      playAudioHint();
-    }, 80);
   }
 };
 
-let modalMountedAt = 0;
+let modalOpenedAt = 0;
+let lastNextCardAt = 0;
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (!quizStore.isWavePreviewActive && !quizStore.showMicroPreviewModal) return;
-  if (Date.now() - modalMountedAt < 300) return; // Prevent accidental skip on launch
-  if (e.key === 'Enter' || e.key === 'ArrowRight') {
+  // Prevent accidental skip immediately when modal opens (< 150ms)
+  if (Date.now() - modalOpenedAt < 150) return;
+
+  if (e.key === 'Enter' || e.code === 'Enter' || e.key === 'NumpadEnter' || e.key === 'ArrowRight' || e.code === 'ArrowRight') {
     e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    // Throttle 200ms between cards to prevent accidental rapid double enters
+    if (Date.now() - lastNextCardAt < 200) return;
+    lastNextCardAt = Date.now();
+
     handleNextCard();
   } else if (e.key === ' ' || e.key === 'v' || e.key === 'V') {
     e.preventDefault();
+    e.stopPropagation();
     playAudioHint();
   }
 };
@@ -82,23 +89,36 @@ watch(
     if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal) {
       setTimeout(() => {
         playAudioHint();
-      }, 150);
+      }, 100);
     }
   }
 );
 
+// Watch when preview modal becomes active
+watch(
+  [() => quizStore.isWavePreviewActive, () => quizStore.showMicroPreviewModal],
+  ([wave, micro]) => {
+    if (wave || micro) {
+      modalOpenedAt = Date.now();
+      // Blur any active input so focus doesn't capture/block keys
+      if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+      setTimeout(() => {
+        playAudioHint();
+      }, 150);
+    }
+  },
+  { immediate: true }
+);
+
 onMounted(() => {
-  modalMountedAt = Date.now();
-  window.addEventListener('keydown', handleKeydown);
-  if (quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal) {
-    setTimeout(() => {
-      playAudioHint();
-    }, 200);
-  }
+  modalOpenedAt = Date.now();
+  window.addEventListener('keydown', handleKeydown, { capture: true });
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('keydown', handleKeydown, { capture: true });
   stop();
 });
 </script>

@@ -109,7 +109,9 @@ watch(
     () => quizStore.justClosedPreview
   ], 
   ([waveActive, microActive, justClosed]) => {
-    if (!waveActive && !microActive && !justClosed) {
+    if (waveActive || microActive) {
+      inputRef.value?.blur();
+    } else if (!justClosed) {
       setTimeout(() => {
         focusInput();
       }, 80);
