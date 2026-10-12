@@ -258,19 +258,15 @@ export const useMasteryStore = defineStore('mastery', () => {
     let newStreak = oldStreak;
 
     if (isTypo && !isCorrectVal) {
-      // Soal yg sudah hafal (streak 3-4) atau mahkota (streak >= 5),
-      // lalu hanya typo atau salah 1 huruf:
-      // Cukup turun 1 tingkatan saja:
-      // - Mahkota (>= 5) -> Hafal (4)
-      // - Hafal (3-4) -> Proses (2)
-      // - Proses (1-2) -> Belum (0)
-      // - Belum (0) -> tetap 0
+      // Logic saat typo (salah ketik 1 huruf):
+      // 1. Level Mahkota (streak >= 5):
+      //    Turun 1 streak (bisa tetap di Mahkota jika streak > 5, atau turun ke Hafal jika 5 -> 4).
+      // 2. Di bawah Mahkota (Hafal & Proses/Belum - streak < 5):
+      //    Streak TIDAK BERUBAH (tidak ter-reset, tidak berkurang, dan tidak bertambah).
       if (oldStreak >= 5) {
-        newStreak = 4;
-      } else if (oldStreak >= 3) {
-        newStreak = 2;
+        newStreak = oldStreak - 1;
       } else {
-        newStreak = 0;
+        newStreak = oldStreak;
       }
 
       if (newStreak !== oldStreak) {
@@ -278,8 +274,21 @@ export const useMasteryStore = defineStore('mastery', () => {
         streakChanged = true;
       }
     } else if (!isCorrectVal) {
-      // Salah total atau dilewati -> reset ke 0
-      newStreak = 0;
+      // Salah total (bukan typo / dilewati):
+      if (oldStreak >= 5) {
+        // Level Mahkota (streak >= 5): turun 2 level -> Level Proses (streak 2)
+        newStreak = 2;
+      } else if (oldStreak >= 3) {
+        // Level Hafal (streak 3-4): turun 1 level -> Level Proses (streak 2)
+        newStreak = 2;
+      } else if (oldStreak >= 1) {
+        // Level Proses (streak 1-2): turun 1 streak (minimal streak 1)
+        newStreak = Math.max(1, oldStreak - 1);
+      } else {
+        // Level Belum (streak 0): tetap 0
+        newStreak = 0;
+      }
+
       if (newStreak !== oldStreak) {
         userStreaks.value[charKey] = newStreak;
         streakChanged = true;

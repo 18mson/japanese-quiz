@@ -148,9 +148,29 @@ const correctRomajiDisplay = computed(() => {
     : currentWord.value.romaji;
 });
 
+import { useMasteryStore } from '../stores/masteryStore';
+
+const masteryStore = useMasteryStore();
+
 const isTypo = computed(() => {
   const lastAns = quizStore.userAnswers[quizStore.userAnswers.length - 1];
   return lastAns && lastAns.character === currentWord.value?.character && lastAns.isTypo;
+});
+
+const typoStatusMessage = computed(() => {
+  if (!isTypo.value) return '';
+  const char = currentWord.value?.character;
+  const currentStreak = char ? (masteryStore.userStreaks[char] || 0) : 0;
+  if (quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down') {
+    return 'Turun ke Hafal (Streak -1)';
+  }
+  if (currentStreak >= 5) {
+    return 'Tetap Mahkota (Streak -1)';
+  }
+  if (currentStreak >= 3) {
+    return 'Status Hafal aman (Streak tetap)';
+  }
+  return 'Salah ketik (+3 Poin, Streak tetap)';
 });
 </script>
 
@@ -218,10 +238,10 @@ const isTypo = computed(() => {
             <template v-else>Salah</template>
           </h3>
           <p 
-            v-if="isTypo && quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down'"
+            v-if="isTypo && typoStatusMessage"
             class="text-xs font-semibold text-amber-700 dark:text-amber-300 mt-0.5"
           >
-            Turun 1 tingkatan (tidak di-reset ke 0)
+            {{ typoStatusMessage }}
           </p>
           
           <div class="mt-2 space-y-1">
