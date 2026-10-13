@@ -210,20 +210,17 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       count: situationalPhrases.value.length,
       activeClass: 'bg-amber-600 text-white shadow-md shadow-amber-600/30 border-amber-600 dark:border-amber-500',
       color: 'amber'
-    }
-  ];
-
-  if (currentChapter.value.tables && currentChapter.value.tables.length > 0) {
-    tabs.push({
+    },
+    {
       id: 'tables',
       name: 'Lampiran Khusus',
       jpName: '付録 · Tabel Ringkasan',
       icon: Table2,
-      count: currentChapter.value.tables.length,
+      count: currentChapter.value.tables?.length || 0,
       activeClass: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30 border-cyan-600 dark:border-cyan-500',
       color: 'cyan'
-    });
-  }
+    }
+  ];
 
   return tabs;
 });

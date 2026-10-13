@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Table2 } from '@lucide/vue';
 import type { LessonGrammarChapter } from '../../../../data/lessonGrammarBook';
 
 defineProps<{
@@ -8,7 +9,14 @@ defineProps<{
 
 <template>
   <section class="flex flex-col gap-6">
+    <div v-if="!tables || tables.length === 0" class="py-12 text-center text-slate-500 dark:text-slate-400">
+      <Table2 class="w-8 h-8 mx-auto mb-2 opacity-50" />
+      <p class="text-sm font-bold">Tidak ada lampiran khusus untuk bab ini.</p>
+      <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Bab ini berfokus pada pola kalimat utama dan partikel tanpa tabel referensi khusus.</p>
+    </div>
+
     <div
+      v-else
       v-for="(tbl, tIdx) in tables"
       :key="tIdx"
       class="bg-white dark:bg-slate-850/90 border border-gray-200/90 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-xs dark:shadow-md flex flex-col gap-3"

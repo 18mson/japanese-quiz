@@ -7,9 +7,26 @@ export interface VersionEntry {
   highlights: string[];
 }
 
-export const APP_VERSION = '2.8.1';
+export const APP_VERSION = '2.9.0';
 
 export const VERSION_HISTORY: VersionEntry[] = [
+  {
+    version: '2.9.0',
+    tag: 'Lesson Handbook & Kotoba Expansion',
+    date: '13 Okt 2026',
+    type: 'minor',
+    title: 'Buku Saku Materi Minna no Nihongo (Bab 1–25), Ekspansi Kosakata Bab 21 & 22, dan Penyelarasan UI/UX',
+    highlights: [
+      'Fitur Baru: Buku Saku Materi (Lesson Handbook): Panduan komprehensif tata bahasa Bab 1–25 Minna no Nihongo dengan 5 tab interaktif (Pola & Rumus Bunkei, Partikel & Kaidah Joshi, Kosakata Resmi Kotoba, Percakapan Kaiwa, dan Lampiran Khusus) lengkap dengan audio TTS dan navigasi mobile/desktop.',
+      'Konsistensi Tab Lampiran Khusus di Buku Materi: Tab Lampiran Khusus kini selalu tampil di setiap bab; jika bab belum memiliki tabel referensi, indikator counter akan menampilkan 0 (konsisten dengan tab Partikel) beserta status panduan informatif.',
+      'Penambahan Kosakata Bab 21 & 22: Menambahkan 30 kosakata baru Bab 21 dan 40 kosakata baru Bab 22 Minna no Nihongo ke dalam kamus lengkap dengan kanji, kana, romaji, dan terjemahan bahasa Indonesia.',
+      'Penyeragaman Dimensi Header: Menyetarakan ukuran, tinggi, dan padding header antara halaman Home dan halaman Materi untuk transisi halaman yang mulus dan presisi.',
+      'Stabilisasi Sakelar Tema (Anti-Flicker): Menghilangkan kedipan (flicker) ikon dan tombol switch tema saat beralih antara Light Mode dan Dark Mode.',
+      'Tata Letak Rata Atas Kuis Kotoba: Mengunci posisi vertikal kuis kotoba menjadi rata atas agar tidak bergeser saat evaluasi dan hasil jawaban dimunculkan.',
+      'Perbaikan Animasi Filter Materi: Mengoptimalkan transisi animasi buka/tutup pada filter materi agar selalu tampil konsisten di semua resolusi layar.',
+      'Tampilan Lengkap Ringkasan Soal: Memperbaiki tampilan ringkasan soal pada hasil kuis kotoba agar teks pertanyaan dan jawaban tampil penuh tanpa terpotong.'
+    ]
+  },
   {
     version: '2.8.1',
     tag: 'Celebration & Theme Alignment',

@@ -78,13 +78,23 @@ A modern, interactive, and intelligent web application designed to help learners
 - **Supabase Integration**: Synchronizes user streaks, match records, and leaderboard rankings online across devices.
 - **Speed & Cumulative Leaderboards**: Track top-performing speed runs and total cumulative scores.
 
+### 📖 12. Lesson Handbook & Grammar Reference (Buku Saku Materi Minna no Nihongo)
+- **Komprehensif Bab 1–25**: Panduan lengkap materi tata bahasa terstruktur mengikuti silabus Minna no Nihongo Shokyuu I.
+- **5 Tab Navigasi Terpadu**:
+  - 📐 **Pola & Rumus (Bunkei)**: Rumus pola kalimat, visual token tata bahasa, dan contoh kalimat berbunyi audio TTS.
+  - 🧭 **Partikel & Kaidah (Joshi)**: Peran partikel dan catatan tata bahasa penting.
+  - ⛩️ **Kosakata Bab (Kotoba)**: Bank kosakata resmi per bab (termasuk ekspansi lengkap Bab 21 & 22) dengan filter kategori cepat.
+  - ✨ **Ungkapan & Percakapan (Kaiwa)**: Frasa situasional dan pola dialog sehari-hari.
+  - 📊 **Lampiran Khusus (Tabel Ringkasan)**: Tabel referensi khusus (kata sifat, konjugasi, hitungan) dengan indikator status yang selalu konsisten di setiap bab.
+- **Navigasi Responsif**: Sidebar desktop interaktif dan floating action pill responsif di mobile dengan filter cepat.
+
 ---
 
 ## 🛠️ Technology Stack
 
 - **Frontend Core**: [Vue 3](https://vuejs.org/) (Composition API + `<script setup>`) + [TypeScript](https://www.typescriptlang.org/)
 - **Build Tool**: [Vite](https://vitejs.dev/) + PWA support (`vite-plugin-pwa`)
-- **State Management**: [Pinia](https://pinia.vuejs.org/) (`authStore`, `quizStore`, `battlegroundStore`, `settingsStore`)
+- **State Management**: [Pinia](https://pinia.vuejs.org/) (`authStore`, `quizStore`, `battlegroundStore`, `settingsStore`, `masteryStore`)
 - **Styling & Icons**: [Tailwind CSS](https://tailwindcss.com/) (with dark mode class support) + [@lucide/vue](https://lucide.dev/)
 - **Japanese Romaji Parsing**: [WanaKana](https://wanakana.com/)
 - **Database, Auth & Realtime**: [Supabase](https://supabase.com/) (PostgreSQL + Realtime Broadcast & Presence + Deno Edge Functions)
@@ -127,6 +137,29 @@ npm run build
 # Preview build locally
 npm run preview
 ```
+
+---
+
+## 📋 Catatan Rilis & Sistem Versi (Changelog)
+
+### v2.9.0 (13 Okt 2026) - Lesson Handbook & Kotoba Expansion
+- **Fitur Baru Buku Saku Materi (Lesson Handbook)**: Peluncuran fitur panduan materi tata bahasa Minna no Nihongo Bab 1–25 dengan 5 tab interaktif (Pola & Rumus Bunkei, Partikel & Kaidah Joshi, Kosakata Resmi Kotoba, Percakapan Kaiwa, dan Lampiran Khusus) lengkap dengan native audio TTS dan navigasi mobile/desktop.
+- **Konsistensi Tab Lampiran Khusus**: Tab Lampiran Khusus di Buku Materi kini selalu tampil di setiap bab; jika bab belum memiliki tabel referensi khusus, indikator menampilkan `0` (konsisten dengan tab Partikel) beserta tampilan panduan informatif.
+- **Ekspansi Kosakata Bab 21 & 22**: Menambahkan 30 kosakata baru Bab 21 dan 40 kosakata baru Bab 22 Minna no Nihongo ke dalam bank data lengkap dengan kanji, kana, romaji, dan makna bahasa Indonesia.
+- **Penyeragaman Ukuran Header**: Menyamakan ketinggian, padding, dan ukuran header antara halaman Home dan halaman Materi untuk transisi visual yang mulus dan presisi.
+- **Stabilisasi Sakelar Tema (Anti-Flicker)**: Mengatasi glitch/kedipan pada tombol switch tema dan ikon saat berganti antara Light Mode dan Dark Mode.
+- **Tata Letak Rata Atas Kuis Kotoba**: Mengunci posisi kuis kotoba agar tetap rata atas guna mencegah pergeseran vertikal elemen antarmuka saat hasil kuis dimunculkan.
+- **Perbaikan Animasi Filter Materi**: Mengoptimalkan animasi transisi filter materi agar selalu responsif dan tampil mulus.
+- **Penyempurnaan Ringkasan Soal Hasil Kuis**: Memperbaiki pemotongan teks ringkasan soal pada kartu rekap hasil kuis kotoba.
+
+### v2.8.1 (30 Sep 2026) - Celebration & Theme Alignment
+- Penyelarasan modal naik level adaptif terhadap tema Light & Dark mode.
+- Reposisi toast target harian ke posisi atas layar (top-center) dengan animasi luncur halus.
+- Kelengkapan kosakata alat tulis Minna no Nihongo Bab 7.
+
+### v2.8.0 (29 Sep 2026) - Aizome & Light Mode Refinement
+- Penyelarasan penuh Light Mode dengan palet warna tradisional Jepang (Aizome Indigo & Torii Vermilion).
+- Pembaruan tampilan hasil kuis, canvas kanji Genkouyoushi, dan ikon vektor flat Lucide.
 
 ---
 
