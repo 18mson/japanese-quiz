@@ -50,7 +50,7 @@ defineExpose({
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between gap-1.5 sm:gap-3 shadow-xs flex-shrink-0">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 h-[59px] min-h-[59px] flex items-center justify-between gap-1.5 sm:gap-3 shadow-xs flex-shrink-0">
     <!-- Left: Back Button & Breadcrumb -->
     <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
       <button
@@ -249,3 +249,16 @@ defineExpose({
     </div>
   </header>
 </template>
+
+<style scoped>
+.expand-search-enter-active,
+.expand-search-leave-active {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.expand-search-enter-from,
+.expand-search-leave-to {
+  opacity: 0;
+  transform: scaleX(0.85);
+  transform-origin: right center;
+}
+</style>

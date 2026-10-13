@@ -240,7 +240,7 @@ const goToHome = () => {
 <template>
   <div class="h-full w-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
     <!-- Top Global App Bar (Hidden when Battleground, Daily Practice or Handbook is active) -->
-    <header v-if="!showBattleground && !showDailyPractice && !showHandbook" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <header v-if="!showBattleground && !showDailyPractice && !showHandbook" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 h-[59px] min-h-[59px] flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
           <span class="text-xl">🇯🇵</span>
@@ -722,7 +722,7 @@ const goToHome = () => {
     <div 
       v-else 
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
-      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : 'max-w-2xl pb-48 md:pb-20')"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-3xl pb-24 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'))"
     >
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       
@@ -763,7 +763,7 @@ const goToHome = () => {
         </template>
       </main>
       
-      <QuizResults v-else class="flex-1 overflow-hidden" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
+      <QuizResults v-else class="w-full flex-shrink-0" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       <QuizBottomNav v-if="quizStore.selectedMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" :quiz-started="quizStarted" />
     </div>
   </div>

@@ -173,3 +173,73 @@ watch(() => props.activeTab, () => {
     </div>
   </Transition>
 </template>
+
+<style scoped>
+.fab-fade-enter-active,
+.fab-fade-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fab-fade-enter-from,
+.fab-fade-leave-to {
+  opacity: 0;
+  transform: translateY(14px) scale(0.95);
+}
+.fab-fade-enter-to,
+.fab-fade-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Animasi stagger list tombol filter */
+.stagger-filter-enter-active {
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--enter-delay, 0) * 45ms);
+}
+.stagger-filter-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 1, 1), transform 0.2s cubic-bezier(0.4, 0, 1, 1);
+  transition-delay: calc(var(--leave-delay, 0) * 35ms);
+}
+
+.stagger-filter-enter-from {
+  opacity: 0;
+  transform: translateX(45px) scale(0.9);
+}
+.stagger-filter-leave-to {
+  opacity: 0;
+  transform: translateX(50px) scale(0.85);
+}
+
+.fade-overlay-enter-active,
+.fade-overlay-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-overlay-enter-from,
+.fade-overlay-leave-to {
+  opacity: 0;
+}
+
+.expand-text-enter-active,
+.expand-text-leave-active {
+  transition: all 0.25s ease;
+}
+.expand-text-enter-from,
+.expand-text-leave-to {
+  opacity: 0;
+  max-width: 0;
+  transform: scaleX(0.8);
+}
+.expand-text-enter-to,
+.expand-text-leave-from {
+  opacity: 1;
+  max-width: 200px;
+  transform: scaleX(1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

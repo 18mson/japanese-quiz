@@ -18,7 +18,7 @@ const emit = defineEmits<{
   <Transition name="dropdown-slide">
     <div
       v-if="isOpen"
-      class="fixed sm:absolute top-[49px] sm:top-[57px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
+      class="fixed sm:absolute top-[59px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
     >
       <div class="flex items-center justify-between pb-2.5 border-b border-gray-200/80 dark:border-slate-800 mb-2.5">
         <div class="flex items-center gap-2">
@@ -65,8 +65,34 @@ const emit = defineEmits<{
   <Transition name="fade-overlay">
     <div
       v-if="isOpen"
-      class="fixed inset-x-0 bottom-0 top-[49px] sm:top-[57px] z-30 bg-slate-950/50 dark:bg-slate-950/70 backdrop-blur-xs cursor-pointer"
+      class="fixed inset-x-0 bottom-0 top-[59px] z-30 bg-slate-950/50 dark:bg-slate-950/70 backdrop-blur-xs cursor-pointer"
       @click="emit('close')"
     />
   </Transition>
 </template>
+
+<style scoped>
+.dropdown-slide-enter-active,
+.dropdown-slide-leave-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dropdown-slide-enter-from,
+.dropdown-slide-leave-to {
+  opacity: 0;
+  transform: translate(-50%, -10px) scale(0.97);
+}
+.dropdown-slide-enter-to,
+.dropdown-slide-leave-from {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.fade-overlay-enter-active,
+.fade-overlay-leave-active {
+  transition: opacity 0.25s ease;
+}
+.fade-overlay-enter-from,
+.fade-overlay-leave-to {
+  opacity: 0;
+}
+</style>

@@ -105,7 +105,7 @@ function handleRetry() {
 <template>
   <div class="min-h-screen h-full w-full bg-slate-50 dark:bg-slate-950 flex flex-col justify-between overflow-y-auto text-slate-900 dark:text-slate-100 transition-colors duration-200">
     <!-- Top Global App Bar for Daily Mode -->
-    <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 h-[59px] min-h-[59px] flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2 sm:gap-3">
         <!-- Back button -->
         <button

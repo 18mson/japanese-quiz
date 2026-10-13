@@ -35,13 +35,11 @@ const handleKeydown = (event: KeyboardEvent) => {
     isKeyboardNav.value = true;
     focusedButtonIndex.value = (focusedButtonIndex.value - 1 + 3) % 3;
   } else if (event.key === 'ArrowDown') {
-    if (listRef.value) {
-      listRef.value.scrollBy({ top: 100, behavior: 'smooth' });
-    }
+    const scrollContainer = listRef.value?.closest('.overflow-y-auto') || window;
+    scrollContainer.scrollBy({ top: 120, behavior: 'smooth' });
   } else if (event.key === 'ArrowUp') {
-    if (listRef.value) {
-      listRef.value.scrollBy({ top: -100, behavior: 'smooth' });
-    }
+    const scrollContainer = listRef.value?.closest('.overflow-y-auto') || window;
+    scrollContainer.scrollBy({ top: -120, behavior: 'smooth' });
   } else if (event.key === 'Enter' || event.key === ' ') {
     event.preventDefault();
     if (focusedButtonIndex.value === 0) {
@@ -128,7 +126,7 @@ const hasTierChanges = computed(() => {
 </script>
 
 <template>
-  <div class="p-2 sm:p-4 pb-20 sm:pb-24 max-w-3xl mx-auto animate-slide-up w-full h-full flex flex-col overflow-hidden min-h-0" v-if="quizStore.quizCompleted">
+  <div class="p-2 sm:p-4 pb-20 sm:pb-24 max-w-3xl mx-auto animate-slide-up w-full flex flex-col" v-if="quizStore.quizCompleted">
     <h2 class="text-xl text-slate-800 dark:text-slate-100 text-center mb-2 font-black flex-shrink-0">Quiz Results</h2>
 
     <!-- Speed Achievement Celebration Banner -->
@@ -209,7 +207,7 @@ const hasTierChanges = computed(() => {
     
     <!-- Sentence Typing Custom Stats Banner -->
     <div 
-      v-if="quizStore.sentenceStats"
+      v-if="quizStore.sentenceStats" 
       class="mb-3 grid grid-cols-3 gap-1.5 sm:gap-3 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white rounded-2xl p-3 sm:p-4 shadow-xs flex-shrink-0 text-center"
     >
       <div class="flex flex-col justify-center">
@@ -240,14 +238,14 @@ const hasTierChanges = computed(() => {
       </div>
     </div>
     
-    <!-- Question Summary List Box (Flex-1 for maximum scrolling area) -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 border border-slate-200 dark:border-slate-800 flex-1 flex flex-col overflow-hidden min-h-0 shadow-xs">
-      <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-800 flex-shrink-0">
+    <!-- Question Summary List Box -->
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-800 shadow-xs mb-3">
+      <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-100 dark:border-slate-800">
         <h3 class="text-xs sm:text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
         <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ quizStore.userAnswers.length }} Soal Selesai</span>
       </div>
 
-      <ul ref="listRef" class="space-y-2 flex-1 overflow-y-auto pr-1 min-h-0 scroll-smooth">
+      <ul ref="listRef" class="space-y-2">
         <li 
           v-for="(answer, index) in quizStore.userAnswers" 
           :key="index"
