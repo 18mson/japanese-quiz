@@ -66,49 +66,19 @@ export const useAuthStore = defineStore('auth', () => {
   const checkAndHandleStreakSyncOnLogin = async (userId: string) => {
     const quizStore = useQuizStore();
     try {
-      const serverStreaks = await quizStore.fetchServerStreaks(userId);
-      const localStreaks = quizStore.getLocalStreaks();
-
-      const localCount = Object.values(localStreaks).filter((s: any) => Number(s) > 0).length;
-      const serverCount = Object.values(serverStreaks).filter((s: any) => Number(s) > 0).length;
-
-      if (localCount > 0 && serverCount > 0) {
-        const isDifferent = Object.keys(localStreaks).some(k => localStreaks[k] !== serverStreaks[k]) ||
-          Object.keys(serverStreaks).some(k => serverStreaks[k] !== localStreaks[k]);
-
-        if (isDifferent) {
-          pendingLocalCount.value = localCount;
-          pendingServerCount.value = serverCount;
-          pendingServerStreaks.value = serverStreaks;
-          pendingUserId.value = userId;
-          showSyncConflictModal.value = true;
-          return;
-        }
-      }
-
-      if (serverCount > 0 && localCount === 0) {
-        quizStore.applyServerStreaks(serverStreaks);
-      } else if (localCount > 0 && serverCount === 0) {
-        await quizStore.syncLocalToServer(userId);
-      } else if (serverCount > 0) {
-        quizStore.applyServerStreaks(serverStreaks);
-      }
+      await quizStore.syncWithServer(userId);
       await syncBadgesForCurrentUser();
     } catch (err) {
-      console.error('Error during streak sync check:', err);
+      console.error('Error during streak sync check on login:', err);
     }
   };
 
-  const resolveSyncConflict = async (keepServer: boolean) => {
+  const resolveSyncConflict = async (_keepServer: boolean) => {
     syncConflictLoading.value = true;
     const quizStore = useQuizStore();
     try {
-      if (keepServer) {
-        // User selected YES: Server data overwrites local data
-        quizStore.applyServerStreaks(pendingServerStreaks.value);
-      } else {
-        // User selected NO: Local data overwrites server data
-        await quizStore.syncLocalToServer(pendingUserId.value);
+      if (pendingUserId.value) {
+        await quizStore.syncWithServer(pendingUserId.value);
       }
       await syncBadgesForCurrentUser();
     } catch (e) {

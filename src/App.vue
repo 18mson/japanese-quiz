@@ -32,12 +32,43 @@ import { useQuizStore } from './stores/quizStore';
 import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useBadgeStore } from './stores/badgeStore';
-import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders, RotateCcw } from '@lucide/vue';
+import { useMasteryStore } from './stores/masteryStore';
+import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders, RotateCcw, Cloud, RefreshCw } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
 const badgeStore = useBadgeStore();
+const masteryStore = useMasteryStore();
+
+const syncToastMessage = ref<string | null>(null);
+let syncToastTimeout: any = null;
+
+const handleManualSync = async () => {
+  if (!authStore.user) {
+    showAuthModal.value = true;
+    return;
+  }
+  try {
+    const res = await masteryStore.syncWithServer(authStore.user.id);
+    const totalMastered = quizStore.overallMasteryStats.mastered;
+    syncToastMessage.value = `Sinkronisasi selesai! ${totalMastered} karakter dihafal (${res.pushed} diunggah, ${res.pulled} diperbarui).`;
+  } catch (e) {
+    syncToastMessage.value = 'Gagal sinkronisasi. Periksa koneksi internet.';
+  }
+  if (syncToastTimeout) clearTimeout(syncToastTimeout);
+  syncToastTimeout = setTimeout(() => {
+    syncToastMessage.value = null;
+  }, 4000);
+};
+
+const handleVisibilityChange = async () => {
+  if (document.visibilityState === 'visible' && authStore.user) {
+    try {
+      await masteryStore.syncWithServer(authStore.user.id);
+    } catch (e) { }
+  }
+};
 
 const quizStarted = ref(false);
 const showAuthModal = ref(false);
@@ -140,6 +171,7 @@ const checkRouteState = () => {
 onMounted(async () => {
   window.addEventListener('popstate', checkRouteState);
   document.addEventListener('click', handleDocumentClick);
+  document.addEventListener('visibilitychange', handleVisibilityChange);
   checkRouteState();
   settingsStore.applyTheme();
   await authStore.checkSession();
@@ -156,6 +188,7 @@ onMounted(async () => {
 onUnmounted(() => {
   window.removeEventListener('popstate', checkRouteState);
   document.removeEventListener('click', handleDocumentClick);
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 });
 
 const startQuiz = () => {
@@ -248,6 +281,22 @@ const goToHome = () => {
       </div>
 
       <div class="flex items-center gap-2">
+        <!-- Cloud Sync Button -->
+        <button
+          v-if="authStore.user"
+          type="button"
+          @click="handleManualSync"
+          :disabled="masteryStore.isSyncing"
+          class="flex items-center gap-1.5 bg-gray-50 dark:bg-slate-850 hover:bg-gray-100/80 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs disabled:opacity-50"
+          :title="masteryStore.isSyncing ? 'Sedang menyinkronkan data...' : 'Sinkronkan data dengan cloud'"
+        >
+          <RefreshCw v-if="masteryStore.isSyncing" class="w-3.5 h-3.5 text-aizome dark:text-torii animate-spin" />
+          <Cloud v-else class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <span class="text-xs font-bold text-gray-700 dark:text-slate-200 hidden sm:inline">
+            {{ masteryStore.isSyncing ? 'Sinkron...' : 'Sinkron' }}
+          </span>
+        </button>
+
         <template v-if="authStore.user">
           <div class="relative" ref="userDropdownRef">
             <button 
@@ -281,6 +330,24 @@ const goToHome = () => {
                     {{ authStore.user?.email || 'Akun Pengguna' }}
                   </span>
                 </div>
+              </div>
+
+              <!-- Manual Cloud Sync Menu Item -->
+              <div class="px-1 mb-2">
+                <button
+                  @click="handleManualSync"
+                  :disabled="masteryStore.isSyncing"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold rounded-xl transition flex items-center justify-between cursor-pointer bg-emerald-50/70 dark:bg-emerald-950/30 hover:bg-emerald-100/70 dark:hover:bg-emerald-900/40 border border-emerald-200/70 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300"
+                >
+                  <div class="flex items-center gap-2">
+                    <RefreshCw v-if="masteryStore.isSyncing" class="w-4 h-4 text-emerald-600 dark:text-emerald-400 animate-spin flex-shrink-0" />
+                    <Cloud v-else class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                    <span>Sinkronisasi Cloud</span>
+                  </div>
+                  <span class="text-[10px] font-semibold text-emerald-600/80 dark:text-emerald-400/80">
+                    {{ masteryStore.isSyncing ? 'Sinkron...' : 'Klik Sinkron' }}
+                  </span>
+                </button>
               </div>
 
               <!-- Profile & Badge Collection Menu Item -->
@@ -538,6 +605,24 @@ const goToHome = () => {
     <PreviewCardModal v-if="quizStarted && !showBattleground" />
     <LessonMaterialModal v-if="quizStarted && !showBattleground" />
     <GoalCelebrationToast />
+
+    <!-- Cloud Sync Toast Notification -->
+    <transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="transform -translate-y-4 opacity-0"
+      enter-to-class="transform translate-y-0 opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="transform translate-y-0 opacity-100"
+      leave-to-class="transform -translate-y-4 opacity-0"
+    >
+      <div 
+        v-if="syncToastMessage" 
+        class="fixed top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-700 shadow-xl flex items-center gap-2.5 text-xs font-bold text-slate-800 dark:text-slate-100 max-w-sm sm:max-w-md text-center"
+      >
+        <Cloud class="w-4 h-4 text-emerald-500 flex-shrink-0" />
+        <span>{{ syncToastMessage }}</span>
+      </div>
+    </transition>
 
     <!-- Main Screens -->
     <BattlegroundMode

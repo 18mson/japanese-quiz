@@ -365,6 +365,16 @@ export const useQuizStore = defineStore('quiz', () => {
 
     submitToLeaderboard(finalSubmissionScore);
 
+    // Auto-sync mastery streaks at end of quiz
+    import('./authStore').then(({ useAuthStore }) => {
+      const authStore = useAuthStore();
+      if (authStore.user) {
+        masteryStore.syncWithServer(authStore.user.id).catch(err => {
+          console.warn('Auto-sync at finishQuiz failed:', err);
+        });
+      }
+    });
+
     const goalsStore = useGoalsStore();
     goalsStore.checkAndTriggerCelebration();
 
@@ -528,6 +538,9 @@ export const useQuizStore = defineStore('quiz', () => {
     getLocalStreaks: masteryStore.getLocalStreaks,
     fetchServerStreaks: masteryStore.fetchServerStreaks,
     syncLocalToServer: masteryStore.syncLocalToServer,
+    syncWithServer: masteryStore.syncWithServer,
+    isSyncing: toRef(masteryStore, 'isSyncing'),
+    lastSyncTime: toRef(masteryStore, 'lastSyncTime'),
     applyServerStreaks: masteryStore.applyServerStreaks,
 
     // Delegated to Lesson Store

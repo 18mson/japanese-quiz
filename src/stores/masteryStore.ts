@@ -28,33 +28,158 @@ const getLocalIntroduced = (): Record<string, boolean> => {
   return {};
 };
 
+const PENDING_STREAKS_KEY = 'japanese-quiz-pending-streaks';
+
+const getPendingStreaks = (): string[] => {
+  try {
+    const stored = localStorage.getItem(PENDING_STREAKS_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch (e) { }
+  return [];
+};
+
+const addPendingStreak = (char: string) => {
+  try {
+    const list = getPendingStreaks();
+    if (!list.includes(char)) {
+      list.push(char);
+      localStorage.setItem(PENDING_STREAKS_KEY, JSON.stringify(list));
+    }
+  } catch (e) { }
+};
+
+const clearPendingStreaks = () => {
+  try {
+    localStorage.removeItem(PENDING_STREAKS_KEY);
+  } catch (e) { }
+};
+
 export const useMasteryStore = defineStore('mastery', () => {
   const userStreaks = ref<Record<string, number>>(getLocalStreaks());
   const introducedChars = ref<Record<string, boolean>>(getLocalIntroduced());
   const latestTierTransition = ref<TierTransition | null>(null);
   const sessionTierChanges = ref<TierTransition[]>([]);
+  const isSyncing = ref(false);
+  const lastSyncTime = ref<Date | null>(null);
+  const syncError = ref<string | null>(null);
 
   const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
-    const { data, error } = await supabase.from('user_streaks').select('character, streak').eq('user_id', userId);
-    if (error) throw error;
+    let allData: Array<{ character: string; streak: number }> = [];
+    const pageSize = 1000;
+    let from = 0;
+    let hasMore = true;
+
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('user_streaks')
+        .select('character, streak')
+        .eq('user_id', userId)
+        .range(from, from + pageSize - 1);
+
+      if (error) throw error;
+      if (data && data.length > 0) {
+        allData = allData.concat(data);
+        if (data.length < pageSize) {
+          hasMore = false;
+        } else {
+          from += pageSize;
+        }
+      } else {
+        hasMore = false;
+      }
+    }
+
     const streaks: Record<string, number> = {};
-    if (data) data.forEach(item => { streaks[item.character] = item.streak; });
+    allData.forEach(item => { streaks[item.character] = item.streak; });
     return streaks;
   };
 
+  const syncWithServer = async (userId: string): Promise<{ pushed: number; pulled: number }> => {
+    if (isSyncing.value) return { pushed: 0, pulled: 0 };
+    isSyncing.value = true;
+    syncError.value = null;
+
+    try {
+      const serverStreaks = await fetchServerStreaks(userId);
+      const local = getLocalStreaks();
+      const pendingList = new Set(getPendingStreaks());
+
+      const merged: Record<string, number> = { ...local };
+      const toUpsert: Array<{
+        user_id: string;
+        character: string;
+        streak: number;
+        last_tier?: string;
+        tier_changed_at?: string;
+        updated_at: string;
+      }> = [];
+
+      let pulled = 0;
+      let pushed = 0;
+
+      // 1. Merge server into local (if server has higher streak)
+      Object.entries(serverStreaks).forEach(([char, serverStreak]) => {
+        const localStreak = local[char] || 0;
+        if (serverStreak > localStreak) {
+          merged[char] = serverStreak;
+          pulled++;
+        }
+      });
+
+      // 2. Identify local streaks that are higher than server or queued in pending
+      const now = new Date().toISOString();
+      Object.entries(local).forEach(([char, localStreak]) => {
+        const serverStreak = serverStreaks[char] || 0;
+        if ((localStreak > serverStreak && localStreak > 0) || pendingList.has(char)) {
+          const tier = getMasteryTierFromStreak(localStreak);
+          toUpsert.push({
+            user_id: userId,
+            character: char,
+            streak: localStreak,
+            last_tier: tier,
+            tier_changed_at: now,
+            updated_at: now
+          });
+          pushed++;
+        }
+      });
+
+      // 3. Batch push higher local streaks to Supabase in chunks of 100
+      if (toUpsert.length > 0) {
+        const chunkSize = 100;
+        for (let i = 0; i < toUpsert.length; i += chunkSize) {
+          const chunk = toUpsert.slice(i, i + chunkSize);
+          const { error } = await supabase
+            .from('user_streaks')
+            .upsert(chunk, { onConflict: 'user_id,character' });
+          if (error) {
+            console.error('Failed to push local streaks chunk to server:', error);
+            throw error;
+          }
+        }
+      }
+
+      // 4. Clear pending streaks queue on success
+      clearPendingStreaks();
+
+      // 5. Update in-memory reactive state and localStorage
+      userStreaks.value = merged;
+      localStorage.setItem('japanese-quiz-streaks', JSON.stringify(merged));
+      loadIntroducedFromStorage();
+      lastSyncTime.value = new Date();
+
+      return { pushed, pulled };
+    } catch (e: any) {
+      console.error('Error during syncWithServer:', e);
+      syncError.value = e?.message || 'Gagal sinkronisasi';
+      throw e;
+    } finally {
+      isSyncing.value = false;
+    }
+  };
+
   const syncLocalToServer = async (userId: string) => {
-    const current = getLocalStreaks();
-    const entries = Object.entries(current).filter(([_, streak]) => streak > 0);
-    if (entries.length === 0) return;
-
-    const rows = entries.map(([character, streak]) => ({
-      user_id: userId,
-      character,
-      streak
-    }));
-
-    const { error } = await supabase.from('user_streaks').upsert(rows, { onConflict: 'user_id,character' });
-    if (error) console.error('Failed to sync local streaks to server:', error);
+    return syncWithServer(userId);
   };
 
   const applyServerStreaks = (serverStreaks: Record<string, number>) => {
@@ -90,19 +215,9 @@ export const useMasteryStore = defineStore('mastery', () => {
     const authStore = useAuthStore();
     if (authStore.user) {
       try {
-        const serverStreaks = await fetchServerStreaks(authStore.user.id);
-        const merged: Record<string, number> = { ...local };
-        Object.entries(serverStreaks).forEach(([char, streak]) => {
-          merged[char] = Math.max(merged[char] || 0, streak);
-          if (streak > 0) {
-            introducedChars.value[char] = true;
-          }
-        });
-        userStreaks.value = merged;
-        localStorage.setItem('japanese-quiz-streaks', JSON.stringify(merged));
-        saveIntroducedToStorage();
+        await syncWithServer(authStore.user.id);
       } catch (e) {
-        console.error('Error fetching server streaks:', e);
+        console.error('Error syncing streaks with server on load:', e);
       }
     }
   };
@@ -322,17 +437,29 @@ export const useMasteryStore = defineStore('mastery', () => {
         sessionTierChanges.value.push(transition);
       }
 
-      import('./authStore').then(({ useAuthStore }) => {
+      import('./authStore').then(async ({ useAuthStore }) => {
         const authStore = useAuthStore();
         if (authStore.user) {
-          supabase.from('user_streaks').upsert({
-            user_id: authStore.user.id,
-            character: charKey,
-            streak: newStreak,
-            last_tier: transition.newTier,
-            tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'user_id,character' }).then();
+          try {
+            const { error } = await supabase.from('user_streaks').upsert({
+              user_id: authStore.user.id,
+              character: charKey,
+              streak: newStreak,
+              last_tier: transition.newTier,
+              tier_changed_at: transition.direction !== 'same' ? new Date().toISOString() : undefined,
+              updated_at: new Date().toISOString()
+            }, { onConflict: 'user_id,character' });
+
+            if (error) {
+              console.warn('Background streak upsert failed, queued for next sync:', error);
+              addPendingStreak(charKey);
+            }
+          } catch (err: any) {
+            console.warn('Network error during streak upsert, queued for next sync:', err);
+            addPendingStreak(charKey);
+          }
+        } else {
+          addPendingStreak(charKey);
         }
       });
     }
@@ -345,7 +472,11 @@ export const useMasteryStore = defineStore('mastery', () => {
     introducedChars,
     latestTierTransition,
     sessionTierChanges,
+    isSyncing,
+    lastSyncTime,
+    syncError,
     fetchServerStreaks,
+    syncWithServer,
     syncLocalToServer,
     applyServerStreaks,
     saveIntroducedToStorage,
