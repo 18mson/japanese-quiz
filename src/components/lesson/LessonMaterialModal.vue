@@ -100,16 +100,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Transition name="fade-scale">
+  <Transition name="modal-backdrop">
     <div 
       v-if="quizStore.showLessonMaterial" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md select-none animate-fadeIn"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md select-none"
       @touchstart="handleTouchStart"
       @touchend="handleTouchEnd"
     >
       <!-- Modal Content Card -->
       <div 
-        class="w-full max-w-xl bg-slate-900/95 border border-violet-500/30 rounded-3xl p-5 sm:p-6 shadow-2xl shadow-violet-950/60 flex flex-col justify-between relative overflow-hidden text-slate-100 max-h-[92vh]"
+        class="modal-panel w-full max-w-xl bg-slate-900/95 border border-violet-500/30 rounded-3xl p-5 sm:p-6 shadow-2xl shadow-violet-950/60 flex flex-col justify-between relative overflow-hidden text-slate-100 max-h-[92vh]"
       >
         <!-- Background Neon Glows -->
         <div class="absolute -top-24 -right-24 w-60 h-60 bg-torii/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -395,15 +395,3 @@ onUnmounted(() => {
     @close="isReferenceModalOpen = false" 
   />
 </template>
-
-<style scoped>
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-</style>

@@ -73,68 +73,50 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md animate-fadeIn"
-      @click="handleBackdropClick"
-    >
+    <Transition name="modal-backdrop">
       <div
-        class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 w-full flex flex-col max-h-[90vh] overflow-hidden animate-scaleUp relative"
-        :class="[maxWidthClass, panelClass]"
+        v-if="isOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-md"
+        @click="handleBackdropClick"
       >
-        <!-- Header (Slot or Default Title Bar) -->
-        <slot name="header">
-          <div
-            v-if="title || showCloseButton"
-            class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0"
-            :class="headerClass"
-          >
-            <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-slate-100">
-              {{ title }}
-            </h3>
-            <button
-              v-if="showCloseButton"
-              type="button"
-              @click="emit('close')"
-              class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer"
-              aria-label="Tutup"
-            >
-              <X class="w-5 h-5" />
-            </button>
-          </div>
-        </slot>
-
-        <!-- Content Body -->
         <div
-          class="flex-1 overflow-y-auto"
-          :class="bodyClass"
+          class="modal-panel bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-slate-800 w-full flex flex-col max-h-[90vh] overflow-hidden relative"
+          :class="[maxWidthClass, panelClass]"
         >
-          <slot></slot>
-        </div>
+          <!-- Header (Slot or Default Title Bar) -->
+          <slot name="header">
+            <div
+              v-if="title || showCloseButton"
+              class="px-5 py-4 sm:px-6 sm:py-5 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between flex-shrink-0"
+              :class="headerClass"
+            >
+              <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-slate-100">
+                {{ title }}
+              </h3>
+              <button
+                v-if="showCloseButton"
+                type="button"
+                @click="emit('close')"
+                class="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition cursor-pointer"
+                aria-label="Tutup"
+              >
+                <X class="w-5 h-5" />
+              </button>
+            </div>
+          </slot>
 
-        <!-- Footer -->
-        <slot name="footer"></slot>
+          <!-- Content Body -->
+          <div
+            class="flex-1 overflow-y-auto"
+            :class="bodyClass"
+          >
+            <slot></slot>
+          </div>
+
+          <!-- Footer -->
+          <slot name="footer"></slot>
+        </div>
       </div>
-    </div>
+    </Transition>
   </Teleport>
 </template>
-
-<style scoped>
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out forwards;
-}
-
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.96) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.animate-scaleUp {
-  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-</style>

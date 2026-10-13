@@ -112,14 +112,14 @@ onUnmounted(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="modal-backdrop">
       <div 
         v-if="isOpen" 
-        class="fixed inset-0 bg-slate-950/50 dark:bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-2.5 sm:p-5 select-none animate-fadeIn"
+        class="fixed inset-0 bg-slate-950/50 dark:bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-2.5 sm:p-5 select-none"
         @click.self="emit('close')"
       >
         <div 
-          class="max-w-5xl w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[90vh] max-h-[880px] animate-scaleUp relative text-slate-800 dark:text-slate-100"
+          class="modal-panel max-w-5xl w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[90vh] max-h-[880px] relative text-slate-800 dark:text-slate-100"
         >
           <!-- Top Decorative Glows -->
           <div class="absolute -right-16 -top-16 w-48 h-48 bg-torii/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -283,11 +283,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-.animate-fadeIn { animation: fadeIn 0.2s ease-out forwards; }
-@keyframes scaleUp { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-.animate-scaleUp { animation: scaleUp 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-
 .tab-fade-enter-active,
 .tab-fade-leave-active {
   transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);

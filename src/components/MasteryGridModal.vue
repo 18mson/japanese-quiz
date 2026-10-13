@@ -302,16 +302,17 @@ const nextPreviewItem = () => {
 
 <template>
   <Teleport to="body">
-    <div 
-      v-if="isOpen" 
-      class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6 animate-fadeIn"
-      @click="closeDropdowns"
-      @click.self="emit('close'); closeDropdowns();"
-    >
+    <Transition name="modal-backdrop">
       <div 
-        class="max-w-5xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[88vh] max-h-[850px] border border-gray-100 dark:border-slate-800 animate-scaleUp relative"
+        v-if="isOpen" 
+        class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-6"
         @click="closeDropdowns"
+        @click.self="emit('close'); closeDropdowns();"
       >
+        <div 
+          class="modal-panel max-w-5xl w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[88vh] max-h-[850px] border border-gray-100 dark:border-slate-800 relative"
+          @click="closeDropdowns"
+        >
         
         <!-- Modal Header -->
         <div class="px-4 sm:px-6 py-3.5 sm:py-4 bg-gradient-to-r from-indigo-900 via-indigo-850 to-indigo-900 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border-b border-indigo-950/40 dark:border-slate-800 text-white flex items-center justify-between shadow-md flex-shrink-0 relative overflow-hidden">
@@ -351,10 +352,11 @@ const nextPreviewItem = () => {
             <button 
               v-if="unmasteredCount > 0 && !isEditMode"
               @click="handleStartWeakQuiz"
-              class="px-3 sm:px-4 py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 dark:from-torii dark:to-amber-500 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center gap-1.5 cursor-pointer animate-pulse-slow"
+              class="p-2 sm:px-4 sm:py-1.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 dark:from-torii dark:to-amber-500 text-white rounded-xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center justify-center gap-1.5 cursor-pointer animate-pulse-slow"
+              :title="`Latih ${unmasteredCount} Item Lemah`"
             >
-              <Zap class="w-3.5 h-3.5 fill-white" />
-              <span>Latih {{ unmasteredCount }} Lemah</span>
+              <Zap class="w-3.5 h-3.5 fill-white shrink-0" />
+              <span class="hidden sm:inline">Latih {{ unmasteredCount }} Lemah</span>
             </button>
 
             <button 
@@ -567,29 +569,33 @@ const nextPreviewItem = () => {
 
       </div>
     </div>
+    </Transition>
 
     <!-- Character / Word Interactive Preview Modal Component -->
-    <MasteryPreviewModal
-      v-if="selectedPreviewItem"
-      :item="selectedPreviewItem"
-      :current-index="selectedPreviewIndex"
-      :total-items="filteredItems.length"
-      :category="activeCategory"
-      @close="closePreview"
-      @prev="prevPreviewItem"
-      @next="nextPreviewItem"
-    />
+    <Transition name="modal-backdrop">
+      <MasteryPreviewModal
+        v-if="selectedPreviewItem"
+        :item="selectedPreviewItem"
+        :current-index="selectedPreviewIndex"
+        :total-items="filteredItems.length"
+        :category="activeCategory"
+        @close="closePreview"
+        @prev="prevPreviewItem"
+        @next="nextPreviewItem"
+      />
+    </Transition>
 
     <!-- Confirmation Modal Dialog for Bulk Update -->
-    <div 
-      v-if="showConfirmModal" 
-      class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[70] flex items-center justify-center p-4 animate-fadeIn"
-      @click.self="!isApplying && (showConfirmModal = false)"
-    >
+    <Transition name="modal-backdrop">
       <div 
-        class="max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-slate-800 p-5 sm:p-6 animate-scaleUp text-gray-800 dark:text-slate-100"
-        @click.stop
+        v-if="showConfirmModal" 
+        class="fixed inset-0 bg-slate-950/85 backdrop-blur-sm z-[70] flex items-center justify-center p-4"
+        @click.self="!isApplying && (showConfirmModal = false)"
       >
+        <div 
+          class="modal-panel max-w-md w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-slate-800 p-5 sm:p-6 text-gray-800 dark:text-slate-100"
+          @click.stop
+        >
         <!-- Icon & Title -->
         <div class="flex items-start gap-3.5 mb-4">
           <div 
@@ -670,6 +676,7 @@ const nextPreviewItem = () => {
         </div>
       </div>
     </div>
+    </Transition>
   </Teleport>
 </template>
 

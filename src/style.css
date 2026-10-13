@@ -31,6 +31,11 @@
     --accent-matcha-light: #34D399;
   }
 
+  html, body, #app {
+    height: 100%;
+    width: 100%;
+  }
+
   body {
     @apply font-sans bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200;
     -webkit-tap-highlight-color: transparent;
@@ -117,4 +122,70 @@
   filter: blur(14px);
   opacity: 0.12;
   transform: scale(0.97);
+}
+
+/* ============================================================ */
+/* UNIVERSAL MODAL / POPUP TRANSITION (ENTER & EXIT)            */
+/* ============================================================ */
+.modal-backdrop-enter-active {
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-backdrop-leave-active {
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal-backdrop-enter-from,
+.modal-backdrop-leave-to {
+  opacity: 0;
+}
+
+.modal-backdrop-enter-active .modal-panel,
+.modal-backdrop-enter-active [data-modal-panel] {
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.modal-backdrop-leave-active .modal-panel,
+.modal-backdrop-leave-active [data-modal-panel] {
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal-backdrop-enter-from .modal-panel,
+.modal-backdrop-enter-from [data-modal-panel] {
+  opacity: 0;
+  transform: scale(0.95) translateY(8px);
+}
+.modal-backdrop-leave-to .modal-panel,
+.modal-backdrop-leave-to [data-modal-panel] {
+  opacity: 0;
+  transform: scale(0.96) translateY(6px);
+}
+
+/* Direct standalone modal panel fade-scale */
+.fade-scale-enter-active {
+  transition: opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fade-scale-leave-active {
+  transition: opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fade-scale-enter-from,
+.fade-scale-leave-to {
+  opacity: 0;
+  transform: scale(0.95) translateY(6px);
+}
+
+/* ============================================================ */
+/* UNIVERSAL DROPDOWN MENU TRANSITION (ENTER & EXIT)            */
+/* ============================================================ */
+.dropdown-enter-active {
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.dropdown-leave-active {
+  transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+}
+.dropdown-enter-to,
+.dropdown-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }

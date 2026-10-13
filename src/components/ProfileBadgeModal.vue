@@ -308,12 +308,13 @@ const closeInspect = () => {
     </div>
 
     <!-- Inspect Modal Details (When clicking a badge) -->
-    <div 
-      v-if="selectedBadgeToInspect"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md animate-fadeIn"
-      @click.self="closeInspect"
-    >
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl relative">
+    <Transition name="modal-backdrop">
+      <div 
+        v-if="selectedBadgeToInspect"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md"
+        @click.self="closeInspect"
+      >
+        <div class="modal-panel bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl relative">
         <button 
           @click="closeInspect" 
           class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-full cursor-pointer"
@@ -386,6 +387,7 @@ const closeInspect = () => {
         </div>
       </div>
     </div>
+    </Transition>
   </BaseModal>
 </template>
 

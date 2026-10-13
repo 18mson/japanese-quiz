@@ -4,6 +4,7 @@ import { BookOpen, Globe2, MessageCircle, X, Search } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { fetchLessonVocabulary, fetchLessonReferenceTables } from '../../services/lessonService';
 import { LessonVocabulary, LessonReferenceTable } from '../../types/lesson';
+import { wordsData } from '../../data/words';
 import { useTabIndicator } from '../../composables/useTabIndicator';
 
 const props = defineProps<{
@@ -33,7 +34,18 @@ const loadData = async () => {
       fetchLessonVocabulary(quizStore.currentLessonNumber),
       fetchLessonReferenceTables(quizStore.currentLessonNumber)
     ]);
-    vocabularyList.value = vocab;
+    if (vocab && vocab.length > 0) {
+      vocabularyList.value = vocab;
+    } else {
+      const lessonKey = `Pelajaran ${quizStore.currentLessonNumber}`;
+      const localWords = wordsData.filter(w => w.lesson === lessonKey);
+      vocabularyList.value = localWords.map(w => ({
+        japanese: w.character,
+        meaning: w.meaning,
+        note: Array.isArray(w.romaji) ? w.romaji[0] : w.romaji,
+        category: (w.category_word === 'Ungkapan' || w.category_word === 'Kata Seru') ? 'renshuu_c_phrase' : 'kosakata'
+      }));
+    }
     referenceTables.value = refs;
   } catch (e) {
     console.error('Error loading lesson references:', e);
@@ -89,14 +101,14 @@ const filteredTableRows = computed(() => {
 </script>
 
 <template>
-  <Transition name="fade-scale">
+  <Transition name="modal-backdrop">
     <div 
       v-if="isOpen" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md select-none animate-fadeIn"
+      class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md select-none"
       @click.self="emit('close')"
     >
       <div 
-        class="w-full max-w-2xl bg-slate-900/95 border border-indigo-500/30 rounded-3xl p-5 sm:p-7 shadow-2xl shadow-indigo-950/60 flex flex-col relative overflow-hidden text-slate-100 max-h-[90vh]"
+        class="modal-panel w-full max-w-2xl bg-slate-900/95 border border-indigo-500/30 rounded-3xl p-5 sm:p-7 shadow-2xl shadow-indigo-950/60 flex flex-col relative overflow-hidden text-slate-100 max-h-[90vh]"
       >
         <!-- Top Glows -->
         <div class="absolute -top-24 -right-24 w-60 h-60 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -294,16 +306,6 @@ const filteredTableRows = computed(() => {
 </template>
 
 <style scoped>
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: all 0.2s ease-out;
-}
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
 .tab-fade-enter-active,
 .tab-fade-leave-active {
   transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);

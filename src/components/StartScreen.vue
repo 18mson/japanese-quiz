@@ -21,7 +21,7 @@ import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
 import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
 import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
 
-const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice']);
+const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice', 'openHandbook']);
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
@@ -304,7 +304,9 @@ watch(characterTypes, (newVal) => {
     <div class="w-full flex justify-center items-start gap-5 2xl:gap-8 mt-1 xl:mt-0">
       <!-- Left Column: Peta Penguasaan Huruf (Desktop >= xl) -->
       <aside class="hidden xl:block w-[300px] 2xl:w-[340px] shrink-0">
-        <DesktopMasterySidebar @open-mastery-grid="emit('openMasteryGrid')" />
+        <DesktopMasterySidebar 
+          @open-mastery-grid="emit('openMasteryGrid')" 
+        />
       </aside>
 
       <!-- Center Column: Wheel Selector & Options -->

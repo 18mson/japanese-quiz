@@ -254,38 +254,40 @@ function msToStr(ms: number, status?: string): string {
     </div>
 
     <!-- Play Again Popup Modal for Non-Host Players -->
-    <div
-      v-if="store.showPlayAgainPrompt && !store.isHost"
-      class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-pop"
-    >
-      <div class="w-full max-w-sm bg-gradient-to-b from-indigo-900 to-slate-900 border border-indigo-500/40 rounded-3xl p-6 shadow-2xl text-center flex flex-col items-center">
-        <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 mb-4 shadow-inner">
-          <Sparkles class="w-7 h-7 text-indigo-400" />
-        </div>
-        
-        <h3 class="text-xl font-black text-white mb-2">Host Memulai Game Baru! 🎮</h3>
-        <p class="text-xs text-slate-300 leading-relaxed mb-6">
-          Host memilih untuk bermain lagi di room ini. Apakah kamu mau ikut bergabung kembali ke arena?
-        </p>
+    <Transition name="modal-backdrop">
+      <div
+        v-if="store.showPlayAgainPrompt && !store.isHost"
+        class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4"
+      >
+        <div class="modal-panel w-full max-w-sm bg-gradient-to-b from-indigo-900 to-slate-900 border border-indigo-500/40 rounded-3xl p-6 shadow-2xl text-center flex flex-col items-center">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-300 mb-4 shadow-inner">
+            <Sparkles class="w-7 h-7 text-indigo-400" />
+          </div>
+          
+          <h3 class="text-xl font-black text-white mb-2">Host Memulai Game Baru! 🎮</h3>
+          <p class="text-xs text-slate-300 leading-relaxed mb-6">
+            Host memilih untuk bermain lagi di room ini. Apakah kamu mau ikut bergabung kembali ke arena?
+          </p>
 
-        <div class="w-full flex flex-col gap-2.5">
-          <button
-            @click="store.acceptPlayAgain()"
-            :disabled="store.isLoading"
-            class="w-full py-3 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition shadow-lg shadow-torii/30 cursor-pointer"
-          >
-            <RotateCcw class="w-4 h-4" />
-            Ikut Main Lagi
-          </button>
-          <button
-            @click="store.declinePlayAgain(); emit('exit')"
-            class="w-full py-2.5 text-slate-400 hover:text-white text-xs font-semibold transition cursor-pointer"
-          >
-            Keluar ke Menu
-          </button>
+          <div class="w-full flex flex-col gap-2.5">
+            <button
+              @click="store.acceptPlayAgain()"
+              :disabled="store.isLoading"
+              class="w-full py-3 bg-gradient-to-r from-torii to-torii-hover hover:brightness-110 rounded-xl font-extrabold text-white flex items-center justify-center gap-2 transition shadow-lg shadow-torii/30 cursor-pointer"
+            >
+              <RotateCcw class="w-4 h-4" />
+              Ikut Main Lagi
+            </button>
+            <button
+              @click="store.declinePlayAgain(); emit('exit')"
+              class="w-full py-2.5 text-slate-400 hover:text-white text-xs font-semibold transition cursor-pointer"
+            >
+              Keluar ke Menu
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </Transition>
 
   </div>
 </template>

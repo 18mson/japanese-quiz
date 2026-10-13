@@ -67,10 +67,10 @@ onUnmounted(() => {
 
 <template>
   <div 
-    class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[60] flex items-center justify-center p-3 sm:p-4 animate-fadeIn"
+    class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[60] flex items-center justify-center p-3 sm:p-4"
     @click.self="emit('close')"
   >
-    <div class="max-w-md w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-4 sm:p-5 text-center shadow-2xl relative flex flex-col items-center animate-scaleUp">
+    <div class="modal-panel max-w-md w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-4 sm:p-5 text-center shadow-2xl relative flex flex-col items-center">
       
       <!-- Header / Category Badge & Mode Switcher -->
       <div class="w-full flex items-center justify-between mb-3.5">

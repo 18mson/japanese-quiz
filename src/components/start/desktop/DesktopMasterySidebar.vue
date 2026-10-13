@@ -143,7 +143,7 @@ const quizStore = useQuizStore();
     <button
       type="button"
       @click="emit('openMasteryGrid')"
-      class="w-full py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 hover:text-aizome dark:text-slate-200 dark:hover:text-white font-bold text-xs border border-slate-200/80 dark:border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
+      class="w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 hover:text-aizome dark:text-slate-200 dark:hover:text-white font-bold text-xs border border-slate-200/80 dark:border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
     >
       <LayoutGrid class="w-4 h-4" />
       <span>Buka Grid Lengkap</span>

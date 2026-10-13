@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Target, BookOpen, Trophy, CalendarDays } from '@lucide/vue';
+import { Target, Trophy, CalendarDays } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
 import DailyGoalProgressBar from '../goals/DailyGoalProgressBar.vue';
 
@@ -66,17 +66,6 @@ const onAction = (action: () => void) => {
       >
         <CalendarDays class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
         <span class="hidden md:inline">Latihan Harian</span>
-      </button>
-
-      <button 
-        v-if="selectedLevel === 'n5'"
-        type="button"
-        @click.stop="onAction(() => emit('openReference'))"
-        class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-gray-200/80 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-750 shadow-2xs"
-        title="Lihat Kosakata & Referensi Resmi Bab"
-      >
-        <BookOpen class="w-4 h-4 text-torii flex-shrink-0" />
-        <span class="hidden sm:inline">Referensi Bab</span>
       </button>
 
 

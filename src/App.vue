@@ -18,6 +18,7 @@ import DailyPracticeMode from './components/daily/DailyPracticeMode.vue';
 import KaiwaPlayer from './components/KaiwaPlayer.vue';
 import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';
+import LessonHandbookView from './components/lesson/LessonHandbookView.vue';
 import QuizWritingPlayer from './components/writing/QuizWritingPlayer.vue';
 import QuizHitunganPlayer from './components/hitungan/QuizHitunganPlayer.vue';
 
@@ -33,7 +34,7 @@ import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useBadgeStore } from './stores/badgeStore';
 import { useMasteryStore } from './stores/masteryStore';
-import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, Award, Sliders, RotateCcw, Cloud, RefreshCw } from '@lucide/vue';
+import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, BookOpen, Award, Sliders, RotateCcw, Cloud, RefreshCw, LogIn } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -78,6 +79,8 @@ const showAboutModal = ref(false);
 const showReferenceModal = ref(false);
 const showBattleground = ref(false);
 const showDailyPractice = ref(false);
+const showHandbook = ref(false);
+const selectedHandbookLesson = ref(1);
 const showSettingsModal = ref(false);
 
 const showUserDropdown = ref(false);
@@ -98,8 +101,6 @@ const openBadgeModal = () => {
   showUserDropdown.value = false;
   badgeStore.openProfileBadgeModal();
 };
-
-
 
 const openBattleground = () => {
   showBattleground.value = true;
@@ -133,6 +134,25 @@ const closeDailyPractice = () => {
   }
 };
 
+const openHandbook = (lessonNum?: number) => {
+  if (lessonNum && lessonNum >= 1 && lessonNum <= 25) {
+    selectedHandbookLesson.value = lessonNum;
+  }
+  showHandbook.value = true;
+  localStorage.setItem('active_screen', 'materi');
+  if (!window.location.pathname.includes('/materi')) {
+    history.pushState(null, '', '/materi');
+  }
+};
+
+const closeHandbook = () => {
+  showHandbook.value = false;
+  localStorage.removeItem('active_screen');
+  if (window.location.pathname.includes('/materi') || window.location.search.includes('mode=materi')) {
+    history.pushState(null, '', '/');
+  }
+};
+
 const checkRouteState = () => {
   const pathname = window.location.pathname;
   const searchParams = new URLSearchParams(window.location.search);
@@ -146,11 +166,16 @@ const checkRouteState = () => {
     searchParams.get('mode') === 'daily' ||
     hash === '#daily';
 
+  const isMateriRoute = pathname.includes('/materi') ||
+    searchParams.get('mode') === 'materi' ||
+    hash === '#materi';
+
   showBattleground.value = isBattlegroundRoute;
   showDailyPractice.value = isDailyRoute;
+  showHandbook.value = isMateriRoute || (localStorage.getItem('active_screen') === 'materi' && !isBattlegroundRoute && !isDailyRoute);
 
   // Bersihkan active_screen tersimpan jika membuka root home screen agar tidak auto-redirect
-  if (!isBattlegroundRoute && !isDailyRoute) {
+  if (!isBattlegroundRoute && !isDailyRoute && !isMateriRoute && localStorage.getItem('active_screen') !== 'materi') {
     localStorage.removeItem('active_screen');
   }
   if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
@@ -208,25 +233,19 @@ const goToHome = () => {
   quizStore.showMicroPreviewModal = false;
   closeBattleground();
   closeDailyPractice();
+  closeHandbook();
 };
 </script>
 
 <template>
   <div class="h-full w-screen bg-slate-50 dark:bg-slate-900 font-sans flex flex-col overflow-hidden select-none text-slate-900 dark:text-slate-100 transition-colors duration-200">
-    <!-- Top Global App Bar (Hidden when Battleground or Daily Practice is active) -->
-    <header v-if="!showBattleground && !showDailyPractice" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
+    <!-- Top Global App Bar (Hidden when Battleground, Daily Practice or Handbook is active) -->
+    <header v-if="!showBattleground && !showDailyPractice && !showHandbook" class="relative bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 flex items-center justify-between shadow-xs flex-shrink-0 z-20">
       <div class="flex items-center gap-2">
         <div class="flex items-center gap-2 cursor-pointer" @click="goToHome">
           <span class="text-xl">🇯🇵</span>
           <span class="font-extrabold text-gray-900 dark:text-slate-100 tracking-tight text-sm sm:text-base">Nihongo Master</span>
         </div>
-        <button 
-            @click="showAboutModal = true"
-            class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-torii/10 dark:hover:bg-slate-750 hover:text-torii dark:hover:text-torii-light border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
-            title="Tentang Aplikasi"
-          >
-          <Info class="w-3.5 h-3.5 text-torii dark:text-torii-light" />
-        </button>
 
         <button 
           @click="showReferenceModal = true"
@@ -235,6 +254,15 @@ const goToHome = () => {
         >
           <BookMarked class="w-3.5 h-3.5 text-matcha dark:text-matcha-light" />
           <span class="hidden sm:inline">Furoku</span>
+        </button>
+
+        <button 
+          @click="openHandbook()"
+          class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-torii/10 dark:hover:bg-slate-750 hover:text-torii dark:hover:text-torii-light border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
+          title="Buku Materi Pelajaran (Minna no Nihongo Bab 1–25)"
+        >
+          <BookOpen class="w-3.5 h-3.5 text-torii dark:text-torii-light" />
+          <span class="hidden sm:inline">Buku Materi</span>
         </button>
       </div>
 
@@ -281,19 +309,18 @@ const goToHome = () => {
       </div>
 
       <div class="flex items-center gap-2">
-        <!-- Cloud Sync Button -->
+        <!-- Cloud Sync Button (Hanya tampil saat proses sync sedang berjalan) -->
         <button
-          v-if="authStore.user"
+          v-if="authStore.user && masteryStore.isSyncing"
           type="button"
           @click="handleManualSync"
           :disabled="masteryStore.isSyncing"
           class="flex items-center gap-1.5 bg-gray-50 dark:bg-slate-850 hover:bg-gray-100/80 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs disabled:opacity-50"
-          :title="masteryStore.isSyncing ? 'Sedang menyinkronkan data...' : 'Sinkronkan data dengan cloud'"
+          title="Sedang menyinkronkan data..."
         >
-          <RefreshCw v-if="masteryStore.isSyncing" class="w-3.5 h-3.5 text-aizome dark:text-torii animate-spin" />
-          <Cloud v-else class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <RefreshCw class="w-3.5 h-3.5 text-aizome dark:text-torii animate-spin" />
           <span class="text-xs font-bold text-gray-700 dark:text-slate-200 hidden sm:inline">
-            {{ masteryStore.isSyncing ? 'Sinkron...' : 'Sinkron' }}
+            Sinkron...
           </span>
         </button>
 
@@ -301,22 +328,28 @@ const goToHome = () => {
           <div class="relative" ref="userDropdownRef">
             <button 
               @click.stop="showUserDropdown = !showUserDropdown"
-              class="flex items-center gap-2 bg-gray-50 dark:bg-slate-850 hover:bg-gray-100/80 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
+              class="flex items-center gap-1.5 sm:gap-2 bg-gray-50 dark:bg-slate-850 hover:bg-gray-100/80 dark:hover:bg-slate-800 border border-gray-200/80 dark:border-slate-700/80 px-2 sm:px-2.5 py-1.5 rounded-xl cursor-pointer transition select-none shadow-xs"
+              :title="authStore.displayUsername"
             >
-              <div class="w-6 h-6 rounded-lg bg-aizome/10 dark:bg-torii/20 border border-aizome/20 dark:border-torii/40 flex items-center justify-center font-extrabold text-xs overflow-hidden shadow-2xs p-0.5">
+              <div class="w-6 h-6 rounded-lg bg-aizome/10 dark:bg-torii/20 border border-aizome/20 dark:border-torii/40 flex items-center justify-center font-extrabold text-xs overflow-hidden shadow-2xs p-0.5 shrink-0">
                 <BadgeIcon :badge-id="badgeStore.activeAvatarBadge.id" class="w-4 h-4" />
               </div>
-              <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate max-w-[100px] sm:max-w-[120px]">
+              <!-- Inisial saja di mobile, nama lengkap di desktop -->
+              <span class="text-xs font-black text-gray-800 dark:text-slate-200 sm:hidden">
+                {{ (authStore.displayUsername || 'U').charAt(0).toUpperCase() }}
+              </span>
+              <span class="text-xs font-bold text-gray-800 dark:text-slate-200 truncate hidden sm:inline max-w-[120px]">
                 {{ authStore.displayUsername }}
               </span>
-              <ChevronDown class="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 transition-transform duration-200" :class="{ 'rotate-180': showUserDropdown }" />
+              <ChevronDown class="w-3.5 h-3.5 text-gray-500 dark:text-slate-400 transition-transform duration-200 shrink-0" :class="{ 'rotate-180': showUserDropdown }" />
             </button>
 
             <!-- Dropdown Menu -->
-            <div 
-              v-if="showUserDropdown"
-              class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 py-2.5 px-3 z-50 animate-fadeIn text-gray-800 dark:text-slate-200"
-            >
+            <Transition name="dropdown">
+              <div 
+                v-if="showUserDropdown"
+                class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 py-2.5 px-3 z-50 text-gray-800 dark:text-slate-200"
+              >
               <!-- User Summary Header -->
               <div class="px-2 pb-2.5 mb-2 border-b border-gray-100 dark:border-slate-800 flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-aizome/10 dark:bg-torii/20 border border-aizome/20 dark:border-torii/40 text-white flex items-center justify-center font-extrabold text-sm shadow-xs flex-shrink-0 overflow-hidden p-1">
@@ -437,6 +470,20 @@ const goToHome = () => {
                 </button>
               </div>
 
+              <!-- About App Button -->
+              <div class="px-1 mt-1">
+                <button
+                  @click="showAboutModal = true; showUserDropdown = false;"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <Info class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
+                    <span>Tentang Aplikasi</span>
+                  </div>
+                  <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
+                </button>
+              </div>
+
               <!-- Divider -->
               <div class="my-1.5 border-t border-gray-100 dark:border-slate-800"></div>
 
@@ -449,6 +496,7 @@ const goToHome = () => {
                 <span>Keluar</span>
               </button>
             </div>
+            </Transition>
           </div>
         </template>
         <template v-else>
@@ -465,10 +513,11 @@ const goToHome = () => {
             </button>
 
             <!-- Dropdown Menu for Guest -->
-            <div 
-              v-if="showUserDropdown"
-              class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 py-2.5 px-3 z-50 animate-fadeIn text-gray-800 dark:text-slate-200"
-            >
+            <Transition name="dropdown">
+              <div 
+                v-if="showUserDropdown"
+                class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 py-2.5 px-3 z-50 text-gray-800 dark:text-slate-200"
+              >
               <!-- Profile & Badges Menu Item for Guest -->
               <div class="px-1 mb-2">
                 <button
@@ -542,6 +591,20 @@ const goToHome = () => {
                 </button>
               </div>
 
+              <!-- About App Button -->
+              <div class="px-1 mt-1">
+                <button
+                  @click="showAboutModal = true; showUserDropdown = false;"
+                  class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
+                >
+                  <div class="flex items-center gap-2">
+                    <Info class="w-3.5 h-3.5 text-indigo-600 dark:text-torii" />
+                    <span>Tentang Aplikasi</span>
+                  </div>
+                  <ChevronRight class="w-3.5 h-3.5 text-gray-400" />
+                </button>
+              </div>
+
               <!-- Divider -->
               <div class="my-1.5 border-t border-gray-100 dark:border-slate-800"></div>
 
@@ -553,13 +616,16 @@ const goToHome = () => {
                 Masuk / Daftar
               </button>
             </div>
+            </Transition>
           </div>
 
           <button 
             @click="showAuthModal = true"
-            class="px-3.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
+            class="p-2 sm:px-3.5 sm:py-1.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-torii dark:hover:bg-torii-hover text-white rounded-xl text-xs font-bold transition shadow-xs cursor-pointer flex items-center gap-1.5 shrink-0"
+            title="Masuk / Daftar"
           >
-            Masuk / Daftar
+            <LogIn class="w-4 h-4 shrink-0" />
+            <span class="hidden sm:inline">Masuk / Daftar</span>
           </button>
         </template>
       </div>
@@ -636,6 +702,12 @@ const goToHome = () => {
       @exit="closeDailyPractice"
       @open-auth="showAuthModal = true"
     />
+    <LessonHandbookView
+      v-else-if="showHandbook"
+      class="flex-1 w-full h-full z-30"
+      :initial-lesson="selectedHandbookLesson"
+      @exit="closeHandbook"
+    />
     <StartScreen 
       v-else-if="!quizStarted" 
       @start="startQuiz" 
@@ -645,6 +717,7 @@ const goToHome = () => {
       @open-battleground="openBattleground"
       @open-furoku="showReferenceModal = true"
       @open-daily-practice="openDailyPractice"
+      @open-handbook="openHandbook"
     />
     <div 
       v-else 

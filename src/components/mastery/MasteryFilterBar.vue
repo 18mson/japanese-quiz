@@ -234,10 +234,11 @@ const statusPills = [
         </button>
 
         <!-- Custom Dropdown Menu -->
-        <div
-          v-if="openDropdown === 'subtype'"
-          class="absolute left-0 top-full mt-1.5 w-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 p-1.5 z-50 max-h-60 overflow-y-auto animate-fadeIn select-none"
-        >
+        <Transition name="dropdown">
+          <div
+            v-if="openDropdown === 'subtype'"
+            class="absolute left-0 top-full mt-1.5 w-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 p-1.5 z-50 max-h-60 overflow-y-auto select-none"
+          >
           <button
             type="button"
             @click="emit('update:subtype', 'all'); closeDropdowns();"
@@ -305,6 +306,7 @@ const statusPills = [
             </button>
           </template>
         </div>
+        </Transition>
       </div>
 
       <!-- Status Filter Horizontal Tabs with Sliding Indicator -->
@@ -329,10 +331,12 @@ const statusPills = [
             type="button"
             @click="emit('update:statusFilter', st.key)"
             :title="st.label"
-            class="relative z-10 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-200 cursor-pointer select-none flex items-center gap-1.5 shrink-0"
-            :class="statusFilter === st.key 
-              ? 'text-gray-900 dark:text-white font-extrabold' 
-              : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
+            class="relative z-10 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 cursor-pointer select-none flex items-center gap-1 sm:gap-1.5 shrink-0"
+            :class="[
+              statusFilter === st.key 
+                ? 'px-2.5 sm:px-3.5 text-gray-900 dark:text-white font-extrabold' 
+                : 'px-2 sm:px-3.5 text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'
+            ]"
           >
             <component 
               :is="st.icon" 
@@ -346,7 +350,7 @@ const statusPills = [
                 'text-amber-500 dark:text-amber-400'
               ]" 
             />
-            <span>{{ st.shortLabel }}</span>
+            <span :class="statusFilter === st.key ? 'inline' : 'hidden sm:inline'">{{ st.shortLabel }}</span>
           </button>
         </div>
       </div>

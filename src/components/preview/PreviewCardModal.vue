@@ -124,16 +124,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div 
-    v-if="quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal"
-    class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-4 z-50 animate-fadeIn"
-  >
+  <Transition name="modal-backdrop">
     <div 
-      :class="[
-        'w-full max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-3xl p-4 sm:p-6 text-center shadow-2xl relative flex flex-col items-center transition-all duration-300',
-        hasExamples ? 'max-w-md md:max-w-2xl lg:max-w-3xl' : 'max-w-md'
-      ]"
+      v-if="quizStore.isWavePreviewActive || quizStore.showMicroPreviewModal"
+      class="fixed inset-0 bg-slate-950/85 backdrop-blur-md flex flex-col items-center justify-center p-3 sm:p-4 z-50"
     >
+      <div 
+        :class="[
+          'modal-panel w-full max-h-[92vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-3xl p-4 sm:p-6 text-center shadow-2xl relative flex flex-col items-center transition-all duration-300',
+          hasExamples ? 'max-w-md md:max-w-2xl lg:max-w-3xl' : 'max-w-md'
+        ]"
+      >
       
       <!-- Top Mode & Lesson Badges -->
       <div class="flex items-center justify-center gap-2 flex-wrap mb-3">
@@ -305,4 +306,5 @@ onUnmounted(() => {
 
     </div>
   </div>
+  </Transition>
 </template>
