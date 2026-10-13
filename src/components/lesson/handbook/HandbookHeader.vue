@@ -189,48 +189,57 @@ defineExpose({
         <Sun v-else class="w-3.5 h-3.5 text-amber-500" />
       </button>
 
-      <!-- Desktop Segmented Theme Switcher (Auto / Dark / Light) -->
-      <div class="hidden sm:flex items-center p-0.5 bg-gray-100 dark:bg-slate-800 rounded-xl border border-gray-200/80 dark:border-slate-700/80 shadow-2xs shrink-0">
+      <!-- Desktop Segmented Theme Switcher (Auto / Dark / Light) with Sliding Pill Indicator -->
+      <div class="hidden sm:grid grid-cols-3 relative p-0.5 bg-gray-100 dark:bg-slate-800 rounded-xl border border-gray-200/80 dark:border-slate-700/80 shadow-2xs shrink-0 select-none">
+        <!-- Sliding Pill Indicator -->
+        <div 
+          class="absolute inset-y-0.5 rounded-lg bg-white dark:bg-slate-700 border border-gray-200/90 dark:border-slate-600 shadow-xs transition-transform duration-200 ease-out pointer-events-none"
+          :style="{
+            width: 'calc((100% - 4px) / 3)',
+            left: '2px',
+            transform: `translateX(${
+              settingsStore.themeMode === 'auto' ? '0%' :
+              settingsStore.themeMode === 'dark' ? '100%' : '200%'
+            })`
+          }"
+        ></div>
+
         <button
           id="theme-auto-btn"
           type="button"
           @click="settingsStore.setThemeMode('auto')"
-          :class="[
-            'px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition flex items-center gap-1 cursor-pointer select-none',
-            settingsStore.themeMode === 'auto'
-              ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-2xs font-extrabold'
-              : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'
-          ]"
+          class="relative z-10 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 cursor-pointer transition-colors duration-150"
+          :class="settingsStore.themeMode === 'auto'
+            ? 'text-indigo-600 dark:text-torii-light font-extrabold'
+            : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           title="Ikuti Sistem / Auto"
         >
           <Monitor class="w-3.5 h-3.5 shrink-0" />
           <span class="hidden md:inline">Auto</span>
         </button>
+
         <button
           id="theme-dark-btn"
           type="button"
           @click="settingsStore.setThemeMode('dark')"
-          :class="[
-            'px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition flex items-center gap-1 cursor-pointer select-none',
-            settingsStore.themeMode === 'dark'
-              ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-2xs font-extrabold'
-              : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'
-          ]"
+          class="relative z-10 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 cursor-pointer transition-colors duration-150"
+          :class="settingsStore.themeMode === 'dark'
+            ? 'text-indigo-600 dark:text-torii-light font-extrabold'
+            : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           title="Mode Gelap / Dark"
         >
           <Moon class="w-3.5 h-3.5 shrink-0" />
           <span class="hidden md:inline">Dark</span>
         </button>
+
         <button
           id="theme-light-btn"
           type="button"
           @click="settingsStore.setThemeMode('light')"
-          :class="[
-            'px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold transition flex items-center gap-1 cursor-pointer select-none',
-            settingsStore.themeMode === 'light'
-              ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-torii-light shadow-2xs font-extrabold'
-              : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'
-          ]"
+          class="relative z-10 px-1.5 sm:px-2 py-1 rounded-lg text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 cursor-pointer transition-colors duration-150"
+          :class="settingsStore.themeMode === 'light'
+            ? 'text-indigo-600 dark:text-torii-light font-extrabold'
+            : 'text-gray-500 dark:text-slate-400 hover:text-gray-800 dark:hover:text-slate-200'"
           title="Mode Terang / Light"
         >
           <Sun class="w-3.5 h-3.5 shrink-0" />

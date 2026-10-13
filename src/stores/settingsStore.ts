@@ -80,6 +80,23 @@ export const useSettingsStore = defineStore('settings', () => {
   const applyTheme = () => {
     if (typeof document !== 'undefined') {
       const dark = isDarkMode.value;
+
+      // Temporarily inject a style tag to disable all CSS transitions during theme switch
+      // This completely prevents icons, buttons, and backgrounds from flickering / blinking
+      const disableTransitionsStyle = document.createElement('style');
+      disableTransitionsStyle.appendChild(
+        document.createTextNode(
+          `*, *::before, *::after {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -o-transition: none !important;
+            -ms-transition: none !important;
+            transition: none !important;
+          }`
+        )
+      );
+      document.head.appendChild(disableTransitionsStyle);
+
       if (dark) {
         document.documentElement.classList.add('dark');
         document.body.classList.add('dark');
@@ -87,6 +104,18 @@ export const useSettingsStore = defineStore('settings', () => {
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark');
       }
+
+      // Force synchronous reflow so that colors apply instantly without intermediate states
+      void document.body.offsetHeight;
+
+      // Remove the style block in next frame to re-enable normal transitions for hover/click
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (disableTransitionsStyle.parentNode) {
+            document.head.removeChild(disableTransitionsStyle);
+          }
+        });
+      });
     }
   };
 

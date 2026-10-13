@@ -94,35 +94,37 @@ const instructionText = computed(() => {
           </span>
           
           <!-- Interactive Hints (Only for Words Quiz when not answered yet) -->
-          <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-2.5 flex gap-2 flex-wrap justify-center animate-fadeIn">
-            <!-- Reading Hint Button/Pill -->
-            <template v-if="hasValidReadingHint">
-              <button 
-                v-if="!showReadingHint"
-                class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
-                @click="showReadingHint = true"
-              >
-                <Lightbulb class="w-3 h-3 text-indigo-600 dark:text-torii" />
-                <span>Reading Hint</span>
-              </button>
-              <span v-else class="text-xs font-semibold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-                Reading: <span class="font-jp">{{ currentKana }}</span>
-              </span>
-            </template>
+          <div v-if="isWord" class="mt-2.5 flex gap-2 flex-wrap justify-center items-center min-h-[28px]">
+            <template v-if="quizStore.selectedAnswer === null">
+              <!-- Reading Hint Button/Pill -->
+              <template v-if="hasValidReadingHint">
+                <button 
+                  v-if="!showReadingHint"
+                  class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+                  @click="showReadingHint = true"
+                >
+                  <Lightbulb class="w-3 h-3 text-indigo-600 dark:text-torii" />
+                  <span>Reading Hint</span>
+                </button>
+                <span v-else class="text-xs font-semibold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+                  Reading: <span class="font-jp">{{ currentKana }}</span>
+                </span>
+              </template>
 
-            <!-- Meaning Hint Button/Pill -->
-            <template v-if="currentMeaning">
-              <button 
-                v-if="!showMeaningHint"
-                class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
-                @click="quizStore.openMeaningHint()"
-              >
-                <BookOpen class="w-3 h-3 text-indigo-600 dark:text-torii" />
-                <span>Petunjuk Arti</span>
-              </button>
-              <span v-else class="text-xs font-medium text-teal-700 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
-                Arti: {{ currentMeaning }}
-              </span>
+              <!-- Meaning Hint Button/Pill -->
+              <template v-if="currentMeaning">
+                <button 
+                  v-if="!showMeaningHint"
+                  class="text-[10px] px-2.5 py-1 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-sm cursor-pointer hover:shadow focus:outline-none flex items-center gap-1"
+                  @click="quizStore.openMeaningHint()"
+                >
+                  <BookOpen class="w-3 h-3 text-indigo-600 dark:text-torii" />
+                  <span>Petunjuk Arti</span>
+                </button>
+                <span v-else class="text-xs font-medium text-teal-700 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-100 dark:border-slate-700 px-2.5 py-0.5 rounded-full animate-hintPop shadow-sm">
+                  Arti: {{ currentMeaning }}
+                </span>
+              </template>
             </template>
           </div>
         </div>

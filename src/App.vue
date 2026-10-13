@@ -727,11 +727,13 @@ const goToHome = () => {
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       
       <main 
-        class="w-full flex flex-col items-center justify-center flex-shrink-0 md:my-auto transition-all duration-300"
+        class="w-full flex flex-col items-center flex-shrink-0 transition-all duration-300"
         :class="[
           quizStore.selectedMode === 'writing' || quizStore.selectedMode === 'hitungan'
-            ? 'bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
-            : 'bg-transparent border-0 shadow-none p-1 sm:p-2 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]'
+            ? 'justify-center md:my-auto bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
+            : (quizStore.questionType === 'words' || quizStore.currentQuestion?.type === 'word' || quizStore.isTypingMode
+                ? 'justify-start pt-2 sm:pt-4 md:pt-6 mb-2 sm:mb-4 bg-transparent border-0 shadow-none p-1 sm:p-2'
+                : 'justify-center md:my-auto bg-transparent border-0 shadow-none p-1 sm:p-2 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]')
         ]"
         v-if="!quizStore.quizCompleted"
       >
