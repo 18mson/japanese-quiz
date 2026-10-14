@@ -188,8 +188,9 @@ export async function prepareWeakItemsQuestions(params: {
   selectedKanaCategory: 'all' | 'basic' | 'dakuten' | 'combination';
   getMasteryStreak: (char: string) => number;
   introducedChars: Record<string, boolean>;
+  currentLessonNumber?: number;
 }): Promise<{ questions: any[]; initialQuestionCount: number }> {
-  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars } = params;
+  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars, currentLessonNumber } = params;
   const questionCount = getQuestionCountFromDuration(targetDuration, type);
   let pool = getFallbackLocalPool(type, level);
 
@@ -203,7 +204,7 @@ export async function prepareWeakItemsQuestions(params: {
 
   let questions: any[] = [];
   if (type === 'words') {
-    questions = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak);
+    questions = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak, currentLessonNumber);
   } else if (type === 'kanji') {
     const weakEntries = kanjiWritingEntries.filter(e => getMasteryStreak(e.kanji) < 3);
     const poolEntries = weakEntries.length > 0 ? weakEntries : kanjiWritingEntries;

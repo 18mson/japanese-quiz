@@ -211,7 +211,8 @@ export const useQuizStore = defineStore('quiz', () => {
       level,
       selectedKanaCategory: selectedKanaCategory.value,
       getMasteryStreak: masteryStore.getMasteryStreak,
-      introducedChars: masteryStore.introducedChars
+      introducedChars: masteryStore.introducedChars,
+      currentLessonNumber: lessonStore.currentLessonNumber
     });
 
     questions.value = res.questions;

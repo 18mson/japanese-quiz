@@ -24,8 +24,8 @@ export interface KanjiQuestion extends KanjiItem {
  * Balanced weights to encourage steady lesson progression while reviewing active words.
  */
 export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
-  new: 35,
-  learning: 40,
+  new: 30,
+  learning: 45,
   mastered: 20,
   crown: 5
 };
@@ -34,7 +34,7 @@ export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
  * Gets dynamic cap for new/unlearned unique words in a single session based on total slots.
  */
 export const getMaxNewUniquePerSession = (totalSlots: number): number => {
-  return Math.max(2, Math.min(8, Math.round(totalSlots * 0.35)));
+  return Math.max(2, Math.min(8, Math.round(totalSlots * 0.30)));
 };
 
 /**
@@ -105,20 +105,38 @@ export const getHighestActiveLessonNumber = (
  * lag = Math.max(0, currentLesson - itemLesson)
  * weight = (1 + lag * lagMultiplier) * streakUrgencyMultiplier
  */
+/**
+ * Calculates selection weight for a candidate item in 'learning' (Proses) tier.
+ * Words from earlier lessons that are lagging behind the user's current progress
+ * get an exponentially higher probability of being sampled (power-law scaling: (1 + lag)^3).
+ *
+ * Formula:
+ * lag = Math.max(0, currentLesson - itemLesson)
+ * baseLagWeight = Math.pow(1 + lag, power)
+ * weight = baseLagWeight * streakUrgencyMultiplier
+ */
 export const calculateLearningItemWeight = (
   item: KanjiItem,
   currentLesson: number,
   streak: number,
-  lagMultiplier: number = 2.0
+  power: number = 3.0
 ): number => {
   const itemLesson = parseLessonNumber(item.lesson);
   const lag = Math.max(0, currentLesson - itemLesson);
 
-  // Semakin tertinggal dari bab aktif saat ini, semakin tinggi bobotnya
-  const baseLagWeight = 1 + lag * lagMultiplier;
+  // Semakin tertinggal dari bab aktif saat ini, semakin tinggi bobotnya (power-law scaling: (1 + lag)^3)
+  // Contoh jika currentLesson = 11:
+  // - Bab 11 (lag 0): 1^3 = 1
+  // - Bab 10 (lag 1): 2^3 = 8
+  // - Bab 9  (lag 2): 3^3 = 27
+  // - Bab 8  (lag 3): 4^3 = 64
+  // - Bab 7  (lag 4): 5^3 = 125
+  // - Bab 6  (lag 5): 6^3 = 216
+  // - Bab 5  (lag 6): 7^3 = 343
+  const baseLagWeight = Math.pow(1 + lag, power);
 
-  // Streak 1 (baru gagal/salah ketik) memiliki urgensi sedikit lebih tinggi dari streak 2
-  const streakMultiplier = streak <= 1 ? 1.25 : 1.0;
+  // Streak 1 (baru gagal / typo / baru turun) memiliki urgensi lebih tinggi dari streak 2
+  const streakMultiplier = streak <= 1 ? 1.5 : 1.0;
 
   return baseLagWeight * streakMultiplier;
 };
@@ -131,14 +149,14 @@ export const pickWeightedLearningItem = (
   items: KanjiItem[],
   currentLesson: number,
   getMasteryStreak: (character: string) => number,
-  lagMultiplier: number = 2.0
+  power: number = 3.0
 ): KanjiItem | null => {
   if (!items || items.length === 0) return null;
   if (items.length === 1) return items.splice(0, 1)[0];
 
   const weights = items.map(item => {
     const streak = getMasteryStreak(item.character);
-    return calculateLearningItemWeight(item, currentLesson, streak, lagMultiplier);
+    return calculateLearningItemWeight(item, currentLesson, streak, power);
   });
 
   const totalWeight = weights.reduce((sum, w) => sum + w, 0);
@@ -159,7 +177,7 @@ export const pickWeightedLearningItem = (
 /**
  * Selects a rich pool of UNIQUE words for the session.
  * Prioritizes natural lesson progression (Pelajaran 1 -> 2 -> 3...) rather than arbitrary character length.
- * Incorporates Lesson Lag Weighted Sampling for 'learning' (Proses) words so lagging lessons appear sooner.
+ * Incorporates Lesson Lag Weighted Sampling for 'learning' (Proses) words so lagging lessons appear promptly.
  */
 export const selectKanjiUniquePool = (
   pool: KanjiItem[],
@@ -216,6 +234,43 @@ export const selectKanjiUniquePool = (
     mastered: [...tierBuckets.mastered],
     crown: [...tierBuckets.crown]
   };
+
+  // --- Priority Allocation for Lagging Unmastered Words ---
+  // If there are words in 'learning' from earlier lessons (lag >= 1),
+  // guarantee at least 1 slot (or 2 slots if totalSlots >= 16) specifically
+  // for the lagging pool so unmastered words from previous lessons appear promptly.
+  const maxLaggingSlots = totalSlots >= 16 ? 2 : 1;
+  let laggingSlotsCount = 0;
+
+  while (
+    laggingSlotsCount < maxLaggingSlots &&
+    selectedUnique.length < targetUniqueCount &&
+    available.learning.length > 0
+  ) {
+    const laggingCandidates = available.learning.filter(item => {
+      const itemLesson = parseLessonNumber(item.lesson);
+      return (effectiveCurrentLesson - itemLesson) >= 1;
+    });
+
+    if (laggingCandidates.length === 0) break;
+
+    const picked = pickWeightedLearningItem(
+      laggingCandidates,
+      effectiveCurrentLesson,
+      getMasteryStreak
+    );
+
+    if (picked) {
+      const removeIdx = available.learning.findIndex(it => it.character === picked.character);
+      if (removeIdx !== -1) {
+        available.learning.splice(removeIdx, 1);
+      }
+      selectedUnique.push({ item: picked, tier: 'learning' });
+      laggingSlotsCount++;
+    } else {
+      break;
+    }
+  }
 
   while (selectedUnique.length < targetUniqueCount) {
     // Check which tiers still have candidates and are within caps
