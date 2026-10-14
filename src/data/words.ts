@@ -317,6 +317,8 @@ export const wordsData: JapaneseWord[] = [
   { character: 'はさみ', kana: 'はさみ', romaji: ['hasami'], meaning: 'gunting', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'ケータイ', kana: 'ケータイ', romaji: ['keetai', 'ketai'], meaning: 'HP, telepon genggam', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'メール', kana: 'メール', romaji: ['meeru', 'meru'], meaning: 'e-mail, surel', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
+  { character: 'ファクス', kana: 'ファクス', romaji: ['fakusu', 'fakkusu', 'faks'], meaning: 'faksimili, fax', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
+  { character: 'ファクシミリ', kana: 'ファクシミリ', romaji: ['fakushimiri', 'fakusimiri'], meaning: 'faksimili', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: '年賀状', kana: 'ねんがじょう', romaji: ['nengajou', 'nengajo'], meaning: 'kartu tahun baru', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'パンチ', kana: 'パンチ', romaji: ['panchi'], meaning: 'pelubang kertas', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },
   { character: 'ホッチキス', kana: 'ホッチキス', romaji: ['hotchikisu', 'hocchikisu'], meaning: 'stapler, hektar', type: 'word', lesson: 'Pelajaran 7', category_word: 'Kata Benda' },

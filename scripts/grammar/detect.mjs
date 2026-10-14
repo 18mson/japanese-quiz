@@ -442,7 +442,7 @@ export function detectTags(tokens) {
       if (prev && !transportWords.includes(prev.surface_form)) {
         const meansWords = [
           'ワープロ', '日本語', '英語', 'はし', 'スプーン', 'フォーク',
-          'ハサミ', 'はさみ', '手', 'パソコン', 'ファクス', 'ファックス',
+          'ハサミ', 'はさみ', '手', 'パソコン', 'ファクス', 'ファックス', 'ファクシミリ',
           'ナイフ', '鉛筆', 'えんぴつ', 'ボールペン', 'メール'
         ];
         if (meansWords.includes(prev.surface_form)) {

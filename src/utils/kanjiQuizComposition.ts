@@ -68,15 +68,109 @@ export const KANJI_TIER_METADATA: Record<MasteryTierKey, { questionReason: strin
 };
 
 /**
+ * Parses lesson number integer from a lesson string (e.g. 'Pelajaran 5' -> 5).
+ */
+export const parseLessonNumber = (lesson?: string): number => {
+  if (!lesson) return 1;
+  const match = lesson.match(/\d+/);
+  return match ? parseInt(match[0], 10) : 1;
+};
+
+/**
+ * Detects the highest active lesson number from candidates where the player has streak > 0.
+ */
+export const getHighestActiveLessonNumber = (
+  pool: KanjiItem[],
+  getMasteryStreak: (character: string) => number,
+  fallbackLesson: number = 1
+): number => {
+  let highest = fallbackLesson;
+  for (const item of pool) {
+    if (getMasteryStreak(item.character) > 0) {
+      const num = parseLessonNumber(item.lesson);
+      if (num > highest) {
+        highest = num;
+      }
+    }
+  }
+  return highest;
+};
+
+/**
+ * Calculates selection weight for a candidate item in 'learning' (Proses) tier.
+ * Words from earlier lessons that are lagging behind the user's current progress
+ * get a significantly higher probability of being sampled.
+ *
+ * Formula:
+ * lag = Math.max(0, currentLesson - itemLesson)
+ * weight = (1 + lag * lagMultiplier) * streakUrgencyMultiplier
+ */
+export const calculateLearningItemWeight = (
+  item: KanjiItem,
+  currentLesson: number,
+  streak: number,
+  lagMultiplier: number = 2.0
+): number => {
+  const itemLesson = parseLessonNumber(item.lesson);
+  const lag = Math.max(0, currentLesson - itemLesson);
+
+  // Semakin tertinggal dari bab aktif saat ini, semakin tinggi bobotnya
+  const baseLagWeight = 1 + lag * lagMultiplier;
+
+  // Streak 1 (baru gagal/salah ketik) memiliki urgensi sedikit lebih tinggi dari streak 2
+  const streakMultiplier = streak <= 1 ? 1.25 : 1.0;
+
+  return baseLagWeight * streakMultiplier;
+};
+
+/**
+ * Picks an item from learning array using Weighted Random Sampling (Roulette Wheel Selection),
+ * then removes it from the array in-place.
+ */
+export const pickWeightedLearningItem = (
+  items: KanjiItem[],
+  currentLesson: number,
+  getMasteryStreak: (character: string) => number,
+  lagMultiplier: number = 2.0
+): KanjiItem | null => {
+  if (!items || items.length === 0) return null;
+  if (items.length === 1) return items.splice(0, 1)[0];
+
+  const weights = items.map(item => {
+    const streak = getMasteryStreak(item.character);
+    return calculateLearningItemWeight(item, currentLesson, streak, lagMultiplier);
+  });
+
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+  if (totalWeight <= 0) return items.splice(0, 1)[0];
+
+  let randomVal = Math.random() * totalWeight;
+
+  for (let i = 0; i < items.length; i++) {
+    randomVal -= weights[i];
+    if (randomVal <= 0 || i === items.length - 1) {
+      return items.splice(i, 1)[0];
+    }
+  }
+
+  return items.splice(0, 1)[0];
+};
+
+/**
  * Selects a rich pool of UNIQUE words for the session.
  * Prioritizes natural lesson progression (Pelajaran 1 -> 2 -> 3...) rather than arbitrary character length.
+ * Incorporates Lesson Lag Weighted Sampling for 'learning' (Proses) words so lagging lessons appear sooner.
  */
 export const selectKanjiUniquePool = (
   pool: KanjiItem[],
   totalSlots: number,
-  getMasteryStreak: (character: string) => number
+  getMasteryStreak: (character: string) => number,
+  currentLessonNumber?: number
 ): { item: KanjiItem; tier: MasteryTierKey }[] => {
   if (!pool || pool.length === 0) return [];
+
+  const highestActive = getHighestActiveLessonNumber(pool, getMasteryStreak, currentLessonNumber || 1);
+  const effectiveCurrentLesson = Math.max(currentLessonNumber || 1, highestActive);
 
   // Group available candidates by tier
   const tierBuckets: Record<MasteryTierKey, KanjiItem[]> = {
@@ -142,7 +236,15 @@ export const selectKanjiUniquePool = (
         tier => available[tier].length > 0 && (tier !== 'new' || newCount < maxNewCount)
       );
       if (!fallbackTier) break; // Exhausted eligible items
-      const item = available[fallbackTier].shift()!;
+
+      let item: KanjiItem;
+      if (fallbackTier === 'learning') {
+        const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+        item = picked || available.learning.shift()!;
+      } else {
+        item = available[fallbackTier].shift()!;
+      }
+
       selectedUnique.push({ item, tier: fallbackTier });
       if (fallbackTier === 'new') newCount++;
       continue;
@@ -162,7 +264,14 @@ export const selectKanjiUniquePool = (
       }
     }
 
-    const item = available[chosenTier].shift()!;
+    let item: KanjiItem;
+    if (chosenTier === 'learning') {
+      const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+      item = picked || available.learning.shift()!;
+    } else {
+      item = available[chosenTier].shift()!;
+    }
+
     selectedUnique.push({ item, tier: chosenTier });
     if (chosenTier === 'new') newCount++;
   }
@@ -359,12 +468,13 @@ export const assignFirstAppearanceFlags = (
 export const buildKanjiSessionQuestions = (
   pool: KanjiItem[],
   totalSlots: number,
-  getMasteryStreak: (character: string) => number
+  getMasteryStreak: (character: string) => number,
+  currentLessonNumber?: number
 ): KanjiQuestion[] => {
   if (!pool || pool.length === 0) return [];
 
-  // 1. Select unique pool
-  const uniquePool = selectKanjiUniquePool(pool, totalSlots, getMasteryStreak);
+  // 1. Select unique pool with adaptive lesson lag weighting
+  const uniquePool = selectKanjiUniquePool(pool, totalSlots, getMasteryStreak, currentLessonNumber);
   if (uniquePool.length === 0) return [];
 
   // 2. Distribute repetition slots

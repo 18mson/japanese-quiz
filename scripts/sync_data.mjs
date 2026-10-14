@@ -95,6 +95,8 @@ const baseAdditionalWords = [
   { kanji: 'はさみ', kana: 'はさみ', romaji: ['hasami'], meaning: 'gunting', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'ケータイ', kana: 'ケータイ', romaji: ['keetai', 'ketai'], meaning: 'HP, telepon genggam', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'メール', kana: 'メール', romaji: ['meeru', 'meru'], meaning: 'e-mail, surel', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'ファクス', kana: 'ファクス', romaji: ['fakusu', 'fakkusu', 'faks'], meaning: 'faksimili, fax', category: 'Kata Benda', lesson: 'Pelajaran 7' },
+  { kanji: 'ファクシミリ', kana: 'ファクシミリ', romaji: ['fakushimiri', 'fakusimiri'], meaning: 'faksimili', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: '年賀状', kana: 'ねんがじょう', romaji: ['nengajou', 'nengajo'], meaning: 'kartu tahun baru', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'パンチ', kana: 'パンチ', romaji: ['panchi'], meaning: 'pelubang kertas', category: 'Kata Benda', lesson: 'Pelajaran 7' },
   { kanji: 'ホッチキス', kana: 'ホッチキス', romaji: ['hotchikisu', 'hocchikisu'], meaning: 'stapler, hektar', category: 'Kata Benda', lesson: 'Pelajaran 7' },

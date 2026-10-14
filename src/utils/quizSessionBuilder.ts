@@ -25,6 +25,7 @@ export async function prepareStandardQuestions(params: {
   getMasteryStreak: (char: string) => number;
   userStreaks: Record<string, number>;
   introducedChars: Record<string, boolean>;
+  currentLessonNumber?: number;
 }): Promise<PreparedQuestionsResult> {
   const {
     targetDuration,
@@ -35,7 +36,8 @@ export async function prepareStandardQuestions(params: {
     activeKanjiLessonNumber,
     getMasteryStreak,
     userStreaks,
-    introducedChars
+    introducedChars,
+    currentLessonNumber
   } = params;
 
   if (type === 'sentences') {
@@ -96,7 +98,12 @@ export async function prepareStandardQuestions(params: {
       return numA - numB;
     });
 
-    const kanjiQuestions = buildKanjiSessionQuestions(finalPool, questionCount, getMasteryStreak);
+    const effectiveLesson = Math.max(
+      currentLessonNumber || 1,
+      activeKanjiLessonNumber || 1,
+      selectedKanjiLessonNumber || 1
+    );
+    const kanjiQuestions = buildKanjiSessionQuestions(finalPool, questionCount, getMasteryStreak, effectiveLesson);
 
     const uniqueUnlearnedInSession: any[] = [];
     const seenChars = new Set<string>();

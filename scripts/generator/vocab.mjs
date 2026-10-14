@@ -344,6 +344,7 @@ export const CURRICULUM_FIRST_TAUGHT = {
   'ワープロ': { lesson: 7, confidence: 'book', id: 'pengolah kata', kana: 'ワープロ' },
   '紙': { lesson: 7, confidence: 'curriculum', id: 'kertas', kana: 'かみ' },
   'ファクス': { lesson: 7, confidence: 'curriculum', id: 'faks', kana: 'ファクス' },
+  'ファクシミリ': { lesson: 7, confidence: 'curriculum', id: 'faksimili', kana: 'ファクシミリ' },
   '面白い': { lesson: 8, confidence: 'curriculum', id: 'menarik', kana: 'おもしろい' }
 };
 

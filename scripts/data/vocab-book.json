@@ -2008,6 +2008,25 @@
     },
     {
       "lesson": 7,
+      "jp": "ファクス",
+      "kana": "ファクス",
+      "id": "faksimili",
+      "alt": [
+        "ファックス",
+        "ファクシミリ"
+      ]
+    },
+    {
+      "lesson": 7,
+      "jp": "ファクシミリ",
+      "kana": "ファクシミリ",
+      "id": "faksimili",
+      "alt": [
+        "ファクス"
+      ]
+    },
+    {
+      "lesson": 7,
       "jp": "年賀状",
       "kana": "ねんがじょう",
       "id": "kartu tahun baru",

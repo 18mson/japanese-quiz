@@ -226,6 +226,8 @@ INSERT INTO public.quiz_items (category, "character", romaji, kana, meaning, typ
 ('words', 'はさみ', ARRAY['hasami'], 'はさみ', 'gunting', 'word', false, 'Pelajaran 7'),
 ('words', 'ケータイ', ARRAY['keetai', 'ketai'], 'ケータイ', 'HP, telepon genggam', 'word', false, 'Pelajaran 7'),
 ('words', 'メール', ARRAY['meeru', 'meru'], 'メール', 'e-mail, surel', 'word', false, 'Pelajaran 7'),
+('words', 'ファクス', ARRAY['fakusu', 'fakkusu', 'faks'], 'ファクス', 'faksimili, fax', 'word', false, 'Pelajaran 7'),
+('words', 'ファクシミリ', ARRAY['fakushimiri', 'fakusimiri'], 'ファクシミリ', 'faksimili', 'word', false, 'Pelajaran 7'),
 ('words', '年賀状', ARRAY['nengajou', 'nengajo'], 'ねんがじょう', 'kartu tahun baru', 'word', true, 'Pelajaran 7'),
 ('words', 'パンチ', ARRAY['panchi'], 'パンチ', 'pelubang kertas', 'word', false, 'Pelajaran 7'),
 ('words', 'ホッチキス', ARRAY['hotchikisu', 'hocchikisu'], 'ホッチキス', 'stapler, hektar', 'word', false, 'Pelajaran 7'),

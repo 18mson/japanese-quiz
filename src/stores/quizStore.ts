@@ -182,7 +182,8 @@ export const useQuizStore = defineStore('quiz', () => {
       activeKanjiLessonNumber: activeKanjiLessonNumber.value,
       getMasteryStreak: masteryStore.getMasteryStreak,
       userStreaks: masteryStore.userStreaks,
-      introducedChars: masteryStore.introducedChars
+      introducedChars: masteryStore.introducedChars,
+      currentLessonNumber: lessonStore.currentLessonNumber
     });
 
     questions.value = res.questions;
