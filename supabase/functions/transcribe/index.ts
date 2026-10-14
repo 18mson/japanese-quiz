@@ -1,3 +1,4 @@
+// @ts-nocheck
 // ============================================================
 // Supabase Edge Function: transcribe
 // Whisper (Groq) Audio Transcription dengan Rate Limiting Harian

@@ -1,8 +1,13 @@
+// @ts-nocheck
+// =============================================================
+// Supabase Edge Function Test: groq_mock_test.ts
+// Deno runtime — dijalankan dengan `deno test`
+// =============================================================
+
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
 import {
   mapGroqErrorStatus,
-  processGroqResponse,
-  isHallucination
+  processGroqResponse
 } from "./utils.ts";
 
 Deno.test("Edge Function Error Mapping & Groq Mock Suite", async (t) => {
