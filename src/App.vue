@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue';
 import QuizHeader from './components/QuizHeader.vue';
 import QuizQuestion from './components/QuizQuestion.vue';
 import QuizOptions from './components/QuizOptions.vue';
@@ -14,7 +14,7 @@ import LevelUpModal from './components/LevelUpModal.vue';
 import SyncConflictModal from './components/SyncConflictModal.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 import BattlegroundMode from './components/BattlegroundMode.vue';
-import DailyPracticeMode from './components/daily/DailyPracticeMode.vue';
+const DailyPracticeMode = defineAsyncComponent(() => import('./components/daily/DailyPracticeMode.vue'));
 import KaiwaPlayer from './components/KaiwaPlayer.vue';
 import RenshuuPlayer from './components/RenshuuPlayer.vue';
 import LessonMaterialModal from './components/lesson/LessonMaterialModal.vue';

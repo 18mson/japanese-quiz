@@ -3,6 +3,10 @@
 // (Local Processing untuk UX Cepat 0ms + Background Sync)
 // ============================================================
 
+import { useAnswerCheck } from '../composables/useAnswerCheck';
+
+const answerCheckerInstance = useAnswerCheck();
+
 export const KANJI_DIGITS: Record<string, number> = {
   '〇': 0, '一': 1, '二': 2, '三': 3, '四': 4,
   '五': 5, '六': 6, '七': 7, '八': 8, '九': 9
@@ -305,7 +309,18 @@ export function checkAnswerWithDetails(
     }
   }
 
-  // 2. Cek Toleransi Sesuai Mode Input
+  // 1.5. Evaluasi menggunakan useAnswerCheck (Kanonisasi Kana lewat readings.json + Weighted Edit Distance)
+  // Batas lolos: clamp(panjang * 0.12, 0.6, 3) - berlaku untuk jalur voice dan ketik
+  const acRes = answerCheckerInstance.check(userAnswer, acceptedAnswers);
+  if (acRes.isMatch) {
+    return {
+      isMatch: true,
+      isTolerance: acRes.isTolerance,
+      matchedTarget: acRes.matchedTarget
+    };
+  }
+
+  // 2. Cek Toleransi Sesuai Mode Input (Fallback / Legacy Checks)
   for (const acc of acceptedAnswers) {
     const accNorm = normalizeAnswer(acc);
     const accTokens = tokenizeJapaneseMarkers(accNorm.strict);

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue';
-import { useSpeechAnswer } from '../../composables/useSpeechAnswer';
+import { useVoiceAnswer } from '../../composables/useVoiceAnswer';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import DailyNavPaddles from './practice/DailyNavPaddles.vue';
 import DailyQuestionPrompt from './practice/DailyQuestionPrompt.vue';
@@ -58,17 +58,20 @@ onMounted(async () => {
   }
 });
 
-// Composable Speech Recognition
+// Composable Voice Recognition (Whisper + Web Speech Fallback)
 const {
   isSupported: isSpeechSupported,
-  isListening,
+  isRecording,
+  isProcessing,
   transcript,
   interimTranscript,
-  error: speechError,
-  startListening,
-  stopListening,
-  resetTranscript,
-} = useSpeechAnswer();
+  error: voiceError,
+  mode: voiceMode,
+  startRecording,
+  stopRecording,
+  cancelRecording,
+  reset: resetVoice,
+} = useVoiceAnswer();
 
 let autoSubmitTimer: ReturnType<typeof setTimeout> | null = null;
 const JAPANESE_SENTENCE_ENDING_REGEX = /(です|でした|ですか|でしたか|ではありません|じゃありません|じゃありませんでした|ではありませんでした|ます|ました|ますか|ましたか|ません|ませんでした|ましょう|ましょうか|てください|ないでください|たいです|たくないです|だ|だった)[。！？.,!?\s]*$/;
@@ -86,7 +89,7 @@ const mainActionState = computed<'advance' | 'send' | 'mic'>(() => {
 });
 
 /**
- * Deteksi akhir kalimat Jepang secara instan:
+ * Deteksi akhir kalimat Jepang secara instan (Web Speech Mode):
  * Jika ucapan pengguna berakhiran predikat penutup kalimat Jepang
  * langsung kirim jawaban dalam 250ms tanpa menunggu jeda hening selesai
  */
@@ -97,8 +100,8 @@ function checkAndTriggerSentenceEndingAutoSubmit(text: string) {
     if (autoSubmitTimer) clearTimeout(autoSubmitTimer);
     autoSubmitTimer = setTimeout(() => {
       if (activeInputMode.value === 'voice' && !props.question.is_correct && !props.submitting) {
-        if (isListening.value) {
-          stopListening();
+        if (isRecording.value) {
+          stopRecording();
         }
         handleSubmit();
       }
@@ -106,10 +109,10 @@ function checkAndTriggerSentenceEndingAutoSubmit(text: string) {
   }
 }
 
-// Auto submit setelah pengguna selesai berbicara di voice mode (fallback silence detection)
-watch(isListening, (listening, wasListening) => {
-  if (wasListening && !listening) {
-    if (activeInputMode.value === 'voice' && inputText.value.trim() && !props.question.is_correct && !props.submitting) {
+// Auto submit setelah pengguna selesai berbicara di voice mode (fallback silence detection untuk Web Speech)
+watch(isRecording, (recording, wasRecording) => {
+  if (wasRecording && !recording) {
+    if (voiceMode.value === 'webspeech' && activeInputMode.value === 'voice' && inputText.value.trim() && !props.question.is_correct && !props.submitting) {
       if (autoSubmitTimer) clearTimeout(autoSubmitTimer);
       autoSubmitTimer = setTimeout(() => {
         handleSubmit();
@@ -118,18 +121,23 @@ watch(isListening, (listening, wasListening) => {
   }
 });
 
-// Ketika transcript dari mic berubah, masukkan langsung ke input text dan cek deteksi akhir kalimat
+// Ketika transcript dari mic/whisper berubah, masukkan ke input text dan submit
 watch(transcript, (newVal) => {
   if (newVal) {
     inputText.value = newVal;
     inputMethod.value = 'voice';
-    checkAndTriggerSentenceEndingAutoSubmit(newVal);
+    if (voiceMode.value === 'whisper') {
+      // Pada mode Whisper, hasil rekaman sudah final -> submit langsung
+      handleSubmit();
+    } else {
+      checkAndTriggerSentenceEndingAutoSubmit(newVal);
+    }
   }
 });
 
-// Cek juga interim transcript secara live agar submit secepat kilat
+// Cek juga interim transcript secara live pada Web Speech mode
 watch(interimTranscript, (newVal) => {
-  if (newVal && activeInputMode.value === 'voice') {
+  if (newVal && activeInputMode.value === 'voice' && voiceMode.value === 'webspeech') {
     checkAndTriggerSentenceEndingAutoSubmit(newVal);
   }
 });
@@ -143,7 +151,7 @@ watch(
       autoSubmitTimer = null;
     }
     inputMethod.value = 'text';
-    resetTranscript();
+    resetVoice();
     if (props.question.is_correct) {
       const ans = props.question.correct_answer || props.revealedAnswer || '';
       inputText.value = ans;
@@ -163,8 +171,8 @@ watch(
 );
 
 watch(activeInputMode, (mode) => {
-  if (mode === 'keyboard' && isListening.value) {
-    stopListening();
+  if (mode === 'keyboard' && isRecording.value) {
+    stopRecording();
   }
 });
 
@@ -175,12 +183,13 @@ watch(inputText, () => {
 });
 
 function toggleMic() {
-  if (isListening.value) {
-    stopListening();
+  if (isRecording.value) {
+    stopRecording();
   } else {
     inputText.value = '';
-    resetTranscript();
-    startListening();
+    resetVoice();
+    const excludeAnswers = props.question.jp_answers || (props.question.correct_answer ? [props.question.correct_answer] : []);
+    startRecording(props.question.chapter_id, excludeAnswers);
   }
 }
 
@@ -190,7 +199,7 @@ const displayedVoiceTranscript = computed(() => {
 
 function handleClear() {
   inputText.value = '';
-  resetTranscript();
+  resetVoice();
   focusInput();
 }
 
@@ -206,8 +215,8 @@ function handleSubmit() {
     } catch {}
   }
 
-  if (isListening.value) {
-    stopListening();
+  if (isRecording.value) {
+    stopRecording();
   }
 
   lastAnswerGiven.value = trimmed;
@@ -338,7 +347,7 @@ onUnmounted(() => {
     clearTimeout(autoSubmitTimer);
     autoSubmitTimer = null;
   }
-  stopListening();
+  cancelRecording();
   window.removeEventListener('keydown', handleGlobalKeydown);
 });
 </script>
@@ -380,13 +389,15 @@ onUnmounted(() => {
       v-model="inputText"
       :input-mode="activeInputMode"
       :action-state="mainActionState"
-      :is-listening="isListening"
+      :is-listening="isRecording"
+      :is-processing="isProcessing"
+      :voice-mode="voiceMode"
       :submitting="submitting"
       :is-completed="isQuestionCompleted"
       :is-last-question="isLastQuestion"
       :all-completed="allCompleted"
       :voice-transcript="displayedVoiceTranscript"
-      :voice-error="speechError"
+      :voice-error="voiceError"
       :is-speech-supported="isSpeechSupported"
       @update:input-mode="(mode) => activeInputMode = mode"
       @submit="handleSubmit"

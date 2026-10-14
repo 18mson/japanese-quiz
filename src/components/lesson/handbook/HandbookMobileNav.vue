@@ -85,35 +85,31 @@ watch(() => props.activeTab, () => {
   <!-- ======================================================== -->
   <!-- MOBILE FILTER LIST POPUP (Di atas tombol filter)          -->
   <!-- ======================================================== -->
-  <!-- 1. Backdrop Overlay Gelap -->
+  <!-- 1. Backdrop Overlay Gelap (tanpa backdrop-blur agar card di belakangnya tidak ikut beranimasi/flicker) -->
   <Transition name="fade-overlay">
     <div
       v-if="isOpen && !isScrolledToBottom"
-      class="fixed inset-0 z-40 bg-slate-950/65 backdrop-blur-xs md:hidden"
+      class="fixed inset-0 z-40 bg-slate-950/50 md:hidden"
       @click="emit('close')"
     />
   </Transition>
 
-  <!-- 2. List Tombol Filter (Tanpa Card, Mengambang di Atas Tombol Filter, Bergeser Keluar Satu-satu) -->
+  <!-- 2. List Tombol Filter (Tanpa Card, Mengambang di Atas Tombol Filter, Bergeser Keluar Bersama) -->
   <div
-    class="fixed bottom-[74px] right-4 z-50 md:hidden flex flex-col items-end gap-2.5"
+    class="filter-nav-container fixed bottom-[74px] right-4 z-50 md:hidden flex flex-col items-end gap-2.5"
     :class="[isOpen && !isScrolledToBottom ? 'pointer-events-auto' : 'pointer-events-none']"
   >
     <TransitionGroup name="stagger-filter">
       <button
-        v-for="(tab, index) in (isOpen && !isScrolledToBottom ? tabs : [])"
+        v-for="tab in (isOpen && !isScrolledToBottom ? tabs : [])"
         :key="tab.id"
         type="button"
         @click="emit('selectTab', tab.id)"
-        :style="{
-          '--enter-delay': tabs.length - 1 - index,
-          '--leave-delay': index
-        }"
         :class="[
-          'flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-xs shadow-2xl border cursor-pointer select-none active:scale-90',
+          'filter-nav-btn flex items-center gap-3 px-4 py-2.5 rounded-2xl font-bold text-xs shadow-lg border cursor-pointer select-none active:scale-95',
           activeTab === tab.id
             ? tab.activeClass + ' ring-2 ring-white/40 shadow-indigo-600/30'
-            : 'bg-white/95 dark:bg-slate-850/95 text-slate-800 dark:text-slate-100 border-gray-200/90 dark:border-slate-750/90 hover:bg-white dark:hover:bg-slate-800 shadow-slate-950/30'
+            : 'bg-white dark:bg-slate-850 text-slate-800 dark:text-slate-100 border-gray-200 dark:border-slate-750 shadow-black/10'
         ]"
       >
         <div :class="['w-7 h-7 rounded-xl flex items-center justify-center shrink-0 shadow-2xs', activeTab === tab.id ? 'bg-white/20 text-white' : 'bg-gray-100 dark:bg-slate-750 text-slate-600 dark:text-slate-300']">
@@ -190,32 +186,57 @@ watch(() => props.activeTab, () => {
   transform: translateY(0) scale(1);
 }
 
-/* Animasi stagger list tombol filter */
+.filter-nav-container {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.filter-nav-btn {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animasi list tombol filter (bersih tanpa demotion flicker & tanpa lag delay) */
 .stagger-filter-enter-active {
-  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--enter-delay, 0) * 45ms);
+  transition: opacity 0.18s cubic-bezier(0.16, 1, 0.3, 1), transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .stagger-filter-leave-active {
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 1, 1), transform 0.2s cubic-bezier(0.4, 0, 1, 1);
-  transition-delay: calc(var(--leave-delay, 0) * 35ms);
+  transition: opacity 0.14s ease-in, transform 0.14s ease-in;
 }
 
 .stagger-filter-enter-from {
   opacity: 0;
-  transform: translateX(45px) scale(0.9);
+  transform: translate3d(20px, 0, 0);
+}
+.stagger-filter-enter-to,
+.stagger-filter-leave-from {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
 }
 .stagger-filter-leave-to {
   opacity: 0;
-  transform: translateX(50px) scale(0.85);
+  transform: translate3d(20px, 0, 0);
 }
 
 .fade-overlay-enter-active,
 .fade-overlay-leave-active {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.2s ease;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 .fade-overlay-enter-from,
 .fade-overlay-leave-to {
   opacity: 0;
+}
+.fade-overlay-enter-to,
+.fade-overlay-leave-from {
+  opacity: 1;
 }
 
 .expand-text-enter-active,

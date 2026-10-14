@@ -20,6 +20,8 @@ const props = withDefaults(
     voiceTranscript?: string;
     voiceError?: string | null;
     isSpeechSupported?: boolean;
+    isProcessing?: boolean;
+    voiceMode?: 'whisper' | 'webspeech';
   }>(),
   {
     disabled: false,
@@ -28,6 +30,8 @@ const props = withDefaults(
     voiceTranscript: '',
     voiceError: null,
     isSpeechSupported: true,
+    isProcessing: false,
+    voiceMode: 'whisper',
   }
 );
 
@@ -288,6 +292,10 @@ const showVoiceTranscriptPopup = computed(() => {
               <span class="w-2 h-2 rounded-full bg-rose-500"></span>
               Mendengarkan... Silakan bicara kalimat Jepang
             </span>
+            <span v-else-if="isProcessing" key="processing" class="text-indigo-600 dark:text-torii font-bold flex items-center gap-1.5 justify-center">
+              <div class="w-3.5 h-3.5 border-2 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin"></div>
+              Mentranskripsi suara (Whisper AI)...
+            </span>
             <span v-else-if="submitting" key="submitting" class="text-indigo-600 dark:text-torii font-bold flex items-center gap-1.5 justify-center">
               <div class="w-3.5 h-3.5 border-2 border-indigo-600 dark:border-torii border-t-transparent rounded-full animate-spin"></div>
               Memeriksa jawaban...
@@ -300,6 +308,14 @@ const showVoiceTranscriptPopup = computed(() => {
               Tekan mic lalu ucapkan kalimat dalam bahasa Jepang
             </span>
           </transition>
+        </div>
+        <!-- Status Mode & Catatan Privasi -->
+        <div class="mt-1.5 flex items-center justify-center gap-2 text-[10px] text-slate-400 dark:text-slate-500 select-none">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 font-medium border border-slate-200/60 dark:border-slate-700/60">
+            {{ voiceMode === 'whisper' ? '⚡ mode teliti' : '⚡ mode cepat' }}
+          </span>
+          <span>•</span>
+          <span>Audio diproses langsung &amp; tidak disimpan</span>
         </div>
       </div>
     </transition>
