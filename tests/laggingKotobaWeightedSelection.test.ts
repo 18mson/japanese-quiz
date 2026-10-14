@@ -5,6 +5,7 @@ import {
   getHighestActiveLessonNumber,
   calculateLearningItemWeight,
   pickWeightedLearningItem,
+  getMaxNewUniquePerSession,
   buildKanjiSessionQuestions,
   type KanjiItem
 } from '../src/utils/kanjiQuizComposition';
@@ -213,6 +214,80 @@ describe('Lagging Kotoba Adaptive Weighted Selection Suite', () => {
     assert.ok(
       successRate >= 90.0,
       `Dalam percobaan 5x kuis, Bab 5 harus muncul minimal 90% kesempatan. Hasil simulasi: ${successRate}% (${batchesWhereBab5Appeared}/${BATCHES})`
+    );
+  });
+
+  test('6. getMaxNewUniquePerSession mematuhi ambang batas antrean proses (>30, >15, <=15)', () => {
+    // 1. > 30 kata: TIDAK MASUK POOL (0 kata)
+    assert.strictEqual(getMaxNewUniquePerSession(8, 31), 0, 'Jika antrean proses 31 (>30), kata baru harus 0');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 50), 0, 'Jika antrean proses 50 (>30), kata baru harus 0');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 113), 0, 'Jika antrean proses 113 (>30), kata baru harus 0');
+    assert.strictEqual(getMaxNewUniquePerSession(24, 40), 0, 'Untuk durasi berapapun, jika >30 maka kata baru harus 0');
+
+    // 2. > 15 kata (16 - 30): MASUK BERTAHAP (max 1 kata untuk sesi 8 soal)
+    assert.strictEqual(getMaxNewUniquePerSession(8, 16), 1, 'Jika antrean proses 16 (>15), kata baru harus 1');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 25), 1, 'Jika antrean proses 25 (>15), kata baru harus 1');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 30), 1, 'Jika antrean proses 30 (>15), kata baru harus 1');
+
+    // 3. <= 15 kata: NORMAL UNDIAN (2 - 3 kata)
+    assert.strictEqual(getMaxNewUniquePerSession(8, 15), 3, 'Jika antrean proses 15 (<=15), kata baru normal 3');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 10), 3, 'Jika antrean proses 10 (<=15), kata baru normal 3');
+    assert.strictEqual(getMaxNewUniquePerSession(8, 0), 3, 'Jika antrean proses 0, kata baru normal 3');
+  });
+
+  test('7. Integrasi: Saat antrean proses > 30, kuis 100% memblokir kata baru dan didominasi oleh kata Proses', () => {
+    const testPool: KanjiItem[] = [];
+    const streaks: Record<string, number> = {};
+
+    // 40 kata dalam antrean proses (> 30)
+    for (let i = 1; i <= 40; i++) {
+      const char = `learning_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 5', romaji: char });
+      streaks[char] = (i % 2) + 1; // streak 1 atau 2
+    }
+
+    // 50 kata baru (belum pernah dipelajari, streak 0)
+    for (let i = 1; i <= 50; i++) {
+      const char = `new_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 6', romaji: char });
+      streaks[char] = 0;
+    }
+
+    // 10 kata hafal (streak 4)
+    for (let i = 1; i <= 10; i++) {
+      const char = `mastered_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 2', romaji: char });
+      streaks[char] = 4;
+    }
+
+    const SESSIONS = 50;
+    let totalQuestions = 0;
+    let totalLearningQuestions = 0;
+    let totalNewQuestions = 0;
+
+    for (let s = 0; s < SESSIONS; s++) {
+      const session = buildKanjiSessionQuestions(testPool, 8, char => streaks[char] || 0, 6);
+      assert.strictEqual(session.length, 8);
+
+      session.forEach(q => {
+        totalQuestions++;
+        if (q.tier === 'learning') {
+          totalLearningQuestions++;
+        }
+        if (q.tier === 'new') {
+          totalNewQuestions++;
+        }
+      });
+    }
+
+    // 1. Kata baru harus mutlak 0 (tidak masuk pool sama sekali)
+    assert.strictEqual(totalNewQuestions, 0, 'Kata baru harus 0% saat antrean proses > 30');
+
+    // 2. Kategori proses harus sangat mendominasi (>= 80% dari total soal)
+    const learningRatio = (totalLearningQuestions / totalQuestions) * 100;
+    assert.ok(
+      learningRatio >= 80.0,
+      `Kategori proses harus mendominasi >= 80%. Hasil simulasi: ${learningRatio}% (${totalLearningQuestions}/${totalQuestions})`
     );
   });
 });

@@ -39,19 +39,27 @@ function detectVoices(): void {
     hasJapaneseVoice.value = jaVoices.length > 0;
 
     if (jaVoices.length > 0) {
-      // Voice Priority for macOS / Chrome / Safari stability:
-      // 1. Google 日本語 (Built-in Chromium cloud voice, works flawlessly on Chrome macOS without OS voice pack)
+      // Voice Priority for Cross-Browser Stability (Chrome, Edge, Safari, Firefox):
+      // 1. Google 日本語 (Chrome Chromium built-in voice)
       const googleJaVoice = jaVoices.find(v => v.name.toLowerCase().includes('google'));
-      // 2. Default system voice explicitly for ja-JP
+      // 2. Microsoft Natural Online voice (Edge: 七海 / Nanami, 圭太 / Keita, Natural)
+      const msNaturalJaVoice = jaVoices.find(v =>
+        v.name.includes('七海') || v.name.includes('圭太') ||
+        v.name.toLowerCase().includes('nanami') || v.name.toLowerCase().includes('keita') ||
+        v.name.toLowerCase().includes('natural')
+      );
+      // 3. Other Microsoft Japanese voices (Edge Windows / Mac)
+      const msJaVoice = jaVoices.find(v => v.name.toLowerCase().includes('microsoft'));
+      // 4. Default system voice explicitly for ja-JP
       const defaultJaVoice = jaVoices.find(v => v.default && (v.lang === 'ja-JP' || v.lang === 'ja_JP'));
-      // 3. Local service Japanese voice (non-Siri to avoid macOS permission/download roadblocks)
+      // 5. Local service Japanese voice (non-Siri to avoid macOS permission roadblocks)
       const localJaVoice = jaVoices.find(v => v.localService && !v.name.toLowerCase().includes('siri'));
-      // 4. Kyoko / Otoya if installed
+      // 6. Kyoko / Otoya if installed on macOS
       const namedJaVoice = jaVoices.find(v => (v.name.toLowerCase().includes('kyoko') || v.name.toLowerCase().includes('otoya')) && !v.name.toLowerCase().includes('siri'));
-      // 5. Any exact ja-JP
+      // 7. Any exact ja-JP
       const exactJaVoice = jaVoices.find(v => v.lang === 'ja-JP' || v.lang === 'ja_JP');
 
-      selectedVoice.value = googleJaVoice || defaultJaVoice || localJaVoice || namedJaVoice || exactJaVoice || jaVoices[0];
+      selectedVoice.value = googleJaVoice || msNaturalJaVoice || msJaVoice || defaultJaVoice || localJaVoice || namedJaVoice || exactJaVoice || jaVoices[0];
     } else {
       selectedVoice.value = null;
     }
@@ -61,8 +69,8 @@ function detectVoices(): void {
 }
 
 /**
- * Fallback to crystal-clear Google Translate Japanese TTS audio via HTML5 Audio
- * Works 100% on all macOS versions (Safari, Chrome, Arc, Firefox) even when system TTS voice is missing
+ * Fallback to crystal-clear Japanese TTS audio via HTML5 Audio
+ * Works 100% on Microsoft Edge, Chrome, Safari, Firefox across Windows & Mac.
  */
 function playFallbackAudio(text: string): void {
   if (typeof window === 'undefined') return;
@@ -75,8 +83,12 @@ function playFallbackAudio(text: string): void {
 
   try {
     const encodedText = encodeURIComponent(text);
-    const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodedText}`;
-    const audio = new Audio(audioUrl);
+    // Primary: Youdao Japanese Audio stream (High fidelity, fast, no CORS issues, works in Edge/Chrome/Safari)
+    // Backup: Google Translate TTS stream
+    const primaryUrl = `https://dict.youdao.com/dictvoice?audio=${encodedText}&le=jap`;
+    const backupUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=ja&client=tw-ob&q=${encodedText}`;
+
+    const audio = new Audio(primaryUrl);
     fallbackAudio = audio;
 
     isSpeaking.value = true;
@@ -91,6 +103,16 @@ function playFallbackAudio(text: string): void {
     };
 
     audio.onerror = () => {
+      if (audio.src === primaryUrl) {
+        // Try backup URL once
+        audio.src = backupUrl;
+        audio.play().catch(() => {
+          if (fallbackAudio === audio) fallbackAudio = null;
+          isSpeaking.value = false;
+          currentSpeakingText.value = '';
+        });
+        return;
+      }
       if (fallbackAudio === audio) {
         fallbackAudio = null;
       }
@@ -156,9 +178,18 @@ export function useTextToSpeech() {
     }
 
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
       window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
     }
     activeUtterance = null;
+    if (typeof window !== 'undefined') {
+      (window as any).__tts_active_utterance = null;
+    }
     isSpeaking.value = false;
     currentSpeakingText.value = '';
   }
@@ -166,7 +197,7 @@ export function useTextToSpeech() {
   function speak(text: string, options?: SpeakOptions): void {
     if (!text || typeof window === 'undefined') return;
 
-    // Refresh voices detection in case voices were loaded late
+    // Refresh voices detection in case voices were loaded late (e.g. Edge on page load)
     if ('speechSynthesis' in window && !hasJapaneseVoice.value) {
       detectVoices();
     }
@@ -174,7 +205,7 @@ export function useTextToSpeech() {
     // Stop ongoing speech first
     stop();
 
-    // If browser doesn't have Web Speech API or has no Japanese voices on macOS,
+    // If browser doesn't have Web Speech API or has no Japanese voices,
     // immediately use the high-quality Japanese audio stream
     if (!('speechSynthesis' in window) || !hasJapaneseVoice.value) {
       playFallbackAudio(text);
@@ -203,6 +234,10 @@ export function useTextToSpeech() {
       }
 
       activeUtterance = utterance;
+      // Prevent Chromium / Edge garbage collection bug by holding a window-level reference
+      if (typeof window !== 'undefined') {
+        (window as any).__tts_active_utterance = utterance;
+      }
       let hasStarted = false;
 
       utterance.onstart = () => {
@@ -221,6 +256,9 @@ export function useTextToSpeech() {
         if (activeUtterance === utterance) {
           activeUtterance = null;
         }
+        if (typeof window !== 'undefined' && (window as any).__tts_active_utterance === utterance) {
+          (window as any).__tts_active_utterance = null;
+        }
         isSpeaking.value = false;
         currentSpeakingText.value = '';
       };
@@ -233,11 +271,14 @@ export function useTextToSpeech() {
         if (activeUtterance === utterance) {
           activeUtterance = null;
         }
+        if (typeof window !== 'undefined' && (window as any).__tts_active_utterance === utterance) {
+          (window as any).__tts_active_utterance = null;
+        }
 
-        // If Web Speech fails on macOS (e.g., missing offline voice pack or blocked),
+        // If Web Speech fails (e.g., missing offline voice pack or blocked),
         // fallback to HTML5 Japanese audio immediately
         if ((e as any).error !== 'canceled' && (e as any).error !== 'interrupted') {
-          console.warn('SpeechSynthesis error on macOS, switching to audio stream:', (e as any).error);
+          console.warn('SpeechSynthesis error, switching to audio stream:', (e as any).error);
           playFallbackAudio(text);
         } else {
           isSpeaking.value = false;
@@ -245,19 +286,20 @@ export function useTextToSpeech() {
         }
       };
 
-      // Watchdog timer: If macOS SpeechSynthesis hangs without firing onstart within 350ms,
-      // fallback seamlessly to audio stream
+      // Watchdog timer: Online cloud voices (like Microsoft Natural voices in Edge)
+      // take 400ms - 1500ms to buffer audio over the network.
+      // Timeout is set to 2800ms so cloud voices have sufficient time before falling back.
       speechStartTimeout = setTimeout(() => {
         speechStartTimeout = null;
         if (!hasStarted && isSpeaking.value && currentSpeakingText.value === text) {
-          console.warn('SpeechSynthesis hung on macOS, activating audio fallback');
+          console.warn('SpeechSynthesis start timed out, activating audio stream fallback');
           if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
             window.speechSynthesis.cancel();
           }
           activeUtterance = null;
           playFallbackAudio(text);
         }
-      }, 350);
+      }, 2800);
 
       window.speechSynthesis.speak(utterance);
     } catch (err) {

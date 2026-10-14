@@ -24,26 +24,45 @@ export interface KanjiQuestion extends KanjiItem {
  * Balanced weights to encourage steady lesson progression while reviewing active words.
  */
 export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
-  new: 30,
-  learning: 45,
-  mastered: 20,
+  learning: 55,
+  new: 25,
+  mastered: 15,
   crown: 5
 };
 
 /**
- * Gets dynamic cap for new/unlearned unique words in a single session based on total slots.
+ * Gets dynamic cap for new/unlearned unique words in a single session based on total slots
+ * and current learning queue size:
+ * - > 30 words in learning queue : TIDAK MASUK POOL (0 new words)
+ * - > 15 words in learning queue : MASUK UNDIAN BERTAHAP (max 1 new word per 8 slots)
+ * - <= 15 words in learning queue: NORMAL UNDIAN (2-3 new words per 8 slots)
  */
-export const getMaxNewUniquePerSession = (totalSlots: number): number => {
-  return Math.max(2, Math.min(8, Math.round(totalSlots * 0.30)));
+export const getMaxNewUniquePerSession = (
+  totalSlots: number,
+  learningQueueCount: number = 0
+): number => {
+  // 1. > 30 kata dalam antrean proses: tidak masuk pool
+  if (learningQueueCount > 30) {
+    return 0;
+  }
+
+  // 2. > 15 kata dalam antrean proses: masuk undian pool bertahap
+  if (learningQueueCount > 15) {
+    return Math.max(1, Math.min(3, Math.round(totalSlots * 0.15)));
+  }
+
+  // 3. <= 15 kata dalam antrean proses: normal undian
+  return Math.max(2, Math.min(8, Math.round(totalSlots * 0.35)));
 };
 
 /**
  * Repetition weight per word based on its mastery tier.
- * Keeps repetition natural (1-2x) to ensure high unique word diversity per session.
+ * Gives learning words higher repetition weight (3) to dominate quiz sessions
+ * and accelerate mastery before new words are introduced.
  */
 export const KANJI_REPEAT_WEIGHT: Record<MasteryTierKey, number> = {
-  new: 2,
-  learning: 2,
+  learning: 3,
+  new: 1.5,
   mastered: 1,
   crown: 1
 };
@@ -223,7 +242,7 @@ export const selectKanjiUniquePool = (
     Math.min(pool.length, Math.max(Math.round(totalSlots * 0.65), Math.min(5, totalSlots)))
   );
 
-  const maxNewCount = getMaxNewUniquePerSession(totalSlots);
+  const maxNewCount = getMaxNewUniquePerSession(totalSlots, tierBuckets.learning.length);
   const selectedUnique: { item: KanjiItem; tier: MasteryTierKey }[] = [];
   let newCount = 0;
 
