@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="ideaBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="60%" stop-color="#312e81" />
+      <stop offset="100%" stop-color="#4338ca" />
+    </linearGradient>
+    <linearGradient id="bulbGlowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="40%" stop-color="#facc15" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+    <linearGradient id="laptopGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e2e8f0" />
+      <stop offset="100%" stop-color="#94a3b8" />
+    </linearGradient>
+    <filter id="ideaShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000000" flood-opacity="0.35" />
+    </filter>
+    <filter id="bulbShine" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="20" flood-color="#facc15" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Deep Indigo Idea Creative Workspace -->
+  <rect width="800" height="450" fill="url(#ideaBg)" />
+
+  <!-- Soft Ambient Glow Center -->
+  <circle cx="560" cy="180" r="160" fill="#facc15" opacity="0.08" />
+
+  <!-- Wooden Co-working Table Desk Surface -->
+  <polygon points="0,310 800,270 800,450 0,450" fill="#1e293b" />
+  <line x1="0" y1="310" x2="800" y2="270" stroke="#475569" stroke-width="2" />
+
+  <!-- GLOWING LIGHTBULB (THE MOMENT OF INSIGHT & OPINION - HERO ELEMENT) -->
+  <g transform="translate(540, 60)" filter="url(#bulbShine)">
+    <!-- Bulb Glass Dome -->
+    <path d="M40,0 C18,0 0,18 0,40 C0,56 12,68 18,85 L18,105 L62,105 L62,85 C68,68 80,56 80,40 C80,18 62,0 40,0 Z" fill="url(#bulbGlowGrad)" stroke="#fef08a" stroke-width="2" />
+    <!-- Golden Glowing Filament -->
+    <path d="M30,55 L35,30 L45,30 L50,55" fill="none" stroke="#78350f" stroke-width="3" stroke-linecap="round" />
+    <circle cx="35" cy="30" r="2.5" fill="#78350f" />
+    <circle cx="45" cy="30" r="2.5" fill="#78350f" />
+    <!-- Screw Base (Metal Threads) -->
+    <rect x="22" y="105" width="36" height="6" rx="2" fill="#94a3b8" />
+    <rect x="24" y="113" width="32" height="6" rx="2" fill="#64748b" />
+    <rect x="28" y="121" width="24" height="6" rx="2" fill="#475569" />
+    <ellipse cx="40" cy="128" rx="8" ry="4" fill="#334155" />
+
+    <!-- Radiant Idea Burst Rays -->
+    <line x1="40" y1="-25" x2="40" y2="-10" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+    <line x1="85" y1="-10" x2="72" y2="2" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+    <line x1="105" y1="35" x2="90" y2="38" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+    <line x1="-5" y1="-10" x2="8" y2="2" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+    <line x1="-25" y1="35" x2="-10" y2="38" stroke="#fef08a" stroke-width="3.5" stroke-linecap="round" />
+  </g>
+
+  <!-- SPEECH & THOUGHT BUBBLE (OPINION: ~TO OMOIMASU) -->
+  <g transform="translate(360, 90)" filter="url(#ideaShadow)">
+    <!-- Main Floating Dialogue Cloud -->
+    <path d="M20,0 L140,0 Q160,0 160,20 L160,70 Q160,90 140,90 L50,90 L25,115 L28,90 L20,90 Q0,90 0,70 L0,20 Q0,0 20,0 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5" />
+    <!-- Japanese Kanji 「思」(Omou - Think/Opinion) inside bubble -->
+    <text x="80" y="58" font-size="38" font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif" font-weight="900" fill="#4338ca" text-anchor="middle">思</text>
+  </g>
+
+  <!-- Secondary Smaller Speech Bubble (Agreeing / Replying) -->
+  <g transform="translate(640, 160)" filter="url(#ideaShadow)">
+    <path d="M10,0 L70,0 Q80,0 80,10 L80,45 Q80,55 70,55 L35,55 L20,70 L22,55 L10,55 Q0,55 0,45 L0,10 Q0,0 10,0 Z" fill="#38bdf8" />
+    <circle cx="25" cy="28" r="4" fill="#ffffff" />
+    <circle cx="40" cy="28" r="4" fill="#ffffff" />
+    <circle cx="55" cy="28" r="4" fill="#ffffff" />
+  </g>
+
+  <!-- DESK WORKSPACE ESSENTIALS -->
+  <!-- 1. Open Laptop Display & Keyboard (Angled Perspective) -->
+  <g transform="translate(360, 250)" filter="url(#ideaShadow)">
+    <!-- Base / Keyboard Deck -->
+    <polygon points="20,70 200,60 220,110 0,120" fill="url(#laptopGrad)" stroke="#64748b" stroke-width="1.5" />
+    <!-- Trackpad -->
+    <polygon points="85,92 135,89 138,108 88,111" fill="#cbd5e1" />
+    <!-- Keyboard Area -->
+    <polygon points="30,72 190,64 180,88 20,96" fill="#334155" />
+
+    <!-- Open Screen Display -->
+    <polygon points="20,70 200,60 210,0 30,10" fill="#0f172a" stroke="#475569" stroke-width="2" />
+    <!-- Glowing Screen Face with Code/Text Lines -->
+    <polygon points="26,65 194,56 204,6 36,16" fill="#1e293b" />
+    <!-- Graphic UI on screen -->
+    <line x1="50" y1="28" x2="110" y2="25" stroke="#38bdf8" stroke-width="3" stroke-linecap="round" />
+    <line x1="50" y1="38" x2="150" y2="33" stroke="#a5b4fc" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="50" y1="48" x2="130" y2="43" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" />
+    <circle cx="175" cy="30" r="10" fill="#facc15" opacity="0.8" />
+  </g>
+
+  <!-- 2. Spiral Idea Notebook with Fountain Pen -->
+  <g transform="translate(580, 275) rotate(-8)" filter="url(#ideaShadow)">
+    <!-- Notebook Paper Pad -->
+    <rect x="0" y="0" width="130" height="95" rx="6" fill="#fef9c3" stroke="#eab308" stroke-width="1.5" />
+    <line x1="20" y1="0" x2="20" y2="95" stroke="#f87171" stroke-width="1.5" />
+    <!-- Ruled lines -->
+    <line x1="30" y1="25" x2="115" y2="25" stroke="#cbd5e1" stroke-width="1" />
+    <line x1="30" y1="45" x2="115" y2="45" stroke="#cbd5e1" stroke-width="1" />
+    <line x1="30" y1="65" x2="115" y2="65" stroke="#cbd5e1" stroke-width="1" />
+    <!-- Spiral Ring Wire Bindings -->
+    <g fill="#94a3b8">
+      <rect x="-3" y="10" width="8" height="4" rx="2" />
+      <rect x="-3" y="25" width="8" height="4" rx="2" />
+      <rect x="-3" y="40" width="8" height="4" rx="2" />
+      <rect x="-3" y="55" width="8" height="4" rx="2" />
+      <rect x="-3" y="70" width="8" height="4" rx="2" />
+      <rect x="-3" y="85" width="8" height="4" rx="2" />
+    </g>
+
+    <!-- Sleek Navy Fountain Pen -->
+    <g transform="translate(60, 45) rotate(42)">
+      <rect x="0" y="0" width="8" height="70" rx="3" fill="#1e1b4b" />
+      <rect x="0" y="6" width="8" height="3" fill="#facc15" />
+      <polygon points="0,70 8,70 4,82" fill="#facc15" />
+      <polygon points="2,75 6,75 4,82" fill="#1e1b4b" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="studySky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe" />
+      <stop offset="50%" stop-color="#f0f9ff" />
+      <stop offset="100%" stop-color="#fef3c7" />
+    </linearGradient>
+    <linearGradient id="deskWood" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#92400e" />
+    </linearGradient>
+    <linearGradient id="bookCoverRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#be123c" />
+    </linearGradient>
+    <linearGradient id="jishoBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="watchGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="40%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#a16207" />
+    </linearGradient>
+    <filter id="deskShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#78350f" flood-opacity="0.22" />
+    </filter>
+  </defs>
+
+  <!-- Sunlit Classroom Wall Background -->
+  <rect width="800" height="450" fill="url(#studySky)" />
+
+  <!-- Window Frame on the upper right -->
+  <g transform="translate(560, 20)" opacity="0.35">
+    <rect x="0" y="0" width="220" height="180" rx="6" fill="#ffffff" stroke="#94a3b8" stroke-width="4" />
+    <line x1="110" y1="0" x2="110" y2="180" stroke="#94a3b8" stroke-width="3" />
+    <line x1="0" y1="90" x2="220" y2="90" stroke="#94a3b8" stroke-width="3" />
+    <!-- Blue sky & fluffy cloud through window -->
+    <ellipse cx="60" cy="50" rx="35" ry="18" fill="#bae6fd" />
+    <ellipse cx="90" cy="45" rx="30" ry="16" fill="#bae6fd" />
+  </g>
+
+  <!-- Natural Oak Study Desk Surface (Perspective View) -->
+  <polygon points="0,210 800,175 800,450 0,450" fill="url(#deskWood)" />
+  <line x1="0" y1="210" x2="800" y2="175" stroke="#fde68a" stroke-width="2.5" opacity="0.8" />
+
+  <!-- 1. THICK JAPANESE DICTIONARY (JISHO - KORE WA JISHO DESU) -->
+  <g transform="translate(340, 195) rotate(-6)" filter="url(#deskShadow)">
+    <!-- Book Shadow underneath -->
+    <rect x="5" y="10" width="140" height="180" rx="6" fill="#451a03" opacity="0.35" />
+    <!-- Spine Thickness Bottom -->
+    <rect x="0" y="25" width="140" height="160" rx="6" fill="#1e293b" />
+    <!-- White Paper Page Gilt Edge -->
+    <rect x="8" y="12" width="130" height="165" rx="4" fill="#fef9c3" stroke="#fde047" stroke-width="1" />
+    <!-- Blue Hardcover Front -->
+    <rect x="0" y="0" width="136" height="170" rx="5" fill="url(#jishoBlue)" stroke="#0284c7" stroke-width="1.5" />
+    <!-- Gold Foil Kanji Title 「辞書」 -->
+    <rect x="40" y="25" width="56" height="65" rx="4" fill="#ffffff" opacity="0.15" />
+    <text x="68" y="55" font-size="22" font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif" font-weight="900" fill="#fef08a" text-anchor="middle">辞書</text>
+    <text x="68" y="74" font-size="8" font-family="sans-serif" font-weight="bold" fill="#bae6fd" text-anchor="middle">DICTIONARY</text>
+    <!-- Red Ribbon Bookmark trailing out -->
+    <path d="M68,170 Q75,195 90,210 L84,212 L78,206 L74,214 Z" fill="#ef4444" />
+  </g>
+
+  <!-- 2. OPEN STUDY TEXTBOOK / NOTEBOOK (HON / NO-TO) -->
+  <g transform="translate(480, 190) rotate(4)" filter="url(#deskShadow)">
+    <!-- Open Book Pages Left & Right -->
+    <path d="M0,25 Q55,15 105,22 L105,145 Q55,138 0,150 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+    <path d="M210,25 Q155,15 105,22 L105,145 Q155,138 210,150 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2" />
+    <!-- Under Cover Binding Edge -->
+    <path d="M-4,27 L105,24 L214,27 L210,154 L105,148 L-4,154 Z" fill="#b91c1c" />
+
+    <!-- Printed Grammar Content on Left Page -->
+    <g stroke="#94a3b8" stroke-width="2" stroke-linecap="round">
+      <line x1="18" y1="45" x2="92" y2="43" />
+      <line x1="18" y1="60" x2="88" y2="58" />
+      <line x1="18" y1="75" x2="82" y2="73" />
+      <line x1="18" y1="90" x2="90" y2="88" />
+      <line x1="18" y1="105" x2="68" y2="103" />
+    </g>
+    <!-- Right Page: Illustration / Vocabulary Box -->
+    <rect x="120" y="42" width="75" height="40" rx="3" fill="#f0fdf4" stroke="#86efac" stroke-width="1" />
+    <line x1="120" y1="95" x2="195" y2="97" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+    <line x1="120" y1="110" x2="185" y2="112" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+    <line x1="120" y1="125" x2="170" y2="127" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- 3. RETRO WRISTWATCH (TOKEI - SORE WA DARE NO TOKEI DESU KA) -->
+  <g transform="translate(680, 260) rotate(-18)" filter="url(#deskShadow)">
+    <!-- Leather Brown Strap -->
+    <rect x="18" y="-45" width="18" height="150" rx="4" fill="#78350f" stroke="#451a03" stroke-width="1.5" />
+    <circle cx="27" cy="-25" r="2" fill="#451a03" />
+    <circle cx="27" cy="-10" r="2" fill="#451a03" />
+    <circle cx="27" cy="70" r="2" fill="#451a03" />
+    <circle cx="27" cy="85" r="2" fill="#451a03" />
+
+    <!-- Circular Gold Watch Face -->
+    <circle cx="27" cy="30" r="28" fill="url(#watchGold)" stroke="#78350f" stroke-width="2" />
+    <circle cx="27" cy="30" r="23" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+    <!-- Hour markers & Hands (10:10 classic time) -->
+    <circle cx="27" cy="30" r="2.5" fill="#1e293b" />
+    <line x1="27" y1="30" x2="17" y2="17" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="27" y1="30" x2="42" y2="24" stroke="#1e293b" stroke-width="2" stroke-linecap="round" />
+    <line x1="27" y1="30" x2="33" y2="44" stroke="#ef4444" stroke-width="1" stroke-linecap="round" />
+  </g>
+
+  <!-- 4. FOUNTAIN PEN & WOODEN PENCIL (PEN & ENPITSU) -->
+  <g transform="translate(440, 280) rotate(35)" filter="url(#deskShadow)">
+    <!-- Yellow Hexagonal Pencil -->
+    <rect x="0" y="0" width="8" height="95" fill="#facc15" stroke="#ca8a04" stroke-width="0.8" />
+    <!-- Silver Ferrule & Pink Eraser -->
+    <rect x="0" y="95" width="8" height="10" fill="#94a3b8" />
+    <rect x="0" y="105" width="8" height="12" rx="2" fill="#f472b6" />
+    <!-- Sharpened Wood Cone & Graphite Lead -->
+    <polygon points="0,0 8,0 4,-14" fill="#fed7aa" />
+    <polygon points="2,-7 6,-7 4,-14" fill="#1e293b" />
+  </g>
+
+  <!-- 5. CLASSIC JAPANESE UMBRELLA (KASA - LEANING BESIDE DESK) -->
+  <g transform="translate(290, 190) rotate(14)" filter="url(#deskShadow)">
+    <!-- Umbrella Canopy Wrapped Slim (Deep Forest Green / Navy) -->
+    <polygon points="12,40 18,40 22,230 8,230" fill="#047857" stroke="#065f46" stroke-width="1.5" />
+    <!-- Metal Tip Ferrule -->
+    <polygon points="12,230 18,230 15,255" fill="#94a3b8" />
+    <!-- Center Shaft & Wooden Curved Handle (J-Hook) -->
+    <line x1="15" y1="40" x2="15" y2="5" stroke="#78350f" stroke-width="4.5" stroke-linecap="round" />
+    <path d="M15,5 Q15,-20 -5,-20 Q-25,-20 -25,0" fill="none" stroke="#78350f" stroke-width="6" stroke-linecap="round" />
+  </g>
+</svg>

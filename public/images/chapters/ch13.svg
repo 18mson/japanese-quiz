@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <!-- Tropical Okinawa Sky & Ocean Gradient -->
+    <linearGradient id="okinawaSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="40%" stop-color="#38bdf8" />
+      <stop offset="75%" stop-color="#7dd3fc" />
+      <stop offset="100%" stop-color="#bae6fd" />
+    </linearGradient>
+
+    <!-- Turquoise Tropical Sea -->
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4" />
+      <stop offset="50%" stop-color="#0891b2" />
+      <stop offset="100%" stop-color="#0e7490" />
+    </linearGradient>
+
+    <!-- Sand Beach Gradient -->
+    <linearGradient id="sandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="50%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#fcd34d" />
+    </linearGradient>
+
+    <!-- Ice Cream Colors -->
+    <linearGradient id="iceCream1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fda4af" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </linearGradient>
+    <linearGradient id="iceCream2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a7f3d0" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+
+    <filter id="beachShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0e7490" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#okinawaSky)" />
+
+  <!-- Tropical Distant Island Silhouette -->
+  <polygon points="450,220 540,195 620,220" fill="#0284c7" opacity="0.4" />
+  <polygon points="580,220 650,205 720,220" fill="#0369a1" opacity="0.3" />
+
+  <!-- Turquoise Ocean Waves -->
+  <polygon points="0,220 800,210 800,320 0,340" fill="url(#seaGrad)" />
+  <!-- Wave Foams -->
+  <path d="M0,280 Q200,265 400,280 T800,270 L800,290 Q600,280 400,295 T0,295 Z" fill="#ffffff" opacity="0.5" />
+  <path d="M0,320 Q200,305 400,320 T800,310 L800,335 Q600,325 400,335 T0,340 Z" fill="#ffffff" opacity="0.75" />
+
+  <!-- White Coral Sand Beach -->
+  <polygon points="0,330 800,310 800,450 0,450" fill="url(#sandGrad)" />
+
+  <!-- PALM TREES (SWAYING IN OCEAN BREEZE) -->
+  <g transform="translate(680, 80)" filter="url(#beachShadow)">
+    <!-- Trunk -->
+    <path d="M40,260 Q10,140 25,40" fill="none" stroke="#78350f" stroke-width="12" stroke-linecap="round" />
+    <path d="M40,260 Q10,140 25,40" fill="none" stroke="#b45309" stroke-width="7" stroke-linecap="round" />
+    <!-- Palm Fronds / Leaves -->
+    <path d="M25,40 Q-30,10 -60,40" fill="none" stroke="#047857" stroke-width="8" stroke-linecap="round" />
+    <path d="M25,40 Q0,-10 -20,-35" fill="none" stroke="#059669" stroke-width="8" stroke-linecap="round" />
+    <path d="M25,40 Q50,-15 70,-30" fill="none" stroke="#10b981" stroke-width="8" stroke-linecap="round" />
+    <path d="M25,40 Q80,20 110,35" fill="none" stroke="#059669" stroke-width="8" stroke-linecap="round" />
+    <path d="M25,40 Q40,70 55,100" fill="none" stroke="#047857" stroke-width="8" stroke-linecap="round" />
+    <!-- Coconuts -->
+    <circle cx="20" cy="46" r="8" fill="#451a03" />
+    <circle cx="32" cy="48" r="7" fill="#78350f" />
+  </g>
+
+  <!-- REFRESHING DOUBLE SCOOP ICE CREAM CONE (HERO ELEMENT) -->
+  <g transform="translate(380, 170)" filter="url(#beachShadow)">
+    <!-- Waffle Cone -->
+    <polygon points="40,110 70,220 100,110" fill="#d97706" stroke="#92400e" stroke-width="2" />
+    <!-- Waffle Lattice Pattern -->
+    <line x1="48" y1="130" x2="85" y2="185" stroke="#92400e" stroke-width="1.5" />
+    <line x1="56" y1="150" x2="76" y2="195" stroke="#92400e" stroke-width="1.5" />
+    <line x1="92" y1="130" x2="55" y2="185" stroke="#92400e" stroke-width="1.5" />
+    <line x1="84" y1="150" x2="64" y2="195" stroke="#92400e" stroke-width="1.5" />
+
+    <!-- Bottom Scoop (Mint / Matcha) -->
+    <circle cx="70" cy="100" r="34" fill="url(#iceCream2)" />
+    <!-- Top Scoop (Strawberry / Sakura) -->
+    <circle cx="70" cy="55" r="30" fill="url(#iceCream1)" />
+
+    <!-- Dripping Cream -->
+    <path d="M42,105 Q45,120 48,115" stroke="#a7f3d0" stroke-width="5" stroke-linecap="round" fill="none" />
+    <!-- Cherry on top -->
+    <circle cx="70" cy="22" r="10" fill="#dc2626" />
+    <path d="M70,16 Q78,0 84,-5" stroke="#7f1d1d" stroke-width="2.5" fill="none" stroke-linecap="round" />
+  </g>
+
+  <!-- SUITCASE & SUNGLASSES (TRAVEL / VACATION) -->
+  <g transform="translate(230, 290) rotate(-6)" filter="url(#beachShadow)">
+    <!-- Retro Cyan Suitcase -->
+    <rect x="0" y="20" width="105" height="75" rx="10" fill="#06b6d4" stroke="#0891b2" stroke-width="2" />
+    <!-- Leather Corner Protectors -->
+    <rect x="0" y="20" width="18" height="18" rx="4" fill="#78350f" />
+    <rect x="87" y="20" width="18" height="18" rx="4" fill="#78350f" />
+    <rect x="0" y="77" width="18" height="18" rx="4" fill="#78350f" />
+    <rect x="87" y="77" width="18" height="18" rx="4" fill="#78350f" />
+    <!-- Handle -->
+    <path d="M38,20 C38,6 67,6 67,20" fill="none" stroke="#78350f" stroke-width="5" stroke-linecap="round" />
+    <!-- Travel Stickers -->
+    <circle cx="45" cy="55" r="14" fill="#fef08a" />
+    <text x="45" y="58" font-size="7" font-weight="900" fill="#b45309" text-anchor="middle">JAPAN</text>
+  </g>
+</svg>

@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="mallAtriumSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="60%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#334155" />
+    </linearGradient>
+    <linearGradient id="glassEscalator" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.2" />
+    </linearGradient>
+    <linearGradient id="counterMarble" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="50%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+    <linearGradient id="signNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <filter id="mallShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Department Store Atrium Interior Background -->
+  <rect width="800" height="450" fill="url(#mallAtriumSky)" />
+
+  <!-- Atrium Balcony Glass Railing Lines in Background (2F / 3F) -->
+  <g stroke="#475569" stroke-width="2" opacity="0.6">
+    <line x1="300" y1="120" x2="800" y2="100" />
+    <line x1="300" y1="140" x2="800" y2="120" />
+    <line x1="350" y1="120" x2="350" y2="140" />
+    <line x1="450" y1="117" x2="450" y2="137" />
+    <line x1="550" y1="113" x2="550" y2="133" />
+    <line x1="650" y1="110" x2="650" y2="130" />
+    <line x1="750" y1="106" x2="750" y2="126" />
+  </g>
+
+  <!-- Polished Marble Lobby Floor in Perspective -->
+  <polygon points="0,270 800,230 800,450 0,450" fill="#1e293b" />
+  <line x1="0" y1="270" x2="800" y2="230" stroke="#38bdf8" stroke-width="1.5" opacity="0.6" />
+  <!-- Marble Tile Grid Lines -->
+  <g stroke="#334155" stroke-width="1" opacity="0.5">
+    <line x1="420" y1="250" x2="360" y2="450" />
+    <line x1="540" y1="244" x2="520" y2="450" />
+    <line x1="660" y1="238" x2="680" y2="450" />
+    <line x1="200" y1="340" x2="800" y2="300" />
+    <line x1="100" y1="410" x2="800" y2="370" />
+  </g>
+
+  <!-- MODERN GLASS-SIDED DIAGONAL ESCALATOR (2F TO 1F) -->
+  <g transform="translate(520, 75)" filter="url(#mallShadow)">
+    <!-- 1. Escalator Underbody Truss -->
+    <polygon points="-12,70 212,222 212,242 -12,90" fill="#1e293b" stroke="#0f172a" stroke-width="1" />
+
+    <!-- 2. Continuous Solid Escalator Steps (Treads & Risers - 100% Attached) -->
+    <!-- Solid Stair Block Base Fill -->
+    <path d="M-10,46 
+             L10,46 L10,60 
+             L30,60 L30,74 
+             L50,74 L50,88 
+             L70,88 L70,102 
+             L90,102 L90,116 
+             L110,116 L110,130 
+             L130,130 L130,144 
+             L150,144 L150,158 
+             L170,158 L170,172 
+             L190,172 L190,186 
+             L210,186 L210,200 
+             L210,222 L-10,70 Z" fill="#334155" stroke="#475569" stroke-width="1" />
+
+    <!-- Yellow Safety Warning Edges & Step Treads -->
+    <g stroke="#facc15" stroke-width="1.8">
+      <line x1="-10" y1="46" x2="10" y2="46" />
+      <line x1="10" y1="60" x2="30" y2="60" />
+      <line x1="30" y1="74" x2="50" y2="74" />
+      <line x1="50" y1="88" x2="70" y2="88" />
+      <line x1="70" y1="102" x2="90" y2="102" />
+      <line x1="90" y1="116" x2="110" y2="116" />
+      <line x1="110" y1="130" x2="130" y2="130" />
+      <line x1="130" y1="144" x2="150" y2="144" />
+      <line x1="150" y1="158" x2="170" y2="158" />
+      <line x1="170" y1="172" x2="190" y2="172" />
+      <line x1="190" y1="186" x2="210" y2="186" />
+    </g>
+
+    <!-- Metallic Riser Vertical Stripes -->
+    <g stroke="#64748b" stroke-width="1.5">
+      <line x1="10" y1="47" x2="10" y2="60" />
+      <line x1="30" y1="61" x2="30" y2="74" />
+      <line x1="50" y1="75" x2="50" y2="88" />
+      <line x1="70" y1="89" x2="70" y2="102" />
+      <line x1="90" y1="103" x2="90" y2="116" />
+      <line x1="110" y1="117" x2="110" y2="130" />
+      <line x1="130" y1="131" x2="130" y2="144" />
+      <line x1="150" y1="145" x2="150" y2="158" />
+      <line x1="170" y1="159" x2="170" y2="172" />
+      <line x1="190" y1="173" x2="190" y2="186" />
+      <line x1="210" y1="187" x2="210" y2="200" />
+    </g>
+
+    <!-- 3. Blue Tinted Glass Side Panel (In front of lower step edge) -->
+    <polygon points="-28,24 218,194 218,225 -28,55" fill="url(#glassEscalator)" stroke="#38bdf8" stroke-width="1.5" />
+
+    <!-- Glass Glare Reflection Line -->
+    <line x1="-15" y1="36" x2="205" y2="188" stroke="#ffffff" stroke-width="1.5" opacity="0.4" />
+
+    <!-- 4. Chrome Lower Base Trim -->
+    <polygon points="-28,55 218,225 218,240 -28,70" fill="#94a3b8" stroke="#cbd5e1" stroke-width="1" />
+
+    <!-- 5. Black Moving Handrail Top -->
+    <line x1="-30" y1="20" x2="220" y2="190" stroke="#020617" stroke-width="9" stroke-linecap="round" />
+    <line x1="-28" y1="18" x2="218" y2="188" stroke="#334155" stroke-width="2" stroke-linecap="round" />
+  </g>
+
+  <!-- DEPARTMENT STORE INFORMATION RECEPTION DESK (UKETSUKE - HERO ELEMENT) -->
+  <g transform="translate(340, 210)" filter="url(#mallShadow)">
+    <!-- Curved Reception Counter Front Body -->
+    <path d="M0,50 L200,40 L210,130 L0,140 Z" fill="url(#counterMarble)" stroke="#cbd5e1" stroke-width="1.5" />
+    <!-- Countertop Surface (Polished Grey Granite) -->
+    <polygon points="-10,50 210,40 200,30 -20,40" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5" />
+    <!-- Wood Slat Accent Panel on Front -->
+    <rect x="25" y="65" width="150" height="55" rx="4" fill="#0284c7" opacity="0.1" stroke="#38bdf8" stroke-width="1" />
+    <!-- Japanese Signboard on Desk 「受付・UKETSUKE」 -->
+    <g transform="translate(65, 75)">
+      <rect x="0" y="0" width="70" height="26" rx="3" fill="#0f172a" />
+      <text x="35" y="14" font-size="9" font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">受 付</text>
+      <text x="35" y="22" font-size="5" font-family="sans-serif" font-weight="bold" fill="#38bdf8" text-anchor="middle">INFORMATION</text>
+    </g>
+
+    <!-- Chrome Service Call Bell on Counter -->
+    <g transform="translate(25, 32)">
+      <ellipse cx="12" cy="12" rx="10" ry="4" fill="#64748b" />
+      <path d="M4,10 C4,4 20,4 20,10 Z" fill="#facc15" stroke="#ca8a04" stroke-width="0.8" />
+      <circle cx="12" cy="3" r="2" fill="#ca8a04" />
+    </g>
+
+    <!-- Small Floor Plant beside Counter -->
+    <g transform="translate(195, 60)">
+      <!-- Ceramic Pot -->
+      <polygon points="10,45 28,45 25,75 13,75" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+      <!-- Lush Green Leaves -->
+      <path d="M19,45 Q5,20 10,5 Q20,25 19,45 Z" fill="#15803d" />
+      <path d="M19,45 Q35,20 30,5 Q20,25 19,45 Z" fill="#16a34a" />
+      <path d="M19,45 Q22,10 19,-5 Q16,15 19,45 Z" fill="#22c55e" />
+    </g>
+  </g>
+
+  <!-- OVERHEAD DIRECTIONAL WAYFINDING SIGNAGE (KOKO / SOKO / ASOKO - CHAPTER 3 GRAMMAR) -->
+  <g transform="translate(360, 40)" filter="url(#mallShadow)">
+    <!-- Ceiling Mounting Rods -->
+    <line x1="40" y1="0" x2="40" y2="35" stroke="#94a3b8" stroke-width="3" />
+    <line x1="200" y1="0" x2="200" y2="35" stroke="#94a3b8" stroke-width="3" />
+
+    <!-- Sleek Navy Illuminated Directional Signboard -->
+    <rect x="0" y="35" width="240" height="70" rx="8" fill="url(#signNavy)" stroke="#0284c7" stroke-width="2" />
+
+    <!-- Section 1: Arrow Up - エレベーター (Elevator) -->
+    <g transform="translate(20, 50)">
+      <circle cx="12" cy="12" r="10" fill="#38bdf8" />
+      <polygon points="12,5 7,13 10,13 10,19 14,19 14,13 17,13" fill="#0f172a" />
+      <text x="30" y="16" font-size="11" font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif" font-weight="bold" fill="#ffffff">ここ 1F</text>
+    </g>
+
+    <!-- Divider Line -->
+    <line x1="105" y1="45" x2="105" y2="95" stroke="#334155" stroke-width="1.5" />
+
+    <!-- Section 2: Arrow Right - そこ / あそこ (Soko / Asoko: Restroom & Escalator) -->
+    <g transform="translate(125, 50)">
+      <circle cx="12" cy="12" r="10" fill="#4ade80" />
+      <polygon points="19,12 11,7 11,10 5,10 5,14 11,14 11,17" fill="#0f172a" />
+      <text x="30" y="16" font-size="11" font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif" font-weight="bold" fill="#ffffff">あそこ 2F</text>
+    </g>
+
+    <!-- Bottom English Subtitles -->
+    <text x="50" y="90" font-size="7" font-family="sans-serif" font-weight="bold" fill="#94a3b8">MAIN LOBBY</text>
+    <text x="155" y="90" font-size="7" font-family="sans-serif" font-weight="bold" fill="#94a3b8">SHOPS &amp; CAFE</text>
+  </g>
+</svg>

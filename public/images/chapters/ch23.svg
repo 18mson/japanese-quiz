@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="shibuyaDusk" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+    <linearGradient id="neonGreenGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#86efac" />
+      <stop offset="40%" stop-color="#22c55e" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+    <linearGradient id="icCardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#67e8f9" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0e7490" />
+    </linearGradient>
+    <filter id="trafficShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+    <filter id="greenNeon" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="16" flood-color="#22c55e" flood-opacity="0.8" />
+    </filter>
+  </defs>
+
+  <!-- Tokyo Evening City Street Sky -->
+  <rect width="800" height="450" fill="url(#shibuyaDusk)" />
+
+  <!-- Asphalt Road in Perspective -->
+  <polygon points="0,240 800,200 800,450 0,450" fill="#1e293b" />
+  <line x1="0" y1="240" x2="800" y2="200" stroke="#334155" stroke-width="2" />
+
+  <!-- PEDESTRIAN ZEBRA CROSSING (ODAN-HODO IN PERSPECTIVE) -->
+  <g fill="#f8fafc" opacity="0.85">
+    <polygon points="340,240 375,238 395,450 345,450" />
+    <polygon points="415,236 450,234 490,450 440,450" />
+    <polygon points="490,232 525,230 585,450 535,450" />
+    <polygon points="565,228 600,226 680,450 630,450" />
+    <polygon points="640,224 675,222 775,450 725,450" />
+  </g>
+
+  <!-- JAPANESE PEDESTRIAN TRAFFIC LIGHT POST (AUSHINGOU - HERO ELEMENT) -->
+  <g transform="translate(380, 50)" filter="url(#trafficShadow)">
+    <!-- Steel Traffic Signal Pole -->
+    <rect x="55" y="160" width="16" height="240" fill="#475569" stroke="#334155" stroke-width="2" />
+    <!-- Yellow/Black Caution Stripes on Base of Pole -->
+    <g>
+      <rect x="55" y="320" width="16" height="15" fill="#facc15" />
+      <rect x="55" y="350" width="16" height="15" fill="#facc15" />
+      <rect x="55" y="380" width="16" height="15" fill="#facc15" />
+    </g>
+
+    <!-- Signal Housing Box (Dark Slate Blue) -->
+    <rect x="25" y="15" width="76" height="175" rx="14" fill="#0f172a" stroke="#334155" stroke-width="3" />
+    <!-- Sun Visors (Hoods above lights) -->
+    <path d="M28,26 Q63,8 98,26" fill="none" stroke="#475569" stroke-width="4" />
+    <path d="M28,105 Q63,87 98,105" fill="none" stroke="#475569" stroke-width="4" />
+
+    <!-- TOP LIGHT: RED DON'T WALK (INACTIVE / FAINT) -->
+    <circle cx="63" cy="58" r="32" fill="#1e293b" stroke="#334155" stroke-width="2" />
+    <!-- Faint Red Figure standing -->
+    <g transform="translate(63, 58) scale(0.7)" fill="#ef4444" opacity="0.25">
+      <circle cx="0" cy="-20" r="7" />
+      <rect x="-6" y="-10" width="12" height="24" rx="4" />
+      <line x1="-3" y1="14" x2="-3" y2="30" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+      <line x1="3" y1="14" x2="3" y2="30" stroke="#ef4444" stroke-width="4" stroke-linecap="round" />
+    </g>
+
+    <!-- BOTTOM LIGHT: GREEN ACTIVE WALK LIGHT (SHINING BRILLIANTLY) -->
+    <circle cx="63" cy="140" r="32" fill="#064e3b" stroke="#059669" stroke-width="2" />
+    <circle cx="63" cy="140" r="30" fill="url(#neonGreenGlow)" filter="url(#greenNeon)" />
+
+    <!-- Iconic Walking Silhouette inside Green Light -->
+    <g transform="translate(63, 140) scale(0.85)" fill="#ffffff">
+      <!-- Head -->
+      <circle cx="0" cy="-20" r="6" />
+      <!-- Torso with slight forward lean -->
+      <path d="M-4,-12 L5,-10 L3,6 L-6,4 Z" />
+      <!-- Left Stride Leg forward -->
+      <line x1="-3" y1="4" x2="-14" y2="24" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+      <!-- Right Leg back -->
+      <line x1="3" y1="4" x2="12" y2="22" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+      <!-- Arms in walking swing -->
+      <line x1="2" y1="-8" x2="12" y2="2" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+      <line x1="-4" y1="-8" x2="-12" y2="-2" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+    </g>
+
+    <!-- PUSH-BUTTON SIGNAL BOX (OSHI-BOTAN SHIKI: Botan o osu to...) -->
+    <g transform="translate(43, 230)">
+      <rect x="0" y="0" width="40" height="60" rx="4" fill="#facc15" stroke="#ca8a04" stroke-width="2" />
+      <!-- Push Button Circular -->
+      <circle cx="20" cy="30" r="14" fill="#ef4444" stroke="#b91c1c" stroke-width="2" />
+      <circle cx="20" cy="30" r="9" fill="#f87171" />
+      <!-- Japanese text '押ボタン' label -->
+      <rect x="5" y="6" width="30" height="8" rx="2" fill="#1e293b" />
+      <text x="20" y="12" font-size="5" font-family="sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">おす</text>
+    </g>
+  </g>
+
+  <!-- COMMUTER TOUCH IC CARD (SUICA/PASMO: TOUCH SURU TO GĒTO GA AKIMASU) -->
+  <g transform="translate(560, 240) rotate(-12)" filter="url(#trafficShadow)">
+    <!-- IC Card Body -->
+    <rect x="0" y="0" width="140" height="88" rx="7" fill="url(#icCardGrad)" stroke="#22d3ee" stroke-width="1.5" />
+    <!-- White Card accent stripe -->
+    <path d="M0,50 Q70,35 140,55 L140,88 L0,88 Z" fill="#ffffff" opacity="0.25" />
+    <!-- IC Chip Gold Contact -->
+    <rect x="18" y="24" width="22" height="18" rx="3" fill="#fef08a" stroke="#ca8a04" stroke-width="1" />
+    <line x1="29" y1="24" x2="29" y2="42" stroke="#ca8a04" stroke-width="0.8" />
+    <line x1="18" y1="33" x2="40" y2="33" stroke="#ca8a04" stroke-width="0.8" />
+
+    <!-- Stylized Mascot Penguin / Train silhouette on card -->
+    <circle cx="105" cy="40" r="14" fill="#ffffff" opacity="0.9" />
+    <path d="M100,45 Q105,32 110,45 Z" fill="#0891b2" />
+    <circle cx="103" cy="38" r="2" fill="#0891b2" />
+    <polygon points="105,38 108,40 105,42" fill="#ea580c" />
+
+    <!-- Radio Frequency Sensor Wave Ripples -->
+    <path d="M125,12 A16,16 0 0,1 138,25" fill="none" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+    <path d="M120,6 A24,24 0 0,1 144,30" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.7" />
+  </g>
+</svg>

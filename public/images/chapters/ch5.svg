@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <!-- Sky gradient at blue hour / dawn -->
+    <linearGradient id="skyTrain" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="45%" stop-color="#bae6fd" />
+      <stop offset="85%" stop-color="#fbcfe8" />
+      <stop offset="100%" stop-color="#fde047" />
+    </linearGradient>
+
+    <!-- Mt Fuji Snowcap Gradient -->
+    <linearGradient id="fujiSnow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e0e7ff" />
+    </linearGradient>
+
+    <!-- Mt Fuji Body Gradient -->
+    <linearGradient id="fujiBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="50%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+
+    <!-- Shinkansen Train Body Gradient -->
+    <linearGradient id="trainBody" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </linearGradient>
+
+    <!-- Shinkansen Blue Stripe -->
+    <linearGradient id="trainBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+
+    <!-- Speed trail gradient -->
+    <linearGradient id="speedTrail" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="60%" stop-color="#38bdf8" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.7" />
+    </linearGradient>
+
+    <!-- Ground / Hills Gradient -->
+    <linearGradient id="hillsGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+
+    <filter id="trainShadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#0f172a" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Sky Background -->
+  <rect width="800" height="450" fill="url(#skyTrain)" />
+
+  <!-- Morning Sun Orb (Rising behind Mt Fuji) -->
+  <circle cx="580" cy="180" r="95" fill="#f43f5e" opacity="0.85" />
+  <circle cx="580" cy="180" r="115" fill="#fda4af" opacity="0.35" />
+
+  <!-- Majestic Mount Fuji Silhouette -->
+  <g>
+    <!-- Main Mountain Body -->
+    <polygon points="380,320 580,95 780,320" fill="url(#fujiBody)" />
+    <!-- Snow Cap -->
+    <polygon points="580,95 532,150 550,165 570,155 585,170 605,155 628,150" fill="url(#fujiSnow)" />
+  </g>
+
+  <!-- Rolling Hills in Middleground -->
+  <path d="M0,320 Q200,280 420,320 T800,310 L800,450 L0,450 Z" fill="#059669" opacity="0.85" />
+  <path d="M0,340 Q300,310 600,345 T800,335 L800,450 L0,450 Z" fill="url(#hillsGrad)" />
+
+  <!-- Sakura Trees Along Tracks -->
+  <g opacity="0.8">
+    <circle cx="180" cy="300" r="32" fill="#f472b6" />
+    <circle cx="215" cy="290" r="28" fill="#fda4af" />
+    <circle cx="150" cy="310" r="24" fill="#fb7185" />
+    <circle cx="270" cy="315" r="26" fill="#f472b6" />
+  </g>
+
+  <!-- Railway Bridge Viaduct & Tracks -->
+  <polygon points="0,375 800,345 800,390 0,420" fill="#64748b" />
+  <line x1="0" y1="375" x2="800" y2="345" stroke="#94a3b8" stroke-width="3" />
+  <line x1="0" y1="382" x2="800" y2="352" stroke="#475569" stroke-width="4" />
+
+  <!-- Speed Motion Wind Lines -->
+  <line x1="120" y1="330" x2="350" y2="330" stroke="url(#speedTrail)" stroke-width="3" stroke-linecap="round" />
+  <line x1="80" y1="345" x2="380" y2="345" stroke="url(#speedTrail)" stroke-width="4" stroke-linecap="round" />
+  <line x1="160" y1="365" x2="420" y2="365" stroke="url(#speedTrail)" stroke-width="3" stroke-linecap="round" />
+
+  <!-- SHINKANSEN NOZOMI TRAIN (Hero Element) -->
+  <g filter="url(#trainShadow)">
+    <!-- Aerodynamic Nose & Main Body Car 1 -->
+    <path d="M720,325 C660,325 580,328 480,334 L320,344 L320,390 L480,385 C560,382 640,378 720,358 C740,353 748,342 748,335 C748,328 738,325 720,325 Z" fill="url(#trainBody)" stroke="#cbd5e1" stroke-width="1.5" />
+
+    <!-- Trailing Car 2 -->
+    <polygon points="120,356 312,345 312,391 120,402" fill="url(#trainBody)" stroke="#cbd5e1" stroke-width="1.5" />
+    <!-- Connector between cars -->
+    <rect x="312" y="352" width="8" height="35" fill="#334155" />
+
+    <!-- Iconic Shinkansen Blue Speed Stripe -->
+    <path d="M738,342 C660,344 580,346 480,352 L120,374 L120,382 L480,360 C580,354 660,350 735,348 Z" fill="url(#trainBlue)" />
+    <!-- Thin Secondary Stripe -->
+    <path d="M700,354 C630,355 560,358 480,364 L120,386 L120,390 L480,368 C560,362 630,359 695,357 Z" fill="#0284c7" />
+
+    <!-- Sleek Cockpit Windshield (Dark Tinted Glass) -->
+    <path d="M680,330 C640,331 600,334 570,338 L580,346 C615,342 650,339 685,338 Z" fill="#0f172a" />
+    <path d="M678,331 C642,332 605,335 578,339" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+
+    <!-- Passenger Windows along Car 1 -->
+    <g fill="#1e293b" opacity="0.9">
+      <rect x="520" y="340" width="22" height="10" rx="2" />
+      <rect x="480" y="342" width="22" height="10" rx="2" />
+      <rect x="440" y="344" width="22" height="10" rx="2" />
+      <rect x="400" y="346" width="22" height="10" rx="2" />
+      <rect x="360" y="348" width="22" height="10" rx="2" />
+    </g>
+
+    <!-- Passenger Windows along Car 2 -->
+    <g fill="#1e293b" opacity="0.9">
+      <rect x="270" y="354" width="22" height="10" rx="2" />
+      <rect x="230" y="356" width="22" height="10" rx="2" />
+      <rect x="190" y="358" width="22" height="10" rx="2" />
+      <rect x="150" y="360" width="22" height="10" rx="2" />
+    </g>
+
+    <!-- High-speed Headlight Beam -->
+    <polygon points="742,342 790,336 790,348 742,344" fill="#fef08a" opacity="0.9" />
+    <polygon points="742,340 800,320 800,360 742,345" fill="#fef08a" opacity="0.25" />
+  </g>
+</svg>

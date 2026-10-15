@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="parkSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="60%" stop-color="#fed7aa" />
+      <stop offset="100%" stop-color="#fdba74" />
+    </linearGradient>
+    <linearGradient id="benchWood" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="ginkgoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="60%" stop-color="#facc15" />
+      <stop offset="100%" stop-color="#eab308" />
+    </linearGradient>
+    <filter id="parkGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#78350f" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Golden Autumn Afternoon Sky -->
+  <rect width="800" height="450" fill="url(#parkSky)" />
+
+  <!-- Distant City Park Trees & Foliage -->
+  <g opacity="0.4">
+    <circle cx="280" cy="180" r="90" fill="#fde047" />
+    <circle cx="360" cy="150" r="110" fill="#f59e0b" />
+    <circle cx="480" cy="160" r="130" fill="#ea580c" />
+    <circle cx="620" cy="140" r="120" fill="#eab308" />
+  </g>
+
+  <!-- Park Ground & Cobblestone Path -->
+  <polygon points="0,290 800,240 800,450 0,450" fill="#78716c" />
+  <polygon points="0,290 800,240 800,320 0,370" fill="#a8a29e" opacity="0.4" />
+  <!-- Stone joint lines -->
+  <line x1="0" y1="290" x2="800" y2="240" stroke="#d6d3d1" stroke-width="2" />
+
+  <!-- GINKGO TREE BRANCH OVERHEAD (TOKYO MEIJI JINGU GAIEN VIBES) -->
+  <g transform="translate(560, -20)" filter="url(#parkGlow)">
+    <!-- Branch Trunk -->
+    <path d="M240,0 Q180,60 120,50 Q60,40 0,80" fill="none" stroke="#451a03" stroke-width="12" stroke-linecap="round" />
+    <!-- Golden Foliage clusters -->
+    <ellipse cx="140" cy="60" rx="70" ry="50" fill="url(#ginkgoGold)" />
+    <ellipse cx="80" cy="80" rx="60" ry="45" fill="url(#ginkgoGold)" />
+    <ellipse cx="190" cy="40" rx="80" ry="55" fill="url(#ginkgoGold)" />
+    <ellipse cx="40" cy="100" rx="45" ry="35" fill="url(#ginkgoGold)" />
+  </g>
+
+  <!-- CLASSIC PARK BENCH (HERO ELEMENT FOR CASUAL FRIEND TALK) -->
+  <g transform="translate(360, 200)" filter="url(#parkGlow)">
+    <!-- Cast Iron Dark Green Legs/Frames -->
+    <g stroke="#14532d" stroke-width="7" stroke-linecap="round">
+      <!-- Left Leg structure -->
+      <path d="M40,170 L50,90 L60,40" />
+      <path d="M40,170 L65,170 L50,90" />
+      <line x1="20" y1="90" x2="60" y2="90" />
+      <!-- Right Leg structure -->
+      <path d="M290,165 L300,85 L310,35" />
+      <path d="M290,165 L315,165 L300,85" />
+      <line x1="270" y1="85" x2="310" y2="85" />
+    </g>
+
+    <!-- Bench Wooden Backrest Slats (angled) -->
+    <rect x="25" y="10" width="300" height="15" rx="4" fill="url(#benchWood)" stroke="#451a03" stroke-width="1.5" />
+    <rect x="25" y="32" width="300" height="15" rx="4" fill="url(#benchWood)" stroke="#451a03" stroke-width="1.5" />
+    <rect x="25" y="54" width="300" height="15" rx="4" fill="url(#benchWood)" stroke="#451a03" stroke-width="1.5" />
+
+    <!-- Bench Wooden Seat Slats (horizontal plane) -->
+    <polygon points="10,85 340,85 330,102 0,102" fill="url(#benchWood)" stroke="#451a03" stroke-width="1.5" />
+    <polygon points="5,104 335,104 325,121 -5,121" fill="url(#benchWood)" stroke="#451a03" stroke-width="1.5" />
+
+    <!-- TWO TAKEAWAY COFFEE CUPS ON BENCH (TWO FRIENDS CHATTING) -->
+    <!-- Cup 1 (Tall Latte) -->
+    <g transform="translate(90, 48)">
+      <polygon points="8,10 32,10 28,45 12,45" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+      <!-- Brown heat sleeve -->
+      <polygon points="9,20 31,20 30,34 10,34" fill="#a16207" />
+      <!-- Japanese cafe green circle logo -->
+      <circle cx="20" cy="27" r="4" fill="#15803d" />
+      <!-- White Plastic Lid -->
+      <ellipse cx="20" cy="9" rx="13" ry="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1" />
+    </g>
+
+    <!-- Cup 2 (Matcha Latte) -->
+    <g transform="translate(130, 52)">
+      <polygon points="6,10 30,10 27,41 9,41" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1" />
+      <!-- Brown heat sleeve -->
+      <polygon points="7,19 29,19 28,32 8,32" fill="#a16207" />
+      <circle cx="18" cy="25" r="3.5" fill="#15803d" />
+      <!-- White Lid -->
+      <ellipse cx="18" cy="9" rx="13" ry="3" fill="#ffffff" stroke="#94a3b8" stroke-width="1" />
+    </g>
+
+    <!-- Casual Messenger Bag on Bench -->
+    <g transform="translate(180, 50)">
+      <rect x="0" y="8" width="55" height="40" rx="8" fill="#1e293b" />
+      <path d="M0,8 L55,8 L52,24 L3,24 Z" fill="#334155" />
+      <rect x="23" y="22" width="9" height="7" rx="1.5" fill="#facc15" />
+    </g>
+  </g>
+
+  <!-- FALLEN GINKGO FAN LEAVES SCATTERED ON GROUND -->
+  <g fill="url(#ginkgoGold)" stroke="#d97706" stroke-width="0.8">
+    <!-- Leaf 1 -->
+    <path d="M380,380 C365,365 375,350 395,355 C415,350 425,365 410,380 Z" />
+    <line x1="395" y1="380" x2="395" y2="395" stroke="#b45309" stroke-width="1.5" />
+    <!-- Leaf 2 -->
+    <path d="M520,390 C508,378 516,366 532,370 C548,366 556,378 544,390 Z" transform="rotate(30, 532, 380)" />
+    <!-- Leaf 3 -->
+    <path d="M680,360 C668,348 676,336 692,340 C708,336 716,348 704,360 Z" transform="rotate(-20, 692, 350)" />
+  </g>
+
+  <!-- Soft Warm Light Sparkles / Floating Dust Motes -->
+  <circle cx="480" cy="180" r="14" fill="#ffffff" opacity="0.3" filter="url(#parkGlow)" />
+  <circle cx="590" cy="220" r="18" fill="#ffffff" opacity="0.25" filter="url(#parkGlow)" />
+  <circle cx="340" cy="140" r="10" fill="#ffffff" opacity="0.35" filter="url(#parkGlow)" />
+</svg>

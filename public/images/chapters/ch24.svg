@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="warmHeartSky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff1f2" />
+      <stop offset="50%" stop-color="#ffe4e6" />
+      <stop offset="100%" stop-color="#fed7aa" />
+    </linearGradient>
+    <linearGradient id="suitcaseLeather" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b45309" />
+      <stop offset="50%" stop-color="#92400e" />
+      <stop offset="100%" stop-color="#78350f" />
+    </linearGradient>
+    <linearGradient id="origamiPink" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fda4af" />
+      <stop offset="50%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+    <filter id="heartShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#881337" flood-opacity="0.22" />
+    </filter>
+    <filter id="heartGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="12" flood-color="#f43f5e" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Warm Compassionate Rose/Peach Sky -->
+  <rect width="800" height="450" fill="url(#warmHeartSky)" />
+
+  <!-- Wooden Floor / Station Platform Ground -->
+  <polygon points="0,320 800,280 800,450 0,450" fill="#f8fafc" />
+  <line x1="0" y1="320" x2="800" y2="280" stroke="#fecdd3" stroke-width="2" />
+
+  <!-- Soft Ambient Floating Hearts in Sky -->
+  <g fill="#f43f5e" opacity="0.15">
+    <path d="M420,80 A12,12 0 0,0 408,92 A12,12 0 0,0 430,110 L432,112 L434,110 A12,12 0 0,0 456,92 A12,12 0 0,0 444,80 A12,12 0 0,0 432,86 A12,12 0 0,0 420,80 Z" transform="scale(1.2)" />
+    <path d="M580,50 A10,10 0 0,0 570,60 A10,10 0 0,0 588,75 L590,77 L592,75 A10,10 0 0,0 610,60 A10,10 0 0,0 600,50 A10,10 0 0,0 590,55 A10,10 0 0,0 580,50 Z" />
+  </g>
+
+  <!-- VINTAGE TRAVEL SUITCASE (NIMOTSU O MOTTE MORAIMASHITA / KUREMASHITA) -->
+  <g transform="translate(360, 160)" filter="url(#heartShadow)">
+    <!-- Main Leather Trunk Body -->
+    <rect x="0" y="30" width="220" height="150" rx="14" fill="url(#suitcaseLeather)" stroke="#451a03" stroke-width="2.5" />
+
+    <!-- Corner Brass Protective Brackets -->
+    <!-- Top-Left -->
+    <path d="M0,45 L15,45 A15,15 0 0,1 30,30 L0,30 Z" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <circle cx="12" cy="38" r="2.5" fill="#713f12" />
+    <!-- Top-Right -->
+    <path d="M220,45 L205,45 A15,15 0 0,0 190,30 L220,30 Z" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <circle cx="208" cy="38" r="2.5" fill="#713f12" />
+    <!-- Bottom-Left -->
+    <path d="M0,165 L15,165 A15,15 0 0,0 30,180 L0,180 Z" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <circle cx="12" cy="172" r="2.5" fill="#713f12" />
+    <!-- Bottom-Right -->
+    <path d="M220,165 L205,165 A15,15 0 0,1 190,180 L220,180 Z" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <circle cx="208" cy="172" r="2.5" fill="#713f12" />
+
+    <!-- Twin Vertical Leather Straps with Gold Buckles -->
+    <!-- Left Strap -->
+    <rect x="45" y="30" width="18" height="150" fill="#451a03" />
+    <rect x="42" y="95" width="24" height="20" rx="3" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <rect x="47" y="100" width="14" height="10" rx="2" fill="#451a03" />
+    <line x1="54" y1="95" x2="54" y2="115" stroke="#facc15" stroke-width="2" />
+
+    <!-- Right Strap -->
+    <rect x="155" y="30" width="18" height="150" fill="#451a03" />
+    <rect x="152" y="95" width="24" height="20" rx="3" fill="#facc15" stroke="#a16207" stroke-width="1.5" />
+    <rect x="157" y="100" width="14" height="10" rx="2" fill="#451a03" />
+    <line x1="164" y1="95" x2="164" y2="115" stroke="#facc15" stroke-width="2" />
+
+    <!-- Top Carrying Handle -->
+    <path d="M85,30 C85,5 135,5 135,30" fill="none" stroke="#451a03" stroke-width="10" stroke-linecap="round" />
+    <path d="M85,30 C85,5 135,5 135,30" fill="none" stroke="#b45309" stroke-width="6" stroke-linecap="round" />
+    <!-- Brass Handle Mounts -->
+    <rect x="80" y="24" width="12" height="10" rx="2" fill="#facc15" />
+    <rect x="128" y="24" width="12" height="10" rx="2" fill="#facc15" />
+
+    <!-- Travel Stickers (Tokyo & Sakura) -->
+    <g transform="translate(85, 60) rotate(-6)">
+      <rect x="0" y="0" width="50" height="32" rx="3" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" />
+      <circle cx="25" cy="16" r="9" fill="#ef4444" />
+      <text x="25" y="19" font-size="6" font-family="sans-serif" font-weight="bold" fill="#ffffff" text-anchor="middle">TOKYO</text>
+    </g>
+  </g>
+
+  <!-- JAPANESE ORIGAMI PAPER CRANE (ORIZURU - SYMBOL OF GOODWILL & GRATITUDE) -->
+  <g transform="translate(560, 110) scale(1.15)" filter="url(#heartShadow)">
+    <!-- Origami Wing Left -->
+    <polygon points="40,60 0,10 70,35" fill="url(#origamiPink)" />
+    <!-- Origami Wing Right -->
+    <polygon points="70,35 140,0 90,60" fill="#fb7185" />
+    <!-- Center Body Fold -->
+    <polygon points="40,60 70,35 90,60 65,95" fill="#f43f5e" />
+    <!-- Origami Neck & Beak -->
+    <polygon points="40,60 15,35 12,38 35,68" fill="#e11d48" />
+    <polygon points="15,35 6,38 10,44" fill="#9f1239" />
+    <!-- Origami Tail -->
+    <polygon points="90,60 120,40 100,75" fill="#fda4af" />
+  </g>
+
+  <!-- GLOWING FLOATING HEART SPARKLE (WARMTH OF ARIGATOU) -->
+  <g transform="translate(630, 220)" filter="url(#heartGlow)">
+    <path d="M25,8 A10,10 0 0,0 15,18 A10,10 0 0,0 33,32 L35,34 L37,32 A10,10 0 0,0 55,18 A10,10 0 0,0 45,8 A10,10 0 0,0 35,13 A10,10 0 0,0 25,8 Z" fill="#f43f5e" />
+  </g>
+
+  <!-- Floating Gift Box with Ribbon (GIFT / OREI) -->
+  <g transform="translate(310, 260) rotate(10)" filter="url(#heartShadow)">
+    <rect x="0" y="10" width="70" height="55" rx="6" fill="#fecdd3" stroke="#f43f5e" stroke-width="1.5" />
+    <!-- Lid -->
+    <rect x="-3" y="4" width="76" height="14" rx="4" fill="#fda4af" stroke="#f43f5e" stroke-width="1.5" />
+    <!-- Satin Gold Ribbon Vertical -->
+    <rect x="28" y="4" width="14" height="61" fill="#facc15" stroke="#ca8a04" stroke-width="1" />
+    <!-- Satin Gold Ribbon Bow on top -->
+    <circle cx="28" cy="2" r="7" fill="none" stroke="#facc15" stroke-width="3" />
+    <circle cx="42" cy="2" r="7" fill="none" stroke="#facc15" stroke-width="3" />
+    <circle cx="35" cy="4" r="3" fill="#ca8a04" />
+  </g>
+</svg>

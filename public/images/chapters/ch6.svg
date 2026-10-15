@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <!-- Warm Kissaten Cafe Background Gradient -->
+    <linearGradient id="cafeBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff7ed" />
+      <stop offset="50%" stop-color="#ffedd5" />
+      <stop offset="100%" stop-color="#fed7aa" />
+    </linearGradient>
+
+    <!-- Warm lantern glow -->
+    <radialGradient id="lanternGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.9" />
+      <stop offset="60%" stop-color="#d97706" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#b45309" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Matcha Bowl Ceramic Gradient -->
+    <linearGradient id="matchaBowl" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" />
+      <stop offset="50%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+
+    <!-- Frothy Matcha Green Tea Gradient -->
+    <radialGradient id="matchaTea" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#86efac" />
+      <stop offset="40%" stop-color="#4ade80" />
+      <stop offset="85%" stop-color="#16a34a" />
+      <stop offset="100%" stop-color="#15803d" />
+    </radialGradient>
+
+    <!-- Dango Skewer Gradients -->
+    <radialGradient id="dangoPink" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#fbcfe8" />
+      <stop offset="100%" stop-color="#f43f5e" />
+    </radialGradient>
+    <radialGradient id="dangoWhite" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#e2e8f0" />
+    </radialGradient>
+    <radialGradient id="dangoGreen" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#bbf7d0" />
+      <stop offset="100%" stop-color="#22c55e" />
+    </radialGradient>
+
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#78350f" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Cafe Wall -->
+  <rect width="800" height="450" fill="url(#cafeBg)" />
+
+  <!-- Japanese Wooden Grid Screen in Background -->
+  <g opacity="0.25">
+    <rect x="420" y="20" width="340" height="280" fill="none" stroke="#78350f" stroke-width="4" rx="8" />
+    <line x1="420" y1="90" x2="760" y2="90" stroke="#78350f" stroke-width="2" />
+    <line x1="420" y1="160" x2="760" y2="160" stroke="#78350f" stroke-width="2" />
+    <line x1="420" y1="230" x2="760" y2="230" stroke="#78350f" stroke-width="2" />
+    <line x1="505" y1="20" x2="505" y2="300" stroke="#78350f" stroke-width="2" />
+    <line x1="590" y1="20" x2="590" y2="300" stroke="#78350f" stroke-width="2" />
+    <line x1="675" y1="20" x2="675" y2="300" stroke="#78350f" stroke-width="2" />
+  </g>
+
+  <!-- Hanging Japanese Paper Lantern (Chochin) with Kanji -->
+  <g transform="translate(620, -10)" filter="url(#softShadow)">
+    <line x1="50" y1="0" x2="50" y2="45" stroke="#1e293b" stroke-width="3" />
+    <!-- Lantern Body -->
+    <ellipse cx="50" cy="110" rx="42" ry="60" fill="#fef3c7" stroke="#b45309" stroke-width="2" />
+    <!-- Ribs -->
+    <ellipse cx="50" cy="85" rx="36" ry="10" fill="none" stroke="#d97706" stroke-width="1.5" />
+    <ellipse cx="50" cy="110" rx="42" ry="12" fill="none" stroke="#d97706" stroke-width="1.5" />
+    <ellipse cx="50" cy="135" rx="36" ry="10" fill="none" stroke="#d97706" stroke-width="1.5" />
+    <!-- Black Caps -->
+    <rect x="25" y="45" width="50" height="12" rx="3" fill="#1e293b" />
+    <rect x="25" y="165" width="50" height="12" rx="3" fill="#1e293b" />
+    <!-- Kanji for Cafe / Tea (茶) -->
+    <text x="50" y="122" font-family="'Noto Sans JP', sans-serif" font-size="28" font-weight="900" fill="#b45309" text-anchor="middle">茶</text>
+    <!-- Warm Glow -->
+    <circle cx="50" cy="110" r="90" fill="url(#lanternGlow)" />
+  </g>
+
+  <!-- Wooden Cafe Counter -->
+  <polygon points="0,320 800,300 800,450 0,450" fill="#78350f" />
+  <polygon points="0,320 800,300 800,345 0,365" fill="#92400e" opacity="0.75" />
+  <line x1="0" y1="320" x2="800" y2="300" stroke="#fcd34d" stroke-width="3" opacity="0.6" />
+
+  <!-- Traditional Woven Tatami Coaster / Tray -->
+  <g transform="translate(180, 290)" filter="url(#softShadow)">
+    <ellipse cx="140" cy="70" rx="135" ry="42" fill="#d4d4d8" />
+    <ellipse cx="140" cy="68" rx="130" ry="40" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="2" />
+  </g>
+
+  <!-- MATCHA TEA BOWL (CHAWAN) -->
+  <g transform="translate(210, 220)" filter="url(#softShadow)">
+    <!-- Shadow -->
+    <ellipse cx="70" cy="120" rx="60" ry="18" fill="#451a03" opacity="0.3" />
+    <!-- Bowl Exterior -->
+    <path d="M15,50 C10,95 30,120 70,120 C110,120 130,95 125,50 Z" fill="url(#matchaBowl)" stroke="#475569" stroke-width="2" />
+    <!-- Bowl Rim Rim Texture -->
+    <ellipse cx="70" cy="50" rx="55" ry="16" fill="#1e293b" />
+    <!-- Green Tea Liquid with Whisked Foam -->
+    <ellipse cx="70" cy="53" rx="50" ry="14" fill="url(#matchaTea)" />
+    <!-- Matcha Foam Bubbles -->
+    <circle cx="60" cy="52" r="3" fill="#bbf7d0" opacity="0.8" />
+    <circle cx="75" cy="55" r="4" fill="#bbf7d0" opacity="0.9" />
+    <circle cx="82" cy="50" r="2.5" fill="#bbf7d0" opacity="0.7" />
+    <circle cx="50" cy="54" r="2" fill="#bbf7d0" opacity="0.6" />
+    <circle cx="68" cy="48" r="3.5" fill="#dcfce7" opacity="0.8" />
+  </g>
+
+  <!-- HANAMI DANGO SKEWER (Hero Food Element) -->
+  <g transform="translate(360, 275)" filter="url(#softShadow)">
+    <!-- Bamboo Stick -->
+    <line x1="20" y1="75" x2="160" y2="25" stroke="#ca8a04" stroke-width="4.5" stroke-linecap="round" />
+
+    <!-- Green Dango (Bottom) -->
+    <circle cx="60" cy="62" r="18" fill="url(#dangoGreen)" />
+    <ellipse cx="55" cy="56" rx="4" ry="2" fill="#ffffff" opacity="0.6" />
+
+    <!-- White Dango (Middle) -->
+    <circle cx="95" cy="49" r="18" fill="url(#dangoWhite)" />
+    <ellipse cx="90" cy="43" rx="4" ry="2" fill="#ffffff" opacity="0.8" />
+
+    <!-- Pink Dango (Top) -->
+    <circle cx="130" cy="36" r="18" fill="url(#dangoPink)" />
+    <ellipse cx="125" cy="30" rx="4" ry="2" fill="#ffffff" opacity="0.7" />
+  </g>
+
+  <!-- Maple Autumn Leaf (Momiji) Decoration -->
+  <g transform="translate(480, 340) rotate(25)" opacity="0.85">
+    <path d="M0,0 C-10,-15 -25,-10 -20,5 C-15,18 0,25 0,35 C0,25 15,18 20,5 C25,-10 10,-15 0,0 Z" fill="#dc2626" />
+    <path d="M-5,10 L-25,12 C-20,20 -10,24 0,35 C10,24 20,20 25,12 L5,10 Z" fill="#ea580c" />
+    <line x1="0" y1="35" x2="0" y2="45" stroke="#7f1d1d" stroke-width="2" stroke-linecap="round" />
+  </g>
+</svg>
