@@ -79,9 +79,14 @@ const emit = defineEmits<{
           <span class="text-xs font-semibold text-indigo-800 dark:text-indigo-200 truncate">
             {{ w.meaning }}
           </span>
-          <span v-if="w.category_word" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700/60 flex-shrink-0">
-            {{ w.category_word }}
-          </span>
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <span v-if="w.sub_category" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-matcha/10 text-matcha-dark dark:text-matcha border border-matcha/20">
+              {{ w.sub_category }}
+            </span>
+            <span v-if="w.category_word" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700/60">
+              {{ w.category_word }}
+            </span>
+          </div>
         </div>
       </div>
     </div>

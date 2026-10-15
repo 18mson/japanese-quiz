@@ -231,8 +231,29 @@ export const useQuizStore = defineStore('quiz', () => {
       const filtered = poolData.filter(w => w.type === selectedKanaCategory.value);
       if (filtered.length >= 6) poolData = filtered;
     }
-    const pool = poolData.flatMap(w => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
-    const incorrectOptions = Array.from(new Set(pool.filter(r => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random()).slice(0, 5);
+
+    // Contextual distractors for Vocabulary mode if sub_category is present
+    let incorrectOptions: string[] = [];
+    if (questionType.value === 'words' && currentQuestion.value.sub_category) {
+      const currentSubCat = currentQuestion.value.sub_category;
+      const themeCandidates = poolData.filter(
+        (w: any) => w.sub_category === currentSubCat &&
+        !(Array.isArray(w.romaji) ? w.romaji : [w.romaji]).some((r: string) => correctRomajis.includes(r))
+      );
+      const themePool: string[] = themeCandidates.flatMap((w: any) => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
+      const uniqueThemeDistractors = Array.from(new Set(themePool.filter((r: string) => !correctRomajis.includes(r)))).sort(() => 0.5 - Math.random());
+      incorrectOptions = uniqueThemeDistractors.slice(0, 5);
+    }
+
+    // Fill remaining slots with general pool candidates if needed
+    if (incorrectOptions.length < 5) {
+      const generalPool: string[] = poolData.flatMap((w: any) => Array.isArray(w.romaji) ? w.romaji : [w.romaji]);
+      const remainingCandidates = Array.from(
+        new Set(generalPool.filter((r: string) => !correctRomajis.includes(r) && !incorrectOptions.includes(r)))
+      ).sort(() => 0.5 - Math.random());
+      incorrectOptions = [...incorrectOptions, ...remainingCandidates.slice(0, 5 - incorrectOptions.length)];
+    }
+
     return [...incorrectOptions, correctRomajis[0]].sort(() => 0.5 - Math.random());
   });
 

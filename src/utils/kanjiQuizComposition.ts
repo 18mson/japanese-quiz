@@ -9,6 +9,7 @@ export interface KanjiItem {
   type?: string;
   lesson?: string;
   category_word?: string;
+  sub_category?: string;
   [key: string]: any;
 }
 
@@ -291,7 +292,53 @@ export const selectKanjiUniquePool = (
     }
   }
 
+  // --- Thematic Clustering Setup (~60% dominant theme) ---
+  // Detect or establish primaryTheme to create cohesive, thematic practice sessions
+  let primaryTheme: string | null = null;
+  const targetThemeCount = Math.max(1, Math.round(targetUniqueCount * 0.6));
+
+  // If a lagging item was picked and has a sub_category, use it as initial theme candidate
+  const initialThemeWord = selectedUnique.find(u => !!u.item.sub_category);
+  if (initialThemeWord && initialThemeWord.item.sub_category) {
+    primaryTheme = initialThemeWord.item.sub_category;
+  } else {
+    // Detect theme with highest representation in remaining candidates (>= 2 items)
+    const themeCounts: Record<string, number> = {};
+    [...available.learning, ...available.new, ...available.mastered].forEach(it => {
+      if (it.sub_category) {
+        themeCounts[it.sub_category] = (themeCounts[it.sub_category] || 0) + 1;
+      }
+    });
+    const candidateThemes = Object.keys(themeCounts).filter(k => themeCounts[k] >= 2);
+    if (candidateThemes.length > 0) {
+      candidateThemes.sort((a, b) => themeCounts[b] - themeCounts[a]);
+      // Pick top theme with slight randomization among top 2 for variety across sessions
+      const topIdx = candidateThemes.length > 1 && Math.random() < 0.35 ? 1 : 0;
+      primaryTheme = candidateThemes[topIdx];
+    }
+  }
+
+  const pickCandidateWithTheme = (
+    candidates: KanjiItem[],
+    theme?: string | null,
+    affinityChance: number = 0.75
+  ): KanjiItem | null => {
+    if (!candidates || candidates.length === 0) return null;
+    if (theme && Math.random() < affinityChance) {
+      const matchIdx = candidates.findIndex(it => it.sub_category === theme);
+      if (matchIdx !== -1) {
+        return candidates.splice(matchIdx, 1)[0];
+      }
+    }
+    return candidates.shift() || null;
+  };
+
   while (selectedUnique.length < targetUniqueCount) {
+    const currentThemeCount = primaryTheme
+      ? selectedUnique.filter(u => u.item.sub_category === primaryTheme).length
+      : 0;
+    const shouldBoostTheme = !!primaryTheme && currentThemeCount < targetThemeCount;
+
     // Check which tiers still have candidates and are within caps
     const eligibleTiers = (['new', 'learning', 'mastered', 'crown'] as MasteryTierKey[]).filter(tier => {
       if (available[tier].length === 0) return false;
@@ -313,13 +360,29 @@ export const selectKanjiUniquePool = (
 
       let item: KanjiItem;
       if (fallbackTier === 'learning') {
-        const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
-        item = picked || available.learning.shift()!;
+        if (shouldBoostTheme) {
+          const themeCandidates = available.learning.filter(it => it.sub_category === primaryTheme);
+          const picked = themeCandidates.length > 0
+            ? pickWeightedLearningItem(themeCandidates, effectiveCurrentLesson, getMasteryStreak)
+            : null;
+          if (picked) {
+            const removeIdx = available.learning.findIndex(it => it.character === picked.character);
+            if (removeIdx !== -1) available.learning.splice(removeIdx, 1);
+            item = picked;
+          } else {
+            const fallbackPicked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+            item = fallbackPicked || available.learning.shift()!;
+          }
+        } else {
+          const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+          item = picked || available.learning.shift()!;
+        }
       } else {
-        item = available[fallbackTier].shift()!;
+        item = (shouldBoostTheme ? pickCandidateWithTheme(available[fallbackTier], primaryTheme) : null) || available[fallbackTier].shift()!;
       }
 
       selectedUnique.push({ item, tier: fallbackTier });
+      if (!primaryTheme && item.sub_category) primaryTheme = item.sub_category;
       if (fallbackTier === 'new') newCount++;
       continue;
     }
@@ -340,13 +403,29 @@ export const selectKanjiUniquePool = (
 
     let item: KanjiItem;
     if (chosenTier === 'learning') {
-      const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
-      item = picked || available.learning.shift()!;
+      if (shouldBoostTheme) {
+        const themeCandidates = available.learning.filter(it => it.sub_category === primaryTheme);
+        const picked = themeCandidates.length > 0
+          ? pickWeightedLearningItem(themeCandidates, effectiveCurrentLesson, getMasteryStreak)
+          : null;
+        if (picked) {
+          const removeIdx = available.learning.findIndex(it => it.character === picked.character);
+          if (removeIdx !== -1) available.learning.splice(removeIdx, 1);
+          item = picked;
+        } else {
+          const fallbackPicked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+          item = fallbackPicked || available.learning.shift()!;
+        }
+      } else {
+        const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
+        item = picked || available.learning.shift()!;
+      }
     } else {
-      item = available[chosenTier].shift()!;
+      item = (shouldBoostTheme ? pickCandidateWithTheme(available[chosenTier], primaryTheme) : null) || available[chosenTier].shift()!;
     }
 
     selectedUnique.push({ item, tier: chosenTier });
+    if (!primaryTheme && item.sub_category) primaryTheme = item.sub_category;
     if (chosenTier === 'new') newCount++;
   }
 

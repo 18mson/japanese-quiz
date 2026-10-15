@@ -167,11 +167,14 @@ const matchesQuery = (item: any, q: string, qHira: string, qKata: string, qRom: 
     return true;
   }
 
-  // 5. Lesson or category_word match
+  // 5. Lesson, category_word, or sub_category match
   if (item.lesson && item.lesson.toLowerCase().includes(q)) {
     return true;
   }
   if (item.category_word && item.category_word.toLowerCase().includes(q)) {
+    return true;
+  }
+  if (item.sub_category && item.sub_category.toLowerCase().includes(q)) {
     return true;
   }
 

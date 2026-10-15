@@ -1,4 +1,5 @@
 import { sentencesData } from '../data/sentences';
+import { wordsData } from '../data/words';
 import { supabase } from '../lib/supabaseClient';
 import { getQuestionCountFromDuration, getFallbackLocalPool } from './quizHelpers';
 import { buildHurufSessionQuestions } from './hurufQuizComposition';
@@ -91,7 +92,18 @@ export async function prepareStandardQuestions(params: {
   }
 
   if (type === 'words') {
-    finalPool = finalPool.filter(w => !!w.character && w.character.trim().length > 0);
+    const wordsMap = new Map(wordsData.map(w => [w.character, w]));
+    finalPool = finalPool
+      .filter(w => !!w.character && w.character.trim().length > 0)
+      .map(item => {
+        const local = wordsMap.get(item.character);
+        return {
+          ...item,
+          category_word: item.category_word || local?.category_word,
+          sub_category: item.sub_category || local?.sub_category
+        };
+      });
+
     finalPool.sort((a, b) => {
       const numA = parseInt((a.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;
       const numB = parseInt((b.lesson || 'Pelajaran 1').replace(/\D/g, '')) || 1;

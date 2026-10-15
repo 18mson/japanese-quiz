@@ -114,11 +114,27 @@ function pickKotobaKanjiQuestion(usedIds: Set<string>): QuizBlitzQuestion {
   const picked = pool[Math.floor(Math.random() * pool.length)];
 
   const correctMeaning = picked.meaning;
-  const distractors = Array.from(
-    new Set(wordsData.map(w => w.meaning).filter(m => m !== correctMeaning))
-  )
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 3);
+  let distractors: string[] = [];
+
+  if (picked.sub_category) {
+    const themeDistractors = Array.from(
+      new Set(
+        wordsData
+          .filter(w => w.sub_category === picked.sub_category && w.meaning !== correctMeaning)
+          .map(w => w.meaning)
+      )
+    ).sort(() => 0.5 - Math.random());
+    distractors = themeDistractors.slice(0, 3);
+  }
+
+  if (distractors.length < 3) {
+    const generalDistractors = Array.from(
+      new Set(wordsData.map(w => w.meaning).filter(m => m !== correctMeaning && !distractors.includes(m)))
+    )
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3 - distractors.length);
+    distractors = [...distractors, ...generalDistractors];
+  }
 
   const allOptions = [...distractors, correctMeaning].sort(() => 0.5 - Math.random());
 

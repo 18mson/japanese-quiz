@@ -158,6 +158,12 @@ onUnmounted(() => {
           {{ currentItem.lesson }}
         </span>
         <span 
+          v-if="currentItem?.sub_category" 
+          class="text-xs px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-bold border border-emerald-200 dark:border-emerald-500/30"
+        >
+          {{ currentItem.sub_category }}
+        </span>
+        <span 
           v-if="currentItem?.category_word" 
           class="text-xs px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-500/30"
         >

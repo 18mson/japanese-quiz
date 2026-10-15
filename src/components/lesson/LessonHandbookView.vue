@@ -116,7 +116,8 @@ const filteredVocabulary = computed<JapaneseWord[]>(() => {
       item.character.toLowerCase().includes(q) ||
       item.kana.toLowerCase().includes(q) ||
       romajiStr.toLowerCase().includes(q) ||
-      item.meaning.toLowerCase().includes(q)
+      item.meaning.toLowerCase().includes(q) ||
+      (item.sub_category && item.sub_category.toLowerCase().includes(q))
     );
   });
 });
