@@ -63,6 +63,10 @@ async function handleAddSecondChapter(chapterIds: number[]) {
   }
 }
 
+const allQuestionsCompleted = computed(() => {
+  return dailyStore.questions.length > 0 && dailyStore.questions.every(q => q.is_correct || q.attempts >= 3 || q.revealed);
+});
+
 // Jika sesi yang dimuat sudah berstatus selesai atau seluruh soal telah terjawab, tampilkan QuotaExhaustedView
 watch(
   () => [dailyStore.quotaExhausted, dailyStore.session?.status, allQuestionsCompleted.value] as const,
@@ -77,10 +81,6 @@ watch(
 async function handleSubmit(text: string, inputMethod: 'text' | 'voice') {
   await dailyStore.submitCurrentAnswer(text, inputMethod);
 }
-
-const allQuestionsCompleted = computed(() => {
-  return dailyStore.questions.length > 0 && dailyStore.questions.every(q => q.is_correct || q.attempts >= 3 || q.revealed);
-});
 
 function handleNext() {
   if (dailyStore.currentIndex < dailyStore.totalQuestions - 1) {

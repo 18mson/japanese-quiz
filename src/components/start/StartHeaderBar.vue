@@ -31,7 +31,7 @@ const onAction = (action: () => void) => {
   <div 
     @click="emit('interact')"
     :class="[
-      'w-full max-w-3xl mb-4 sm:mb-6 bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 transition-all duration-200 flex items-center justify-between gap-2.5 sm:gap-4 flex-shrink-0 cursor-pointer',
+      'w-full max-w-3xl mx-auto mb-4 sm:mb-6 bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 transition-all duration-200 flex items-center justify-between gap-2.5 sm:gap-4 flex-shrink-0 cursor-pointer',
       isKeyboardNav && focusedSection === 'header'
         ? 'border-aizome dark:border-torii/70 shadow-md ring-2 ring-aizome/40 dark:ring-torii/40 border'
         : 'border border-slate-200 dark:border-slate-800 shadow-sm'

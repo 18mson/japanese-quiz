@@ -316,9 +316,53 @@ test('Voice Answer & Whisper Transcribe Test Suite', async (t) => {
     const res2 = check('これはペンです', ['私は学生です']);
     assert.strictEqual(res2.isMatch, false);
   });
+
+  // ============================================================
+  // 7. Manual Voice Send & Cancellation Control
+  // ============================================================
+  await t.test('7.1 useVoiceAnswer menginisialisasi hasSpoken=false dan cancelRecording mereset state dengan bersih', async () => {
+    const { useVoiceAnswer } = await import('../src/composables/useVoiceAnswer.ts');
+    let invokeCalled = false;
+    const voice = useVoiceAnswer({
+      invokeFn: async () => {
+        invokeCalled = true;
+        return { data: { text: 'test' }, error: null };
+      }
+    });
+
+    assert.strictEqual(voice.hasSpoken.value, false, 'hasSpoken harus false saat inisialisasi');
+    assert.strictEqual(voice.isRecording.value, false);
+
+    // Panggil cancelRecording
+    voice.cancelRecording();
+
+    assert.strictEqual(voice.hasSpoken.value, false);
+    assert.strictEqual(voice.isRecording.value, false);
+    assert.strictEqual(voice.transcript.value, '');
+    assert.strictEqual(voice.error.value, null);
+    assert.strictEqual(invokeCalled, false, 'Audio tidak boleh dikirim saat dibatalkan');
+  });
+
+  await t.test('7.2 furiganaDict memetakan kata-kata berawalan o (お国, お仕事, お手洗い) dan kata 雑誌 dengan benar', async () => {
+    const { FURIGANA_DICT } = await import('../src/utils/furiganaDict.ts');
+    const { parseFuriganaSegments } = await import('../src/utils/furiganaParser.ts');
+
+    assert.strictEqual(FURIGANA_DICT['雑誌'], 'ざっし');
+    assert.strictEqual(FURIGANA_DICT['お手洗い'], 'おてあらい');
+    assert.strictEqual(FURIGANA_DICT['お国'], 'おくに');
+    assert.strictEqual(FURIGANA_DICT['お仕事'], 'おしごと');
+    assert.strictEqual(FURIGANA_DICT['夜'], 'よる');
+
+    const segments = parseFuriganaSegments('この雑誌はあなたのです。');
+    const zasshiSeg = segments.find(s => s.text === '雑誌');
+    assert.ok(zasshiSeg, 'Segmen 雑誌 harus ditemukan');
+    assert.strictEqual(zasshiSeg?.reading, 'ざっし');
+    assert.strictEqual(zasshiSeg?.isRuby, true);
+  });
 });
 
 test.after(() => {
   setImmediate(() => process.exit(0));
 });
+
 

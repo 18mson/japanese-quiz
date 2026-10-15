@@ -15,7 +15,7 @@ const props = withDefaults(
   {
     showFurigana: true,
     customClass: '',
-    rtClass: 'text-[0.42em] sm:text-[0.45em] font-semibold text-indigo-600/90 dark:text-torii-light/90',
+    rtClass: 'text-[0.54em] sm:text-[0.58em] font-bold text-indigo-600 dark:text-torii-light',
     diffUserAnswer: '',
     isAllCorrect: false,
   }
@@ -106,7 +106,7 @@ const processedSegments = computed(() => {
         ]"
       >
         {{ seg.rubyText }}
-        <rt :class="['select-none leading-none tracking-normal font-sans', isAllCorrect ? 'text-blue-500/90 dark:text-blue-300/90' : rtClass]">
+        <rt :class="['select-none leading-none tracking-tight font-japanese font-bold', isAllCorrect ? 'text-[0.54em] sm:text-[0.58em] text-blue-600 dark:text-blue-300' : rtClass]">
           {{ seg.reading }}
         </rt>
       </ruby>
@@ -133,8 +133,10 @@ const processedSegments = computed(() => {
 <style scoped>
 ruby {
   ruby-position: over;
+  ruby-align: center;
 }
 rt {
   user-select: none;
+  font-family: inherit;
 }
 </style>

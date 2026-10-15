@@ -63,6 +63,7 @@ const {
   isSupported: isSpeechSupported,
   isRecording,
   isProcessing,
+  hasSpoken,
   transcript,
   interimTranscript,
   error: voiceError,
@@ -72,6 +73,11 @@ const {
   cancelRecording,
   reset: resetVoice,
 } = useVoiceAnswer();
+
+function handleCancelVoice() {
+  cancelRecording();
+  inputText.value = '';
+}
 
 let autoSubmitTimer: ReturnType<typeof setTimeout> | null = null;
 const JAPANESE_SENTENCE_ENDING_REGEX = /(です|でした|ですか|でしたか|ではありません|じゃありません|じゃありませんでした|ではありませんでした|ます|ました|ますか|ましたか|ません|ませんでした|ましょう|ましょうか|てください|ないでください|たいです|たくないです|だ|だった)[。！？.,!?\s]*$/;
@@ -390,6 +396,7 @@ onUnmounted(() => {
       :input-mode="activeInputMode"
       :action-state="mainActionState"
       :is-listening="isRecording"
+      :has-spoken="hasSpoken"
       :is-processing="isProcessing"
       :voice-mode="voiceMode"
       :submitting="submitting"
@@ -403,6 +410,7 @@ onUnmounted(() => {
       @submit="handleSubmit"
       @advance="handleAdvance"
       @toggle-mic="toggleMic"
+      @cancel-voice="handleCancelVoice"
       @clear="handleClear"
     />
   </div>

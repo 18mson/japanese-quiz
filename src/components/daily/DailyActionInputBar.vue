@@ -22,6 +22,7 @@ const props = withDefaults(
     isSpeechSupported?: boolean;
     isProcessing?: boolean;
     voiceMode?: 'whisper' | 'webspeech';
+    hasSpoken?: boolean;
   }>(),
   {
     disabled: false,
@@ -32,6 +33,7 @@ const props = withDefaults(
     isSpeechSupported: true,
     isProcessing: false,
     voiceMode: 'whisper',
+    hasSpoken: false,
   }
 );
 
@@ -41,6 +43,7 @@ const emit = defineEmits<{
   (e: 'submit'): void;
   (e: 'advance'): void;
   (e: 'toggleMic'): void;
+  (e: 'cancelVoice'): void;
   (e: 'clear'): void;
 }>();
 
@@ -141,9 +144,16 @@ const mainActionButtonClasses = computed(() => {
 
   // Mode Voice (Mic)
   const isSpin = isSpinningMic.value ? 'animate-micSpin ' : '';
-  const micColor = props.isListening
-    ? 'bg-rose-500 hover:bg-rose-600 text-white ring-4 sm:ring-8 ring-rose-400/40 shadow-rose-500/30 scale-105'
-    : 'bg-gradient-to-tr from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 dark:from-torii dark:to-torii-hover text-white hover:scale-105 active:scale-95 ring-4 ring-indigo-500/20 dark:ring-torii/20 shadow-xl';
+  let micColor = '';
+  if (props.isListening) {
+    if (props.hasSpoken) {
+      micColor = 'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white ring-4 sm:ring-8 ring-emerald-400/40 shadow-emerald-500/30 scale-105 active:scale-95 animate-pulse';
+    } else {
+      micColor = 'bg-rose-500 hover:bg-rose-600 text-white ring-4 sm:ring-8 ring-rose-400/40 shadow-rose-500/30 scale-105';
+    }
+  } else {
+    micColor = 'bg-gradient-to-tr from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 dark:from-torii dark:to-torii-hover text-white hover:scale-105 active:scale-95 ring-4 ring-indigo-500/20 dark:ring-torii/20 shadow-xl';
+  }
 
   return base + `w-16 h-16 sm:w-20 sm:h-20 rounded-full shrink-0 ${isSpin} ${micColor}`;
 });
@@ -155,7 +165,14 @@ const mainActionButtonTitle = computed(() => {
   if (props.actionState === 'send') {
     return 'Kirim Jawaban';
   }
-  return props.isListening ? 'Hentikan rekaman mic' : 'Tekan untuk berbicara bahasa Jepang';
+  if (props.isListening) {
+    return props.hasSpoken ? 'Selesai berbicara — Tekan untuk kirim jawaban' : 'Mendengarkan... Silakan bicara bahasa Jepang';
+  }
+  return 'Tekan untuk berbicara bahasa Jepang';
+});
+
+const isVoiceCancelState = computed(() => {
+  return props.inputMode === 'voice' && props.isListening && props.hasSpoken && !props.isCompleted;
 });
 
 const showVoiceTranscriptPopup = computed(() => {
@@ -171,21 +188,35 @@ const showVoiceTranscriptPopup = computed(() => {
 
 <template>
   <div class="w-full max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto flex flex-col items-center justify-center min-h-[144px] gap-2.5 sm:gap-3.5 transition-all duration-300 relative z-20 pb-2">
-    <!-- ================= SLOT ATAS: MODE SWITCHER ================= -->
+    <!-- ================= SLOT ATAS: MODE SWITCHER / CANCEL VOICE ================= -->
     <transition name="fade-collapse">
       <div v-if="!isCompleted" class="flex items-center justify-center">
         <button
           v-if="isSpeechSupported"
           type="button"
-          @click="toggleMode"
-          class="group px-3.5 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 border border-slate-200/90 dark:border-slate-700/90 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1.5 shadow-2xs hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer"
-          :title="inputMode === 'voice' ? 'Beralih ke ketik keyboard' : 'Beralih kembali ke mode suara'"
+          @click="isVoiceCancelState ? emit('cancelVoice') : toggleMode()"
+          :class="[
+            'group px-3.5 py-1.5 rounded-full border text-xs font-bold flex items-center gap-1.5 shadow-2xs hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer',
+            isVoiceCancelState
+              ? 'bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/70 dark:hover:bg-rose-900/80 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-800 ring-2 ring-rose-400/25'
+              : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-600 dark:text-slate-300 border-slate-200/90 dark:border-slate-700/90'
+          ]"
+          :title="isVoiceCancelState ? 'Batal kirim suara' : (inputMode === 'voice' ? 'Beralih ke ketik keyboard' : 'Beralih kembali ke mode suara')"
         >
           <transition name="mode-toggle-swap" mode="out-in">
-            <div v-if="inputMode === 'voice'" key="mode-keyboard" class="flex items-center gap-1.5">
+            <!-- STATE A: SAAT RECORDING VOICE & SUDAH BERSUARA -> BERUBAH JADI BATAL -->
+            <div v-if="isVoiceCancelState" key="mode-cancel" class="flex items-center gap-1.5">
+              <X class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-600 dark:text-rose-400 group-hover:rotate-90 transition-transform duration-300" />
+              <span>Batal</span>
+            </div>
+
+            <!-- STATE B: MODE VOICE NORMAL -> KETIK JAWABAN -->
+            <div v-else-if="inputMode === 'voice'" key="mode-keyboard" class="flex items-center gap-1.5">
               <Keyboard class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-torii transition-colors" />
               <span>Ketik Jawaban</span>
             </div>
+
+            <!-- STATE C: MODE KEYBOARD -> MODE SUARA -->
             <div v-else key="mode-voice" class="flex items-center gap-1.5">
               <Mic class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 dark:text-torii group-hover:rotate-12 transition-transform duration-300" />
               <span>Mode Suara</span>
@@ -255,9 +286,12 @@ const showVoiceTranscriptPopup = computed(() => {
               <span class="hidden sm:inline">Kirim</span>
             </div>
 
-            <!-- STATE 3: MODE VOICE (MIC) -->
+            <!-- STATE 3: MODE VOICE (MIC ATAU TOMBOL KIRIM SETELAH BERSUARA) -->
             <div v-else key="mic-content" class="flex items-center justify-center">
               <Mic v-if="!isListening" class="w-7 h-7 sm:w-9 sm:h-9" />
+              <div v-else-if="hasSpoken" class="flex items-center justify-center gap-1">
+                <Send class="w-6 h-6 sm:w-8 sm:h-8" />
+              </div>
               <MicOff v-else class="w-7 h-7 sm:w-9 sm:h-9 text-white animate-pulse" />
             </div>
           </transition>
@@ -288,7 +322,11 @@ const showVoiceTranscriptPopup = computed(() => {
       >
         <div class="min-h-[20px] flex items-center justify-center">
           <transition name="caption-swap" mode="out-in">
-            <span v-if="isListening" key="listening" class="text-rose-500 dark:text-rose-400 font-bold flex items-center gap-1.5 justify-center animate-pulse">
+            <span v-if="isListening && hasSpoken" key="ready-to-send" class="text-emerald-500 dark:text-emerald-400 font-bold flex items-center gap-1.5 justify-center">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+              Suara terdeteksi! Tekan tombol Kirim bila sudah selesai bicara
+            </span>
+            <span v-else-if="isListening" key="listening" class="text-rose-500 dark:text-rose-400 font-bold flex items-center gap-1.5 justify-center animate-pulse">
               <span class="w-2 h-2 rounded-full bg-rose-500"></span>
               Mendengarkan... Silakan bicara kalimat Jepang
             </span>

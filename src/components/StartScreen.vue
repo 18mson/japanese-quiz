@@ -285,7 +285,7 @@ watch(characterTypes, (newVal) => {
     />
     
     <!-- SECTION 1: HEADER BAR (Mobile & Tablet only, hidden on desktop >= xl) -->
-    <div class="w-full max-w-4xl xl:hidden mb-1">
+    <div class="w-full max-w-3xl xl:hidden mb-1 flex justify-center">
       <StartHeaderBar
         :is-keyboard-nav="isKeyboardNav"
         :focused-section="focusedSection"

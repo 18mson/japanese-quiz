@@ -102,6 +102,7 @@ export function useVoiceAnswer(options?: {
 }) {
   const isRecording = ref(false);
   const isProcessing = ref(false);
+  const hasSpoken = ref(false);
   const transcript = ref('');
   const interimTranscript = ref('');
   const error = ref<string | null>(null);
@@ -181,6 +182,7 @@ export function useVoiceAnswer(options?: {
     error.value = null;
     transcript.value = '';
     interimTranscript.value = '';
+    hasSpoken.value = false;
     currentChapterId = chapterId;
     currentExcludeAnswers = excludeAnswers;
 
@@ -234,6 +236,10 @@ export function useVoiceAnswer(options?: {
             }
             const rms = Math.sqrt(sum / bufferLength);
             if (rms > peakRms) peakRms = rms;
+            // Deteksi suara untuk ubah ikon mic jadi tombol kirim manual
+            if (!hasSpoken.value && rms > 0.015) {
+              hasSpoken.value = true;
+            }
           }, 60);
         }
       } catch (err) {
@@ -263,12 +269,12 @@ export function useVoiceAnswer(options?: {
       mediaRecorder.start(200);
       isRecording.value = true;
 
-      // Maksimal 8 detik otomatis stop
+      // Maksimal 15 detik batas waktu pengaman otomatis stop
       maxDurationTimer = setTimeout(() => {
         if (isRecording.value) {
           stopRecording();
         }
-      }, 8000);
+      }, 15000);
     } catch (err: any) {
       clearTimers();
       stopMediaStream();
@@ -312,6 +318,10 @@ export function useVoiceAnswer(options?: {
     audioChunks = [];
     isRecording.value = false;
     isProcessing.value = false;
+    hasSpoken.value = false;
+    transcript.value = '';
+    interimTranscript.value = '';
+    error.value = null;
   }
 
   async function processRecordedAudio(durationMs: number, explicitPeakRms?: number): Promise<void> {
@@ -475,6 +485,7 @@ export function useVoiceAnswer(options?: {
     isSupported,
     isRecording: computed(() => (mode.value === 'whisper' ? isRecording.value : webSpeech.isListening.value)),
     isProcessing,
+    hasSpoken,
     transcript,
     interimTranscript,
     error,
