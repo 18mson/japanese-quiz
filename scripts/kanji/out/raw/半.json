@@ -1,0 +1,20 @@
+{
+  "kanji": "半",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "二",
+      "role": "shape",
+      "meaning_id": "dua"
+    }
+  ],
+  "etymology_id": "Kanji ini menggambarkan pemisahan suatu benda utuh menjadi dua bagian.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Memotong sesuatu menjadi dua bagian berarti menjadi setengah.",
+  "note_id": "Digunakan untuk menyatakan setengah, seperti pada setengah jam."
+}

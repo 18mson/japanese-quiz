@@ -1,0 +1,25 @@
+{
+  "kanji": "夏",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "garis kepala"
+    },
+    {
+      "part": "自",
+      "role": "shape",
+      "meaning_id": "mata atau wajah"
+    },
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "kaki yang melangkah"
+    }
+  ],
+  "etymology_id": "Bentuk asal kanji ini tidak pasti secara rinci, tersusun dari bentuk sosok manusia bertopeng atau penari dengan kepala dan kaki (夂).",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Saat musim panas, lindungi wajah (自) dan kepala (一) saat kaki (夂) melangkah santai.",
+  "note_id": "Dibaca 'なつ' untuk musim panas, salah satu dari empat musim di Jepang."
+}

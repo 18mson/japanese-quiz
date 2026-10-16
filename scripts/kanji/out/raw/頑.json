@@ -1,0 +1,20 @@
+{
+  "kanji": "頑",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "頁",
+      "role": "meaning",
+      "meaning_id": "kepala"
+    },
+    {
+      "part": "元",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ガン"
+    }
+  ],
+  "etymology_id": "Terbentuk dari 頁 (kepala) yang menandakan makna dan 元 yang bertindak sebagai penanda bunyi ガン, melambangkan watak kepala batu atau keteguhan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seseorang yang memegang teguh pikiran awal (元) di dalam kepala (頁)-nya bersikap gigih dan pantang menyerah (頑).",
+  "note_id": "Umum ditemukan dalam ungkapan penyemangat 頑張ります (berusaha keras/bersemangat)."
+}

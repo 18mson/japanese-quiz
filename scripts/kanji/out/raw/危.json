@@ -1,0 +1,25 @@
+{
+  "kanji": "危",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "厂",
+      "role": "meaning",
+      "meaning_id": "tebing curam"
+    },
+    {
+      "part": "卩",
+      "role": "meaning",
+      "meaning_id": "orang berlutut"
+    },
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "posisi membungkuk"
+    }
+  ],
+  "etymology_id": "Menggambarkan seseorang (卩) yang membungkuk tidak stabil di tepi tebing curam (厂), menggambarkan situasi yang rawan atau tidak aman.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada orang yang berlutut (卩) membungkuk (勹) di tepi tebing tinggi (厂), posisinya sangat berbahaya (危).",
+  "note_id": "Bentuk kata sifat yang sangat umum adalah 危ない (abunai = berbahaya)."
+}

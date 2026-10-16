@@ -1,0 +1,15 @@
+{
+  "kanji": "絵",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "shape",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen benang. Struktur ini menunjukkan pembentukan kata.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bayangkan menarik sehelai benang untuk membuat sebuah gambar atau lukisan.",
+  "note_id": "Artinya adalah picture, drawing, painting, sketch."
+}

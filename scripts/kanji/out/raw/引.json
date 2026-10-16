@@ -1,0 +1,20 @@
+{
+  "kanji": "引",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "弓",
+      "role": "meaning",
+      "meaning_id": "busur panah"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "tali busur"
+    }
+  ],
+  "etymology_id": "Berasal dari penggambaran busur panah (弓) yang ditarik bersama talinya (｜), sehingga menghasilkan makna menarik atau meregangkan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menarik tali lurus (｜) pada busur panah (弓) kuat-kuat saat bersiap memanah.",
+  "note_id": "Sering muncul pada kata kerja sehari-hari seperti 引く (menarik) dan お引き出し (tarik tunai)."
+}

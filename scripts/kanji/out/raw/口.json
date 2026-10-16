@@ -1,0 +1,20 @@
+{
+  "kanji": "口",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "囗",
+      "role": "shape",
+      "meaning_id": "kotak"
+    }
+  ],
+  "etymology_id": "Gambar sederhana dari sebuah mulut yang terbuka.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kotak menyerupai mulut manusia yang sedang terbuka.",
+  "note_id": "Kosakata: 入口 (pintu masuk), 出口 (pintu keluar), 東口 (pintu timur)."
+}

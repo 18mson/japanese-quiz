@@ -1,0 +1,15 @@
+{
+  "kanji": "船",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "舟",
+      "role": "meaning",
+      "meaning_id": "perahu"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur perahu (舟) yang menunjukkan arti dasar benda yang mengapung.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kanji ini mirip dengan sebuah perahu (舟) di atas air.",
+  "note_id": "Digunakan untuk menyatakan kapal laut atau transportasi air."
+}

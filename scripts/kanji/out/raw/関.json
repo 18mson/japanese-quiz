@@ -1,0 +1,20 @@
+{
+  "kanji": "関",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "gerbang"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Menggambarkan pintu gerbang (門) dengan palang pengunci, melambangkan pembatas gerbang masuk.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Pintu gerbang (門) besar yang menghubungkan jalan menuju ruang depan (玄関).",
+  "note_id": "Terdapat pada kosakata 玄関 (area pintu masuk rumah)."
+}

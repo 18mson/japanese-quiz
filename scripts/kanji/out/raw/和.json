@@ -1,0 +1,20 @@
+{
+  "kanji": "和",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "tanaman padi"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggabungkan tanaman padi (禾) dan mulut (口) yang melambangkan kecukupan pangan dan keharmonisan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mulut (口) memakan hasil panen padi (禾) dengan damai.",
+  "note_id": "Digunakan pada kata gaya Jepang (和室)."
+}

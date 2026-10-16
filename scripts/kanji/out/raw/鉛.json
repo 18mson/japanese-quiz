@@ -1,0 +1,20 @@
+{
+  "kanji": "鉛",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "金",
+      "role": "meaning",
+      "meaning_id": "logam"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    }
+  ],
+  "etymology_id": "Komponen logam (金) menunjukkan jenis zat mineral atau timbal. Bagian kanan berfungsi sebagai penanda bunyi 'en'.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Logam (金) timbal hitam digunakan untuk mengisi batang pensil (鉛筆).",
+  "note_id": "Umum dipakai dalam kata 鉛筆 (pensil)."
+}

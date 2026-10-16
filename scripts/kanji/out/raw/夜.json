@@ -1,0 +1,15 @@
+{
+  "kanji": "夜",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "夕",
+      "role": "meaning",
+      "meaning_id": "evening"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen yang berhubungan dengan waktu sore atau malam (夕).",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berhubungan dengan waktu petang atau malam hari (夕).",
+  "note_id": "Kosakata: 夜 (よる) = malam"
+}

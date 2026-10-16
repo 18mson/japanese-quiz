@@ -1,0 +1,15 @@
+{
+  "kanji": "杯",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "tree"
+    }
+  ],
+  "etymology_id": "Gabungan bahan kayu dan bagian bunyi untuk mangkuk atau gelas minum.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gelas atau cangkir yang dulunya dibuat dari bahan kayu.",
+  "note_id": "Digunakan saat bersulang (kanpai)."
+}

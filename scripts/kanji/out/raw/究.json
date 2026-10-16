@@ -1,0 +1,20 @@
+{
+  "kanji": "究",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "穴",
+      "role": "meaning",
+      "meaning_id": "gua"
+    },
+    {
+      "part": "九",
+      "role": "phonetic",
+      "meaning_id": "sembilan"
+    }
+  ],
+  "etymology_id": "Menggabungkan gua (穴) dengan komponen (九) yang memberikan bunyi bacaan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Masuk ke dalam lubang (穴) untuk menyelidiki sesuatu sampai tuntas.",
+  "note_id": "Dipakai dalam kata penelitian."
+}

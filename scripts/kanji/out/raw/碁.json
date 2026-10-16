@@ -1,0 +1,15 @@
+{
+  "kanji": "碁",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "石",
+      "role": "meaning",
+      "meaning_id": "batu"
+    }
+  ],
+  "etymology_id": "Terdiri dari batu dan komponen lainnya untuk permainan Go.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Permainan papan Go menggunakan bidak seperti batu.",
+  "note_id": "Kosakata: 囲碁 (Igo)."
+}

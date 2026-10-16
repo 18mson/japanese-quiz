@@ -1,0 +1,30 @@
+{
+  "kanji": "寂",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "小",
+      "role": "phonetic",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "卜",
+      "role": "phonetic",
+      "meaning_id": "tanda"
+    },
+    {
+      "part": "又",
+      "role": "phonetic",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Gabungan atap rumah dan komponen lain yang menunjukkan suasana sepi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Di dalam rumah beratap (宀), suasana terasa kecil dan sepi.",
+  "note_id": "Kosakata: 寂しい (sepi, kesepian)."
+}

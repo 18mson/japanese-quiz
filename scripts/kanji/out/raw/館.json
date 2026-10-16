@@ -1,0 +1,25 @@
+{
+  "kanji": "館",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "食",
+      "role": "meaning",
+      "meaning_id": "makanan atau penginapan"
+    },
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap atau bangunan"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut atau ruangan"
+    }
+  ],
+  "etymology_id": "Gabungan radikal 食 (makanan) dan elemen bangunan (宀, 口) yang merujuk pada penginapan tempat makan atau gedung publik beratap besar.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Gedung beratap besar (宀) tempat banyak mulut (口) menikmati hidangan (食) adalah gedung fasilitas umum (館).",
+  "note_id": "Sering dipakai sebagai akhiran untuk gedung fasilitas umum seperti 図書館 (perpustakaan) dan 美術館 (museum seni)."
+}

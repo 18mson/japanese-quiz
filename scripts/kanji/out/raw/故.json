@@ -1,0 +1,25 @@
+{
+  "kanji": "故",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "攵",
+      "role": "meaning",
+      "meaning_id": "tindakan"
+    }
+  ],
+  "etymology_id": "Menunjukkan alasan atau kejadian masa lalu.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Alasan lama dari masa lalu.",
+  "note_id": "Digunakan dalam koshou (kerusakan) dan furusato (kampung halaman)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "真",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "ten"
+    },
+    {
+      "part": "目",
+      "role": "shape",
+      "meaning_id": "eye"
+    }
+  ],
+  "etymology_id": "Gabungan dari alat dan mata untuk melihat kenyataan yang benar.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Melihat dengan jelas di hadapan mata untuk kebenaran.",
+  "note_id": "Digunakan dalam kata foto (写真)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "将",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "寸",
+      "role": "meaning",
+      "meaning_id": "ukuran jempol"
+    }
+  ],
+  "etymology_id": "Menggambarkan pemimpin atau perwira yang memegang kendali.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seorang pemimpin (将) memberikan perintah dengan tegas.",
+  "note_id": "Digunakan dalam nama permainan catur Jepang Shogi (将棋)."
+}

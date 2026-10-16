@@ -1,0 +1,15 @@
+{
+  "kanji": "川",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "川",
+      "role": "meaning",
+      "meaning_id": "river"
+    }
+  ],
+  "etymology_id": "Bentuk gambar aliran air sungai.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tiga garis lurus melambangkan aliran air sungai.",
+  "note_id": "Kanji dasar untuk sungai."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "表",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "衣",
+      "role": "meaning",
+      "meaning_id": "clothes"
+    },
+    {
+      "part": "士",
+      "role": "meaning",
+      "meaning_id": "scholar"
+    }
+  ],
+  "etymology_id": "Melambangkan bagian luar dari pakaian (衣).",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bagian luar pakaian (衣) yang dipakai oleh seseorang.",
+  "note_id": "Kosakata penting: 時刻表 (jadwal waktu)."
+}

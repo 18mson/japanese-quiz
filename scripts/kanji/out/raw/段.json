@@ -1,0 +1,15 @@
+{
+  "kanji": "段",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "殳",
+      "role": "shape",
+      "meaning_id": "meny擊 atau memukul"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen yang menunjukkan bentuk dan bagian lain sebagai penanda bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Gunakan bentuk tangga untuk naik ke tingkat (grade) berikutnya.",
+  "note_id": "Kosakata: 階段 (tangga)."
+}

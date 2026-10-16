@@ -1,0 +1,20 @@
+{
+  "kanji": "脱",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging atau tubuh"
+    },
+    {
+      "part": "并",
+      "role": "phonetic",
+      "meaning_id": "menggabungkan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen tubuh (月) dan komponen bunyi (并). Berkaitan dengan melepas pakaian dari tubuh.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tubuh (月) keluar dari pakaian saat Anda melepasnya (脱).",
+  "note_id": "Digunakan pada kata 脱ぎます (nugimasu) yang berarti melepas."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "病",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "疒",
+      "role": "meaning",
+      "meaning_id": "sickness"
+    }
+  ],
+  "etymology_id": "Menggunakan radikal sakit (疒) untuk menunjukkan kondisi tubuh yang tidak sehat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Radikal penyakit (疒) menandakan seseorang sedang sakit (病).",
+  "note_id": "Kosakata penting: 病院 (rumah sakit), 病気 (sakit)."
+}

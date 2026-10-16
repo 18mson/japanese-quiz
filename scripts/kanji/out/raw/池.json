@@ -1,0 +1,20 @@
+{
+  "kanji": "池",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "也",
+      "role": "phonetic",
+      "meaning_id": "juga"
+    }
+  ],
+  "etymology_id": "Gabungan elemen air (氵) dan penanda bunyi 也 yang berarti kolam.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Genangan air (氵) membentuk sebuah kolam.",
+  "note_id": "Kosakata: 電池 (baterai)."
+}

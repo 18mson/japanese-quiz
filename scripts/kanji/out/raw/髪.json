@@ -1,0 +1,15 @@
+{
+  "kanji": "髪",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "髟",
+      "role": "meaning",
+      "meaning_id": "rambut"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen 髟 yang bermakna rambut, digabungkan dengan bagian lain yang menunjukkan bunyi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Komponen rambut di atas menggambarkan helaian rambut di kepala.",
+  "note_id": "Digunakan untuk menyatakan rambut (かみ)."
+}

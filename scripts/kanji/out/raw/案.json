@@ -1,0 +1,25 @@
+{
+  "kanji": "案",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "kayu atau meja"
+    },
+    {
+      "part": "宀",
+      "role": "phonetic",
+      "meaning_id": "atap (bagian dari pelafalan AN)"
+    },
+    {
+      "part": "女",
+      "role": "phonetic",
+      "meaning_id": "wanita (bagian dari pelafalan AN)"
+    }
+  ],
+  "etymology_id": "Menggabungkan meja kayu (木) dan unsur atas yang berbunyi AN. Meja kayu digunakan sebagai tempat memikirkan dan menulis rancangan atau rencana.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di atas meja kayu (木), seorang wanita di bawah atap menyusun sebuah rencana.",
+  "note_id": "Digunakan pada kata kerja 案内します yang berarti memandu jalan atau mengantar."
+}

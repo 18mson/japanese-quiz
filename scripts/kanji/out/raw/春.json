@@ -1,0 +1,20 @@
+{
+  "kanji": "春",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Menggambarkan suasana musim semi di bawah matahari.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Matahari bersinar hangat di musim semi.",
+  "note_id": "Kosakata: 春 (musim semi)"
+}

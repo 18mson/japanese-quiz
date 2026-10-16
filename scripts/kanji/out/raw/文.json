@@ -1,0 +1,15 @@
+{
+  "kanji": "文",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "文",
+      "role": "shape",
+      "meaning_id": "pola atau tulisan"
+    }
+  ],
+  "etymology_id": "Menggambarkan garis-garis yang saling silang seperti pola hiasan, berkembang menjadi tulisan dan kalimat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Garis-garis pola yang saling silang membentuk kalimat dan tulisan seni.",
+  "note_id": "Digunakan dalam kalimat dan tata bahasa."
+}

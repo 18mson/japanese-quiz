@@ -1,0 +1,20 @@
+{
+  "kanji": "千",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "stroke"
+    },
+    {
+      "part": "十",
+      "role": "meaning",
+      "meaning_id": "ten"
+    }
+  ],
+  "etymology_id": "Modifikasi dari angka sepuluh untuk menyatakan seribu.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Angka sepuluh dengan tambahan garis menunjukkan seribu.",
+  "note_id": "Menyatakan bilangan seribu."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "月",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "bulan"
+    }
+  ],
+  "etymology_id": "Gambar bentuk bulan sabit di langit malam.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk menyerupai bulan sabit.",
+  "note_id": "Kosakata penting: 月曜日 (げつようび) untuk hari Senin."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "郵",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻏",
+      "role": "meaning",
+      "meaning_id": "tempat"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan pengiriman surat ke suatu tempat.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tempat untuk mengirim surat dan pos.",
+  "note_id": "Kosakata: 郵便局 (ゆうびんきょく) = kantor pos, 郵便ポスト (ゆうびんポスト) = kotak pos, 郵便局員 (ゆうびんきょくいん) = petugas kantor pos."
+}

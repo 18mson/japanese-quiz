@@ -1,0 +1,20 @@
+{
+  "kanji": "犬",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Berasal dari gambar bentuk seekor anjing.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuknya mirip hewan anjing.",
+  "note_id": "Kanji ini berarti anjing."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "点",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "灬",
+      "role": "meaning",
+      "meaning_id": "api"
+    }
+  ],
+  "etymology_id": "Gabungan unsur api (灬) untuk menunjukkan titik percikan api.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Titik-titik api kecil.",
+  "note_id": "Digunakan untuk titik atau perempatan."
+}

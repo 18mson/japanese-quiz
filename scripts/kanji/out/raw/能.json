@@ -1,0 +1,15 @@
+{
+  "kanji": "能",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "shape",
+      "meaning_id": "moon"
+    }
+  ],
+  "etymology_id": "Struktur terdiri dari beberapa bagian bentuk dasar yang mewakili kemampuan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang yang memiliki banyak bakat dan kemampuan.",
+  "note_id": "Digunakan untuk seni teater tradisional Noh."
+}

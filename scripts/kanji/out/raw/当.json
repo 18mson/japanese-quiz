@@ -1,0 +1,15 @@
+{
+  "kanji": "当",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "ヨ",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang menunjukkan sasaran atau tepat kena.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tepat sasaran atau sesuatu yang benar.",
+  "note_id": "Digunakan dalam kata 本当 (benar) dan お弁当 (bekal)."
+}

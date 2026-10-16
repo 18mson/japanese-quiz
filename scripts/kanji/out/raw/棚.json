@@ -1,0 +1,20 @@
+{
+  "kanji": "棚",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon atau kayu"
+    },
+    {
+      "part": "月",
+      "role": "shape",
+      "meaning_id": "bentuk alternatif"
+    }
+  ],
+  "etymology_id": "Terdiri dari kayu (木) yang menunjukkan bahwa rak atau lemari tradisional terbuat dari papan kayu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Rak (棚) dibuat dari bahan kayu (木).",
+  "note_id": "Digunakan pada kata 棚 (tana) yang berarti rak atau lemari."
+}

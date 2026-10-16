@@ -1,0 +1,20 @@
+{
+  "kanji": "秘",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "hati atau perasaan"
+    },
+    {
+      "part": "禾",
+      "role": "phonetic",
+      "meaning_id": "tanaman"
+    }
+  ],
+  "etymology_id": "Komponen 心 menunjukkan sesuatu yang disimpan di dalam hati sebagai rahasia.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang disimpan dalam hati (心) adalah rahasia.",
+  "note_id": "Digunakan dalam kata sembelit (便秘をします)."
+}

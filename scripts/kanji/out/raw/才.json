@@ -1,0 +1,25 @@
+{
+  "kanji": "才",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis lengkung"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "亅",
+      "role": "shape",
+      "meaning_id": "kait"
+    }
+  ],
+  "etymology_id": "Bentuk sederhana dari tunas yang tumbuh.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tunas yang memiliki bakat tumbuh.",
+  "note_id": "Digunakan untuk kata genius dan usia."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "幹",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "干",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi カン"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Mengandung komponen penanda bunyi 干 (カン) yang digabung dengan bentuk lain untuk menyatakan batang utama pohon.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Batang utama (幹) pohon yang kokoh menginspirasi jalur utama kereta cepat 新幹線.",
+  "note_id": "Muncul dalam kata 新幹線 (kereta super cepat Shinkansen)."
+}

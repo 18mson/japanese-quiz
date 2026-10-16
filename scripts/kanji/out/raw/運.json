@@ -1,0 +1,20 @@
+{
+  "kanji": "運",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "berjalan atau bergerak"
+    },
+    {
+      "part": "車",
+      "role": "meaning",
+      "meaning_id": "kereta atau kendaraan"
+    }
+  ],
+  "etymology_id": "Gabungan dari kendaraan atau kereta (車) yang bergerak di jalan (辶), membentuk makna mengangkut atau memindahkan sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Mengendarai kereta (車) yang bergerak di jalan (辶) untuk mengangkut barang dan membawa keberuntungan.",
+  "note_id": "Digunakan pada kata kerja mengemudi 運転します serta kata keberuntungan."
+}

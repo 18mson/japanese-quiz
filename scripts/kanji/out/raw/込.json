@@ -1,0 +1,20 @@
+{
+  "kanji": "込",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "入",
+      "role": "meaning",
+      "meaning_id": "masuk"
+    }
+  ],
+  "etymology_id": "Gabungan gerak berjalan dan masuk ke dalam suatu tempat.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bergerak (辶) masuk (入) ke dalam.",
+  "note_id": "Kosakata: お振り込み (transfer bank), 飛び込む (terjun ke dalam)."
+}

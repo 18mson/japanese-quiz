@@ -1,0 +1,25 @@
+{
+  "kanji": "京",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "小",
+      "role": "shape",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen bentuk yang menggambarkan struktur bangunan besar atau ibu kota.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bayangkan bangunan ibu kota (京) yang besar memiliki atap (亠) dan banyak bagian.",
+  "note_id": "Digunakan dalam kata Tokyo (東京)."
+}

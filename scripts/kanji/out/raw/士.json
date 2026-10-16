@@ -1,0 +1,15 @@
+{
+  "kanji": "士",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "士",
+      "role": "meaning",
+      "meaning_id": "samurai"
+    }
+  ],
+  "etymology_id": "Menunjukkan seorang pria terpelajar atau samurai.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk huruf mirip orang dengan topi berdiri.",
+  "note_id": "Kosakata penting: 富士山 (Fujisan) dan 弁護士 (bengoshi)."
+}

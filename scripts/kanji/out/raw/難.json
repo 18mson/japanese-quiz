@@ -1,0 +1,20 @@
+{
+  "kanji": "難",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "大",
+      "role": "meaning",
+      "meaning_id": "besar"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Terdiri dari beberapa komponen yang digabungkan untuk menyatakan kesulitan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Masalah yang besar (大) membuat orang mengeluh dengan mulut (口) karena sulit (難).",
+  "note_id": "Digunakan dalam kata sulit (難しい)."
+}

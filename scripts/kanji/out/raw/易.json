@@ -1,0 +1,20 @@
+{
+  "kanji": "易",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "勿",
+      "role": "shape",
+      "meaning_id": "bentuk garis atau ekor"
+    }
+  ],
+  "etymology_id": "Asal usul bentuk karakter ini tidak pasti. Terdiri dari elemen mirip matahari (日) di atas dan bentuk 勿 di bawahnya.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Belajar setiap hari di bawah matahari (日) membuat pelajaran menjadi mudah.",
+  "note_id": "Digunakan dalam kata 易しい yang berarti mudah atau gampang."
+}

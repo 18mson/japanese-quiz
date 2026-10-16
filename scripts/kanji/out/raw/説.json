@@ -1,0 +1,30 @@
+{
+  "kanji": "説",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "words"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mouth"
+    },
+    {
+      "part": "并",
+      "role": "phonetic",
+      "meaning_id": "combine"
+    },
+    {
+      "part": "儿",
+      "role": "shape",
+      "meaning_id": "legs"
+    }
+  ],
+  "etymology_id": "Menggunakan kata-kata atau ucapan untuk menjelaskan sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kata-kata dari mulut untuk menerangkan pendapat.",
+  "note_id": "Sering dipakai dalam kata kerja penjelasan."
+}

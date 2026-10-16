@@ -1,0 +1,20 @@
+{
+  "kanji": "駄",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "馬",
+      "role": "meaning",
+      "meaning_id": "kuda"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur kuda (馬) dengan komponen yang menunjukkan beban bawaan kuda.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Beban yang diangkut oleh kuda (馬) menjadi sia-sia jika terlalu berat.",
+  "note_id": "Kosakata utama: 無駄 (むだ) - sia-sia."
+}

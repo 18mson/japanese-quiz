@@ -1,0 +1,35 @@
+{
+  "kanji": "普",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "并",
+      "role": "phonetic",
+      "meaning_id": "bersama"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "二",
+      "role": "shape",
+      "meaning_id": "dua"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "garis tegak"
+    }
+  ],
+  "etymology_id": "Menggabungkan arti matahari yang bersinar secara universal ke mana-mana.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Matahari bersinar merata ke semua tempat secara umum.",
+  "note_id": "Kosakata: 普通 (ふつう) - biasa (kereta biasa / lokal)."
+}

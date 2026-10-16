@@ -1,0 +1,25 @@
+{
+  "kanji": "漢",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air atau sungai"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggunakan radikal air (氵) yang awalnya merujuk pada nama sungai, lalu digunakan untuk menyebut Tiongkok.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Huruf Kanji (漢字) datang melintasi perairan (氵) sungai yang besar (大).",
+  "note_id": "Merupakan kanji pertama dalam istilah 漢字 (huruf kanji)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "眼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "艮",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ガン"
+    }
+  ],
+  "etymology_id": "Terdiri dari radikal 目 (mata) sebagai penentu arti dan komponen 艮 sebagai penanda bunyi ガン, secara khusus mengindikasikan bola mata.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mata (目) yang menatap diam tanpa bergeming (艮) memperlihatkan bola mata (眼) dengan jelas.",
+  "note_id": "Dalam kosakata dasar sering muncul pada kata 眼鏡 (kacamata) yang dibaca めがね."
+}

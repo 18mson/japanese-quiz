@@ -1,0 +1,15 @@
+{
+  "kanji": "隣",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻖",
+      "role": "meaning",
+      "meaning_id": "bukit"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen bukit (⻖) yang menunjukkan lokasi atau tempat yang berdampingan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Ada bangunan di sebelah bukit (⻖).",
+  "note_id": "Arti dasar neighboring atau sebelah."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "湯",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Gabungan unsur air dan bagian lain yang menunjukkan air panas.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Air yang dipanaskan oleh matahari menjadi air panas.",
+  "note_id": "Digunakan dalam kata お湯 (air panas)."
+}

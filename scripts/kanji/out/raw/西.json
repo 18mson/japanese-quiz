@@ -1,0 +1,15 @@
+{
+  "kanji": "西",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "西",
+      "role": "meaning",
+      "meaning_id": "west"
+    }
+  ],
+  "etymology_id": "Gambar sarang burung di mana burung kembali saat matahari terbenam di barat.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Sarang burung tempat kembali saat matahari terbenam di arah barat.",
+  "note_id": "Digunakan untuk arah barat."
+}

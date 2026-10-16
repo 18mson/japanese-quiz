@@ -1,0 +1,25 @@
+{
+  "kanji": "町",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "sawah"
+    },
+    {
+      "part": "亅",
+      "role": "shape",
+      "meaning_id": "kait"
+    }
+  ],
+  "etymology_id": "Sawah digabungkan untuk menunjukkan wilayah pemukiman atau batas tanah kota.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Petak-petak sawah yang membentuk suatu kota.",
+  "note_id": "Menyatakan arti kota atau wilayah."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "折",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "hand"
+    },
+    {
+      "part": "斤",
+      "role": "phonetic",
+      "meaning_id": "axe"
+    }
+  ],
+  "etymology_id": "Menggunakan tangan dan kapak untuk memotong atau mematahkan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tangan memegang kapak untuk mematahkan kayu.",
+  "note_id": "Berkaitan dengan arti melipat atau mematahkan."
+}

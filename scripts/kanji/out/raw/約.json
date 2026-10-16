@@ -1,0 +1,15 @@
+{
+  "kanji": "約",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "thread"
+    }
+  ],
+  "etymology_id": "Menggunakan komponen benang (糸) yang melambangkan pengikatan atau janji.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mengikat benang (糸) untuk membuat janji (約).",
+  "note_id": "Kosakata: 約束 (やくそく) = janji; 予約します (よやくします) = reservasi"
+}

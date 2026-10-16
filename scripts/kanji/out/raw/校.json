@@ -1,0 +1,25 @@
+{
+  "kanji": "校",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "父",
+      "role": "phonetic",
+      "meaning_id": "ayah"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "penutup"
+    }
+  ],
+  "etymology_id": "Menggabungkan pohon dengan unsur bunyi untuk menyatakan bangunan atau tempat belajar seperti sekolah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di dekat pohon (木) ada tempat ayah mengantar anak ke sekolah (校).",
+  "note_id": "Kosakata: 学校 (がっこう) berarti sekolah dan 高校 (こうこう) berarti SMA."
+}

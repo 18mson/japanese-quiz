@@ -1,0 +1,25 @@
+{
+  "kanji": "塩",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "皿",
+      "role": "meaning",
+      "meaning_id": "wadah atau piring"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    }
+  ],
+  "etymology_id": "Merupakan bentuk penyederhanaan dari karakter garam. Menggabungkan wadah piring (皿) dengan komponen 土 dan 口 sebagai penyederhana tulisan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Mengambil garam (塩) alami lalu menaruhnya ke dalam piring (皿) di atas meja.",
+  "note_id": "Digunakan langsung sebagai kata benda 塩 (garam)."
+}

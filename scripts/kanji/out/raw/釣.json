@@ -1,0 +1,15 @@
+{
+  "kanji": "釣",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "金",
+      "role": "meaning",
+      "meaning_id": "logam atau emas"
+    }
+  ],
+  "etymology_id": "Komponen logam menunjukkan alat pancing atau kail yang terbuat dari besi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggunakan alat logam untuk memancing ikan.",
+  "note_id": "Kosakata: 釣り (つり) = memancing, お釣り (おつり) = uang kembalian."
+}

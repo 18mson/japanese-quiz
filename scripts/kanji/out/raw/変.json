@@ -1,0 +1,20 @@
+{
+  "kanji": "変",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "berjalan atau kaki"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Menggambarkan perubahan kondisi dari suatu keadaan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang berada di bawah penutup mengalami perubahan.",
+  "note_id": "Digunakan dalam taihen (berat/gawat) dan kaemasu (mengubah)."
+}

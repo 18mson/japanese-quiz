@@ -1,0 +1,20 @@
+{
+  "kanji": "社",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "礻",
+      "role": "meaning",
+      "meaning_id": "altar atau dewa"
+    },
+    {
+      "part": "土",
+      "role": "phonetic",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Gabungan altar atau tempat pemujaan dengan tanah tempat kuil didirikan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tempat ibadah atau perusahaan (礻) didirikan di atas sebidang tanah (土).",
+  "note_id": "Kosakata: 会社 (perusahaan), 会社員 (karyawan perusahaan)."
+}

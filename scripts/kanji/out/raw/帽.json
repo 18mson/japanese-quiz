@@ -1,0 +1,25 @@
+{
+  "kanji": "帽",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Gabungan komponen kain dan bagian penanda lainnya.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Kain yang dipakai di kepala untuk menutupi mata dari matahari.",
+  "note_id": "Digunakan dalam kata 帽子 (topi)."
+}

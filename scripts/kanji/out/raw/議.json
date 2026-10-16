@@ -1,0 +1,50 @@
+{
+  "kanji": "議",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau berbicara"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "王",
+      "role": "shape",
+      "meaning_id": "raja"
+    },
+    {
+      "part": "并",
+      "role": "shape",
+      "meaning_id": "bersama"
+    },
+    {
+      "part": "羊",
+      "role": "shape",
+      "meaning_id": "domba"
+    },
+    {
+      "part": "亅",
+      "role": "shape",
+      "meaning_id": "pengait"
+    },
+    {
+      "part": "戈",
+      "role": "shape",
+      "meaning_id": "tombak"
+    },
+    {
+      "part": "手",
+      "role": "shape",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Menggunakan kata-kata untuk berdiskusi dan berdebat secara bersama.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berbicara bersama menggunakan banyak kata dalam rapat.",
+  "note_id": "Digunakan untuk kata rapat."
+}

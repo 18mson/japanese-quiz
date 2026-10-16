@@ -1,0 +1,15 @@
+{
+  "kanji": "晩",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari atau hari"
+    }
+  ],
+  "etymology_id": "Komponen 日 berkaitan dengan waktu atau matahari, menunjukkan waktu ketika hari mulai gelap.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Saat matahari (日) hampir tenggelam, hari sudah malam.",
+  "note_id": "Digunakan untuk menyatakan malam (晩), malam ini (今晩), dan setiap malam (毎晩)."
+}

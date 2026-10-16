@@ -1,0 +1,20 @@
+{
+  "kanji": "公",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "delapan terbalik"
+    },
+    {
+      "part": "厶",
+      "role": "shape",
+      "meaning_id": "pribadi"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang meluas dari hal pribadi menjadi urusan umum.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Membuka hal pribadi untuk urusan publik.",
+  "note_id": "Kosakata: 公園 (taman), 公務員 (PNS)."
+}

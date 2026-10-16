@@ -1,0 +1,20 @@
+{
+  "kanji": "頃",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "匕",
+      "role": "shape",
+      "meaning_id": "sendok"
+    },
+    {
+      "part": "貝",
+      "role": "shape",
+      "meaning_id": "kerang"
+    }
+  ],
+  "etymology_id": "Komponen terdiri dari bagian bentuk tanpa penjelasan makna pasti.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Perhatikan bagian komponen untuk waktu sekitar.",
+  "note_id": "Digunakan untuk menyatakan perkiraan waktu."
+}

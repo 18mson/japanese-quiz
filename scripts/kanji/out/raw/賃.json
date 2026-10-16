@@ -1,0 +1,20 @@
+{
+  "kanji": "賃",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang atau cangkang"
+    }
+  ],
+  "etymology_id": "Gabungan komponen orang dan uang yang menunjukkan pembayaran sewa atau upah kerja.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Orang memberikan uang untuk membayar sewa atau upah.",
+  "note_id": "Kosakata: 家賃 (やちん) = biaya sewa rumah."
+}

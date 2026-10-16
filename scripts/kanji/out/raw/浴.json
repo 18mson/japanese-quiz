@@ -1,0 +1,20 @@
+{
+  "kanji": "浴",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "谷",
+      "role": "phonetic",
+      "meaning_id": "lembah"
+    }
+  ],
+  "etymology_id": "Unsur air (氵) menunjukkan kegiatan yang berhubungan dengan air, dan bagian lain berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mandi (浴) menggunakan air (氵).",
+  "note_id": "Kosakata penting: 浴びます (mandi)."
+}

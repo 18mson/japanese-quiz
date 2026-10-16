@@ -1,0 +1,20 @@
+{
+  "kanji": "切",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "刀",
+      "role": "meaning",
+      "meaning_id": "sword"
+    },
+    {
+      "part": "匕",
+      "role": "phonetic",
+      "meaning_id": "spoon"
+    }
+  ],
+  "etymology_id": "Menggabungkan pisau untuk melakukan pemotongan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggunakan pisau untuk memotong sesuatu.",
+  "note_id": "Digunakan dalam kata kerja memotong."
+}

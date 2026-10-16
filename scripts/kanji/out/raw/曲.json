@@ -1,0 +1,15 @@
+{
+  "kanji": "曲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Komponen struktur dan garis menunjukkan bentuk garis yang melengkung.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Garis yang melengkung seperti jalan yang berbelok.",
+  "note_id": "Digunakan dalam kata kerjaまがる (belok) dan kata benda yang berarti musik atau lagu."
+}

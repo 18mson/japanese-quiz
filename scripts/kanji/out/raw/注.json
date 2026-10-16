@@ -1,0 +1,25 @@
+{
+  "kanji": "注",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "王",
+      "role": "shape",
+      "meaning_id": "raja"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Air dikombinasikan untuk membentuk arti menuangkan atau mengalirkan cairan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air yang mengalir dari wadah.",
+  "note_id": "Digunakan pada kata pesanan atau menuangkan."
+}

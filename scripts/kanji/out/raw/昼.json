@@ -1,0 +1,30 @@
+{
+  "kanji": "昼",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "尸",
+      "role": "shape",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Gabungan komponen menggambarkan waktu siang hari saat matahari bersinar di atas.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Matahari di bawah atap menandakan waktu siang hari.",
+  "note_id": "Sering dipakai dalam kata istirahat siang dan makan siang."
+}

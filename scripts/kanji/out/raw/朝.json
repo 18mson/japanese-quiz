@@ -1,0 +1,25 @@
+{
+  "kanji": "朝",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "bulan"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Matahari terbit saat bulan masih tampak di langit pagi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Matahari dan bulan tampak bersama di pagi hari.",
+  "note_id": "Digunakan untuk waktu pagi dan sarapan."
+}

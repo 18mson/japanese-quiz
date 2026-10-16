@@ -1,0 +1,20 @@
+{
+  "kanji": "達",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "gerak atau jalan"
+    },
+    {
+      "part": "并",
+      "role": "phonetic",
+      "meaning_id": "menggabungkan"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen gerak (辶) dan komponen bunyi (并) yang menunjukkan pelafalan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seseorang bergerak (辶) bersama-sama (并) untuk mencapai (達) tujuan atau teman.",
+  "note_id": "Digunakan pada kata 友達 (tomodachi) yang berarti teman."
+}

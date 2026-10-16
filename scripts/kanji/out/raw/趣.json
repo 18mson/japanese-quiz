@@ -1,0 +1,30 @@
+{
+  "kanji": "趣",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "耳",
+      "role": "shape",
+      "meaning_id": "ear"
+    },
+    {
+      "part": "走",
+      "role": "shape",
+      "meaning_id": "run"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "earth"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "again"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen-komponen struktur.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menggabungkan berbagai bagian untuk membentuk arti minat atau hobi.",
+  "note_id": "Kosakata penting: 趣味 (hobi)."
+}

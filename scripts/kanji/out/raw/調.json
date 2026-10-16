@@ -1,0 +1,30 @@
+{
+  "kanji": "調",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau berbicara"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "batas"
+    }
+  ],
+  "etymology_id": "Kata-kata digabungkan untuk menunjukkan nada, memeriksa, atau menyesuaikan sesuatu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan kata-kata untuk memeriksa suatu kondisi.",
+  "note_id": "Digunakan untuk memeriksa, koki, dan kondisi fisik."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "問",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "gate"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mouth"
+    }
+  ],
+  "etymology_id": "Gabungan dari gerbang (門) dan mulut (口), menggambarkan seseorang berdiri di gerbang untuk bertanya.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bertanya (問) dengan membuka mulut (口) di depan gerbang (門).",
+  "note_id": "Kosakata: 問題 (もんだい) = masalah"
+}

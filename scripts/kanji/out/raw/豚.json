@@ -1,0 +1,20 @@
+{
+  "kanji": "豚",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "shape",
+      "meaning_id": "daging"
+    },
+    {
+      "part": "豕",
+      "role": "meaning",
+      "meaning_id": "babi"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen daging dan babi yang menunjukkan arti daging babi atau hewan babi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Hewan babi (豕) menghasilkan daging (月).",
+  "note_id": "Digunakan dalam kata daging babi (豚肉)."
+}

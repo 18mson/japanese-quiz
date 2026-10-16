@@ -1,0 +1,20 @@
+{
+  "kanji": "介",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "𠆢",
+      "role": "shape",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "terpisah atau batas"
+    }
+  ],
+  "etymology_id": "Terdiri dari bentuk orang 𠆢 dan garis ハ di kedua sisinya, membentuk arti berada di antara atau menjadi perantara.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang (𠆢) berdiri dengan dua tangan terentang (ハ) untuk menjadi perantara dan memperkenalkan temannya.",
+  "note_id": "Sering muncul dalam kata 紹介 (しょうかい, perkenalan)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "季",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "tanaman padi"
+    },
+    {
+      "part": "子",
+      "role": "phonetic",
+      "meaning_id": "anak"
+    }
+  ],
+  "etymology_id": "Gabungan tanaman padi dan anak untuk merepresentasikan musim panen.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tanaman padi tumbuh seiring bergantinya musim.",
+  "note_id": "Dasar pembentukan kata musim."
+}

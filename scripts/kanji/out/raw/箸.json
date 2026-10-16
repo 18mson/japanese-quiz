@@ -1,0 +1,20 @@
+{
+  "kanji": "箸",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "竹",
+      "role": "meaning",
+      "meaning_id": "bambu"
+    },
+    {
+      "part": "日",
+      "role": "phonetic",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Alat makan dari bambu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Alat makan dari bambu (竹) untuk makan setiap hari (日).",
+  "note_id": "Berarti sumpit."
+}

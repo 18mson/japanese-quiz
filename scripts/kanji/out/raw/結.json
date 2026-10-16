@@ -1,0 +1,15 @@
+{
+  "kanji": "結",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Komponen benang digunakan untuk menyatakan kegiatan mengikat.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Benang yang diikat menjadi satu.",
+  "note_id": "Kosakata penting: 結婚します (けっこんします) untuk menikah."
+}

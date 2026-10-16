@@ -1,0 +1,20 @@
+{
+  "kanji": "強",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "弓",
+      "role": "meaning",
+      "meaning_id": "busur"
+    },
+    {
+      "part": "虫",
+      "role": "shape",
+      "meaning_id": "serangga"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur busur panah (弓) yang ditarik kuat untuk mewakili kekuatan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menarik busur (弓) membutuhkan tenaga yang kuat.",
+  "note_id": "Digunakan dalam kata belajar (勉強) dan kuat (強い)."
+}

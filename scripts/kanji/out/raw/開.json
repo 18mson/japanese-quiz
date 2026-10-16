@@ -1,0 +1,25 @@
+{
+  "kanji": "開",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "gerbang/pintu"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "palang pintu"
+    },
+    {
+      "part": "廾",
+      "role": "meaning",
+      "meaning_id": "dua tangan"
+    }
+  ],
+  "etymology_id": "Menggambarkan dua tangan (廾) yang mengangkat palang kayu (一) pada gerbang (門) untuk membukanya.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Dua tangan (廾) melepas palang (一) di depan pintu gerbang (門) untuk membukanya.",
+  "note_id": "Digunakan pada kata kerja 開けます (あけます, membuka)."
+}

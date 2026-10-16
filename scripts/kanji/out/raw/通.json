@@ -1,0 +1,20 @@
+{
+  "kanji": "通",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "gerak jalan"
+    },
+    {
+      "part": "用",
+      "role": "phonetic",
+      "meaning_id": "menggunakan"
+    }
+  ],
+  "etymology_id": "Komponen gerak jalan digabungkan dengan bagian penanda bunyi untuk menyatakan arti melewati atau melalui.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berjalan melewati jalan raya untuk pergi ke suatu tempat.",
+  "note_id": "Kosakata: 普通 (ふつう) = biasa, 通帳記入 (つうちょうきにゅう) = pencetakan buku tabungan, 交通 (こうつう) = lalu lintas."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "画",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "petak tanah"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "garis batas"
+    },
+    {
+      "part": "凵",
+      "role": "shape",
+      "meaning_id": "bingkai pembatas"
+    }
+  ],
+  "etymology_id": "Menggambarkan proses menarik garis atau menorehkan tanda untuk membatasi petak sawah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menarik garis batas berbingkai (一, 凵) untuk menggambar petak sawah (田).",
+  "note_id": "Muncul pada kata bioskop atau film 映画 (えいが) dan pelukis 画家 (がか)."
+}

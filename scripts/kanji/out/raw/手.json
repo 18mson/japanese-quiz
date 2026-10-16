@@ -1,0 +1,15 @@
+{
+  "kanji": "手",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "手",
+      "role": "shape",
+      "meaning_id": "hand"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar bentuk tangan manusia.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kanji ini menyerupai jari-jari dan telapak tangan.",
+  "note_id": "Kosakata penting: 手紙 (surat) dan お手洗い (toilet)."
+}

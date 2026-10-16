@@ -1,0 +1,20 @@
+{
+  "kanji": "英",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "tanaman atau bunga"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Radikal tanaman (⺾) menandakan bunga mekar yang indah, sementara unsur bawahnya memberi pelengkap bentuk dan bunyi, melambangkan hal istimewa.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bunga (⺾) yang tumbuh mekar sangat besar (大) melambangkan keunggulan dan kepintaran dalam berbahasa Inggris.",
+  "note_id": "Umum dipakai untuk negara Inggris serta mata pelajaran bahasa Inggris (英語)."
+}

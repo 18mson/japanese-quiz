@@ -1,0 +1,15 @@
+{
+  "kanji": "読",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen kata yang berkaitan dengan kegiatan mengucapkan atau membaca teks.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Membaca (読) menggunakan kata-kata (言).",
+  "note_id": "Digunakan dalam kosakata membaca (読みます)."
+}

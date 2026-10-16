@@ -1,0 +1,20 @@
+{
+  "kanji": "夫",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "person"
+    },
+    {
+      "part": "大",
+      "role": "meaning",
+      "meaning_id": "big"
+    }
+  ],
+  "etymology_id": "Menggambarkan seorang pria dewasa yang berdiri tegak.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Gambar seorang pria dewasa yang besar dan kuat.",
+  "note_id": "Kosakata penting: 夫 (おっと), 大丈夫な (だいじょうぶな)."
+}

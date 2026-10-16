@@ -1,0 +1,20 @@
+{
+  "kanji": "低",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "氏",
+      "role": "phonetic",
+      "meaning_id": "nama atau klan"
+    }
+  ],
+  "etymology_id": "Komponen orang dikombinasikan dengan unsur bunyi untuk menunjukkan posisi yang rendah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Postur seseorang yang membungkuk menjadi rendah.",
+  "note_id": "Kosakata: 低い (ひくい) = rendah."
+}

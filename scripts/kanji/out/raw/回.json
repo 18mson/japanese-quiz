@@ -1,0 +1,20 @@
+{
+  "kanji": "回",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "囗",
+      "role": "shape",
+      "meaning_id": "lingkaran luar"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "lingkaran dalam"
+    }
+  ],
+  "etymology_id": "Menggambarkan bentuk pusaran atau lingkaran berputar ganda, membentuk arti berputar atau hitungan perulangan (kali).",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kotak di dalam kotak (囗 dan 口) menggambarkan putaran yang berputar berulang kali.",
+  "note_id": "Digunakan untuk kata kerja 回します (まわします) dan penghitung frekuensi ～回 (～かい)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "姉",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "wanita"
+    }
+  ],
+  "etymology_id": "Menggunakan komponen wanita untuk menunjukkan anggota keluarga perempuan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Wanita yang lebih tua adalah kakak perempuan.",
+  "note_id": "Kosakata penting: 姉 (ane) dan お姉さん (oneesan)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "冷",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "冫",
+      "role": "meaning",
+      "meaning_id": "es"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur es (冫) untuk merepresentasikan rasa atau benda yang dingin.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada es (冫) yang membuat sesuatu menjadi dingin.",
+  "note_id": "Digunakan pada kata dingin dan kulkas."
+}

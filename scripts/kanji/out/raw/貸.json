@@ -1,0 +1,20 @@
+{
+  "kanji": "貸",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang atau kerang"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan orang (⺅) yang memberikan atau meminjamkan uang atau berharga (貝).",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Orang (⺅) memberikan uang atau barang berharga (貝) untuk dipinjamkan.",
+  "note_id": "Digunakan dalam kata kerja kashimasu (meminjamkan)."
+}

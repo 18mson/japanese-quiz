@@ -1,0 +1,20 @@
+{
+  "kanji": "資",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang"
+    },
+    {
+      "part": "次",
+      "role": "shape",
+      "meaning_id": "berikutnya"
+    }
+  ],
+  "etymology_id": "Gabungan uang atau kekayaan dan komponen lain untuk menyatakan aset atau modal.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Uang yang disimpan untuk menjadi aset atau modal.",
+  "note_id": "Artinya adalah assets, resources, capital, funds, data."
+}

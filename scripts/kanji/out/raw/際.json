@@ -1,0 +1,20 @@
+{
+  "kanji": "際",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻖",
+      "role": "meaning",
+      "meaning_id": "bukit"
+    },
+    {
+      "part": "示",
+      "role": "shape",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan batas atau tepi suatu tempat.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Pinggir bukit di dekat altar.",
+  "note_id": "Sering dipakai dalam kata internasional."
+}

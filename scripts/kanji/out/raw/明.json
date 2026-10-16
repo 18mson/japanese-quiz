@@ -1,0 +1,20 @@
+{
+  "kanji": "明",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "bulan"
+    }
+  ],
+  "etymology_id": "Gabungan matahari dan bulan yang keduanya memancarkan cahaya.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Matahari dan bulan bersama-sama membuat dunia menjadi terang.",
+  "note_id": "Berarti terang atau cerah."
+}

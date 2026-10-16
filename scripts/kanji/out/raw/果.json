@@ -1,0 +1,20 @@
+{
+  "kanji": "果",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "田",
+      "role": "shape",
+      "meaning_id": "buah bulat"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Menggambarkan buah bulat matang yang tampak menggantung di ujung dahan pohon.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Buah berbentuk kotak bulat seperti sawah (田) tumbuh di atas pohon (木).",
+  "note_id": "Terdapat dalam kosakata umum buah-buahan yaitu 果物 (くだもの)."
+}

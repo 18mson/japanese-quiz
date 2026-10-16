@@ -1,0 +1,20 @@
+{
+  "kanji": "線",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    },
+    {
+      "part": "白",
+      "role": "phonetic",
+      "meaning_id": "putih"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur benang (糸) yang menunjukkan arti garis tipis, dan unsur putih (白) sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bayangkan sehelai benang (糸) putih (白) yang membentang lurus seperti garis.",
+  "note_id": "Sering dipakai untuk jalur kereta seperti Shinkansen."
+}

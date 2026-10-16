@@ -1,0 +1,15 @@
+{
+  "kanji": "乗",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "tanaman"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen yang menunjukkan arti dasar.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang naik ke atas tanaman atau kendaraan.",
+  "note_id": "Digunakan dalam kata kerja naik kendaraan (のります)."
+}

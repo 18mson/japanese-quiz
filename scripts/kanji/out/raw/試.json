@@ -1,0 +1,20 @@
+{
+  "kanji": "試",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau berbicara"
+    },
+    {
+      "part": "工",
+      "role": "phonetic",
+      "meaning_id": "tukang atau kerja"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur kata (言) yang berkaitan dengan evaluasi dan komponen suara.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ujian atau tes (試) melibatkan kata-kata (言) dan pekerjaan (工).",
+  "note_id": "Kosakata penting: 試験 (しけん) = ujian, 試合 (しあい) = pertandingan."
+}

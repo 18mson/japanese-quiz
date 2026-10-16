@@ -371,7 +371,19 @@ defineEmits<{
             </div>
           </div>
 
-          <!-- 5. AUTHOR / CREATOR CREDIT SECTION -->
+          <!-- 5. DATA ATTRIBUTION & CREDITS -->
+          <div class="pt-4 border-t border-gray-100 dark:border-slate-800">
+            <div class="rounded-2xl p-4 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-xs space-y-1.5">
+              <h4 class="font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5">
+                <span>📚 Atribusi Data & Hak Cipta</span>
+              </h4>
+              <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                KANJIDIC2 dan KRADFILE, hak cipta The Electronic Dictionary Research and Development Group (EDRDG), lisensi CC BY-SA 4.0; penjelasan dibuat dengan bantuan AI dan dapat mengandung kekeliruan.
+              </p>
+            </div>
+          </div>
+
+          <!-- 6. AUTHOR / CREATOR CREDIT SECTION -->
           <div class="pt-4 border-t border-gray-100 dark:border-slate-800">
             <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-xl relative overflow-hidden border border-slate-800">
               <div class="absolute right-0 top-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl pointer-events-none"></div>

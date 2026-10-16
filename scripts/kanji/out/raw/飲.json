@@ -1,0 +1,20 @@
+{
+  "kanji": "飲",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "食",
+      "role": "meaning",
+      "meaning_id": "makanan atau makan"
+    },
+    {
+      "part": "欠",
+      "role": "meaning",
+      "meaning_id": "membuka mulut"
+    }
+  ],
+  "etymology_id": "Gabungan dari komponen makanan (食) dan orang yang membuka mulut lebar-lebar (欠), melambangkan tindakan menelan cairan atau minum.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Membuka mulut lebar-lebar (欠) untuk menelan makanan atau cairan (食) yang diminum.",
+  "note_id": "Sangat sering digunakan pada kosakata Minna no Nihongo seperti 飲みます dan 飲み物."
+}

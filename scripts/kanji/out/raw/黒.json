@@ -1,0 +1,20 @@
+{
+  "kanji": "黒",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "里",
+      "role": "shape",
+      "meaning_id": "desa"
+    },
+    {
+      "part": "灬",
+      "role": "meaning",
+      "meaning_id": "api"
+    }
+  ],
+  "etymology_id": "Menggambarkan jelaga atau asap hitam akibat pembakaran.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Asap dari api (灬) membuat warna batu atau tanah menjadi hitam.",
+  "note_id": "Kosakata: 黒い (hitam)."
+}

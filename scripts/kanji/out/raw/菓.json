@@ -1,0 +1,25 @@
+{
+  "kanji": "菓",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "tanaman herba"
+    },
+    {
+      "part": "田",
+      "role": "phonetic",
+      "meaning_id": "bagian dari buah"
+    },
+    {
+      "part": "木",
+      "role": "phonetic",
+      "meaning_id": "bagian dari buah"
+    }
+  ],
+  "etymology_id": "Radikal ⺾ memberi makna bahan pangan nabati, dipadukan dengan 果 sebagai penanda bunyi ka sekaligus melambangkan buah olahan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanaman (⺾) penghasil buah (果) yang diolah menjadi kue dan camilan manis.",
+  "note_id": "Biasa ditemukan dalam kata camilan atau makanan ringan お菓子 (おかし)."
+}

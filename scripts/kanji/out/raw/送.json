@@ -1,0 +1,20 @@
+{
+  "kanji": "送",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen jalan (辶) yang menunjukkan perpindahan, dan bagian lain yang memberikan petunjuk pengucapan atau arti mengirim.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Mengantar atau mengirim sesuatu dengan berjalan (辶) membawa barang yang besar (大).",
+  "note_id": "Kosakata utama: 送ります (おくります) - mengirim; 放送 (ほうそう) - siaran."
+}

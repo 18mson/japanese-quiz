@@ -1,0 +1,30 @@
+{
+  "kanji": "風",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "風",
+      "role": "meaning",
+      "meaning_id": "angin"
+    },
+    {
+      "part": "虫",
+      "role": "phonetic",
+      "meaning_id": "serangga"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "penutup"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis miring"
+    }
+  ],
+  "etymology_id": "Melambangkan gerakan udara atau angin.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Angin berhembus menutupi serangga yang terbang.",
+  "note_id": "Kosakata: 風呂場 (ふろば) - kamar mandi."
+}

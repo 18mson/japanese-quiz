@@ -1,0 +1,25 @@
+{
+  "kanji": "賀",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "kerang berharga atau hadiah"
+    },
+    {
+      "part": "力",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ga"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ga"
+    }
+  ],
+  "etymology_id": "Komponen harta berharga 貝 digabung dengan 加 (berisi 力 dan 口) yang berfungsi sebagai penanda bunyi ga untuk menyampaikan ucapan selamat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Membawa barang berharga (貝) sambil bersuara (口) penuh semangat (力) memberi selamat.",
+  "note_id": "Digunakan pada kartu ucapan menyambut tahun baru 年賀状 (ねんがじょう)."
+}

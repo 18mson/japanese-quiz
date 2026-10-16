@@ -1,0 +1,20 @@
+{
+  "kanji": "向",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "penutup"
+    }
+  ],
+  "etymology_id": "Menghadap ke suatu arah yang ditunjukkan oleh bangunan atau jendela.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menghadap ke arah sebuah jendela atau bangunan.",
+  "note_id": "Kosakata: 振り向く (menengok ke belakang)."
+}

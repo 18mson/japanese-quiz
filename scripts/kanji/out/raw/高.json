@@ -1,0 +1,25 @@
+{
+  "kanji": "高",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "batas"
+    }
+  ],
+  "etymology_id": "Gambar menara atau bangunan bertingkat yang tinggi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bangunan dengan atap dan jendela bertingkat yang menjulang tinggi ke atas.",
+  "note_id": "Kosakata: 高い (mahal, tinggi), 高校 (SMA), 残高照会 (cek saldo)."
+}

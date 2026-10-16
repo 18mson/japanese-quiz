@@ -1,0 +1,25 @@
+{
+  "kanji": "腰",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging"
+    },
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "wanita"
+    },
+    {
+      "part": "西",
+      "role": "meaning",
+      "meaning_id": "barat"
+    }
+  ],
+  "etymology_id": "Bagian tubuh berkaitan dengan daging di area pinggang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bagian tubuh (月) di pinggang.",
+  "note_id": "Kosakata: ぎっくり腰 (sakit pinggang mendadak)."
+}

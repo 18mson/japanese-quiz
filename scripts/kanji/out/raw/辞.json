@@ -1,0 +1,20 @@
+{
+  "kanji": "辞",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辛",
+      "role": "phonetic",
+      "meaning_id": "shin"
+    },
+    {
+      "part": "舌",
+      "role": "meaning",
+      "meaning_id": "lidah"
+    }
+  ],
+  "etymology_id": "Gabungan lidah (舌) dan komponen bunyi untuk menyatakan kata atau pengunduran diri.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggunakan lidah (舌) untuk mengucapkan kata-kata pengunduran diri (辞).",
+  "note_id": "Arti dasar: resign, word, term."
+}

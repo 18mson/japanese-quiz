@@ -1,0 +1,20 @@
+{
+  "kanji": "紙",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang atau serat"
+    },
+    {
+      "part": "氏",
+      "role": "phonetic",
+      "meaning_id": "nama keluarga"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen benang (糸) karena kertas terbuat dari jalinan serat atau benang halus, dan komponen 氏 sebagai petunjuk bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kertas (紙) dibuat dari serat benang (糸) yang diproses.",
+  "note_id": "Kosakata penting: 手紙 (てがみ) = surat."
+}

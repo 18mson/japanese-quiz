@@ -1,0 +1,15 @@
+{
+  "kanji": "護",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    }
+  ],
+  "etymology_id": "Kata 言 digabung dengan komponen lain untuk arti melindungi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Mengucapkan kata-kata untuk melindungi seseorang.",
+  "note_id": "Kosakata: 弁護士 (pengacara), 看護師 (perawat)."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "保",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen orang dan bagian pendukung lain.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang melindungi pohon dan keluarganya.",
+  "note_id": "Digunakan dalam kata 健康保険証 (kartu asuransi kesehatan)."
+}

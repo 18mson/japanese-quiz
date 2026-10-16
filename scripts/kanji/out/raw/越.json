@@ -1,0 +1,25 @@
+{
+  "kanji": "越",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "走",
+      "role": "meaning",
+      "meaning_id": "berjalan atau berlari"
+    },
+    {
+      "part": "戈",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Komponen berjalan (走) menunjukkan perpindahan, sementara komponen 戈 dan 土 membentuk bagian yang menandakan bunyi serta aksi melintasi rintangan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berlari (走) melintasi tanah (土) sambil membawa senjata (戈) untuk melewati (越) perbatasan.",
+  "note_id": "Muncul dalam kosakata 引っ越し (pindah rumah)."
+}

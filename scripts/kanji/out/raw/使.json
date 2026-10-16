@@ -1,0 +1,20 @@
+{
+  "kanji": "使",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Gabungan orang dan mulut yang menunjukkan perintah atau penggunaan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang menggunakan mulutnya untuk memberi perintah.",
+  "note_id": "Digunakan untuk kata kerja memakai."
+}

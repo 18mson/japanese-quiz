@@ -1,0 +1,15 @@
+{
+  "kanji": "痢",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "疒",
+      "role": "meaning",
+      "meaning_id": "sakit"
+    }
+  ],
+  "etymology_id": "Kanji 痢 terdiri dari komponen penyakit 疒 yang menunjukkan gangguan kesehatan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Penyakit (疒) di perut yang membuat sering ke belakang adalah diare.",
+  "note_id": "Digunakan dalam kata diare (下痢をします)."
+}

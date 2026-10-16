@@ -1,0 +1,15 @@
+{
+  "kanji": "盆",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "皿",
+      "role": "meaning",
+      "meaning_id": "piring atau wadah"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen piring (皿) yang menunjukkan wadah atau nampan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Piring (皿) besar berbentuk nampan atau baki.",
+  "note_id": "Digunakan dalam kata 盆踊り (Tarian Bon)."
+}

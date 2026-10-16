@@ -1,0 +1,15 @@
+{
+  "kanji": "渡",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari unsur air dan komponen lain yang menunjukkan bunyi atau arti menyeberang air.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada air, artinya menyeberang atau melintas di atas air.",
+  "note_id": "Digunakan dalam kata 渡ります (menyeberang)."
+}

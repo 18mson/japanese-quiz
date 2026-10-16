@@ -1,0 +1,20 @@
+{
+  "kanji": "治",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "台",
+      "role": "phonetic",
+      "meaning_id": "dasar"
+    }
+  ],
+  "etymology_id": "Air yang mengalir ditenangkan atau diatur agar terpusat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air yang ditenangkan.",
+  "note_id": "Artinya adalah reign, be at peace, calm down, subdue."
+}

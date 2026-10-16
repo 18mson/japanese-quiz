@@ -1,0 +1,15 @@
+{
+  "kanji": "定",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    }
+  ],
+  "etymology_id": "Komponen atap dikombinasikan dengan bagian lain untuk menyatakan sesuatu yang tetap atau pasti di bawah atap.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Atap rumah menetapkan tempat tinggal yang pasti.",
+  "note_id": "Kosakata: 定食 (ていしょく) = menu paket, set menu."
+}

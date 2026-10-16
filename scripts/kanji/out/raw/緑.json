@@ -1,0 +1,15 @@
+{
+  "kanji": "緑",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen benang (糸) yang memberikan arti dasar terkait tekstil atau warna benang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bayangkan benang (糸) yang berwarna hijau.",
+  "note_id": "Arti dasar hijau."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "八",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "delapan"
+    }
+  ],
+  "etymology_id": "Menunjukkan pemisahan atau pembagian.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Garis yang berpisah melambangkan angka delapan.",
+  "note_id": "Berarti delapan."
+}

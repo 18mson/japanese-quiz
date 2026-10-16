@@ -1,0 +1,20 @@
+{
+  "kanji": "銀",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "金",
+      "role": "meaning",
+      "meaning_id": "logam"
+    },
+    {
+      "part": "艮",
+      "role": "phonetic",
+      "meaning_id": "berhenti"
+    }
+  ],
+  "etymology_id": "Logam emas digabung dengan komponen bunyi untuk menunjukkan logam perak.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Logam berharga selain emas adalah perak yang dipakai di bank.",
+  "note_id": "Digunakan dalam kata 銀行 (bank)."
+}

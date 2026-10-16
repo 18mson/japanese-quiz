@@ -1,0 +1,20 @@
+{
+  "kanji": "欲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "谷",
+      "role": "phonetic",
+      "meaning_id": "lembah"
+    },
+    {
+      "part": "欠",
+      "role": "meaning",
+      "meaning_id": "kekurangan atau terbuka"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur kekurangan (欠) yang menunjukkan rasa ingin atau hasrat, dengan bagian lembah (谷) sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Merasa ada kekurangan (欠) di dalam diri menimbulkan keinginan atau rasa mau (欲).",
+  "note_id": "Kosakata penting: 欲しい (ingin) dan 食欲 (nafsu makan)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "雨",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "雨",
+      "role": "meaning",
+      "meaning_id": "hujan"
+    }
+  ],
+  "etymology_id": "Piktograf yang menggambarkan tetesan-tetesan air hujan yang turun jatuh dari langit atau awan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bayangkan langit berawan di atas dan empat titik tetesan air hujan (雨) yang turun.",
+  "note_id": "Merupakan kanji dasar dan juga berfungsi sebagai radikal untuk berbagai kanji cuaca."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "後",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "langkah kaki"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen langkah kaki untuk menyatakan posisi di belakang atau kemudian.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Orang yang berjalan tertinggal di belakang.",
+  "note_id": "Kosakata: 午後 (p.m.), 後ろ (belakang)."
+}

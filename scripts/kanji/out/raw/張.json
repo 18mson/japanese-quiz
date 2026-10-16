@@ -1,0 +1,20 @@
+{
+  "kanji": "張",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "弓",
+      "role": "meaning",
+      "meaning_id": "busur panah"
+    },
+    {
+      "part": "長",
+      "role": "phonetic",
+      "meaning_id": "panjang"
+    }
+  ],
+  "etymology_id": "Busur panah digabungkan untuk arti merentangkan atau menarik tali busur.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menarik busur panah agar merentang.",
+  "note_id": "Digunakan dalam kata dinas luar kota dan berusaha keras."
+}

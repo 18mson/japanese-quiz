@@ -1,0 +1,25 @@
+{
+  "kanji": "世",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "世",
+      "role": "meaning",
+      "meaning_id": "generation"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "garis"
+    }
+  ],
+  "etymology_id": "Menggambarkan tiga generasi dalam satu garis waktu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tiga garis yang terhubung menunjukkan generasi yang terus berjalan di dunia.",
+  "note_id": "Digunakan dalam kata dunia dan bantuan."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "菜",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "rumput"
+    },
+    {
+      "part": "木",
+      "role": "shape",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Tanaman atau tumbuhan yang dimakan sebagai sayur.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanaman rumput dan pohon yang tumbuh menjadi sayuran hijau.",
+  "note_id": "Bagian dari kata sayur."
+}

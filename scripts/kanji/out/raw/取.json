@@ -1,0 +1,20 @@
+{
+  "kanji": "取",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "耳",
+      "role": "meaning",
+      "meaning_id": "telinga"
+    },
+    {
+      "part": "又",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Berasal dari tindakan memegang telinga musuh yang tertangkap dalam perang.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tangan (又) memegang telinga (耳) untuk mengambil sesuatu.",
+  "note_id": "Kosakata: 取ります (mengambil)."
+}

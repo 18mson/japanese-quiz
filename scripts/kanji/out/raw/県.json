@@ -1,0 +1,20 @@
+{
+  "kanji": "県",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "小",
+      "role": "shape",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "目",
+      "role": "shape",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Struktur terdiri dari komponen mata dan bagian lainnya.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Wilayah prefektur yang luas dilihat dengan mata (目).",
+  "note_id": "Kanji ini berarti prefektur."
+}

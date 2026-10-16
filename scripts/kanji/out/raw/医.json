@@ -1,0 +1,20 @@
+{
+  "kanji": "医",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "匚",
+      "role": "meaning",
+      "meaning_id": "kotak atau wadah"
+    },
+    {
+      "part": "矢",
+      "role": "meaning",
+      "meaning_id": "anak panah"
+    }
+  ],
+  "etymology_id": "Menggabungkan wadah (匚) yang menyimpan anak panah (矢). Dikaitkan dengan tindakan mencabut atau merawat luka panah dalam pengobatan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Dokter menyimpan obat di wadah (匚) dan mencabut anak panah (矢) yang tertancap.",
+  "note_id": "Muncul pada kata 医者 (dokter) dan 歯医者 (dokter gigi)."
+}

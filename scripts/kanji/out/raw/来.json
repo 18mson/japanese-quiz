@@ -1,0 +1,15 @@
+{
+  "kanji": "来",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Bentuk asalnya adalah gambar tanaman gandum atau jelai yang melambangkan kedatangan biji-bijian.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang datang (来) dari pohon (木).",
+  "note_id": "Kosakata penting: 来週 (minggu depan) dan 来月 (bulan depan)."
+}

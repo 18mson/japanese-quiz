@@ -1,0 +1,20 @@
+{
+  "kanji": "帳",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    },
+    {
+      "part": "長",
+      "role": "phonetic",
+      "meaning_id": "panjang"
+    }
+  ],
+  "etymology_id": "Kain digabungkan dengan komponen pelafalan untuk menunjukkan buku catatan atau tirai.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kain panjang yang dilipat seperti buku catatan.",
+  "note_id": "Digunakan untuk buku agenda atau buku tabungan."
+}

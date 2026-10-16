@@ -1,0 +1,20 @@
+{
+  "kanji": "国",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "囗",
+      "role": "meaning",
+      "meaning_id": "batas"
+    },
+    {
+      "part": "王",
+      "role": "meaning",
+      "meaning_id": "raja"
+    }
+  ],
+  "etymology_id": "Wilayah dengan batas teritorial yang dipimpin oleh seorang raja.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Wilayah berpagar/batas (囗) tempat raja (王) berkuasa adalah sebuah negara.",
+  "note_id": "Kosakata: 韓国 (Korea Selatan), 中国 (Cina), お国 (negara)."
+}

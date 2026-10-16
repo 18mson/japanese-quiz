@@ -1,0 +1,20 @@
+{
+  "kanji": "信",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    }
+  ],
+  "etymology_id": "Orang (⺅) yang menepati kata-kata (言) yang diucapkan, mencerminkan kepercayaan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kata-kata (言) dari seseorang (⺅) yang bisa dipercaya.",
+  "note_id": "Digunakan dalam arti percaya atau sinyal."
+}

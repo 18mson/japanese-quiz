@@ -1,0 +1,20 @@
+{
+  "kanji": "忙",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "忄",
+      "role": "meaning",
+      "meaning_id": "hati atau perasaan"
+    },
+    {
+      "part": "亡",
+      "role": "phonetic",
+      "meaning_id": "hilang atau mati"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen hati (忄) dan komponen bunyi 亡. Hati yang hilang atau gelisah menunjukkan arti sibuk.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Hati (忄) yang merasa hilang (亡) membuat seseorang sangat sibuk dan gelisah.",
+  "note_id": "Digunakan dalam kata 忙しい (sibuk)."
+}

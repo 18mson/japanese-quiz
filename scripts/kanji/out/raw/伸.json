@@ -1,0 +1,20 @@
+{
+  "kanji": "伸",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Orang yang meregangkan badan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang meregangkan tubuh saat matahari terbit.",
+  "note_id": "Berarti memanjang atau meluruskan."
+}

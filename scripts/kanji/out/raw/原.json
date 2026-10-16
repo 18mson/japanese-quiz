@@ -1,0 +1,25 @@
+{
+  "kanji": "原",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "厂",
+      "role": "meaning",
+      "meaning_id": "tebing"
+    },
+    {
+      "part": "白",
+      "role": "meaning",
+      "meaning_id": "putih"
+    },
+    {
+      "part": "小",
+      "role": "meaning",
+      "meaning_id": "kecil"
+    }
+  ],
+  "etymology_id": "Tanah luas atau padang rumput.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Dataran luas di bawah tebing.",
+  "note_id": "Digunakan pada nama tempat Akihabara."
+}

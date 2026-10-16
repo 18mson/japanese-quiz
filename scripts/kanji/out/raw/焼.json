@@ -1,0 +1,25 @@
+{
+  "kanji": "焼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "火",
+      "role": "meaning",
+      "meaning_id": "api"
+    },
+    {
+      "part": "十",
+      "role": "phonetic",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "儿",
+      "role": "phonetic",
+      "meaning_id": "kaki"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen api yang menunjukkan arti membakar atau memanggang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gunakan api (火) untuk memanggang makanan.",
+  "note_id": "Minna no Nihongo: すき焼き (すきやき) adalah nama makanan Jepang (sukiyaki)."
+}

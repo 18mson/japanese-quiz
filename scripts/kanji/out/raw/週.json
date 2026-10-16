@@ -1,0 +1,30 @@
+{
+  "kanji": "週",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "movement"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mouth"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "earth"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "border"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur pergerakan (辶) dengan siklus waktu atau putaran minggu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Waktu yang berputar dari hari ke hari membentuk satu minggu.",
+  "note_id": "Kosakata penting: 先週 (minggu lalu) dan 今週 (minggu ini)."
+}

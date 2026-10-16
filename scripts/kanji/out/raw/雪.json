@@ -1,0 +1,20 @@
+{
+  "kanji": "雪",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "雨",
+      "role": "meaning",
+      "meaning_id": "rain"
+    },
+    {
+      "part": "ヨ",
+      "role": "shape",
+      "meaning_id": "hand"
+    }
+  ],
+  "etymology_id": "Tetesan air hujan yang turun dalam wujud salju.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Air hujan yang membeku turun menjadi salju.",
+  "note_id": "Kanji dasar untuk musim dingin dan salju."
+}

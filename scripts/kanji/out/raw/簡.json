@@ -1,0 +1,25 @@
+{
+  "kanji": "簡",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "竹",
+      "role": "meaning",
+      "meaning_id": "bambu"
+    },
+    {
+      "part": "門",
+      "role": "phonetic",
+      "meaning_id": "gerbang (bagian dari penanda bunyi カン)"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Terdiri dari bambu (竹) sebagai media surat atau bilah catatan ringkas, dipadukan dengan penanda bunyi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Pesan pada bilah bambu (竹) di dekat gerbang (門) ditulis dengan sederhana (簡単).",
+  "note_id": "Biasa digunakan dalam kata sifat-na 簡単 (mudah atau simpel)."
+}

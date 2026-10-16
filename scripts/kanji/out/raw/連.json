@@ -1,0 +1,20 @@
+{
+  "kanji": "連",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "車",
+      "role": "meaning",
+      "meaning_id": "mobil"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur berjalan (辶) dan kendaraan atau kelompok (車) untuk arti membawa atau menggandeng.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berjalan (辶) bersama mobil (車) secara beriringan.",
+  "note_id": "Digunakan dalam kata mengajak atau membawa orang."
+}

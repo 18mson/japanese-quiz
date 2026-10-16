@@ -1,0 +1,25 @@
+{
+  "kanji": "華",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "bunga atau tanaman"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "garis cabang"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "batang tegak"
+    }
+  ],
+  "etymology_id": "Menampilkan keindahan rimbunnya cabang ranting serta mahkota bunga yang sedang mekar berseri.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bunga (⺾) di atas batang dahan yang mekar megah dan berkilau.",
+  "note_id": "Dipakai dalam seni merangkai bunga Jepang 華道 (かどう)."
+}

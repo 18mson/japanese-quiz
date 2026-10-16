@@ -1,0 +1,25 @@
+{
+  "kanji": "階",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻖",
+      "role": "meaning",
+      "meaning_id": "bukit"
+    },
+    {
+      "part": "白",
+      "role": "shape",
+      "meaning_id": "putih"
+    },
+    {
+      "part": "比",
+      "role": "shape",
+      "meaning_id": "banding"
+    }
+  ],
+  "etymology_id": "Komponen bukit menunjukkan undakan atau tingkatan seperti lereng bukit.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tangga bertingkat di gedung seperti undakan di bukit.",
+  "note_id": "Artinya adalah storey, stair, counter for storeys."
+}

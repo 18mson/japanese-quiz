@@ -1,0 +1,30 @@
+{
+  "kanji": "康",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "水",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "ヨ",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    },
+    {
+      "part": "隶",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen atap dan unsur lainnya untuk menyatakan keadaan mudah atau damai.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Di dalam rumah (广) ada air (水) bersih demi kesehatan.",
+  "note_id": "Kosakata: 健康保険証 (けんこうほけんしょう) berarti kartu asuransi kesehatan."
+}

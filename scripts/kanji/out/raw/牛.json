@@ -1,0 +1,15 @@
+{
+  "kanji": "牛",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "牛",
+      "role": "shape",
+      "meaning_id": "sapi"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar kepala sapi dengan tanduknya.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai kepala sapi beserta dua tanduk di atasnya.",
+  "note_id": "Dasar untuk kata susu sapi dan daging sapi."
+}

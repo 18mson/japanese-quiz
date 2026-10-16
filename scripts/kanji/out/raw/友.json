@@ -1,0 +1,15 @@
+{
+  "kanji": "友",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "又",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Terdiri dari gambar dua tangan yang saling berpegangan atau bekerja sama.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Dua tangan yang saling berpegangan menggambarkan seorang teman.",
+  "note_id": "Kosakata: 友達 (ともだち) = teman."
+}

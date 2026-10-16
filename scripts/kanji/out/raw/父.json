@@ -1,0 +1,15 @@
+{
+  "kanji": "父",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "父",
+      "role": "meaning",
+      "meaning_id": "ayah"
+    }
+  ],
+  "etymology_id": "Gambar tangan yang memegang alat atau tongkat, melambangkan sosok kepala keluarga atau ayah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bentuk seseorang yang memegang tongkat sebagai kepala keluarga.",
+  "note_id": "Kosakata: 父 (ちち) - ayah sendiri; お父さん (おとうさん) - ayah orang lain."
+}

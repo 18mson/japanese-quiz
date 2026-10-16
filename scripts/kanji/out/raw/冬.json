@@ -1,0 +1,20 @@
+{
+  "kanji": "冬",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "kaki"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Menggambarkan akhir dari segala sesuatu atau musim dingin.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Musim dingin membuat orang meringkuk di bawah titik salju.",
+  "note_id": "Digunakan dalam kata 冬 (musim dingin)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "意",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "音",
+      "role": "phonetic",
+      "meaning_id": "suara (penanda bunyi I)"
+    },
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "hati atau pikiran"
+    }
+  ],
+  "etymology_id": "Menggabungkan hati (心) dan 音 sebagai penanda bunyi I. Secara makna, melambangkan apa yang dipikirkan atau dirasakan di dalam hati seseorang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Suara (音) yang timbul dari dalam hati (心) adalah makna dan pendapat sebenarnya.",
+  "note_id": "Sangat sering digunakan pada 意見 (pendapat) dan 意味 (arti/makna)."
+}

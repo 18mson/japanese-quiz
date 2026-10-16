@@ -1,0 +1,15 @@
+{
+  "kanji": "女",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    }
+  ],
+  "etymology_id": "Gambar stilisasi seorang wanita yang sedang duduk dengan tangan disilang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kanji ini menyerupai siluet seorang wanita (女) yang sedang duduk.",
+  "note_id": "Dasar pembentukan kata untuk perempuan seperti anak perempuan (女の子) dan pacar (彼女)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "砂",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "石",
+      "role": "meaning",
+      "meaning_id": "batu"
+    },
+    {
+      "part": "少",
+      "role": "shape",
+      "meaning_id": "sedikit"
+    }
+  ],
+  "etymology_id": "Terdiri dari batu dan sedikit, menunjukkan pecahan batu yang sangat kecil yaitu pasir.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Butiran pasir adalah batu yang berukuran sangat kecil.",
+  "note_id": "Artinya adalah sand."
+}

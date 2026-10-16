@@ -1,0 +1,20 @@
+{
+  "kanji": "酒",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "water"
+    },
+    {
+      "part": "酉",
+      "role": "phonetic",
+      "meaning_id": "alcohol jar"
+    }
+  ],
+  "etymology_id": "Terdiri dari air (氵) dan wadah fermentasi atau alkohol (酉).",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air yang berada di dekat wadah adalah minuman sake atau alkohol.",
+  "note_id": "Kosakata penting: お酒 (sake/alkohol)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "休",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan gambar orang (⺅) yang bersandar atau berhenti di dekat pohon (木) untuk beristirahat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seorang ORANG bersandar pada POHON untuk beristirahat.",
+  "note_id": "Berkaitan dengan arti libur atau istirahat."
+}

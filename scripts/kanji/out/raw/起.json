@@ -1,0 +1,25 @@
+{
+  "kanji": "起",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "走",
+      "role": "meaning",
+      "meaning_id": "berlari atau bergerak"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "已",
+      "role": "phonetic",
+      "meaning_id": "sudah"
+    }
+  ],
+  "etymology_id": "Bergerak bangun dari tanah atau posisi semula.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bergerak bangkit berdiri dari atas tanah.",
+  "note_id": "Digunakan untuk bangun tidur."
+}

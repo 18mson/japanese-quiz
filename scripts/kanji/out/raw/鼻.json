@@ -1,0 +1,15 @@
+{
+  "kanji": "鼻",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "自",
+      "role": "meaning",
+      "meaning_id": "oneself"
+    }
+  ],
+  "etymology_id": "Komponen 自 sering digunakan untuk merujuk pada diri sendiri, di mana orang menunjuk ke hidung saat merujuk pada diri mereka.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Saat menunjuk diri sendiri (自), kita menunjuk ke bagian hidung (鼻).",
+  "note_id": "Kosakata penting: 鼻 (hidung)."
+}

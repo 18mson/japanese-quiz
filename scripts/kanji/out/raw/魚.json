@@ -1,0 +1,20 @@
+{
+  "kanji": "魚",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "魚",
+      "role": "shape",
+      "meaning_id": "ikan"
+    },
+    {
+      "part": "灬",
+      "role": "shape",
+      "meaning_id": "api"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar bentuk ikan secara keseluruhan, dengan bagian bawah (灬) melambangkan ekor.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gambar kepala, badan, sirip, dan ekor ikan.",
+  "note_id": "Artinya adalah ikan."
+}

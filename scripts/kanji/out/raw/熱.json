@@ -1,0 +1,15 @@
+{
+  "kanji": "熱",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "灬",
+      "role": "meaning",
+      "meaning_id": "fire"
+    }
+  ],
+  "etymology_id": "Terdiri dari elemen api di bagian bawah yang menunjukkan suhu panas.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada api di bawah yang membuat badan menjadi panas atau demam.",
+  "note_id": "Digunakan saat menyatakan demam."
+}

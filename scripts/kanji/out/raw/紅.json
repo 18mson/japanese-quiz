@@ -1,0 +1,30 @@
+{
+  "kanji": "紅",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    },
+    {
+      "part": "工",
+      "role": "phonetic",
+      "meaning_id": "keahlian"
+    },
+    {
+      "part": "幺",
+      "role": "shape",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "小",
+      "role": "shape",
+      "meaning_id": "kecil"
+    }
+  ],
+  "etymology_id": "Menggabungkan benang dan unsur warna merah tua atau crimson.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Benang (糸) yang dicelup menghasilkan warna merah tua (紅).",
+  "note_id": "Kosakata: 紅茶 (こうちゃ) berarti teh hitam."
+}

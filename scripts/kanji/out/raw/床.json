@@ -1,0 +1,20 @@
+{
+  "kanji": "床",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "rumah atau bangunan"
+    },
+    {
+      "part": "木",
+      "role": "phonetic",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen atap atau bangunan dan kayu. Kayu berfungsi sebagai penanda bacaan dan bahan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Ada kayu di dalam bangunan rumah untuk membuat lantai atau tempat tidur.",
+  "note_id": "Minna no Nihongo: 床屋 (とこや) berarti pangkas rambut."
+}

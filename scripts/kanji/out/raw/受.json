@@ -1,0 +1,25 @@
+{
+  "kanji": "受",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "爪",
+      "role": "shape",
+      "meaning_id": "claw"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "hand"
+    },
+    {
+      "part": "冖",
+      "role": "shape",
+      "meaning_id": "cover"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen tangan dan penutup untuk menggambarkan proses menerima sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menerima sesuatu menggunakan tangan.",
+  "note_id": "Kosakata penting: 受付 (meja informasi)."
+}

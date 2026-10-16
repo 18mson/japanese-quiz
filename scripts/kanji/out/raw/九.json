@@ -1,0 +1,15 @@
+{
+  "kanji": "九",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "九",
+      "role": "shape",
+      "meaning_id": "angka sembilan"
+    }
+  ],
+  "etymology_id": "Simbol garis lengkung yang menunjukkan angka sembilan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk angka sembilan yang melengkung tegas.",
+  "note_id": "Angka sembilan dalam pembacaan kun讀み menggunakan ここの."
+}

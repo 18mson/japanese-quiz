@@ -1,0 +1,30 @@
+{
+  "kanji": "修",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "person"
+    },
+    {
+      "part": "彡",
+      "role": "shape",
+      "meaning_id": "decoration"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "line"
+    },
+    {
+      "part": "攵",
+      "role": "shape",
+      "meaning_id": "action"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur orang dan dekorasi atau tindakan untuk memperbaiki diri.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang yang melakukan tindakan disiplin dan belajar.",
+  "note_id": "Kosakata penting: 修理します (memperbaiki)."
+}

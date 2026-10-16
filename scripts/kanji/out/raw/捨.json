@@ -1,0 +1,25 @@
+{
+  "kanji": "捨",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "土",
+      "role": "phonetic",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen tangan serta komponen lain sebagai penanda bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Anda menggunakan tangan (扌) untuk membuang sesuatu ke tanah (土).",
+  "note_id": "Kosakata: 捨てます (membuang)."
+}

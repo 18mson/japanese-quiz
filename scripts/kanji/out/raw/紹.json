@@ -1,0 +1,35 @@
+{
+  "kanji": "紹",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "幺",
+      "role": "phonetic",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "小",
+      "role": "phonetic",
+      "meaning_id": "kecil"
+    },
+    {
+      "part": "刀",
+      "role": "phonetic",
+      "meaning_id": "pisau"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen benang yang menyambungkan sesuatu, digunakan untuk arti memperkenalkan atau menghubungkan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan mulut dan benang untuk menghubungkan atau memperkenalkan orang.",
+  "note_id": "Minna no Nihongo: 紹介します (しょうかいします) berarti memperkenalkan."
+}

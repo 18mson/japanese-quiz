@@ -1,0 +1,20 @@
+{
+  "kanji": "袋",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "弋",
+      "role": "shape",
+      "meaning_id": "panah bertali"
+    }
+  ],
+  "etymology_id": "Menggambarkan kantong atau wadah tertutup.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sebuah tas atau karung (袋) untuk membawa barang.",
+  "note_id": "Digunakan dalam kata tebukuro (sarung tangan)."
+}

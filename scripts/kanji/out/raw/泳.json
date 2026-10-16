@@ -1,0 +1,20 @@
+{
+  "kanji": "泳",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "水",
+      "role": "phonetic",
+      "meaning_id": "aliran air"
+    }
+  ],
+  "etymology_id": "Terdiri dari radikal air (氵) yang memberi makna berkaitan dengan cairan, serta komponen bunyi yang menyiratkan arus panjang di air.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bergerak terapung di dalam air (氵) mengikuti aliran air (水) adalah berenang (泳).",
+  "note_id": "Muncul pada kata kerja golongan satu 泳ぎます (berenang)."
+}

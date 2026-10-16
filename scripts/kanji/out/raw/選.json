@@ -1,0 +1,15 @@
+{
+  "kanji": "選",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "gerakan"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur gerakan (辶) yang berkaitan dengan tindakan memilih dan memilah untuk diambil.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berjalan (辶) maju untuk memilih sesuatu.",
+  "note_id": "Digunakan dalam kata atlet (senshu)."
+}

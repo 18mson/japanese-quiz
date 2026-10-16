@@ -1,0 +1,20 @@
+{
+  "kanji": "知",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "矢",
+      "role": "phonetic",
+      "meaning_id": "panah"
+    }
+  ],
+  "etymology_id": "Terdiri dari mulut yang menyampaikan kata-kata dengan cepat seperti panah untuk menunjukkan pengetahuan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Mulut (口) berbicara cepat seperti panah (矢) saat membagikan pengetahuan.",
+  "note_id": "Kosakata: 知ります (mengetahui), 知っています (tahu)."
+}

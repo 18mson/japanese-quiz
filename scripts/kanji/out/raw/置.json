@@ -1,0 +1,15 @@
+{
+  "kanji": "置",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Terdiri dari berbagai komponen termasuk mata untuk menempatkan sesuatu dalam pandangan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Letakkan (置きます) barang di tempat yang bisa dilihat mata (目).",
+  "note_id": "Kosakata: 置きます (meletakkan)."
+}

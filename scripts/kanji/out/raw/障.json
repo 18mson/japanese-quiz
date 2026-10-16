@@ -1,0 +1,35 @@
+{
+  "kanji": "障",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻖",
+      "role": "meaning",
+      "meaning_id": "bukit"
+    },
+    {
+      "part": "音",
+      "role": "phonetic",
+      "meaning_id": "suara"
+    },
+    {
+      "part": "十",
+      "role": "phonetic",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "日",
+      "role": "phonetic",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "立",
+      "role": "phonetic",
+      "meaning_id": "berdiri"
+    }
+  ],
+  "etymology_id": "Menggabungkan bukit dan komponen lain untuk menunjukkan hambatan atau rintangan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada halangan di bukit yang membuat jalan terganggu.",
+  "note_id": "Minna no Nihongo: 故障 (こしょう) berarti kerusakan."
+}

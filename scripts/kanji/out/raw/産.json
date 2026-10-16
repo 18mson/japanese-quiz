@@ -1,0 +1,20 @@
+{
+  "kanji": "産",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "立",
+      "role": "meaning",
+      "meaning_id": "berdiri"
+    },
+    {
+      "part": "生",
+      "role": "phonetic",
+      "meaning_id": "hidup"
+    }
+  ],
+  "etymology_id": "Gabungan komponen hidup dan berdiri untuk melahirkan atau produk.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang hidup dan berdiri tegak baru dilahirkan.",
+  "note_id": "Digunakan untuk oleh-oleh."
+}

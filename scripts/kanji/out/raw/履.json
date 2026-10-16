@@ -1,0 +1,30 @@
+{
+  "kanji": "履",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "尸",
+      "role": "meaning",
+      "meaning_id": "tubuh atau rumah"
+    },
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "langkah kaki"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "kaki berjalan"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur yang berkaitan dengan gerakan dan alas kaki.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Melangkah (彳) menggunakan alas kaki (履).",
+  "note_id": "Kosakata penting: 履きます (memakai sepatu/celana)."
+}

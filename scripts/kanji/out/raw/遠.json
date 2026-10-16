@@ -1,0 +1,25 @@
+{
+  "kanji": "遠",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "pergerakan atau jalan"
+    },
+    {
+      "part": "土",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    },
+    {
+      "part": "衣",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    }
+  ],
+  "etymology_id": "Komponen pergerakan (辶) menyatakan perjalanan. Bagian kanannya yang terdiri atas 土, 口, dan 衣 berfungsi sebagai penanda bunyi 'en'.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Melakukan perjalanan (辶) melintasi tanah (土) yang membentang amat jauh (遠い).",
+  "note_id": "Digunakan dalam kata sifat 遠い (jauh)."
+}

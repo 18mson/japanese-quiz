@@ -1,0 +1,20 @@
+{
+  "kanji": "忘",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "亡",
+      "role": "meaning",
+      "meaning_id": "hilang"
+    },
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "hati"
+    }
+  ],
+  "etymology_id": "Gabungan makna hati dan sesuatu yang hilang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Sesuatu hilang dari dalam hati, artinya lupa.",
+  "note_id": "Digunakan dalam kata 忘れます (lupa)."
+}

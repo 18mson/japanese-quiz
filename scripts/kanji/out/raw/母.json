@@ -1,0 +1,15 @@
+{
+  "kanji": "母",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "母",
+      "role": "shape",
+      "meaning_id": "ibu"
+    }
+  ],
+  "etymology_id": "Gambar seorang wanita dengan tanda khusus yang menunjukkan seorang ibu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk figur seorang ibu.",
+  "note_id": "Digunakan dalam kata 母 (ibu sendiri) dan お母さん (ibu orang lain)."
+}

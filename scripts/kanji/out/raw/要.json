@@ -1,0 +1,20 @@
+{
+  "kanji": "要",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    },
+    {
+      "part": "西",
+      "role": "meaning",
+      "meaning_id": "barat"
+    }
+  ],
+  "etymology_id": "Struktur komponen terdiri dari wanita (女) dan barat (西) tanpa penjelasan sejarah yang pasti mengenai arti kebutuhan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Hal yang sangat diperlukan (要) di arah barat (西) oleh seorang wanita (女).",
+  "note_id": "Kosakata penting: 要ります (memerlukan)."
+}

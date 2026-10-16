@@ -1,0 +1,20 @@
+{
+  "kanji": "痛",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "疒",
+      "role": "meaning",
+      "meaning_id": "penyakit"
+    },
+    {
+      "part": "用",
+      "role": "phonetic",
+      "meaning_id": "menggunakan"
+    }
+  ],
+  "etymology_id": "Komponen penyakit digabungkan dengan bagian penanda bunyi untuk menyatakan rasa sakit.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Penyakit di tubuh menyebabkan rasa sakit.",
+  "note_id": "Kosakata: 痛いです (いたいです) = sakit, 頭が痛い (あたまがいたい) = sakit kepala, おなかが痛い (おなかがいたい) = sakit perut."
+}

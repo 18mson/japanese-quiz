@@ -1,0 +1,20 @@
+{
+  "kanji": "動",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "力",
+      "role": "meaning",
+      "meaning_id": "tenaga"
+    },
+    {
+      "part": "里",
+      "role": "meaning",
+      "meaning_id": "desa"
+    }
+  ],
+  "etymology_id": "Gabungan unsur desa/berat dan tenaga (力) untuk menyatakan gerakan atau perpindahan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menggunakan tenaga (力) untuk bergerak.",
+  "note_id": "Kosakata: 自動販売機 (じどうはんばいき) = mesin jual otomatis; 動物 (どうぶつ) = hewan; 動きます (うごきます) = bergerak."
+}

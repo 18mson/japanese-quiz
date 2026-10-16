@@ -1,0 +1,15 @@
+{
+  "kanji": "白",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "白",
+      "role": "shape",
+      "meaning_id": "putih"
+    }
+  ],
+  "etymology_id": "Berasal dari gambar biji atau cahaya.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Huruf ini melambangkan warna putih.",
+  "note_id": "Berarti putih."
+}

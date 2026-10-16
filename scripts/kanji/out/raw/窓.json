@@ -1,0 +1,20 @@
+{
+  "kanji": "窓",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "穴",
+      "role": "meaning",
+      "meaning_id": "gua atau lubang"
+    },
+    {
+      "part": "心",
+      "role": "shape",
+      "meaning_id": "hati"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen lubang (穴) dan bentuk lainnya. Bagian di dalam atau bawah berfungsi sebagai penanda bentuk atau pengingat struktur jendela.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Jendela adalah lubang (穴) di dinding untuk melihat luar dengan hati (心) yang tenang.",
+  "note_id": "Kosakata utama: 窓 (まど) - jendela."
+}

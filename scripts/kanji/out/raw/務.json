@@ -1,0 +1,25 @@
+{
+  "kanji": "務",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "矛",
+      "role": "shape",
+      "meaning_id": "tombak"
+    },
+    {
+      "part": "力",
+      "role": "meaning",
+      "meaning_id": "tenaga"
+    },
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "kaki berjalan"
+    }
+  ],
+  "etymology_id": "Menggabungkan tenaga dan bentuk lainnya untuk menyatakan tugas.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menggunakan tenaga untuk menyelesaikan tugas.",
+  "note_id": "Digunakan dalam kata kantor dan pegawai negeri."
+}

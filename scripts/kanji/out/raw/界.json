@@ -1,0 +1,25 @@
+{
+  "kanji": "界",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "sawah/lahan"
+    },
+    {
+      "part": "𠆢",
+      "role": "phonetic",
+      "meaning_id": "介 (pembatas/bunyi)"
+    },
+    {
+      "part": "儿",
+      "role": "phonetic",
+      "meaning_id": "介 (pembatas/bunyi)"
+    }
+  ],
+  "etymology_id": "Komponen sawah (田) menunjukkan batas tanah, digabungkan dengan 介 (diuraikan jadi 𠆢 dan 儿) sebagai penanda bunyi (カイ) dan arti perantara/batas.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Sawah (田) yang diberi batas perantara (介) membentuk batas wilayah dunia (界).",
+  "note_id": "Paling sering dijumpai dalam kata 世界 (せかい, dunia)."
+}

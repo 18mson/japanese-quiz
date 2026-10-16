@@ -1,0 +1,15 @@
+{
+  "kanji": "交",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Menggambarkan bentuk kaki yang bersilang saat berpapasan atau bercampur.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Garis yang saling menyilang menunjukkan percampuran.",
+  "note_id": "Kosakata: 外交官 (diplomat), 交通 (lalu lintas), 交差点 (perempatan)."
+}

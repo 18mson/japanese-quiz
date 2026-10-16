@@ -1,0 +1,20 @@
+{
+  "kanji": "歳",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "止",
+      "role": "shape",
+      "meaning_id": "berhenti"
+    },
+    {
+      "part": "小",
+      "role": "shape",
+      "meaning_id": "kecil"
+    }
+  ],
+  "etymology_id": "Struktur terdiri dari beberapa komponen termasuk bagian yang memberi petunjuk bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Usia bertambah seiring waktu yang berhenti pada angka kecil.",
+  "note_id": "Digunakan untuk menyatakan umur."
+}

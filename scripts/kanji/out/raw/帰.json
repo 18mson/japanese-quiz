@@ -1,0 +1,30 @@
+{
+  "kanji": "帰",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "ヨ",
+      "role": "shape",
+      "meaning_id": "komponenヨ"
+    },
+    {
+      "part": "刂",
+      "role": "shape",
+      "meaning_id": "komponen pisau"
+    },
+    {
+      "part": "巾",
+      "role": "shape",
+      "meaning_id": "komponen kain"
+    },
+    {
+      "part": "冖",
+      "role": "shape",
+      "meaning_id": "komponen penutup"
+    }
+  ],
+  "etymology_id": "Terdiri dari berbagai komponen grafis yang digabungkan untuk membentuk kanji pulang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang menggunakan kain dan penutup saat kembali pulang.",
+  "note_id": "Digunakan dalam kata kerja pulang."
+}

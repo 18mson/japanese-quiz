@@ -1,0 +1,25 @@
+{
+  "kanji": "煙",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "火",
+      "role": "meaning",
+      "meaning_id": "api"
+    },
+    {
+      "part": "西",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    },
+    {
+      "part": "土",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    }
+  ],
+  "etymology_id": "Komponen api (火) membawa arti pembakaran. Sisi kanan yang tersusun atas 西 dan 土 berfungsi sebagai penanda bunyi 'en'.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Saat ada api (火) menyala di atas tanah (土) arah barat (西), asap (煙) tebal mengepul.",
+  "note_id": "Ditemukan pada tanda 禁煙 (dilarang merokok)."
+}

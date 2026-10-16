@@ -1,0 +1,30 @@
+{
+  "kanji": "夢",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "夕",
+      "role": "meaning",
+      "meaning_id": "malam"
+    },
+    {
+      "part": "⺾",
+      "role": "shape",
+      "meaning_id": "rumput"
+    },
+    {
+      "part": "罒",
+      "role": "shape",
+      "meaning_id": "jaring"
+    },
+    {
+      "part": "冖",
+      "role": "shape",
+      "meaning_id": "penutup"
+    }
+  ],
+  "etymology_id": "Dibentuk dari beberapa komponen visual.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Hal yang dilihat saat malam menjelang tidur adalah mimpi.",
+  "note_id": "Berarti mimpi."
+}

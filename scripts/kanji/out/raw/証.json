@@ -1,0 +1,25 @@
+{
+  "kanji": "証",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    },
+    {
+      "part": "一",
+      "role": "phonetic",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "止",
+      "role": "phonetic",
+      "meaning_id": "berhenti"
+    }
+  ],
+  "etymology_id": "Menggabungkan kata-kata (言) yang menjadi bukti atau keterangan resmi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kata-kata (言) yang diucapkan menjadi bukti atau sertifikat.",
+  "note_id": "Minna no Nihongo: Digunakan pada 暗証番号 (nomor PIN) dan 健康保険証 (kartu asuransi)."
+}

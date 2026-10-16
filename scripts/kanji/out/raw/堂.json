@@ -1,0 +1,20 @@
+{
+  "kanji": "堂",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Kanji ini menggambarkan aula besar atau bangunan publik di atas tanah.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Aula besar di atas tanah (土) tempat orang berkumpul.",
+  "note_id": "Kosakata: 食堂 (しょくどう) = ruang makan, kantin."
+}

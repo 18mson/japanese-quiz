@@ -1,0 +1,30 @@
+{
+  "kanji": "最",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "耳",
+      "role": "shape",
+      "meaning_id": "telinga"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "tangan"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Menggabungkan beberapa komponen bentuk.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menyatakan yang paling paling.",
+  "note_id": "Digunakan dalam kata akhir-akhir ini."
+}

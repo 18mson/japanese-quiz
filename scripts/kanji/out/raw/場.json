@@ -1,0 +1,20 @@
+{
+  "kanji": "場",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Tanah lapang tempat matahari bersinar.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tempat di atas tanah di bawah matahari.",
+  "note_id": "Sering dipakai untuk menunjukkan lokasi atau tempat."
+}

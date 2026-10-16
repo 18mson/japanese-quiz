@@ -1,0 +1,25 @@
+{
+  "kanji": "布",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis miring"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen kain dan bagian penanda bentuk.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sehelai kain dibentangkan.",
+  "note_id": "Kosakata: 布団 (ふとん) - kasur dan selimut ala Jepang."
+}

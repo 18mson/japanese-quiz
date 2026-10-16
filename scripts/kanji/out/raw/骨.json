@@ -1,0 +1,25 @@
+{
+  "kanji": "骨",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging"
+    },
+    {
+      "part": "冖",
+      "role": "shape",
+      "meaning_id": "penutup"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "batas"
+    }
+  ],
+  "etymology_id": "Gambar struktur kerangka atau tulang di dalam tubuh.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Rangka struktur keras di dalam tubuh.",
+  "note_id": "Kosakata: 骨折 (patah tulang)."
+}

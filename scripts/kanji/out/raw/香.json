@@ -1,0 +1,20 @@
+{
+  "kanji": "香",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "tanaman"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen 禾 (tanaman) dan 日 (matahari) yang digabungkan untuk merepresentasikan aroma atau bau harum dari tanaman.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tanaman (禾) di bawah terik matahari (日) menghasilkan wangi atau aroma yang harum.",
+  "note_id": "Kosakata: 香港 (Hong Kong)."
+}

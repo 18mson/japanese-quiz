@@ -1,0 +1,25 @@
+{
+  "kanji": "居",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "尸",
+      "role": "shape",
+      "meaning_id": "atap atau tubuh"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen struktur tempat tinggal dan bagian lainnya untuk menyatakan keberadaan seseorang di suatu tempat.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang berada di dalam rumah tinggal.",
+  "note_id": "Digunakan untuk menyatakan keberadaan atau ruang keluarga."
+}

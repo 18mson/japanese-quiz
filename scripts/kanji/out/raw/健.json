@@ -1,0 +1,20 @@
+{
+  "kanji": "健",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "聿",
+      "role": "phonetic",
+      "meaning_id": "kuas"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen orang dan kuas. Bagian kuas berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seorang (⺅) yang memegang alat seperti kuas (聿) akan tetap sehat dan kuat.",
+  "note_id": "Kanji ini digunakan dalam kata sehat (kensou/kenkou)."
+}

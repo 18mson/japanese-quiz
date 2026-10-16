@@ -1,0 +1,20 @@
+{
+  "kanji": "鉄",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "金",
+      "role": "meaning",
+      "meaning_id": "logam"
+    },
+    {
+      "part": "矢",
+      "role": "phonetic",
+      "meaning_id": "panah"
+    }
+  ],
+  "etymology_id": "Terdiri dari logam (金) dan penanda bunyi panah (矢) untuk menyatakan besi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Logam yang keras seperti panah adalah besi.",
+  "note_id": "Berkaitan dengan benda dari besi atau kereta bawah tanah."
+}

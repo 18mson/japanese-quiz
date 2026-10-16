@@ -1,0 +1,25 @@
+{
+  "kanji": "優",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "person"
+    },
+    {
+      "part": "白",
+      "role": "phonetic",
+      "meaning_id": "white"
+    },
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "heart"
+    }
+  ],
+  "etymology_id": "Gabungan komponen orang dan hati untuk menggambarkan sifat lemah lembut atau unggul.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang dengan hati yang lembut dan unggul.",
+  "note_id": "Kosakata penting: 俳優 (はいゆう)."
+}

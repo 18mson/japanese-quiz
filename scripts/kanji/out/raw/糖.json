@@ -1,0 +1,20 @@
+{
+  "kanji": "糖",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "米",
+      "role": "meaning",
+      "meaning_id": "beras"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari komponen beras dan unsur lain yang menunjukkan arti gula.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Rasa manis gula seperti makanan dari beras (米) yang masuk ke mulut (口).",
+  "note_id": "Kosakata: 砂糖 (さとう) = gula."
+}

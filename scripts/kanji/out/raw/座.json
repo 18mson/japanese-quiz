@@ -1,0 +1,25 @@
+{
+  "kanji": "座",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Orang duduk di atas tanah di dalam bangunan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Orang berada di dalam bangunan untuk duduk.",
+  "note_id": "Digunakan untuk kata duduk."
+}

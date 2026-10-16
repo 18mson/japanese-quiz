@@ -1,0 +1,15 @@
+{
+  "kanji": "耳",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "耳",
+      "role": "shape",
+      "meaning_id": "telinga"
+    }
+  ],
+  "etymology_id": "Berasal dari gambar bentuk telinga manusia.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kanji ini menyerupai gambar telinga.",
+  "note_id": "Arti dasar: ear."
+}

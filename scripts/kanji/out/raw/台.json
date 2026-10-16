@@ -1,0 +1,15 @@
+{
+  "kanji": "台",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Bentuk sederhana dari struktur panggung atau penyangga.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Alas atau meja (台) tempat meletakkan sesuatu seperti mulut (口) terbuka.",
+  "note_id": "Digunakan sebagai akhiran penghitung mesin."
+}

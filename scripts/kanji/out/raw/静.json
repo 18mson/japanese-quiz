@@ -1,0 +1,45 @@
+{
+  "kanji": "静",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "青",
+      "role": "phonetic",
+      "meaning_id": "blue"
+    },
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "bulan"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "亅",
+      "role": "shape",
+      "meaning_id": "kait"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    },
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "bungkus"
+    },
+    {
+      "part": "ヨ",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    }
+  ],
+  "etymology_id": "Menggunakan komponen biru/tenang untuk menyampaikan suasana sunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Suasana malam saat bulan bersinar di tanah terasa sangat tenang dan sunyi.",
+  "note_id": "Digunakan untuk keadaan yang sunyi atau tenang."
+}

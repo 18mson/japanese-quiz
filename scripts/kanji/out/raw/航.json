@@ -1,0 +1,25 @@
+{
+  "kanji": "航",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "舟",
+      "role": "meaning",
+      "meaning_id": "perahu"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "titik"
+    },
+    {
+      "part": "几",
+      "role": "shape",
+      "meaning_id": "meja"
+    }
+  ],
+  "etymology_id": "Menggabungkan perahu dengan komponen pelayaran atau navigasi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Perahu (舟) yang berlayar mengarungi lautan (航).",
+  "note_id": "Kosakata: 航空便 (こうくうびん) berarti pos udara."
+}

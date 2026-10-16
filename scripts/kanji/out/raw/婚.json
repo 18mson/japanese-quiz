@@ -1,0 +1,25 @@
+{
+  "kanji": "婚",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "氏",
+      "role": "shape",
+      "meaning_id": "nama keluarga"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur perempuan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Perempuan yang bergabung dalam keluarga.",
+  "note_id": "Digunakan dalam kata menikah."
+}

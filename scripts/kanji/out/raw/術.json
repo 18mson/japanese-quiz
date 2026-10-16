@@ -1,0 +1,25 @@
+{
+  "kanji": "術",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan keahlian atau teknik.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Keahlian atau teknik seni.",
+  "note_id": "Kosakata: 美術 (seni rupa)"
+}

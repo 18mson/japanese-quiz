@@ -1,0 +1,15 @@
+{
+  "kanji": "練",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen benang (糸) yang berhubungan dengan proses memintal atau melatih.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Melatih (練) diri merapikan benang (糸) terus-menerus.",
+  "note_id": "Digunakan pada kata latihan (練習)."
+}

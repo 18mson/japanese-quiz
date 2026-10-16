@@ -1,0 +1,30 @@
+{
+  "kanji": "青",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "bulan"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "二",
+      "role": "shape",
+      "meaning_id": "dua"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang melambangkan warna tumbuhan yang subur.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tumbuhan hijau dan biru tumbuh subur di atas tanah.",
+  "note_id": "Menyatakan warna biru atau hijau."
+}

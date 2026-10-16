@@ -1,0 +1,20 @@
+{
+  "kanji": "天",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Menggambarkan sesuatu yang besar di atas kepala, yaitu langit.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada garis di atas orang besar (大) menunjukkan langit.",
+  "note_id": "Sering dipakai dalam kata cuaca."
+}

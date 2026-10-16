@@ -1,0 +1,15 @@
+{
+  "kanji": "方",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "方",
+      "role": "shape",
+      "meaning_id": "arah"
+    }
+  ],
+  "etymology_id": "Gambar alat bajak atau benda yang mengarah ke suatu sisi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Garis lurus menunjukkan arah atau orang.",
+  "note_id": "Digunakan dalam kata あの方 (beliau) dan 読み方 (cara membaca)."
+}

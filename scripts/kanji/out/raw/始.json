@@ -1,0 +1,15 @@
+{
+  "kanji": "始",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "wanita"
+    }
+  ],
+  "etymology_id": "Gabungan komponen wanita dan bagian lain sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seorang wanita mengawali suatu kegiatan.",
+  "note_id": "Kosakata penting: 始めます (hajimemasu)."
+}

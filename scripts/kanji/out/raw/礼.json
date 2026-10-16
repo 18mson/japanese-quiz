@@ -1,0 +1,15 @@
+{
+  "kanji": "礼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "礻",
+      "role": "meaning",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Menggunakan komponen altar (礻) yang berkaitan dengan upacara keagamaan, rasa hormat, dan terima kasih.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berdiri di depan altar (礻) untuk memberikan penghormatan.",
+  "note_id": "Digunakan untuk salam dan rasa terima kasih."
+}

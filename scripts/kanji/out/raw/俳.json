@@ -1,0 +1,20 @@
+{
+  "kanji": "俳",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "person"
+    },
+    {
+      "part": "非",
+      "role": "phonetic",
+      "meaning_id": "not"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur orang dan komponen bunyi untuk kata yang berkaitan dengan aktor.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seorang manusia yang tampil di panggung sebagai aktor.",
+  "note_id": "Dipakai dalam kata aktor atau aktris."
+}

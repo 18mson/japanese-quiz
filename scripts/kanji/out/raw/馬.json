@@ -1,0 +1,15 @@
+{
+  "kanji": "馬",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "馬",
+      "role": "shape",
+      "meaning_id": "horse"
+    }
+  ],
+  "etymology_id": "Merupakan gambar bentuk seekor kuda dengan surai dan kakinya secara visual.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk tulisan yang menyerupai kepala, badan, dan surai seekor kuda.",
+  "note_id": "Kanji dasar untuk hewan kuda."
+}

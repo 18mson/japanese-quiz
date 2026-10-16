@@ -1,0 +1,15 @@
+{
+  "kanji": "城",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Gabungan unsur tanah dan bagian lain membentuk arti benteng atau kastil.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Kastil dibangun di atas tanah yang kuat.",
+  "note_id": "Berkaitan dengan bangunan pertahanan."
+}

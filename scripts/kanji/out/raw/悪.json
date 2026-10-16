@@ -1,0 +1,20 @@
+{
+  "kanji": "悪",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut atau bentuk kotak"
+    },
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "hati atau perasaan"
+    }
+  ],
+  "etymology_id": "Menggabungkan bagian atas yang ditekan dengan hati (心) di bawahnya. Menunjukkan perasaan hati yang tidak menyenangkan, salah, atau jahat.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ketika ucapan dari mulut (口) menyakiti hati (心), itu adalah perbuatan yang buruk.",
+  "note_id": "Sering digunakan dalam kosakata 悪い (buruk/jelek)."
+}

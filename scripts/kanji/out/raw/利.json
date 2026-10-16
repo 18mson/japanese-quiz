@@ -1,0 +1,20 @@
+{
+  "kanji": "利",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "tanaman biji-bijian"
+    },
+    {
+      "part": "刂",
+      "role": "meaning",
+      "meaning_id": "pisau"
+    }
+  ],
+  "etymology_id": "Gabungan tanaman padi/biji (禾) dan pisau (刂) yang melambangkan pemotongan hasil panen untuk mendapatkan keuntungan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Memotong (刂) tanaman (禾) memberikan keuntungan (利).",
+  "note_id": "Kosakata penting: 便利な (praktis)."
+}

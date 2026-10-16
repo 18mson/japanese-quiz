@@ -1,0 +1,20 @@
+{
+  "kanji": "独",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "犭",
+      "role": "meaning",
+      "meaning_id": "hewan"
+    },
+    {
+      "part": "虫",
+      "role": "meaning",
+      "meaning_id": "serangga"
+    }
+  ],
+  "etymology_id": "Menyatakan sesuatu yang sendiri atau tunggal.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seekor hewan (犭) hidup sendirian.",
+  "note_id": "Kosakata: 独身 (どくしん) = bujangan, belum menikah."
+}

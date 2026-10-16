@@ -1,0 +1,25 @@
+{
+  "kanji": "合",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "𠆢",
+      "role": "shape",
+      "meaning_id": "penutup"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Menggambarkan penutup yang pas menutup wadah atau dua hal yang disatukan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tutup dan mulut wadah disatukan menjadi pas.",
+  "note_id": "Kosakata: 試合 (pertandingan), 都合 (kondisi/keadaan)."
+}

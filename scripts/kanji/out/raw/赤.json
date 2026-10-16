@@ -1,0 +1,20 @@
+{
+  "kanji": "赤",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "赤",
+      "role": "meaning",
+      "meaning_id": "red"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "earth"
+    }
+  ],
+  "etymology_id": "Gabungan komponen api atau warna merah dengan tanah.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tanah yang terpanggang api menjadi berwarna merah.",
+  "note_id": "Memiliki arti dasar merah."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "万",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "meaning",
+      "meaning_id": "one"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "slide"
+    }
+  ],
+  "etymology_id": "Kanji ini awalnya adalah gambar kalajengking, lalu dipinjam untuk menyatakan jumlah sepuluh ribu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Garis satu dengan goresan melengkung seperti angka sepuluh ribu.",
+  "note_id": "Kosakata penting: 万 (まん), 万里の長城 (ばんりのちょうじょう)."
+}

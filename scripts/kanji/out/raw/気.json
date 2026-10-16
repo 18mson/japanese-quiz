@@ -1,0 +1,25 @@
+{
+  "kanji": "気",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "气",
+      "role": "meaning",
+      "meaning_id": "uap atau udara"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "goresan miring"
+    }
+  ],
+  "etymology_id": "Menggambarkan uap atau udara yang mengepul melambangkan semangat dan atmosfer.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Uap udara mengepul menunjukkan adanya energi atau semangat.",
+  "note_id": "Sangat sering dipakai untuk kondisi fisik dan mental."
+}

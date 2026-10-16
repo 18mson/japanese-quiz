@@ -1,0 +1,15 @@
+{
+  "kanji": "呼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggunakan mulut untuk memanggil seseorang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan mulut (口) untuk memanggil.",
+  "note_id": "Digunakan dalam yobimasu (memanggil)."
+}

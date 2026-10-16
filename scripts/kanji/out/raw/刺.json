@@ -1,0 +1,20 @@
+{
+  "kanji": "刺",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "刂",
+      "role": "meaning",
+      "meaning_id": "pisau"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen pohon dan pisau, melambangkan benda tajam yang dapat menusuk.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bayangkan pisau memotong bagian pohon yang berduri.",
+  "note_id": "Kosakata penting: 名刺 (meishi) dan 刺身 (sashimi)."
+}

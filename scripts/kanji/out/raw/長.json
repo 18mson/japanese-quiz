@@ -1,0 +1,15 @@
+{
+  "kanji": "長",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "長",
+      "role": "meaning",
+      "meaning_id": "panjang atau senior"
+    }
+  ],
+  "etymology_id": "Bentuk asli menggambarkan seseorang berambut panjang yang menunjukkan senioritas.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Rambut yang panjang menandakan orang tersebut adalah senior atau pemimpin.",
+  "note_id": "Kosakata: 長い (ながい) = panjang, 課長 (かちょう) = kepala seksi, 部長 (ぶちょう) = kepala bagian."
+}

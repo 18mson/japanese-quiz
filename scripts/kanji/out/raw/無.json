@@ -1,0 +1,30 @@
+{
+  "kanji": "無",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "garis tegak"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis miring ke kiri"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "灬",
+      "role": "meaning",
+      "meaning_id": "api"
+    }
+  ],
+  "etymology_id": "Berasal dari karakter kuno yang berarti tidak ada.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Semua telah terbakar oleh api hingga tidak ada apa-apa.",
+  "note_id": "Berarti tidak ada atau ketiadaan."
+}

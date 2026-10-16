@@ -1,0 +1,15 @@
+{
+  "kanji": "登",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang menggambarkan gerakan naik ke atas.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bergerak naik ke atas untuk mendaki gunung.",
+  "note_id": "Digunakan dalam kata 登ります (mendaki)."
+}

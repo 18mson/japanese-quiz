@@ -1,0 +1,25 @@
+{
+  "kanji": "待",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "langkah kaki"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "寸",
+      "role": "meaning",
+      "meaning_id": "inci"
+    }
+  ],
+  "etymology_id": "Seseorang berjalan (彳) lalu berhenti di suatu tempat di atas tanah (土) untuk menanti.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang melangkah (彳) berhenti di tanah (土) sebentar (寸) untuk menunggu.",
+  "note_id": "Digunakan dalam kata kerja menunggu (machimasu)."
+}

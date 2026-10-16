@@ -1,0 +1,20 @@
+{
+  "kanji": "皆",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "比",
+      "role": "meaning",
+      "meaning_id": "berbaris bersama/membandingkan"
+    },
+    {
+      "part": "白",
+      "role": "meaning",
+      "meaning_id": "terang/jelas"
+    }
+  ],
+  "etymology_id": "Komponen orang yang berbaris berdampingan (比) di atas keterusterangan (白), melambangkan semua orang berkumpul secara seragam.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Orang-orang berbaris bersama (比) di bawah sinar putih (白) yang menyinari semua orang (皆).",
+  "note_id": "Umum dipakai dalam sapaan 皆さん (みなさん)."
+}

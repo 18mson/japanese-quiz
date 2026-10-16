@@ -1,0 +1,15 @@
+{
+  "kanji": "前",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging"
+    }
+  ],
+  "etymology_id": "Kanji ini menggambarkan posisi bagian depan tubuh.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang berada di muka atau di depan.",
+  "note_id": "Sangat sering dipakai untuk menyatakan waktu pagi (gozen) atau arti depan (mae)."
+}

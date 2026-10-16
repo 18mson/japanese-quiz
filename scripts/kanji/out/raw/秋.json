@@ -1,0 +1,20 @@
+{
+  "kanji": "秋",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "grain"
+    },
+    {
+      "part": "火",
+      "role": "shape",
+      "meaning_id": "fire"
+    }
+  ],
+  "etymology_id": "Menggabungkan tanaman padi (禾) dan api (火) yang melambangkan musim panen atau musim gugur.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Musim panen gandum atau tanaman di bawah terik matahari.",
+  "note_id": "Kosakata penting: 秋 (musim gugur) dan 秋葉原 (Akihabara)."
+}

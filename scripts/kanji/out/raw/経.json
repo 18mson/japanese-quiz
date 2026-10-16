@@ -1,0 +1,15 @@
+{
+  "kanji": "経",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Komponen benang digabungkan untuk menunjukkan makna dasar yang berkaitan dengan tenunan atau benang vertikal.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Benang yang membentang panjang seperti garis bujur.",
+  "note_id": "Kosakata penting: 経済 (けいざい) untuk ekonomi."
+}

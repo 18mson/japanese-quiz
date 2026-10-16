@@ -1,0 +1,20 @@
+{
+  "kanji": "返",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "gerakan atau jalan"
+    },
+    {
+      "part": "又",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Tangan yang mengembalikan sesuatu sambil berjalan atau memutar arah kembali.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tangan bergerak mengembalikan sesuatu di jalan.",
+  "note_id": "Digunakan dalam kaeshimasu (mengembalikan)."
+}

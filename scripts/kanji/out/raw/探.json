@@ -1,0 +1,15 @@
+{
+  "kanji": "探",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Terdiri dari tangan (扌) yang menunjukkan tindakan mencari atau meraba dengan tangan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan tangan (扌) untuk mencari (探) sesuatu.",
+  "note_id": "Digunakan pada kata お探しですか (osagashisuka) yang berarti sedang mencari apa."
+}

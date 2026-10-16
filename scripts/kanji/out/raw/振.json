@@ -1,0 +1,20 @@
+{
+  "kanji": "振",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "hand"
+    },
+    {
+      "part": "辰",
+      "role": "phonetic",
+      "meaning_id": "辰"
+    }
+  ],
+  "etymology_id": "Gabungan komponen tangan dan suara bacaan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan tangan untuk mengayun atau melambai.",
+  "note_id": "Sering dipakai dalam kata kerja gerakan tangan."
+}

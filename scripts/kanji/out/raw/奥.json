@@ -1,0 +1,25 @@
+{
+  "kanji": "奥",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "bingkai penutup"
+    },
+    {
+      "part": "米",
+      "role": "shape",
+      "meaning_id": "beras"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    }
+  ],
+  "etymology_id": "Tersusun dari pembatas luar (冂) serta bagian dalam yang menyerupai 米 dan 大, menggambarkan bagian ruang yang paling dalam atau tertutup.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Di ruangan paling dalam (奥) yang tertutup (冂), tersimpan beras (米) dalam jumlah besar (大).",
+  "note_id": "Sering digunakan dalam panggilan sopan 奥さん (istri orang lain)."
+}

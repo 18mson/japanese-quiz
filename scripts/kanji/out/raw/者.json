@@ -1,0 +1,20 @@
+{
+  "kanji": "者",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "phonetic",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "⺹",
+      "role": "shape",
+      "meaning_id": "bagian atas"
+    }
+  ],
+  "etymology_id": "Struktur komponen terdiri dari bagian atas dan bentuk hari atau matahari.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang (者) yang bekerja di bawah matahari (日).",
+  "note_id": "Kosakata: 医者 (dokter), 研究者 (peneliti)."
+}

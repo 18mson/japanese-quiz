@@ -1,0 +1,25 @@
+{
+  "kanji": "何",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "亅",
+      "role": "shape",
+      "meaning_id": "tongkat pengait"
+    }
+  ],
+  "etymology_id": "Menampilkan orang (⺅) yang memikul beban di pundak (bagian kanan 可), kemudian maknanya dipinjam untuk kata tanya 'apa'.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seorang (⺅) membuka mulut (口) bertanya apa yang ada di ujung kait (亅).",
+  "note_id": "Bisa dibaca 'なに' atau 'なん' tergantung pada huruf yang mengikutinya."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "逆",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan atau bergerak"
+    },
+    {
+      "part": "并",
+      "role": "shape",
+      "meaning_id": "bersama"
+    },
+    {
+      "part": "屮",
+      "role": "shape",
+      "meaning_id": "tunas"
+    }
+  ],
+  "etymology_id": "Bergerak berlawanan arah dengan arus perjalanan normal.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berjalan melangkah ke arah yang berlawanan.",
+  "note_id": "Berarti kebalikan atau berlawanan."
+}

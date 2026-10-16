@@ -1,0 +1,20 @@
+{
+  "kanji": "建",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "廴",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "聿",
+      "role": "phonetic",
+      "meaning_id": "kuas"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen jalan dan kuas untuk menggambarkan aktivitas membangun.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Orang berjalan (廴) membawa alat untuk membangun sebuah gedung.",
+  "note_id": "Kanji ini berarti membangun."
+}

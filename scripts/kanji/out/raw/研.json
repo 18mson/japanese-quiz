@@ -1,0 +1,15 @@
+{
+  "kanji": "研",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "石",
+      "role": "meaning",
+      "meaning_id": "batu"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen batu dan bagian lain untuk menyatakan kegiatan mengasah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan batu (石) untuk mengasah atau memoles sesuatu.",
+  "note_id": "Digunakan dalam kata penelitian."
+}

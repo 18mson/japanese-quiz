@@ -1,0 +1,20 @@
+{
+  "kanji": "背",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "body"
+    },
+    {
+      "part": "匕",
+      "role": "meaning",
+      "meaning_id": "spoon"
+    }
+  ],
+  "etymology_id": "Gabungan komponen tubuh dan bagian lain untuk menunjukkan bagian punggung manusia.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bagian tubuh yang lurus seperti punggung.",
+  "note_id": "Kosakata penting: 背 (せ)."
+}

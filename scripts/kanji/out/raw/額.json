@@ -1,0 +1,30 @@
+{
+  "kanji": "額",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "頁",
+      "role": "meaning",
+      "meaning_id": "kepala atau dahi"
+    },
+    {
+      "part": "宀",
+      "role": "shape",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "langkah kaki"
+    }
+  ],
+  "etymology_id": "Komponen 頁 melambangkan kepala atau dahi. Bagian kiri berfungsi sebagai penanda fonetik sekaligus membentuk makna dahi atau jumlah angka yang tertulis.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang menundukkan dahi dan kepala saat melihat jumlah uang yang tertera di kertas.",
+  "note_id": "Digunakan untuk dahi (ひたい) dan nominal jumlah uang seperti pada 金額 (きんがく)."
+}

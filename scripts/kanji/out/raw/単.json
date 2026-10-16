@@ -1,0 +1,15 @@
+{
+  "kanji": "単",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "sawah"
+    }
+  ],
+  "etymology_id": "Berasal dari gambar alat atau bentuk tunggal sederhana.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang tunggal dan sederhana (単) seperti satu petak sawah (田).",
+  "note_id": "Digunakan pada kata 簡単な (kantanna) yang berarti mudah atau simpel."
+}

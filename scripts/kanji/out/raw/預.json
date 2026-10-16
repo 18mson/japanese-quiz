@@ -1,0 +1,15 @@
+{
+  "kanji": "預",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang atau barang berharga"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan penitipan uang atau barang berharga.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menitipkan uang atau barang berharga kepada orang lain.",
+  "note_id": "Kosakata: お預け入れ (おあずけいれ) = setoran tunai / menambahkan saldo."
+}

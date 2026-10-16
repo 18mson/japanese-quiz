@@ -1,0 +1,20 @@
+{
+  "kanji": "六",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "delapan"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Merupakan angka sederhana yang mewakili jumlah enam.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk huruf yang mewakili angka enam.",
+  "note_id": "Artinya adalah enam."
+}

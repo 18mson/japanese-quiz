@@ -1,0 +1,20 @@
+{
+  "kanji": "直",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Gabungan komponen mata dan garis untuk merepresentasikan pandangan yang lurus atau jujur.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Memandang dengan lurus dan jujur untuk memperbaiki sesuatu.",
+  "note_id": "Kosakata: 直します (なおします) = mengoreksi, memperbaiki."
+}

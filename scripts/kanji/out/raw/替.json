@@ -1,0 +1,25 @@
+{
+  "kanji": "替",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "大",
+      "role": "meaning",
+      "meaning_id": "besar"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Gabungan komponen orang dan bagian lain yang menunjukkan pertukaran.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang (人) yang besar (大) bertukar posisi setiap hari (日).",
+  "note_id": "Digunakan untuk arti mengganti atau menukar."
+}

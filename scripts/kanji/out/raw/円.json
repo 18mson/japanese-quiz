@@ -1,0 +1,25 @@
+{
+  "kanji": "円",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "bingkai luar"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "garis mendatar"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "garis tegak"
+    }
+  ],
+  "etymology_id": "Bentuk penyederhanaan yang melambangkan kebulatan atau lingkaran. Makna ini kemudian meluas untuk menyebut uang koin dan mata uang yen.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kotak bergaris (円) yang melambangkan koin bundar bernilai satu yen.",
+  "note_id": "Digunakan untuk menyebut mata uang Jepang, yen (円)."
+}

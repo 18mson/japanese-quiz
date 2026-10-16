@@ -1,0 +1,15 @@
+{
+  "kanji": "止",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "止",
+      "role": "meaning",
+      "meaning_id": "berhenti"
+    }
+  ],
+  "etymology_id": "Gambar telapak kaki yang berdiri diam.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Telapak kaki yang berhenti melangkah.",
+  "note_id": "Kosakata penting: 止めます (tomemasu)."
+}

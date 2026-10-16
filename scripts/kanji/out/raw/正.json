@@ -1,0 +1,20 @@
+{
+  "kanji": "正",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "止",
+      "role": "meaning",
+      "meaning_id": "berhenti"
+    },
+    {
+      "part": "一",
+      "role": "meaning",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Menggambarkan berjalan menuju satu tujuan yang benar.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berhenti pada satu arah yang benar.",
+  "note_id": "Digunakan untuk tahun baru dan arti benar."
+}

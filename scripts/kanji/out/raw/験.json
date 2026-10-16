@@ -1,0 +1,20 @@
+{
+  "kanji": "験",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "馬",
+      "role": "phonetic",
+      "meaning_id": "kuda"
+    },
+    {
+      "part": "人",
+      "role": "shape",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen yang memberi petunjuk bunyi dan makna terkait pengujian.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang menguji kuda.",
+  "note_id": "Digunakan dalam kata shiken (ujian)."
+}

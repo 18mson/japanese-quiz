@@ -1,0 +1,15 @@
+{
+  "kanji": "飛",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "飛",
+      "role": "shape",
+      "meaning_id": "terbang"
+    }
+  ],
+  "etymology_id": "Berasal dari bentuk bergambar burung yang sedang mengepakkan sayapnya ke udara.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk kanji ini menyerupai bentuk burung yang sedang terbang di udara.",
+  "note_id": "Digunakan untuk pesawat terbang (飛行機) dan terbang (飛ぶ)."
+}

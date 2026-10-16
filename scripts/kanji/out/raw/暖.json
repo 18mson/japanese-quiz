@@ -1,0 +1,15 @@
+{
+  "kanji": "暖",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Terdiri dari matahari (日) yang memberikan kehangatan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Sinar matahari (日) membuat udara menjadi hangat (暖).",
+  "note_id": "Digunakan pada kata 暖かい (atatakai) yang berarti hangat."
+}

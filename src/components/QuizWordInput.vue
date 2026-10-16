@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue';
+import { ref, onMounted, onUnmounted, watch, nextTick, computed, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Check, X, AlertTriangle } from '@lucide/vue';
+import { Check, X, AlertTriangle, HelpCircle } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
+import { extractKanjiFromWord, loadKanjiInfo } from '../services/kanjiInfoService';
+
+const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
 const quizStore = useQuizStore();
 const userInput = computed({
@@ -172,6 +175,39 @@ const typoStatusMessage = computed(() => {
   }
   return 'Salah ketik (+3 Poin, Streak tetap)';
 });
+
+// Kanji Details Popup State
+const showKanjiPopup = ref(false);
+const availableKanjiSet = ref<Set<string>>(new Set());
+
+const currentWordKanji = computed(() => {
+  return extractKanjiFromWord(currentWord.value?.character || '');
+});
+
+const hasKanjiDetails = computed(() => {
+  if (currentWordKanji.value.length === 0) return false;
+  return currentWordKanji.value.some(k => availableKanjiSet.value.has(k));
+});
+
+const checkKanjiAvailability = async () => {
+  if (currentWordKanji.value.length === 0) return;
+  try {
+    const data = await loadKanjiInfo();
+    availableKanjiSet.value = new Set(Object.keys(data));
+  } catch (err) {
+    console.error('Gagal mengecek ketersediaan kanji:', err);
+  }
+};
+
+watch(() => quizStore.selectedAnswer, (newVal) => {
+  if (newVal !== null && currentWordKanji.value.length > 0) {
+    checkKanjiAvailability();
+  }
+});
+
+watch(() => quizStore.currentQuestionIndex, () => {
+  showKanjiPopup.value = false;
+});
 </script>
 
 <template>
@@ -256,17 +292,40 @@ const typoStatusMessage = computed(() => {
 
         <!-- Explanation Block -->
         <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex flex-col items-center">
-          <div class="flex items-baseline gap-2 flex-wrap justify-center">
+          <div class="flex items-center gap-2 flex-wrap justify-center">
             <span class="text-2xl font-bold text-gray-800 dark:text-slate-100 font-jp">{{ currentWord?.character }}</span>
             <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 dark:text-slate-400 font-medium font-jp">
               （{{ (currentWord as any)?.kana }}）
             </span>
+
+            <!-- Tombol / Ikon '?' Pembuka Detail Kanji -->
+            <button
+              v-if="hasKanjiDetails"
+              type="button"
+              id="btn-kanji-detail-input"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border"
+              :class="!quizStore.isAnswerCorrect
+                ? 'bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle'
+                : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 text-[11px]'"
+              @click="showKanjiPopup = true"
+              :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
+            >
+              <HelpCircle class="w-3.5 h-3.5" :class="!quizStore.isAnswerCorrect ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500 dark:text-slate-400'" />
+              <span>{{ !quizStore.isAnswerCorrect ? 'Bedah Kanji (?)' : 'Kanji (?)' }}</span>
+            </button>
           </div>
           <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 dark:text-slate-300 italic">
             Arti: {{ (currentWord as any)?.meaning }}
           </p>
         </div>
       </div>
+
+      <!-- Popup Detail Kanji -->
+      <KanjiInfoPopup
+        :is-open="showKanjiPopup"
+        :target-word="currentWord?.character"
+        @close="showKanjiPopup = false"
+      />
 
       <!-- Next button is rendered globally in bottom navbar -->
     </div>

@@ -1,0 +1,15 @@
+{
+  "kanji": "呂",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Terdiri dari dua bentuk mulut (口) yang disusun vertikal.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Dua mulut (口) tersusun ke bawah di kamar mandi.",
+  "note_id": "Digunakan pada kata kamar mandi (風呂場)."
+}

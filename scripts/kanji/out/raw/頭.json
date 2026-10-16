@@ -1,0 +1,25 @@
+{
+  "kanji": "頭",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "kerang"
+    }
+  ],
+  "etymology_id": "Kanji ini berarti kepala dan menggunakan bagian tubuh atau lambang untuk mewakili bagian atas tubuh.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Di kepala ada mata (目) dan mulut (口).",
+  "note_id": "Kosakata: 頭 (あたま) = kepala; 頭が痛い (あたまがいたい) = sakit kepala."
+}

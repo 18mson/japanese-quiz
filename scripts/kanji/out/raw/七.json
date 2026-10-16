@@ -1,0 +1,15 @@
+{
+  "kanji": "七",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "乙",
+      "role": "shape",
+      "meaning_id": "second"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah penanda abstrak untuk menunjukkan angka tujuh.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Garis melintang dipotong garis lengkung, membentuk angka tujuh.",
+  "note_id": "Kosakata penting: 七日 (なのか) dan 七つ (ななつ)."
+}

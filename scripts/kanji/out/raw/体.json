@@ -1,0 +1,20 @@
+{
+  "kanji": "体",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "木",
+      "role": "phonetic",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen orang (⺅) dan kayu atau struktur (木) sebagai penanda bunyi atau bentuk dasar tubuh.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Badan seorang (⺅) manusia berdiri tegak seperti batang kayu (木).",
+  "note_id": "Digunakan dalam kata badan atau tubuh (からだ)."
+}

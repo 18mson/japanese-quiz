@@ -1,0 +1,20 @@
+{
+  "kanji": "記",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau berbicara"
+    },
+    {
+      "part": "已",
+      "role": "phonetic",
+      "meaning_id": "sudah"
+    }
+  ],
+  "etymology_id": "Kata-kata yang diucapkan lalu dituliskan untuk mencatat sebuah kisah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan kata-kata untuk menulis catatan harian.",
+  "note_id": "Digunakan pada kata catatan."
+}

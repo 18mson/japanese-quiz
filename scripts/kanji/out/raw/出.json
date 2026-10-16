@@ -1,0 +1,15 @@
+{
+  "kanji": "出",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "山",
+      "role": "meaning",
+      "meaning_id": "gunung"
+    }
+  ],
+  "etymology_id": "Menggambarkan sesuatu yang bergerak keluar.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bergerak keluar dari dalam gunung.",
+  "note_id": "Kosakata: 出ます (keluar), 出口 (pintu keluar)"
+}

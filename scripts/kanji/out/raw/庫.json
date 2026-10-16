@@ -1,0 +1,20 @@
+{
+  "kanji": "庫",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "bangunan"
+    },
+    {
+      "part": "車",
+      "role": "meaning",
+      "meaning_id": "mobil"
+    }
+  ],
+  "etymology_id": "Bangunan untuk menyimpan kendaraan atau barang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bangunan (广) untuk menyimpan mobil (車).",
+  "note_id": "Digunakan dalam reizouko (kulkas)."
+}

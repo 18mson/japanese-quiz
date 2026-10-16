@@ -1,0 +1,15 @@
+{
+  "kanji": "田",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "田",
+      "role": "shape",
+      "meaning_id": "sawah"
+    }
+  ],
+  "etymology_id": "Berasal dari gambar petak sawah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kotak sawah yang dibagi menjadi empat bagian.",
+  "note_id": "Digunakan untuk sawah atau nama tempat."
+}

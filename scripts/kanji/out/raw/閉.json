@@ -1,0 +1,15 @@
+{
+  "kanji": "閉",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "pintu"
+    }
+  ],
+  "etymology_id": "Pintu yang ditutup rapat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Pintu besar yang ditutup rapat.",
+  "note_id": "Digunakan dalam shimemasu (menutup)."
+}

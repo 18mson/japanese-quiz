@@ -1,0 +1,15 @@
+{
+  "kanji": "多",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "夕",
+      "role": "meaning",
+      "meaning_id": "petang"
+    }
+  ],
+  "etymology_id": "Pengulangan simbol petang (夕) untuk menunjukkan jumlah yang banyak atau bertumpuk.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada dua bulan atau waktu petang (夕) yang bertumpuk menandakan jumlah yang banyak (多).",
+  "note_id": "Kosakata utama: 多い (おおい) - banyak."
+}

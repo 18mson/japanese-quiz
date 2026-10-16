@@ -1,0 +1,20 @@
+{
+  "kanji": "踊",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "足",
+      "role": "meaning",
+      "meaning_id": "kaki"
+    },
+    {
+      "part": "用",
+      "role": "phonetic",
+      "meaning_id": "menggunakan"
+    }
+  ],
+  "etymology_id": "Unsur kaki (足) menunjukkan gerakan fisik, sedangkan bagian lain berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menari (踊) menggunakan kaki (足).",
+  "note_id": "Kosakata penting: 盆踊り (Tarian Bon)."
+}

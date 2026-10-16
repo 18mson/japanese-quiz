@@ -1,0 +1,20 @@
+{
+  "kanji": "薬",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "grass"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "tree"
+    }
+  ],
+  "etymology_id": "Gabungan unsur tanaman (⺾) dan kayu/pohon (木) karena obat tradisional terbuat dari tumbuhan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanaman (⺾) dan bagian pohon (木) diolah menjadi obat (薬).",
+  "note_id": "Kosakata: 薬 (くすり) = obat"
+}

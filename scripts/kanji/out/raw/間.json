@@ -1,0 +1,20 @@
+{
+  "kanji": "間",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "gerbang atau pintu"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Menggambarkan celah atau ruang saat sinar matahari (日) tampak di antara dua daun pintu gerbang (門).",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada cahaya matahari (日) yang masuk di sela-sela atau di antara (間) pintu gerbang (門).",
+  "note_id": "Digunakan untuk menyatakan rentang waktu (時間) dan ruang antara (間)."
+}

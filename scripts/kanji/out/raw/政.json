@@ -1,0 +1,20 @@
+{
+  "kanji": "政",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "止",
+      "role": "meaning",
+      "meaning_id": "stop"
+    },
+    {
+      "part": "攵",
+      "role": "meaning",
+      "meaning_id": "action"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang berkaitan dengan tindakan mengatur dan mengelola urusan pemerintahan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tindakan mengatur dan menghentikan masalah dalam pemerintahan.",
+  "note_id": "Kosakata penting: 政治家 (せいじか)."
+}

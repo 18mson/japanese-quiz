@@ -1,0 +1,20 @@
+{
+  "kanji": "庭",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "bangunan atau rumah"
+    },
+    {
+      "part": "王",
+      "role": "meaning",
+      "meaning_id": "raja"
+    }
+  ],
+  "etymology_id": "Komponen bangunan dan bagian lainnya digabungkan untuk menyatakan halaman atau kebun di sekitar rumah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Halaman rumah yang luas seperti tanah milik raja.",
+  "note_id": "Kosakata: 庭 (にわ) = halaman, kebun."
+}

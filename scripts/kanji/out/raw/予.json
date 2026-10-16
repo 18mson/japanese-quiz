@@ -1,0 +1,15 @@
+{
+  "kanji": "予",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Menunjukkan hal yang mendahului atau sebelumnya.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang disiapkan terlebih dahulu sebelum terjadi.",
+  "note_id": "Kosakata: 予約します (よやくします) = memesan, reservasi."
+}

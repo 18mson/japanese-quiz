@@ -1,0 +1,20 @@
+{
+  "kanji": "役",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "step"
+    },
+    {
+      "part": "又",
+      "role": "meaning",
+      "meaning_id": "hand"
+    }
+  ],
+  "etymology_id": "Gabungan langkah (彳) dan tangan (又) yang menunjukkan tugas atau pekerjaan yang dikerjakan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Melangkah (彳) menggunakan tangan (又) untuk menjalankan tugas (役).",
+  "note_id": "Kosakata: 市役所 (しやくしょ) = kantor wali kota; 役に立ちます = berguna"
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "専",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "ten"
+    },
+    {
+      "part": "寸",
+      "role": "shape",
+      "meaning_id": "inch"
+    },
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "rice field"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan mengurus suatu bidang secara khusus.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggarap bidang tanah secara khusus dan eksklusif.",
+  "note_id": "Digunakan dalam kata keahlian khusus (senmon)."
+}

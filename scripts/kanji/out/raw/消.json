@@ -1,0 +1,20 @@
+{
+  "kanji": "消",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "月",
+      "role": "phonetic",
+      "meaning_id": "bulan"
+    }
+  ],
+  "etymology_id": "Terdiri dari air dan komponen bulan. Air digunakan untuk memadamkan atau melenyapkan sesuatu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air (氵) dipakai untuk memadamkan atau mematikan (消) api.",
+  "note_id": "Minna no Nihongo: 消します (けします) berarti mematikan atau memadamkan."
+}

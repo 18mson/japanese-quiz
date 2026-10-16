@@ -1,0 +1,20 @@
+{
+  "kanji": "桜",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "女",
+      "role": "phonetic",
+      "meaning_id": "perempuan"
+    }
+  ],
+  "etymology_id": "Pohon yang menghasilkan bunga sakura.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Pohon yang indah dipandang wanita, yaitu pohon sakura.",
+  "note_id": "Menyatakan bunga sakura."
+}

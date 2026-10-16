@@ -1,0 +1,15 @@
+{
+  "kanji": "面",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "面",
+      "role": "shape",
+      "meaning_id": "wajah"
+    }
+  ],
+  "etymology_id": "Gambar garis besar wajah manusia.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Garis luar yang menggambarkan bentuk wajah atau topeng.",
+  "note_id": "Digunakan untuk permukaan dan wajah."
+}

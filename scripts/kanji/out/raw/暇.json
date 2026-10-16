@@ -1,0 +1,20 @@
+{
+  "kanji": "暇",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "hari atau waktu"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "tangan atau penanda"
+    }
+  ],
+  "etymology_id": "Komponen 日 melambangkan hari atau waktu, disandingkan dengan komponen 叚 (mengandung 又) yang bertindak sebagai pembawa bunyi 'ka'.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Ketika ada waktu matahari (日) bersinar dan tangan (又) bebas santai, itu adalah waktu luang.",
+  "note_id": "Sering dipakai sebagai kata sifat-na, yaitu 暇な (ひまな) yang berarti tidak sibuk."
+}

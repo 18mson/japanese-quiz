@@ -1,0 +1,15 @@
+{
+  "kanji": "北",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "匕",
+      "role": "shape",
+      "meaning_id": "sendok atau orang berbalik"
+    }
+  ],
+  "etymology_id": "Terdiri dari bentuk dua orang yang saling membelakangi. Menyatakan arah utara.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Dua orang saling membelakangi dan berjalan ke arah utara.",
+  "note_id": "Digunakan dalam kata 北海道 (Hokkaido) dan 北口 (pintu utara)."
+}

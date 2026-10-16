@@ -1,0 +1,20 @@
+{
+  "kanji": "橋",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggunakan unsur kayu (木) karena jembatan zaman dulu dibuat dari kayu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Jembatan (橋) terbuat dari kayu (木).",
+  "note_id": "Digunakan dalam kata jembatan (橋)."
+}

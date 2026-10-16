@@ -1,0 +1,25 @@
+{
+  "kanji": "葉",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "rumput atau tanaman"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "世",
+      "role": "phonetic",
+      "meaning_id": "generasi atau dunia"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan unsur tanaman (⺾) dan pohon (木) untuk menunjukkan bagian tumbuhan, sementara unsur 世 berfungsi sebagai pemberi bunyi bacaan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Daun (葉) tumbuh di atas pohon (木) dari tanaman (⺾).",
+  "note_id": "Kosakata penting: 言葉 (kata/bahasa) dan 秋葉原 (nama tempat di Tokyo)."
+}

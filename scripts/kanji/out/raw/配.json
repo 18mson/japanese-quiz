@@ -1,0 +1,20 @@
+{
+  "kanji": "配",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "酉",
+      "role": "phonetic",
+      "meaning_id": "alkohol atau kendi"
+    },
+    {
+      "part": "已",
+      "role": "shape",
+      "meaning_id": "sudah"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang mewakili suara dan arti distribusi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Membagikan sesuatu kepada orang lain.",
+  "note_id": "Digunakan dalam kata khawatir atau cemas (shinpai)."
+}

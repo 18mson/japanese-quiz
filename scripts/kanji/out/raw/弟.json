@@ -1,0 +1,20 @@
+{
+  "kanji": "弟",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "弓",
+      "role": "shape",
+      "meaning_id": "busur"
+    },
+    {
+      "part": "并",
+      "role": "phonetic",
+      "meaning_id": "menggabungkan"
+    }
+  ],
+  "etymology_id": "Komponen 并 berfungsi sebagai penanda bunyi, sedangkan komponen lainnya membentuk bentuk dasar kanji ini.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bentuk adik laki-laki yang sedang memegang busur.",
+  "note_id": "Digunakan untuk menyatakan adik laki-laki."
+}

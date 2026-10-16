@@ -1,0 +1,15 @@
+{
+  "kanji": "涼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "water"
+    }
+  ],
+  "etymology_id": "Kanji 涼 menggunakan unsur air 氵 untuk menunjukkan suasana yang sejuk dan dingin.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air (氵) yang dingin membuat udara terasa sejuk (涼).",
+  "note_id": "Digunakan dalam kata sejuk (涼しい)."
+}

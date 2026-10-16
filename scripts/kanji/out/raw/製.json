@@ -1,0 +1,30 @@
+{
+  "kanji": "製",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "衣",
+      "role": "meaning",
+      "meaning_id": "pakaian"
+    },
+    {
+      "part": "刂",
+      "role": "meaning",
+      "meaning_id": "pisau"
+    },
+    {
+      "part": "牛",
+      "role": "meaning",
+      "meaning_id": "sapi"
+    },
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    }
+  ],
+  "etymology_id": "Menggabungkan proses memotong bahan untuk membuat produk.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Memotong bahan kain dan kulit untuk membuat produk buatan.",
+  "note_id": "Digunakan untuk menyatakan buatan atau produk."
+}

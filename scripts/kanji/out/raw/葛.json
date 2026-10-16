@@ -1,0 +1,30 @@
+{
+  "kanji": "葛",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "rumput atau tanaman"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "bungkusan"
+    },
+    {
+      "part": "匕",
+      "role": "shape",
+      "meaning_id": "sendok"
+    }
+  ],
+  "etymology_id": "Komponen ⺾ menunjukkan kelompok tumbuhan atau rumput rambat (kudzu), sedangkan komponen di bawahnya bertindak sebagai penentu bunyi fonetik.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tanaman obat dari rumput merambat yang tumbuh lebat dan dipanen di bawah terik matahari.",
+  "note_id": "Kerap dijumpai pada nama tempat atau tokoh seperti 葛飾北斎 (Katsushika Hokusai)."
+}

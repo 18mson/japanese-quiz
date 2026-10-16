@@ -1,0 +1,20 @@
+{
+  "kanji": "聞",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "耳",
+      "role": "meaning",
+      "meaning_id": "telinga"
+    },
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "pintu"
+    }
+  ],
+  "etymology_id": "Telinga yang diletakkan di dekat pintu untuk mendengarkan suara dari luar.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menempelkan telinga di pintu untuk mendengarkan suara.",
+  "note_id": "Digunakan dalam kiku (mendengar) dan shinbun (koran)."
+}

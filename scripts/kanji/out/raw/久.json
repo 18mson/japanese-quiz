@@ -1,0 +1,15 @@
+{
+  "kanji": "久",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "久",
+      "role": "shape",
+      "meaning_id": "long time"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah bentuk gambar atau simbol yang mewakili konsep waktu yang lama atau berlanjut.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bentuknya mirip orang membungkuk karena sudah sangat tua dan lama.",
+  "note_id": "Digunakan dalam kata ひさしぶり (lama tidak bertemu)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "細",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    },
+    {
+      "part": "田",
+      "role": "phonetic",
+      "meaning_id": "sawah"
+    }
+  ],
+  "etymology_id": "Benang yang sangat tipis dan kecil.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Benang yang tipis dan kecil seperti garis di sawah.",
+  "note_id": "Digunakan untuk menyatakan benda kecil atau tipis."
+}

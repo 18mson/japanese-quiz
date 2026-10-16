@@ -1,0 +1,15 @@
+{
+  "kanji": "心",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "心",
+      "role": "shape",
+      "meaning_id": "heart"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar bentuk hati atau organ tubuh bagian dalam.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai gambar hati manusia yang sedang berdetak.",
+  "note_id": "Digunakan untuk hal-hal yang berkaitan dengan perasaan dan pikiran."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "束",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggambarkan kayu atau batang (木) yang diikat menjadi satu di bagian tengahnya.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mengikat batang-batang pohon (木) menjadi satu ikatan (束).",
+  "note_id": "Kosakata utama: 約束 (やくそく) - janji."
+}

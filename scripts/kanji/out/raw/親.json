@@ -1,0 +1,20 @@
+{
+  "kanji": "親",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "tree"
+    },
+    {
+      "part": "見",
+      "role": "meaning",
+      "meaning_id": "see"
+    }
+  ],
+  "etymology_id": "Gabungan melihat dan pohon yang berkaitan dengan orang tua.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang tua selalu mengawasi dan melihat anak-anaknya.",
+  "note_id": "Digunakan untuk orang tua dan keakraban."
+}

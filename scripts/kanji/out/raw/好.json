@@ -1,0 +1,20 @@
+{
+  "kanji": "好",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    },
+    {
+      "part": "子",
+      "role": "meaning",
+      "meaning_id": "anak"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen perempuan dan anak yang melambangkan kebaikan atau perasaan suka.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seorang wanita (女) dan seorang anak (子) bersama-sama menunjukkan hal yang disukai (好).",
+  "note_id": "Kosakata: 好きな (すき) berarti suka atau gemar."
+}

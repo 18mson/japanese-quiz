@@ -1,0 +1,20 @@
+{
+  "kanji": "新",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "tree"
+    },
+    {
+      "part": "辛",
+      "role": "phonetic",
+      "meaning_id": "spicy"
+    }
+  ],
+  "etymology_id": "Gabungan komponen pohon dan suara pembacaan untuk menyatakan sesuatu yang baru ditebang.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kayu pohon yang baru.",
+  "note_id": "Kanji tingkat dasar yang sangat penting untuk kata baru."
+}

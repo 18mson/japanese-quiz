@@ -1,0 +1,20 @@
+{
+  "kanji": "現",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "王",
+      "role": "shape",
+      "meaning_id": "raja"
+    },
+    {
+      "part": "見",
+      "role": "meaning",
+      "meaning_id": "melihat"
+    }
+  ],
+  "etymology_id": "Menunjukkan sesuatu yang dapat dilihat atau nampak sekarang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Raja dapat melihat keadaan yang sekarang.",
+  "note_id": "Digunakan dalam genkin (uang tunai)."
+}

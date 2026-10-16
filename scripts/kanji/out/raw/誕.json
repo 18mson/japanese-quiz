@@ -1,0 +1,15 @@
+{
+  "kanji": "誕",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau berbicara"
+    }
+  ],
+  "etymology_id": "Terdiri dari kata (言) yang berkaitan dengan ucapan selamat atau perayaan kelahiran.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mengucapkan (言) selamat pada hari ulang tahun atau kelahiran (誕).",
+  "note_id": "Digunakan pada kata 誕生日 (tanjoubi) yang berarti hari ulang tahun."
+}

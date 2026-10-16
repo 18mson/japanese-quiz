@@ -1,0 +1,15 @@
+{
+  "kanji": "卵",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "卩",
+      "role": "shape",
+      "meaning_id": "tanda atau segel"
+    }
+  ],
+  "etymology_id": "Merupakan gambar sederhana yang melambangkan bentuk telur.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bentuk lonjong seperti telur (卵).",
+  "note_id": "Kosakata penting: 卵 (telur)."
+}

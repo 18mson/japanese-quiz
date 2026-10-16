@@ -1,0 +1,20 @@
+{
+  "kanji": "弁",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "厶",
+      "role": "shape",
+      "meaning_id": "sudut"
+    },
+    {
+      "part": "廾",
+      "role": "shape",
+      "meaning_id": "dua tangan"
+    }
+  ],
+  "etymology_id": "Bentuk asli yang menggambarkan pembagian atau pemisahan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Dua tangan membuka sesuatu seperti kelopak bunga.",
+  "note_id": "Digunakan dalam kata お弁当 (bekal) dan 弁護士 (pengacara)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "容",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Gabungan atap dan mulut, menggambarkan wadah atau isi di dalam rumah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di bawah atap terdapat wadah untuk menampung sesuatu.",
+  "note_id": "Kosakata: 理容師 (りようし) = tukang cukur rambut (pria), 美容師 (びようし) = ahli tata rias / penata rambut."
+}

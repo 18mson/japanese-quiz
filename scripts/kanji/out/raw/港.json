@@ -1,0 +1,30 @@
+{
+  "kanji": "港",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    },
+    {
+      "part": "已",
+      "role": "phonetic",
+      "meaning_id": "sudah"
+    },
+    {
+      "part": "井",
+      "role": "shape",
+      "meaning_id": "sumur"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur air dengan komponen suara untuk pelabuhan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Ada air (氵) di tempat kapal berlabuh di pelabuhan (港).",
+  "note_id": "Kosakata: 空港 (くうこう) berarti bandara dan 香港 (ホンコン) berarti Hong Kong."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "禁",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "示",
+      "role": "meaning",
+      "meaning_id": "menunjukkan"
+    },
+    {
+      "part": "木",
+      "role": "shape",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Pemberitahuan atau peringatan yang ditunjukkan pada pohon untuk melarang sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tanda peringatan dipasang pada pohon agar orang dilarang mendekat.",
+  "note_id": "Sering dipakai dalam aturan larangan seperti 禁煙 (dilarang merokok)."
+}

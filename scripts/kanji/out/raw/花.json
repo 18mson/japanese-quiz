@@ -1,0 +1,25 @@
+{
+  "kanji": "花",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "tanaman atau rumput"
+    },
+    {
+      "part": "匕",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ka"
+    },
+    {
+      "part": "⺅",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ka"
+    }
+  ],
+  "etymology_id": "Komponen ⺾ menunjukkan tumbuhan berdaun atau herba, sedangkan gabungan ⺅ dan 匕 (化) berfungsi sebagai penanda bunyi ka.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanaman (⺾) yang berubah (化) menjadi bunga mekar yang sangat indah.",
+  "note_id": "Digunakan pada kata 花 (はな) dan tradisi melihat sakura お花見 (おはなみ)."
+}

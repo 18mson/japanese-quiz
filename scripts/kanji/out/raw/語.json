@@ -1,0 +1,20 @@
+{
+  "kanji": "語",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    },
+    {
+      "part": "五",
+      "role": "phonetic",
+      "meaning_id": "lima"
+    }
+  ],
+  "etymology_id": "Kata 言 digabung dengan 五 sebagai penunjuk bacaan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kata-kata yang diucapkan berkaitan dengan bahasa.",
+  "note_id": "Kosakata: ～語 (bahasa ~), 英語 (bahasa Inggris), 日本語 (bahasa Jepang)."
+}

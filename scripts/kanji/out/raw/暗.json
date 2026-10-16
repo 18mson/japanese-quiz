@@ -1,0 +1,20 @@
+{
+  "kanji": "暗",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "音",
+      "role": "phonetic",
+      "meaning_id": "suara (penanda bunyi AN)"
+    }
+  ],
+  "etymology_id": "Menggabungkan matahari (日) sebagai penanda arti dan 音 sebagai penanda bunyi AN. Tanpa adanya cahaya matahari, keadaan menjadi gelap.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ketika matahari (日) hilang dan hanya terdengar bunyi (音), suasana menjadi gelap.",
+  "note_id": "Muncul dalam kosakata 暗い (gelap) dan 暗証番号 (nomor PIN)."
+}

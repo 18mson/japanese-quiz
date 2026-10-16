@@ -1,0 +1,15 @@
+{
+  "kanji": "甘",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "甘",
+      "role": "meaning",
+      "meaning_id": "manis"
+    }
+  ],
+  "etymology_id": "Bentuk simbolik yang menggambarkan sesuatu yang terasa enak dan manis tertahan di dalam mulut.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kotak menyerupai mulut yang sedang mengecap rasa makanan yang manis (甘い).",
+  "note_id": "Membentuk kata sifat-i dasar 甘い (manis)."
+}

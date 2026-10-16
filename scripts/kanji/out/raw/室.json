@@ -1,0 +1,20 @@
+{
+  "kanji": "室",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "至",
+      "role": "meaning",
+      "meaning_id": "tiba"
+    }
+  ],
+  "etymology_id": "Gabungan atap (宀) dan tempat tiba (至) membentuk arti ruangan di dalam bangunan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di bawah atap (宀), kita tiba (至) di dalam sebuah ruangan (室).",
+  "note_id": "Arti dasar: room, apartment, chamber."
+}

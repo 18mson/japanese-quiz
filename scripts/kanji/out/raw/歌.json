@@ -1,0 +1,20 @@
+{
+  "kanji": "歌",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut bernyanyi"
+    },
+    {
+      "part": "欠",
+      "role": "meaning",
+      "meaning_id": "mulut terbuka lebar"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen penanda bunyi yang terdiri dari mulut dan komponen 欠 yang memperlihatkan seseorang membuka mulut saat bernyanyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Dua mulut (口) bernyanyi gembira sampai mulutnya menganga lebar (欠).",
+  "note_id": "Muncul pada kata 歌 (うた) yang berarti lagu dan 歌手 (かしゅ) penyanyi."
+}

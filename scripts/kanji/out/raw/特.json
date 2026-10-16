@@ -1,0 +1,20 @@
+{
+  "kanji": "特",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "牛",
+      "role": "meaning",
+      "meaning_id": "sapi"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Terdiri dari sapi (牛) dan komponen lain yang awalnya berarti istimewa.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Sapi (牛) yang berdiri di atas tanah (土) ini sangat spesial.",
+  "note_id": "Kosakata: 特急 (とっきゅう) = super ekspres; 特に (とくに) = terutama."
+}

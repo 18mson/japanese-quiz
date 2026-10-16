@@ -1,0 +1,20 @@
+{
+  "kanji": "違",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "berjalan atau jalan"
+    },
+    {
+      "part": "韋",
+      "role": "phonetic",
+      "meaning_id": "kulit atau berbalik (penanda bunyi I)"
+    }
+  ],
+  "etymology_id": "Menggabungkan jalan (辶) sebagai penanda arti pergerakan dan 韋 sebagai penanda bunyi I. Menggambarkan tindakan menyimpang dari jalan sehingga berbeda atau salah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berjalan (辶) berlawanan arah dengan orang lain menunjukkan suatu perbedaan.",
+  "note_id": "Paling sering digunakan dalam percakapan sehari-hari: 違います (bukan/salah)."
+}

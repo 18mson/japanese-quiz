@@ -1,0 +1,25 @@
+{
+  "kanji": "丈",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis miring"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Menggambarkan sosok tinggi atau ukuran panjang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Garis dan titik membentuk ukuran tinggi atau panjang.",
+  "note_id": "Minna no Nihongo: 大丈夫な (だいじょうぶ) berarti tidak apa-apa atau aman."
+}

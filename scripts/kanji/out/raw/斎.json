@@ -1,0 +1,15 @@
+{
+  "kanji": "斎",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "示",
+      "role": "meaning",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan pemurnian diri di depan altar atau tempat suci.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Altar yang disucikan untuk tempat ibadah.",
+  "note_id": "Digunakan pada nama atau istilah khusus."
+}

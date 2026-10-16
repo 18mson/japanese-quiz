@@ -1,0 +1,20 @@
+{
+  "kanji": "伎",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "支",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ギ"
+    }
+  ],
+  "etymology_id": "Terbentuk dari radikal orang (⺅) dan komponen 支 yang memberikan nilai bunyi ギ, merujuk pada keahlian atau talenta yang dilakukan orang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Seseorang (⺅) yang tangannya terampil menopang (支) berbagai pertunjukan memiliki bakat seni (伎).",
+  "note_id": "Paling sering ditemui dalam seni teater tradisional Jepang 歌舞伎 (kabuki)."
+}

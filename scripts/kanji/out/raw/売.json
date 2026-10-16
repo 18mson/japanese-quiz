@@ -1,0 +1,20 @@
+{
+  "kanji": "売",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "士",
+      "role": "meaning",
+      "meaning_id": "pria atau samurai"
+    },
+    {
+      "part": "冖",
+      "role": "shape",
+      "meaning_id": "penutup"
+    }
+  ],
+  "etymology_id": "Menggambarkan orang yang menawarkan barang dagangan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang (士) di bawah atap (冖) sedang menjual barang.",
+  "note_id": "Berarti menjual."
+}

@@ -1,0 +1,30 @@
+{
+  "kanji": "漫",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "罒",
+      "role": "shape",
+      "meaning_id": "jaring"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen air dan bagian lain yang menunjukkan bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Air yang meluap bebas seperti cerita dalam komik.",
+  "note_id": "Sering dipakai dalam kata manga atau manzai."
+}

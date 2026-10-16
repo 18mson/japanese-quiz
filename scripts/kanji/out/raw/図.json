@@ -1,0 +1,20 @@
+{
+  "kanji": "図",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "囗",
+      "role": "shape",
+      "meaning_id": "enclosure"
+    },
+    {
+      "part": "斗",
+      "role": "shape",
+      "meaning_id": "dipper"
+    }
+  ],
+  "etymology_id": "Kotak pembatas wilayah yang diisi gambar denah.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Batas wilayah yang digambar dalam sebuah peta.",
+  "note_id": "Digunakan untuk perpustakaan dan peta."
+}

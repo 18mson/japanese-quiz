@@ -1,0 +1,25 @@
+{
+  "kanji": "築",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "竹",
+      "role": "meaning",
+      "meaning_id": "bambu"
+    },
+    {
+      "part": "工",
+      "role": "meaning",
+      "meaning_id": "tukang"
+    }
+  ],
+  "etymology_id": "Menggunakan bahan bangunan seperti kayu dan bambu yang dikerjakan oleh tukang untuk membangun.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tukang (工) menggunakan kayu (木) dan bambu (竹) untuk membangun rumah.",
+  "note_id": "Kosakata: 建築家 (arsitek)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "三",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "meaning",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Terdiri dari tiga garis horizontal yang melambangkan angka tiga.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tiga garis mendatar menunjukkan angka tiga.",
+  "note_id": "Angka tiga dalam bahasa Jepang."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "神",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "礻",
+      "role": "meaning",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Gabungan altar dewa dan bagian bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Altar tempat berdoa kepada tuhan atau dewa.",
+  "note_id": "Berkaitan dengan keagamaan dan kuil."
+}

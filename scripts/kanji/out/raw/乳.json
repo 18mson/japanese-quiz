@@ -1,0 +1,15 @@
+{
+  "kanji": "乳",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "子",
+      "role": "meaning",
+      "meaning_id": "anak"
+    }
+  ],
+  "etymology_id": "Menggambarkan kaitan antara ibu dan anak dalam pemberian susu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seorang anak (子) yang masih bayi memerlukan susu (乳).",
+  "note_id": "Digunakan dalam kata susu (牛乳)."
+}

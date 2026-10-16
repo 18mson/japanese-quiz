@@ -1,0 +1,20 @@
+{
+  "kanji": "吸",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "及",
+      "role": "phonetic",
+      "meaning_id": "mencapai"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen mulut (口) untuk makna tindakan yang melibatkan mulut, serta komponen (及) sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan MULUT untuk menghisap sesuatu.",
+  "note_id": "Digunakan pada kata menghisap atau merokok."
+}

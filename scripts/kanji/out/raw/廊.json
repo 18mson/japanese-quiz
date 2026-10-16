@@ -1,0 +1,20 @@
+{
+  "kanji": "廊",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻏",
+      "role": "meaning",
+      "meaning_id": "tempat"
+    },
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "bangunan"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur bangunan (广) dan area (⻏) yang merujuk pada bagian koridor.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berada di dalam bangunan (广) melewati lorong.",
+  "note_id": "Digunakan pada kata koridor (廊下)."
+}

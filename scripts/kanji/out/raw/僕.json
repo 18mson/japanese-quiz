@@ -1,0 +1,15 @@
+{
+  "kanji": "僕",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen orang (⺅) dan bagian lain yang memberi petunjuk bunyi. Berarti pelayan atau aku.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seorang (⺅) pelayan yang berkata aku (boku).",
+  "note_id": "Digunakan sebagai kata ganti orang pertama informal untuk pria."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "初",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "衤",
+      "role": "meaning",
+      "meaning_id": "pakaian"
+    },
+    {
+      "part": "刀",
+      "role": "meaning",
+      "meaning_id": "pisau"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan memotong kain sebagai langkah awal membuat pakaian.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Memotong kain dengan pisau untuk pertama kali.",
+  "note_id": "Kosakata: 初めて (pertama kali)"
+}

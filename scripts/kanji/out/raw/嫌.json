@@ -1,0 +1,15 @@
+{
+  "kanji": "嫌",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen perempuan dan bagian lain sebagai penanda bunyi untuk menyatakan rasa benci.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada unsur perempuan (女) yang merasa tidak suka atau benci.",
+  "note_id": "Digunakan dalam kata benci atau tidak suka."
+}

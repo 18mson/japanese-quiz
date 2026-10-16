@@ -1,0 +1,20 @@
+{
+  "kanji": "封",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "寸",
+      "role": "meaning",
+      "meaning_id": "ukuran atau tangan"
+    }
+  ],
+  "etymology_id": "Menggunakan tanah untuk menutup atau menyegel sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menekan tanah dengan tangan untuk menyegel surat atau barang.",
+  "note_id": "Kosakata: 封筒 (ふうとう) - amplop."
+}

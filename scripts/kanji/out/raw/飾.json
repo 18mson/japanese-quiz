@@ -1,0 +1,20 @@
+{
+  "kanji": "飾",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    },
+    {
+      "part": "食",
+      "role": "meaning",
+      "meaning_id": "makanan"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan menghias menggunakan kain atau ornamen.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menghias benda dengan kain.",
+  "note_id": "Berarti dekorasi atau hiasan."
+}

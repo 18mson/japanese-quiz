@@ -1,0 +1,30 @@
+{
+  "kanji": "寒",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap atau rumah"
+    },
+    {
+      "part": "井",
+      "role": "shape",
+      "meaning_id": "jerami atau rangka"
+    },
+    {
+      "part": "ハ",
+      "role": "meaning",
+      "meaning_id": "es atau titik beku"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "garis alas"
+    }
+  ],
+  "etymology_id": "Menggambarkan suasana di dalam rumah (宀) di mana seseorang menumpuk jerami untuk melindungi diri dari udara es yang dingin membeku.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di dalam rumah menumpuk jerami rapat-rapat karena lantai membeku dan udara sangat dingin.",
+  "note_id": "Khusus digunakan untuk dinginnya cuaca atau suhu udara (寒い)."
+}

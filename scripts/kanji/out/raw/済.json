@@ -1,0 +1,20 @@
+{
+  "kanji": "済",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "斉",
+      "role": "phonetic",
+      "meaning_id": "rata"
+    }
+  ],
+  "etymology_id": "Air digabung dengan komponen bunyi untuk membentuk arti menyelesaikan atau melunasi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Air yang merata menandakan tugas telah selesai.",
+  "note_id": "Sering dipakai dalam kata ekonomi."
+}

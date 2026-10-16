@@ -1,0 +1,15 @@
+{
+  "kanji": "状",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "犬",
+      "role": "meaning",
+      "meaning_id": "anjing"
+    }
+  ],
+  "etymology_id": "Bentuk dan keadaan rupa.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bentuk suatu keadaan rupa.",
+  "note_id": "Digunakan pada kata surat atau keadaan."
+}

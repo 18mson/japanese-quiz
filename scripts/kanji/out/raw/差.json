@@ -1,0 +1,25 @@
+{
+  "kanji": "差",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis lengkung"
+    },
+    {
+      "part": "工",
+      "role": "shape",
+      "meaning_id": "tukang"
+    },
+    {
+      "part": "羊",
+      "role": "shape",
+      "meaning_id": "domba"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen bentuk.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menyatakan perbedaan atau jarak.",
+  "note_id": "Digunakan dalam kata perempatan."
+}

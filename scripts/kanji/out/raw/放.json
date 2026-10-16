@@ -1,0 +1,20 @@
+{
+  "kanji": "放",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "方",
+      "role": "phonetic",
+      "meaning_id": "arah"
+    },
+    {
+      "part": "攵",
+      "role": "meaning",
+      "meaning_id": "tindakan"
+    }
+  ],
+  "etymology_id": "Gabungan komponen arah dan tindakan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mengarahkan tangan untuk melepaskan sesuatu.",
+  "note_id": "Digunakan dalam kata 放送 (siaran)."
+}

@@ -1,0 +1,35 @@
+{
+  "kanji": "喫",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "大",
+      "role": "shape",
+      "meaning_id": "besar"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "刀",
+      "role": "shape",
+      "meaning_id": "pisau"
+    },
+    {
+      "part": "亠",
+      "role": "shape",
+      "meaning_id": "tutup"
+    }
+  ],
+  "etymology_id": "Menggunakan mulut untuk makan, minum, atau merokok.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Membuka mulut untuk memasukkan sesuatu saat makan atau minum.",
+  "note_id": "Digunakan pada kafe."
+}

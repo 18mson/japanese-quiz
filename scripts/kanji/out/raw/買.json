@@ -1,0 +1,20 @@
+{
+  "kanji": "買",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "kerang atau uang"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Menggunakan kerang (uang zaman dulu) untuk melakukan transaksi.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggunakan uang kerang (貝) dengan mengamati (目) barang yang ingin dibeli.",
+  "note_id": "Berarti membeli."
+}

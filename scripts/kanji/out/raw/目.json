@@ -1,0 +1,15 @@
+{
+  "kanji": "目",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "eye"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar bentuk mata manusia.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gambar kotak dengan garis di tengah yang menyerupai mata.",
+  "note_id": "Kosakata: 目 (め) = mata; ～目 (～め) = akhiran urutan"
+}

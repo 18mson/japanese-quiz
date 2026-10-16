@@ -1,0 +1,15 @@
+{
+  "kanji": "食",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "食",
+      "role": "meaning",
+      "meaning_id": "makanan"
+    }
+  ],
+  "etymology_id": "Bentuk wadah makanan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mangkuk makanan yang siap disantap.",
+  "note_id": "Kanji dasar untuk makan dan makanan."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "血",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "血",
+      "role": "meaning",
+      "meaning_id": "darah"
+    }
+  ],
+  "etymology_id": "Gambar wadah yang berisi tetesan cairan merah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Setetes cairan dalam wadah melambangkan darah.",
+  "note_id": "Kosakata penting: 血が出ます (ちがでます) untuk berdarah."
+}

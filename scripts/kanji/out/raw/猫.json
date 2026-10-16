@@ -1,0 +1,15 @@
+{
+  "kanji": "猫",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "犭",
+      "role": "meaning",
+      "meaning_id": "animal"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen hewan dan bagian lain sebagai petunjuk bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Hewan berkaki empat yang lucu dan mengeong adalah kucing.",
+  "note_id": "Kosakata dasar untuk hewan kucing."
+}

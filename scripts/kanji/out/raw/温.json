@@ -1,0 +1,25 @@
+{
+  "kanji": "温",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "皿",
+      "role": "shape",
+      "meaning_id": "wadah atau piring"
+    }
+  ],
+  "etymology_id": "Komponen 氵 (air) mewakili sifat cairan atau suhu, dipadukan dengan bagian kanan yang melambangkan wadah makanan hangat di bawah kehangatan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Air (氵) di dalam wadah (皿) terasa hangat karena terkena sinar matahari (日).",
+  "note_id": "Digunakan untuk kehangatan benda atau makanan yang dapat disentuh (あたたかい)."
+}

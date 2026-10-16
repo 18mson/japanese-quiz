@@ -1,0 +1,20 @@
+{
+  "kanji": "都",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "⻏",
+      "role": "meaning",
+      "meaning_id": "kota"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang berkaitan dengan wilayah atau kota besar.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kota besar atau pusat pemerintahan.",
+  "note_id": "Digunakan dalam kata 都合 (kondisi/keadaan)."
+}

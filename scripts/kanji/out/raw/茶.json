@@ -1,0 +1,20 @@
+{
+  "kanji": "茶",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "rumput"
+    },
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    }
+  ],
+  "etymology_id": "Tanaman teh dikaitkan dengan unsur tanaman atau rumput (⺾) dan kayu (木).",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanaman teh tumbuh dari rumput (⺾) dan pohon (木) di alam.",
+  "note_id": "Kosakata: お茶 (teh), 紅茶 (teh hitam), 喫茶店 (kedai kopi)."
+}

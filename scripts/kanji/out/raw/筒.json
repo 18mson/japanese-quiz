@@ -1,0 +1,20 @@
+{
+  "kanji": "筒",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "竹",
+      "role": "meaning",
+      "meaning_id": "bambu"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari bambu dan mulut. Digunakan untuk menyatakan benda seperti pipa atau silinder dari bambu.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Pipa bambu (竹) yang berlubang seperti mulut (口).",
+  "note_id": "Kosakata: 封筒 (ふうとう) = amplop."
+}

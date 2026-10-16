@@ -1,0 +1,20 @@
+{
+  "kanji": "電",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "雨",
+      "role": "meaning",
+      "meaning_id": "hujan"
+    },
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "sawah"
+    }
+  ],
+  "etymology_id": "Awalnya menggambarkan kilat di awan hujan, kini berarti listrik.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Hujan di atas sawah disertai kilat listrik.",
+  "note_id": "Digunakan untuk kereta listrik, telepon, dan baterai."
+}

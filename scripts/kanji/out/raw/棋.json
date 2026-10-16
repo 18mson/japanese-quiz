@@ -1,0 +1,25 @@
+{
+  "kanji": "棋",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "kayu"
+    },
+    {
+      "part": "甘",
+      "role": "shape",
+      "meaning_id": "bagian atas papan"
+    },
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "kaki penyangga"
+    }
+  ],
+  "etymology_id": "Menggabungkan 木 (kayu) sebagai bahan pembuatan bidak dan papan catur dengan komponen sisanya sebagai penanda bunyi キ.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bidak permainan papan dari kayu (木) disusun rapi di atas papan berkaki (甘, ハ) untuk main catur (棋).",
+  "note_id": "Umum ditemukan dalam kata 将棋 (shogi = catur tradisional Jepang)."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "軽",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "車",
+      "role": "meaning",
+      "meaning_id": "kendaraan"
+    }
+  ],
+  "etymology_id": "Komponen kendaraan digabung untuk menyatakan sesuatu yang ringan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kereta atau kendaraan yang terasa ringan.",
+  "note_id": "Kosakata penting: 軽い (かるい) untuk ringan."
+}

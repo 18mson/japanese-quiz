@@ -1,0 +1,30 @@
+{
+  "kanji": "象",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "membungkus"
+    },
+    {
+      "part": "豕",
+      "role": "shape",
+      "meaning_id": "babi"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    }
+  ],
+  "etymology_id": "Berasal dari bentuk gambar gajah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bayangkan bentuk tubuh dan bentuk fisik seekor gajah.",
+  "note_id": "Minna no Nihongo: 象 (ぞう) berarti gajah."
+}

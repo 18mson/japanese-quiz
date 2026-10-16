@@ -1,0 +1,25 @@
+{
+  "kanji": "課",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata atau perintah"
+    },
+    {
+      "part": "田",
+      "role": "phonetic",
+      "meaning_id": "bagian dari buah"
+    },
+    {
+      "part": "木",
+      "role": "phonetic",
+      "meaning_id": "bagian dari buah"
+    }
+  ],
+  "etymology_id": "Komponen perkataan 言 dipadukan dengan 果 sebagai penanda bunyi ka, bermakna penetapan tugas kerja atau bab pelajaran.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Melalui perkataan (言), pimpinan menilai hasil tugas (果) dari setiap seksi.",
+  "note_id": "Terdapat dalam sebutan jabatan kepala seksi di kantor yaitu 課長 (かちょう)."
+}

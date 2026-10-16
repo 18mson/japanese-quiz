@@ -1,0 +1,20 @@
+{
+  "kanji": "百",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "meaning",
+      "meaning_id": "one"
+    },
+    {
+      "part": "白",
+      "role": "meaning",
+      "meaning_id": "white"
+    }
+  ],
+  "etymology_id": "Kombinasi angka satu (一) di atas kanji putih (白), digunakan sebagai angka seratus.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Satu (一) kotak putih (白) penuh berisi seratus (百) buah.",
+  "note_id": "Kosakata penting: 百 (seratus)."
+}

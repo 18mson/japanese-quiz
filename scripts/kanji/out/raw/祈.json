@@ -1,0 +1,20 @@
+{
+  "kanji": "祈",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "礻",
+      "role": "meaning",
+      "meaning_id": "altar atau dewa"
+    },
+    {
+      "part": "斤",
+      "role": "phonetic",
+      "meaning_id": "kapak"
+    }
+  ],
+  "etymology_id": "Komponen altar digabung dengan komponen bunyi untuk menyatakan doa kepada dewa.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berdiri di depan altar memohon doa.",
+  "note_id": "Berkaitan dengan kegiatan berdoa."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "次",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "冫",
+      "role": "meaning",
+      "meaning_id": "es"
+    },
+    {
+      "part": "欠",
+      "role": "phonetic",
+      "meaning_id": "kek"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen 冫 (es) dan 欠 sebagai penanda bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Setelah es (冫) mencair, giliran hal selanjutnya (次) yang terjadi.",
+  "note_id": "Arti dasar: next, order, sequence."
+}

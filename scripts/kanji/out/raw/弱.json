@@ -1,0 +1,20 @@
+{
+  "kanji": "弱",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "弓",
+      "role": "meaning",
+      "meaning_id": "busur panah"
+    },
+    {
+      "part": "冫",
+      "role": "meaning",
+      "meaning_id": "es"
+    }
+  ],
+  "etymology_id": "Gabungan dua bentuk busur panah yang melambangkan kelemahan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Busur panah (弓) yang membeku karena es (冫) menjadi lemah.",
+  "note_id": "Kosakata: 弱い (lemah)."
+}

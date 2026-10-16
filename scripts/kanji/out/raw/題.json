@@ -1,0 +1,20 @@
+{
+  "kanji": "題",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang atau nilai"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang berkaitan dengan judul, topik, atau masalah (題).",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Topik atau soal ujian (題) yang harus dikerjakan setiap hari.",
+  "note_id": "Digunakan dalam kata mondai (masalah) dan shukudai (PR)."
+}

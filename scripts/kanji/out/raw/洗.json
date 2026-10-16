@@ -1,0 +1,20 @@
+{
+  "kanji": "洗",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "土",
+      "role": "phonetic",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Kanji ini terdiri dari unsur air (氵) dan unsur tanah (土) yang berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gunakan air (氵) di atas tanah (土) untuk mencuci.",
+  "note_id": "Digunakan dalam kata kerja mencuci (araimasu)."
+}

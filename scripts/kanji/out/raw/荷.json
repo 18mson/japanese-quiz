@@ -1,0 +1,25 @@
+{
+  "kanji": "荷",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺾",
+      "role": "meaning",
+      "meaning_id": "tumbuhan atau beban jerami"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ka"
+    },
+    {
+      "part": "⺅",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi ka"
+    }
+  ],
+  "etymology_id": "Komponen rumput ⺾ melambangkan muatan barang jerami, sedangkan bagian bawahnya berfungsi sebagai penanda bunyi ka.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Rumput (⺾) yang diikat dipikul manusia sebagai barang bawaan.",
+  "note_id": "Sering dipakai untuk menyebut barang bawaan atau paket yaitu 荷物 (にもつ)."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "園",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "囗",
+      "role": "meaning",
+      "meaning_id": "pagar keliling"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "衣",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi"
+    }
+  ],
+  "etymology_id": "Komponen kurungan (囗) menunjukkan sebidang tanah berpagar. Bagian dalamnya yang memuat 土 dan 衣 berfungsi sebagai penanda bunyi 'en'.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Di dalam area berpagar (囗), terdapat tanah (土) taman yang indah untuk dikunjungi.",
+  "note_id": "Biasa dipakai dalam kata 公園 (taman)."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "先",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "stroke"
+    },
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "earth"
+    },
+    {
+      "part": "儿",
+      "role": "shape",
+      "meaning_id": "legs"
+    }
+  ],
+  "etymology_id": "Menggambarkan seseorang yang berjalan mendahului di depan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang berjalan di depan mendahului yang lain.",
+  "note_id": "Digunakan pada kata guru (sensei)."
+}

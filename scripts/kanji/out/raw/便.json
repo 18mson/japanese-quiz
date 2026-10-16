@@ -1,0 +1,25 @@
+{
+  "kanji": "便",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "田",
+      "role": "meaning",
+      "meaning_id": "sawah"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen orang dan bagian bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang pergi ke sawah setiap hari membawa surat untuk kemudahan.",
+  "note_id": "Digunakan dalam kata 便利な (praktis) dan 郵便局 (kantor pos)."
+}

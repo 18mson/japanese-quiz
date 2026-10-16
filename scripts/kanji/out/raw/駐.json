@@ -1,0 +1,25 @@
+{
+  "kanji": "駐",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "王",
+      "role": "shape",
+      "meaning_id": "raja"
+    },
+    {
+      "part": "馬",
+      "role": "meaning",
+      "meaning_id": "kuda"
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": "titik"
+    }
+  ],
+  "etymology_id": "Kuda digabungkan untuk menunjukkan tempat kuda berhenti atau tinggal.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kuda berhenti di suatu tempat parkir.",
+  "note_id": "Penting untuk kata tempat parkir."
+}

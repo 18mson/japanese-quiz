@@ -1,0 +1,20 @@
+{
+  "kanji": "枚",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "tree"
+    },
+    {
+      "part": "攵",
+      "role": "phonetic",
+      "meaning_id": "action"
+    }
+  ],
+  "etymology_id": "Gabungan komponen pohon dan tindakan, awalnya merujuk pada sehelai papan tipis dari kayu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Pohon yang dipotong menjadi lembaran tipis.",
+  "note_id": "Kosakata penting: ～枚 (～まい)."
+}

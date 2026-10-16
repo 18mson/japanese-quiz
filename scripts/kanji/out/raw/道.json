@@ -1,0 +1,20 @@
+{
+  "kanji": "道",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "首",
+      "role": "meaning",
+      "meaning_id": "leher"
+    }
+  ],
+  "etymology_id": "Gabungan tanda gerak/jalan (辶) dan kepala/leher (首) untuk menunjukkan arah atau jalan yang ditempuh.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berjalan (辶) menempuh jalan dengan kepala (首) tegak.",
+  "note_id": "Kosakata: 北海道 (ほっかいどう) = Hokkaido; 茶道 (さどう) = upacara minum teh; 華道 (かどう) = seni merangkai bunga."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "撮",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    },
+    {
+      "part": "耳",
+      "role": "phonetic",
+      "meaning_id": "telinga"
+    }
+  ],
+  "etymology_id": "Menggunakan tangan untuk melakukan suatu aksi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menggunakan tangan untuk mengambil foto.",
+  "note_id": "Artinya adalah snapshot, take pictures."
+}

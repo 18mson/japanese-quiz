@@ -1,0 +1,20 @@
+{
+  "kanji": "店",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Gabungan atap (广) dan penanda bunyi untuk menyatakan bangunan tempat berjualan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Bangunan beratap tempat orang berkumpul untuk berbelanja.",
+  "note_id": "Digunakan untuk toko atau kedai."
+}

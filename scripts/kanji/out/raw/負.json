@@ -1,0 +1,30 @@
+{
+  "kanji": "負",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "kerang atau uang"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "ハ",
+      "role": "shape",
+      "meaning_id": "delapan terbalik"
+    },
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "bungkus"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan urusan uang atau kerang, berkembang menjadi arti menanggung beban atau kekalahan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang kehilangan uang di bawah mata, mengalami kekalahan.",
+  "note_id": "Kosakata: 負けます (まけます) - kalah."
+}

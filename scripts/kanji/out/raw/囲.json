@@ -1,0 +1,20 @@
+{
+  "kanji": "囲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "囗",
+      "role": "meaning",
+      "meaning_id": "pagar atau batas keliling"
+    },
+    {
+      "part": "井",
+      "role": "phonetic",
+      "meaning_id": "sumur atau bingkai (penanda bunyi I)"
+    }
+  ],
+  "etymology_id": "Menggabungkan kurungan keliling (囗) yang memberi arti melingkari, dan 井 sebagai penanda bunyi I. Menggambarkan tindakan mengelilingi sesuatu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Sebuah sumur (井) dikelilingi oleh pagar kotak (囗) di sekitarnya.",
+  "note_id": "Contoh kosakatanya adalah 囲碁 (permainan papan Igo)."
+}

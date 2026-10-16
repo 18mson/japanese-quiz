@@ -1,0 +1,20 @@
+{
+  "kanji": "末",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "tanda"
+    }
+  ],
+  "etymology_id": "Mirip dengan kanji 本, tetapi garis penanda berada di bagian atas pohon (木), menunjukkan ujung atau akhir.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Garis (一) di bagian paling atas pohon (木) menunjukkan ujung atau akhir.",
+  "note_id": "Digunakan dalam kata 週末 (akhir pekan)."
+}

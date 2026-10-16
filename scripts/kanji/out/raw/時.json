@@ -1,0 +1,20 @@
+{
+  "kanji": "時",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "寺",
+      "role": "phonetic",
+      "meaning_id": "kuil"
+    }
+  ],
+  "etymology_id": "Matahari digunakan sebagai penunjuk waktu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Pergerakan matahari menandakan waktu atau jam.",
+  "note_id": "Artinya adalah time, hour."
+}

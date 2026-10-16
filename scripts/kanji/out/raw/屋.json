@@ -1,0 +1,20 @@
+{
+  "kanji": "屋",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "尸",
+      "role": "meaning",
+      "meaning_id": "atap atau tubuh"
+    },
+    {
+      "part": "至",
+      "role": "phonetic",
+      "meaning_id": "tiba atau sampai"
+    }
+  ],
+  "etymology_id": "Komponen 尸 melambangkan bangunan atau tempat bernaung, dipadukan dengan 至 yang berfungsi sebagai penanda bunyi serta makna tiba di tempat kediaman.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Di bawah atap (尸), orang sampai (至) di rumah atau toko untuk beristirahat.",
+  "note_id": "Sering dipakai sebagai akhiran nama toko seperti 本屋 (ほんや) serta kata 部屋 (へや)."
+}

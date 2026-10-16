@@ -1,0 +1,15 @@
+{
+  "kanji": "遅",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "辶",
+      "role": "meaning",
+      "meaning_id": "jalan"
+    }
+  ],
+  "etymology_id": "Gabungan elemen jalan (辶) untuk menyatakan gerakan yang lambat atau terlambat.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berjalan (辶) dengan lambat membuat kita menjadi telat.",
+  "note_id": "Kosakata: 遅い (lambat/telat)."
+}

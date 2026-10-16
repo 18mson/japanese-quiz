@@ -1,0 +1,25 @@
+{
+  "kanji": "節",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "竹",
+      "role": "meaning",
+      "meaning_id": "bamboo"
+    },
+    {
+      "part": "卩",
+      "role": "shape",
+      "meaning_id": "seal"
+    },
+    {
+      "part": "艮",
+      "role": "phonetic",
+      "meaning_id": "counter"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan ruas pada tanaman bambu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ruas-ruas pada batang bambu.",
+  "note_id": "Digunakan untuk menyatakan musim atau bagian."
+}

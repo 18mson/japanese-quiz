@@ -1,0 +1,20 @@
+{
+  "kanji": "察",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "示",
+      "role": "shape",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Mengamati atau menebak situasi secara mendalam.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Melihat dari bawah atap untuk menebak situasi.",
+  "note_id": "Digunakan pada kata polisi."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "盲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "亡",
+      "role": "phonetic",
+      "meaning_id": "dead, vanish, escape"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "eye"
+    }
+  ],
+  "etymology_id": "Kanji ini gabungan dari komponen 目 (mata) yang memberi arti dan 亡 yang berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mata (目) yang hilang (亡) penglihatannya menjadi buta (盲).",
+  "note_id": "Kosakata: 盲腸 (もうちょう) = usus buntu"
+}

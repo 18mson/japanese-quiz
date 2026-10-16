@@ -1,0 +1,20 @@
+{
+  "kanji": "靴",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "shape",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "革",
+      "role": "meaning",
+      "meaning_id": "kulit"
+    }
+  ],
+  "etymology_id": "Pakaian atau penutup kaki yang terbuat dari bahan kulit.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kulit hewan yang dipakai oleh orang untuk alas kaki (sepatu).",
+  "note_id": "Digunakan untuk alas kaki seperti sepatu dan kaos kaki."
+}

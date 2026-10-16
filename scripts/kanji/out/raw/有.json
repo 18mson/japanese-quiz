@@ -1,0 +1,15 @@
+{
+  "kanji": "有",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging"
+    }
+  ],
+  "etymology_id": "Gabungan unsur tangan dan daging, menyatakan kepemilikan atau keberadaan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada daging di tangan menunjukkan kepemilikan atau sesuatu yang ada.",
+  "note_id": "Kosakata: 有名な (ゆうめい) = terkenal."
+}

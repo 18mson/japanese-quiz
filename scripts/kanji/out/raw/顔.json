@@ -1,0 +1,25 @@
+{
+  "kanji": "顔",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "頁",
+      "role": "meaning",
+      "meaning_id": "kepala"
+    },
+    {
+      "part": "立",
+      "role": "shape",
+      "meaning_id": "berdiri tegak"
+    },
+    {
+      "part": "彡",
+      "role": "shape",
+      "meaning_id": "garis corak atau rambut"
+    }
+  ],
+  "etymology_id": "Menggabungkan 頁 (kepala) sebagai penunjuk makna dengan bagian kiri yang berfungsi sebagai penanda fonetik sekaligus corak dahi dan wajah.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bagian kepala (頁) yang berdiri tegak (立) dihiasi garis-garis fitur (彡) membentuk wajah (顔) seseorang.",
+  "note_id": "Kata mandiri 顔 dibaca 'kao' dengan arti wajah atau muka."
+}

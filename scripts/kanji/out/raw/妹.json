@@ -1,0 +1,15 @@
+{
+  "kanji": "妹",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "女",
+      "role": "meaning",
+      "meaning_id": "perempuan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen perempuan (女) untuk menunjukkan anggota keluarga wanita.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Anggota keluarga perempuan (女) yang lebih muda adalah adik perempuan.",
+  "note_id": "Digunakan dalam kata 妹 (adik perempuan sendiri)."
+}

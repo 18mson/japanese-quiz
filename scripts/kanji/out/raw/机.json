@@ -1,0 +1,20 @@
+{
+  "kanji": "机",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "kayu"
+    },
+    {
+      "part": "几",
+      "role": "phonetic",
+      "meaning_id": "meja kecil, penanda bunyi キ"
+    }
+  ],
+  "etymology_id": "Terdiri dari 木 (kayu) yang menunjukkan bahan perabot dan 几 (meja berkaki) yang sekaligus berfungsi sebagai penanda bunyi キ.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Perabot dari kayu (木) yang bentuknya seperti bangku atau tatakan (几) adalah meja belajar (机).",
+  "note_id": "Kosakata dasar 机 biasanya dibaca secara kun'yomi yaitu つくえ (meja tulis)."
+}

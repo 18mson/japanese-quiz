@@ -1,0 +1,25 @@
+{
+  "kanji": "左",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis lengkung"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "工",
+      "role": "shape",
+      "meaning_id": "tukang"
+    }
+  ],
+  "etymology_id": "Menggambarkan arah kiri.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Arah tangan kiri.",
+  "note_id": "Menunjukkan arah kiri."
+}

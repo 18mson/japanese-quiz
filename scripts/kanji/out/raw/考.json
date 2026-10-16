@@ -1,0 +1,20 @@
+{
+  "kanji": "考",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺹",
+      "role": "shape",
+      "meaning_id": "bentuk"
+    },
+    {
+      "part": "勹",
+      "role": "shape",
+      "meaning_id": "membungkus"
+    }
+  ],
+  "etymology_id": "Menggambarkan aktivitas mental atau berpikir.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Memikirkan sesuatu secara mendalam di kepala (考).",
+  "note_id": "Kosakata: 考えます (かんがえます) berarti berpikir."
+}

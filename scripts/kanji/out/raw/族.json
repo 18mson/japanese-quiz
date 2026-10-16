@@ -1,0 +1,20 @@
+{
+  "kanji": "族",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "方",
+      "role": "meaning",
+      "meaning_id": "arah atau orang"
+    },
+    {
+      "part": "矢",
+      "role": "meaning",
+      "meaning_id": "panah"
+    }
+  ],
+  "etymology_id": "Menggabungkan bendera atau kelompok orang (方) dengan panah (矢) yang melambangkan prajurit atau anggota kaum.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Sekelompok orang (方) membawa panah (矢) dalam satu kaum atau keluarga (族).",
+  "note_id": "Kosakata utama: 家族 (かぞく) - keluarga."
+}

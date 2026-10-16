@@ -1,0 +1,25 @@
+{
+  "kanji": "乾",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh atau tegak"
+    },
+    {
+      "part": "乙",
+      "role": "shape",
+      "meaning_id": "lekukan"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur cahaya matahari (日) dengan bagian sekitarnya untuk menyatakan proses penguapan air hingga menjadi kering atau surut.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Terik sinar matahari yang bersinar tinggi membuat semua pakaian basah menjadi cepat kering.",
+  "note_id": "Digunakan dalam kata bersulang 乾杯 (secara harfiah: mengeringkan cangkir)."
+}

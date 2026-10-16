@@ -1,0 +1,20 @@
+{
+  "kanji": "外",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "夕",
+      "role": "meaning",
+      "meaning_id": "malam / bulan"
+    },
+    {
+      "part": "卜",
+      "role": "meaning",
+      "meaning_id": "ramalan"
+    }
+  ],
+  "etymology_id": "Meramal (卜) yang dilakukan pada malam hari (夕) dianggap berada di luar kebiasaan baku, sehingga bermakna luar atau menyimpang.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Pada waktu malam (夕), seseorang meramal (卜) di luar rumah di bawah langit terbuka.",
+  "note_id": "Berarti luar (そと) dan dipakai pada kata 外国 (がいこく, luar negeri)."
+}

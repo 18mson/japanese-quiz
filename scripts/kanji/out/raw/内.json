@@ -1,0 +1,20 @@
+{
+  "kanji": "内",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "冂",
+      "role": "shape",
+      "meaning_id": "batas"
+    }
+  ],
+  "etymology_id": "Menggambarkan seseorang yang berada di dalam suatu batas atau bangunan.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Ada orang (人) di dalam sebuah batas (冂) atau rumah.",
+  "note_id": "Berarti dalam atau di dalam."
+}

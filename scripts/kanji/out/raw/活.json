@@ -1,0 +1,20 @@
+{
+  "kanji": "活",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "舌",
+      "role": "phonetic",
+      "meaning_id": "lidah"
+    }
+  ],
+  "etymology_id": "Komponen air (氵) melambangkan aliran yang terus bergerak dan sumber kehidupan, dipadukan dengan 舌 sebagai penanda bunyi pembacaan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Air yang membasahi lidah membuat orang yang lemas kembali bersemangat dan hidup segar.",
+  "note_id": "Umum dipakai dalam kosakata 生活 (kehidupan sehari-hari)."
+}

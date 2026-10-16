@@ -1,0 +1,20 @@
+{
+  "kanji": "兄",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "儿",
+      "role": "meaning",
+      "meaning_id": "kaki"
+    }
+  ],
+  "etymology_id": "Kanji ini menggabungkan komponen mulut dan kaki untuk menggambarkan seseorang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seseorang dengan mulut yang banyak bicara seperti seorang kakak laki-laki.",
+  "note_id": "Kosakata penting: 兄 (あに) untuk kakak laki-laki sendiri."
+}

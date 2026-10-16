@@ -1,0 +1,20 @@
+{
+  "kanji": "泊",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "白",
+      "role": "phonetic",
+      "meaning_id": "putih"
+    }
+  ],
+  "etymology_id": "Air (氵) dan komponen bunyi untuk menyatakan perahu yang menepi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Berhenti di dekat air (氵) saat malam untuk menginap.",
+  "note_id": "Digunakan untuk menginap di hotel."
+}

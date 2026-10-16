@@ -1,0 +1,25 @@
+{
+  "kanji": "楽",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "kayu"
+    },
+    {
+      "part": "白",
+      "role": "meaning",
+      "meaning_id": "putih atau gendang"
+    },
+    {
+      "part": "冫",
+      "role": "shape",
+      "meaning_id": "hiasan atau lonceng"
+    }
+  ],
+  "etymology_id": "Menggambarkan alat musik terbuat dari kayu dengan instrumen di atasnya, menghasilkan alunan bunyi yang menghibur dan menyenangkan hati.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Memainkan alat musik kayu berwarna putih membuat perasaan menjadi sangat senang dan nyaman.",
+  "note_id": "Memiliki bacaan gaku pada 音楽 (musik) dan raku pada 楽しい (menyenangkan)."
+}

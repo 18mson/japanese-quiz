@@ -1,0 +1,45 @@
+{
+  "kanji": "舞",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "無",
+      "role": "phonetic",
+      "meaning_id": "tidak ada"
+    },
+    {
+      "part": "舛",
+      "role": "meaning",
+      "meaning_id": "kaki bolak-balik"
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "二",
+      "role": "shape",
+      "meaning_id": "dua"
+    },
+    {
+      "part": "夕",
+      "role": "meaning",
+      "meaning_id": "malam"
+    },
+    {
+      "part": "ノ",
+      "role": "shape",
+      "meaning_id": "garis miring"
+    },
+    {
+      "part": "｜",
+      "role": "shape",
+      "meaning_id": "garis tegak"
+    }
+  ],
+  "etymology_id": "Menggabungkan gerakan kaki yang berputar dan menari.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kaki melangkah berputar-putar saat menari di malam hari.",
+  "note_id": "Kosakata: 歌舞伎 (かぶき) - kabuki (seni teater Jepang)."
+}

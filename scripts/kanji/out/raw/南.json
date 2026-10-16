@@ -1,0 +1,15 @@
+{
+  "kanji": "南",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Struktur komponen tidak dapat dijelaskan secara pasti sebagai pembentuk arti selatan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Arah selatan (南) ditunjukkan dengan tanda khusus.",
+  "note_id": "Berarti arah selatan."
+}

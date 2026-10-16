@@ -1,0 +1,15 @@
+{
+  "kanji": "四",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "囗",
+      "role": "shape",
+      "meaning_id": "kotak"
+    }
+  ],
+  "etymology_id": "Bentuk tulisan yang mewakili angka empat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Kotak yang dibagi menjadi empat bagian.",
+  "note_id": "Kosakata penting: 四日 (yokka) dan 十四日 (juuyokka)."
+}

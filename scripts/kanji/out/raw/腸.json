@@ -1,0 +1,30 @@
+{
+  "kanji": "腸",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging atau bagian tubuh"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "勿",
+      "role": "phonetic",
+      "meaning_id": "jangan"
+    }
+  ],
+  "etymology_id": "Bagian tubuh (daging) digabungkan untuk menyatakan organ dalam yaitu usus.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Organ tubuh bagian dalam yang panjang seperti usus.",
+  "note_id": "Digunakan pada istilah usus buntu."
+}

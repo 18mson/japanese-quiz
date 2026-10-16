@@ -1,0 +1,20 @@
+{
+  "kanji": "教",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "子",
+      "role": "meaning",
+      "meaning_id": "anak"
+    },
+    {
+      "part": "攵",
+      "role": "meaning",
+      "meaning_id": "tindakan"
+    }
+  ],
+  "etymology_id": "Menggabungkan arti anak (子) dan tindakan membimbing atau mengajar (攵).",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Mengajar (教) anak (子) dengan memberikan arahan.",
+  "note_id": "Digunakan dalam kata mengajar (教えます) dan ruang kelas (教室)."
+}

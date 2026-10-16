@@ -1,0 +1,20 @@
+{
+  "kanji": "付",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "person"
+    },
+    {
+      "part": "寸",
+      "role": "meaning",
+      "meaning_id": "measurement"
+    }
+  ],
+  "etymology_id": "Gabungan orang (⺅) dan ukuran/tangan (寸), menyatakan melekatkan atau menempelkan sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang (⺅) menempelkan tangan (寸) untuk melekatkan (付) sesuatu.",
+  "note_id": "Kosakata penting: 受付 (resepsionis)."
+}

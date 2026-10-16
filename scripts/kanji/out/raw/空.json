@@ -1,0 +1,20 @@
+{
+  "kanji": "空",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "穴",
+      "role": "meaning",
+      "meaning_id": "gua"
+    },
+    {
+      "part": "工",
+      "role": "phonetic",
+      "meaning_id": "konstruksi"
+    }
+  ],
+  "etymology_id": "Lubang yang luas di atas kepala yang membentuk langit terbuka.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada ruangan kosong yang luas dan terbuka di atas atap rumah.",
+  "note_id": "Memiliki arti langit serta ruang kosong."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "険",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻖",
+      "role": "meaning",
+      "meaning_id": "bukit"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen bukit dan bagian lain sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Medan di bukit (⻖) yang curam dan berbahaya.",
+  "note_id": "Kanji ini berarti curam atau tempat berbahaya."
+}

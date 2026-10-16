@@ -1,0 +1,15 @@
+{
+  "kanji": "年",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": "one"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan siklus tanaman padi yang dipanen setiap tahun.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Periode waktu satu tahun yang terus berputar.",
+  "note_id": "Digunakan dalam keterangan waktu seperti tahun lalu dan tahun depan."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "野",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "里",
+      "role": "meaning",
+      "meaning_id": "village"
+    },
+    {
+      "part": "矛",
+      "role": "phonetic",
+      "meaning_id": "halberd, spear"
+    }
+  ],
+  "etymology_id": "Gabungan komponen 里 (desa/tanah) dan 矛 sebagai penanda bunyi untuk menyatakan padang atau ladang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Tanah di desa (里) yang luas menjadi ladang atau lapangan (野).",
+  "note_id": "Kosakata: 野菜 (やさい) = sayur; 野球 (やきゅう) = baseball"
+}

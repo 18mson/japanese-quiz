@@ -1,0 +1,15 @@
+{
+  "kanji": "門",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "門",
+      "role": "meaning",
+      "meaning_id": "gate"
+    }
+  ],
+  "etymology_id": "Kanji ini adalah gambar dua daun pintu gerbang.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuknya seperti dua pintu gerbang besar.",
+  "note_id": "Kosakata: 専門 (せんもん) = spesialisasi"
+}

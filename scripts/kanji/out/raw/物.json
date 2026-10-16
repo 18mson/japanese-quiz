@@ -1,0 +1,15 @@
+{
+  "kanji": "物",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "牛",
+      "role": "meaning",
+      "meaning_id": "sapi"
+    }
+  ],
+  "etymology_id": "Gabungan komponen yang berkaitan dengan hewan kurban atau sapi dan hal umum untuk menyatakan benda atau barang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Ada sapi dan barang-barang di sekitar kita.",
+  "note_id": "Digunakan dalam kata kudamono (buah) dan nimotsu (barang)."
+}

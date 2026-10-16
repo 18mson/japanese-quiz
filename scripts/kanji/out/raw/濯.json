@@ -1,0 +1,15 @@
+{
+  "kanji": "濯",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    }
+  ],
+  "etymology_id": "Melibatkan unsur air (氵) yang digunakan untuk mencuci atau membilas.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Menggunakan air (氵) untuk mencuci pakaian.",
+  "note_id": "Digunakan dalam kata sentakushimasu (mencuci baju)."
+}

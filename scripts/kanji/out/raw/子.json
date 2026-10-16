@@ -1,0 +1,15 @@
+{
+  "kanji": "子",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "子",
+      "role": "meaning",
+      "meaning_id": "anak"
+    }
+  ],
+  "etymology_id": "Gambar seorang bayi atau anak kecil dengan tangan dan kaki terbungkus selimut.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuknya mirip bayi kecil.",
+  "note_id": "Kosakata penting: 子供 (kodomo) dan 男の子 (otokonoko)."
+}

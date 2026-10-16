@@ -1,0 +1,15 @@
+{
+  "kanji": "球",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "王",
+      "role": "meaning",
+      "meaning_id": "batu giok"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur batu giok atau permata (王) yang sering berbentuk bulat.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Batu permata (王) yang dibentuk bundar seperti bola.",
+  "note_id": "Digunakan untuk bola dan bumi."
+}

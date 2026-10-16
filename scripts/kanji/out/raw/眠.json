@@ -1,0 +1,25 @@
+{
+  "kanji": "眠",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "氏",
+      "role": "shape",
+      "meaning_id": "klan"
+    }
+  ],
+  "etymology_id": "Menggabungkan mata dengan komponen bunyi.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Mata tertutup saat tidur.",
+  "note_id": "Digunakan untuk kata mengantuk."
+}

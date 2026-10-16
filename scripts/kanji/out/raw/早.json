@@ -1,0 +1,20 @@
+{
+  "kanji": "早",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "十",
+      "role": "meaning",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Matahari (日) yang baru terbit di pagi hari.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Saat matahari (日) terbit lebih awal.",
+  "note_id": "Digunakan untuk arti cepat atau pagi (hayai)."
+}

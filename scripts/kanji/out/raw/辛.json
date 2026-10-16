@@ -1,0 +1,15 @@
+{
+  "kanji": "辛",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "辛",
+      "role": "shape",
+      "meaning_id": "spicy"
+    }
+  ],
+  "etymology_id": "Gambar alat pemotong yang menyakitkan atau tajam.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Rasa yang menusuk lidah seperti pedas.",
+  "note_id": "Menggambarkan rasa pedas atau asin kuat."
+}

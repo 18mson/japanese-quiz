@@ -1,0 +1,15 @@
+{
+  "kanji": "作",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Orang yang bekerja atau membuat sesuatu.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Orang yang sedang membuat atau memproduksi sesuatu.",
+  "note_id": "Kanji dasar untuk kata kerja membuat."
+}

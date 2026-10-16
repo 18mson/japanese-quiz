@@ -1,0 +1,25 @@
+{
+  "kanji": "舎",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "𠆢",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggambarkan bangunan atau pondok tempat tinggal di atas tanah.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Rumah kecil di atas tanah (土) dengan atap (𠆢) tempat orang berkumpul.",
+  "note_id": "Arti dasar: cottage, inn, hut."
+}

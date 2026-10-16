@@ -1,0 +1,20 @@
+{
+  "kanji": "彼",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "彳",
+      "role": "meaning",
+      "meaning_id": "jalan atau orang"
+    },
+    {
+      "part": "皮",
+      "role": "phonetic",
+      "meaning_id": "kulit"
+    }
+  ],
+  "etymology_id": "Komponen 彳 berkaitan dengan orang, dan 皮 berfungsi sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Orang (彳) yang berjalan jauh menunjuk ke arah 'dia' atau 'itu'.",
+  "note_id": "Digunakan untuk dia laki-laki (彼) dan dia perempuan/pacar (彼女)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "鏡",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "金",
+      "role": "meaning",
+      "meaning_id": "logam"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur logam (金) karena cermin tradisional terbuat dari logam mengkilap.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Cermin (鏡) dibuat dari logam (金) yang memantulkan cahaya.",
+  "note_id": "Digunakan dalam kata kacamata (眼鏡)."
+}

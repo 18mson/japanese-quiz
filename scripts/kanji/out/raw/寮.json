@@ -1,0 +1,15 @@
+{
+  "kanji": "寮",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "roof"
+    }
+  ],
+  "etymology_id": "Kanji 寮 terdiri dari atap 宀 yang menunjukkan bangunan besar tempat tinggal bersama.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Di bawah atap (宀) ada banyak orang tinggal di asrama (寮).",
+  "note_id": "Digunakan dalam kata asrama (寮)."
+}

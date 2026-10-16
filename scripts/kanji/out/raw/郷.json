@@ -1,0 +1,20 @@
+{
+  "kanji": "郷",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⻏",
+      "role": "meaning",
+      "meaning_id": "kota"
+    },
+    {
+      "part": "幺",
+      "role": "shape",
+      "meaning_id": "kecil"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur tempat atau desa (⻏) untuk menyatakan kampung halaman.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Desa (⻏) tempat asal kampung halaman.",
+  "note_id": "Digunakan dalam kata kampung halaman (故郷)."
+}

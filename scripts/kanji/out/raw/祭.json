@@ -1,0 +1,15 @@
+{
+  "kanji": "祭",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "示",
+      "role": "meaning",
+      "meaning_id": "altar"
+    }
+  ],
+  "etymology_id": "Menggabungkan altar dan tangan yang memegang sesuatu untuk ritual pemujaan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada altar untuk mengadakan festival atau ritual.",
+  "note_id": "Sering dipakai untuk kata festival."
+}

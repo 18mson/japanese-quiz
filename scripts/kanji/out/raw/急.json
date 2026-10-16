@@ -1,0 +1,15 @@
+{
+  "kanji": "急",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "心",
+      "role": "meaning",
+      "meaning_id": "hati"
+    }
+  ],
+  "etymology_id": "Menggabungkan unsur hati atau perasaan (心) yang menunjukkan keadaan mendesak atau tergesa-gesa.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: HATI yang merasa cemas membuat kita terburu-buru.",
+  "note_id": "Sering dipakai dalam kereta ekspres atau keadaan darurat."
+}

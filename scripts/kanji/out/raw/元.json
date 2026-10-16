@@ -1,0 +1,20 @@
+{
+  "kanji": "元",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "二",
+      "role": "shape",
+      "meaning_id": "dua"
+    },
+    {
+      "part": "儿",
+      "role": "shape",
+      "meaning_id": "kaki"
+    }
+  ],
+  "etymology_id": "Menggambarkan bagian atas dan dasar atau awal mula sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Dua garis di atas kaki menunjukkan asal mula.",
+  "note_id": "Dasar dari kata genki (sehat)."
+}

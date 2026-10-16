@@ -1,0 +1,20 @@
+{
+  "kanji": "勉",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "免",
+      "role": "phonetic",
+      "meaning_id": "bebas"
+    },
+    {
+      "part": "力",
+      "role": "meaning",
+      "meaning_id": "kekuatan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen kekuatan dan bagian bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Menggunakan kekuatan untuk terus berusaha dan belajar.",
+  "note_id": "Digunakan dalam kata 勉強します (belajar)."
+}

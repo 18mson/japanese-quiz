@@ -1,0 +1,15 @@
+{
+  "kanji": "販",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "貝",
+      "role": "meaning",
+      "meaning_id": "uang atau barang berharga"
+    }
+  ],
+  "etymology_id": "Komponen 貝 berkaitan dengan uang atau perdagangan, digabungkan untuk menunjukkan aktivitas jual beli.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ada uang (貝) saat melakukan kegiatan jual beli atau pemasaran.",
+  "note_id": "Digunakan dalam kata mesin jual otomatis (自動販売機)."
+}

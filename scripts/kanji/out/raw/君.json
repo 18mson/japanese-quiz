@@ -1,0 +1,15 @@
+{
+  "kanji": "君",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Menggabungkan perintah dari penguasa yang keluar dari mulut.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang pemimpin yang mengeluarkan perintah dengan mulutnya.",
+  "note_id": "Digunakan sebagai kata sapaan akrab untuk teman atau bawahan."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "午",
+  "formation_type": "unknown",
+  "components": [
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen ノ, 干, dan 十.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Simbol waktu siang hari.",
+  "note_id": "Kosakata: 午前 (a.m.), 午後 (p.m.)."
+}

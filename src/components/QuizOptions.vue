@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue';
+import { ref, watch, onMounted, onUnmounted, computed, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Sparkles, X, ArrowRight } from '@lucide/vue';
+import { Sparkles, X, ArrowRight, HelpCircle } from '@lucide/vue';
 import { getRandomCorrectFeedback, getRandomRetryFeedback } from '../utils/feedbackMessages';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
+import { extractKanjiFromWord, loadKanjiInfo } from '../services/kanjiInfoService';
+
+const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
 const quizStore = useQuizStore();
 const focusedIndex = ref(0);
@@ -127,6 +130,39 @@ const getOptionClass = (option: string, index: number) => {
 const isLastQuestion = computed(() => {
   return quizStore.currentQuestionIndex >= quizStore.questions.length - 1;
 });
+
+// Kanji Details Popup State
+const showKanjiPopup = ref(false);
+const availableKanjiSet = ref<Set<string>>(new Set());
+
+const currentWordKanji = computed(() => {
+  return extractKanjiFromWord(quizStore.currentQuestion?.character || '');
+});
+
+const hasKanjiDetails = computed(() => {
+  if (currentWordKanji.value.length === 0) return false;
+  return currentWordKanji.value.some(k => availableKanjiSet.value.has(k));
+});
+
+const checkKanjiAvailability = async () => {
+  if (currentWordKanji.value.length === 0) return;
+  try {
+    const data = await loadKanjiInfo();
+    availableKanjiSet.value = new Set(Object.keys(data));
+  } catch (err) {
+    console.error('Gagal mengecek ketersediaan kanji:', err);
+  }
+};
+
+watch(() => quizStore.selectedAnswer, (newVal) => {
+  if (newVal !== null && currentWordKanji.value.length > 0) {
+    checkKanjiAvailability();
+  }
+});
+
+watch(() => quizStore.currentQuestionIndex, () => {
+  showKanjiPopup.value = false;
+});
 </script>
 
 <template>
@@ -165,11 +201,31 @@ const isLastQuestion = computed(() => {
             <Sparkles class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
+            <button
+              v-if="hasKanjiDetails"
+              type="button"
+              class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold rounded-lg bg-emerald-200/70 hover:bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300/80 transition cursor-pointer ml-1"
+              @click.stop="showKanjiPopup = true"
+            >
+              <HelpCircle class="w-3 h-3 text-emerald-700 dark:text-emerald-300" />
+              <span>Kanji (?)</span>
+            </button>
           </div>
           <div v-else class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/15 dark:text-torii-light border border-rose-200 dark:border-torii/40 animate-fadeIn flex items-center justify-center gap-2 flex-wrap shadow-xs">
             <X class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-torii flex-shrink-0" />
             <span>Salah. Jawaban yang benar adalah "{{ Array.isArray(quizStore.currentQuestion?.romaji) ? quizStore.currentQuestion?.romaji.join(' atau ') : quizStore.currentQuestion?.romaji }}"</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
+            <button
+              v-if="hasKanjiDetails"
+              type="button"
+              id="btn-kanji-detail-desktop"
+              class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-lg bg-rose-200/80 hover:bg-rose-300 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-700 transition cursor-pointer shadow-xs ml-2"
+              @click.stop="showKanjiPopup = true"
+              :title="`Bedah komponen & arti kanji ${quizStore.currentQuestion?.character}`"
+            >
+              <HelpCircle class="w-3.5 h-3.5 text-rose-700 dark:text-rose-300" />
+              <span>Bedah Kanji (?)</span>
+            </button>
           </div>
         </div>
       </div>
@@ -184,11 +240,29 @@ const isLastQuestion = computed(() => {
             <Sparkles class="w-3.5 h-3.5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
+            <button
+              v-if="hasKanjiDetails"
+              type="button"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-200/70 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 transition cursor-pointer"
+              @click.stop="showKanjiPopup = true"
+            >
+              <span>Kanji (?)</span>
+            </button>
           </div>
           <div v-else class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/20 dark:text-torii-light border border-rose-300/80 dark:border-torii/40 flex items-center justify-center gap-1.5 flex-wrap shadow-xs">
             <X class="w-3.5 h-3.5 text-rose-600 dark:text-torii flex-shrink-0" />
             <span>Jawaban benar: {{ Array.isArray(quizStore.currentQuestion?.romaji) ? quizStore.currentQuestion?.romaji.join(' / ') : quizStore.currentQuestion?.romaji }}</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
+            <button
+              v-if="hasKanjiDetails"
+              type="button"
+              id="btn-kanji-detail-mobile"
+              class="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-lg bg-rose-200/80 hover:bg-rose-300 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-700 transition cursor-pointer ml-1"
+              @click.stop="showKanjiPopup = true"
+            >
+              <HelpCircle class="w-3 h-3 text-rose-700 dark:text-rose-300" />
+              <span>Bedah Kanji (?)</span>
+            </button>
           </div>
         </div>
 
@@ -229,5 +303,12 @@ const isLastQuestion = computed(() => {
         </div>
       </div>
     </div>
+
+    <!-- Popup Detail Kanji -->
+    <KanjiInfoPopup
+      :is-open="showKanjiPopup"
+      :target-word="quizStore.currentQuestion?.character"
+      @close="showKanjiPopup = false"
+    />
   </div>
 </template>

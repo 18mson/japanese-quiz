@@ -1,0 +1,25 @@
+{
+  "kanji": "機",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "kayu atau perangkat"
+    },
+    {
+      "part": "幺",
+      "role": "shape",
+      "meaning_id": "benang halus"
+    },
+    {
+      "part": "戈",
+      "role": "shape",
+      "meaning_id": "senjata atau tuas mekanis"
+    }
+  ],
+  "etymology_id": "Awalnya merujuk pada alat tenun dari kayu (木) yang memiliki mekanisme rumit dengan komponen kanan bertindak sebagai penanda bunyi キ.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Rangka kayu (木) yang menggerakkan benang (幺) dengan tuas presisi (戈) adalah sebuah mesin (機).",
+  "note_id": "Dipakai dalam banyak kata mesin modern seperti 飛行機 (pesawat terbang) dan 自動販売機 (mesin jual otomatis)."
+}

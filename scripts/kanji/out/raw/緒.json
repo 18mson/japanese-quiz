@@ -1,0 +1,15 @@
+{
+  "kanji": "緒",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "benang"
+    }
+  ],
+  "etymology_id": "Terdiri dari unsur benang yang melambangkan ikatan atau ujung tali.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Sehelai benang (糸) dihubungkan bersama-sama (一緒に) dengan erat.",
+  "note_id": "Sering digunakan dalam frasa bersama-sama (一緒に)."
+}

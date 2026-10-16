@@ -1,0 +1,20 @@
+{
+  "kanji": "疲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "疒",
+      "role": "meaning",
+      "meaning_id": "penyakit atau kondisi badan"
+    },
+    {
+      "part": "皮",
+      "role": "phonetic",
+      "meaning_id": "kulit"
+    }
+  ],
+  "etymology_id": "Komponen 疒 menunjukkan kondisi tubuh yang tidak sehat atau sakit, digabungkan untuk menyatakan kelelahan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kondisi badan (疒) terasa lelah hingga kulit (皮) terasa lemas.",
+  "note_id": "Digunakan untuk kata kerja lelah (疲れます)."
+}

@@ -1,0 +1,25 @@
+{
+  "kanji": "酔",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "酉",
+      "role": "meaning",
+      "meaning_id": "alcohol"
+    },
+    {
+      "part": "九",
+      "role": "shape",
+      "meaning_id": "sembilan"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen yang berhubungan dengan wadah alkohol.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Orang yang minum banyak alkohol akan merasa mabuk.",
+  "note_id": "Digunakan dalam kata mabuk sisa alkohol."
+}

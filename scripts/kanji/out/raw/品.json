@@ -1,0 +1,15 @@
+{
+  "kanji": "品",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "口",
+      "role": "meaning",
+      "meaning_id": "mouth"
+    }
+  ],
+  "etymology_id": "Terdiri dari tiga buah mulut (口), awalnya melambangkan banyak wadah atau barang.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Tiga mulut (口) yang membicarakan kualitas suatu barang (品).",
+  "note_id": "Kosakata penting: 製品 (produk)."
+}

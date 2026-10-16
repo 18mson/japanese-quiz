@@ -1,0 +1,15 @@
+{
+  "kanji": "払",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Komponen tangan menunjukkan aksi menggunakan tangan untuk menepis, membersihkan, atau mengeluarkan uang (membayar).",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Tangan bergerak untuk membayar atau menyingkirkan sesuatu.",
+  "note_id": "Digunakan dalam kata haraimasu (membayar)."
+}

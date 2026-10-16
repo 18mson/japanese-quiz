@@ -1,0 +1,20 @@
+{
+  "kanji": "押",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    },
+    {
+      "part": "田",
+      "role": "phonetic",
+      "meaning_id": "bagian penanda bunyi"
+    }
+  ],
+  "etymology_id": "Komponen tangan (扌) menunjukkan tindakan fisik menekan atau mendorong. Bagian kanan yang memuat 田 berfungsi sebagai penanda bunyi 'ou'.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Gunakan jari tangan (扌) untuk menekan (押) tombol pintu dengan kuat.",
+  "note_id": "Biasa dipakai dalam kata kerja 押します (menekan/mendorong)."
+}

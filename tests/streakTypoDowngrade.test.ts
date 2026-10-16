@@ -72,19 +72,19 @@ console.log('--- 1. HIRAGANA TYPING MODE ---');
   assert(quizStore.userAnswers[0].isTypo === true, 'userAnswers mencatat isTypo === true');
   assert(quizStore.userAnswers[0].pointsEarned === 3, 'Jawaban typo mendapat 3 poin');
 
-  // Case 1.2: Hiragana Hafal (streak 3) -> typo 'so' (dist 1) -> harus turun ke Proses (streak 2), bukan 0!
+  // Case 1.2: Hiragana Hafal (streak 3) -> typo 'so' (dist 1) -> streak < 5 tidak berubah (tetap 3)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
   masteryStore.userStreaks['さ'] = 3;
   quizStore.submitAnswer('so');
-  assert(masteryStore.userStreaks['さ'] === 2, 'Hiragana Hafal (streak 3) typo 1 huruf -> streak turun ke 2 (Proses)');
+  assert(masteryStore.userStreaks['さ'] === 3, 'Hiragana Hafal (streak 3) typo 1 huruf -> streak tidak berubah (tetap 3)');
 
-  // Case 1.3: Hiragana Mahkota (streak 5) -> Salah total 'xyz' (bukan typo) -> reset ke 0
+  // Case 1.3: Hiragana Mahkota (streak 5) -> Salah total 'xyz' (bukan typo) -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
   masteryStore.userStreaks['た'] = 5;
   quizStore.submitAnswer('xyz');
-  assert(masteryStore.userStreaks['た'] === 0, 'Hiragana Mahkota (streak 5) salah total (xyz) -> streak reset ke 0');
+  assert(masteryStore.userStreaks['た'] === 2, 'Hiragana Mahkota (streak 5) salah total (xyz) -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -112,19 +112,19 @@ console.log('\n--- 2. KOTOBA (WORDS) TYPING MODE ---');
   assert(masteryStore.userStreaks['わたし'] === 4, 'Kotoba Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
   assert(quizStore.userAnswers[0].isTypo === true, 'Kotoba isTypo === true');
 
-  // Case 2.2: Kotoba Hafal (streak 4) -> typo 'anat' (dist 1) -> turun ke 2 (Proses)
+  // Case 2.2: Kotoba Hafal (streak 4) -> typo 'anat' (dist 1) -> streak < 5 tidak berubah (tetap 4)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
   masteryStore.userStreaks['あなた'] = 4;
   quizStore.submitAnswer('anat');
-  assert(masteryStore.userStreaks['あなた'] === 2, 'Kotoba Hafal (streak 4) typo 1 huruf -> streak turun ke 2 (Proses)');
+  assert(masteryStore.userStreaks['あなた'] === 4, 'Kotoba Hafal (streak 4) typo 1 huruf -> streak tidak berubah (tetap 4)');
 
-  // Case 2.3: Kotoba Mahkota (streak 6) -> Salah total 'arigatou' -> reset ke 0
+  // Case 2.3: Kotoba Mahkota (streak 6) -> Salah total 'arigatou' -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
   masteryStore.userStreaks['せんせい'] = 6;
   quizStore.submitAnswer('arigatou');
-  assert(masteryStore.userStreaks['せんせい'] === 0, 'Kotoba Mahkota (streak 6) salah total -> streak reset ke 0');
+  assert(masteryStore.userStreaks['せんせい'] === 2, 'Kotoba Mahkota (streak 6) salah total -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -151,19 +151,19 @@ console.log('\n--- 3. KANJI TYPING MODE ---');
   quizStore.submitAnswer('hii');
   assert(masteryStore.userStreaks['日'] === 4, 'Kanji Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
 
-  // Case 3.2: Kanji Hafal (streak 3) -> typo 'tuki' -> wait 'tuki' is correct variant for tsuki, let's use 'tuki2' or 'tsuk' (dist 1)
+  // Case 3.2: Kanji Hafal (streak 3) -> typo 'tsuk' (dist 1) -> streak < 5 tidak berubah (tetap 3)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
   masteryStore.userStreaks['月'] = 3;
   quizStore.submitAnswer('tsuk');
-  assert(masteryStore.userStreaks['月'] === 2, 'Kanji Hafal (streak 3) typo 1 huruf -> streak turun ke 2 (Proses)');
+  assert(masteryStore.userStreaks['月'] === 3, 'Kanji Hafal (streak 3) typo 1 huruf -> streak tidak berubah (tetap 3)');
 
-  // Case 3.3: Kanji Mahkota (streak 5) -> salah total 'ki' -> reset ke 0
+  // Case 3.3: Kanji Mahkota (streak 5) -> salah total 'ki' -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
   masteryStore.userStreaks['水'] = 5;
   quizStore.submitAnswer('ki');
-  assert(masteryStore.userStreaks['水'] === 0, 'Kanji Mahkota (streak 5) salah total -> streak reset ke 0');
+  assert(masteryStore.userStreaks['水'] === 2, 'Kanji Mahkota (streak 5) salah total -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -175,7 +175,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
   const quizStore = useQuizStore();
   const masteryStore = useMasteryStore();
 
-  // Case 4.1: Jawaban kosong / skip tidak boleh dianggap typo
+  // Case 4.1: Jawaban kosong / skip tidak boleh dianggap typo, streak 5 turun ke Level Proses (streak 2)
   quizStore.selectedMode = 'keyboard_typing';
   quizStore.questionType = 'hiragana';
   quizStore.quizLevel = 'basic';
@@ -185,7 +185,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
   quizStore.currentQuestionIndex = 0;
   masteryStore.userStreaks['あ'] = 5;
   quizStore.submitAnswer('');
-  assert(masteryStore.userStreaks['あ'] === 0, 'Skip/jawaban kosong pada huruf 1 karakter (あ) -> reset ke 0 (bukan typo)');
+  assert(masteryStore.userStreaks['あ'] === 2, 'Skip/jawaban kosong pada huruf 1 karakter (あ) -> turun ke Level Proses (streak 2, bukan typo)');
   assert(quizStore.userAnswers[0].isTypo === false, 'isTypo adalah false untuk input kosong');
 
   // Case 4.2: Mode Pilihan Ganda (multiple_choice) tidak menerapkan toleransi typo
@@ -198,7 +198,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
   masteryStore.userStreaks['か'] = 5;
   // Memilih 'ko' pada pilihan ganda
   quizStore.submitAnswer('ko');
-  assert(masteryStore.userStreaks['か'] === 0, 'Mode Pilihan Ganda salah pilih -> reset ke 0 (typo tidak aktif)');
+  assert(masteryStore.userStreaks['か'] === 2, 'Mode Pilihan Ganda salah pilih -> turun ke Level Proses (streak 2, typo tidak aktif)');
   assert(quizStore.userAnswers[1].isTypo === false, 'isTypo adalah false pada mode pilihan ganda');
 }
 

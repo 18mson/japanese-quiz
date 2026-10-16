@@ -1,0 +1,20 @@
+{
+  "kanji": "雑",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "木",
+      "role": "meaning",
+      "meaning_id": "pohon"
+    },
+    {
+      "part": "隹",
+      "role": "phonetic",
+      "meaning_id": "burung"
+    }
+  ],
+  "etymology_id": "Gabungan komponen pohon dan burung untuk hal yang bercampur atau bermacam-macam.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berbagai macam hal bercampur seperti burung di atas pohon.",
+  "note_id": "Digunakan dalam kata majalah."
+}

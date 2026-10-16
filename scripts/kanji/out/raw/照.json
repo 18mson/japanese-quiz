@@ -1,0 +1,30 @@
+{
+  "kanji": "照",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "口",
+      "role": "phonetic",
+      "meaning_id": "mulut"
+    },
+    {
+      "part": "刀",
+      "role": "phonetic",
+      "meaning_id": "pisau"
+    },
+    {
+      "part": "灬",
+      "role": "phonetic",
+      "meaning_id": "api"
+    }
+  ],
+  "etymology_id": "Menggabungkan elemen matahari untuk menggambarkan cahaya yang menerangi atau menyinari.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Matahari (日) menyinari dan menerangi sesuatu.",
+  "note_id": "Minna no Nihongo: 残高照会 (ざんだかしょうかい) berarti pengecekan saldo rekening."
+}

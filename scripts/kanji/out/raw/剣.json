@@ -1,0 +1,15 @@
+{
+  "kanji": "剣",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "刂",
+      "role": "meaning",
+      "meaning_id": "pisau"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen pisau dan bagian lainnya sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Pisau (刂) yang tajam digunakan untuk membuat pedang atau sabre.",
+  "note_id": "Kanji ini berarti pedang atau sabre."
+}

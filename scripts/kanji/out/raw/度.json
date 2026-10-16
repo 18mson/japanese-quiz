@@ -1,0 +1,20 @@
+{
+  "kanji": "度",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "广",
+      "role": "shape",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "又",
+      "role": "shape",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Struktur komponen rumah dan tangan yang menunjukkan ukuran atau batas.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Berkaitan dengan hitungan atau kali kejadian.",
+  "note_id": "Digunakan dalam kata 一度 (sekali) dan 今度 (lain kali)."
+}

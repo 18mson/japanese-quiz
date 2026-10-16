@@ -1,0 +1,15 @@
+{
+  "kanji": "写",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "冖",
+      "role": "meaning",
+      "meaning_id": "cover"
+    }
+  ],
+  "etymology_id": "Menggambarkan proses menyalin atau menjiplak bentuk di bawah penutup.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menutup sesuatu untuk menyalinnya.",
+  "note_id": "Kosakata penting: 写真 (しゃしん)."
+}

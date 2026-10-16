@@ -1,0 +1,30 @@
+{
+  "kanji": "確",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "石",
+      "role": "meaning",
+      "meaning_id": "batu"
+    },
+    {
+      "part": "隹",
+      "role": "phonetic",
+      "meaning_id": "burung"
+    },
+    {
+      "part": "宀",
+      "role": "shape",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": "mulut"
+    }
+  ],
+  "etymology_id": "Komponen batu (石) melambangkan sifat keras, kukuh, dan tidak berubah. Bagian lainnya berfungsi sebagai penanda bunyi serta memperjelas arti sesuatu yang teguh dan pasti.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Meletakkan batu di bawah atap bersama burung memastikan struktur bangunan kokoh, kuat, dan pasti aman.",
+  "note_id": "Umum digunakan dalam kata 確認 (memastikan atau mengonfirmasi)."
+}

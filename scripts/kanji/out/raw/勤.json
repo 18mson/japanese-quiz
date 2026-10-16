@@ -1,0 +1,20 @@
+{
+  "kanji": "勤",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "土",
+      "role": "shape",
+      "meaning_id": "tanah"
+    },
+    {
+      "part": "力",
+      "role": "meaning",
+      "meaning_id": "kekuatan"
+    }
+  ],
+  "etymology_id": "Menggabungkan komponen yang berkaitan dengan menggunakan kekuatan saat bekerja.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Bekerja dengan mengerahkan tenaga dan kekuatan di atas tanah.",
+  "note_id": "Berkaitan dengan pekerjaan, tugas, dan dinas."
+}

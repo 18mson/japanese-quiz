@@ -1,0 +1,20 @@
+{
+  "kanji": "上",
+  "formation_type": "ideograph_simple",
+  "components": [
+    {
+      "part": "一",
+      "role": "meaning",
+      "meaning_id": "satu"
+    },
+    {
+      "part": "卜",
+      "role": "shape",
+      "meaning_id": "tanda"
+    }
+  ],
+  "etymology_id": "Menunjukkan posisi di atas garis dasar.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Garis pendek di atas garis horizontal menunjukkan posisi atas.",
+  "note_id": "Minna no Nihongo: Digunakan pada 上手な (pandai), 上 (atas), dan 上着 (jaket)."
+}

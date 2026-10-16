@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 supabase/.temp/
 *.tsbuildinfo
+
+# Kanji raw dictionaries
+scripts/kanji/raw/

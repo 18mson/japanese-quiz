@@ -1,0 +1,20 @@
+{
+  "kanji": "準",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "氵",
+      "role": "meaning",
+      "meaning_id": "air"
+    },
+    {
+      "part": "十",
+      "role": "shape",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan permukaan air yang merata untuk standar persiapan.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Air yang merata sebagai persiapan.",
+  "note_id": "Kosakata: 準備 (persiapan)"
+}

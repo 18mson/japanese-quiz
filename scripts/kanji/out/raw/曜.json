@@ -1,0 +1,15 @@
+{
+  "kanji": "曜",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan cahaya matahari dan penamaan hari.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Matahari bersinar setiap hari dalam sepekan.",
+  "note_id": "Kosakata: 月曜日 (げつようび) = hari Senin, 火曜日 (かようび) = hari Selasa, 水曜日 (すいようび) = hari Rabu."
+}

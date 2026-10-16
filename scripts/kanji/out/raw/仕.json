@@ -1,0 +1,20 @@
+{
+  "kanji": "仕",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    },
+    {
+      "part": "士",
+      "role": "phonetic",
+      "meaning_id": "sarjana"
+    }
+  ],
+  "etymology_id": "Gabungan orang dan unsur bunyi untuk melayani atau bekerja.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Seorang pekerja atau orang yang sedang melakukan tugas.",
+  "note_id": "Digunakan dalam kata pekerjaan."
+}

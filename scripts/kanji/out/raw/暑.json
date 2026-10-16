@@ -1,0 +1,20 @@
+{
+  "kanji": "暑",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "⺹",
+      "role": "phonetic",
+      "meaning_id": "penanda bunyi"
+    }
+  ],
+  "etymology_id": "Gabungan antara matahari dan komponen penanda bunyi untuk menggambarkan cuaca yang sangat panas di musim panas.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Matahari (日) bersinar sangat terik membuat udara terasa panas (暑い).",
+  "note_id": "Digunakan untuk menyatakan suhu udara yang panas (暑い)."
+}

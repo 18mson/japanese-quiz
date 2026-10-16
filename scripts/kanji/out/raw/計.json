@@ -1,0 +1,20 @@
+{
+  "kanji": "計",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "言",
+      "role": "meaning",
+      "meaning_id": "kata"
+    },
+    {
+      "part": "十",
+      "role": "phonetic",
+      "meaning_id": "sepuluh"
+    }
+  ],
+  "etymology_id": "Komponen kata digabung untuk menyuarakan gagasan berbicara atau merencanakan sesuatu.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berkata-kata sepuluh kali saat membuat rencana atau perhitungan.",
+  "note_id": "Kosakata penting: 時計 (とけい) untuk jam."
+}

@@ -1,0 +1,15 @@
+{
+  "kanji": "着",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Menggambarkan pakaian yang dikenakan pada tubuh atau tiba di suatu tempat.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Mengenakan pakaian (着る) atau tiba (着く) di tempat tujuan.",
+  "note_id": "Kosakata: 上着 (jaket), 下着 (pakaian dalam), 着物 (kimono)."
+}

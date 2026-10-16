@@ -1,0 +1,15 @@
+{
+  "kanji": "身",
+  "formation_type": "pictograph",
+  "components": [
+    {
+      "part": "身",
+      "role": "shape",
+      "meaning_id": "body"
+    }
+  ],
+  "etymology_id": "Gambar tubuh manusia.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bentuk menyerupai postur tubuh manusia.",
+  "note_id": "Digunakan pada kata yang berhubungan dengan diri sendiri."
+}

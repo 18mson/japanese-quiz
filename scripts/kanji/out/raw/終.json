@@ -1,0 +1,30 @@
+{
+  "kanji": "終",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "糸",
+      "role": "meaning",
+      "meaning_id": "thread"
+    },
+    {
+      "part": "幺",
+      "role": "shape",
+      "meaning_id": "short thread"
+    },
+    {
+      "part": "小",
+      "role": "shape",
+      "meaning_id": "small"
+    },
+    {
+      "part": "夂",
+      "role": "shape",
+      "meaning_id": "winter"
+    }
+  ],
+  "etymology_id": "Berkaitan dengan benang (糸) yang mencapai ujungnya atau diselesaikan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Ujung dari gulungan benang menandakan selesainya pekerjaan.",
+  "note_id": "Kosakata penting: 終わります (selesai)."
+}

@@ -1,0 +1,20 @@
+{
+  "kanji": "肩",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "月",
+      "role": "meaning",
+      "meaning_id": "daging"
+    },
+    {
+      "part": "戸",
+      "role": "phonetic",
+      "meaning_id": "pintu"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen daging (tubuh) dan pintu sebagai penanda bunyi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Bagian daging (月) di tubuh manusia yang berada di dekat leher yaitu pundak atau bahu.",
+  "note_id": "Kanji ini berarti bahu atau pundak."
+}

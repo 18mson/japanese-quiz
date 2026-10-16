@@ -1,0 +1,20 @@
+{
+  "kanji": "走",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "走",
+      "role": "meaning",
+      "meaning_id": "berlari"
+    },
+    {
+      "part": "土",
+      "role": "meaning",
+      "meaning_id": "tanah"
+    }
+  ],
+  "etymology_id": "Menggambarkan seseorang yang menggerakkan kaki di atas tanah saat berlari.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Seseorang bergerak cepat di atas tanah (土) saat berlari (走る).",
+  "note_id": "Kosakata utama: 走る (はしる) - berlari."
+}

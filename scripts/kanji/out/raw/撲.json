@@ -1,0 +1,15 @@
+{
+  "kanji": "撲",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "扌",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    }
+  ],
+  "etymology_id": "Terdiri dari komponen tangan (扌) yang menunjukkan aksi memukul atau menampar.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Menggunakan tangan (扌) untuk memukul.",
+  "note_id": "Digunakan dalam kata 相撲 (sumo)."
+}

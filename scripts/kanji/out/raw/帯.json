@@ -1,0 +1,15 @@
+{
+  "kanji": "帯",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "巾",
+      "role": "meaning",
+      "meaning_id": "kain"
+    }
+  ],
+  "etymology_id": "Menggambarkan sehelai kain (巾) yang diikatkan di pinggang.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Kain (巾) yang panjang dan dililitkan menjadi ikat pinggang.",
+  "note_id": "Berkaitan dengan ikat pinggang kimono atau obi."
+}

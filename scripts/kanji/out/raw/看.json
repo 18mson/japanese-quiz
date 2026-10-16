@@ -1,0 +1,20 @@
+{
+  "kanji": "看",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "手",
+      "role": "meaning",
+      "meaning_id": "tangan"
+    },
+    {
+      "part": "目",
+      "role": "meaning",
+      "meaning_id": "mata"
+    }
+  ],
+  "etymology_id": "Gabungan tangan (手) yang diletakkan di atas mata (目) untuk menaungi pandangan saat mengawasi.",
+  "etymology_confidence": "established",
+  "mnemonic_id": "Cara mengingat: Letakkan tangan (手) di atas mata (目) untuk melihat dan mengawasi pasien (看護師).",
+  "note_id": "Dipakai dalam kata 看護師 (perawat)."
+}

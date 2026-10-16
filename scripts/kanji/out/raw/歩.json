@@ -1,0 +1,20 @@
+{
+  "kanji": "歩",
+  "formation_type": "compound_meaning",
+  "components": [
+    {
+      "part": "止",
+      "role": "meaning",
+      "meaning_id": "berhenti"
+    },
+    {
+      "part": "小",
+      "role": "meaning",
+      "meaning_id": "kecil"
+    }
+  ],
+  "etymology_id": "Gabungan langkah kaki dan gerakan.",
+  "etymology_confidence": "traditional",
+  "mnemonic_id": "Cara mengingat: Berjalan dimulai dengan langkah kecil demi langkah.",
+  "note_id": "Digunakan dalam kata 歩きます (berjalan kaki) dan 散歩します (berjalan-jalan)."
+}

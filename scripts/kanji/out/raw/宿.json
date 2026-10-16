@@ -1,0 +1,25 @@
+{
+  "kanji": "宿",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "宀",
+      "role": "meaning",
+      "meaning_id": "atap"
+    },
+    {
+      "part": "白",
+      "role": "phonetic",
+      "meaning_id": "putih"
+    },
+    {
+      "part": "⺅",
+      "role": "meaning",
+      "meaning_id": "orang"
+    }
+  ],
+  "etymology_id": "Terdiri dari atap dan orang.",
+  "etymology_confidence": "uncertain",
+  "mnemonic_id": "Cara mengingat: Orang tinggal di bawah atap untuk menginap.",
+  "note_id": "Kosakata: 宿題 (PR)"
+}
