@@ -337,7 +337,7 @@ export const useMasteryStore = defineStore('mastery', () => {
 
   const hiraganaMasteryStats = computed(() => computeCategoryMasteryStats(hiraganaData, userStreaks.value));
   const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
-  const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value));
+  const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value, getMasteryStreak));
   const kanjiMasteryStats = computed(() => computeCategoryMasteryStats(kanjiN5Data, userStreaks.value, getMasteryStreak));
 
   const overallMasteryStats = computed(() => {
@@ -351,7 +351,7 @@ export const useMasteryStore = defineStore('mastery', () => {
     let level = 1;
     for (let i = 1; i <= 25; i++) {
       const lessonWords = wordsData.filter(w => w.lesson === `Pelajaran ${i}` || (!w.lesson && i === 1));
-      if (lessonWords.length > 0 && lessonWords.every(w => (userStreaks.value[w.character] || 0) >= 3)) {
+      if (lessonWords.length > 0 && lessonWords.every(w => getMasteryStreak(w.character) >= 3)) {
         level = i + 1;
       } else {
         break;
