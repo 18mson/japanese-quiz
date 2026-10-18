@@ -1,15 +1,22 @@
 {
   "kanji": "跳",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "足",
       "role": "meaning",
       "meaning_id": "kaki"
+    },
+    {
+      "part": "兆",
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen kaki yang menunjukkan arti berhubungan dengan gerak kaki dan bagian lain sebagai penanda bunyi.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Menggunakan kaki untuk melompat tinggi.",
-  "note_id": "Kosakata: 跳ぶ (とぶ) - meloncat."
+  "etymology_id": "Kanji ini terbentuk dari komponen meaning 足 (kaki) yang menunjukkan makna gerak fisik, serta bagian phonetic 兆 yang memberikan petunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Menggunakan kaki (足) untuk melompat tinggi.",
+  "note_id": "",
+  "phonetic_part": "兆",
+  "reading_hint": "兆 チョウ → 跳 チョウ"
 }

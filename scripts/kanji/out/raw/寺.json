@@ -1,20 +1,22 @@
 {
   "kanji": "寺",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "土",
-      "role": "meaning",
+      "role": "phonetic",
       "meaning_id": "tanah"
     },
     {
       "part": "寸",
       "role": "meaning",
-      "meaning_id": "ukuran atau inci"
+      "meaning_id": "ukuran"
     }
   ],
-  "etymology_id": "Dibangun di atas tanah (土) dengan ukuran tertentu (寸) untuk tempat resmi atau wihara.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Kuil Buddha (寺) berdiri di atas sebidang tanah (土).",
-  "note_id": "Kosakata penting: お寺 (おてら) = wihara, kuil Buddha."
+  "etymology_id": "Kanji ini terdiri dari 土 sebagai pemberi petunjuk bunyi dan 寸 sebagai petunjuk makna.",
+  "mnemonic_id": "Cara mengingat: Tempat ibadah di atas tanah (土) dengan aturan atau ukuran (寸) yang jelas.",
+  "note_id": "Kosakata Minna no Nihongo: お寺 (おてら) = wihara",
+  "phonetic_part": "之V",
+  "reading_hint": "之V ジ → 寺 ジ"
 }

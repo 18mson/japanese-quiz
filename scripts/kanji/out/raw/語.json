@@ -1,6 +1,7 @@
 {
   "kanji": "語",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "言",
@@ -8,13 +9,14 @@
       "meaning_id": "kata"
     },
     {
-      "part": "五",
+      "part": "吾",
       "role": "phonetic",
-      "meaning_id": "lima"
+      "meaning_id": "saya"
     }
   ],
-  "etymology_id": "Kata 言 digabung dengan 五 sebagai penunjuk bacaan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Kata-kata yang diucapkan berkaitan dengan bahasa.",
-  "note_id": "Kosakata: ～語 (bahasa ~), 英語 (bahasa Inggris), 日本語 (bahasa Jepang)."
+  "etymology_id": "Kanji ini dibentuk dari 言 (kata) yang menunjukkan kategori makna bahasa dan 吾 sebagai pemberi bunyi.",
+  "mnemonic_id": "Cara mengingat: Kata-kata (言) yang diucapkan oleh saya (吾).",
+  "note_id": "Kosakata Minna no Nihongo: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang.",
+  "phonetic_part": "吾",
+  "reading_hint": "吾 go → 語 go"
 }

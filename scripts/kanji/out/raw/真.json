@@ -1,20 +1,32 @@
 {
   "kanji": "真",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "十",
-      "role": "shape",
-      "meaning_id": "ten"
+      "role": "meaning",
+      "meaning_id": "sepuluh"
+    },
+    {
+      "part": "具",
+      "role": "meaning",
+      "meaning_id": "alat"
     },
     {
       "part": "目",
-      "role": "shape",
-      "meaning_id": "eye"
+      "role": "meaning",
+      "meaning_id": "mata"
+    },
+    {
+      "part": "八",
+      "role": "meaning",
+      "meaning_id": "delapan"
     }
   ],
-  "etymology_id": "Gabungan dari alat dan mata untuk melihat kenyataan yang benar.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Melihat dengan jelas di hadapan mata untuk kebenaran.",
-  "note_id": "Digunakan dalam kata foto (写真)."
+  "etymology_id": "Kanji ini menggabungkan komponen alat (具) dan mata (目) untuk menyatakan kebenaran atau kenyataan yang jelas.",
+  "mnemonic_id": "Cara mengingat: Melihat dengan mata kepala sendiri (目) secara nyata dan benar (真).",
+  "note_id": "Kosakata Minna no Nihongo: 写真 (しゃしん) = foto",
+  "phonetic_part": null,
+  "reading_hint": null
 }

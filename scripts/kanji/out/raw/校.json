@@ -1,6 +1,7 @@
 {
   "kanji": "校",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "木",
@@ -8,18 +9,14 @@
       "meaning_id": "pohon"
     },
     {
-      "part": "父",
+      "part": "交",
       "role": "phonetic",
-      "meaning_id": "ayah"
-    },
-    {
-      "part": "亠",
-      "role": "shape",
-      "meaning_id": "penutup"
+      "meaning_id": "persimpangan"
     }
   ],
-  "etymology_id": "Menggabungkan pohon dengan unsur bunyi untuk menyatakan bangunan atau tempat belajar seperti sekolah.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Di dekat pohon (木) ada tempat ayah mengantar anak ke sekolah (校).",
-  "note_id": "Kosakata: 学校 (がっこう) berarti sekolah dan 高校 (こうこう) berarti SMA."
+  "etymology_id": "Kanji ini menggunakan 木 (pohon/kayu) sebagai kategori makna dan 交 sebagai penanda bunyi.",
+  "mnemonic_id": "Cara mengingat: Bangunan dari kayu (木) di persimpangan jalan (交) yaitu sekolah.",
+  "note_id": "Kosakata Minna no Nihongo: 学校 (がっこう) = sekolah, 高校 (こうこう) = SMA.",
+  "phonetic_part": "交",
+  "reading_hint": "交 kō → 校 kō"
 }

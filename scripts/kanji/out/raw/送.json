@@ -1,20 +1,22 @@
 {
   "kanji": "送",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "辶",
+      "part": "关",
       "role": "meaning",
-      "meaning_id": "jalan"
+      "meaning_id": "gerbang"
     },
     {
-      "part": "大",
-      "role": "shape",
-      "meaning_id": "besar"
+      "part": "⻌",
+      "role": "meaning",
+      "meaning_id": "jalan"
     }
   ],
-  "etymology_id": "Terdiri dari komponen jalan (辶) yang menunjukkan perpindahan, dan bagian lain yang memberikan petunjuk pengucapan atau arti mengirim.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Mengantar atau mengirim sesuatu dengan berjalan (辶) membawa barang yang besar (大).",
-  "note_id": "Kosakata utama: 送ります (おくります) - mengirim; 放送 (ほうそう) - siaran."
+  "etymology_id": "Kanji ini menggabungkan elemen gerbang (关) dan jalan (⻌) untuk menggambarkan aktivitas mengantar atau mengirim.",
+  "mnemonic_id": "Cara mengingat: Berjalan (⻌) mengantar sesuatu melewati gerbang (关).",
+  "note_id": "Kosakata Minna no Nihongo: 送ります (おくります) = mengirim",
+  "phonetic_part": null,
+  "reading_hint": null
 }

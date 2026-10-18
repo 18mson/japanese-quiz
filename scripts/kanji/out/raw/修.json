@@ -1,30 +1,27 @@
 {
   "kanji": "修",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "person"
+      "meaning_id": "orang"
+    },
+    {
+      "part": "攸",
+      "role": "phonetic",
+      "meaning_id": "mengalir"
     },
     {
       "part": "彡",
       "role": "shape",
-      "meaning_id": "decoration"
-    },
-    {
-      "part": "｜",
-      "role": "shape",
-      "meaning_id": "line"
-    },
-    {
-      "part": "攵",
-      "role": "shape",
-      "meaning_id": "action"
+      "meaning_id": "bulu/hiasan"
     }
   ],
-  "etymology_id": "Terdiri dari unsur orang dan dekorasi atau tindakan untuk memperbaiki diri.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seseorang yang melakukan tindakan disiplin dan belajar.",
-  "note_id": "Kosakata penting: 修理します (memperbaiki)."
+  "etymology_id": "Kanji ini terdiri dari 亻 (orang) yang menunjukkan kategori makna terkait manusia, serta 攸 sebagai pemberi petunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Seseorang (亻) yang mendisiplinkan diri terus-menerus.",
+  "note_id": "Kosakata Minna no Nihongo: 修理します (しゅうりします) = memperbaiki",
+  "phonetic_part": "攸1",
+  "reading_hint": "攸 シュウ → 修 シュウ"
 }

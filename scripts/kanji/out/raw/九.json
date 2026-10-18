@@ -1,15 +1,22 @@
 {
   "kanji": "九",
   "formation_type": "pictograph",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "九",
+      "part": "丿",
       "role": "shape",
-      "meaning_id": "angka sembilan"
+      "meaning_id": "garis miring"
+    },
+    {
+      "part": "乙",
+      "role": "shape",
+      "meaning_id": "bentuk kait"
     }
   ],
-  "etymology_id": "Simbol garis lengkung yang menunjukkan angka sembilan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk angka sembilan yang melengkung tegas.",
-  "note_id": "Angka sembilan dalam pembacaan kun讀み menggunakan ここの."
+  "etymology_id": "Kanji dasar yang menggambarkan angka sembilan.",
+  "mnemonic_id": "Cara mengingat: Bentuk goresan sederhana untuk angka sembilan (九).",
+  "note_id": "Kosakata Minna no Nihongo: 九日 (ここのか) = tanggal 9, 九つ (ここのつ) = sembilan.",
+  "phonetic_part": null,
+  "reading_hint": null
 }

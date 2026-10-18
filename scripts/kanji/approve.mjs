@@ -13,47 +13,57 @@ const TARGET_FINAL_FILE = path.resolve(__dirname, '../../src/data/kanjiInfo.json
 
 export function parseArgs() {
   const args = process.argv.slice(2);
-  const exceptIndex = args.indexOf('--all-except');
-  const exceptKanji = new Set();
+  const onlyIndex = args.indexOf('--only');
+  const onlyKanji = new Set();
 
-  if (exceptIndex !== -1 && args[exceptIndex + 1]) {
-    const rawExcept = args.slice(exceptIndex + 1).join(' ');
-    // Split by comma or whitespace
-    const items = rawExcept.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+  if (onlyIndex !== -1 && args[onlyIndex + 1]) {
+    const rawOnly = args.slice(onlyIndex + 1).join(' ');
+    const items = rawOnly.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
     for (const item of items) {
-      // Each kanji might be multiple characters if concatenated without spaces
       for (const char of item) {
         if (/[\u4e00-\u9fff]/.test(char)) {
-          exceptKanji.add(char);
+          onlyKanji.add(char);
         }
       }
     }
   }
 
-  return { exceptKanji };
+  return { onlyKanji };
 }
 
-export function approveEntries({ exceptKanji = new Set() } = {}) {
+export function approveEntries({ onlyKanji = new Set() } = {}) {
+  if (onlyKanji.size === 0) {
+    throw new Error('Gunakan flag --only <daftar_kanji> untuk menyetujui kanji tertentu.');
+  }
+
   if (!fs.existsSync(KANJI_INFO_FILE)) {
     throw new Error(`Berkas kanji-info.json tidak ditemukan di ${KANJI_INFO_FILE}. Jalankan validate.mjs dulu!`);
   }
 
   const allEntries = JSON.parse(fs.readFileSync(KANJI_INFO_FILE, 'utf-8'));
   let newlyApproved = 0;
-  let skippedExcept = 0;
+  let skippedCount = 0;
   let rejectedCount = 0;
 
-  const finalMap = {};
+  // Baca target final yang sudah ada jika ada agar tidak menimpa entri yang sudah approved sebelumnya
+  let finalMap = {};
+  if (fs.existsSync(TARGET_FINAL_FILE)) {
+    try {
+      finalMap = JSON.parse(fs.readFileSync(TARGET_FINAL_FILE, 'utf-8'));
+    } catch (e) {
+      finalMap = {};
+    }
+  }
 
   for (const entry of allEntries) {
-    if (entry.status === 'rejected') {
-      rejectedCount++;
+    if (!onlyKanji.has(entry.kanji)) {
+      skippedCount++;
       continue;
     }
 
-    if (exceptKanji.has(entry.kanji)) {
-      entry.status = 'needs_review';
-      skippedExcept++;
+    if (entry.status === 'rejected') {
+      console.warn(`⚠️ Menolak menyetujui kanji ${entry.kanji} karena berstatus 'rejected'.`);
+      rejectedCount++;
       continue;
     }
 
@@ -61,7 +71,6 @@ export function approveEntries({ exceptKanji = new Set() } = {}) {
     entry.status = 'approved';
     newlyApproved++;
 
-    // Format entri final untuk aplikasi (tanpa internal status/reasons)
     finalMap[entry.kanji] = {
       kanji: entry.kanji,
       meaning: entry.facts?.meaning || [],
@@ -76,6 +85,10 @@ export function approveEntries({ exceptKanji = new Set() } = {}) {
       etymology_confidence: entry.etymology_confidence,
       mnemonic_id: entry.mnemonic_id,
       note_id: entry.note_id || '',
+      phonetic_part: entry.facts?.phonetic_part || entry.phonetic_part || null,
+      reading_hint: entry.reading_hint || null,
+      claim_kind: entry.claim_kind || 'structure',
+      old_form: entry.facts?.old_form || entry.old_form || null,
       words: entry.facts?.words || []
     };
   }
@@ -93,7 +106,7 @@ export function approveEntries({ exceptKanji = new Set() } = {}) {
   return {
     total: allEntries.length,
     approved: newlyApproved,
-    except: skippedExcept,
+    skipped: skippedCount,
     rejected: rejectedCount,
     rawBytes,
     gzipBytes,
@@ -102,15 +115,19 @@ export function approveEntries({ exceptKanji = new Set() } = {}) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { exceptKanji } = parseArgs();
-  console.log(`🚀 Menyetujui kanji (dikecualikan: ${exceptKanji.size === 0 ? 'tidak ada' : Array.from(exceptKanji).join(', ')})...`);
+  const { onlyKanji } = parseArgs();
+  if (onlyKanji.size === 0) {
+    console.error('❌ Harap berikan daftar kanji yang disetujui: node scripts/kanji/approve.mjs --only <daftar>');
+    process.exit(1);
+  }
 
-  const result = approveEntries({ exceptKanji });
+  console.log(`🚀 Menyetujui kanji terpilih (${Array.from(onlyKanji).join(', ')})...`);
+  const result = approveEntries({ onlyKanji });
 
   console.log(`\n✅ Persetujuan selesai!`);
-  console.log(`📊 Total entri: ${result.total}`);
-  console.log(`✅ Approved: ${result.approved}`);
-  console.log(`⏸ Dikecualikan (Needs Review): ${result.except}`);
+  console.log(`📊 Total entri di katalog: ${result.total}`);
+  console.log(`✅ Approved baru: ${result.approved}`);
+  console.log(`⏸ Dilewati: ${result.skipped}`);
   console.log(`❌ Ditolak (Rejected): ${result.rejected}`);
   console.log(`💾 Berkas final: ${result.targetFile}`);
   console.log(`📏 Ukuran raw: ${(result.rawBytes / 1024).toFixed(2)} KB (${result.rawBytes} bytes)`);

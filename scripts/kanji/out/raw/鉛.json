@@ -1,6 +1,7 @@
 {
   "kanji": "鉛",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "金",
@@ -8,13 +9,14 @@
       "meaning_id": "logam"
     },
     {
-      "part": "口",
+      "part": "㕣",
       "role": "phonetic",
-      "meaning_id": "bagian penanda bunyi"
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Komponen logam (金) menunjukkan jenis zat mineral atau timbal. Bagian kanan berfungsi sebagai penanda bunyi 'en'.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Logam (金) timbal hitam digunakan untuk mengisi batang pensil (鉛筆).",
-  "note_id": "Umum dipakai dalam kata 鉛筆 (pensil)."
+  "etymology_id": "Kanji ini dibentuk dari komponen 金 (logam) yang menunjukkan kategori makna dan 㕣 yang memberikan petunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Logam (金) yang berat dan beracun seperti timah.",
+  "note_id": "Kosakata Minna no Nihongo: 鉛筆 (えんぴつ) = pensil.",
+  "phonetic_part": "㕣",
+  "reading_hint": "㕣 en → 鉛 en"
 }

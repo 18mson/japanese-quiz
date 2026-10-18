@@ -1,20 +1,22 @@
 {
   "kanji": "通",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "辶",
-      "role": "meaning",
-      "meaning_id": "gerak jalan"
+      "part": "甬",
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
     },
     {
-      "part": "用",
-      "role": "phonetic",
-      "meaning_id": "menggunakan"
+      "part": "⻌",
+      "role": "meaning",
+      "meaning_id": "jalan atau bergerak"
     }
   ],
-  "etymology_id": "Komponen gerak jalan digabungkan dengan bagian penanda bunyi untuk menyatakan arti melewati atau melalui.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Berjalan melewati jalan raya untuk pergi ke suatu tempat.",
-  "note_id": "Kosakata: 普通 (ふつう) = biasa, 通帳記入 (つうちょうきにゅう) = pencetakan buku tabungan, 交通 (こうつう) = lalu lintas."
+  "etymology_id": "Kanji ini menggabungkan komponen makna ⻌ (jalan) dan bagian bunyi 甬 untuk menyatakan arti melewati atau melalui.",
+  "mnemonic_id": "Cara mengingat: Berjalan (⻌) melewati suatu jalur dengan lancar.",
+  "note_id": "",
+  "phonetic_part": "甬",
+  "reading_hint": "甬 ツウ → 通 ツウ"
 }

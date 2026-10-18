@@ -1,25 +1,22 @@
 {
   "kanji": "顔",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "頁",
+      "part": "彦",
       "role": "meaning",
+      "meaning_id": "pria elok"
+    },
+    {
+      "part": "頁",
+      "role": "phonetic",
       "meaning_id": "kepala"
-    },
-    {
-      "part": "立",
-      "role": "shape",
-      "meaning_id": "berdiri tegak"
-    },
-    {
-      "part": "彡",
-      "role": "shape",
-      "meaning_id": "garis corak atau rambut"
     }
   ],
-  "etymology_id": "Menggabungkan 頁 (kepala) sebagai penunjuk makna dengan bagian kiri yang berfungsi sebagai penanda fonetik sekaligus corak dahi dan wajah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bagian kepala (頁) yang berdiri tegak (立) dihiasi garis-garis fitur (彡) membentuk wajah (顔) seseorang.",
-  "note_id": "Kata mandiri 顔 dibaca 'kao' dengan arti wajah atau muka."
+  "etymology_id": "Kanji ini menggabungkan 彦 di kiri dan 頁 (kepala/halaman) di kanan sebagai penanda bunyi.",
+  "mnemonic_id": "Cara mengingat: Bagian kepala atau wajah (頁) seseorang.",
+  "note_id": "Kosakata Minna no Nihongo: 顔 (かお) = wajah, muka.",
+  "phonetic_part": "頁",
+  "reading_hint": "頁 gan → 顔 gan"
 }

@@ -1,11 +1,12 @@
 {
   "kanji": "散",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "月",
-      "role": "phonetic",
-      "meaning_id": "bulan"
+      "role": "meaning",
+      "meaning_id": "daging"
     },
     {
       "part": "攵",
@@ -13,8 +14,9 @@
       "meaning_id": "tindakan"
     }
   ],
-  "etymology_id": "Gabungan komponen makna tindakan dan unsur bunyi untuk menyatakan tersebar.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Tindakan membuat sesuatu terpencar ke mana-mana.",
-  "note_id": "Digunakan dalam kegiatan berjalan-jalan."
+  "etymology_id": "Kanji ini disusun dari komponen 月 dan 攵 untuk menyatakan tindakan menyebar.",
+  "mnemonic_id": "Cara mengingat: Tindakan (攵) membuat sesuatu berserakan.",
+  "note_id": "Kosakata Minna no Nihongo: 散歩します (さんぽします) = berjalan-jalan.",
+  "phonetic_part": null,
+  "reading_hint": null
 }

@@ -27,6 +27,10 @@ export interface KanjiDetail {
   etymology_confidence: 'established' | 'traditional' | 'uncertain';
   mnemonic_id: string;
   note_id?: string;
+  phonetic_part?: string | null;
+  reading_hint?: string | null;
+  claim_kind?: 'structure' | 'folk' | 'unknown';
+  old_form?: string | null;
   words?: KanjiWordContext[];
 }
 

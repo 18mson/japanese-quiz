@@ -1,20 +1,22 @@
 {
   "kanji": "東",
-  "formation_type": "compound_meaning",
+  "formation_type": "ideograph_simple",
+  "claim_kind": "structure",
   "components": [
-    {
-      "part": "日",
-      "role": "meaning",
-      "meaning_id": "matahari"
-    },
     {
       "part": "木",
       "role": "meaning",
       "meaning_id": "pohon"
+    },
+    {
+      "part": "日",
+      "role": "meaning",
+      "meaning_id": "matahari"
     }
   ],
-  "etymology_id": "Matahari terbit di balik pohon di sebelah timur.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Matahari terbit di balik pohon, yaitu arah timur.",
-  "note_id": "Digunakan dalam kata 東京 (Tokyo) dan 東口 (pintu timur)."
+  "etymology_id": "Kanji ini menggambarkan matahari (日) yang terbit di balik pohon (木) di sebelah timur.",
+  "mnemonic_id": "Cara mengingat: Matahari (日) terbit di antara pepohonan (木) di sebelah timur.",
+  "note_id": "",
+  "phonetic_part": null,
+  "reading_hint": null
 }

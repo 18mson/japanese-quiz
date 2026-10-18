@@ -390,7 +390,7 @@ onUnmounted(() => {
               <!-- 6. Footer Feedback & Report Button -->
               <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
                 <span class="text-[11px] text-slate-600 dark:text-slate-400">
-                  Data EDRDG (CC BY-SA 4.0) • Pembentukan AI
+                  Data EDRDG (CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0) • Pembentukan AI
                 </span>
 
                 <button

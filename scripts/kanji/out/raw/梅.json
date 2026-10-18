@@ -1,6 +1,7 @@
 {
   "kanji": "梅",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "木",
@@ -8,13 +9,14 @@
       "meaning_id": "pohon"
     },
     {
-      "part": "母",
+      "part": "毎",
       "role": "phonetic",
-      "meaning_id": "ibu"
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Pohon (木) yang menghasilkan buah plum.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Pohon (木) buah yang dirawat oleh ibu (母) adalah pohon ume.",
-  "note_id": "Digunakan untuk buah plum."
+  "etymology_id": "Kanji ini terdiri dari komponen meaning 木 (pohon) yang menunjukkan jenis tanaman, dan phonetic 毎 yang memberikan petunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Pohon (木) buah ume yang berbunga setiap (毎) tahun.",
+  "note_id": "",
+  "phonetic_part": "毎",
+  "reading_hint": "毎 バイ → 梅 バイ"
 }

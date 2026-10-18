@@ -1,6 +1,7 @@
 {
   "kanji": "答",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "竹",
@@ -8,13 +9,14 @@
       "meaning_id": "bambu"
     },
     {
-      "part": "口",
+      "part": "合",
       "role": "meaning",
-      "meaning_id": "mulut"
+      "meaning_id": "menggabungkan atau cocok"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen bambu dan mulut. Penjelasan pastinya belum pasti.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Untuk memberi jawaban, buka mulut di depan orang.",
-  "note_id": "Kosakata: 答え (こたえ) = jawaban."
+  "etymology_id": "Kanji ini disusun dari komponen 竹 (bambu) dan 合 (sesuai/cocok).",
+  "mnemonic_id": "Cara mengingat: Memberikan jawaban (答) yang cocok (合) dan tepat seperti ruas bambu (竹).",
+  "note_id": "",
+  "phonetic_part": null,
+  "reading_hint": null
 }

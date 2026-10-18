@@ -36,20 +36,23 @@ export function getApiKey() {
 
 export const SYSTEM_PROMPT = `Kamu menyusun catatan belajar kanji untuk pelajar Indonesia tingkat pemula (Minna no Nihongo).
 Aturan KETAT:
-1. Gunakan HANYA fakta yang diberikan (arti, bacaan, jumlah goresan, daftar komponen).
-   Bagian 'components' pada keluaran HARUS himpunan bagian dari daftar komponen yang diberikan.
-2. Jangan mengarang sejarah. Dilarang menyebut tahun, dinasti, tulang ramalan, nama ahli, atau
-   klaim "pada zaman dahulu ...".
-3. Untuk 'etymology_id' jelaskan hubungan komponen dengan arti kanji secara singkat (maks 50 kata).
-   - 'established': penjelasan yang diterima luas dan tidak diperdebatkan (mis. 休 = orang + pohon).
-   - 'traditional': penjelasan populer yang tidak pasti benar secara sejarah.
-   - 'uncertain': jika tidak yakin. Pada kasus ini cukup jelaskan struktur komponen dan JANGAN
-     mengarang alasan.
-4. Bila salah satu komponen kemungkinan hanya penanda bunyi (bacaan sama atau mirip dengan kanji),
-   jelaskan sebagai 'phonetic', jangan dipaksa punya makna.
-5. 'mnemonic_id' adalah alat bantu mengingat, harus diawali "Cara mengingat:", maks 40 kata,
-   dan TIDAK boleh dinyatakan sebagai sejarah.
-6. Semua teks dalam bahasa Indonesia yang sederhana. Jangan menambah field lain.`;
+1. Fakta yang diberikan adalah pohon komponen (KanjiVG), bagian bunyi (phonetic_part, bisa null), bentuk lama (old_form, bisa null), serta daftar KRADFILE. Gunakan komponen dari pohon KanjiVG; jangan menjelaskan lewat serpihan KRADFILE bila ada komponen induk di pohon. Tiap components[].part HARUS ada di salah satu: pohon KanjiVG, KRADFILE, atau old_form.
+2. Jika phonetic_part ada: jelaskan bahwa bagian itu menunjukkan bunyi, dan komponen lainnya menunjukkan kategori makna. Jangan mengarang makna untuk bagian bunyi. Beri role 'phonetic' pada komponen penanda bunyi tersebut, set formation_type menjadi 'phono_semantic', dan isi field reading_hint dengan pola bacaan bagian itu → bacaan kanji (mis. "交 こう → 校 こう").
+3. Jika old_form ada: sebutkan satu kalimat "Bentuk lama: X" dan jelaskan kanji modern sebagai penyederhanaan; JANGAN menebak bentuk lama bila old_form null.
+4. Jika kamu tidak tahu atau asal-usulnya tidak pasti, gunakan claim_kind "unknown" dan jelaskan hanya struktur komponen (JANGAN mengarang klaim "berasal dari..."). JANGAN menggunakan cerita folk (mis. "orang di bawah atap = menjual") sebagai penjelasan asal-usul.
+5. Jangan mengarang sejarah. Dilarang menyebut tahun, dinasti, tulang ramalan, nama ahli, atau pola "pada zaman".
+6. 'mnemonic_id' adalah alat bantu mengingat, harus diawali "Cara mengingat:", maks 40 kata, memuat minimal satu citra konkret ATAU petunjuk bunyi (mis. "交 (kō) memberi bunyi 'kō'"), dan DILARANG hanya mengulang arti kanji.
+7. Format keluaran JSON memuat field:
+   - kanji: karakter kanji
+   - formation_type: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown'
+   - phonetic_part: bagian bunyi (string jika ada, atau null jika tidak ada)
+   - reading_hint: petunjuk keterkaitan bacaan (string jika phonetic_part ada, mis. "交 こう → 校 こう", atau null jika tidak ada)
+   - claim_kind: 'structure' | 'folk' | 'unknown'
+   - components: array objek { part, role: 'meaning' | 'phonetic' | 'shape', meaning_id }
+   - etymology_id: penjelasan asal-usul/hubungan komponen secara ringkas (maks 50 kata). Jika claim_kind "unknown", jelaskan hanya struktur komponen dan petunjuk bacaan bila ada.
+   - mnemonic_id: jembatan keledai dimulai dengan "Cara mengingat:" (maks 40 kata)
+   - note_id: catatan tambahan bila relevan, atau string kosong jika tidak ada.
+Semua teks dalam bahasa Indonesia yang sederhana.`;
 
 export const RESPONSE_SCHEMA = {
   type: 'ARRAY',
@@ -60,6 +63,12 @@ export const RESPONSE_SCHEMA = {
       formation_type: {
         type: 'STRING',
         enum: ['pictograph', 'ideograph_simple', 'compound_meaning', 'phono_semantic', 'unknown']
+      },
+      phonetic_part: { type: 'STRING', nullable: true },
+      reading_hint: { type: 'STRING', nullable: true },
+      claim_kind: {
+        type: 'STRING',
+        enum: ['structure', 'folk', 'unknown']
       },
       components: {
         type: 'ARRAY',
@@ -74,30 +83,53 @@ export const RESPONSE_SCHEMA = {
         }
       },
       etymology_id: { type: 'STRING' },
-      etymology_confidence: {
-        type: 'STRING',
-        enum: ['established', 'traditional', 'uncertain']
-      },
       mnemonic_id: { type: 'STRING' },
       note_id: { type: 'STRING' }
     },
-    required: ['kanji', 'formation_type', 'components', 'etymology_id', 'etymology_confidence', 'mnemonic_id', 'note_id']
+    required: [
+      'kanji',
+      'formation_type',
+      'claim_kind',
+      'components',
+      'etymology_id',
+      'mnemonic_id',
+      'note_id'
+    ]
   }
 };
 
-function buildUserPrompt(batchItems) {
-  let prompt = `Susun catatan belajar untuk ${batchItems.length} kanji berikut:\n\n`;
+function formatKanjiVgTree(node, depth = 0) {
+  if (!node) return '(tidak ada struktur)';
+  const indent = '  '.repeat(depth);
+  const info = [];
+  if (node.element) info.push(`elemen: ${node.element}`);
+  if (node.original) info.push(`asli: ${node.original}`);
+  if (node.phon) info.push(`bunyi (phon): ${node.phon}`);
+  if (node.position) info.push(`posisi: ${node.position}`);
+
+  let res = `${indent}- ${info.join(', ') || 'grup'}\n`;
+  for (const child of node.children || []) {
+    res += formatKanjiVgTree(child, depth + 1);
+  }
+  return res;
+}
+
+export function buildUserPrompt(batchItems) {
+  let prompt = `Susun catatan belajar untuk ${batchItems.length} kanji berikut berdasarkan fakta yang tersedia:\n\n`;
 
   for (let i = 0; i < batchItems.length; i++) {
     const item = batchItems[i];
-    prompt += `--- Kanji ${i + 1} ---\n`;
-    prompt += `Kanji: ${item.kanji}\n`;
+    prompt += `=== Kanji ${i + 1}: ${item.kanji} ===\n`;
     prompt += `Arti: ${(item.meaning || []).slice(0, 5).join(', ') || '-'}\n`;
     prompt += `On: ${(item.on || []).join(', ') || '-'}\n`;
     prompt += `Kun: ${(item.kun || []).join(', ') || '-'}\n`;
     prompt += `Goresan: ${item.stroke_count ?? '-'}\n`;
+    prompt += `Bagian Bunyi (phonetic_part): ${item.phonetic_part ? item.phonetic_part : 'null (tidak ada)'}\n`;
+    prompt += `Bentuk Lama (old_form): ${item.old_form ? item.old_form : 'null (tidak ada)'}\n`;
+    prompt += `Komponen KanjiVG Flat: ${(item.flat_parts || []).join(', ') || '-'}\n`;
+    prompt += `Pohon Struktur KanjiVG:\n${formatKanjiVgTree(item.tree)}`;
     prompt += `Komponen KRADFILE: ${(item.components || []).join(', ') || '-'}\n`;
-    prompt += `Kosakata proyek:\n`;
+    prompt += `Kosakata proyek Minna no Nihongo:\n`;
     const sampleWords = (item.words || []).slice(0, 3);
     if (sampleWords.length === 0) {
       prompt += `- (tidak ada kosakata konteks khusus)\n`;
@@ -166,7 +198,43 @@ export async function callGeminiApi(apiKey, userPrompt, retryCount = 0) {
   }
 }
 
-export async function generateAll({ specificKanji = null, overwrite = false } = {}) {
+export function parseCliArgs() {
+  const args = process.argv.slice(2);
+  let specificKanji = null;
+  let maxRequests = Infinity;
+  let overwrite = false;
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === '--only' && args[i + 1]) {
+      const raw = args[i + 1];
+      const items = raw.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+      specificKanji = [];
+      for (const item of items) {
+        for (const char of item) {
+          if (/[\u4e00-\u9fff]/.test(char)) {
+            specificKanji.push(char);
+          }
+        }
+      }
+      i++;
+    } else if (arg === '--max-requests' && args[i + 1]) {
+      maxRequests = parseInt(args[i + 1], 10);
+      i++;
+    } else if (arg === '--overwrite') {
+      overwrite = true;
+    }
+  }
+
+  // Jika --only diberikan tanpa flag lain, defaultkan overwrite=true untuk kanji terpilih
+  if (specificKanji && specificKanji.length > 0 && !args.includes('--no-overwrite')) {
+    overwrite = true;
+  }
+
+  return { specificKanji, maxRequests, overwrite };
+}
+
+export async function generateAll({ specificKanji = null, maxRequests = Infinity, overwrite = false } = {}) {
   if (!fs.existsSync(FACTS_FILE)) {
     throw new Error(`Berkas facts.json tidak ditemukan di ${FACTS_FILE}. Jalankan facts.mjs dulu!`);
   }
@@ -203,14 +271,21 @@ export async function generateAll({ specificKanji = null, overwrite = false } = 
 
   // Batching 10 kanji per request
   const totalBatches = Math.ceil(pendingFacts.length / BATCH_SIZE);
+  let requestCount = 0;
 
   for (let b = 0; b < totalBatches; b++) {
+    if (requestCount >= maxRequests) {
+      console.log(`🛑 Batas --max-requests (${maxRequests}) tercapai. Menghentikan proses.`);
+      break;
+    }
+
     const batch = pendingFacts.slice(b * BATCH_SIZE, (b + 1) * BATCH_SIZE);
     const kanjiNames = batch.map(x => x.kanji).join(', ');
-    console.log(`\n🚀 [Batch ${b + 1}/${totalBatches}] Mengirim ${batch.length} kanji: ${kanjiNames}`);
+    console.log(`\n🚀 [Batch ${b + 1}/${totalBatches}] (${requestCount + 1}/${maxRequests}) Mengirim ${batch.length} kanji: ${kanjiNames}`);
 
     const prompt = buildUserPrompt(batch);
     const results = await callGeminiApi(apiKey, prompt);
+    requestCount++;
 
     if (!Array.isArray(results)) {
       console.error(`⚠️ Respons batch ${b + 1} bukan array! Mengabaikan...`);
@@ -227,7 +302,7 @@ export async function generateAll({ specificKanji = null, overwrite = false } = 
     console.log(`💾 Tersimpan ${results.length} kanji ke out/raw/`);
 
     // Jeda antar permintaan
-    if (b < totalBatches - 1) {
+    if (b < totalBatches - 1 && requestCount < maxRequests) {
       await new Promise(r => setTimeout(r, REQUEST_DELAY_MS));
     }
   }
@@ -236,7 +311,8 @@ export async function generateAll({ specificKanji = null, overwrite = false } = 
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  generateAll().catch(err => {
+  const { specificKanji, maxRequests, overwrite } = parseCliArgs();
+  generateAll({ specificKanji, maxRequests, overwrite }).catch(err => {
     console.error('❌ Gagal menjalankan generate.mjs:', err);
     process.exit(1);
   });

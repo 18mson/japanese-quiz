@@ -1,6 +1,7 @@
 {
   "kanji": "団",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "囗",
@@ -9,12 +10,13 @@
     },
     {
       "part": "寸",
-      "role": "meaning",
-      "meaning_id": "ukuran atau jempol"
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Terdiri dari batas (囗) yang mengelilingi sesuatu menjadi satu kelompok.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Orang-orang berkumpul di dalam satu batas (囗) membentuk kelompok (団).",
-  "note_id": "Digunakan pada kata 布団 (futon) yang berarti kasur Jepang."
+  "etymology_id": "Bentuk lama: 團. Kanji ini adalah gabungan kategori makna 囗 (batas/lingkup) dan bagian bunyi 専/寸 (dan).",
+  "mnemonic_id": "Cara mengingat: Ada orang yang terkumpul dalam suatu batas (囗) membentuk kelompok.",
+  "note_id": "",
+  "phonetic_part": "専/寸",
+  "reading_hint": "専/寸 ダン → 団 ダン"
 }

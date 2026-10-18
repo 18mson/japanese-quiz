@@ -1,25 +1,22 @@
 {
   "kanji": "荷",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺾",
+      "part": "艹",
       "role": "meaning",
-      "meaning_id": "tumbuhan atau beban jerami"
+      "meaning_id": "tanaman"
     },
     {
-      "part": "口",
+      "part": "何",
       "role": "phonetic",
-      "meaning_id": "penanda bunyi ka"
-    },
-    {
-      "part": "⺅",
-      "role": "phonetic",
-      "meaning_id": "penanda bunyi ka"
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Komponen rumput ⺾ melambangkan muatan barang jerami, sedangkan bagian bawahnya berfungsi sebagai penanda bunyi ka.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Rumput (⺾) yang diikat dipikul manusia sebagai barang bawaan.",
-  "note_id": "Sering dipakai untuk menyebut barang bawaan atau paket yaitu 荷物 (にもつ)."
+  "etymology_id": "Kanji ini terdiri dari komponen 艹 (tanaman/rumput) sebagai kategori makna dan 何 sebagai pemberi bunyi.",
+  "mnemonic_id": "Cara mengingat: Membawa beban tanaman (艹) menggunakan pundak.",
+  "note_id": "Kosakata Minna no Nihongo: 荷物 (にもつ) = barang, paket.",
+  "phonetic_part": "何",
+  "reading_hint": "何 ka → 荷 ka"
 }

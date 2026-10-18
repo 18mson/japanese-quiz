@@ -1,6 +1,7 @@
 {
   "kanji": "服",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "月",
@@ -8,13 +9,14 @@
       "meaning_id": "daging atau tubuh"
     },
     {
-      "part": "又",
-      "role": "shape",
-      "meaning_id": "tangan"
+      "part": "𠬝",
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Terdiri dari komponen daging dan tangan, menunjukkan tubuh manusia yang mengenakan atau diikat erat oleh pakaian.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Daging tubuh dibalut pakaian yang dipegang erat oleh tangan.",
-  "note_id": "Digunakan dalam kata fuku (baju)."
+  "etymology_id": "Kanji ini terdiri dari komponen meaning 月 (daging/tubuh) yang berkaitan dengan badan, serta bagian phonetic 𠬝.",
+  "mnemonic_id": "Cara mengingat: Sesuatu yang menempel di tubuh (月) yaitu pakaian (服).",
+  "note_id": "",
+  "phonetic_part": "𠬝",
+  "reading_hint": "𠬝 フク → 服 フク"
 }

@@ -1,20 +1,22 @@
 {
   "kanji": "売",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "士",
       "role": "meaning",
-      "meaning_id": "pria atau samurai"
+      "meaning_id": "tanah"
     },
     {
-      "part": "冖",
-      "role": "shape",
-      "meaning_id": "penutup"
+      "part": "買V",
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
     }
   ],
-  "etymology_id": "Menggambarkan orang yang menawarkan barang dagangan.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang (士) di bawah atap (冖) sedang menjual barang.",
-  "note_id": "Berarti menjual."
+  "etymology_id": "Kanji ini terdiri dari bagian 土 di atas dan bagian bunyi 買 di bawah. Bentuk lama: 賣. Kanji modern ini merupakan bentuk penyederhanaan dari bentuk lamanya.",
+  "mnemonic_id": "Cara mengingat: Bagian 土 dan 买 membantu menunjukkan bunyi dan struktur kanji menjual ini.",
+  "note_id": "Kosakata penting: 売ります (menjual), 売り場 (tempat penjualan).",
+  "phonetic_part": "買V",
+  "reading_hint": "買V さい/ばい → 売 ばい"
 }

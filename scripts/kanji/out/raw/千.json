@@ -1,20 +1,22 @@
 {
   "kanji": "千",
   "formation_type": "ideograph_simple",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "ノ",
       "role": "shape",
-      "meaning_id": "stroke"
+      "meaning_id": "garis miring"
     },
     {
       "part": "十",
       "role": "meaning",
-      "meaning_id": "ten"
+      "meaning_id": "sepuluh"
     }
   ],
-  "etymology_id": "Modifikasi dari angka sepuluh untuk menyatakan seribu.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Angka sepuluh dengan tambahan garis menunjukkan seribu.",
-  "note_id": "Menyatakan bilangan seribu."
+  "etymology_id": "Kanji ini adalah bentuk ideografik sederhana yang menambahkan garis pada angka sepuluh untuk menunjukkan jumlah seribu.",
+  "mnemonic_id": "Cara mengingat: Angka sepuluh (十) dengan tambahan goresan (ノ) menjadi seribu (千).",
+  "note_id": "Kosakata Minna no Nihongo: 千 (せん) = ribu",
+  "phonetic_part": null,
+  "reading_hint": null
 }

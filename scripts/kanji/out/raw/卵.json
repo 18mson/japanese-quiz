@@ -1,15 +1,22 @@
 {
   "kanji": "卵",
-  "formation_type": "pictograph",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
+    {
+      "part": "卯",
+      "role": "shape",
+      "meaning_id": "bagian bentuk"
+    },
     {
       "part": "卩",
       "role": "shape",
-      "meaning_id": "tanda atau segel"
+      "meaning_id": "bagian bentuk"
     }
   ],
-  "etymology_id": "Merupakan gambar sederhana yang melambangkan bentuk telur.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Bentuk lonjong seperti telur (卵).",
-  "note_id": "Kosakata penting: 卵 (telur)."
+  "etymology_id": "Kanji ini terdiri dari kombinasi garis dan komponen bentuk.",
+  "mnemonic_id": "Cara mengingat: Cangkang telur (卵) yang retak di dalamnya.",
+  "note_id": "",
+  "phonetic_part": null,
+  "reading_hint": null
 }

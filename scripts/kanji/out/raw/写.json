@@ -1,15 +1,22 @@
 {
   "kanji": "写",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "冖",
       "role": "meaning",
-      "meaning_id": "cover"
+      "meaning_id": "penutup"
+    },
+    {
+      "part": "与",
+      "role": "phonetic",
+      "meaning_id": "memberi"
     }
   ],
-  "etymology_id": "Menggambarkan proses menyalin atau menjiplak bentuk di bawah penutup.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menutup sesuatu untuk menyalinnya.",
-  "note_id": "Kosakata penting: 写真 (しゃしん)."
+  "etymology_id": "Bentuk lama: 寫. Kanji ini disederhanakan dari bentuk lamanya. Terdiri dari 冖 (penutup) dan 与 sebagai pemberi petunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Menutup (冖) dan memberikan (与) hasil salinan atau foto.",
+  "note_id": "Kosakata Minna no Nihongo: 写真 (しゃしん) = foto",
+  "phonetic_part": "与/舄",
+  "reading_hint": "与 シャ → 写 シャ"
 }

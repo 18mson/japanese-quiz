@@ -1,15 +1,22 @@
 {
   "kanji": "迎",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "辶",
+      "part": "卬",
+      "role": "phonetic",
+      "meaning_id": "bagian bunyi"
+    },
+    {
+      "part": "⻌",
       "role": "meaning",
-      "meaning_id": "jalan"
+      "meaning_id": "gerak jalan"
     }
   ],
-  "etymology_id": "Komponen jalan menunjukkan arti bergerak untuk menyambut seseorang.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Berjalan menyambut tamu yang datang.",
-  "note_id": "Kosakata penting: 迎えます (むかえます) untuk menyambut."
+  "etymology_id": "Kanji ini dibentuk dari ⻌ (jalan/gerak) dan 卬 sebagai penanda bunyi.",
+  "mnemonic_id": "Cara mengingat: Berjalan (⻌) untuk menyambut tamu.",
+  "note_id": "Kosakata Minna no Nihongo: 迎えます (むかえます) = menjemput.",
+  "phonetic_part": "卬",
+  "reading_hint": "卬 gei → 迎 gei"
 }

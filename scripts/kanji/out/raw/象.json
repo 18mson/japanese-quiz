@@ -1,30 +1,22 @@
 {
   "kanji": "象",
   "formation_type": "pictograph",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "勹",
+      "part": "𠂊",
       "role": "shape",
-      "meaning_id": "membungkus"
+      "meaning_id": "bentuk"
     },
     {
       "part": "豕",
-      "role": "shape",
-      "meaning_id": "babi"
-    },
-    {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
+      "role": "meaning",
+      "meaning_id": "babi/hewan"
     }
   ],
-  "etymology_id": "Berasal dari bentuk gambar gajah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bayangkan bentuk tubuh dan bentuk fisik seekor gajah.",
-  "note_id": "Minna no Nihongo: 象 (ぞう) berarti gajah."
+  "etymology_id": "Kanji ini menggambarkan bentuk hewan besar seperti gajah secara piktografis.",
+  "mnemonic_id": "Cara mengingat: Bentuk tubuh hewan besar (豕) dengan belalai.",
+  "note_id": "Kosakata Minna no Nihongo: 象 (ぞう) = gajah",
+  "phonetic_part": null,
+  "reading_hint": null
 }

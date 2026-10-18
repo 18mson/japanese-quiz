@@ -1,15 +1,22 @@
 {
   "kanji": "警",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
+    {
+      "part": "敬",
+      "role": "phonetic",
+      "meaning_id": "hormat"
+    },
     {
       "part": "言",
       "role": "meaning",
       "meaning_id": "kata"
     }
   ],
-  "etymology_id": "Komponen kata digunakan untuk membentuk arti peringatan atau teguran.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Kata-kata peringatan yang diucapkan oleh polisi.",
-  "note_id": "Kosakata penting: 警察官 (けいさつかん) untuk petugas kepolisian."
+  "etymology_id": "Kanji ini terdiri dari 言 (kata/bicara) yang berkaitan dengan makna peringatan dan 敬 sebagai penanda bunyi.",
+  "mnemonic_id": "Cara mengingat: Berbicara (言) dengan hormat dan waspada.",
+  "note_id": "Kosakata Minna no Nihongo: 警察官 (けいさつかん) = polisi.",
+  "phonetic_part": "敬",
+  "reading_hint": "敬 kei → 警 kei"
 }

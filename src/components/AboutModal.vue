@@ -378,7 +378,7 @@ defineEmits<{
                 <span>📚 Atribusi Data & Hak Cipta</span>
               </h4>
               <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
-                KANJIDIC2 dan KRADFILE, hak cipta The Electronic Dictionary Research and Development Group (EDRDG), lisensi CC BY-SA 4.0; penjelasan dibuat dengan bantuan AI dan dapat mengandung kekeliruan.
+                KANJIDIC2 dan KRADFILE, hak cipta The Electronic Dictionary Research and Development Group (EDRDG), lisensi CC BY-SA 4.0; KanjiVG hak cipta Ulrich Apel, lisensi CC BY-SA 3.0; penjelasan dibuat dengan bantuan AI dan dapat mengandung kekeliruan.
               </p>
             </div>
           </div>

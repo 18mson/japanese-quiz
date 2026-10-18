@@ -1,15 +1,17 @@
 {
   "kanji": "用",
-  "formation_type": "pictograph",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
       "part": "用",
       "role": "shape",
-      "meaning_id": "alat atau pagar"
+      "meaning_id": "bentuk dasar"
     }
   ],
-  "etymology_id": "Menggambarkan alat yang digunakan untuk suatu fungsi atau pekerjaan.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Alat yang siap digunakan untuk menyelesaikan suatu urusan.",
-  "note_id": "Kosakata: 用事 (ようじ) = urusan."
+  "etymology_id": "Kanji ini digambarkan sebagai bentuk tunggal yang menunjukkan fungsi atau penggunaan.",
+  "mnemonic_id": "Cara mengingat: Alat atau fasilitas yang siap digunakan (用) untuk suatu urusan.",
+  "note_id": "",
+  "phonetic_part": null,
+  "reading_hint": null
 }

@@ -1,16 +1,12 @@
 {
   "kanji": "所",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "尸",
-      "role": "shape",
-      "meaning_id": "bentuk"
-    },
-    {
       "part": "戸",
-      "role": "meaning",
-      "meaning_id": "pintu rumah"
+      "role": "phonetic",
+      "meaning_id": "pintu"
     },
     {
       "part": "斤",
@@ -18,8 +14,9 @@
       "meaning_id": "kapak"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari unsur yang berkaitan dengan tempat tinggal atau bangunan serta alat, yang digunakan untuk merepresentasikan arti tempat.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Di depan pintu (戸) rumah, ada tempat (所) untuk meletakkan kapak (斤).",
-  "note_id": "Digunakan dalam kata benda yang menyatakan tempat seperti kantor (事務所) dan wastafel (洗面所)."
+  "etymology_id": "Kanji ini menggunakan 戸 sebagai pemberi petunjuk bunyi dan 斤 sebagai pelengkap makna.",
+  "mnemonic_id": "Cara mengingat: Pintu (戸) rumah sebagai suatu tempat (ところ) tertentu.",
+  "note_id": "Kosakata Minna no Nihongo: 事務所 (じむしょ) = kantor",
+  "phonetic_part": "戸",
+  "reading_hint": "戸 ショ → 所 ショ"
 }
