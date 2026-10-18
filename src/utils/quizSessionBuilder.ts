@@ -23,6 +23,7 @@ export async function prepareStandardQuestions(params: {
   selectedKanaCategory: 'all' | 'basic' | 'dakuten' | 'combination';
   selectedKanjiLessonNumber: number;
   activeKanjiLessonNumber: number;
+  selectedWordLessonNumber?: number | null;
   getMasteryStreak: (char: string) => number;
   userStreaks: Record<string, number>;
   introducedChars: Record<string, boolean>;
@@ -35,6 +36,7 @@ export async function prepareStandardQuestions(params: {
     selectedKanaCategory,
     selectedKanjiLessonNumber,
     activeKanjiLessonNumber,
+    selectedWordLessonNumber,
     getMasteryStreak,
     userStreaks,
     introducedChars,
@@ -110,12 +112,23 @@ export async function prepareStandardQuestions(params: {
       return numA - numB;
     });
 
-    const effectiveLesson = Math.max(
-      currentLessonNumber || 1,
-      activeKanjiLessonNumber || 1,
-      selectedKanjiLessonNumber || 1
-    );
-    const kanjiQuestions = buildKanjiSessionQuestions(finalPool, questionCount, getMasteryStreak, effectiveLesson);
+    let poolForSelection = finalPool;
+    if (selectedWordLessonNumber && selectedWordLessonNumber > 0) {
+      const lessonKey = `Pelajaran ${selectedWordLessonNumber}`;
+      const filteredByLesson = finalPool.filter(w => w.lesson === lessonKey);
+      if (filteredByLesson.length > 0) {
+        poolForSelection = filteredByLesson;
+      }
+    }
+
+    const effectiveLesson = selectedWordLessonNumber && selectedWordLessonNumber > 0
+      ? selectedWordLessonNumber
+      : Math.max(
+          currentLessonNumber || 1,
+          activeKanjiLessonNumber || 1,
+          selectedKanjiLessonNumber || 1
+        );
+    const kanjiQuestions = buildKanjiSessionQuestions(poolForSelection, questionCount, getMasteryStreak, effectiveLesson);
 
     const uniqueUnlearnedInSession: any[] = [];
     const seenChars = new Set<string>();

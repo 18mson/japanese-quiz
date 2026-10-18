@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, computed } from 'vue';
 import { 
   ArrowLeft, 
   BookOpen, 
@@ -9,16 +9,23 @@ import {
   X, 
   Sun, 
   Moon, 
-  Monitor 
+  Monitor,
+  CheckCircle2
 } from '@lucide/vue';
 import { useSettingsStore } from '../../../stores/settingsStore';
+import { useLessonStore } from '../../../stores/lessonStore';
 
-defineProps<{
+const props = defineProps<{
   currentLessonNumber: number;
   isChapterDropdownOpen: boolean;
   searchQuery: string;
   isMobileSearchOpen: boolean;
 }>();
+
+const lessonStore = useLessonStore();
+const isCurrentLessonCompleted = computed(() => {
+  return lessonStore.isChapterFullyCompleted(props.currentLessonNumber);
+});
 
 const emit = defineEmits<{
   (e: 'exit'): void;
@@ -99,11 +106,14 @@ defineExpose({
           'px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-black text-xs sm:text-sm flex items-center gap-1 sm:gap-1.5 transition cursor-pointer shadow-2xs active:scale-95',
           isChapterDropdownOpen
             ? 'bg-indigo-600 text-white border-indigo-600 dark:border-indigo-500 shadow-md shadow-indigo-600/30'
-            : 'bg-indigo-50/90 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-200'
+            : (isCurrentLessonCompleted
+                ? 'bg-emerald-50/90 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700/70 text-emerald-800 dark:text-emerald-200 ring-1 ring-emerald-400/30'
+                : 'bg-indigo-50/90 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-200')
         ]"
       >
-        <span :class="['font-jp font-bold', isChapterDropdownOpen ? 'text-white' : 'text-torii']">第{{ currentLessonNumber }}課</span>
-        <span class="hidden sm:inline" :class="isChapterDropdownOpen ? 'text-white' : 'text-slate-800 dark:text-slate-100'">· Bab {{ currentLessonNumber }}</span>
+        <CheckCircle2 v-if="isCurrentLessonCompleted" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <span :class="['font-jp font-bold', isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-700 dark:text-emerald-300' : 'text-torii')]">第{{ currentLessonNumber }}課</span>
+        <span class="hidden sm:inline" :class="isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-900 dark:text-emerald-100' : 'text-slate-800 dark:text-slate-100')">· Bab {{ currentLessonNumber }}</span>
         <span :class="['text-[10px] transition-transform duration-200', isChapterDropdownOpen ? 'text-white rotate-180' : 'text-indigo-500 dark:text-indigo-400']">▼</span>
       </button>
 

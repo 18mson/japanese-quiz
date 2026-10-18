@@ -191,6 +191,7 @@ const handleStart = async () => {
   }
 
   if (modeId === 'kotoba') {
+    quizStore.selectedWordLessonNumber = null;
     quizStore.selectedMode = 'sentence_typing';
     await quizStore.startQuiz(1, subType, 'n5', selectedKanaCategory.value);
     emit('start');

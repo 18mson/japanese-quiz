@@ -2,6 +2,7 @@
 import { Search } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { JapaneseWord } from '../../../../data/words';
+import { useQuizStore } from '../../../../stores/quizStore';
 
 defineProps<{
   words: JapaneseWord[];
@@ -13,6 +14,19 @@ defineProps<{
 const emit = defineEmits<{
   (e: 'selectCategory', cat: string): void;
 }>();
+
+const quizStore = useQuizStore();
+
+const getWordStatus = (char: string) => {
+  const streak = quizStore.getMasteryStreak(char);
+  if (streak >= 3) {
+    return { label: 'Dikuasai', class: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' };
+  }
+  if (streak >= 1 || quizStore.introducedChars[char]) {
+    return { label: 'Proses', class: 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30' };
+  }
+  return { label: 'Belum', class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700' };
+};
 </script>
 
 <template>
@@ -72,7 +86,14 @@ const emit = defineEmits<{
               {{ Array.isArray(w.romaji) ? w.romaji[0] : w.romaji }}
             </span>
           </div>
-          <SpeakerButton :text="w.kana || w.character" size="sm" />
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span 
+              :class="['px-1.5 py-0.5 rounded-md text-[9px] font-black border uppercase tracking-wider', getWordStatus(w.character).class]"
+            >
+              {{ getWordStatus(w.character).label }}
+            </span>
+            <SpeakerButton :text="w.kana || w.character" size="sm" />
+          </div>
         </div>
 
         <div class="pt-2 border-t border-gray-100 dark:border-slate-800/60 flex items-center justify-between gap-2">

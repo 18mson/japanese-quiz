@@ -34,6 +34,7 @@ import { useAuthStore } from './stores/authStore';
 import { useSettingsStore } from './stores/settingsStore';
 import { useBadgeStore } from './stores/badgeStore';
 import { useMasteryStore } from './stores/masteryStore';
+import { useLessonStore } from './stores/lessonStore';
 import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, BookOpen, Award, Sliders, RotateCcw, Cloud, RefreshCw, LogIn } from '@lucide/vue';
 
 const quizStore = useQuizStore();
@@ -41,6 +42,7 @@ const authStore = useAuthStore();
 const settingsStore = useSettingsStore();
 const badgeStore = useBadgeStore();
 const masteryStore = useMasteryStore();
+const lessonStore = useLessonStore();
 
 const syncToastMessage = ref<string | null>(null);
 let syncToastTimeout: any = null;
@@ -137,6 +139,8 @@ const closeDailyPractice = () => {
 const openHandbook = (lessonNum?: number) => {
   if (lessonNum && lessonNum >= 1 && lessonNum <= 25) {
     selectedHandbookLesson.value = lessonNum;
+  } else {
+    selectedHandbookLesson.value = lessonStore.getFirstUncompletedLessonNumber();
   }
   showHandbook.value = true;
   localStorage.setItem('active_screen', 'materi');
@@ -151,6 +155,12 @@ const closeHandbook = () => {
   if (window.location.pathname.includes('/materi') || window.location.search.includes('mode=materi')) {
     history.pushState(null, '', '/');
   }
+};
+
+const handleStartLessonQuiz = async (lessonNumber: number) => {
+  closeHandbook();
+  await quizStore.startLessonKotobaQuiz(lessonNumber);
+  quizStarted.value = true;
 };
 
 const checkRouteState = () => {
@@ -707,6 +717,7 @@ const goToHome = () => {
       class="flex-1 w-full h-full z-30"
       :initial-lesson="selectedHandbookLesson"
       @exit="closeHandbook"
+      @start-lesson-quiz="handleStartLessonQuiz"
     />
     <StartScreen 
       v-else-if="!quizStarted" 

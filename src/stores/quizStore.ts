@@ -26,6 +26,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const quizLevel = ref<'basic' | 'n5'>('basic');
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
+  const selectedWordLessonNumber = ref<number | null>(null);
   const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>('multiple_choice');
   const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
 
@@ -180,6 +181,7 @@ export const useQuizStore = defineStore('quiz', () => {
       selectedKanaCategory: selectedKanaCategory.value,
       selectedKanjiLessonNumber: selectedKanjiLessonNumber.value,
       activeKanjiLessonNumber: activeKanjiLessonNumber.value,
+      selectedWordLessonNumber: selectedWordLessonNumber.value,
       getMasteryStreak: masteryStore.getMasteryStreak,
       userStreaks: masteryStore.userStreaks,
       introducedChars: masteryStore.introducedChars,
@@ -194,6 +196,12 @@ export const useQuizStore = defineStore('quiz', () => {
     initialQuestionCount.value = res.initialQuestionCount;
     isLoading.value = false;
     initQuestionHints();
+  };
+
+  const startLessonKotobaQuiz = async (lessonNumber: number, duration: number = 1) => {
+    selectedWordLessonNumber.value = lessonNumber;
+    selectedMode.value = 'sentence_typing';
+    await startQuiz(duration, 'words', 'n5', selectedKanaCategory.value);
   };
 
   const startWeakItemsQuiz = async (
@@ -402,6 +410,9 @@ export const useQuizStore = defineStore('quiz', () => {
     goalsStore.checkAndTriggerCelebration();
 
     const badgeStore = useBadgeStore();
+    if (selectedWordLessonNumber.value) {
+      lessonStore.setCategoryCompleted(selectedWordLessonNumber.value, 'vocab', true);
+    }
     if (badgeStore.hasUnclaimedLevels || masteryStore.currentUserLevel > levelBeforeQuiz.value) {
       showLevelUpScreen.value = true;
     } else {
@@ -536,7 +547,9 @@ export const useQuizStore = defineStore('quiz', () => {
 
     // Core Actions
     startQuiz,
+    startLessonKotobaQuiz,
     startWeakItemsQuiz,
+    selectedWordLessonNumber,
     submitAnswer,
     finishSentenceQuiz,
     nextQuestion,

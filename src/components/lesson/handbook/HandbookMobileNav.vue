@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { X } from '@lucide/vue';
+import { X, CheckCircle2 } from '@lucide/vue';
 import type { HandbookTabItem, HandbookTabId } from './types';
 
 const props = defineProps<{
@@ -119,15 +119,24 @@ watch(() => props.activeTab, () => {
           <span class="font-extrabold text-xs tracking-tight">{{ tab.name }}</span>
           <span class="text-[10px] opacity-75 font-medium">{{ tab.jpName }}</span>
         </div>
-        <span
-          v-if="tab.count !== undefined"
-          :class="[
-            'px-2 py-0.5 rounded-full text-[10px] font-black shrink-0 ml-1',
-            activeTab === tab.id ? 'bg-white/25 text-white' : 'bg-gray-100 dark:bg-slate-750 text-slate-600 dark:text-slate-400'
-          ]"
-        >
-          {{ tab.count }}
-        </span>
+        <div class="flex items-center gap-1.5 shrink-0 ml-1">
+          <CheckCircle2
+            v-if="tab.isCompleted"
+            :class="[
+              'w-3.5 h-3.5',
+              activeTab === tab.id ? 'text-white' : 'text-emerald-500 dark:text-emerald-400'
+            ]"
+          />
+          <span
+            v-if="tab.count !== undefined"
+            :class="[
+              'px-2 py-0.5 rounded-full text-[10px] font-black',
+              activeTab === tab.id ? 'bg-white/25 text-white' : 'bg-gray-100 dark:bg-slate-750 text-slate-600 dark:text-slate-400'
+            ]"
+          >
+            {{ tab.count }}
+          </span>
+        </div>
       </button>
     </TransitionGroup>
   </div>
@@ -156,6 +165,13 @@ watch(() => props.activeTab, () => {
       >
         <component :is="tab.icon" class="w-3.5 h-3.5" />
         <span v-if="activeTab === tab.id">{{ tab.name }}</span>
+        <CheckCircle2
+          v-if="tab.isCompleted"
+          :class="[
+            'w-3 h-3',
+            activeTab === tab.id ? 'text-white' : 'text-emerald-500 dark:text-emerald-400'
+          ]"
+        />
         <span
           v-if="tab.count !== undefined"
           :class="[

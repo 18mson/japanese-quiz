@@ -10,4 +10,5 @@ export interface HandbookTabItem {
   count?: number;
   activeClass: string;
   color: string;
+  isCompleted?: boolean;
 }

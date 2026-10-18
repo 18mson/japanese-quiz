@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { BookOpen, X } from '@lucide/vue';
+import { BookOpen, X, CheckCircle2 } from '@lucide/vue';
 import { lessonGrammarBookData } from '../../../data/lessonGrammarBook';
+import { useLessonStore } from '../../../stores/lessonStore';
 
 defineProps<{
   isOpen: boolean;
@@ -11,6 +12,8 @@ const emit = defineEmits<{
   (e: 'select', num: number): void;
   (e: 'close'): void;
 }>();
+
+const lessonStore = useLessonStore();
 </script>
 
 <template>
@@ -45,13 +48,26 @@ const emit = defineEmits<{
           :class="[
             'p-2 sm:p-2.5 rounded-xl border text-left transition flex flex-col gap-0.5 cursor-pointer active:scale-95',
             currentLessonNumber === ch.lessonNumber
-              ? 'bg-indigo-50 dark:bg-indigo-600/25 border-indigo-400 dark:border-indigo-500 text-indigo-700 dark:text-indigo-200 ring-2 ring-indigo-400/40 shadow-xs'
-              : 'bg-gray-50 dark:bg-slate-800/60 border-gray-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-750'
+              ? (lessonStore.isChapterFullyCompleted(ch.lessonNumber)
+                  ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-100 ring-2 ring-emerald-400/40 shadow-xs'
+                  : 'bg-indigo-50 dark:bg-indigo-600/25 border-indigo-400 dark:border-indigo-500 text-indigo-700 dark:text-indigo-200 ring-2 ring-indigo-400/40 shadow-xs')
+              : (lessonStore.isChapterFullyCompleted(ch.lessonNumber)
+                  ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200/90 dark:border-emerald-800/50 text-slate-700 dark:text-slate-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-900/30'
+                  : 'bg-gray-50 dark:bg-slate-800/60 border-gray-200 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-750')
           ]"
         >
           <div class="flex items-center justify-between">
             <span class="text-xs font-black font-jp text-torii">第{{ ch.lessonNumber }}課</span>
-            <span class="text-[10px] font-bold text-slate-400">Bab {{ ch.lessonNumber }}</span>
+            <div class="flex items-center gap-1">
+              <span
+                v-if="lessonStore.isChapterFullyCompleted(ch.lessonNumber)"
+                class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[9px] font-extrabold border border-emerald-400/30"
+              >
+                <CheckCircle2 class="w-3 h-3 text-emerald-500 shrink-0" />
+                <span>Selesai</span>
+              </span>
+              <span v-else class="text-[10px] font-bold text-slate-400">Bab {{ ch.lessonNumber }}</span>
+            </div>
           </div>
           <div class="text-[11px] font-medium text-slate-600 dark:text-slate-300 line-clamp-1 truncate">
             {{ ch.title.split(':')[1]?.trim() || ch.title }}

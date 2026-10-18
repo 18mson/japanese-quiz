@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { Layers, Compass, Languages, Table2, Sparkles } from '@lucide/vue';
+import { Layers, Compass, Languages, Table2, Sparkles, Play } from '@lucide/vue';
 import { 
   lessonGrammarBookData, 
   getLessonChapterData, 
   LessonGrammarChapter 
 } from '../../data/lessonGrammarBook';
 import { wordsData, JapaneseWord } from '../../data/words';
-import { useQuizStore } from '../../stores/quizStore';
+import { useLessonStore } from '../../stores/lessonStore';
 
 import type { HandbookTabId, HandbookTabItem } from './handbook/types';
 import HandbookHeader from './handbook/HandbookHeader.vue';
@@ -15,33 +15,34 @@ import HandbookChapterDropdown from './handbook/HandbookChapterDropdown.vue';
 import HandbookHeroBanner from './handbook/HandbookHeroBanner.vue';
 import HandbookSidebar from './handbook/HandbookSidebar.vue';
 import HandbookMobileNav from './handbook/HandbookMobileNav.vue';
+import HandbookCompletionBar from './handbook/HandbookCompletionBar.vue';
 import TabBunkei from './handbook/tabs/TabBunkei.vue';
 import TabParticles from './handbook/tabs/TabParticles.vue';
 import TabVocab from './handbook/tabs/TabVocab.vue';
 import TabPhrases from './handbook/tabs/TabPhrases.vue';
 import TabTables from './handbook/tabs/TabTables.vue';
 
-const props = withDefaults(
-  defineProps<{
-    initialLesson?: number;
-  }>(),
-  {
-    initialLesson: 1
-  }
-);
+const props = defineProps<{
+  initialLesson?: number;
+}>();
 
 const emit = defineEmits<{
   (e: 'exit'): void;
+  (e: 'startLessonQuiz', lessonNumber: number): void;
 }>();
 
-const quizStore = useQuizStore();
+const lessonStore = useLessonStore();
 
-// Current Selected Lesson (1 - 25)
+// Current Selected Lesson (1 - 25): jika tidak diberikan atau default, buka bab berikutnya yang belum selesai
 const currentLessonNumber = ref<number>(
   props.initialLesson && props.initialLesson >= 1 && props.initialLesson <= 25 
     ? props.initialLesson 
-    : (quizStore.currentLessonNumber || 1)
+    : (lessonStore.getFirstUncompletedLessonNumber() || 1)
 );
+
+const handleStartKotobaQuiz = () => {
+  emit('startLessonQuiz', currentLessonNumber.value);
+};
 
 // Active Tab: 'bunkei' | 'particles' | 'vocab' | 'phrases' | 'tables'
 const activeTab = ref<HandbookTabId>('bunkei');
@@ -183,7 +184,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       icon: Layers,
       count: currentChapter.value.bunkei?.length || 0,
       activeClass: 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 border-indigo-600 dark:border-indigo-500',
-      color: 'indigo'
+      color: 'indigo',
+      isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'bunkei')
     },
     {
       id: 'particles',
@@ -192,7 +194,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       icon: Compass,
       count: currentChapter.value.particles?.length || 0,
       activeClass: 'bg-torii text-white shadow-md shadow-torii/30 border-torii dark:border-torii',
-      color: 'torii'
+      color: 'torii',
+      isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'particles')
     },
     {
       id: 'vocab',
@@ -201,7 +204,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       icon: Languages,
       count: currentLessonWords.value.length,
       activeClass: 'bg-matcha text-white shadow-md shadow-matcha/30 border-matcha dark:border-matcha',
-      color: 'matcha'
+      color: 'matcha',
+      isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'vocab')
     },
     {
       id: 'phrases',
@@ -210,7 +214,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       icon: Sparkles,
       count: situationalPhrases.value.length,
       activeClass: 'bg-amber-600 text-white shadow-md shadow-amber-600/30 border-amber-600 dark:border-amber-500',
-      color: 'amber'
+      color: 'amber',
+      isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'phrases')
     },
     {
       id: 'tables',
@@ -219,7 +224,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       icon: Table2,
       count: currentChapter.value.tables?.length || 0,
       activeClass: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30 border-cyan-600 dark:border-cyan-500',
-      color: 'cyan'
+      color: 'cyan',
+      isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'tables')
     }
   ];
 
@@ -354,6 +360,13 @@ onUnmounted(() => {
 
       <!-- MAIN BODY CONTENT -->
       <main class="flex-1 min-w-0 w-full flex flex-col gap-6 pb-28 md:pb-16">
+        <!-- Interactive Category Completion Bar with Kotoba Telemetry & Check/Uncheck Toggle -->
+        <HandbookCompletionBar
+          :lesson-number="currentLessonNumber"
+          :active-tab="activeTab"
+          :active-tab-info="activeTabInfo"
+        />
+
         <TabBunkei 
           v-if="activeTab === 'bunkei'" 
           :items="filteredBunkei" 
@@ -394,10 +407,42 @@ onUnmounted(() => {
       @close="isMobileFilterListOpen = false"
       @select-tab="selectTab"
     />
+
+    <!-- FLOATING ACTION BUTTON UNTUK LATIHAN KOTOBA PER BAB (Ketika Tab Kosakata Aktif) -->
+    <Transition name="fab-slide">
+      <div 
+        v-if="activeTab === 'vocab' && currentLessonWords.length > 0"
+        class="fixed bottom-5 left-4 z-40 sm:bottom-6 sm:right-6 sm:left-auto"
+      >
+        <button
+          type="button"
+          @click="handleStartKotobaQuiz"
+          class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-600/35 hover:shadow-emerald-600/50 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2.5 border border-white/20 select-none cursor-pointer"
+          :title="`Mulai latihan kuis kosakata Bab ${currentLessonNumber}`"
+        >
+          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+            <Play class="w-3.5 h-3.5 fill-current text-white" />
+          </div>
+          <span>Latihan Kotoba Bab {{ currentLessonNumber }}</span>
+          <span class="px-2 py-0.5 rounded-full bg-white/25 text-[10px] font-extrabold tracking-tight">
+            {{ currentLessonWords.length }} Kata
+          </span>
+        </button>
+      </div>
+    </Transition>
   </div>
 </template>
 
 <style scoped>
+.fab-slide-enter-active,
+.fab-slide-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.fab-slide-enter-from,
+.fab-slide-leave-to {
+  opacity: 0;
+  transform: translateY(16px) scale(0.95);
+}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
