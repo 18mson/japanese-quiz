@@ -60,20 +60,23 @@ const quizStore = useQuizStore();
     <div class="w-full max-w-3xl flex flex-col items-center gap-2">
       <!-- Session Info Pill -->
       <div 
-        v-if="selectedLevel !== 'battleground' && characterType !== 'renshuu'" 
+        v-if="activeModeId !== 'online_game' && characterType !== 'renshuu'" 
         class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium"
       >
-        <span v-if="['hiragana', 'katakana', 'mix'].includes(characterType)" class="text-aizome dark:text-torii-light font-bold">
+        <span v-if="['hiragana', 'katakana'].includes(activeModeId) || (activeModeId === 'lainnya' && characterType === 'mix')" class="text-aizome dark:text-torii-light font-bold">
           Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
         </span>
-        <span v-else-if="characterType === 'kanji'" class="text-matcha dark:text-matcha font-bold">
+        <span v-else-if="activeModeId === 'kanji'" class="text-matcha dark:text-matcha font-bold">
           Target: {{ quizStore.currentKanjiLessonLabel }} ({{ quizStore.currentKanjiLessonStats.total }} Kanji N5)
         </span>
-        <span v-else-if="activeModeId === 'hitungan'" class="text-amber-600 dark:text-amber-400 font-bold">
+        <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
+          Tantangan Harian (Audio & Suara)
+        </span>
+        <span v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" class="text-amber-600 dark:text-amber-400 font-bold">
           Wave: {{ currentHitunganWave.title }} • {{ selectedHitunganDirection === 'number_to_kana' ? 'Ketik Kana' : 'Numpad Touch' }}
         </span>
         <span v-else class="text-slate-400 font-bold">
-          {{ characterType === 'words' ? '8 Kanji' : (characterType === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
+          {{ characterType === 'words' ? '8 Kosakata N5' : (characterType === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
         </span>
       </div>
 
@@ -81,13 +84,15 @@ const quizStore = useQuizStore();
         type="button"
         :class="[
           'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden',
-          selectedLevel === 'battleground'
+          activeModeId === 'online_game'
             ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25'
-            : activeModeId === 'hitungan'
-              ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/25 text-slate-950 font-black'
-              : characterType === 'renshuu'
-                ? 'bg-gradient-to-r from-aizome via-slate-800 to-aizome-hover hover:from-aizome-hover hover:to-slate-900 dark:from-torii dark:via-rose-600 dark:to-amber-700 shadow-aizome/20 dark:shadow-torii/25'
-                : 'bg-aizome hover:bg-aizome-hover dark:bg-torii dark:hover:bg-torii-hover dark:shadow-torii/30 shadow-aizome/20',
+            : activeModeId === 'daily'
+              ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-indigo-800 hover:from-amber-500 hover:to-indigo-700 shadow-amber-500/25'
+              : (activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType))
+                ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/25 text-slate-950 font-black'
+                : characterType === 'renshuu'
+                  ? 'bg-gradient-to-r from-aizome via-slate-800 to-aizome-hover hover:from-aizome-hover hover:to-slate-900 dark:from-torii dark:via-rose-600 dark:to-amber-700 shadow-aizome/20 dark:shadow-torii/25'
+                  : 'bg-aizome hover:bg-aizome-hover dark:bg-torii dark:hover:bg-torii-hover dark:shadow-torii/30 shadow-aizome/20',
           isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-aizome/60 dark:ring-torii-light/60 shadow-lg' : ''
         ]"
         @click="emit('interact'); emit('start');"
@@ -101,17 +106,25 @@ const quizStore = useQuizStore();
             </svg>
             Loading Questions...
           </div>
-          <div v-else-if="selectedLevel === 'battleground'" key="battleground" class="flex items-center justify-center gap-2 w-full">
-            <span>Masuk Arena Duel Online</span>
+          <div v-else-if="activeModeId === 'online_game'" key="battleground" class="flex items-center justify-center gap-2 w-full">
+            <span>{{ characterType === 'quiz_blitz' ? 'Mulai Quiz Blitz' : 'Masuk Arena Adu Ketik' }}</span>
             <Swords class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
-          <div v-else-if="activeModeId === 'hitungan'" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-slate-950">
+          <div v-else-if="activeModeId === 'daily'" key="daily" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai Latihan Harian</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-slate-950">
             <span>Mulai: {{ currentHitunganWave.shortTitle }} ({{ selectedHitunganDirection === 'number_to_kana' ? 'Angka ➔ Kana' : 'Kana ➔ Angka' }})</span>
             <ArrowRight class="w-5 h-5 sm:w-6 sm:h-6 text-slate-950" />
           </div>
           <div v-else-if="characterType === 'renshuu'" key="renshuu" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Sesi Berikutnya (10 Soal)</span>
             <Sparkles class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="characterType === 'writing'" key="writing" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai Tulis Huruf (Goresan)</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </div>
           <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Kuis</span>

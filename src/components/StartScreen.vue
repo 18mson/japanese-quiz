@@ -10,7 +10,7 @@ import { HITUNGAN_WAVES, type HitunganWaveDef } from '../data/hitunganWaves';
 import { HitunganService } from '../services/hitunganService';
 
 // Subcomponents & Config
-import { modesList } from './start/modesConfig';
+import { modesList, getDynamicDefaultModeId } from './start/modesConfig';
 import StartHeaderBar from './start/StartHeaderBar.vue';
 import StartWheelSelector from './start/StartWheelSelector.vue';
 import StartBottomBar from './start/StartBottomBar.vue';
@@ -32,9 +32,29 @@ const isReferenceModalOpen = ref(false);
 const isHitunganTutorialOpen = ref(false);
 const hitunganWaveForTutorial = ref<HitunganWaveDef | null>(null);
 
-// Mode & Character Selection State
-const characterTypes = ref('hiragana');
-const selectedLevel = ref<'basic' | 'n5' | 'battleground'>('basic');
+// User interaction flag (preserves manual user selection once touched)
+const hasUserInteracted = ref(false);
+
+// Dynamic Default Selection based on mastery progression:
+// Hiragana < 100% -> Hiragana, Hiragana 100% -> Katakana, Katakana 100% -> Kanji, etc.
+const targetDefaultModeId = getDynamicDefaultModeId({
+  hiraganaPct: quizStore.hiraganaMasteryStats?.percentage ?? 0,
+  katakanaPct: quizStore.katakanaMasteryStats?.percentage ?? 0,
+  kanjiPct: quizStore.kanjiMasteryStats?.percentage ?? 0,
+  wordsPct: quizStore.wordsMasteryStats?.percentage ?? 0
+});
+const defaultModeIndex = modesList.findIndex(m => m.id === targetDefaultModeId);
+const initialModeIndex = defaultModeIndex !== -1 ? defaultModeIndex : modesList.findIndex(m => m.id === 'hiragana');
+
+// Carousel / Wheel State
+const activeModeIndex = ref(initialModeIndex !== -1 ? initialModeIndex : 0);
+const prevActiveModeIndex = ref(activeModeIndex.value);
+const scrollDirection = ref<'down' | 'up'>('down');
+const activeMode = computed(() => modesList[activeModeIndex.value]);
+
+// Mode & Character / Subtype Selection State
+const characterTypes = ref(modesList[activeModeIndex.value].defaultType);
+const selectedLevel = ref<'basic' | 'n5' | 'battleground'>(modesList[activeModeIndex.value].level);
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<KanaCategoryType>('all');
 
@@ -43,21 +63,17 @@ const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
 const selectedHitunganWaveKey = ref<string>('basic_1_10');
 const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
 
-// Carousel / Wheel State
-const defaultModeIndex = modesList.findIndex(m => m.id === 'multiple_choice');
-const initialModeIndex = defaultModeIndex !== -1 ? defaultModeIndex : 0;
-const activeModeIndex = ref(initialModeIndex);
-const prevActiveModeIndex = ref(initialModeIndex);
-const scrollDirection = ref<'down' | 'up'>('down');
-const activeMode = computed(() => modesList[activeModeIndex.value]);
-
 const currentHitunganWave = computed(() => {
   return HITUNGAN_WAVES.find(w => w.wave_key === selectedHitunganWaveKey.value) || HITUNGAN_WAVES[0];
 });
 
 const isKanaMode = computed(() => {
-  return ['multiple_choice', 'keyboard_typing', 'writing'].includes(activeMode.value.id) &&
-    ['hiragana', 'katakana', 'mix'].includes(characterTypes.value);
+  return ['hiragana', 'katakana'].includes(activeMode.value.id) ||
+    (activeMode.value.id === 'lainnya' && characterTypes.value === 'mix');
+});
+
+const isHitunganMode = computed(() => {
+  return activeMode.value.id === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterTypes.value);
 });
 
 // Selection Handlers
@@ -65,6 +81,7 @@ function selectMode(index: number) {
   if (index < 0 || index >= modesList.length) return;
   if (index === activeModeIndex.value) return;
 
+  hasUserInteracted.value = true;
   prevActiveModeIndex.value = activeModeIndex.value;
   scrollDirection.value = index > activeModeIndex.value ? 'up' : 'down';
   activeModeIndex.value = index;
@@ -76,6 +93,7 @@ function selectMode(index: number) {
 }
 
 function selectSubType(type: string) {
+  hasUserInteracted.value = true;
   characterTypes.value = type;
 }
 
@@ -113,22 +131,16 @@ const launchHitunganQuiz = (wave?: HitunganWaveDef) => {
 };
 
 const handleStart = async () => {
-  if (activeMode.value.id === 'daily') {
+  const modeId = activeMode.value.id;
+  const subType = characterTypes.value;
+
+  if (modeId === 'daily') {
     emit('openDailyPractice');
     return;
   }
-  if (activeMode.value.id === 'hitungan') {
-    const wave = currentHitunganWave.value;
-    const prog = quizStore.hitunganProgressMap[wave.wave_key];
-    if (!prog?.tutorial_seen) {
-      openHitunganTutorial(wave);
-      return;
-    }
-    launchHitunganQuiz();
-    return;
-  }
-  if (selectedLevel.value === 'battleground') {
-    if (characterTypes.value === 'quiz_blitz') {
+
+  if (modeId === 'online_game') {
+    if (subType === 'quiz_blitz') {
       battlegroundStore.gameMode = 'quiz_blitz';
       battlegroundStore.quizCategory = selectedQuizBlitzCategory.value;
       battlegroundStore.kanaCategory = selectedKanaCategory.value;
@@ -136,10 +148,53 @@ const handleStart = async () => {
       battlegroundStore.gameMode = 'battleground';
     }
     emit('openBattleground');
-  } else {
-    quizStore.selectedMode = activeMode.value.id as any;
-    await quizStore.startQuiz(1, characterTypes.value, selectedLevel.value, selectedKanaCategory.value);
+    return;
+  }
+
+  if (modeId === 'lainnya') {
+    if (['angka', 'counter', 'campuran'].includes(subType)) {
+      const wave = currentHitunganWave.value;
+      const prog = quizStore.hitunganProgressMap[wave.wave_key];
+      if (!prog?.tutorial_seen) {
+        openHitunganTutorial(wave);
+        return;
+      }
+      launchHitunganQuiz();
+      return;
+    } else if (subType === 'mix') {
+      quizStore.selectedMode = 'multiple_choice';
+      await quizStore.startQuiz(1, 'mix', 'basic', selectedKanaCategory.value);
+      emit('start');
+      return;
+    }
+  }
+
+  if (modeId === 'hiragana') {
+    quizStore.selectedMode = subType as any; // 'multiple_choice' | 'keyboard_typing' | 'writing'
+    await quizStore.startQuiz(1, 'hiragana', 'basic', selectedKanaCategory.value);
     emit('start');
+    return;
+  }
+
+  if (modeId === 'katakana') {
+    quizStore.selectedMode = subType as any; // 'multiple_choice' | 'keyboard_typing' | 'writing'
+    await quizStore.startQuiz(1, 'katakana', 'basic', selectedKanaCategory.value);
+    emit('start');
+    return;
+  }
+
+  if (modeId === 'kanji') {
+    quizStore.selectedMode = 'writing';
+    await quizStore.startQuiz(1, 'kanji', 'basic', selectedKanaCategory.value);
+    emit('start');
+    return;
+  }
+
+  if (modeId === 'kotoba') {
+    quizStore.selectedMode = 'sentence_typing';
+    await quizStore.startQuiz(1, subType, 'n5', selectedKanaCategory.value);
+    emit('start');
+    return;
   }
 };
 
@@ -247,6 +302,25 @@ const handleKeydown = (event: KeyboardEvent) => {
 onMounted(() => {
   quizStore.loadRenshuuProgress();
   quizStore.loadHitunganProgress();
+
+  if (!hasUserInteracted.value) {
+    const recId = getDynamicDefaultModeId({
+      hiraganaPct: quizStore.hiraganaMasteryStats?.percentage ?? 0,
+      katakanaPct: quizStore.katakanaMasteryStats?.percentage ?? 0,
+      kanjiPct: quizStore.kanjiMasteryStats?.percentage ?? 0,
+      wordsPct: quizStore.wordsMasteryStats?.percentage ?? 0
+    });
+    const idx = modesList.findIndex(m => m.id === recId);
+    if (idx !== -1 && idx !== activeModeIndex.value) {
+      activeModeIndex.value = idx;
+      prevActiveModeIndex.value = idx;
+      selectedLevel.value = modesList[idx].level;
+      if (modesList[idx].defaultType) {
+        characterTypes.value = modesList[idx].defaultType;
+      }
+    }
+  }
+
   window.addEventListener('keydown', handleKeydown);
   window.addEventListener('pointerdown', deactivateKeyboardNav);
   window.addEventListener('touchstart', deactivateKeyboardNav);
@@ -328,7 +402,7 @@ watch(characterTypes, (newVal) => {
           <Transition name="fade-slide-up" mode="out-in">
             <!-- Duel Online Info Banner -->
             <DuelOnlinePanel 
-              v-if="selectedLevel === 'battleground'" 
+              v-if="activeMode.id === 'online_game'" 
               :sub-type="characterTypes" 
             />
 
@@ -336,19 +410,19 @@ watch(characterTypes, (newVal) => {
             <KanaCategoryPanel
               v-else-if="isKanaMode"
               v-model="selectedKanaCategory"
-              :character-type="characterTypes"
+              :character-type="activeMode.id === 'lainnya' ? 'mix' : activeMode.id"
               @interact="deactivateKeyboardNav"
             />
 
             <!-- Kanji N5 Lesson Progression & Selector Panel -->
             <KanjiLessonPanel
-              v-else-if="activeMode.id === 'writing' && characterTypes === 'kanji'"
+              v-else-if="activeMode.id === 'kanji'"
               @interact="deactivateKeyboardNav"
             />
 
             <!-- Hitungan Mode Wave & Direction Selector Panel -->
             <HitunganWavePanel
-              v-else-if="activeMode.id === 'hitungan'"
+              v-else-if="isHitunganMode"
               :selected-tab="selectedHitunganTab"
               v-model:selected-wave-key="selectedHitunganWaveKey"
               v-model:direction="selectedHitunganDirection"
