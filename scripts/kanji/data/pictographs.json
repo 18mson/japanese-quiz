@@ -1,12 +1,47 @@
-[
-  "象",
-  "日",
-  "月",
-  "木",
-  "山",
-  "川",
-  "人",
-  "口",
-  "目",
-  "手"
-]
+{
+ "meta": {
+  "note": "Daftar kanji yang asal-usulnya sederhana dan disepakati luas (gambar benda, tanda penunjuk, atau gabungan makna). Hanya kanji di sini yang boleh berlabel 'established' tanpa entri manual. Disusun dari pengetahuan umum, bukan dari kamus; periksa bila ragu.",
+  "used_for": "menentukan formation_type dan batas label keyakinan; teks tetap dibuat dengan aturan prompt"
+ },
+ "kanji": {
+  "pictograph": [
+   "日",
+   "月",
+   "木",
+   "山",
+   "川",
+   "人",
+   "口",
+   "目",
+   "手",
+   "耳",
+   "雨",
+   "車",
+   "馬",
+   "犬",
+   "魚",
+   "火",
+   "水",
+   "田",
+   "女",
+   "子",
+   "牛",
+   "象",
+   "大",
+   "足",
+   "土"
+  ],
+  "indicative": [
+   "一",
+   "二",
+   "三",
+   "上",
+   "下",
+   "本",
+   "十"
+  ],
+  "compound_meaning": [
+   "男"
+  ]
+ }
+}

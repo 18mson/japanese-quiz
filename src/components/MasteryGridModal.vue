@@ -8,6 +8,7 @@ import { kanjiN5Data } from '../data/kanji';
 import MasteryCard from './mastery/MasteryCard.vue';
 import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
+import MasteryKanjiDetailModal from './mastery/MasteryKanjiDetailModal.vue';
 import { toRomaji, toHiragana, toKatakana } from 'wanakana';
 import { 
   X, 
@@ -576,8 +577,19 @@ const nextPreviewItem = () => {
 
     <!-- Character / Word Interactive Preview Modal Component -->
     <Transition name="modal-backdrop">
+      <MasteryKanjiDetailModal
+        v-if="selectedPreviewItem && activeCategory === 'kanji'"
+        :key="'kanji_' + selectedPreviewItem.character"
+        :item="selectedPreviewItem"
+        :current-index="selectedPreviewIndex"
+        :total-items="filteredItems.length"
+        @close="closePreview"
+        @prev="prevPreviewItem"
+        @next="nextPreviewItem"
+      />
       <MasteryPreviewModal
-        v-if="selectedPreviewItem"
+        v-else-if="selectedPreviewItem"
+        :key="'preview_' + (selectedPreviewItem.character || selectedPreviewIndex)"
         :item="selectedPreviewItem"
         :current-index="selectedPreviewIndex"
         :total-items="filteredItems.length"

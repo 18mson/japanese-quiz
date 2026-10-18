@@ -1,0 +1,310 @@
+{
+ "meta": {
+  "note": "Entri hasil tinjauan manual. Mengganti hasil Gemini untuk kanji ini; status 'approved'. Entri 'uncertain' sengaja tidak menjelaskan asal-usul.",
+  "rules": "Tulisan Indonesia (etimologi maks 50 kata, mnemonik maks 40 kata)."
+ },
+ "entries": [
+  {
+   "kanji": "顔",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "頁",
+     "role": "meaning",
+     "meaning_id": "kepala"
+    },
+    {
+     "part": "彦",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "彦",
+   "reading_hint": "彦 げん → 顔 がん",
+   "old_form": null,
+   "etymology_id": "頁 (kepala) menunjukkan bagian tubuh, sedangkan 彦 hanya memberi petunjuk bunyi (げん → がん).",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: wajah ada di kepala (頁), dan 彦 mengingatkan bunyi 'gan'.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "寺",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "之",
+     "role": "phonetic",
+     "meaning_id": "(ditulis 土 pada bentuk sekarang)"
+    },
+    {
+     "part": "寸",
+     "role": "meaning",
+     "meaning_id": "tangan, ukuran"
+    }
+   ],
+   "phonetic_part": "之",
+   "reading_hint": "之 し → 寺 じ",
+   "old_form": null,
+   "etymology_id": "Bagian atas (土) adalah bentuk 之 yang berubah dan berfungsi sebagai penanda bunyi (し → じ); 寸 berarti tangan atau ukuran.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: bayangkan kuil (寺) di atas tanah (土) yang diukur (寸). Ini trik ingat, bukan asal-usul.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "強",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "弘",
+     "role": "phonetic",
+     "meaning_id": ""
+    },
+    {
+     "part": "虫",
+     "role": "meaning",
+     "meaning_id": "serangga"
+    }
+   ],
+   "phonetic_part": "弘",
+   "reading_hint": "弘 こう → 強 きょう",
+   "old_form": null,
+   "etymology_id": "弘 (こう) memberi bunyi dan 虫 (serangga) menunjukkan kategori. Menurut kamus kuno Shuowen, arti awalnya sejenis serangga; arti 'kuat' dipakai belakangan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: bayangkan serangga (虫) yang kuat menarik busur (弓). Ini trik ingat saja.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "写",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "宀",
+     "role": "meaning",
+     "meaning_id": "atap"
+    },
+    {
+     "part": "舄",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "舄",
+   "reading_hint": "舄 → 寫 しゃ",
+   "old_form": "寫",
+   "etymology_id": "Bentuk lama 寫 terdiri dari 宀 (atap) dan 舄 (penanda bunyi). Bentuk baru 写 adalah penyederhanaan; 与 di dalamnya bukan penanda bunyi.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tutup (冖) lalu beri (与) hasil salinan. Ini trik ingat saja.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "団",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "囗",
+     "role": "meaning",
+     "meaning_id": "lingkaran, lingkup"
+    },
+    {
+     "part": "專",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "專",
+   "reading_hint": "專 せん・たん → 團 だん",
+   "old_form": "團",
+   "etymology_id": "Bentuk lama 團 = 囗 (lingkup) + 專 (penanda bunyi). Bentuk baru mengganti 專 dengan 寸 sebagai penyederhanaan.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: orang berkumpul dalam satu lingkaran (囗) dengan satu aturan (寸) menjadi kelompok.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "売",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "出",
+     "role": "meaning",
+     "meaning_id": "keluar"
+    },
+    {
+     "part": "買",
+     "role": "meaning",
+     "meaning_id": "membeli"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "賣",
+   "etymology_id": "Bentuk lama 賣 = 出 (keluar) + 買 (membeli): barang yang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: penjual (士) di bawah tenda (冖) berdiri di atas kaki (儿) menawarkan dagangan.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "修",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "攸",
+     "role": "phonetic",
+     "meaning_id": ""
+    },
+    {
+     "part": "彡",
+     "role": "meaning",
+     "meaning_id": "hiasan, menata"
+    }
+   ],
+   "phonetic_part": "攸",
+   "reading_hint": "攸 ゆう → 修 しゅう",
+   "old_form": null,
+   "etymology_id": "攸 (ゆう) memberi bunyi, sedangkan 彡 berarti hiasan atau penataan, jadi 'merapikan, memperbaiki'.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 修 dibaca 'shū' seperti pada 修理 (memperbaiki); 彡 = merapikan.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "千",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan. Jangan dipahami sebagai '十 ditambah goresan'; hafalkan sebagai bentuk tersendiri.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: seperti 十 (sepuluh) yang goresan atasnya miring. Ini trik ingat, bukan sejarah.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "九",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Tidak ada komponen bermakna. Bentuknya dipakai untuk angka sembilan sebagai pinjaman; hafalkan bentuknya.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: seperti angka 9 yang ekornya melengkung.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "服",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "𠬝",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "𠬝",
+   "reading_hint": "𠬝 ふく → 服 ふく",
+   "old_form": null,
+   "etymology_id": "Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月) di sini bukan 'daging'; asalnya diperdebatkan.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: pakaian dibaca 'fuku', sama dengan bunyi bagian kanannya.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "真",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "眞",
+   "etymology_id": "Asal-usulnya diperdebatkan. Bentuk lama 眞 memuat 匕, 目, 乚, dan 八; tafsir bagian-bagiannya beragam.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: ada mata (目) di tengah. Melihat dengan mata sendiri berarti nyata.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "送",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "辶",
+     "role": "meaning",
+     "meaning_id": "bergerak"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "辶 (bergerak) menunjukkan kategori makna. Bagian kanan adalah bentuk yang tidak berdiri sebagai kata sendiri; bukan 'gerbang'.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: berjalan (辶) membawa barang untuk diantar. Ini trik ingat saja.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "散",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "攵",
+     "role": "meaning",
+     "meaning_id": "tindakan"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan; bagian-bagian bentuk modernnya sulit dijelaskan secara pasti. Hafalkan sebagai bentuk.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: 攵 (tindakan) dengan bagian lain yang berhamburan ke mana-mana.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "校",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "木",
+     "role": "meaning",
+     "meaning_id": "kayu, pohon"
+    },
+    {
+     "part": "交",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "交",
+   "reading_hint": "交 こう → 校 こう",
+   "old_form": null,
+   "etymology_id": "木 (kayu) menunjukkan kategori makna, 交 (こう) memberi bunyi; 校 dibaca こう.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: sekolah (校) dari kayu (木); 交 hanya mengingatkan bunyi 'kō'.",
+   "note_id": "",
+   "source": "manual"
+  }
+ ]
+}

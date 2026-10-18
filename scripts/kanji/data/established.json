@@ -1,0 +1,15 @@
+{
+ "note": "Kanji berstruktur fonetik-semantik atau gambar yang sudah kutinjau dan benar. Hanya kanji di daftar ini (ditambah pictographs.json dan manual_entries.json) yang boleh berlabel 'established'. Lainnya maksimal 'traditional'.",
+ "kanji": [
+  "梅",
+  "紙",
+  "語",
+  "警",
+  "跳",
+  "迎",
+  "通",
+  "鉛",
+  "荷",
+  "象"
+ ]
+}
