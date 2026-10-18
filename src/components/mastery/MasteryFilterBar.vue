@@ -150,7 +150,7 @@ const statusPills = [
         ></div>
 
         <button 
-          v-for="cat in (['hiragana', 'katakana', 'words', 'kanji'] as const)" 
+          v-for="cat in (['hiragana', 'katakana', 'kanji', 'words'] as const)" 
           :key="cat"
           :ref="setCategoryTabRef(cat)"
           type="button"

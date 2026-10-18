@@ -82,25 +82,6 @@ const quizStore = useQuizStore();
         </div>
       </div>
 
-      <!-- Kotoba N5 -->
-      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
-        <div class="flex items-center justify-between text-xs">
-          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
-            <span class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-jp flex items-center justify-center text-[10px] font-bold border border-slate-300 dark:border-slate-700">言</span>
-            Kotoba N5
-          </span>
-          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-            {{ quizStore.wordsMasteryStats.mastered }}/{{ quizStore.wordsMasteryStats.total }}
-          </span>
-        </div>
-        <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
-          <div 
-            class="h-full bg-slate-600 dark:bg-torii-light rounded-full transition-all duration-500"
-            :style="{ width: `${quizStore.wordsMasteryStats.percentage}%` }"
-          ></div>
-        </div>
-      </div>
-
       <!-- Kanji N5 -->
       <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
         <div class="flex items-center justify-between text-xs">
@@ -116,6 +97,25 @@ const quizStore = useQuizStore();
           <div 
             class="h-full bg-matcha rounded-full transition-all duration-500"
             :style="{ width: `${quizStore.kanjiMasteryStats.percentage}%` }"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Kotoba N5 -->
+      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
+            <span class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-jp flex items-center justify-center text-[10px] font-bold border border-slate-300 dark:border-slate-700">言</span>
+            Kotoba N5
+          </span>
+          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
+            {{ quizStore.wordsMasteryStats.mastered }}/{{ quizStore.wordsMasteryStats.total }}
+          </span>
+        </div>
+        <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
+          <div 
+            class="h-full bg-slate-600 dark:bg-torii-light rounded-full transition-all duration-500"
+            :style="{ width: `${quizStore.wordsMasteryStats.percentage}%` }"
           ></div>
         </div>
       </div>
