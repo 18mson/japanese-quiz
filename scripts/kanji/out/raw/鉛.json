@@ -6,17 +6,15 @@
     {
       "part": "金",
       "role": "meaning",
-      "meaning_id": "logam"
+      "meaning_id": "gold"
     },
     {
       "part": "㕣",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "a marsh at the foot of the hills, name of a river"
     }
   ],
-  "etymology_id": "Kanji ini dibentuk dari komponen 金 (logam) yang menunjukkan kategori makna dan 㕣 yang memberikan petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Logam (金) yang berat dan beracun seperti timah.",
-  "note_id": "Kosakata Minna no Nihongo: 鉛筆 (えんぴつ) = pensil.",
-  "phonetic_part": "㕣",
-  "reading_hint": "㕣 en → 鉛 en"
+  "etymology_id": "Terdiri dari elemen 金 (emas/logam) sebagai arti dan 㕣 sebagai petunjuk bunyi (on-yomi: エン).",
+  "mnemonic_id": "Cara mengingat: Logam (金) yang berat menyerupai timah (鉛) di dalam pensil (えんぴつ).",
+  "note_id": "Kosakata: 鉛筆 (えんぴつ) = pensil."
 }

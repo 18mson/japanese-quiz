@@ -153,4 +153,35 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
     assert.strictEqual(shouldShowKanjiButton('休み', false), true);
     assert.strictEqual(shouldShowKanjiButton('学生', false), true);
   });
+
+  await t.test('5. Loader old_forms.json membaca data.pairs dan mengecualikan ambiguous', async () => {
+    const { loadOldForms } = await import('../scripts/kanji/facts.mjs');
+    const oldFormsMap = loadOldForms();
+    assert.strictEqual(oldFormsMap.size, 70, 'Jumlah pasangan old_forms harus 70');
+    assert.strictEqual(oldFormsMap.get('真'), '眞');
+    assert.strictEqual(oldFormsMap.get('学'), '學');
+    assert.strictEqual(oldFormsMap.get('売'), '賣');
+    assert.strictEqual(oldFormsMap.get('弁') || null, null, '弁 harus bernilai null karena ambigu');
+  });
+
+  await t.test('6. Evaluasi reading_match rima on-yomi bersuara/tak bersuara dan vokal panjang', async () => {
+    const { isReadingMatch } = await import('../scripts/kanji/validate.mjs');
+    assert.strictEqual(isReadingMatch(['マイ'], ['バイ']).match, true, '毎 まい → 梅 ばい = true');
+    assert.strictEqual(isReadingMatch(['ゴ'], ['ゴ']).match, true, '吾 ご → 語 ご = true');
+    assert.strictEqual(isReadingMatch(['ケツ'], ['ガン']).match, false, '頁 けつ → 顔 がん = false');
+    assert.strictEqual(isReadingMatch(['キュウ'], ['キョウ', 'ゴウ']).match, false, '弓 きゅう → 強 きょう = false');
+  });
+
+  await t.test('7. Entri manual menang langsung dengan status approved dan source manual', async () => {
+    const { loadManualEntries, validateEntry } = await import('../scripts/kanji/validate.mjs');
+    const manualMap = loadManualEntries();
+    assert.ok(manualMap.has('顔'), 'manual_entries harus memuat 顔');
+    assert.ok(manualMap.has('売'), 'manual_entries harus memuat 売');
+
+    const resKao = validateEntry(manualMap.get('顔'), mockFactsMap);
+    assert.strictEqual(resKao.valid, true);
+    assert.strictEqual(resKao.status, 'approved');
+    assert.strictEqual(resKao.source, 'manual');
+  });
 });
+

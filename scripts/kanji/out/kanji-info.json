@@ -1051,27 +1051,19 @@
   },
   {
     "kanji": "九",
-    "formation_type": "pictograph",
-    "claim_kind": "structure",
-    "components": [
-      {
-        "part": "丿",
-        "role": "shape",
-        "meaning_id": "garis miring"
-      },
-      {
-        "part": "乙",
-        "role": "shape",
-        "meaning_id": "bentuk kait"
-      }
-    ],
-    "etymology_id": "Kanji dasar yang menggambarkan angka sembilan.",
-    "mnemonic_id": "Cara mengingat: Bentuk goresan sederhana untuk angka sembilan (九).",
-    "note_id": "Kosakata Minna no Nihongo: 九日 (ここのか) = tanggal 9, 九つ (ここのつ) = sembilan.",
+    "formation_type": "unknown",
+    "components": [],
     "phonetic_part": null,
     "reading_hint": null,
-    "etymology_confidence": "traditional",
-    "status": "draft",
+    "old_form": null,
+    "etymology_id": "Tidak ada komponen bermakna. Bentuknya dipakai untuk angka sembilan sebagai pinjaman; hafalkan bentuknya.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: seperti angka 9 yang ekornya melengkung.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -1091,6 +1083,7 @@
       "components": [
         "九"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "九",
@@ -3357,31 +3350,29 @@
   {
     "kanji": "修",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
-      {
-        "part": "亻",
-        "role": "meaning",
-        "meaning_id": "orang"
-      },
       {
         "part": "攸",
         "role": "phonetic",
-        "meaning_id": "mengalir"
+        "meaning_id": ""
       },
       {
         "part": "彡",
-        "role": "shape",
-        "meaning_id": "bulu/hiasan"
+        "role": "meaning",
+        "meaning_id": "hiasan, menata"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari 亻 (orang) yang menunjukkan kategori makna terkait manusia, serta 攸 sebagai pemberi petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Seseorang (亻) yang mendisiplinkan diri terus-menerus.",
-    "note_id": "Kosakata Minna no Nihongo: 修理します (しゅうりします) = memperbaiki",
-    "phonetic_part": "攸1",
-    "reading_hint": "攸 シュウ → 修 シュウ",
-    "etymology_confidence": "established",
-    "status": "draft",
+    "phonetic_part": "攸",
+    "reading_hint": "攸 ゆう → 修 しゅう",
+    "old_form": null,
+    "etymology_id": "攸 (ゆう) memberi bunyi, sedangkan 彡 berarti hiasan atau penataan, jadi 'merapikan, memperbaiki'.",
+    "etymology_confidence": "traditional",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: 修 dibaca 'shū' seperti pada 修理 (memperbaiki); 彡 = merapikan.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -3407,7 +3398,11 @@
         "彡",
         "攵"
       ],
-      "phonetic_part": "攸1",
+      "phon_hints": [
+        "攸1",
+        "攸2"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "修",
         "攸",
@@ -4728,26 +4723,29 @@
   {
     "kanji": "写",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
-        "part": "冖",
+        "part": "宀",
         "role": "meaning",
-        "meaning_id": "penutup"
+        "meaning_id": "atap"
       },
       {
-        "part": "与",
+        "part": "舄",
         "role": "phonetic",
-        "meaning_id": "memberi"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Bentuk lama: 寫. Kanji ini disederhanakan dari bentuk lamanya. Terdiri dari 冖 (penutup) dan 与 sebagai pemberi petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Menutup (冖) dan memberikan (与) hasil salinan atau foto.",
-    "note_id": "Kosakata Minna no Nihongo: 写真 (しゃしん) = foto",
-    "phonetic_part": "与/舄",
-    "reading_hint": "与 シャ → 写 シャ",
+    "phonetic_part": "舄",
+    "reading_hint": "舄 → 寫 しゃ",
+    "old_form": "寫",
+    "etymology_id": "Bentuk lama 寫 terdiri dari 宀 (atap) dan 舄 (penanda bunyi). Bentuk baru 写 adalah penyederhanaan; 与 di dalamnya bukan penanda bunyi.",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: tutup (冖) lalu beri (与) hasil salinan. Ini trik ingat saja.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -4773,7 +4771,11 @@
         "冖",
         "勹"
       ],
-      "phonetic_part": "与/舄",
+      "phon_hints": [
+        "与",
+        "舄"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "写",
         "冖",
@@ -6321,27 +6323,19 @@
   },
   {
     "kanji": "千",
-    "formation_type": "ideograph_simple",
-    "claim_kind": "structure",
-    "components": [
-      {
-        "part": "ノ",
-        "role": "shape",
-        "meaning_id": "garis miring"
-      },
-      {
-        "part": "十",
-        "role": "meaning",
-        "meaning_id": "sepuluh"
-      }
-    ],
-    "etymology_id": "Kanji ini adalah bentuk ideografik sederhana yang menambahkan garis pada angka sepuluh untuk menunjukkan jumlah seribu.",
-    "mnemonic_id": "Cara mengingat: Angka sepuluh (十) dengan tambahan goresan (ノ) menjadi seribu (千).",
-    "note_id": "Kosakata Minna no Nihongo: 千 (せん) = ribu",
+    "formation_type": "unknown",
+    "components": [],
     "phonetic_part": null,
     "reading_hint": null,
-    "etymology_confidence": "traditional",
-    "status": "draft",
+    "old_form": null,
+    "etymology_id": "Asal-usulnya diperdebatkan. Jangan dipahami sebagai '十 ditambah goresan'; hafalkan sebagai bentuk tersendiri.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: seperti 十 (sepuluh) yang goresan atasnya miring. Ini trik ingat, bukan sejarah.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -6360,6 +6354,7 @@
         "ノ",
         "十"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "千",
@@ -6694,26 +6689,37 @@
   {
     "kanji": "卵",
     "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "卯",
         "role": "shape",
-        "meaning_id": "bagian bentuk"
+        "meaning_id": ""
+      },
+      {
+        "part": "丶",
+        "role": "shape",
+        "meaning_id": ""
+      },
+      {
+        "part": "丿",
+        "role": "shape",
+        "meaning_id": ""
       },
       {
         "part": "卩",
         "role": "shape",
-        "meaning_id": "bagian bentuk"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari kombinasi garis dan komponen bentuk.",
-    "mnemonic_id": "Cara mengingat: Cangkang telur (卵) yang retak di dalamnya.",
+    "etymology_id": "Disusun dari struktur komponen garis dan bentuk dasar.",
+    "mnemonic_id": "Cara mengingat: Bentuk cangkang telur (卵) yang berisi kehidupan baru.",
     "note_id": "",
-    "phonetic_part": null,
-    "reading_hint": null,
+    "source": "gemini",
     "etymology_confidence": "uncertain",
     "status": "needs_review",
+    "reading_hint": null,
+    "reading_match": null,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -6737,6 +6743,7 @@
         "丶",
         "卩"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "卵",
@@ -8583,26 +8590,29 @@
   {
     "kanji": "団",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
         "part": "囗",
         "role": "meaning",
-        "meaning_id": "kotak atau batas"
+        "meaning_id": "lingkaran, lingkup"
       },
       {
-        "part": "寸",
+        "part": "專",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Bentuk lama: 團. Kanji ini adalah gabungan kategori makna 囗 (batas/lingkup) dan bagian bunyi 専/寸 (dan).",
-    "mnemonic_id": "Cara mengingat: Ada orang yang terkumpul dalam suatu batas (囗) membentuk kelompok.",
-    "note_id": "",
-    "phonetic_part": "専/寸",
-    "reading_hint": "専/寸 ダン → 団 ダン",
+    "phonetic_part": "專",
+    "reading_hint": "專 せん・たん → 團 だん",
+    "old_form": "團",
+    "etymology_id": "Bentuk lama 團 = 囗 (lingkup) + 專 (penanda bunyi). Bentuk baru mengganti 專 dengan 寸 sebagai penyederhanaan.",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: orang berkumpul dalam satu lingkaran (囗) dengan satu aturan (寸) menjadi kelompok.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -8624,7 +8634,11 @@
         "寸",
         "囗"
       ],
-      "phonetic_part": "専/寸",
+      "phon_hints": [
+        "専",
+        "寸"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "団",
         "囗",
@@ -9412,27 +9426,30 @@
   },
   {
     "kanji": "売",
-    "formation_type": "phono_semantic",
-    "claim_kind": "structure",
+    "formation_type": "compound_meaning",
     "components": [
       {
-        "part": "士",
+        "part": "出",
         "role": "meaning",
-        "meaning_id": "tanah"
+        "meaning_id": "keluar"
       },
       {
-        "part": "買V",
+        "part": "買",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "membeli"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari bagian 土 di atas dan bagian bunyi 買 di bawah. Bentuk lama: 賣. Kanji modern ini merupakan bentuk penyederhanaan dari bentuk lamanya.",
-    "mnemonic_id": "Cara mengingat: Bagian 土 dan 买 membantu menunjukkan bunyi dan struktur kanji menjual ini.",
-    "note_id": "Kosakata penting: 売ります (menjual), 売り場 (tempat penjualan).",
-    "phonetic_part": "買V",
-    "reading_hint": "買V さい/ばい → 売 ばい",
+    "phonetic_part": "買",
+    "reading_hint": "買 ばい → 賣 ばい",
+    "old_form": "賣",
+    "etymology_id": "Bentuk lama 賣 = 出 (keluar) + 買 (membeli; juga memberi bunyi ばい): barang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買.",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: penjual (士) di bawah tenda (冖) berdiri di atas kaki (儿) menawarkan dagangan.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -9453,7 +9470,10 @@
         "儿",
         "冖"
       ],
-      "phonetic_part": "買V",
+      "phon_hints": [
+        "買"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "売",
         "士",
@@ -12051,26 +12071,29 @@
   {
     "kanji": "寺",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
-        "part": "土",
+        "part": "之",
         "role": "phonetic",
-        "meaning_id": "tanah"
+        "meaning_id": "(ditulis 土 pada bentuk sekarang)"
       },
       {
         "part": "寸",
         "role": "meaning",
-        "meaning_id": "ukuran"
+        "meaning_id": "tangan, ukuran"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari 土 sebagai pemberi petunjuk bunyi dan 寸 sebagai petunjuk makna.",
-    "mnemonic_id": "Cara mengingat: Tempat ibadah di atas tanah (土) dengan aturan atau ukuran (寸) yang jelas.",
-    "note_id": "Kosakata Minna no Nihongo: お寺 (おてら) = wihara",
-    "phonetic_part": "之V",
-    "reading_hint": "之V ジ → 寺 ジ",
+    "phonetic_part": "之",
+    "reading_hint": "之 し → 寺 じ",
+    "old_form": null,
+    "etymology_id": "Bagian atas (土) adalah bentuk 之 yang berubah dan berfungsi sebagai penanda bunyi (し → じ); 寸 berarti tangan atau ukuran.",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: bayangkan kuil (寺) di atas tanah (土) yang diukur (寸). Ini trik ingat, bukan asal-usul.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -12089,7 +12112,10 @@
         "寸",
         "土"
       ],
-      "phonetic_part": "之V",
+      "phon_hints": [
+        "之"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "寺",
         "土",
@@ -14703,12 +14729,11 @@
   {
     "kanji": "強",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
-        "part": "弓",
+        "part": "弘",
         "role": "phonetic",
-        "meaning_id": "busur"
+        "meaning_id": ""
       },
       {
         "part": "虫",
@@ -14716,13 +14741,17 @@
         "meaning_id": "serangga"
       }
     ],
-    "etymology_id": "Kanji ini dibentuk dari 弓 sebagai pemberi bunyi dan 虫 sebagai unsur pendukung.",
-    "mnemonic_id": "Cara mengingat: Busur (弓) yang ditarik dengan kuat.",
-    "note_id": "Kosakata Minna no Nihongo: 勉強します (べんきょうします) = belajar, 強い (つよい) = kuat.",
-    "phonetic_part": "弓",
-    "reading_hint": "弓 kyō → 強 kyō",
-    "etymology_confidence": "established",
-    "status": "draft",
+    "phonetic_part": "弘",
+    "reading_hint": "弘 こう → 強 きょう",
+    "old_form": null,
+    "etymology_id": "弘 (こう) memberi bunyi dan 虫 (serangga) menunjukkan kategori. Menurut kamus kuno Shuowen, arti awalnya sejenis serangga; arti 'kuat' dipakai belakangan.",
+    "etymology_confidence": "traditional",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: bayangkan serangga (虫) yang kuat menarik busur (弓). Ini trik ingat saja.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -14746,6 +14775,9 @@
         "弓",
         "虫",
         "厶"
+      ],
+      "phon_hints": [
+        "弓"
       ],
       "phonetic_part": "弓",
       "flat_parts": [
@@ -15738,27 +15770,28 @@
   },
   {
     "kanji": "所",
-    "formation_type": "phono_semantic",
+    "formation_type": "compound_meaning",
     "claim_kind": "structure",
     "components": [
       {
         "part": "戸",
-        "role": "phonetic",
-        "meaning_id": "pintu"
+        "role": "meaning",
+        "meaning_id": "door, counter for houses"
       },
       {
         "part": "斤",
         "role": "meaning",
-        "meaning_id": "kapak"
+        "meaning_id": "axe, 1.32 lb"
       }
     ],
-    "etymology_id": "Kanji ini menggunakan 戸 sebagai pemberi petunjuk bunyi dan 斤 sebagai pelengkap makna.",
-    "mnemonic_id": "Cara mengingat: Pintu (戸) rumah sebagai suatu tempat (ところ) tertentu.",
-    "note_id": "Kosakata Minna no Nihongo: 事務所 (じむしょ) = kantor",
-    "phonetic_part": "戸",
-    "reading_hint": "戸 ショ → 所 ショ",
-    "etymology_confidence": "established",
+    "etymology_id": "Gabungan dari pintu 戸 dan kapak 斤 untuk menggambarkan suatu tempat.",
+    "mnemonic_id": "Cara mengingat: Tempat (所) di dekat pintu (戸) rumah.",
+    "note_id": "Kosakata: 事務所 (じむしょ) = kantor, 所 (ところ) = tempat.",
+    "source": "gemini",
+    "etymology_confidence": "traditional",
     "status": "draft",
+    "reading_hint": null,
+    "reading_match": null,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -15782,6 +15815,9 @@
         "戸",
         "一",
         "尸"
+      ],
+      "phon_hints": [
+        "戸"
       ],
       "phonetic_part": "戸",
       "flat_parts": [
@@ -17164,27 +17200,25 @@
   },
   {
     "kanji": "散",
-    "formation_type": "phono_semantic",
-    "claim_kind": "structure",
+    "formation_type": "unknown",
     "components": [
-      {
-        "part": "月",
-        "role": "meaning",
-        "meaning_id": "daging"
-      },
       {
         "part": "攵",
         "role": "meaning",
         "meaning_id": "tindakan"
       }
     ],
-    "etymology_id": "Kanji ini disusun dari komponen 月 dan 攵 untuk menyatakan tindakan menyebar.",
-    "mnemonic_id": "Cara mengingat: Tindakan (攵) membuat sesuatu berserakan.",
-    "note_id": "Kosakata Minna no Nihongo: 散歩します (さんぽします) = berjalan-jalan.",
     "phonetic_part": null,
     "reading_hint": null,
-    "etymology_confidence": "traditional",
-    "status": "draft",
+    "old_form": null,
+    "etymology_id": "Asal-usulnya diperdebatkan; bagian-bagian bentuk modernnya sulit dijelaskan secara pasti. Hafalkan sebagai bentuk.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: 攵 (tindakan) dengan bagian lain yang berhamburan ke mana-mana.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -17214,6 +17248,7 @@
         "月",
         "攵"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "散",
@@ -19500,27 +19535,25 @@
   },
   {
     "kanji": "服",
-    "formation_type": "phono_semantic",
-    "claim_kind": "structure",
+    "formation_type": "unknown",
     "components": [
-      {
-        "part": "月",
-        "role": "meaning",
-        "meaning_id": "daging atau tubuh"
-      },
       {
         "part": "𠬝",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari komponen meaning 月 (daging/tubuh) yang berkaitan dengan badan, serta bagian phonetic 𠬝.",
-    "mnemonic_id": "Cara mengingat: Sesuatu yang menempel di tubuh (月) yaitu pakaian (服).",
-    "note_id": "",
     "phonetic_part": "𠬝",
-    "reading_hint": "𠬝 フク → 服 フク",
-    "etymology_confidence": "established",
-    "status": "draft",
+    "reading_hint": "𠬝 ふく → 服 ふく",
+    "old_form": null,
+    "etymology_id": "Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月): sumber berbeda menafsirkannya sebagai 'daging' atau 'perahu (舟)'; asalnya diperdebatkan.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: pakaian dibaca 'fuku', sama dengan bunyi bagian kanannya.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -19541,7 +19574,10 @@
         "又",
         "卩"
       ],
-      "phonetic_part": "𠬝",
+      "phon_hints": [
+        "𠬝"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "服",
         "月",
@@ -20155,27 +20191,33 @@
   },
   {
     "kanji": "東",
-    "formation_type": "ideograph_simple",
+    "formation_type": "compound_meaning",
     "claim_kind": "structure",
     "components": [
       {
         "part": "木",
         "role": "meaning",
-        "meaning_id": "pohon"
+        "meaning_id": "tree, wood"
       },
       {
         "part": "日",
         "role": "meaning",
-        "meaning_id": "matahari"
+        "meaning_id": "day, sun"
+      },
+      {
+        "part": "丿",
+        "role": "shape",
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini menggambarkan matahari (日) yang terbit di balik pohon (木) di sebelah timur.",
-    "mnemonic_id": "Cara mengingat: Matahari (日) terbit di antara pepohonan (木) di sebelah timur.",
+    "etymology_id": "Gabungan dari pohon (木) dan matahari (日).",
+    "mnemonic_id": "Cara mengingat: Matahari (日) terbit di balik pohon (木) di sebelah timur (東).",
     "note_id": "",
-    "phonetic_part": null,
-    "reading_hint": null,
+    "source": "gemini",
     "etymology_confidence": "traditional",
     "status": "draft",
+    "reading_hint": null,
+    "reading_match": null,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -20197,6 +20239,7 @@
         "木",
         "田"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "東",
@@ -20438,26 +20481,29 @@
   {
     "kanji": "校",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
         "part": "木",
         "role": "meaning",
-        "meaning_id": "pohon"
+        "meaning_id": "kayu, pohon"
       },
       {
         "part": "交",
         "role": "phonetic",
-        "meaning_id": "persimpangan"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini menggunakan 木 (pohon/kayu) sebagai kategori makna dan 交 sebagai penanda bunyi.",
-    "mnemonic_id": "Cara mengingat: Bangunan dari kayu (木) di persimpangan jalan (交) yaitu sekolah.",
-    "note_id": "Kosakata Minna no Nihongo: 学校 (がっこう) = sekolah, 高校 (こうこう) = SMA.",
     "phonetic_part": "交",
-    "reading_hint": "交 kō → 校 kō",
+    "reading_hint": "交 こう → 校 こう",
+    "old_form": null,
+    "etymology_id": "木 (kayu) menunjukkan kategori makna, 交 (こう) memberi bunyi; 校 dibaca こう.",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: sekolah (校) dari kayu (木); 交 hanya mengingatkan bunyi 'kō'.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -20479,6 +20525,9 @@
         "父",
         "木",
         "亠"
+      ],
+      "phon_hints": [
+        "交"
       ],
       "phonetic_part": "交",
       "flat_parts": [
@@ -20649,21 +20698,32 @@
       {
         "part": "木",
         "role": "meaning",
-        "meaning_id": "pohon"
+        "meaning_id": "tree, wood"
       },
       {
         "part": "毎",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "every"
+      },
+      {
+        "part": "丿",
+        "role": "shape",
+        "meaning_id": ""
+      },
+      {
+        "part": "毋",
+        "role": "shape",
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari komponen meaning 木 (pohon) yang menunjukkan jenis tanaman, dan phonetic 毎 yang memberikan petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Pohon (木) buah ume yang berbunga setiap (毎) tahun.",
+    "etymology_id": "Gabungan 木 (pohon) dan 毎 sebagai penanda bunyi untuk buah ume.",
+    "mnemonic_id": "Cara mengingat: Pohon (木) buah plum (梅) yang berbuah setiap (毎) tahun.",
     "note_id": "",
-    "phonetic_part": "毎",
-    "reading_hint": "毎 バイ → 梅 バイ",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "毎 (マイ) → 梅 (バイ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -20682,6 +20742,9 @@
         "母",
         "木",
         "毋"
+      ],
+      "phon_hints": [
+        "毎"
       ],
       "phonetic_part": "毎",
       "flat_parts": [
@@ -24494,23 +24557,26 @@
     "components": [
       {
         "part": "⺦",
-        "role": "phonetic",
-        "meaning_id": "papan"
+        "role": "shape",
+        "meaning_id": ""
       },
       {
         "part": "犬",
         "role": "meaning",
-        "meaning_id": "anjing"
+        "meaning_id": "dog"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari ⺦ sebagai pemberi petunjuk bunyi dan 犬 sebagai penunjuk makna.",
-    "mnemonic_id": "Cara mengingat: Keadaan (状) bentuk luar dari sesuatu.",
-    "note_id": "Kosakata Minna no Nihongo: 年賀状 (ねんがじょう) = kartu tahun baru",
-    "phonetic_part": "丬",
-    "reading_hint": "丬 ジョウ → 状 ジョウ",
-    "etymology_confidence": "established",
-    "status": "draft",
-    "reasons": [],
+    "etymology_id": "Gabungan bentuk sisi kiri (⺦) dan unsur anjing (犬).",
+    "mnemonic_id": "Cara mengingat: Melihat bentuk atau status (状) dari seekor anjing (犬).",
+    "note_id": "Bentuk lama dari kanji ini adalah 狀.",
+    "source": "gemini",
+    "etymology_confidence": "traditional",
+    "status": "needs_review",
+    "reading_hint": null,
+    "reading_match": null,
+    "reasons": [
+      "Kanji memiliki old_form ('狀') tetapi tidak ada di manual_entries.json, wajib peninjauan manual"
+    ],
     "facts": {
       "meaning": [
         "status quo",
@@ -24530,7 +24596,10 @@
         "犬",
         "爿"
       ],
-      "phonetic_part": "丬",
+      "phon_hints": [
+        "丬"
+      ],
+      "phonetic_part": null,
       "flat_parts": [
         "状",
         "⺦",
@@ -24538,7 +24607,7 @@
         "大",
         "丶"
       ],
-      "old_form": null,
+      "old_form": "狀",
       "words": [
         {
           "jp": "年賀状",
@@ -25258,17 +25327,18 @@
     "components": [
       {
         "part": "用",
-        "role": "shape",
-        "meaning_id": "bentuk dasar"
+        "role": "meaning",
+        "meaning_id": "menggunakan"
       }
     ],
-    "etymology_id": "Kanji ini digambarkan sebagai bentuk tunggal yang menunjukkan fungsi atau penggunaan.",
-    "mnemonic_id": "Cara mengingat: Alat atau fasilitas yang siap digunakan (用) untuk suatu urusan.",
+    "etymology_id": "Kanji ini berdiri sendiri sebagai satu bentuk dasar.",
+    "mnemonic_id": "Cara mengingat: Huruf 用 (you) mirip pagar kotak untuk menandai urusan atau kegunaan.",
     "note_id": "",
-    "phonetic_part": null,
-    "reading_hint": null,
+    "source": "gemini",
     "etymology_confidence": "uncertain",
     "status": "needs_review",
+    "reading_hint": null,
+    "reading_match": null,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -25290,6 +25360,7 @@
       "components": [
         "用"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "用"
@@ -26757,37 +26828,19 @@
   },
   {
     "kanji": "真",
-    "formation_type": "compound_meaning",
-    "claim_kind": "structure",
-    "components": [
-      {
-        "part": "十",
-        "role": "meaning",
-        "meaning_id": "sepuluh"
-      },
-      {
-        "part": "具",
-        "role": "meaning",
-        "meaning_id": "alat"
-      },
-      {
-        "part": "目",
-        "role": "meaning",
-        "meaning_id": "mata"
-      },
-      {
-        "part": "八",
-        "role": "meaning",
-        "meaning_id": "delapan"
-      }
-    ],
-    "etymology_id": "Kanji ini menggabungkan komponen alat (具) dan mata (目) untuk menyatakan kebenaran atau kenyataan yang jelas.",
-    "mnemonic_id": "Cara mengingat: Melihat dengan mata kepala sendiri (目) secara nyata dan benar (真).",
-    "note_id": "Kosakata Minna no Nihongo: 写真 (しゃしん) = foto",
+    "formation_type": "unknown",
+    "components": [],
     "phonetic_part": null,
     "reading_hint": null,
-    "etymology_confidence": "traditional",
-    "status": "draft",
+    "old_form": "眞",
+    "etymology_id": "Asal-usulnya diperdebatkan. Bentuk lama 眞 memuat 匕, 目, 乚, dan 八; tafsir bagian-bagiannya beragam.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: ada mata (目) di tengah. Melihat dengan mata sendiri berarti nyata.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -26812,6 +26865,7 @@
         "ハ",
         "目"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "真",
@@ -26820,7 +26874,7 @@
         "目",
         "八"
       ],
-      "old_form": null,
+      "old_form": "眞",
       "words": [
         {
           "jp": "写真",
@@ -28538,28 +28592,46 @@
   },
   {
     "kanji": "答",
-    "formation_type": "compound_meaning",
+    "formation_type": "phono_semantic",
     "claim_kind": "structure",
     "components": [
       {
         "part": "竹",
         "role": "meaning",
-        "meaning_id": "bambu"
+        "meaning_id": "bamboo"
       },
       {
         "part": "合",
-        "role": "meaning",
-        "meaning_id": "menggabungkan atau cocok"
+        "role": "phonetic",
+        "meaning_id": "fit, suit"
+      },
+      {
+        "part": "人",
+        "role": "shape",
+        "meaning_id": ""
+      },
+      {
+        "part": "一",
+        "role": "shape",
+        "meaning_id": ""
+      },
+      {
+        "part": "口",
+        "role": "shape",
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini disusun dari komponen 竹 (bambu) dan 合 (sesuai/cocok).",
-    "mnemonic_id": "Cara mengingat: Memberikan jawaban (答) yang cocok (合) dan tepat seperti ruas bambu (竹).",
+    "etymology_id": "Gabungan 竹 (bambu) dan 合 yang berfungsi sebagai penanda bunyi.",
+    "mnemonic_id": "Cara mengingat: Seseorang memberikan jawaban (答) dengan mulut (口) yang sesuai (合).",
     "note_id": "",
-    "phonetic_part": null,
-    "reading_hint": null,
+    "source": "gemini",
     "etymology_confidence": "traditional",
-    "status": "draft",
-    "reasons": [],
+    "status": "needs_review",
+    "reading_hint": "合 (ゴウ) → 答 (トウ)",
+    "reading_match": false,
+    "reasons": [
+      "Klaim phonetic pada '合' tidak cocok rima bacaan on-yomi (ゴウ, ガッ, カッ vs トウ)"
+    ],
     "facts": {
       "meaning": [
         "solution",
@@ -28580,6 +28652,7 @@
         "竹",
         "𠆢"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "答",
@@ -29169,21 +29242,22 @@
       {
         "part": "糸",
         "role": "meaning",
-        "meaning_id": "benang"
+        "meaning_id": "thread"
       },
       {
         "part": "氏",
         "role": "phonetic",
-        "meaning_id": "nama keluarga"
+        "meaning_id": "family name, surname"
       }
     ],
-    "etymology_id": "Kanji ini dibentuk dari komponen 糸 (benang/serat) yang menunjukkan kategori makna bahan pembuat, dan 氏 sebagai pemberi petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Benang atau serat (糸) yang diolah membentuk kertas. Bagian 氏 memberi bunyi 'shi'.",
-    "note_id": "Kosakata Minna no Nihongo: 手紙 (てがみ) = surat",
-    "phonetic_part": "氏",
-    "reading_hint": "氏 シ → 紙 シ",
+    "etymology_id": "Terdiri dari serat benang/serat 糸 dan 氏 sebagai petunjuk bunyi (on-yomi: シ).",
+    "mnemonic_id": "Cara mengingat: Kertas (紙) dibuat dari serat (糸) yang ditekan.",
+    "note_id": "Kosakata: 手紙 (てがみ) = surat.",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "氏 (シ) → 紙 (シ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -29203,6 +29277,9 @@
         "糸",
         "幺",
         "小"
+      ],
+      "phon_hints": [
+        "氏"
       ],
       "phonetic_part": "氏",
       "flat_parts": [
@@ -31492,21 +31569,22 @@
       {
         "part": "艹",
         "role": "meaning",
-        "meaning_id": "tanaman"
+        "meaning_id": "grass"
       },
       {
         "part": "何",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "what"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari komponen 艹 (tanaman/rumput) sebagai kategori makna dan 何 sebagai pemberi bunyi.",
-    "mnemonic_id": "Cara mengingat: Membawa beban tanaman (艹) menggunakan pundak.",
-    "note_id": "Kosakata Minna no Nihongo: 荷物 (にもつ) = barang, paket.",
-    "phonetic_part": "何",
-    "reading_hint": "何 ka → 荷 ka",
+    "etymology_id": "Gabungan unsur tanaman (艹) dan unsur bacaan 何 yang memberikan on-yomi カ.",
+    "mnemonic_id": "Cara mengingat: Membawa barang atau bagasi (荷) di atas rumput (艹) menggunakan apa (何).",
+    "note_id": "Digunakan pada kata 荷物 (にもつ).",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "何 (カ) → 荷 (カ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -31533,6 +31611,9 @@
         "亅",
         "⺾",
         "一"
+      ],
+      "phon_hints": [
+        "何"
       ],
       "phonetic_part": "何",
       "flat_parts": [
@@ -33704,21 +33785,22 @@
       {
         "part": "言",
         "role": "meaning",
-        "meaning_id": "kata"
+        "meaning_id": "say, word"
       },
       {
         "part": "吾",
         "role": "phonetic",
-        "meaning_id": "saya"
+        "meaning_id": "I, my"
       }
     ],
-    "etymology_id": "Kanji ini dibentuk dari 言 (kata) yang menunjukkan kategori makna bahasa dan 吾 sebagai pemberi bunyi.",
-    "mnemonic_id": "Cara mengingat: Kata-kata (言) yang diucapkan oleh saya (吾).",
-    "note_id": "Kosakata Minna no Nihongo: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang.",
-    "phonetic_part": "吾",
-    "reading_hint": "吾 go → 語 go",
+    "etymology_id": "Terdiri dari 言 (kata/bicara) dan 吾 sebagai petunjuk bunyi (on-yomi: ゴ).",
+    "mnemonic_id": "Cara mengingat: Berbicara (言) menggunakan bahasa (語) kita.",
+    "note_id": "Kosakata: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang.",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "吾 (ゴ) → 語 (ゴ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -33741,6 +33823,9 @@
         "言",
         "口",
         "五"
+      ],
+      "phon_hints": [
+        "吾"
       ],
       "phonetic_part": "吾",
       "flat_parts": [
@@ -34100,21 +34185,22 @@
       {
         "part": "敬",
         "role": "phonetic",
-        "meaning_id": "hormat"
+        "meaning_id": "awe, respect"
       },
       {
         "part": "言",
         "role": "meaning",
-        "meaning_id": "kata"
+        "meaning_id": "say, word"
       }
     ],
-    "etymology_id": "Kanji ini terdiri dari 言 (kata/bicara) yang berkaitan dengan makna peringatan dan 敬 sebagai penanda bunyi.",
-    "mnemonic_id": "Cara mengingat: Berbicara (言) dengan hormat dan waspada.",
-    "note_id": "Kosakata Minna no Nihongo: 警察官 (けいさつかん) = polisi.",
-    "phonetic_part": "敬",
-    "reading_hint": "敬 kei → 警 kei",
+    "etymology_id": "Terdiri dari kata yang diucapkan 言 dan komponen 敬 sebagai petunjuk bunyi (on-yomi: ケイ).",
+    "mnemonic_id": "Cara mengingat: Polisi (警察官) memberikan peringatan dengan kata-kata (言).",
+    "note_id": "Kosakata: 警察官 (けいさつかん) = polisi, petugas kepolisian.",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "敬 (ケイ) → 警 (ケイ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -34137,6 +34223,9 @@
         "夂",
         "⺾",
         "攵"
+      ],
+      "phon_hints": [
+        "敬"
       ],
       "phonetic_part": "敬",
       "flat_parts": [
@@ -34404,23 +34493,19 @@
     "claim_kind": "structure",
     "components": [
       {
-        "part": "𠂊",
-        "role": "shape",
-        "meaning_id": "bentuk"
-      },
-      {
         "part": "豕",
         "role": "meaning",
-        "meaning_id": "babi/hewan"
+        "meaning_id": "pig, hog"
       }
     ],
-    "etymology_id": "Kanji ini menggambarkan bentuk hewan besar seperti gajah secara piktografis.",
-    "mnemonic_id": "Cara mengingat: Bentuk tubuh hewan besar (豕) dengan belalai.",
-    "note_id": "Kosakata Minna no Nihongo: 象 (ぞう) = gajah",
-    "phonetic_part": null,
-    "reading_hint": null,
+    "etymology_id": "Berasal dari bentuk visual seekor gajah.",
+    "mnemonic_id": "Cara mengingat: Bentuk tubuh hewan besar seperti gajah (象).",
+    "note_id": "Kosakata: 象 (ぞう) = gajah.",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": null,
+    "reading_match": null,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -34447,6 +34532,7 @@
         "口",
         "一"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "象",
@@ -35372,21 +35458,22 @@
       {
         "part": "足",
         "role": "meaning",
-        "meaning_id": "kaki"
+        "meaning_id": "leg, foot"
       },
       {
         "part": "兆",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "portent, 10**12"
       }
     ],
-    "etymology_id": "Kanji ini terbentuk dari komponen meaning 足 (kaki) yang menunjukkan makna gerak fisik, serta bagian phonetic 兆 yang memberikan petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Menggunakan kaki (足) untuk melompat tinggi.",
-    "note_id": "",
-    "phonetic_part": "兆",
-    "reading_hint": "兆 チョウ → 跳 チョウ",
+    "etymology_id": "Terdiri dari kaki 足 dan 兆 sebagai petunjuk bunyi (on-yomi: チョウ).",
+    "mnemonic_id": "Cara mengingat: Menggunakan kaki (足) untuk melompat atau meloncat (跳ぶ).",
+    "note_id": "Kosakata: 跳ぶ (とぶ) = meloncat.",
+    "source": "gemini",
     "etymology_confidence": "established",
     "status": "draft",
+    "reading_hint": "兆 (チョウ) → 跳 (チョウ)",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -35416,6 +35503,9 @@
         "足",
         "儿",
         "冫"
+      ],
+      "phon_hints": [
+        "兆"
       ],
       "phonetic_part": "兆",
       "flat_parts": [
@@ -35998,22 +36088,25 @@
       {
         "part": "卬",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "lofty, high"
       },
       {
         "part": "⻌",
-        "role": "meaning",
-        "meaning_id": "gerak jalan"
+        "role": "shape",
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini dibentuk dari ⻌ (jalan/gerak) dan 卬 sebagai penanda bunyi.",
-    "mnemonic_id": "Cara mengingat: Berjalan (⻌) untuk menyambut tamu.",
-    "note_id": "Kosakata Minna no Nihongo: 迎えます (むかえます) = menjemput.",
-    "phonetic_part": "卬",
-    "reading_hint": "卬 gei → 迎 gei",
+    "etymology_id": "Terdiri dari ⻌ (jalan) dan 卬 sebagai petunjuk bunyi (on-yomi: ゲイ).",
+    "mnemonic_id": "Cara mengingat: Berjalan (⻌) keluar untuk menyambut atau menjemput (迎えます) seseorang.",
+    "note_id": "Kosakata: 迎えます (むかえます) = menjemput, menyambut.",
+    "source": "gemini",
     "etymology_confidence": "established",
-    "status": "draft",
-    "reasons": [],
+    "status": "needs_review",
+    "reading_hint": "卬 (キョウ) → 迎 (ゲイ)",
+    "reading_match": false,
+    "reasons": [
+      "Klaim phonetic pada '卬' tidak cocok rima bacaan on-yomi (キョウ, ゴウ vs ゲイ)"
+    ],
     "facts": {
       "meaning": [
         "welcome",
@@ -36032,6 +36125,9 @@
       "components": [
         "辶",
         "卩"
+      ],
+      "phon_hints": [
+        "卬"
       ],
       "phonetic_part": "卬",
       "flat_parts": [
@@ -36192,27 +36288,25 @@
   },
   {
     "kanji": "送",
-    "formation_type": "compound_meaning",
-    "claim_kind": "structure",
+    "formation_type": "unknown",
     "components": [
       {
-        "part": "关",
+        "part": "辶",
         "role": "meaning",
-        "meaning_id": "gerbang"
-      },
-      {
-        "part": "⻌",
-        "role": "meaning",
-        "meaning_id": "jalan"
+        "meaning_id": "bergerak"
       }
     ],
-    "etymology_id": "Kanji ini menggabungkan elemen gerbang (关) dan jalan (⻌) untuk menggambarkan aktivitas mengantar atau mengirim.",
-    "mnemonic_id": "Cara mengingat: Berjalan (⻌) mengantar sesuatu melewati gerbang (关).",
-    "note_id": "Kosakata Minna no Nihongo: 送ります (おくります) = mengirim",
     "phonetic_part": null,
     "reading_hint": null,
-    "etymology_confidence": "traditional",
-    "status": "draft",
+    "old_form": null,
+    "etymology_id": "辶 (bergerak) menunjukkan kategori makna. Bagian kanan adalah bentuk yang tidak berdiri sebagai kata sendiri; bukan 'gerbang'.",
+    "etymology_confidence": "uncertain",
+    "claim_kind": "unknown",
+    "mnemonic_id": "Cara mengingat: berjalan (辶) membawa barang untuk diantar. Ini trik ingat saja.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -36234,6 +36328,7 @@
         "大",
         "一"
       ],
+      "phon_hints": [],
       "phonetic_part": null,
       "flat_parts": [
         "送",
@@ -36339,22 +36434,35 @@
       {
         "part": "甬",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "road with walls on both sides"
+      },
+      {
+        "part": "マ",
+        "role": "shape",
+        "meaning_id": ""
+      },
+      {
+        "part": "用",
+        "role": "meaning",
+        "meaning_id": "utilize, business"
       },
       {
         "part": "⻌",
-        "role": "meaning",
-        "meaning_id": "jalan atau bergerak"
+        "role": "shape",
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini menggabungkan komponen makna ⻌ (jalan) dan bagian bunyi 甬 untuk menyatakan arti melewati atau melalui.",
-    "mnemonic_id": "Cara mengingat: Berjalan (⻌) melewati suatu jalur dengan lancar.",
+    "etymology_id": "Terdiri dari komponen 甬 sebagai penanda bunyi dan ⻌ (jalan) yang menunjukkan makna melintas.",
+    "mnemonic_id": "Cara mengingat: Orang menggunakan (用) jalan untuk melintas (通) dalam lalu lintas.",
     "note_id": "",
-    "phonetic_part": "甬",
-    "reading_hint": "甬 ツウ → 通 ツウ",
+    "source": "gemini",
     "etymology_confidence": "established",
-    "status": "draft",
-    "reasons": [],
+    "status": "needs_review",
+    "reading_hint": "甬 (ヨウ) → 通 (ツウ)",
+    "reading_match": false,
+    "reasons": [
+      "Klaim phonetic pada '甬' tidak cocok rima bacaan on-yomi (ヨウ vs ツウ, ツ)"
+    ],
     "facts": {
       "meaning": [
         "traffic",
@@ -36384,6 +36492,9 @@
         "辶",
         "用",
         "マ"
+      ],
+      "phon_hints": [
+        "甬"
       ],
       "phonetic_part": "甬",
       "flat_parts": [
@@ -38137,22 +38248,25 @@
       {
         "part": "金",
         "role": "meaning",
-        "meaning_id": "logam"
+        "meaning_id": "gold"
       },
       {
         "part": "㕣",
         "role": "phonetic",
-        "meaning_id": "bagian bunyi"
+        "meaning_id": "a marsh at the foot of the hills, name of a river"
       }
     ],
-    "etymology_id": "Kanji ini dibentuk dari komponen 金 (logam) yang menunjukkan kategori makna dan 㕣 yang memberikan petunjuk bunyi.",
-    "mnemonic_id": "Cara mengingat: Logam (金) yang berat dan beracun seperti timah.",
-    "note_id": "Kosakata Minna no Nihongo: 鉛筆 (えんぴつ) = pensil.",
-    "phonetic_part": "㕣",
-    "reading_hint": "㕣 en → 鉛 en",
+    "etymology_id": "Terdiri dari elemen 金 (emas/logam) sebagai arti dan 㕣 sebagai petunjuk bunyi (on-yomi: エン).",
+    "mnemonic_id": "Cara mengingat: Logam (金) yang berat menyerupai timah (鉛) di dalam pensil (えんぴつ).",
+    "note_id": "Kosakata: 鉛筆 (えんぴつ) = pensil.",
+    "source": "gemini",
     "etymology_confidence": "established",
-    "status": "draft",
-    "reasons": [],
+    "status": "needs_review",
+    "reading_hint": null,
+    "reading_match": false,
+    "reasons": [
+      "Klaim phonetic pada '㕣' tidak cocok rima bacaan on-yomi (- vs エン)"
+    ],
     "facts": {
       "meaning": [
         "lead"
@@ -38171,6 +38285,9 @@
         "口",
         "并",
         "ハ"
+      ],
+      "phon_hints": [
+        "㕣"
       ],
       "phonetic_part": "㕣",
       "flat_parts": [
@@ -40617,26 +40734,29 @@
   {
     "kanji": "顔",
     "formation_type": "phono_semantic",
-    "claim_kind": "structure",
     "components": [
       {
-        "part": "彦",
+        "part": "頁",
         "role": "meaning",
-        "meaning_id": "pria elok"
+        "meaning_id": "kepala"
       },
       {
-        "part": "頁",
+        "part": "彦",
         "role": "phonetic",
-        "meaning_id": "kepala"
+        "meaning_id": ""
       }
     ],
-    "etymology_id": "Kanji ini menggabungkan 彦 di kiri dan 頁 (kepala/halaman) di kanan sebagai penanda bunyi.",
-    "mnemonic_id": "Cara mengingat: Bagian kepala atau wajah (頁) seseorang.",
-    "note_id": "Kosakata Minna no Nihongo: 顔 (かお) = wajah, muka.",
-    "phonetic_part": "頁",
-    "reading_hint": "頁 gan → 顔 gan",
+    "phonetic_part": "彦",
+    "reading_hint": "彦 げん → 顔 がん",
+    "old_form": null,
+    "etymology_id": "頁 (kepala) menunjukkan bagian tubuh, sedangkan 彦 hanya memberi petunjuk bunyi (げん → がん).",
     "etymology_confidence": "established",
-    "status": "draft",
+    "claim_kind": "structure",
+    "mnemonic_id": "Cara mengingat: wajah ada di kepala (頁), dan 彦 mengingatkan bunyi 'gan'.",
+    "note_id": "",
+    "source": "manual",
+    "status": "approved",
+    "reading_match": true,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -40661,6 +40781,9 @@
         "亠",
         "厂",
         "彡"
+      ],
+      "phon_hints": [
+        "頁"
       ],
       "phonetic_part": "頁",
       "flat_parts": [

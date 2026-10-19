@@ -1,22 +1,20 @@
 {
   "kanji": "所",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
   "claim_kind": "structure",
   "components": [
     {
       "part": "戸",
-      "role": "phonetic",
-      "meaning_id": "pintu"
+      "role": "meaning",
+      "meaning_id": "door, counter for houses"
     },
     {
       "part": "斤",
       "role": "meaning",
-      "meaning_id": "kapak"
+      "meaning_id": "axe, 1.32 lb"
     }
   ],
-  "etymology_id": "Kanji ini menggunakan 戸 sebagai pemberi petunjuk bunyi dan 斤 sebagai pelengkap makna.",
-  "mnemonic_id": "Cara mengingat: Pintu (戸) rumah sebagai suatu tempat (ところ) tertentu.",
-  "note_id": "Kosakata Minna no Nihongo: 事務所 (じむしょ) = kantor",
-  "phonetic_part": "戸",
-  "reading_hint": "戸 ショ → 所 ショ"
+  "etymology_id": "Gabungan dari pintu 戸 dan kapak 斤 untuk menggambarkan suatu tempat.",
+  "mnemonic_id": "Cara mengingat: Tempat (所) di dekat pintu (戸) rumah.",
+  "note_id": "Kosakata: 事務所 (じむしょ) = kantor, 所 (ところ) = tempat."
 }

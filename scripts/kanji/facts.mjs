@@ -36,7 +36,7 @@ export function parseKradfile() {
   return kradMap;
 }
 
-export function parseKanjidic(targetKanjiSet) {
+export function parseKanjidic(targetKanjiSet = null) {
   if (!fs.existsSync(KANJIDIC_PATH)) {
     throw new Error(`KANJIDIC2 tidak ditemukan di ${KANJIDIC_PATH}`);
   }
@@ -48,7 +48,7 @@ export function parseKanjidic(targetKanjiSet) {
     const litMatch = block.match(/<literal>([^<]+)<\/literal>/);
     if (!litMatch) continue;
     const literal = litMatch[1];
-    if (!targetKanjiSet.has(literal)) continue;
+    if (targetKanjiSet && !targetKanjiSet.has(literal)) continue;
 
     const strokeMatch = block.match(/<stroke_count>(\d+)<\/stroke_count>/);
     const stroke_count = strokeMatch ? parseInt(strokeMatch[1], 10) : null;
@@ -169,25 +169,40 @@ export function extractFlatParts(tree, set = new Set()) {
   return Array.from(set);
 }
 
-export function extractPhoneticPart(tree, svgContent = '') {
-  // Cari di tree dulu
-  function findPhon(node) {
-    if (!node) return null;
-    if (node.phon) return node.phon;
-    for (const child of node.children || []) {
-      const p = findPhon(child);
-      if (p) return p;
-    }
-    return null;
+export function parsePhonHints(rawPhon) {
+  if (!rawPhon) return [];
+  const parts = rawPhon.split('/');
+  const hints = [];
+  for (const p of parts) {
+    const cleaned = p.replace(/V+$/g, '').trim();
+    if (cleaned) hints.push(cleaned);
   }
+  return [...new Set(hints)];
+}
 
-  const fromTree = findPhon(tree);
-  if (fromTree) return fromTree;
-
-  // Fallback regex jika ada di atribut <g>
+export function extractAllRawPhon(tree, svgContent = '') {
+  const phons = [];
+  function walk(node) {
+    if (!node) return;
+    if (node.phon) phons.push(node.phon);
+    for (const child of node.children || []) walk(child);
+  }
+  walk(tree);
   if (svgContent) {
-    const m = svgContent.match(/<g\b[^>]*kvg:phon="([^"]+)"/);
-    if (m) return m[1];
+    const matches = svgContent.matchAll(/<g\b[^>]*kvg:phon="([^"]+)"/g);
+    for (const m of matches) phons.push(m[1]);
+  }
+  return [...new Set(phons)];
+}
+
+export function extractPhoneticPart(tree, svgContent = '', flatParts = [], oldForm = null) {
+  if (oldForm) return null;
+  const rawPhons = extractAllRawPhon(tree, svgContent);
+  const hints = [...new Set(rawPhons.flatMap(parsePhonHints))];
+  for (const hint of hints) {
+    if (flatParts.includes(hint)) {
+      return hint;
+    }
   }
   return null;
 }
@@ -197,7 +212,15 @@ export function loadOldForms() {
     try {
       const content = fs.readFileSync(OLD_FORMS_PATH, 'utf-8');
       const data = JSON.parse(content);
-      return new Map(Object.entries(data));
+      const pairs = data.pairs || {};
+      const ambiguous = new Set(Object.keys(data.meta?.ambiguous || {}));
+      const map = new Map();
+      for (const [k, v] of Object.entries(pairs)) {
+        if (!ambiguous.has(k)) {
+          map.set(k, v);
+        }
+      }
+      return map;
     } catch (e) {
       console.warn(`Gagal membaca ${OLD_FORMS_PATH}:`, e.message);
     }
@@ -233,29 +256,32 @@ export function buildFacts() {
       missingKanjidic.push(k);
     }
 
+    const old_form = oldFormsMap.get(k) || null;
+    if (old_form) {
+      withOldFormCount++;
+    }
+
     // KanjiVG SVG
     const hex = k.codePointAt(0).toString(16).padStart(5, '0');
     const svgPath = path.resolve(KANJIVG_DIR, `${hex}.svg`);
     let tree = null;
     let phonetic_part = null;
     let flat_parts = [];
+    let phon_hints = [];
 
     if (fs.existsSync(svgPath)) {
       const svgContent = fs.readFileSync(svgPath, 'utf-8');
       tree = parseKanjivgSvg(svgContent);
-      phonetic_part = extractPhoneticPart(tree, svgContent);
       flat_parts = extractFlatParts(tree);
+      const rawPhons = extractAllRawPhon(tree, svgContent);
+      phon_hints = [...new Set(rawPhons.flatMap(parsePhonHints))];
+      phonetic_part = extractPhoneticPart(tree, svgContent, flat_parts, old_form);
     } else {
       missingKanjiVG.push(k);
     }
 
     if (phonetic_part) {
       withPhoneticCount++;
-    }
-
-    const old_form = oldFormsMap.get(k) || null;
-    if (old_form) {
-      withOldFormCount++;
     }
 
     const factEntry = {
@@ -268,6 +294,7 @@ export function buildFacts() {
       grade: dict ? dict.grade : null,
       components: components,
       tree: tree,
+      phon_hints: phon_hints,
       phonetic_part: phonetic_part,
       flat_parts: flat_parts,
       old_form: old_form,

@@ -140,14 +140,14 @@
     },
     {
      "part": "買",
-     "role": "meaning",
+     "role": "phonetic",
      "meaning_id": "membeli"
     }
    ],
-   "phonetic_part": null,
-   "reading_hint": "",
+   "phonetic_part": "買",
+   "reading_hint": "買 ばい → 賣 ばい",
    "old_form": "賣",
-   "etymology_id": "Bentuk lama 賣 = 出 (keluar) + 買 (membeli): barang yang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買.",
+   "etymology_id": "Bentuk lama 賣 = 出 (keluar) + 買 (membeli; juga memberi bunyi ばい): barang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買.",
    "etymology_confidence": "established",
    "claim_kind": "structure",
    "mnemonic_id": "Cara mengingat: penjual (士) di bawah tenda (冖) berdiri di atas kaki (儿) menawarkan dagangan.",
@@ -220,7 +220,7 @@
    "phonetic_part": "𠬝",
    "reading_hint": "𠬝 ふく → 服 ふく",
    "old_form": null,
-   "etymology_id": "Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月) di sini bukan 'daging'; asalnya diperdebatkan.",
+   "etymology_id": "Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月): sumber berbeda menafsirkannya sebagai 'daging' atau 'perahu (舟)'; asalnya diperdebatkan.",
    "etymology_confidence": "uncertain",
    "claim_kind": "unknown",
    "mnemonic_id": "Cara mengingat: pakaian dibaca 'fuku', sama dengan bunyi bagian kanannya.",

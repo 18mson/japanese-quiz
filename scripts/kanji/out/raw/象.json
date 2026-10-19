@@ -4,19 +4,12 @@
   "claim_kind": "structure",
   "components": [
     {
-      "part": "𠂊",
-      "role": "shape",
-      "meaning_id": "bentuk"
-    },
-    {
       "part": "豕",
       "role": "meaning",
-      "meaning_id": "babi/hewan"
+      "meaning_id": "pig, hog"
     }
   ],
-  "etymology_id": "Kanji ini menggambarkan bentuk hewan besar seperti gajah secara piktografis.",
-  "mnemonic_id": "Cara mengingat: Bentuk tubuh hewan besar (豕) dengan belalai.",
-  "note_id": "Kosakata Minna no Nihongo: 象 (ぞう) = gajah",
-  "phonetic_part": null,
-  "reading_hint": null
+  "etymology_id": "Berasal dari bentuk visual seekor gajah.",
+  "mnemonic_id": "Cara mengingat: Bentuk tubuh hewan besar seperti gajah (象).",
+  "note_id": "Kosakata: 象 (ぞう) = gajah."
 }

@@ -1,22 +1,25 @@
 {
   "kanji": "売",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "士",
+      "part": "出",
       "role": "meaning",
-      "meaning_id": "tanah"
+      "meaning_id": "keluar"
     },
     {
-      "part": "買V",
+      "part": "買",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "membeli"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari bagian 土 di atas dan bagian bunyi 買 di bawah. Bentuk lama: 賣. Kanji modern ini merupakan bentuk penyederhanaan dari bentuk lamanya.",
-  "mnemonic_id": "Cara mengingat: Bagian 土 dan 买 membantu menunjukkan bunyi dan struktur kanji menjual ini.",
-  "note_id": "Kosakata penting: 売ります (menjual), 売り場 (tempat penjualan).",
-  "phonetic_part": "買V",
-  "reading_hint": "買V さい/ばい → 売 ばい"
+  "phonetic_part": "買",
+  "reading_hint": "買 ばい → 賣 ばい",
+  "old_form": "賣",
+  "etymology_id": "Bentuk lama 賣 = 出 (keluar) + 買 (membeli; juga memberi bunyi ばい): barang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: penjual (士) di bawah tenda (冖) berdiri di atas kaki (儿) menawarkan dagangan.",
+  "note_id": "",
+  "source": "manual"
 }

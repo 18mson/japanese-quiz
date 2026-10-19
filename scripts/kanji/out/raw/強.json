@@ -1,12 +1,11 @@
 {
   "kanji": "強",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "弓",
+      "part": "弘",
       "role": "phonetic",
-      "meaning_id": "busur"
+      "meaning_id": ""
     },
     {
       "part": "虫",
@@ -14,9 +13,13 @@
       "meaning_id": "serangga"
     }
   ],
-  "etymology_id": "Kanji ini dibentuk dari 弓 sebagai pemberi bunyi dan 虫 sebagai unsur pendukung.",
-  "mnemonic_id": "Cara mengingat: Busur (弓) yang ditarik dengan kuat.",
-  "note_id": "Kosakata Minna no Nihongo: 勉強します (べんきょうします) = belajar, 強い (つよい) = kuat.",
-  "phonetic_part": "弓",
-  "reading_hint": "弓 kyō → 強 kyō"
+  "phonetic_part": "弘",
+  "reading_hint": "弘 こう → 強 きょう",
+  "old_form": null,
+  "etymology_id": "弘 (こう) memberi bunyi dan 虫 (serangga) menunjukkan kategori. Menurut kamus kuno Shuowen, arti awalnya sejenis serangga; arti 'kuat' dipakai belakangan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: bayangkan serangga (虫) yang kuat menarik busur (弓). Ini trik ingat saja.",
+  "note_id": "",
+  "source": "manual"
 }

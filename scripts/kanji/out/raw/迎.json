@@ -6,17 +6,15 @@
     {
       "part": "卬",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "lofty, high"
     },
     {
       "part": "⻌",
-      "role": "meaning",
-      "meaning_id": "gerak jalan"
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini dibentuk dari ⻌ (jalan/gerak) dan 卬 sebagai penanda bunyi.",
-  "mnemonic_id": "Cara mengingat: Berjalan (⻌) untuk menyambut tamu.",
-  "note_id": "Kosakata Minna no Nihongo: 迎えます (むかえます) = menjemput.",
-  "phonetic_part": "卬",
-  "reading_hint": "卬 gei → 迎 gei"
+  "etymology_id": "Terdiri dari ⻌ (jalan) dan 卬 sebagai petunjuk bunyi (on-yomi: ゲイ).",
+  "mnemonic_id": "Cara mengingat: Berjalan (⻌) keluar untuk menyambut atau menjemput (迎えます) seseorang.",
+  "note_id": "Kosakata: 迎えます (むかえます) = menjemput, menyambut."
 }

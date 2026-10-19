@@ -6,17 +6,25 @@
     {
       "part": "甬",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "road with walls on both sides"
+    },
+    {
+      "part": "マ",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "用",
+      "role": "meaning",
+      "meaning_id": "utilize, business"
     },
     {
       "part": "⻌",
-      "role": "meaning",
-      "meaning_id": "jalan atau bergerak"
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan komponen makna ⻌ (jalan) dan bagian bunyi 甬 untuk menyatakan arti melewati atau melalui.",
-  "mnemonic_id": "Cara mengingat: Berjalan (⻌) melewati suatu jalur dengan lancar.",
-  "note_id": "",
-  "phonetic_part": "甬",
-  "reading_hint": "甬 ツウ → 通 ツウ"
+  "etymology_id": "Terdiri dari komponen 甬 sebagai penanda bunyi dan ⻌ (jalan) yang menunjukkan makna melintas.",
+  "mnemonic_id": "Cara mengingat: Orang menggunakan (用) jalan untuk melintas (通) dalam lalu lintas.",
+  "note_id": ""
 }

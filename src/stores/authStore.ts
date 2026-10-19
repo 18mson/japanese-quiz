@@ -40,11 +40,14 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { useBadgeStore } = await import('./badgeStore');
       const { useMasteryStore } = await import('./masteryStore');
+      const { useLessonStore } = await import('./lessonStore');
       const badgeStore = useBadgeStore();
       const masteryStore = useMasteryStore();
+      const lessonStore = useLessonStore();
       badgeStore.syncFromUser(user.value, masteryStore.currentUserLevel);
+      lessonStore.syncFromUserMetadata(user.value.user_metadata);
     } catch (e) {
-      console.warn('Failed to sync badges for user:', e);
+      console.warn('Failed to sync badges/lesson materi for user:', e);
     }
   };
 

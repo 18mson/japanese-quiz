@@ -1,22 +1,35 @@
 {
   "kanji": "答",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
   "claim_kind": "structure",
   "components": [
     {
       "part": "竹",
       "role": "meaning",
-      "meaning_id": "bambu"
+      "meaning_id": "bamboo"
     },
     {
       "part": "合",
-      "role": "meaning",
-      "meaning_id": "menggabungkan atau cocok"
+      "role": "phonetic",
+      "meaning_id": "fit, suit"
+    },
+    {
+      "part": "人",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "一",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "口",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini disusun dari komponen 竹 (bambu) dan 合 (sesuai/cocok).",
-  "mnemonic_id": "Cara mengingat: Memberikan jawaban (答) yang cocok (合) dan tepat seperti ruas bambu (竹).",
-  "note_id": "",
-  "phonetic_part": null,
-  "reading_hint": null
+  "etymology_id": "Gabungan 竹 (bambu) dan 合 yang berfungsi sebagai penanda bunyi.",
+  "mnemonic_id": "Cara mengingat: Seseorang memberikan jawaban (答) dengan mulut (口) yang sesuai (合).",
+  "note_id": ""
 }

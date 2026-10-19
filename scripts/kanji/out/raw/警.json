@@ -6,17 +6,15 @@
     {
       "part": "敬",
       "role": "phonetic",
-      "meaning_id": "hormat"
+      "meaning_id": "awe, respect"
     },
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "kata"
+      "meaning_id": "say, word"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari 言 (kata/bicara) yang berkaitan dengan makna peringatan dan 敬 sebagai penanda bunyi.",
-  "mnemonic_id": "Cara mengingat: Berbicara (言) dengan hormat dan waspada.",
-  "note_id": "Kosakata Minna no Nihongo: 警察官 (けいさつかん) = polisi.",
-  "phonetic_part": "敬",
-  "reading_hint": "敬 kei → 警 kei"
+  "etymology_id": "Terdiri dari kata yang diucapkan 言 dan komponen 敬 sebagai petunjuk bunyi (on-yomi: ケイ).",
+  "mnemonic_id": "Cara mengingat: Polisi (警察官) memberikan peringatan dengan kata-kata (言).",
+  "note_id": "Kosakata: 警察官 (けいさつかん) = polisi, petugas kepolisian."
 }

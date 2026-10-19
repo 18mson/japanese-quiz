@@ -6,17 +6,25 @@
     {
       "part": "木",
       "role": "meaning",
-      "meaning_id": "pohon"
+      "meaning_id": "tree, wood"
     },
     {
       "part": "毎",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "every"
+    },
+    {
+      "part": "丿",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "毋",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen meaning 木 (pohon) yang menunjukkan jenis tanaman, dan phonetic 毎 yang memberikan petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Pohon (木) buah ume yang berbunga setiap (毎) tahun.",
-  "note_id": "",
-  "phonetic_part": "毎",
-  "reading_hint": "毎 バイ → 梅 バイ"
+  "etymology_id": "Gabungan 木 (pohon) dan 毎 sebagai penanda bunyi untuk buah ume.",
+  "mnemonic_id": "Cara mengingat: Pohon (木) buah plum (梅) yang berbuah setiap (毎) tahun.",
+  "note_id": ""
 }

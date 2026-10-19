@@ -261,10 +261,17 @@ const handleScroll = () => {
   }
 };
 
+const scrollToTop = () => {
+  scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+  if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
 const selectTab = (tabId: HandbookTabId) => {
   activeTab.value = tabId;
   isMobileFilterListOpen.value = false;
-  scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+  scrollToTop();
   isScrolledToBottom.value = false;
 };
 
@@ -272,9 +279,10 @@ const selectTab = (tabId: HandbookTabId) => {
 const goToPreviousLesson = () => {
   if (currentLessonNumber.value > 1) {
     currentLessonNumber.value--;
+    activeTab.value = 'bunkei';
     searchQuery.value = '';
     selectedVocabCategory.value = 'all';
-    scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
     isScrolledToBottom.value = false;
   }
 };
@@ -282,9 +290,10 @@ const goToPreviousLesson = () => {
 const goToNextLesson = () => {
   if (currentLessonNumber.value < 25) {
     currentLessonNumber.value++;
+    activeTab.value = 'bunkei';
     searchQuery.value = '';
     selectedVocabCategory.value = 'all';
-    scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
     isScrolledToBottom.value = false;
   }
 };
@@ -294,7 +303,7 @@ const selectLesson = (num: number) => {
   isChapterDropdownOpen.value = false;
   searchQuery.value = '';
   selectedVocabCategory.value = 'all';
-  scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
+  scrollToTop();
   isScrolledToBottom.value = false;
 };
 
@@ -359,14 +368,7 @@ onUnmounted(() => {
       />
 
       <!-- MAIN BODY CONTENT -->
-      <main class="flex-1 min-w-0 w-full flex flex-col gap-6 pb-28 md:pb-16">
-        <!-- Interactive Category Completion Bar with Kotoba Telemetry & Check/Uncheck Toggle -->
-        <HandbookCompletionBar
-          :lesson-number="currentLessonNumber"
-          :active-tab="activeTab"
-          :active-tab-info="activeTabInfo"
-        />
-
+      <main class="flex-1 min-w-0 w-full flex flex-col gap-6 pb-32 md:pb-16">
         <TabBunkei 
           v-if="activeTab === 'bunkei'" 
           :items="filteredBunkei" 
@@ -392,6 +394,17 @@ onUnmounted(() => {
           v-else-if="activeTab === 'tables'" 
           :tables="currentChapter.tables" 
         />
+
+        <!-- Interactive Category Completion Bar with Next Category / Next Lesson Navigation at the bottom of content -->
+        <HandbookCompletionBar
+          :lesson-number="currentLessonNumber"
+          :active-tab="activeTab"
+          :active-tab-info="activeTabInfo"
+          :tabs="availableTabs"
+          @select-tab="selectTab"
+          @next-lesson="goToNextLesson"
+          @prev-lesson="goToPreviousLesson"
+        />
       </main>
     </div>
 
@@ -412,19 +425,27 @@ onUnmounted(() => {
     <Transition name="fab-slide">
       <div 
         v-if="activeTab === 'vocab' && currentLessonWords.length > 0"
-        class="fixed bottom-5 left-4 z-40 sm:bottom-6 sm:right-6 sm:left-auto"
+        class="fixed left-4 z-40 sm:bottom-6 sm:right-6 sm:left-auto transition-all duration-300"
+        :class="[isScrolledToBottom ? 'bottom-16' : 'bottom-5']"
       >
         <button
           type="button"
           @click="handleStartKotobaQuiz"
-          class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-600/35 hover:shadow-emerald-600/50 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center gap-2.5 border border-white/20 select-none cursor-pointer"
-          :title="`Mulai latihan kuis kosakata Bab ${currentLessonNumber}`"
+          class="group px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-600/35 hover:shadow-emerald-600/50 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border border-white/20 select-none cursor-pointer"
+          :title="`Mulai latihan kuis kosakata Bab ${currentLessonNumber} (${currentLessonWords.length} Kata)`"
         >
-          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
-            <Play class="w-3.5 h-3.5 fill-current text-white" />
+          <!-- Play Icon -->
+          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
+            <Play class="w-3.5 h-3.5 fill-current text-white ml-0.5" />
           </div>
-          <span>Latihan Kotoba Bab {{ currentLessonNumber }}</span>
-          <span class="px-2 py-0.5 rounded-full bg-white/25 text-[10px] font-extrabold tracking-tight">
+
+          <!-- Expanding Detail Text on Hover -->
+          <div class="kotoba-expand-text">
+            <span>Latihan Kotoba Bab {{ currentLessonNumber }}</span>
+          </div>
+
+          <!-- Word count badge (Always visible) -->
+          <span class="px-2 py-0.5 rounded-full bg-white/25 text-[10px] font-extrabold tracking-tight shrink-0 shadow-2xs">
             {{ currentLessonWords.length }} Kata
           </span>
         </button>
@@ -434,6 +455,22 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.kotoba-expand-text {
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, margin 0.3s ease;
+  will-change: max-width, opacity;
+}
+
+.group:hover .kotoba-expand-text,
+.group:focus-visible .kotoba-expand-text {
+  max-width: 220px;
+  opacity: 1;
+  margin-right: 2px;
+}
+
 .fab-slide-enter-active,
 .fab-slide-leave-active {
   transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);

@@ -67,7 +67,11 @@
         }
       ]
     },
-    "phonetic_part": "亜/亞",
+    "phon_hints": [
+      "亜",
+      "亞"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "悪",
       "亜",
@@ -76,7 +80,7 @@
       "口",
       "心"
     ],
-    "old_form": null,
+    "old_form": "惡",
     "words": [
       {
         "jp": "悪い",
@@ -133,6 +137,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "安",
@@ -212,6 +217,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "音"
+    ],
     "phonetic_part": "音",
     "flat_parts": [
       "暗",
@@ -297,6 +305,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "安"
+    ],
     "phonetic_part": "安",
     "flat_parts": [
       "案",
@@ -390,7 +401,10 @@
         }
       ]
     },
-    "phonetic_part": "韋",
+    "phon_hints": [
+      "韋"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "囲",
       "囗",
@@ -400,7 +414,7 @@
       "十",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "圍",
     "words": [
       {
         "jp": "囲碁",
@@ -470,6 +484,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "意",
@@ -540,6 +555,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "易",
@@ -615,6 +631,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "韋"
+    ],
     "phonetic_part": "韋",
     "flat_parts": [
       "違",
@@ -682,6 +701,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "医",
@@ -690,7 +710,7 @@
       "天",
       "大"
     ],
-    "old_form": null,
+    "old_form": "醫",
     "words": [
       {
         "jp": "医者",
@@ -730,6 +750,7 @@
       "element": "一",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "一"
@@ -839,6 +860,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "員",
@@ -933,6 +955,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "引",
@@ -1012,7 +1035,10 @@
         }
       ]
     },
-    "phonetic_part": "食",
+    "phon_hints": [
+      "食"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "飲",
       "飠",
@@ -1111,6 +1137,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "完"
+    ],
     "phonetic_part": "完",
     "flat_parts": [
       "院",
@@ -1166,6 +1195,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "右",
@@ -1211,6 +1241,7 @@
       "element": "雨",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "雨"
@@ -1277,6 +1308,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "軍"
+    ],
     "phonetic_part": "軍",
     "flat_parts": [
       "運",
@@ -1352,6 +1386,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "央"
+    ],
     "phonetic_part": "央",
     "flat_parts": [
       "映",
@@ -1414,6 +1451,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "永"
+    ],
     "phonetic_part": "永",
     "flat_parts": [
       "泳",
@@ -1477,6 +1517,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "央"
+    ],
     "phonetic_part": "央",
     "flat_parts": [
       "英",
@@ -1546,7 +1589,11 @@
         }
       ]
     },
-    "phonetic_part": "尺/睪V",
+    "phon_hints": [
+      "尺",
+      "睪"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "駅",
       "馬",
@@ -1555,7 +1602,7 @@
       "尸",
       "八"
     ],
-    "old_form": null,
+    "old_form": "驛",
     "words": [
       {
         "jp": "駅",
@@ -1658,6 +1705,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "戉"
+    ],
     "phonetic_part": "戉",
     "flat_parts": [
       "越",
@@ -1721,7 +1771,10 @@
         }
       ]
     },
-    "phonetic_part": "員V",
+    "phon_hints": [
+      "員"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "円",
       "冂"
@@ -1815,6 +1868,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "袁"
+    ],
     "phonetic_part": "袁",
     "flat_parts": [
       "園",
@@ -1890,7 +1946,10 @@
         }
       ]
     },
-    "phonetic_part": "煙right",
+    "phon_hints": [
+      "煙right"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "煙",
       "火",
@@ -1977,6 +2036,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "袁"
+    ],
     "phonetic_part": "袁",
     "flat_parts": [
       "遠",
@@ -2055,6 +2117,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "㕣"
+    ],
     "phonetic_part": "㕣",
     "flat_parts": [
       "鉛",
@@ -2121,7 +2186,10 @@
         }
       ]
     },
-    "phonetic_part": "監V",
+    "phon_hints": [
+      "監"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "塩",
       "土",
@@ -2129,7 +2197,7 @@
       "口",
       "皿"
     ],
-    "old_form": null,
+    "old_form": "鹽",
     "words": [
       {
         "jp": "塩",
@@ -2189,6 +2257,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "奥",
@@ -2197,7 +2266,7 @@
       "米",
       "大"
     ],
-    "old_form": null,
+    "old_form": "奧",
     "words": [
       {
         "jp": "奥さん",
@@ -2267,6 +2336,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "甲"
+    ],
     "phonetic_part": "甲",
     "flat_parts": [
       "押",
@@ -2359,6 +2431,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "意"
+    ],
     "phonetic_part": "意",
     "flat_parts": [
       "億",
@@ -2428,6 +2503,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "屋",
@@ -2513,7 +2589,10 @@
         }
       ]
     },
-    "phonetic_part": "温right",
+    "phon_hints": [
+      "温right"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "温",
       "氵",
@@ -2580,6 +2659,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "音",
@@ -2658,6 +2738,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "下",
@@ -2790,6 +2871,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "可"
+    ],
     "phonetic_part": "可",
     "flat_parts": [
       "何",
@@ -2914,7 +2998,11 @@
         }
       ]
     },
-    "phonetic_part": "襾V/賈V",
+    "phon_hints": [
+      "襾",
+      "賈"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "価",
       "亻",
@@ -2980,6 +3068,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "夏",
@@ -3044,6 +3133,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "家",
@@ -3153,6 +3243,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "叚"
+    ],
     "phonetic_part": "叚",
     "flat_parts": [
       "暇",
@@ -3229,6 +3322,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "果",
@@ -3346,6 +3440,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "哥"
+    ],
     "phonetic_part": "哥",
     "flat_parts": [
       "歌",
@@ -3408,6 +3505,7 @@
       "element": "火",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "火"
@@ -3469,6 +3567,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "化"
+    ],
     "phonetic_part": "化",
     "flat_parts": [
       "花",
@@ -3576,6 +3677,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "何"
+    ],
     "phonetic_part": "何",
     "flat_parts": [
       "荷",
@@ -3648,7 +3752,10 @@
         }
       ]
     },
-    "phonetic_part": "垂V",
+    "phon_hints": [
+      "垂"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "華",
       "艹",
@@ -3719,7 +3826,10 @@
         }
       ]
     },
-    "phonetic_part": "里",
+    "phon_hints": [
+      "里"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "菓",
       "艹",
@@ -3790,6 +3900,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "果"
+    ],
     "phonetic_part": "果",
     "flat_parts": [
       "課",
@@ -3863,6 +3976,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "画",
@@ -3872,7 +3986,7 @@
       "丨",
       "凵"
     ],
-    "old_form": null,
+    "old_form": "畫",
     "words": [
       {
         "jp": "映画",
@@ -3946,7 +4060,10 @@
         }
       ]
     },
-    "phonetic_part": "奇",
+    "phon_hints": [
+      "奇"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "賀",
       "加",
@@ -4009,6 +4126,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "介",
@@ -4077,6 +4195,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "会",
@@ -4085,7 +4204,7 @@
       "二",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "會",
     "words": [
       {
         "jp": "会社員",
@@ -4175,6 +4294,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "回",
@@ -4251,6 +4371,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "毎"
+    ],
     "phonetic_part": "毎",
     "flat_parts": [
       "海",
@@ -4329,6 +4452,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "介"
+    ],
     "phonetic_part": "介",
     "flat_parts": [
       "界",
@@ -4405,6 +4531,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "皆",
@@ -4481,7 +4608,10 @@
         }
       ]
     },
-    "phonetic_part": "会",
+    "phon_hints": [
+      "会"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "絵",
       "糸",
@@ -4491,7 +4621,7 @@
       "二",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "繪",
     "words": [
       {
         "jp": "絵",
@@ -4572,6 +4702,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "開",
@@ -4661,6 +4792,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "皆"
+    ],
     "phonetic_part": "皆",
     "flat_parts": [
       "階",
@@ -4738,6 +4872,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "夕"
+    ],
     "phonetic_part": "夕",
     "flat_parts": [
       "外",
@@ -4839,6 +4976,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "寉"
+    ],
     "phonetic_part": "寉",
     "flat_parts": [
       "確",
@@ -4923,7 +5063,10 @@
         }
       ]
     },
-    "phonetic_part": "𦥯",
+    "phon_hints": [
+      "𦥯"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "覚",
       "⺍",
@@ -4932,7 +5075,7 @@
       "目",
       "儿"
     ],
-    "old_form": null,
+    "old_form": "覺",
     "words": [
       {
         "jp": "覚えます",
@@ -4983,6 +5126,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "角",
@@ -5045,14 +5189,17 @@
         }
       ]
     },
-    "phonetic_part": "𦥯",
+    "phon_hints": [
+      "𦥯"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "学",
       "⺍",
       "冖",
       "子"
     ],
-    "old_form": null,
+    "old_form": "學",
     "words": [
       {
         "jp": "学生",
@@ -5158,6 +5305,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "楽",
@@ -5166,7 +5314,7 @@
       "冫",
       "木"
     ],
-    "old_form": null,
+    "old_form": "樂",
     "words": [
       {
         "jp": "楽しい",
@@ -5286,6 +5434,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "客"
+    ],
     "phonetic_part": "客",
     "flat_parts": [
       "額",
@@ -5364,6 +5515,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "舌"
+    ],
     "phonetic_part": "舌",
     "flat_parts": [
       "活",
@@ -5451,6 +5605,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "葛",
@@ -5549,6 +5704,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "乾",
@@ -5664,6 +5820,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "寒",
@@ -5733,6 +5890,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "官",
@@ -5838,6 +5996,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "干"
+    ],
     "phonetic_part": "干",
     "flat_parts": [
       "幹",
@@ -5940,6 +6101,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "奐"
+    ],
     "phonetic_part": "奐",
     "flat_parts": [
       "換",
@@ -6030,7 +6194,10 @@
         }
       ]
     },
-    "phonetic_part": "𦰩",
+    "phon_hints": [
+      "𦰩"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "漢",
       "氵",
@@ -6091,6 +6258,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "甘",
@@ -6147,6 +6315,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "看",
@@ -6234,6 +6403,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "間"
+    ],
     "phonetic_part": "間",
     "flat_parts": [
       "簡",
@@ -6299,6 +6471,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "間",
@@ -6405,6 +6578,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "关"
+    ],
     "phonetic_part": "关",
     "flat_parts": [
       "関",
@@ -6497,6 +6673,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "韓",
@@ -6578,6 +6755,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "官"
+    ],
     "phonetic_part": "官",
     "flat_parts": [
       "館",
@@ -6639,6 +6819,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "艮"
+    ],
     "phonetic_part": "艮",
     "flat_parts": [
       "眼",
@@ -6735,6 +6918,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "元"
+    ],
     "phonetic_part": "元",
     "flat_parts": [
       "頑",
@@ -6826,6 +7012,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "頁"
+    ],
     "phonetic_part": "頁",
     "flat_parts": [
       "顔",
@@ -6938,6 +7127,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "原"
+    ],
     "phonetic_part": "原",
     "flat_parts": [
       "願",
@@ -7019,6 +7211,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "伎",
@@ -7092,6 +7285,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "危",
@@ -7151,6 +7345,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "几"
+    ],
     "phonetic_part": "几",
     "flat_parts": [
       "机",
@@ -7235,6 +7432,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "其"
+    ],
     "phonetic_part": "其",
     "flat_parts": [
       "棋",
@@ -7363,6 +7563,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "幾"
+    ],
     "phonetic_part": "幾",
     "flat_parts": [
       "機",
@@ -7450,6 +7653,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "帰",
@@ -7459,7 +7663,7 @@
       "冖",
       "巾"
     ],
-    "old_form": null,
+    "old_form": "歸",
     "words": [
       {
         "jp": "帰ります",
@@ -7531,7 +7735,10 @@
         }
       ]
     },
-    "phonetic_part": "气",
+    "phon_hints": [
+      "气"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "気",
       "气",
@@ -7539,7 +7746,7 @@
       "乂",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "氣",
     "words": [
       {
         "jp": "元気な",
@@ -7639,6 +7846,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "斤"
+    ],
     "phonetic_part": "斤",
     "flat_parts": [
       "祈",
@@ -7697,6 +7907,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "季",
@@ -7756,6 +7967,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "己"
+    ],
     "phonetic_part": "己",
     "flat_parts": [
       "記",
@@ -7829,6 +8043,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "己"
+    ],
     "phonetic_part": "己",
     "flat_parts": [
       "起",
@@ -7897,6 +8114,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "祇",
@@ -8015,6 +8233,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "義"
+    ],
     "phonetic_part": "義",
     "flat_parts": [
       "議",
@@ -8109,6 +8330,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "契"
+    ],
     "phonetic_part": "契",
     "flat_parts": [
       "喫",
@@ -8184,7 +8408,10 @@
         }
       ]
     },
-    "phonetic_part": "1+4+2+屮",
+    "phon_hints": [
+      "1+4+2+屮"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "逆",
       "屰",
@@ -8239,6 +8466,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "久",
@@ -8294,6 +8522,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "休",
@@ -8369,6 +8598,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "及"
+    ],
     "phonetic_part": "及",
     "flat_parts": [
       "吸",
@@ -8438,7 +8670,10 @@
         }
       ]
     },
-    "phonetic_part": "勹+けいがしら",
+    "phon_hints": [
+      "勹+けいがしら"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "急",
       "𠂊",
@@ -8514,6 +8749,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "求"
+    ],
     "phonetic_part": "求",
     "flat_parts": [
       "球",
@@ -8595,6 +8833,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "九"
+    ],
     "phonetic_part": "九",
     "flat_parts": [
       "究",
@@ -8642,6 +8883,7 @@
       "element": "牛",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "牛"
@@ -8709,6 +8951,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "去",
@@ -8777,6 +9020,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "古"
+    ],
     "phonetic_part": "古",
     "flat_parts": [
       "居",
@@ -8842,6 +9088,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "魚",
@@ -8905,6 +9152,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "京",
@@ -8992,6 +9240,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "共"
+    ],
     "phonetic_part": "共",
     "flat_parts": [
       "供",
@@ -9074,6 +9325,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "弓"
+    ],
     "phonetic_part": "弓",
     "flat_parts": [
       "強",
@@ -9176,6 +9430,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "孝"
+    ],
     "phonetic_part": "孝",
     "flat_parts": [
       "教",
@@ -9284,6 +9541,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "喬"
+    ],
     "phonetic_part": "喬",
     "flat_parts": [
       "橋",
@@ -9395,7 +9655,10 @@
         }
       ]
     },
-    "phonetic_part": "夹",
+    "phon_hints": [
+      "夹"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "狭",
       "⺨",
@@ -9405,7 +9668,7 @@
       "从",
       "人"
     ],
-    "old_form": null,
+    "old_form": "狹",
     "words": [
       {
         "jp": "狭い",
@@ -9464,7 +9727,10 @@
         }
       ]
     },
-    "phonetic_part": "卿",
+    "phon_hints": [
+      "卿"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "郷",
       "乡",
@@ -9563,6 +9829,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "竟"
+    ],
     "phonetic_part": "竟",
     "flat_parts": [
       "鏡",
@@ -9652,6 +9921,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "業",
@@ -9729,6 +9999,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "局",
@@ -9813,6 +10084,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "曲",
@@ -9921,7 +10193,10 @@
         }
       ]
     },
-    "phonetic_part": "菫V",
+    "phon_hints": [
+      "菫"
+    ],
+    "phonetic_part": "菫",
     "flat_parts": [
       "勤",
       "菫",
@@ -9997,6 +10272,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "禁",
@@ -10053,6 +10329,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "斤"
+    ],
     "phonetic_part": "斤",
     "flat_parts": [
       "近",
@@ -10124,7 +10403,11 @@
         }
       ]
     },
-    "phonetic_part": "今1",
+    "phon_hints": [
+      "今1",
+      "今2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "金"
     ],
@@ -10196,6 +10479,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "艮"
+    ],
     "phonetic_part": "艮",
     "flat_parts": [
       "銀",
@@ -10250,6 +10536,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "九",
@@ -10333,6 +10620,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "工"
+    ],
     "phonetic_part": "工",
     "flat_parts": [
       "空",
@@ -10427,6 +10717,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "化"
+    ],
     "phonetic_part": "化",
     "flat_parts": [
       "靴",
@@ -10518,6 +10811,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "尹"
+    ],
     "phonetic_part": "尹",
     "flat_parts": [
       "君",
@@ -10584,6 +10880,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "兄",
@@ -10671,7 +10968,10 @@
         }
       ]
     },
-    "phonetic_part": "圣",
+    "phon_hints": [
+      "圣"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "経",
       "糸",
@@ -10679,7 +10979,7 @@
       "又",
       "土"
     ],
-    "old_form": null,
+    "old_form": "經",
     "words": [
       {
         "jp": "経済",
@@ -10731,6 +11031,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "計",
@@ -10846,6 +11147,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "敬"
+    ],
     "phonetic_part": "敬",
     "flat_parts": [
       "警",
@@ -10923,7 +11227,10 @@
         }
       ]
     },
-    "phonetic_part": "圣",
+    "phon_hints": [
+      "圣"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "軽",
       "車",
@@ -10931,7 +11238,7 @@
       "又",
       "土"
     ],
-    "old_form": null,
+    "old_form": "輕",
     "words": [
       {
         "jp": "軽い",
@@ -11000,7 +11307,10 @@
         }
       ]
     },
-    "phonetic_part": "奚V",
+    "phon_hints": [
+      "奚"
+    ],
+    "phonetic_part": "奚",
     "flat_parts": [
       "鶏",
       "奚",
@@ -11068,6 +11378,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "卬"
+    ],
     "phonetic_part": "卬",
     "flat_parts": [
       "迎",
@@ -11142,6 +11455,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "吉"
+    ],
     "phonetic_part": "吉",
     "flat_parts": [
       "結",
@@ -11187,6 +11503,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "血",
@@ -11225,6 +11542,7 @@
       "element": "月",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "月"
@@ -11341,6 +11659,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "建"
+    ],
     "phonetic_part": "建",
     "flat_parts": [
       "健",
@@ -11426,7 +11747,10 @@
         }
       ]
     },
-    "phonetic_part": "僉V",
+    "phon_hints": [
+      "僉"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "剣",
       "㑒",
@@ -11435,7 +11759,7 @@
       "口",
       "刂"
     ],
-    "old_form": null,
+    "old_form": "劍",
     "words": [
       {
         "jp": "剣道",
@@ -11523,6 +11847,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "兼"
+    ],
     "phonetic_part": "兼",
     "flat_parts": [
       "嫌",
@@ -11589,6 +11916,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "建",
@@ -11646,6 +11974,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "犬",
@@ -11727,7 +12056,10 @@
         }
       ]
     },
-    "phonetic_part": "幵",
+    "phon_hints": [
+      "幵"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "研",
       "石",
@@ -11790,13 +12122,14 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "県",
       "目",
       "小"
     ],
-    "old_form": null,
+    "old_form": "縣",
     "words": [
       {
         "jp": "県",
@@ -11842,6 +12175,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "肩",
@@ -11900,6 +12234,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "見",
@@ -12006,7 +12341,10 @@
         }
       ]
     },
-    "phonetic_part": "僉V",
+    "phon_hints": [
+      "僉"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "険",
       "⻖",
@@ -12015,7 +12353,7 @@
       "一",
       "口"
     ],
-    "old_form": null,
+    "old_form": "險",
     "words": [
       {
         "jp": "健康保険証",
@@ -12098,7 +12436,10 @@
         }
       ]
     },
-    "phonetic_part": "僉V",
+    "phon_hints": [
+      "僉"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "験",
       "馬",
@@ -12108,7 +12449,7 @@
       "一",
       "口"
     ],
-    "old_form": null,
+    "old_form": "驗",
     "words": [
       {
         "jp": "試験",
@@ -12161,6 +12502,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "元",
@@ -12246,6 +12588,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "原",
@@ -12304,6 +12647,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "玄",
@@ -12371,6 +12715,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "見"
+    ],
     "phonetic_part": "見",
     "flat_parts": [
       "現",
@@ -12418,6 +12765,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "言",
@@ -12474,6 +12822,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "古",
@@ -12537,6 +12886,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "乎"
+    ],
     "phonetic_part": "乎",
     "flat_parts": [
       "呼",
@@ -12595,6 +12947,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "庫",
@@ -12685,6 +13038,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "古"
+    ],
     "phonetic_part": "古",
     "flat_parts": [
       "故",
@@ -12750,6 +13106,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "五",
@@ -12823,6 +13180,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "午",
@@ -12902,6 +13260,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "後",
@@ -12997,6 +13356,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "其"
+    ],
     "phonetic_part": "其",
     "flat_parts": [
       "碁",
@@ -13080,6 +13442,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "吾"
+    ],
     "phonetic_part": "吾",
     "flat_parts": [
       "語",
@@ -13188,6 +13553,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "蒦"
+    ],
     "phonetic_part": "蒦",
     "flat_parts": [
       "護",
@@ -13261,6 +13629,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "交",
@@ -13326,6 +13695,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "公",
@@ -13371,6 +13741,7 @@
       "element": "口",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "口"
@@ -13485,6 +13856,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "向",
@@ -13541,6 +13913,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "好",
@@ -13602,14 +13975,17 @@
         }
       ]
     },
-    "phonetic_part": "厶",
+    "phon_hints": [
+      "厶"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "広",
       "广",
       "厂",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "廣",
     "words": [
       {
         "jp": "広い",
@@ -13670,6 +14046,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "隶"
+    ],
     "phonetic_part": "隶",
     "flat_parts": [
       "康",
@@ -13736,6 +14115,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "交"
+    ],
     "phonetic_part": "交",
     "flat_parts": [
       "校",
@@ -13811,6 +14193,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "巷"
+    ],
     "phonetic_part": "巷",
     "flat_parts": [
       "港",
@@ -13876,6 +14261,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "工"
+    ],
     "phonetic_part": "工",
     "flat_parts": [
       "紅",
@@ -13945,6 +14333,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "丂"
+    ],
     "phonetic_part": "丂",
     "flat_parts": [
       "考",
@@ -14015,6 +14406,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "亢"
+    ],
     "phonetic_part": "亢",
     "flat_parts": [
       "航",
@@ -14089,6 +14483,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "行",
@@ -14213,6 +14608,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "夅"
+    ],
     "phonetic_part": "夅",
     "flat_parts": [
       "降",
@@ -14281,6 +14679,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "香",
@@ -14358,6 +14757,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "高",
@@ -14434,13 +14834,14 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "号",
       "口",
       "一"
     ],
-    "old_form": null,
+    "old_form": "號",
     "words": [
       {
         "jp": "番号",
@@ -14524,6 +14925,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "合",
@@ -14600,6 +15002,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "亥"
+    ],
     "phonetic_part": "亥",
     "flat_parts": [
       "刻",
@@ -14667,7 +15072,10 @@
         }
       ]
     },
-    "phonetic_part": "或V",
+    "phon_hints": [
+      "或"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "国",
       "囗",
@@ -14675,7 +15083,7 @@
       "王",
       "丶"
     ],
-    "old_form": null,
+    "old_form": "國",
     "words": [
       {
         "jp": "韓国",
@@ -14758,6 +15166,7 @@
       ],
       "original": "黑"
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "黒",
@@ -14826,6 +15235,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "要"
+    ],
     "phonetic_part": "要",
     "flat_parts": [
       "腰",
@@ -14882,6 +15294,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "骨",
@@ -14937,6 +15350,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "込",
@@ -15022,6 +15436,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "頃",
@@ -15080,6 +15495,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "今",
@@ -15170,6 +15586,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昏"
+    ],
     "phonetic_part": "昏",
     "flat_parts": [
       "婚",
@@ -15222,6 +15641,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "左",
@@ -15292,7 +15712,10 @@
         }
       ]
     },
-    "phonetic_part": "左",
+    "phon_hints": [
+      "左"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "差",
       "羊",
@@ -15361,6 +15784,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "少"
+    ],
     "phonetic_part": "少",
     "flat_parts": [
       "砂",
@@ -15445,6 +15871,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "坐"
+    ],
     "phonetic_part": "坐",
     "flat_parts": [
       "座",
@@ -15516,6 +15945,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "最",
@@ -15576,6 +16006,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "妻",
@@ -15626,6 +16057,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "才",
@@ -15747,6 +16179,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "歳",
@@ -15761,7 +16194,7 @@
       "丿",
       "丶"
     ],
-    "old_form": null,
+    "old_form": "歲",
     "words": [
       {
         "jp": "一歳",
@@ -15876,7 +16309,10 @@
         }
       ]
     },
-    "phonetic_part": "斉",
+    "phon_hints": [
+      "斉"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "済",
       "氵",
@@ -15886,7 +16322,7 @@
       "乂",
       "二"
     ],
-    "old_form": null,
+    "old_form": "濟",
     "words": [
       {
         "jp": "経済",
@@ -15944,6 +16380,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "祭",
@@ -16065,7 +16502,12 @@
         }
       ]
     },
-    "phonetic_part": "斉1",
+    "phon_hints": [
+      "斉1",
+      "斉2",
+      "斉3"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "斎",
       "斉",
@@ -16131,6 +16573,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "田"
+    ],
     "phonetic_part": "田",
     "flat_parts": [
       "細",
@@ -16197,6 +16642,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "采"
+    ],
     "phonetic_part": "采",
     "flat_parts": [
       "菜",
@@ -16279,6 +16727,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "祭"
+    ],
     "phonetic_part": "祭",
     "flat_parts": [
       "際",
@@ -16344,6 +16795,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "乍"
+    ],
     "phonetic_part": "乍",
     "flat_parts": [
       "作",
@@ -16415,14 +16869,17 @@
         }
       ]
     },
-    "phonetic_part": "つ+女",
+    "phon_hints": [
+      "つ+女"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "桜",
       "木",
       "⺍",
       "女"
     ],
-    "old_form": null,
+    "old_form": "櫻",
     "words": [
       {
         "jp": "桜",
@@ -16493,6 +16950,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "祭"
+    ],
     "phonetic_part": "祭",
     "flat_parts": [
       "察",
@@ -16574,6 +17034,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "最"
+    ],
     "phonetic_part": "最",
     "flat_parts": [
       "撮",
@@ -16654,7 +17117,11 @@
         }
       ]
     },
-    "phonetic_part": "集1",
+    "phon_hints": [
+      "集1",
+      "集2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "雑",
       "九",
@@ -16663,7 +17130,7 @@
       "隹",
       "亻"
     ],
-    "old_form": null,
+    "old_form": "雜",
     "words": [
       {
         "jp": "雑誌",
@@ -16718,6 +17185,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "三",
@@ -16808,6 +17276,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "傘",
@@ -16847,6 +17316,7 @@
       "element": "山",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "山"
@@ -16933,6 +17403,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "散",
@@ -17023,6 +17494,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "産",
@@ -17141,7 +17613,11 @@
         }
       ]
     },
-    "phonetic_part": "戋/戔V",
+    "phon_hints": [
+      "戋",
+      "戔"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "残",
       "歹",
@@ -17154,7 +17630,7 @@
       "丿",
       "丶"
     ],
-    "old_form": null,
+    "old_form": "殘",
     "words": [
       {
         "jp": "残念です",
@@ -17221,6 +17697,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "士"
+    ],
     "phonetic_part": "士",
     "flat_parts": [
       "仕",
@@ -17316,6 +17795,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "使",
@@ -17399,6 +17879,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "朿"
+    ],
     "phonetic_part": "朿",
     "flat_parts": [
       "刺",
@@ -17469,6 +17952,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "四",
@@ -17528,6 +18012,7 @@
       "element": "士",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "士"
@@ -17595,6 +18080,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "台"
+    ],
     "phonetic_part": "台",
     "flat_parts": [
       "始",
@@ -17658,6 +18146,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "市"
+    ],
     "phonetic_part": "市",
     "flat_parts": [
       "姉",
@@ -17710,6 +18201,7 @@
       "element": "子",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "子"
@@ -17796,7 +18288,10 @@
         }
       ]
     },
-    "phonetic_part": "止V",
+    "phon_hints": [
+      "止"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "市",
       "亠",
@@ -17867,6 +18362,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "師",
@@ -17943,6 +18439,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "思",
@@ -18005,6 +18502,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "止",
@@ -18056,6 +18554,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "氏"
+    ],
     "phonetic_part": "氏",
     "flat_parts": [
       "紙",
@@ -18135,6 +18636,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "式"
+    ],
     "phonetic_part": "式",
     "flat_parts": [
       "試",
@@ -18211,6 +18715,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "志"
+    ],
     "phonetic_part": "志",
     "flat_parts": [
       "誌",
@@ -18305,6 +18812,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "次"
+    ],
     "phonetic_part": "次",
     "flat_parts": [
       "資",
@@ -18380,7 +18890,10 @@
       ],
       "original": "齒"
     },
-    "phonetic_part": "止",
+    "phon_hints": [
+      "止"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "歯",
       "止",
@@ -18388,7 +18901,7 @@
       "米",
       "凵"
     ],
-    "old_form": null,
+    "old_form": "齒",
     "words": [
       {
         "jp": "歯医者",
@@ -18456,6 +18969,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "事",
@@ -18547,6 +19061,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "子"
+    ],
     "phonetic_part": "子",
     "flat_parts": [
       "字",
@@ -18610,7 +19127,10 @@
         }
       ]
     },
-    "phonetic_part": "之V",
+    "phon_hints": [
+      "之"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "寺",
       "土",
@@ -18674,6 +19194,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "寺"
+    ],
     "phonetic_part": "寺",
     "flat_parts": [
       "持",
@@ -18756,6 +19279,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "寺"
+    ],
     "phonetic_part": "寺",
     "flat_parts": [
       "時",
@@ -18859,6 +19385,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "次",
@@ -18935,6 +19462,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "台"
+    ],
     "phonetic_part": "台",
     "flat_parts": [
       "治",
@@ -18974,6 +19504,7 @@
       "element": "耳",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "耳"
@@ -19017,6 +19548,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "自",
@@ -19123,6 +19655,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "辞",
@@ -19134,7 +19667,7 @@
       "亠",
       "十"
     ],
-    "old_form": null,
+    "old_form": "辭",
     "words": [
       {
         "jp": "辞書",
@@ -19184,6 +19717,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "七",
@@ -19249,6 +19783,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "失",
@@ -19320,6 +19855,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "至"
+    ],
     "phonetic_part": "至",
     "flat_parts": [
       "室",
@@ -19409,7 +19947,11 @@
         }
       ]
     },
-    "phonetic_part": "余V1",
+    "phon_hints": [
+      "余V1",
+      "余V2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "舎",
       "人",
@@ -19417,7 +19959,7 @@
       "士",
       "口"
     ],
-    "old_form": null,
+    "old_form": "舍",
     "words": [
       {
         "jp": "田舎",
@@ -19473,7 +20015,11 @@
         }
       ]
     },
-    "phonetic_part": "与/舄",
+    "phon_hints": [
+      "与",
+      "舄"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "写",
       "冖",
@@ -19554,6 +20100,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "舎"
+    ],
     "phonetic_part": "舎",
     "flat_parts": [
       "捨",
@@ -19613,6 +20162,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "土"
+    ],
     "phonetic_part": "土",
     "flat_parts": [
       "社",
@@ -19693,6 +20245,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "者",
@@ -19743,6 +20296,7 @@
       "element": "車",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "車"
@@ -19846,6 +20400,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昔"
+    ],
     "phonetic_part": "昔",
     "flat_parts": [
       "借",
@@ -19919,6 +20476,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "若",
@@ -20016,6 +20574,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "叔"
+    ],
     "phonetic_part": "叔",
     "flat_parts": [
       "寂",
@@ -20111,6 +20672,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "弱",
@@ -20179,6 +20741,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "主",
@@ -20241,6 +20804,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "取",
@@ -20282,6 +20846,7 @@
       "element": "手",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "手"
@@ -20433,6 +20998,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "取"
+    ],
     "phonetic_part": "取",
     "flat_parts": [
       "趣",
@@ -20504,6 +21072,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "酒",
@@ -20575,7 +21144,10 @@
         }
       ]
     },
-    "phonetic_part": "舟T",
+    "phon_hints": [
+      "舟T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "受",
       "⺤",
@@ -20677,7 +21249,11 @@
         }
       ]
     },
-    "phonetic_part": "攸1",
+    "phon_hints": [
+      "攸1",
+      "攸2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "修",
       "攸",
@@ -20744,6 +21320,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "秋",
@@ -20820,6 +21397,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "冬"
+    ],
     "phonetic_part": "冬",
     "flat_parts": [
       "終",
@@ -20891,6 +21471,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "習",
@@ -20967,6 +21548,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "周"
+    ],
     "phonetic_part": "周",
     "flat_parts": [
       "週",
@@ -21056,6 +21640,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "集",
@@ -21128,6 +21713,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "主"
+    ],
     "phonetic_part": "主",
     "flat_parts": [
       "住",
@@ -21183,6 +21771,7 @@
       "element": "十",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "十"
@@ -21287,6 +21876,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "柔",
@@ -21375,6 +21965,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "重",
@@ -21467,6 +22058,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "宿",
@@ -21535,6 +22127,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "出",
@@ -21692,6 +22285,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "朮"
+    ],
     "phonetic_part": "朮",
     "flat_parts": [
       "術",
@@ -21793,6 +22389,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "春",
@@ -21884,7 +22481,11 @@
         }
       ]
     },
-    "phonetic_part": "隼1",
+    "phon_hints": [
+      "隼1",
+      "隼2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "準",
       "氵",
@@ -21944,6 +22545,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "初",
@@ -22006,6 +22608,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "戸"
+    ],
     "phonetic_part": "戸",
     "flat_parts": [
       "所",
@@ -22103,6 +22708,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "者"
+    ],
     "phonetic_part": "者",
     "flat_parts": [
       "暑",
@@ -22181,6 +22789,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "者"
+    ],
     "phonetic_part": "者",
     "flat_parts": [
       "緒",
@@ -22247,7 +22858,10 @@
         }
       ]
     },
-    "phonetic_part": "者T",
+    "phon_hints": [
+      "者T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "書",
       "聿",
@@ -22314,6 +22928,7 @@
       "element": "女",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "女"
@@ -22399,6 +23014,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "余"
+    ],
     "phonetic_part": "余",
     "flat_parts": [
       "除",
@@ -22475,6 +23093,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "勝",
@@ -22555,14 +23174,17 @@
         }
       ]
     },
-    "phonetic_part": "丬",
+    "phon_hints": [
+      "丬"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "将",
       "⺦",
       "⺤",
       "寸"
     ],
-    "old_form": null,
+    "old_form": "將",
     "words": [
       {
         "jp": "将棋",
@@ -22597,6 +23219,7 @@
       "element": "小",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "小"
@@ -22644,6 +23267,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "少",
@@ -22721,6 +23345,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "床",
@@ -22789,6 +23414,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "肖"
+    ],
     "phonetic_part": "肖",
     "flat_parts": [
       "消",
@@ -22901,6 +23529,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "焼",
@@ -22986,6 +23615,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昭"
+    ],
     "phonetic_part": "昭",
     "flat_parts": [
       "照",
@@ -23054,6 +23686,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "召"
+    ],
     "phonetic_part": "召",
     "flat_parts": [
       "紹",
@@ -23124,7 +23759,10 @@
         }
       ]
     },
-    "phonetic_part": "正",
+    "phon_hints": [
+      "正"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "証",
       "言",
@@ -23133,7 +23771,7 @@
       "止",
       "卜"
     ],
-    "old_form": null,
+    "old_form": "證",
     "words": [
       {
         "jp": "暗証番号",
@@ -23196,6 +23834,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "象",
@@ -23283,6 +23922,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "章"
+    ],
     "phonetic_part": "章",
     "flat_parts": [
       "障",
@@ -23352,6 +23994,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "上",
@@ -23434,6 +24077,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "丈",
@@ -23514,6 +24158,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "乗",
@@ -23522,7 +24167,7 @@
       "十",
       "木"
     ],
-    "old_form": null,
+    "old_form": "乘",
     "words": [
       {
         "jp": "乗り場",
@@ -23623,6 +24268,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "成"
+    ],
     "phonetic_part": "成",
     "flat_parts": [
       "城",
@@ -23704,6 +24352,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昜"
+    ],
     "phonetic_part": "昜",
     "flat_parts": [
       "場",
@@ -23789,7 +24440,10 @@
         }
       ]
     },
-    "phonetic_part": "丬",
+    "phon_hints": [
+      "丬"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "状",
       "⺦",
@@ -23797,7 +24451,7 @@
       "大",
       "丶"
     ],
-    "old_form": null,
+    "old_form": "狀",
     "words": [
       {
         "jp": "年賀状",
@@ -23856,7 +24510,10 @@
         }
       ]
     },
-    "phonetic_part": "食",
+    "phon_hints": [
+      "食"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "飾",
       "飠",
@@ -23941,7 +24598,10 @@
         }
       ]
     },
-    "phonetic_part": "蜀T",
+    "phon_hints": [
+      "蜀T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "触",
       "角",
@@ -23951,7 +24611,7 @@
       "口",
       "丨"
     ],
-    "old_form": null,
+    "old_form": "觸",
     "words": [
       {
         "jp": "触ります",
@@ -23987,6 +24647,7 @@
       "element": "食",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "食"
@@ -24084,6 +24745,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "申"
+    ],
     "phonetic_part": "申",
     "flat_parts": [
       "伸",
@@ -24142,6 +24806,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "信",
@@ -24248,7 +24913,10 @@
         }
       ]
     },
-    "phonetic_part": "しょうへん+けいがしら+冖+又",
+    "phon_hints": [
+      "しょうへん+けいがしら+冖+又"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "寝",
       "宀",
@@ -24298,6 +24966,7 @@
       "element": "心",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "心"
@@ -24359,6 +25028,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "辰"
+    ],
     "phonetic_part": "辰",
     "flat_parts": [
       "振",
@@ -24456,7 +25128,10 @@
         }
       ]
     },
-    "phonetic_part": "辛+木",
+    "phon_hints": [
+      "辛+木"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "新",
       "立",
@@ -24541,6 +25216,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "真",
@@ -24549,7 +25225,7 @@
       "目",
       "八"
     ],
-    "old_form": null,
+    "old_form": "眞",
     "words": [
       {
         "jp": "写真",
@@ -24610,6 +25286,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "申"
+    ],
     "phonetic_part": "申",
     "flat_parts": [
       "神",
@@ -24704,7 +25383,10 @@
         }
       ]
     },
-    "phonetic_part": "辛+木",
+    "phon_hints": [
+      "辛+木"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "親",
       "立",
@@ -24753,6 +25435,7 @@
       "element": "身",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "身"
@@ -24824,6 +25507,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "辛",
@@ -24865,6 +25549,7 @@
       "element": "人",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "人"
@@ -24998,6 +25683,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "図",
@@ -25006,7 +25692,7 @@
       "乂",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "圖",
     "words": [
       {
         "jp": "図書館",
@@ -25044,6 +25730,7 @@
       "element": "水",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "水"
@@ -25142,7 +25829,11 @@
         }
       ]
     },
-    "phonetic_part": "卒/卆",
+    "phon_hints": [
+      "卒",
+      "卆"
+    ],
+    "phonetic_part": "卆",
     "flat_parts": [
       "酔",
       "酉",
@@ -25210,6 +25901,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "世",
@@ -25299,6 +25991,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "正"
+    ],
     "phonetic_part": "正",
     "flat_parts": [
       "政",
@@ -25363,6 +26058,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "正",
@@ -25421,6 +26117,7 @@
       "element": "生",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "生"
@@ -25543,6 +26240,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "制"
+    ],
     "phonetic_part": "制",
     "flat_parts": [
       "製",
@@ -25588,6 +26288,7 @@
       "children": [],
       "original": "襾"
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "西"
@@ -25642,6 +26343,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "青",
@@ -25734,7 +26436,10 @@
         }
       ]
     },
-    "phonetic_part": "青",
+    "phon_hints": [
+      "青"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "静",
       "青",
@@ -25745,7 +26450,7 @@
       "⺕",
       "亅"
     ],
-    "old_form": null,
+    "old_form": "靜",
     "words": [
       {
         "jp": "静かな",
@@ -25793,6 +26498,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "赤",
@@ -25859,6 +26565,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "七"
+    ],
     "phonetic_part": "七",
     "flat_parts": [
       "切",
@@ -25944,6 +26653,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "折",
@@ -26039,6 +26749,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "即"
+    ],
     "phonetic_part": "即",
     "flat_parts": [
       "節",
@@ -26142,6 +26855,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "兌"
+    ],
     "phonetic_part": "兌",
     "flat_parts": [
       "説",
@@ -26197,6 +26913,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "雪",
@@ -26264,6 +26981,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "先",
@@ -26325,6 +27043,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "千",
@@ -26393,7 +27112,10 @@
         }
       ]
     },
-    "phonetic_part": "2+由",
+    "phon_hints": [
+      "2+由"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "専",
       "由",
@@ -26401,7 +27123,7 @@
       "丨",
       "寸"
     ],
-    "old_form": null,
+    "old_form": "專",
     "words": [
       {
         "jp": "専門",
@@ -26435,6 +27157,7 @@
       "children": [],
       "original": "巛"
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "川"
@@ -26505,6 +27228,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "先"
+    ],
     "phonetic_part": "先",
     "flat_parts": [
       "洗",
@@ -26601,6 +27327,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "泉"
+    ],
     "phonetic_part": "泉",
     "flat_parts": [
       "線",
@@ -26666,6 +27395,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "㕣"
+    ],
     "phonetic_part": "㕣",
     "flat_parts": [
       "船",
@@ -26766,6 +27498,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "巽"
+    ],
     "phonetic_part": "巽",
     "flat_parts": [
       "選",
@@ -26839,7 +27574,11 @@
         }
       ]
     },
-    "phonetic_part": "歬1V",
+    "phon_hints": [
+      "歬1",
+      "歬2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "前",
       "八",
@@ -26943,6 +27682,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "然",
@@ -27002,6 +27742,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "全",
@@ -27090,6 +27831,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "帚"
+    ],
     "phonetic_part": "帚",
     "flat_parts": [
       "掃",
@@ -27149,6 +27893,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "早",
@@ -27213,6 +27958,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "相",
@@ -27296,7 +28042,11 @@
         }
       ]
     },
-    "phonetic_part": "忩1",
+    "phon_hints": [
+      "忩1",
+      "忩2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "窓",
       "穴",
@@ -27349,6 +28099,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "走",
@@ -27412,6 +28163,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "送",
@@ -27525,7 +28277,10 @@
         }
       ]
     },
-    "phonetic_part": "臧T",
+    "phon_hints": [
+      "臧T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "蔵",
       "艹",
@@ -27598,6 +28353,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "束",
@@ -27654,6 +28410,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "足",
@@ -27732,6 +28489,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "束"
+    ],
     "phonetic_part": "束",
     "flat_parts": [
       "速",
@@ -27818,6 +28578,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "族",
@@ -27880,6 +28641,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "多",
@@ -27951,6 +28713,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "太"
+    ],
     "phonetic_part": "太",
     "flat_parts": [
       "駄",
@@ -28016,6 +28781,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "体",
@@ -28023,7 +28789,7 @@
       "本",
       "木"
     ],
-    "old_form": null,
+    "old_form": "體",
     "words": [
       {
         "jp": "体",
@@ -28136,6 +28902,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "帯",
@@ -28148,7 +28915,7 @@
       "冖",
       "巾"
     ],
-    "old_form": null,
+    "old_form": "帶",
     "words": [
       {
         "jp": "帯",
@@ -28212,6 +28979,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "寺"
+    ],
     "phonetic_part": "寺",
     "flat_parts": [
       "待",
@@ -28300,6 +29070,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "替",
@@ -28383,6 +29154,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "代"
+    ],
     "phonetic_part": "代",
     "flat_parts": [
       "袋",
@@ -28470,6 +29244,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "代"
+    ],
     "phonetic_part": "代",
     "flat_parts": [
       "貸",
@@ -28536,13 +29313,16 @@
         }
       ]
     },
-    "phonetic_part": "厶",
+    "phon_hints": [
+      "厶"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "台",
       "厶",
       "口"
     ],
-    "old_form": null,
+    "old_form": "臺",
     "words": [
       {
         "jp": "台所",
@@ -28583,6 +29363,7 @@
       "element": "大",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "大"
@@ -28711,6 +29492,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "是"
+    ],
     "phonetic_part": "是",
     "flat_parts": [
       "題",
@@ -28809,6 +29593,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "翟"
+    ],
     "phonetic_part": "翟",
     "flat_parts": [
       "濯",
@@ -28884,7 +29671,10 @@
         }
       ]
     },
-    "phonetic_part": "大V",
+    "phon_hints": [
+      "大"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "達",
       "土",
@@ -28984,7 +29774,10 @@
         }
       ]
     },
-    "phonetic_part": "兌",
+    "phon_hints": [
+      "兌"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "脱",
       "月",
@@ -28995,7 +29788,7 @@
       "儿",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "脫",
     "words": [
       {
         "jp": "脱ぎます",
@@ -29054,6 +29847,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "朋"
+    ],
     "phonetic_part": "朋",
     "flat_parts": [
       "棚",
@@ -29142,6 +29938,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "単",
@@ -29153,7 +29950,7 @@
       "一",
       "丨"
     ],
-    "old_form": null,
+    "old_form": "單",
     "words": [
       {
         "jp": "簡単な",
@@ -29240,7 +30037,10 @@
         }
       ]
     },
-    "phonetic_part": "㓁+木",
+    "phon_hints": [
+      "㓁+木"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "探",
       "扌",
@@ -29325,6 +30125,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "短",
@@ -29412,6 +30213,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "延"
+    ],
     "phonetic_part": "延",
     "flat_parts": [
       "誕",
@@ -29475,7 +30279,11 @@
         }
       ]
     },
-    "phonetic_part": "専/寸",
+    "phon_hints": [
+      "専",
+      "寸"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "団",
       "囗",
@@ -29568,7 +30376,10 @@
         }
       ]
     },
-    "phonetic_part": "単",
+    "phon_hints": [
+      "単"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "弾",
       "弓",
@@ -29579,7 +30390,7 @@
       "一",
       "丨"
     ],
-    "old_form": null,
+    "old_form": "彈",
     "words": [
       {
         "jp": "弾きます",
@@ -29652,7 +30463,10 @@
         }
       ]
     },
-    "phonetic_part": "爰V",
+    "phon_hints": [
+      "爰"
+    ],
+    "phonetic_part": "爰",
     "flat_parts": [
       "暖",
       "日",
@@ -29724,7 +30538,10 @@
         }
       ]
     },
-    "phonetic_part": "耑V",
+    "phon_hints": [
+      "耑"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "段",
       "殳",
@@ -29777,6 +30594,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "男",
@@ -29844,6 +30662,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "知",
@@ -29907,6 +30726,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "也"
+    ],
     "phonetic_part": "也",
     "flat_parts": [
       "地",
@@ -29985,6 +30807,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "也"
+    ],
     "phonetic_part": "也",
     "flat_parts": [
       "池",
@@ -30057,6 +30882,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "直"
+    ],
     "phonetic_part": "直",
     "flat_parts": [
       "置",
@@ -30131,6 +30959,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "遅",
@@ -30139,7 +30968,7 @@
       "䒑",
       "⻌"
     ],
-    "old_form": null,
+    "old_form": "遲",
     "words": [
       {
         "jp": "遅い",
@@ -30235,6 +31064,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "竹"
+    ],
     "phonetic_part": "竹",
     "flat_parts": [
       "築",
@@ -30301,7 +31133,10 @@
         }
       ]
     },
-    "phonetic_part": "余",
+    "phon_hints": [
+      "余"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "茶",
       "艹",
@@ -30395,7 +31230,11 @@
         }
       ]
     },
-    "phonetic_part": "者1V",
+    "phon_hints": [
+      "者1",
+      "者2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "着",
       "羊",
@@ -30473,6 +31312,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "中",
@@ -30552,6 +31392,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "昼",
@@ -30562,7 +31403,7 @@
       "日",
       "一"
     ],
-    "old_form": null,
+    "old_form": "晝",
     "words": [
       {
         "jp": "昼",
@@ -30641,6 +31482,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "主"
+    ],
     "phonetic_part": "主",
     "flat_parts": [
       "注",
@@ -30712,6 +31556,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "主"
+    ],
     "phonetic_part": "主",
     "flat_parts": [
       "駐",
@@ -30771,6 +31618,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "長"
+    ],
     "phonetic_part": "長",
     "flat_parts": [
       "帳",
@@ -30832,6 +31682,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "長"
+    ],
     "phonetic_part": "長",
     "flat_parts": [
       "張",
@@ -30915,7 +31768,10 @@
         }
       ]
     },
-    "phonetic_part": "舟V",
+    "phon_hints": [
+      "舟"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "朝",
       "𠦝",
@@ -30993,6 +31849,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "丁"
+    ],
     "phonetic_part": "丁",
     "flat_parts": [
       "町",
@@ -31083,6 +31942,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昜"
+    ],
     "phonetic_part": "昜",
     "flat_parts": [
       "腸",
@@ -31175,6 +32037,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "周"
+    ],
     "phonetic_part": "周",
     "flat_parts": [
       "調",
@@ -31285,6 +32150,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "兆"
+    ],
     "phonetic_part": "兆",
     "flat_parts": [
       "跳",
@@ -31329,6 +32197,7 @@
       "element": "長",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "長"
@@ -31411,6 +32280,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "直",
@@ -31499,6 +32369,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "任"
+    ],
     "phonetic_part": "任",
     "flat_parts": [
       "賃",
@@ -31573,6 +32446,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "甬"
+    ],
     "phonetic_part": "甬",
     "flat_parts": [
       "痛",
@@ -31668,6 +32544,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "甬"
+    ],
     "phonetic_part": "甬",
     "flat_parts": [
       "通",
@@ -31753,6 +32632,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "勺"
+    ],
     "phonetic_part": "勺",
     "flat_parts": [
       "釣",
@@ -31828,7 +32710,10 @@
         }
       ]
     },
-    "phonetic_part": "氐",
+    "phon_hints": [
+      "氐"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "低",
       "亻",
@@ -31904,7 +32789,10 @@
         }
       ]
     },
-    "phonetic_part": "正",
+    "phon_hints": [
+      "正"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "定",
       "宀",
@@ -31986,6 +32874,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "廷"
+    ],
     "phonetic_part": "廷",
     "flat_parts": [
       "庭",
@@ -32063,6 +32954,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "弟",
@@ -32145,7 +33037,10 @@
         }
       ]
     },
-    "phonetic_part": "失",
+    "phon_hints": [
+      "失"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "鉄",
       "金",
@@ -32154,7 +33049,7 @@
       "夫",
       "大"
     ],
-    "old_form": null,
+    "old_form": "鐵",
     "words": [
       {
         "jp": "地下鉄",
@@ -32201,6 +33096,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "天",
@@ -32282,6 +33178,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "占"
+    ],
     "phonetic_part": "占",
     "flat_parts": [
       "店",
@@ -32368,7 +33267,11 @@
         }
       ]
     },
-    "phonetic_part": "專/云",
+    "phon_hints": [
+      "專",
+      "云"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "転",
       "車",
@@ -32376,7 +33279,7 @@
       "二",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "轉",
     "words": [
       {
         "jp": "自転車",
@@ -32465,6 +33368,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "占"
+    ],
     "phonetic_part": "占",
     "flat_parts": [
       "点",
@@ -32543,7 +33449,11 @@
         }
       ]
     },
-    "phonetic_part": "云/專V",
+    "phon_hints": [
+      "云",
+      "專"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "伝",
       "亻",
@@ -32551,7 +33461,7 @@
       "二",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "傳",
     "words": [
       {
         "jp": "手伝います",
@@ -32583,6 +33493,7 @@
       "element": "田",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "田"
@@ -32641,7 +33552,10 @@
         }
       ]
     },
-    "phonetic_part": "申V",
+    "phon_hints": [
+      "申"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "電",
       "雨",
@@ -32726,6 +33640,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "土"
+    ],
     "phonetic_part": "土",
     "flat_parts": [
       "吐",
@@ -32817,6 +33734,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "度"
+    ],
     "phonetic_part": "度",
     "flat_parts": [
       "渡",
@@ -32906,6 +33826,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "登",
@@ -32984,6 +33905,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "者"
+    ],
     "phonetic_part": "者",
     "flat_parts": [
       "都",
@@ -33067,7 +33991,11 @@
         }
       ]
     },
-    "phonetic_part": "庶1T",
+    "phon_hints": [
+      "庶1T",
+      "庶2T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "度",
       "广",
@@ -33123,6 +34051,7 @@
       "element": "土",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "土"
@@ -33189,6 +34118,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "冬",
@@ -33267,6 +34197,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "殳"
+    ],
     "phonetic_part": "殳",
     "flat_parts": [
       "投",
@@ -33329,6 +34262,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "東",
@@ -33429,6 +34363,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "昜"
+    ],
     "phonetic_part": "昜",
     "flat_parts": [
       "湯",
@@ -33494,13 +34431,16 @@
         }
       ]
     },
-    "phonetic_part": "尚V",
+    "phon_hints": [
+      "尚"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "当",
       "⺌",
       "⺕"
     ],
-    "old_form": null,
+    "old_form": "當",
     "words": [
       {
         "jp": "本当ですか",
@@ -33576,6 +34516,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "答",
@@ -33658,6 +34599,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "同"
+    ],
     "phonetic_part": "同",
     "flat_parts": [
       "筒",
@@ -33736,6 +34680,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "唐"
+    ],
     "phonetic_part": "唐",
     "flat_parts": [
       "糖",
@@ -33833,6 +34780,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "豆"
+    ],
     "phonetic_part": "豆",
     "flat_parts": [
       "頭",
@@ -33937,6 +34887,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "動"
+    ],
     "phonetic_part": "動",
     "flat_parts": [
       "働",
@@ -34030,6 +34983,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "重"
+    ],
     "phonetic_part": "重",
     "flat_parts": [
       "動",
@@ -34130,6 +35086,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "尚"
+    ],
     "phonetic_part": "尚",
     "flat_parts": [
       "堂",
@@ -34204,6 +35163,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "首"
+    ],
     "phonetic_part": "首",
     "flat_parts": [
       "道",
@@ -34302,6 +35264,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "寺"
+    ],
     "phonetic_part": "寺",
     "flat_parts": [
       "特",
@@ -34379,7 +35344,10 @@
         }
       ]
     },
-    "phonetic_part": "蜀T",
+    "phon_hints": [
+      "蜀T"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "独",
       "⺨",
@@ -34388,7 +35356,7 @@
       "口",
       "丨"
     ],
-    "old_form": null,
+    "old_form": "獨",
     "words": [
       {
         "jp": "独身",
@@ -34468,7 +35436,10 @@
         }
       ]
     },
-    "phonetic_part": "売",
+    "phon_hints": [
+      "売"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "読",
       "言",
@@ -34479,7 +35450,7 @@
       "儿",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "讀",
     "words": [
       {
         "jp": "読みます",
@@ -34530,6 +35501,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "豚",
@@ -34602,6 +35574,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "曇",
@@ -34664,6 +35637,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "内",
@@ -34737,6 +35711,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "南",
@@ -34824,6 +35799,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "難",
@@ -34880,6 +35856,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "二"
@@ -34947,6 +35924,7 @@
       "element": "肉",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "肉"
@@ -35006,6 +35984,7 @@
       "element": "日",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "日"
@@ -35254,6 +36233,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "乳",
@@ -35300,6 +36280,7 @@
       "element": "入",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "入"
@@ -35411,6 +36392,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "忍"
+    ],
     "phonetic_part": "忍",
     "flat_parts": [
       "認",
@@ -35480,6 +36464,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "苗"
+    ],
     "phonetic_part": "苗",
     "flat_parts": [
       "猫",
@@ -35590,6 +36577,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "埶"
+    ],
     "phonetic_part": "埶",
     "flat_parts": [
       "熱",
@@ -35661,6 +36651,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "年",
@@ -35770,6 +36761,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "今"
+    ],
     "phonetic_part": "今",
     "flat_parts": [
       "念",
@@ -35855,6 +36849,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "能",
@@ -35905,6 +36900,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "馬",
@@ -35965,6 +36961,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "非"
+    ],
     "phonetic_part": "非",
     "flat_parts": [
       "俳",
@@ -36034,6 +37033,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "不"
+    ],
     "phonetic_part": "不",
     "flat_parts": [
       "杯",
@@ -36110,6 +37112,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "北"
+    ],
     "phonetic_part": "北",
     "flat_parts": [
       "背",
@@ -36178,6 +37183,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "配",
@@ -36248,6 +37254,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "毎"
+    ],
     "phonetic_part": "毎",
     "flat_parts": [
       "梅",
@@ -36313,6 +37322,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "買",
@@ -36389,7 +37399,10 @@
         }
       ]
     },
-    "phonetic_part": "買V",
+    "phon_hints": [
+      "買"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "売",
       "士",
@@ -36468,6 +37481,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "白"
+    ],
     "phonetic_part": "白",
     "flat_parts": [
       "泊",
@@ -36520,6 +37536,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "白",
@@ -36602,6 +37619,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "相"
+    ],
     "phonetic_part": "相",
     "flat_parts": [
       "箱",
@@ -36681,6 +37701,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "箸",
@@ -36737,6 +37758,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "八"
@@ -36815,6 +37837,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "友"
+    ],
     "phonetic_part": "友",
     "flat_parts": [
       "髪",
@@ -36881,6 +37906,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "半",
@@ -36955,6 +37981,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "反"
+    ],
     "phonetic_part": "反",
     "flat_parts": [
       "販",
@@ -37038,6 +38067,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "免"
+    ],
     "phonetic_part": "免",
     "flat_parts": [
       "晩",
@@ -37119,6 +38151,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "番",
@@ -37200,6 +38233,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "皮"
+    ],
     "phonetic_part": "皮",
     "flat_parts": [
       "彼",
@@ -37262,6 +38298,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "皮"
+    ],
     "phonetic_part": "皮",
     "flat_parts": [
       "疲",
@@ -37347,6 +38386,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "必"
+    ],
     "phonetic_part": "必",
     "flat_parts": [
       "秘",
@@ -37419,6 +38461,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "飛",
@@ -37504,7 +38547,10 @@
         }
       ]
     },
-    "phonetic_part": "備right",
+    "phon_hints": [
+      "備right"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "備",
       "亻",
@@ -37560,6 +38606,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "美",
@@ -37652,6 +38699,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "畀"
+    ],
     "phonetic_part": "畀",
     "flat_parts": [
       "鼻",
@@ -37736,6 +38786,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "筆",
@@ -37799,6 +38850,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "百",
@@ -37880,6 +38932,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "表",
@@ -37956,6 +39009,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "丙"
+    ],
     "phonetic_part": "丙",
     "flat_parts": [
       "病",
@@ -38031,6 +39087,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "品",
@@ -38086,6 +39143,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "不",
@@ -38154,6 +39212,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "付",
@@ -38207,6 +39266,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "夫",
@@ -38286,6 +39346,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "畐"
+    ],
     "phonetic_part": "畐",
     "flat_parts": [
       "富",
@@ -38345,7 +39408,10 @@
         }
       ]
     },
-    "phonetic_part": "父V",
+    "phon_hints": [
+      "父"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "布",
       "巾"
@@ -38420,6 +39486,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "普",
@@ -38471,6 +39538,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "父"
@@ -38551,6 +39619,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "付"
+    ],
     "phonetic_part": "付",
     "flat_parts": [
       "符",
@@ -38624,6 +39695,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "負",
@@ -38706,7 +39778,10 @@
         }
       ]
     },
-    "phonetic_part": "丿+2+一+3+3+3+3+2",
+    "phon_hints": [
+      "丿+2+一+3+3+3+3+2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "舞",
       "丿",
@@ -38790,7 +39865,11 @@
         }
       ]
     },
-    "phonetic_part": "立口/否V",
+    "phon_hints": [
+      "立口",
+      "否"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "部",
       "咅",
@@ -38871,6 +39950,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "封",
@@ -38953,7 +40033,10 @@
         }
       ]
     },
-    "phonetic_part": "凡",
+    "phon_hints": [
+      "凡"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "風",
       "几",
@@ -39019,7 +40102,10 @@
         }
       ]
     },
-    "phonetic_part": "𠬝",
+    "phon_hints": [
+      "𠬝"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "服",
       "月",
@@ -39079,13 +40165,16 @@
         }
       ]
     },
-    "phonetic_part": "厶",
+    "phon_hints": [
+      "厶"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "払",
       "扌",
       "厶"
     ],
-    "old_form": null,
+    "old_form": "拂",
     "words": [
       {
         "jp": "払います",
@@ -39139,6 +40228,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "勿"
+    ],
     "phonetic_part": "勿",
     "flat_parts": [
       "物",
@@ -39261,6 +40353,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "分",
@@ -39342,6 +40435,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "文",
@@ -39412,6 +40506,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "門"
+    ],
     "phonetic_part": "門",
     "flat_parts": [
       "聞",
@@ -39495,6 +40592,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "閉",
@@ -39569,6 +40667,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "別",
@@ -39644,6 +40743,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "変",
@@ -39653,7 +40753,7 @@
       "亅",
       "夂"
     ],
-    "old_form": null,
+    "old_form": "變",
     "words": [
       {
         "jp": "大変な",
@@ -39720,6 +40820,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "反"
+    ],
     "phonetic_part": "反",
     "flat_parts": [
       "返",
@@ -39796,6 +40899,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "便",
@@ -39926,6 +41030,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "免"
+    ],
     "phonetic_part": "免",
     "flat_parts": [
       "勉",
@@ -40010,6 +41117,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "弁",
@@ -40087,6 +41195,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "呆"
+    ],
     "phonetic_part": "呆",
     "flat_parts": [
       "保",
@@ -40157,6 +41268,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "歩",
@@ -40166,7 +41278,7 @@
       "小",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "步",
     "words": [
       {
         "jp": "歩いて",
@@ -40220,6 +41332,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "母",
@@ -40320,6 +41433,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "方"
+    ],
     "phonetic_part": "方",
     "flat_parts": [
       "放",
@@ -40376,6 +41492,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "方",
@@ -40452,6 +41569,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "冒"
+    ],
     "phonetic_part": "冒",
     "flat_parts": [
       "帽",
@@ -40521,6 +41641,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "亡"
+    ],
     "phonetic_part": "亡",
     "flat_parts": [
       "忘",
@@ -40597,6 +41720,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "亡"
+    ],
     "phonetic_part": "亡",
     "flat_parts": [
       "忙",
@@ -40648,6 +41774,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "北",
@@ -40748,6 +41875,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "菐"
+    ],
     "phonetic_part": "菐",
     "flat_parts": [
       "僕",
@@ -40842,6 +41972,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "菐"
+    ],
     "phonetic_part": "菐",
     "flat_parts": [
       "撲",
@@ -40900,6 +42033,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "本",
@@ -40992,6 +42126,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "分"
+    ],
     "phonetic_part": "分",
     "flat_parts": [
       "盆",
@@ -41053,6 +42190,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "未"
+    ],
     "phonetic_part": "未",
     "flat_parts": [
       "妹",
@@ -41126,6 +42266,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "枚",
@@ -41184,6 +42325,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "毎",
@@ -41191,7 +42333,7 @@
       "丿",
       "毋"
     ],
-    "old_form": null,
+    "old_form": "每",
     "words": [
       {
         "jp": "毎日",
@@ -41255,6 +42397,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "末",
@@ -41301,12 +42444,13 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "万",
       "一"
     ],
-    "old_form": null,
+    "old_form": "萬",
     "words": [
       {
         "jp": "万",
@@ -41385,6 +42529,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "曼"
+    ],
     "phonetic_part": "曼",
     "flat_parts": [
       "漫",
@@ -41449,6 +42596,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "未"
+    ],
     "phonetic_part": "未",
     "flat_parts": [
       "味",
@@ -41515,6 +42665,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "民"
+    ],
     "phonetic_part": "民",
     "flat_parts": [
       "眠",
@@ -41621,6 +42774,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "矛"
+    ],
     "phonetic_part": "矛",
     "flat_parts": [
       "務",
@@ -41706,6 +42862,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "夢",
@@ -41777,7 +42934,10 @@
         }
       ]
     },
-    "phonetic_part": "丿+2+一+3+3+3+3+2",
+    "phon_hints": [
+      "丿+2+一+3+3+3+3+2"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "無",
       "丿",
@@ -41838,6 +42998,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "名",
@@ -41917,6 +43078,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "明",
@@ -41966,6 +43128,7 @@
       "element": "面",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "面"
@@ -42033,6 +43196,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "亡"
+    ],
     "phonetic_part": "亡",
     "flat_parts": [
       "盲",
@@ -42075,6 +43241,7 @@
       "element": "木",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "木"
@@ -42125,6 +43292,7 @@
       "element": "目",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "目"
@@ -42193,6 +43361,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "門"
+    ],
     "phonetic_part": "門",
     "flat_parts": [
       "問",
@@ -42243,6 +43414,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "門"
@@ -42310,7 +43482,12 @@
         }
       ]
     },
-    "phonetic_part": "亦1",
+    "phon_hints": [
+      "亦1",
+      "亦2",
+      "亦3"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "夜",
       "亠",
@@ -42382,6 +43559,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "予"
+    ],
     "phonetic_part": "予",
     "flat_parts": [
       "野",
@@ -42469,6 +43649,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "役",
@@ -42549,6 +43730,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "約",
@@ -42646,7 +43828,10 @@
         }
       ]
     },
-    "phonetic_part": "楽",
+    "phon_hints": [
+      "楽"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "薬",
       "艹",
@@ -42656,7 +43841,7 @@
       "冫",
       "木"
     ],
-    "old_form": null,
+    "old_form": "藥",
     "words": [
       {
         "jp": "薬",
@@ -42765,6 +43950,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "憂"
+    ],
     "phonetic_part": "憂",
     "flat_parts": [
       "優",
@@ -42820,6 +44008,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "友",
@@ -42871,6 +44060,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "有",
@@ -42948,6 +44138,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "斿"
+    ],
     "phonetic_part": "斿",
     "flat_parts": [
       "遊",
@@ -43031,6 +44224,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "郵",
@@ -43106,6 +44300,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "予",
@@ -43113,7 +44308,7 @@
       "了",
       "亅"
     ],
-    "old_form": null,
+    "old_form": "豫",
     "words": [
       {
         "jp": "予約します",
@@ -43199,6 +44394,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "予"
+    ],
     "phonetic_part": "予",
     "flat_parts": [
       "預",
@@ -43282,6 +44480,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "谷"
+    ],
     "phonetic_part": "谷",
     "flat_parts": [
       "容",
@@ -43367,6 +44568,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "翟"
+    ],
     "phonetic_part": "翟",
     "flat_parts": [
       "曜",
@@ -43453,6 +44657,7 @@
       "element": "用",
       "children": []
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "用"
@@ -43537,7 +44742,10 @@
         }
       ]
     },
-    "phonetic_part": "世+木",
+    "phon_hints": [
+      "世+木"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "葉",
       "艹",
@@ -43609,6 +44817,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "要",
@@ -43680,6 +44889,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "甬"
+    ],
     "phonetic_part": "甬",
     "flat_parts": [
       "踊",
@@ -43769,6 +44981,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "谷"
+    ],
     "phonetic_part": "谷",
     "flat_parts": [
       "欲",
@@ -43849,6 +45064,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "谷"
+    ],
     "phonetic_part": "谷",
     "flat_parts": [
       "浴",
@@ -43917,6 +45135,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "来",
@@ -43924,7 +45143,7 @@
       "木",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "來",
     "words": [
       {
         "jp": "～から来ました",
@@ -44036,6 +45255,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "洛"
+    ],
     "phonetic_part": "洛",
     "flat_parts": [
       "落",
@@ -44121,6 +45343,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "卵",
@@ -44186,6 +45409,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "利",
@@ -44274,6 +45498,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "履",
@@ -44340,6 +45565,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "里"
+    ],
     "phonetic_part": "里",
     "flat_parts": [
       "理",
@@ -44437,6 +45665,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "利"
+    ],
     "phonetic_part": "利",
     "flat_parts": [
       "痢",
@@ -44486,6 +45717,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "里",
@@ -44547,6 +45779,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "立",
@@ -44633,6 +45866,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "留",
@@ -44712,6 +45946,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "旅",
@@ -44771,6 +46006,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "両",
@@ -44778,7 +46014,7 @@
       "冂",
       "山"
     ],
-    "old_form": null,
+    "old_form": "兩",
     "words": [
       {
         "jp": "両親",
@@ -44844,6 +46080,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "尞"
+    ],
     "phonetic_part": "尞",
     "flat_parts": [
       "寮",
@@ -44905,6 +46144,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "料",
@@ -44990,6 +46230,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "涼",
@@ -45059,7 +46300,10 @@
         }
       ]
     },
-    "phonetic_part": "彔V",
+    "phon_hints": [
+      "彔"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "緑",
       "糸",
@@ -45067,7 +46311,7 @@
       "⺕",
       "氺"
     ],
-    "old_form": null,
+    "old_form": "綠",
     "words": [
       {
         "jp": "緑",
@@ -45137,7 +46381,10 @@
         }
       ]
     },
-    "phonetic_part": "粦",
+    "phon_hints": [
+      "粦"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "隣",
       "⻖",
@@ -45147,7 +46394,7 @@
       "夕",
       "㐄"
     ],
-    "old_form": null,
+    "old_form": "鄰",
     "words": [
       {
         "jp": "隣",
@@ -45234,6 +46481,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "令"
+    ],
     "phonetic_part": "令",
     "flat_parts": [
       "冷",
@@ -45297,13 +46547,16 @@
         }
       ]
     },
-    "phonetic_part": "乙",
+    "phon_hints": [
+      "乙"
+    ],
+    "phonetic_part": null,
     "flat_parts": [
       "礼",
       "礻",
       "乙"
     ],
-    "old_form": null,
+    "old_form": "禮",
     "words": [
       {
         "jp": "失礼ですが",
@@ -45372,6 +46625,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "東"
+    ],
     "phonetic_part": "東",
     "flat_parts": [
       "練",
@@ -45433,6 +46689,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "連",
@@ -45498,6 +46755,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "呂",
@@ -45571,6 +46829,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "郎"
+    ],
     "phonetic_part": "郎",
     "flat_parts": [
       "廊",
@@ -45628,6 +46889,7 @@
         }
       ]
     },
+    "phon_hints": [],
     "phonetic_part": null,
     "flat_parts": [
       "六",
@@ -45705,6 +46967,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "禾"
+    ],
     "phonetic_part": "禾",
     "flat_parts": [
       "和",
@@ -45776,6 +47041,9 @@
         }
       ]
     },
+    "phon_hints": [
+      "舌"
+    ],
     "phonetic_part": "舌",
     "flat_parts": [
       "話",

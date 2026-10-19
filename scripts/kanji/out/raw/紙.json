@@ -6,17 +6,15 @@
     {
       "part": "糸",
       "role": "meaning",
-      "meaning_id": "benang"
+      "meaning_id": "thread"
     },
     {
       "part": "氏",
       "role": "phonetic",
-      "meaning_id": "nama keluarga"
+      "meaning_id": "family name, surname"
     }
   ],
-  "etymology_id": "Kanji ini dibentuk dari komponen 糸 (benang/serat) yang menunjukkan kategori makna bahan pembuat, dan 氏 sebagai pemberi petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Benang atau serat (糸) yang diolah membentuk kertas. Bagian 氏 memberi bunyi 'shi'.",
-  "note_id": "Kosakata Minna no Nihongo: 手紙 (てがみ) = surat",
-  "phonetic_part": "氏",
-  "reading_hint": "氏 シ → 紙 シ"
+  "etymology_id": "Terdiri dari serat benang/serat 糸 dan 氏 sebagai petunjuk bunyi (on-yomi: シ).",
+  "mnemonic_id": "Cara mengingat: Kertas (紙) dibuat dari serat (糸) yang ditekan.",
+  "note_id": "Kosakata: 手紙 (てがみ) = surat."
 }

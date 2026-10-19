@@ -1,40 +1,69 @@
 # Sampel Peninjauan Kanji (30 Kanji)
 
-Tabel berikut disusun untuk ditinjau secara manual sebelum persetujuan akhir (status `approved`).
+Dokumen ini disusun untuk ditinjau secara manual sebelum persetujuan akhir (`approve.mjs`).
 
-| No | Kanji | Arti | Komponen | Bagian Bunyi | Bentuk Lama | Asal-usul (Etymology) | Claim Kind | Keyakinan | Cara Mengingat (Mnemonic) |
-|:---:|:---:|:---|:---|:---:|:---:|:---|:---:|:---:|:---|
-| 1 | **九** | nine | `丿(bentuk) 乙(bentuk)` | `-` | `-` | Kanji dasar yang menggambarkan angka sembilan. | `structure` | `traditional` | Cara mengingat: Bentuk goresan sederhana untuk angka sembilan (九). |
-| 2 | **修** | discipline, conduct oneself well, study | `亻(makna) 攸(fonetik) 彡(bentuk)` | `攸1` | `-` | Kanji ini terdiri dari 亻 (orang) yang menunjukkan kategori makna terkait manusia, serta 攸 sebagai pemberi petunjuk bunyi. | `structure` | `established` | Cara mengingat: Seseorang (亻) yang mendisiplinkan diri terus-menerus. |
-| 3 | **写** | copy, be photographed, describe | `冖(makna) 与(fonetik)` | `与/舄` | `寫` | Bentuk lama: 寫. Kanji ini disederhanakan dari bentuk lamanya. Terdiri dari 冖 (penutup) dan 与 sebagai pemberi petunjuk bunyi. | `structure` | `established` | Cara mengingat: Menutup (冖) dan memberikan (与) hasil salinan atau foto. |
-| 4 | **千** | thousand | `ノ(bentuk) 十(makna)` | `-` | `-` | Kanji ini adalah bentuk ideografik sederhana yang menambahkan garis pada angka sepuluh untuk menunjukkan jumlah seribu. | `structure` | `traditional` | Cara mengingat: Angka sepuluh (十) dengan tambahan goresan (ノ) menjadi seribu (千). |
-| 5 | **卵** | egg, ovum, spawn | `卯(bentuk) 卩(bentuk)` | `-` | `-` | Kanji ini terdiri dari kombinasi garis dan komponen bentuk. | `unknown` | `uncertain` | Cara mengingat: Cangkang telur (卵) yang retak di dalamnya. |
-| 6 | **団** | group, association | `囗(makna) 寸(fonetik)` | `専/寸` | `團` | Bentuk lama: 團. Kanji ini adalah gabungan kategori makna 囗 (batas/lingkup) dan bagian bunyi 専/寸 (dan). | `structure` | `established` | Cara mengingat: Ada orang yang terkumpul dalam suatu batas (囗) membentuk kelompok. |
-| 7 | **売** | sell | `士(makna) 買V(fonetik)` | `買V` | `賣` | Kanji ini terdiri dari bagian 土 di atas dan bagian bunyi 買 di bawah. Bentuk lama: 賣. Kanji modern ini merupakan bentuk penyederhanaan dari bentuk lamanya. | `structure` | `established` | Cara mengingat: Bagian 土 dan 买 membantu menunjukkan bunyi dan struktur kanji menjual ini. |
-| 8 | **寺** | Buddhist temple | `土(fonetik) 寸(makna)` | `之V` | `-` | Kanji ini terdiri dari 土 sebagai pemberi petunjuk bunyi dan 寸 sebagai petunjuk makna. | `structure` | `established` | Cara mengingat: Tempat ibadah di atas tanah (土) dengan aturan atau ukuran (寸) yang jelas. |
-| 9 | **強** | strong | `弓(fonetik) 虫(makna)` | `弓` | `-` | Kanji ini dibentuk dari 弓 sebagai pemberi bunyi dan 虫 sebagai unsur pendukung. | `structure` | `established` | Cara mengingat: Busur (弓) yang ditarik dengan kuat. |
-| 10 | **所** | place, extent | `戸(fonetik) 斤(makna)` | `戸` | `-` | Kanji ini menggunakan 戸 sebagai pemberi petunjuk bunyi dan 斤 sebagai pelengkap makna. | `structure` | `established` | Cara mengingat: Pintu (戸) rumah sebagai suatu tempat (ところ) tertentu. |
-| 11 | **散** | scatter, disperse, spend | `月(makna) 攵(makna)` | `-` | `-` | Kanji ini disusun dari komponen 月 dan 攵 untuk menyatakan tindakan menyebar. | `structure` | `traditional` | Cara mengingat: Tindakan (攵) membuat sesuatu berserakan. |
-| 12 | **服** | clothing, admit, obey | `月(makna) 𠬝(fonetik)` | `𠬝` | `-` | Kanji ini terdiri dari komponen meaning 月 (daging/tubuh) yang berkaitan dengan badan, serta bagian phonetic 𠬝. | `structure` | `established` | Cara mengingat: Sesuatu yang menempel di tubuh (月) yaitu pakaian (服). |
-| 13 | **東** | east | `木(makna) 日(makna)` | `-` | `-` | Kanji ini menggambarkan matahari (日) yang terbit di balik pohon (木) di sebelah timur. | `structure` | `traditional` | Cara mengingat: Matahari (日) terbit di antara pepohonan (木) di sebelah timur. |
-| 14 | **校** | exam, school, printing | `木(makna) 交(fonetik)` | `交` | `-` | Kanji ini menggunakan 木 (pohon/kayu) sebagai kategori makna dan 交 sebagai penanda bunyi. | `structure` | `established` | Cara mengingat: Bangunan dari kayu (木) di persimpangan jalan (交) yaitu sekolah. |
-| 15 | **梅** | plum | `木(makna) 毎(fonetik)` | `毎` | `-` | Kanji ini terdiri dari komponen meaning 木 (pohon) yang menunjukkan jenis tanaman, dan phonetic 毎 yang memberikan petunjuk bunyi. | `structure` | `established` | Cara mengingat: Pohon (木) buah ume yang berbunga setiap (毎) tahun. |
-| 16 | **状** | status quo, conditions, circumstances | `⺦(fonetik) 犬(makna)` | `丬` | `-` | Kanji ini terdiri dari ⺦ sebagai pemberi petunjuk bunyi dan 犬 sebagai penunjuk makna. | `structure` | `established` | Cara mengingat: Keadaan (状) bentuk luar dari sesuatu. |
-| 17 | **用** | utilize, business, service | `用(bentuk)` | `-` | `-` | Kanji ini digambarkan sebagai bentuk tunggal yang menunjukkan fungsi atau penggunaan. | `unknown` | `uncertain` | Cara mengingat: Alat atau fasilitas yang siap digunakan (用) untuk suatu urusan. |
-| 18 | **真** | true, reality, Buddhist sect | `十(makna) 具(makna) 目(makna) 八(makna)` | `-` | `-` | Kanji ini menggabungkan komponen alat (具) dan mata (目) untuk menyatakan kebenaran atau kenyataan yang jelas. | `structure` | `traditional` | Cara mengingat: Melihat dengan mata kepala sendiri (目) secara nyata dan benar (真). |
-| 19 | **答** | solution, answer | `竹(makna) 合(makna)` | `-` | `-` | Kanji ini disusun dari komponen 竹 (bambu) dan 合 (sesuai/cocok). | `structure` | `traditional` | Cara mengingat: Memberikan jawaban (答) yang cocok (合) dan tepat seperti ruas bambu (竹). |
-| 20 | **紙** | paper | `糸(makna) 氏(fonetik)` | `氏` | `-` | Kanji ini dibentuk dari komponen 糸 (benang/serat) yang menunjukkan kategori makna bahan pembuat, dan 氏 sebagai pemberi petunjuk bunyi. | `structure` | `established` | Cara mengingat: Benang atau serat (糸) yang diolah membentuk kertas. Bagian 氏 memberi bunyi 'shi'. |
-| 21 | **荷** | baggage, shoulder-pole load, bear (a burden) | `艹(makna) 何(fonetik)` | `何` | `-` | Kanji ini terdiri dari komponen 艹 (tanaman/rumput) sebagai kategori makna dan 何 sebagai pemberi bunyi. | `structure` | `established` | Cara mengingat: Membawa beban tanaman (艹) menggunakan pundak. |
-| 22 | **語** | word, speech, language | `言(makna) 吾(fonetik)` | `吾` | `-` | Kanji ini dibentuk dari 言 (kata) yang menunjukkan kategori makna bahasa dan 吾 sebagai pemberi bunyi. | `structure` | `established` | Cara mengingat: Kata-kata (言) yang diucapkan oleh saya (吾). |
-| 23 | **警** | admonish, commandment | `敬(fonetik) 言(makna)` | `敬` | `-` | Kanji ini terdiri dari 言 (kata/bicara) yang berkaitan dengan makna peringatan dan 敬 sebagai penanda bunyi. | `structure` | `established` | Cara mengingat: Berbicara (言) dengan hormat dan waspada. |
-| 24 | **象** | elephant, pattern after, imitate | `𠂊(bentuk) 豕(makna)` | `-` | `-` | Kanji ini menggambarkan bentuk hewan besar seperti gajah secara piktografis. | `structure` | `established` | Cara mengingat: Bentuk tubuh hewan besar (豕) dengan belalai. |
-| 25 | **跳** | hop, leap up, spring | `足(makna) 兆(fonetik)` | `兆` | `-` | Kanji ini terbentuk dari komponen meaning 足 (kaki) yang menunjukkan makna gerak fisik, serta bagian phonetic 兆 yang memberikan petunjuk bunyi. | `structure` | `established` | Cara mengingat: Menggunakan kaki (足) untuk melompat tinggi. |
-| 26 | **迎** | welcome, meet, greet | `卬(fonetik) ⻌(makna)` | `卬` | `-` | Kanji ini dibentuk dari ⻌ (jalan/gerak) dan 卬 sebagai penanda bunyi. | `structure` | `established` | Cara mengingat: Berjalan (⻌) untuk menyambut tamu. |
-| 27 | **送** | escort, send | `关(makna) ⻌(makna)` | `-` | `-` | Kanji ini menggabungkan elemen gerbang (关) dan jalan (⻌) untuk menggambarkan aktivitas mengantar atau mengirim. | `structure` | `traditional` | Cara mengingat: Berjalan (⻌) mengantar sesuatu melewati gerbang (关). |
-| 28 | **通** | traffic, pass through, avenue | `甬(fonetik) ⻌(makna)` | `甬` | `-` | Kanji ini menggabungkan komponen makna ⻌ (jalan) dan bagian bunyi 甬 untuk menyatakan arti melewati atau melalui. | `structure` | `established` | Cara mengingat: Berjalan (⻌) melewati suatu jalur dengan lancar. |
-| 29 | **鉛** | lead | `金(makna) 㕣(fonetik)` | `㕣` | `-` | Kanji ini dibentuk dari komponen 金 (logam) yang menunjukkan kategori makna dan 㕣 yang memberikan petunjuk bunyi. | `structure` | `established` | Cara mengingat: Logam (金) yang berat dan beracun seperti timah. |
-| 30 | **顔** | face, expression | `彦(makna) 頁(fonetik)` | `頁` | `-` | Kanji ini menggabungkan 彦 di kiri dan 頁 (kepala/halaman) di kanan sebagai penanda bunyi. | `structure` | `established` | Cara mengingat: Bagian kepala atau wajah (頁) seseorang. |
+### Ringkasan Jumlah Sampel:
+- **Total Sampel**: 30
+- **Sumber**: Manual: 14 | Gemini: 16
+- **Status**: Approved: 14 | Needs Review: 7 | Draft: 9 | Rejected: 0
+
+| No | Kanji | Sumber | Status | Keyakinan | Reading Hint (Skrip) | Match | Komponen | Alasan Penolakan / Review | Asal-usul (Etymology) | Cara Mengingat (Mnemonic) |
+|:---:|:---:|:---:|:---:|:---:|:---|:---:|:---|:---|:---|:---|
+| 1 | **九** | **manual** | `approved` | `uncertain` | - | ✅ | `` | - | Tidak ada komponen bermakna. Bentuknya dipakai untuk angka sembilan sebagai pinjaman; hafalkan bentuknya. | Cara mengingat: seperti angka 9 yang ekornya melengkung. |
+| 2 | **修** | **manual** | `approved` | `traditional` | `攸 ゆう → 修 しゅう` | ✅ | `攸(fonetik) 彡(makna)` | - | 攸 (ゆう) memberi bunyi, sedangkan 彡 berarti hiasan atau penataan, jadi 'merapikan, memperbaiki'. | Cara mengingat: 修 dibaca 'shū' seperti pada 修理 (memperbaiki); 彡 = merapikan. |
+| 3 | **写** | **manual** | `approved` | `established` | `舄 → 寫 しゃ` | ✅ | `宀(makna) 舄(fonetik)` | - | Bentuk lama 寫 terdiri dari 宀 (atap) dan 舄 (penanda bunyi). Bentuk baru 写 adalah penyederhanaan; 与 di dalamnya bukan penanda bunyi. | Cara mengingat: tutup (冖) lalu beri (与) hasil salinan. Ini trik ingat saja. |
+| 4 | **千** | **manual** | `approved` | `uncertain` | - | ✅ | `` | - | Asal-usulnya diperdebatkan. Jangan dipahami sebagai '十 ditambah goresan'; hafalkan sebagai bentuk tersendiri. | Cara mengingat: seperti 十 (sepuluh) yang goresan atasnya miring. Ini trik ingat, bukan sejarah. |
+| 5 | **卵** | gemini | `needs_review` | `uncertain` | - | - | `卯(bentuk) 丶(bentuk) 丿(bentuk) 卩(bentuk)` | - | Disusun dari struktur komponen garis dan bentuk dasar. | Cara mengingat: Bentuk cangkang telur (卵) yang berisi kehidupan baru. |
+| 6 | **団** | **manual** | `approved` | `established` | `專 せん・たん → 團 だん` | ✅ | `囗(makna) 專(fonetik)` | - | Bentuk lama 團 = 囗 (lingkup) + 專 (penanda bunyi). Bentuk baru mengganti 專 dengan 寸 sebagai penyederhanaan. | Cara mengingat: orang berkumpul dalam satu lingkaran (囗) dengan satu aturan (寸) menjadi kelompok. |
+| 7 | **売** | **manual** | `approved` | `established` | `買 ばい → 賣 ばい` | ✅ | `出(makna) 買(fonetik)` | - | Bentuk lama 賣 = 出 (keluar) + 買 (membeli; juga memberi bunyi ばい): barang dikeluarkan untuk dibeli, yaitu menjual. 売 adalah penyederhanaan dan tidak mengandung 買. | Cara mengingat: penjual (士) di bawah tenda (冖) berdiri di atas kaki (儿) menawarkan dagangan. |
+| 8 | **寺** | **manual** | `approved` | `established` | `之 し → 寺 じ` | ✅ | `之(fonetik) 寸(makna)` | - | Bagian atas (土) adalah bentuk 之 yang berubah dan berfungsi sebagai penanda bunyi (し → じ); 寸 berarti tangan atau ukuran. | Cara mengingat: bayangkan kuil (寺) di atas tanah (土) yang diukur (寸). Ini trik ingat, bukan asal-usul. |
+| 9 | **強** | **manual** | `approved` | `traditional` | `弘 こう → 強 きょう` | ✅ | `弘(fonetik) 虫(makna)` | - | 弘 (こう) memberi bunyi dan 虫 (serangga) menunjukkan kategori. Menurut kamus kuno Shuowen, arti awalnya sejenis serangga; arti 'kuat' dipakai belakangan. | Cara mengingat: bayangkan serangga (虫) yang kuat menarik busur (弓). Ini trik ingat saja. |
+| 10 | **所** | gemini | `draft` | `traditional` | - | - | `戸(makna) 斤(makna)` | - | Gabungan dari pintu 戸 dan kapak 斤 untuk menggambarkan suatu tempat. | Cara mengingat: Tempat (所) di dekat pintu (戸) rumah. |
+| 11 | **散** | **manual** | `approved` | `uncertain` | - | ✅ | `攵(makna)` | - | Asal-usulnya diperdebatkan; bagian-bagian bentuk modernnya sulit dijelaskan secara pasti. Hafalkan sebagai bentuk. | Cara mengingat: 攵 (tindakan) dengan bagian lain yang berhamburan ke mana-mana. |
+| 12 | **服** | **manual** | `approved` | `uncertain` | `𠬝 ふく → 服 ふく` | ✅ | `𠬝(fonetik)` | - | Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月): sumber berbeda menafsirkannya sebagai 'daging' atau 'perahu (舟)'; asalnya diperdebatkan. | Cara mengingat: pakaian dibaca 'fuku', sama dengan bunyi bagian kanannya. |
+| 13 | **東** | gemini | `draft` | `traditional` | - | - | `木(makna) 日(makna) 丿(bentuk)` | - | Gabungan dari pohon (木) dan matahari (日). | Cara mengingat: Matahari (日) terbit di balik pohon (木) di sebelah timur (東). |
+| 14 | **校** | **manual** | `approved` | `established` | `交 こう → 校 こう` | ✅ | `木(makna) 交(fonetik)` | - | 木 (kayu) menunjukkan kategori makna, 交 (こう) memberi bunyi; 校 dibaca こう. | Cara mengingat: sekolah (校) dari kayu (木); 交 hanya mengingatkan bunyi 'kō'. |
+| 15 | **梅** | gemini | `draft` | `established` | `毎 (マイ) → 梅 (バイ)` | ✅ | `木(makna) 毎(fonetik) 丿(bentuk) 毋(bentuk)` | - | Gabungan 木 (pohon) dan 毎 sebagai penanda bunyi untuk buah ume. | Cara mengingat: Pohon (木) buah plum (梅) yang berbuah setiap (毎) tahun. |
+| 16 | **状** | gemini | `needs_review` | `traditional` | - | - | `⺦(bentuk) 犬(makna)` | Kanji memiliki old_form ('狀') tetapi tidak ada di manual_entries.json, wajib peninjauan manual | Gabungan bentuk sisi kiri (⺦) dan unsur anjing (犬). | Cara mengingat: Melihat bentuk atau status (状) dari seekor anjing (犬). |
+| 17 | **用** | gemini | `needs_review` | `uncertain` | - | - | `用(makna)` | - | Kanji ini berdiri sendiri sebagai satu bentuk dasar. | Cara mengingat: Huruf 用 (you) mirip pagar kotak untuk menandai urusan atau kegunaan. |
+| 18 | **真** | **manual** | `approved` | `uncertain` | - | ✅ | `` | - | Asal-usulnya diperdebatkan. Bentuk lama 眞 memuat 匕, 目, 乚, dan 八; tafsir bagian-bagiannya beragam. | Cara mengingat: ada mata (目) di tengah. Melihat dengan mata sendiri berarti nyata. |
+| 19 | **答** | gemini | `needs_review` | `traditional` | `合 (ゴウ) → 答 (トウ)` | ❌ | `竹(makna) 合(fonetik) 人(bentuk) 一(bentuk) 口(bentuk)` | Klaim phonetic pada '合' tidak cocok rima bacaan on-yomi (ゴウ, ガッ, カッ vs トウ) | Gabungan 竹 (bambu) dan 合 yang berfungsi sebagai penanda bunyi. | Cara mengingat: Seseorang memberikan jawaban (答) dengan mulut (口) yang sesuai (合). |
+| 20 | **紙** | gemini | `draft` | `established` | `氏 (シ) → 紙 (シ)` | ✅ | `糸(makna) 氏(fonetik)` | - | Terdiri dari serat benang/serat 糸 dan 氏 sebagai petunjuk bunyi (on-yomi: シ). | Cara mengingat: Kertas (紙) dibuat dari serat (糸) yang ditekan. |
+| 21 | **荷** | gemini | `draft` | `established` | `何 (カ) → 荷 (カ)` | ✅ | `艹(makna) 何(fonetik)` | - | Gabungan unsur tanaman (艹) dan unsur bacaan 何 yang memberikan on-yomi カ. | Cara mengingat: Membawa barang atau bagasi (荷) di atas rumput (艹) menggunakan apa (何). |
+| 22 | **語** | gemini | `draft` | `established` | `吾 (ゴ) → 語 (ゴ)` | ✅ | `言(makna) 吾(fonetik)` | - | Terdiri dari 言 (kata/bicara) dan 吾 sebagai petunjuk bunyi (on-yomi: ゴ). | Cara mengingat: Berbicara (言) menggunakan bahasa (語) kita. |
+| 23 | **警** | gemini | `draft` | `established` | `敬 (ケイ) → 警 (ケイ)` | ✅ | `敬(fonetik) 言(makna)` | - | Terdiri dari kata yang diucapkan 言 dan komponen 敬 sebagai petunjuk bunyi (on-yomi: ケイ). | Cara mengingat: Polisi (警察官) memberikan peringatan dengan kata-kata (言). |
+| 24 | **象** | gemini | `draft` | `established` | - | - | `豕(makna)` | - | Berasal dari bentuk visual seekor gajah. | Cara mengingat: Bentuk tubuh hewan besar seperti gajah (象). |
+| 25 | **跳** | gemini | `draft` | `established` | `兆 (チョウ) → 跳 (チョウ)` | ✅ | `足(makna) 兆(fonetik)` | - | Terdiri dari kaki 足 dan 兆 sebagai petunjuk bunyi (on-yomi: チョウ). | Cara mengingat: Menggunakan kaki (足) untuk melompat atau meloncat (跳ぶ). |
+| 26 | **迎** | gemini | `needs_review` | `established` | `卬 (キョウ) → 迎 (ゲイ)` | ❌ | `卬(fonetik) ⻌(bentuk)` | Klaim phonetic pada '卬' tidak cocok rima bacaan on-yomi (キョウ, ゴウ vs ゲイ) | Terdiri dari ⻌ (jalan) dan 卬 sebagai petunjuk bunyi (on-yomi: ゲイ). | Cara mengingat: Berjalan (⻌) keluar untuk menyambut atau menjemput (迎えます) seseorang. |
+| 27 | **送** | **manual** | `approved` | `uncertain` | - | ✅ | `辶(makna)` | - | 辶 (bergerak) menunjukkan kategori makna. Bagian kanan adalah bentuk yang tidak berdiri sebagai kata sendiri; bukan 'gerbang'. | Cara mengingat: berjalan (辶) membawa barang untuk diantar. Ini trik ingat saja. |
+| 28 | **通** | gemini | `needs_review` | `established` | `甬 (ヨウ) → 通 (ツウ)` | ❌ | `甬(fonetik) マ(bentuk) 用(makna) ⻌(bentuk)` | Klaim phonetic pada '甬' tidak cocok rima bacaan on-yomi (ヨウ vs ツウ, ツ) | Terdiri dari komponen 甬 sebagai penanda bunyi dan ⻌ (jalan) yang menunjukkan makna melintas. | Cara mengingat: Orang menggunakan (用) jalan untuk melintas (通) dalam lalu lintas. |
+| 29 | **鉛** | gemini | `needs_review` | `established` | - | ❌ | `金(makna) 㕣(fonetik)` | Klaim phonetic pada '㕣' tidak cocok rima bacaan on-yomi (- vs エン) | Terdiri dari elemen 金 (emas/logam) sebagai arti dan 㕣 sebagai petunjuk bunyi (on-yomi: エン). | Cara mengingat: Logam (金) yang berat menyerupai timah (鉛) di dalam pensil (えんぴつ). |
+| 30 | **顔** | **manual** | `approved` | `established` | `彦 げん → 顔 がん` | ✅ | `頁(makna) 彦(fonetik)` | - | 頁 (kepala) menunjukkan bagian tubuh, sedangkan 彦 hanya memberi petunjuk bunyi (げん → がん). | Cara mengingat: wajah ada di kepala (頁), dan 彦 mengingatkan bunyi 'gan'. |
 
 
 ---
-*Gunakan perintah `node scripts/kanji/approve.mjs --only <daftar kanji>` untuk menyetujui hasil setelah tinjauan manual.*
+### Laporan Khusus Komponen Fonetik (reading_match):
+| Kanji | Sumber | Komponen Fonetik | On-yomi Komponen | On-yomi Kanji | Match | Catatan |
+|:---:|:---:|:---:|:---|:---|:---:|:---|
+| **修** | manual | **攸** | `ユウ` | `シュウ, シュ` | ✅ true |  |
+| **写** | manual | **舄** | `シャク, サク, セキ, タク` | `シャ, ジャ` | ✅ true |  |
+| **団** | manual | **專** | `セン` | `ダン, トン` | ✅ true |  |
+| **売** | manual | **買** | `バイ` | `バイ` | ✅ true |  |
+| **寺** | manual | **之** | `シ` | `ジ` | ✅ true |  |
+| **強** | manual | **弘** | `コウ, グ` | `キョウ, ゴウ` | ✅ true | Bentuk historis 弘/彊 (bukan 弓 kyū) |
+| **服** | manual | **𠬝** | `-` | `フク` | ✅ true |  |
+| **校** | manual | **交** | `コウ` | `コウ, キョウ` | ✅ true |  |
+| **梅** | gemini | **毎** | `マイ` | `バイ` | ✅ true |  |
+| **答** | gemini | **合** | `ゴウ, ガッ, カッ` | `トウ` | ❌ false |  |
+| **紙** | gemini | **氏** | `シ` | `シ` | ✅ true |  |
+| **荷** | gemini | **何** | `カ` | `カ` | ✅ true |  |
+| **語** | gemini | **吾** | `ゴ` | `ゴ` | ✅ true |  |
+| **警** | gemini | **敬** | `ケイ, キョウ` | `ケイ` | ✅ true |  |
+| **跳** | gemini | **兆** | `チョウ` | `チョウ` | ✅ true |  |
+| **迎** | gemini | **卬** | `キョウ, ゴウ` | `ゲイ` | ❌ false |  |
+| **通** | gemini | **甬** | `ヨウ` | `ツウ, ツ` | ❌ false |  |
+| **鉛** | gemini | **㕣** | `-` | `エン` | ❌ false |  |
+| **顔** | manual | **彦** | `ゲン` | `ガン` | ✅ true | Bentuk historis 彦 memberi bunyi gen → gan (頁 adalah semantik kepala) |
+
+---
+*Jangan menyetujui apa pun sebelum peninjauan selesai. Gunakan `approve.mjs --only <daftar>` hanya setelah ditinjau.*

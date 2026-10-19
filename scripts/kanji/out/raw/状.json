@@ -5,18 +5,16 @@
   "components": [
     {
       "part": "⺦",
-      "role": "phonetic",
-      "meaning_id": "papan"
+      "role": "shape",
+      "meaning_id": ""
     },
     {
       "part": "犬",
       "role": "meaning",
-      "meaning_id": "anjing"
+      "meaning_id": "dog"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari ⺦ sebagai pemberi petunjuk bunyi dan 犬 sebagai penunjuk makna.",
-  "mnemonic_id": "Cara mengingat: Keadaan (状) bentuk luar dari sesuatu.",
-  "note_id": "Kosakata Minna no Nihongo: 年賀状 (ねんがじょう) = kartu tahun baru",
-  "phonetic_part": "丬",
-  "reading_hint": "丬 ジョウ → 状 ジョウ"
+  "etymology_id": "Gabungan bentuk sisi kiri (⺦) dan unsur anjing (犬).",
+  "mnemonic_id": "Cara mengingat: Melihat bentuk atau status (状) dari seekor anjing (犬).",
+  "note_id": "Bentuk lama dari kanji ini adalah 狀."
 }

@@ -1,22 +1,20 @@
 {
   "kanji": "服",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "unknown",
   "components": [
-    {
-      "part": "月",
-      "role": "meaning",
-      "meaning_id": "daging atau tubuh"
-    },
     {
       "part": "𠬝",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen meaning 月 (daging/tubuh) yang berkaitan dengan badan, serta bagian phonetic 𠬝.",
-  "mnemonic_id": "Cara mengingat: Sesuatu yang menempel di tubuh (月) yaitu pakaian (服).",
-  "note_id": "",
   "phonetic_part": "𠬝",
-  "reading_hint": "𠬝 フク → 服 フク"
+  "reading_hint": "𠬝 ふく → 服 ふく",
+  "old_form": null,
+  "etymology_id": "Bagian kanan 𠬝 memberi bunyi (ふく). Bagian kiri (月): sumber berbeda menafsirkannya sebagai 'daging' atau 'perahu (舟)'; asalnya diperdebatkan.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: pakaian dibaca 'fuku', sama dengan bunyi bagian kanannya.",
+  "note_id": "",
+  "source": "manual"
 }

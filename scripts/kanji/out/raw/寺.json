@@ -1,22 +1,25 @@
 {
   "kanji": "寺",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "土",
+      "part": "之",
       "role": "phonetic",
-      "meaning_id": "tanah"
+      "meaning_id": "(ditulis 土 pada bentuk sekarang)"
     },
     {
       "part": "寸",
       "role": "meaning",
-      "meaning_id": "ukuran"
+      "meaning_id": "tangan, ukuran"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari 土 sebagai pemberi petunjuk bunyi dan 寸 sebagai petunjuk makna.",
-  "mnemonic_id": "Cara mengingat: Tempat ibadah di atas tanah (土) dengan aturan atau ukuran (寸) yang jelas.",
-  "note_id": "Kosakata Minna no Nihongo: お寺 (おてら) = wihara",
-  "phonetic_part": "之V",
-  "reading_hint": "之V ジ → 寺 ジ"
+  "phonetic_part": "之",
+  "reading_hint": "之 し → 寺 じ",
+  "old_form": null,
+  "etymology_id": "Bagian atas (土) adalah bentuk 之 yang berubah dan berfungsi sebagai penanda bunyi (し → じ); 寸 berarti tangan atau ukuran.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: bayangkan kuil (寺) di atas tanah (土) yang diukur (寸). Ini trik ingat, bukan asal-usul.",
+  "note_id": "",
+  "source": "manual"
 }

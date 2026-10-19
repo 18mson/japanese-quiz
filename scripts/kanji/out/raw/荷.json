@@ -6,17 +6,15 @@
     {
       "part": "艹",
       "role": "meaning",
-      "meaning_id": "tanaman"
+      "meaning_id": "grass"
     },
     {
       "part": "何",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "what"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen 艹 (tanaman/rumput) sebagai kategori makna dan 何 sebagai pemberi bunyi.",
-  "mnemonic_id": "Cara mengingat: Membawa beban tanaman (艹) menggunakan pundak.",
-  "note_id": "Kosakata Minna no Nihongo: 荷物 (にもつ) = barang, paket.",
-  "phonetic_part": "何",
-  "reading_hint": "何 ka → 荷 ka"
+  "etymology_id": "Gabungan unsur tanaman (艹) dan unsur bacaan 何 yang memberikan on-yomi カ.",
+  "mnemonic_id": "Cara mengingat: Membawa barang atau bagasi (荷) di atas rumput (艹) menggunakan apa (何).",
+  "note_id": "Digunakan pada kata 荷物 (にもつ)."
 }

@@ -1,22 +1,25 @@
 {
   "kanji": "団",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "囗",
       "role": "meaning",
-      "meaning_id": "kotak atau batas"
+      "meaning_id": "lingkaran, lingkup"
     },
     {
-      "part": "寸",
+      "part": "專",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Bentuk lama: 團. Kanji ini adalah gabungan kategori makna 囗 (batas/lingkup) dan bagian bunyi 専/寸 (dan).",
-  "mnemonic_id": "Cara mengingat: Ada orang yang terkumpul dalam suatu batas (囗) membentuk kelompok.",
+  "phonetic_part": "專",
+  "reading_hint": "專 せん・たん → 團 だん",
+  "old_form": "團",
+  "etymology_id": "Bentuk lama 團 = 囗 (lingkup) + 專 (penanda bunyi). Bentuk baru mengganti 專 dengan 寸 sebagai penyederhanaan.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang berkumpul dalam satu lingkaran (囗) dengan satu aturan (寸) menjadi kelompok.",
   "note_id": "",
-  "phonetic_part": "専/寸",
-  "reading_hint": "専/寸 ダン → 団 ダン"
+  "source": "manual"
 }

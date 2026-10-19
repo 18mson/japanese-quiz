@@ -44,6 +44,40 @@ export const useLessonStore = defineStore('lesson', () => {
   const isLessonMaterialCompleted = ref<boolean>(false);
   const completedCategories = ref<Record<string, boolean>>(getLocalCompletedCategories());
 
+  const syncToSupabaseMetadata = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.auth.updateUser({
+          data: {
+            completed_materi: completedCategories.value
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to sync completed_materi to Supabase:', err);
+    }
+  };
+
+  const syncFromUserMetadata = (userMetadata: any) => {
+    if (userMetadata && userMetadata.completed_materi) {
+      const serverData = userMetadata.completed_materi;
+      completedCategories.value = {
+        ...completedCategories.value,
+        ...serverData
+      };
+      saveLocalCompletedCategories(completedCategories.value);
+    }
+  };
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('storage', (event) => {
+      if (event.key === COMPLETED_CATEGORIES_KEY) {
+        completedCategories.value = getLocalCompletedCategories();
+      }
+    });
+  }
+
   // ── Completion Helper Methods ─────────────────────────────
   const isLessonVocabAutoCompleted = (lessonNumber: number): boolean => {
     const lessonKey = `Pelajaran ${lessonNumber}`;
@@ -74,6 +108,7 @@ export const useLessonStore = defineStore('lesson', () => {
       [key]: status
     };
     saveLocalCompletedCategories(completedCategories.value);
+    syncToSupabaseMetadata();
   };
 
   const toggleCategoryCompletion = (lessonNumber: number, categoryId: string): boolean => {
@@ -190,6 +225,8 @@ export const useLessonStore = defineStore('lesson', () => {
     recordRenshuuAnswer,
     startKaiwaSession,
     startRenshuuSession,
-    resetLessonSession
+    resetLessonSession,
+    syncToSupabaseMetadata,
+    syncFromUserMetadata
   };
 });

@@ -1,22 +1,25 @@
 {
   "kanji": "校",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "木",
       "role": "meaning",
-      "meaning_id": "pohon"
+      "meaning_id": "kayu, pohon"
     },
     {
       "part": "交",
       "role": "phonetic",
-      "meaning_id": "persimpangan"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggunakan 木 (pohon/kayu) sebagai kategori makna dan 交 sebagai penanda bunyi.",
-  "mnemonic_id": "Cara mengingat: Bangunan dari kayu (木) di persimpangan jalan (交) yaitu sekolah.",
-  "note_id": "Kosakata Minna no Nihongo: 学校 (がっこう) = sekolah, 高校 (こうこう) = SMA.",
   "phonetic_part": "交",
-  "reading_hint": "交 kō → 校 kō"
+  "reading_hint": "交 こう → 校 こう",
+  "old_form": null,
+  "etymology_id": "木 (kayu) menunjukkan kategori makna, 交 (こう) memberi bunyi; 校 dibaca こう.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: sekolah (校) dari kayu (木); 交 hanya mengingatkan bunyi 'kō'.",
+  "note_id": "",
+  "source": "manual"
 }

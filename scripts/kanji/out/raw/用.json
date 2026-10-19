@@ -5,13 +5,11 @@
   "components": [
     {
       "part": "用",
-      "role": "shape",
-      "meaning_id": "bentuk dasar"
+      "role": "meaning",
+      "meaning_id": "menggunakan"
     }
   ],
-  "etymology_id": "Kanji ini digambarkan sebagai bentuk tunggal yang menunjukkan fungsi atau penggunaan.",
-  "mnemonic_id": "Cara mengingat: Alat atau fasilitas yang siap digunakan (用) untuk suatu urusan.",
-  "note_id": "",
-  "phonetic_part": null,
-  "reading_hint": null
+  "etymology_id": "Kanji ini berdiri sendiri sebagai satu bentuk dasar.",
+  "mnemonic_id": "Cara mengingat: Huruf 用 (you) mirip pagar kotak untuk menandai urusan atau kegunaan.",
+  "note_id": ""
 }

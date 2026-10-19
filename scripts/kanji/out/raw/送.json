@@ -1,22 +1,20 @@
 {
   "kanji": "送",
-  "formation_type": "compound_meaning",
-  "claim_kind": "structure",
+  "formation_type": "unknown",
   "components": [
     {
-      "part": "关",
+      "part": "辶",
       "role": "meaning",
-      "meaning_id": "gerbang"
-    },
-    {
-      "part": "⻌",
-      "role": "meaning",
-      "meaning_id": "jalan"
+      "meaning_id": "bergerak"
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan elemen gerbang (关) dan jalan (⻌) untuk menggambarkan aktivitas mengantar atau mengirim.",
-  "mnemonic_id": "Cara mengingat: Berjalan (⻌) mengantar sesuatu melewati gerbang (关).",
-  "note_id": "Kosakata Minna no Nihongo: 送ります (おくります) = mengirim",
   "phonetic_part": null,
-  "reading_hint": null
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "辶 (bergerak) menunjukkan kategori makna. Bagian kanan adalah bentuk yang tidak berdiri sebagai kata sendiri; bukan 'gerbang'.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: berjalan (辶) membawa barang untuk diantar. Ini trik ingat saja.",
+  "note_id": "",
+  "source": "manual"
 }

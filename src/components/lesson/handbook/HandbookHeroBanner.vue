@@ -79,10 +79,10 @@ const onImageError = () => {
         </transition>
       </div>
 
-      <!-- Penanda Khusus jika semua materi bab sudah dipelajari: Floating Badge di pojok kanan atas -->
+      <!-- Penanda Khusus jika semua materi bab sudah dipelajari: Floating Badge di pojok kanan atas (Hanya Desktop agar tidak tabrakan di mobile) -->
       <div 
         v-if="completionStats.isFullyCompleted" 
-        class="absolute top-3.5 right-3.5 sm:top-5 sm:right-6 z-20 flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-emerald-600/90 dark:bg-emerald-500/90 text-white shadow-lg shadow-emerald-600/25 border border-emerald-400/60 backdrop-blur-md"
+        class="hidden sm:flex absolute top-5 right-6 z-20 items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-600/90 dark:bg-emerald-500/90 text-white shadow-lg shadow-emerald-600/25 border border-emerald-400/60 backdrop-blur-md"
       >
         <Trophy class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
         <span class="text-[11px] font-black tracking-wide uppercase">Bab Dikuasai</span>
@@ -101,8 +101,10 @@ const onImageError = () => {
             v-if="completionStats.isFullyCompleted"
             class="px-2.5 py-0.5 rounded-lg bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/35 text-[11px] font-black flex items-center gap-1.5 shadow-2xs"
           >
-            <CheckCircle2 class="w-3.5 h-3.5 text-emerald-500" />
-            <span>Semua Materi Selesai ({{ completionStats.completed }}/{{ completionStats.total }})</span>
+            <Trophy class="w-3.5 h-3.5 text-amber-500 fill-amber-500 sm:hidden shrink-0" />
+            <CheckCircle2 class="w-3.5 h-3.5 text-emerald-500 hidden sm:inline shrink-0" />
+            <span class="sm:hidden font-black">Bab Dikuasai ({{ completionStats.completed }}/{{ completionStats.total }})</span>
+            <span class="hidden sm:inline">Semua Materi Selesai ({{ completionStats.completed }}/{{ completionStats.total }})</span>
           </span>
           <span
             v-else-if="completionStats.completed > 0"

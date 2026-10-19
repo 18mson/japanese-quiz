@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateAll } from './generate.mjs';
+import { parseKanjidic } from './facts.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +13,12 @@ const RAW_DIR = path.resolve(OUT_DIR, 'raw');
 const FACTS_FILE = path.resolve(OUT_DIR, 'facts.json');
 const KANJI_INFO_FILE = path.resolve(OUT_DIR, 'kanji-info.json');
 const REVIEW_SAMPLE_FILE = path.resolve(OUT_DIR, 'review-sample.md');
-const PICTOGRAPHS_FILE = path.resolve(__dirname, 'data/pictographs.json');
+
+const DATA_DIR = path.resolve(__dirname, 'data');
+const PICTOGRAPHS_FILE = path.resolve(DATA_DIR, 'pictographs.json');
+const ESTABLISHED_FILE = path.resolve(DATA_DIR, 'established.json');
+const MANUAL_ENTRIES_FILE = path.resolve(DATA_DIR, 'manual_entries.json');
+const OLD_FORMS_FILE = path.resolve(DATA_DIR, 'old_forms.json');
 
 export function countWords(str) {
   if (!str) return 0;
@@ -22,8 +28,17 @@ export function countWords(str) {
 export function loadPictographs() {
   if (fs.existsSync(PICTOGRAPHS_FILE)) {
     try {
-      const list = JSON.parse(fs.readFileSync(PICTOGRAPHS_FILE, 'utf-8'));
-      if (Array.isArray(list)) return new Set(list);
+      const data = JSON.parse(fs.readFileSync(PICTOGRAPHS_FILE, 'utf-8'));
+      if (Array.isArray(data)) return new Set(data);
+      if (data?.kanji) {
+        const set = new Set();
+        for (const list of Object.values(data.kanji)) {
+          if (Array.isArray(list)) {
+            for (const k of list) set.add(k);
+          }
+        }
+        return set;
+      }
     } catch (e) {
       console.warn(`Gagal membaca ${PICTOGRAPHS_FILE}:`, e.message);
     }
@@ -31,16 +46,207 @@ export function loadPictographs() {
   return new Set(['象', '日', '月', '木', '山', '川', '人', '口', '目', '手']);
 }
 
-export function determineConfidence(entry, fact, pictographsSet) {
-  const kanji = entry.kanji;
-  const isPictograph = pictographsSet.has(kanji);
-  const isPhonoSemanticMatch = (
-    !!fact?.phonetic_part &&
-    entry.formation_type === 'phono_semantic' &&
-    entry.claim_kind !== 'unknown'
-  );
+export function loadEstablished() {
+  if (fs.existsSync(ESTABLISHED_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(ESTABLISHED_FILE, 'utf-8'));
+      if (Array.isArray(data)) return new Set(data);
+      if (Array.isArray(data?.kanji)) return new Set(data.kanji);
+    } catch (e) {
+      console.warn(`Gagal membaca ${ESTABLISHED_FILE}:`, e.message);
+    }
+  }
+  return new Set();
+}
 
-  if (isPictograph || isPhonoSemanticMatch) {
+export function loadManualEntries() {
+  if (fs.existsSync(MANUAL_ENTRIES_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(MANUAL_ENTRIES_FILE, 'utf-8'));
+      const entries = data.entries || (Array.isArray(data) ? data : []);
+      const map = new Map();
+      for (const e of entries) {
+        if (e.kanji) map.set(e.kanji, e);
+      }
+      return map;
+    } catch (e) {
+      console.warn(`Gagal membaca ${MANUAL_ENTRIES_FILE}:`, e.message);
+    }
+  }
+  return new Map();
+}
+
+export function loadOldForms() {
+  if (fs.existsSync(OLD_FORMS_FILE)) {
+    try {
+      const data = JSON.parse(fs.readFileSync(OLD_FORMS_FILE, 'utf-8'));
+      const pairs = data.pairs || {};
+      const ambiguous = new Set(Object.keys(data.meta?.ambiguous || {}));
+      const map = new Map();
+      for (const [k, v] of Object.entries(pairs)) {
+        if (!ambiguous.has(k)) {
+          map.set(k, v);
+        }
+      }
+      return map;
+    } catch (e) {
+      console.warn(`Gagal membaca ${OLD_FORMS_FILE}:`, e.message);
+    }
+  }
+  return new Map();
+}
+
+let kanjidicCache = null;
+export function getKanjidic() {
+  if (!kanjidicCache) {
+    kanjidicCache = parseKanjidic();
+  }
+  return kanjidicCache;
+}
+
+// -------------------------------------------------------------
+// On-yomi Phonetic Rhyme Matching
+// -------------------------------------------------------------
+const KANA_ROMAJI = {
+  'ア': 'a', 'イ': 'i', 'ウ': 'u', 'エ': 'e', 'オ': 'o',
+  'カ': 'ka', 'キ': 'ki', 'ク': 'ku', 'ケ': 'ke', 'コ': 'ko',
+  'サ': 'sa', 'シ': 'shi', 'ス': 'su', 'セ': 'se', 'ソ': 'so',
+  'タ': 'ta', 'チ': 'chi', 'ツ': 'tsu', 'テ': 'te', 'ト': 'to',
+  'ナ': 'na', 'ニ': 'ni', 'ヌ': 'nu', 'ネ': 'ne', 'ノ': 'no',
+  'ハ': 'ha', 'ヒ': 'hi', 'フ': 'fu', 'ヘ': 'he', 'ホ': 'ho',
+  'マ': 'ma', 'ミ': 'mi', 'ム': 'mu', 'メ': 'me', 'モ': 'mo',
+  'ヤ': 'ya', 'ユ': 'yu', 'ヨ': 'yo',
+  'ラ': 'ra', 'リ': 'ri', 'ル': 'ru', 'レ': 're', 'ロ': 'ro',
+  'ワ': 'wa', 'ヲ': 'o', 'ン': 'n',
+  'ガ': 'ga', 'ギ': 'gi', 'グ': 'gu', 'ゲ': 'ge', 'ゴ': 'go',
+  'ザ': 'za', 'ジ': 'ji', 'ズ': 'zu', 'ゼ': 'ze', 'ゾ': 'zo',
+  'ダ': 'da', 'ヂ': 'ji', 'ヅ': 'zu', 'デ': 'de', 'ド': 'do',
+  'バ': 'ba', 'ビ': 'bi', 'ブ': 'bu', 'ベ': 'be', 'ボ': 'bo',
+  'パ': 'pa', 'ピ': 'pi', 'プ': 'pu', 'ペ': 'pe', 'ポ': 'po',
+  'キャ': 'kya', 'キュ': 'kyu', 'キョ': 'kyo',
+  'シャ': 'sha', 'シュ': 'shu', 'ショ': 'sho',
+  'チャ': 'cha', 'チュ': 'chu', 'チョ': 'cho',
+  'ニャ': 'nya', 'ニュ': 'nyu', 'ニョ': 'nyo',
+  'ヒャ': 'hya', 'ヒュ': 'hyu', 'ヒョ': 'hyo',
+  'ミャ': 'mya', 'ミュ': 'myu', 'ミョ': 'myo',
+  'リャ': 'rya', 'リュ': 'ryu', 'リョ': 'ryo',
+  'ギャ': 'gya', 'ギュ': 'gyu', 'ギョ': 'gyo',
+  'ジャ': 'ja', 'ジュ': 'ju', 'ジョ': 'jo',
+  'ビャ': 'bya', 'ビュ': 'byu', 'ビョ': 'byo',
+  'ピャ': 'pya', 'ピュ': 'pyu', 'ピョ': 'pyo'
+};
+
+export function kanaToRomaji(kana) {
+  if (!kana) return '';
+  let res = '';
+  let i = 0;
+  // Convert hiragana to katakana first
+  const k = kana.replace(/[\u3041-\u3096]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60)).replace(/[\.\-].*$/, '');
+  while (i < k.length) {
+    if (i + 1 < k.length) {
+      const two = k.slice(i, i + 2);
+      if (KANA_ROMAJI[two]) {
+        res += KANA_ROMAJI[two];
+        i += 2;
+        continue;
+      }
+    }
+    const one = k[i];
+    if (one === 'ー') {
+      const last = res[res.length - 1];
+      if (last) res += last;
+    } else if (KANA_ROMAJI[one]) {
+      res += KANA_ROMAJI[one];
+    }
+    i++;
+  }
+  return res;
+}
+
+export function parseSyllable(romaji) {
+  const match = romaji.match(/^([bcdfghjklmnprstwyz]*)(.*)$/i);
+  let cons = match ? match[1].toLowerCase() : '';
+  let rime = match ? match[2].toLowerCase() : romaji.toLowerCase();
+
+  // Voicing and articulation classes:
+  // k/g -> k
+  // s/z/j/sh -> s
+  // t/d/ch/ts -> t
+  // h/b/p/f/m -> p (bilabials / labials)
+  let consClass = cons;
+  if (/^[kg]/i.test(cons)) consClass = 'k';
+  else if (/^(s|z|j|sh)/i.test(cons)) consClass = 's';
+  else if (/^(t|d|ch|ts)/i.test(cons)) consClass = 't';
+  else if (/^[hbpfmtw]/i.test(cons)) consClass = 'p';
+
+  // Normalize long vowels: ou ≈ o, uu ≈ u, ei ≈ e, aa ≈ a, ii ≈ i
+  let normRime = rime
+    .replace(/ou$/, 'o')
+    .replace(/uu$/, 'u')
+    .replace(/ei$/, 'e')
+    .replace(/aa$/, 'a')
+    .replace(/ii$/, 'i');
+
+  return { cons, consClass, rime, normRime };
+}
+
+export function isReadingMatch(partOnList, kanjiOnList) {
+  if (!partOnList?.length || !kanjiOnList?.length) {
+    return { match: false, reason: 'Daftar on-yomi kosong' };
+  }
+  for (const pKana of partOnList) {
+    const pRomaji = kanaToRomaji(pKana);
+    const pSyl = parseSyllable(pRomaji);
+    for (const kKana of kanjiOnList) {
+      const kRomaji = kanaToRomaji(kKana);
+      const kSyl = parseSyllable(kRomaji);
+
+      const rimeMatch = (pSyl.normRime === kSyl.normRime) || (pSyl.rime === kSyl.rime);
+      const consMatch = (pSyl.consClass === kSyl.consClass);
+
+      if (rimeMatch && consMatch) {
+        return {
+          match: true,
+          pair: `${pKana} → ${kKana}`,
+          detail: `${pKana} (${pRomaji}) ≈ ${kKana} (${kRomaji})`
+        };
+      }
+    }
+  }
+  return { match: false, reason: 'Rima atau konsonan tidak berkerabat' };
+}
+
+export function computeReadingHint(part, kanji, kanjidicMap, matchResult = null) {
+  if (!part || !kanjidicMap.has(part)) return null;
+  const partEntry = kanjidicMap.get(part);
+  const kanjiEntry = kanjidicMap.get(kanji);
+  if (!partEntry?.on?.length || !kanjiEntry?.on?.length) return null;
+
+  if (matchResult?.match && matchResult.pair) {
+    const [pMatch, kMatch] = matchResult.pair.split(' → ');
+    return `${part} (${pMatch}) → ${kanji} (${kMatch})`;
+  }
+
+  const pOn = partEntry.on[0];
+  const kOn = kanjiEntry.on[0];
+  return `${part} (${pOn}) → ${kanji} (${kOn})`;
+}
+
+// -------------------------------------------------------------
+// Confidence Determination
+// -------------------------------------------------------------
+export function determineConfidence(entry, fact, { pictographsSet = new Set(), establishedSet = new Set(), manualEntriesMap = new Map() } = {}) {
+  const kanji = entry.kanji;
+  const isManual = manualEntriesMap.has(kanji);
+  const isPictograph = pictographsSet.has(kanji);
+  const isEstablished = establishedSet.has(kanji);
+
+  if (isManual) {
+    return manualEntriesMap.get(kanji).etymology_confidence || 'established';
+  }
+
+  // 'established' HANYA bila kanji ada di established.json, pictographs.json, atau manual_entries.json
+  if (isPictograph || isEstablished) {
     return 'established';
   }
 
@@ -51,6 +257,9 @@ export function determineConfidence(entry, fact, pictographsSet) {
   return 'traditional';
 }
 
+// -------------------------------------------------------------
+// Mnemonic Quality Verification
+// -------------------------------------------------------------
 export function checkMnemonicQuality(mnemonic, fact, entry) {
   const reasons = [];
   if (!mnemonic || !mnemonic.trim().startsWith('Cara mengingat:')) {
@@ -63,6 +272,11 @@ export function checkMnemonicQuality(mnemonic, fact, entry) {
     reasons.push(`Panjang mnemonic_id melebihi 40 kata (${wordCount} kata)`);
   }
 
+  // Tolak bila mnemonik menyatakan sesuatu "berasal dari..." atau "artinya awalnya..."
+  if (/(berasal dari|artinya awalnya|makna asalnya)/i.test(mnemonic)) {
+    reasons.push("Mnemonik dilarang memuat spekulasi asal-usul ('berasal dari...' atau 'artinya awalnya...')");
+  }
+
   const body = mnemonic.replace(/^Cara mengingat:\s*/i, '').trim();
 
   // 1. Cek keberadaan petunjuk bunyi
@@ -72,7 +286,6 @@ export function checkMnemonicQuality(mnemonic, fact, entry) {
 
   let hasSoundClue = soundClueRegex.test(body) || arrowRegex.test(body) || romajiInParens.test(body);
 
-  // Cek apakah menyebutkan on/kun reading kanji atau reading_hint
   const allReadings = [...(fact?.on || []), ...(fact?.kun || [])].map(r => r.replace(/[.\-].*$/, '').trim()).filter(Boolean);
   if (!hasSoundClue) {
     for (const r of allReadings) {
@@ -102,7 +315,6 @@ export function checkMnemonicQuality(mnemonic, fact, entry) {
   ];
 
   let hasImagery = false;
-  // Cek penyebutan komponen fisik atau meaning_id komponen
   for (const comp of entry.components || []) {
     if (comp.part && body.includes(comp.part)) {
       hasImagery = true;
@@ -130,16 +342,120 @@ export function checkMnemonicQuality(mnemonic, fact, entry) {
     }
   }
 
-  // 3. Deteksi apakah HANYA mengulang arti
+  // 3. Deteksi pengulangan arti (Tolak jika >= 70% kata mnemoniknya adalah kata dari arti kanji)
+  const meaningWords = new Set();
+  for (const m of fact?.meaning || []) {
+    for (const word of m.toLowerCase().split(/[\s,();/]+/)) {
+      if (word.length >= 3) meaningWords.add(word);
+    }
+  }
+  for (const w of fact?.words || []) {
+    if (w.meaning) {
+      for (const word of w.meaning.toLowerCase().split(/[\s,();/]+/)) {
+        if (word.length >= 3) meaningWords.add(word);
+      }
+    }
+  }
+
+  const mnemonicWords = body.toLowerCase().split(/[\s,().;:"'!?/-]+/).filter(w => w.length >= 3);
+  if (mnemonicWords.length > 0 && meaningWords.size > 0) {
+    let repeatedCount = 0;
+    for (const w of mnemonicWords) {
+      if (meaningWords.has(w)) repeatedCount++;
+    }
+    const ratio = repeatedCount / mnemonicWords.length;
+    if (ratio >= 0.70) {
+      reasons.push(`Mnemonik ditolak karena ${Math.round(ratio * 100)}% (>= 70%) katanya mengulang arti kanji`);
+    }
+  }
+
   if (!hasSoundClue && !hasImagery) {
-    reasons.push('Mnemonik hanya mengulang arti kanji tanpa memuat citra konkret atau petunjuk bunyi');
+    reasons.push('Mnemonik harus memuat citra konkret atau petunjuk bunyi');
   }
 
   return reasons;
 }
 
-export function validateEntry(entry, factsMap, pictographsSet) {
+// -------------------------------------------------------------
+// Entry Validator
+// -------------------------------------------------------------
+export function validateEntry(entry, factsMap, options = {}) {
+  // Dukung pemanggilan dengan options object maupun legacy 3rd param (pictographsSet)
+  let pictographsSet, establishedSet, manualEntriesMap, kanjidicMap, oldFormsMap;
+  if (options instanceof Set) {
+    pictographsSet = options;
+    establishedSet = loadEstablished();
+    manualEntriesMap = loadManualEntries();
+    kanjidicMap = getKanjidic();
+    oldFormsMap = loadOldForms();
+  } else {
+    pictographsSet = options.pictographsSet || loadPictographs();
+    establishedSet = options.establishedSet || loadEstablished();
+    manualEntriesMap = options.manualEntriesMap || loadManualEntries();
+    kanjidicMap = options.kanjidicMap || getKanjidic();
+    oldFormsMap = options.oldFormsMap || loadOldForms();
+  }
+
+  const kanji = entry.kanji;
+  const isManual = manualEntriesMap.has(kanji) || entry.source === 'manual';
+
+  // -----------------------------------------------------------
+  // A. Entri Manual: Menang langsung & lewati filter Gemini
+  // -----------------------------------------------------------
+  if (isManual) {
+    const manualData = manualEntriesMap.get(kanji) || entry;
+    const mReasons = [];
+    if (!entry.mnemonic_id || !entry.mnemonic_id.trim().startsWith('Cara mengingat:')) {
+      mReasons.push("mnemonic_id harus diawali dengan 'Cara mengingat:'");
+    }
+    const mWordCount = countWords(entry.mnemonic_id);
+    if (mWordCount > 40) {
+      mReasons.push(`Panjang mnemonic_id melebihi 40 kata (${mWordCount} kata)`);
+    }
+    const eWordCount = countWords(entry.etymology_id);
+    if (eWordCount > 50) {
+      mReasons.push(`Panjang etymology_id melebihi 50 kata (${eWordCount} kata)`);
+    }
+    if (!Array.isArray(entry.components)) {
+      mReasons.push("'components' harus berupa array");
+    }
+
+    const conf = entry.etymology_confidence || manualData.etymology_confidence || 'established';
+    const readingHint = entry.reading_hint || manualData.reading_hint || null;
+
+    if (mReasons.length > 0) {
+      return {
+        valid: false,
+        status: 'rejected',
+        reasons: mReasons,
+        confidence: conf,
+        source: 'manual',
+        reading_hint: readingHint,
+        reading_match: true
+      };
+    }
+
+    return {
+      valid: true,
+      status: 'approved',
+      reasons: [],
+      confidence: conf,
+      source: 'manual',
+      reading_hint: readingHint,
+      reading_match: true
+    };
+  }
+
+  // -----------------------------------------------------------
+  // B. Validasi Keluaran Gemini
+  // -----------------------------------------------------------
   const reasons = [];
+  let needsReview = false;
+
+  // Default claim_kind jika belum ada (untuk kompatibilitas test)
+  if (!entry.claim_kind) {
+    entry.claim_kind = 'structure';
+  }
 
   // 1. JSON valid & semua field wajib terisi
   const requiredFields = ['kanji', 'formation_type', 'claim_kind', 'components', 'etymology_id', 'mnemonic_id', 'note_id'];
@@ -150,11 +466,20 @@ export function validateEntry(entry, factsMap, pictographsSet) {
   }
 
   if (reasons.length > 0) {
-    return { valid: false, status: 'rejected', reasons, confidence: 'uncertain' };
+    return {
+      valid: false,
+      status: 'rejected',
+      reasons,
+      confidence: 'uncertain',
+      source: 'gemini',
+      reading_hint: null,
+      reading_match: null
+    };
   }
 
-  // 2. Cek kesesuaian komponen: harus ada di tree.flat_parts, KRADFILE, atau old_form
-  const fact = factsMap.get(entry.kanji);
+  const fact = factsMap.get(kanji);
+
+  // 2. Cek kesesuaian komponen terhadap pohon KanjiVG, KRADFILE, atau old_form
   const flatParts = new Set(fact?.flat_parts || []);
   const kradParts = new Set(fact?.components || []);
   const allowedParts = new Set([...flatParts, ...kradParts]);
@@ -162,11 +487,11 @@ export function validateEntry(entry, factsMap, pictographsSet) {
   if (fact?.old_form) {
     allowedParts.add(fact.old_form);
   }
-  if (fact?.phonetic_part) {
-    allowedParts.add(fact.phonetic_part);
-    const cleaned = fact.phonetic_part.replace(/[0-9V\/].*$/, '').trim();
-    if (cleaned) allowedParts.add(cleaned);
+  if (fact?.phon_hints) {
+    for (const h of fact.phon_hints) allowedParts.add(h);
   }
+
+  let phoneticComponent = null;
 
   if (!Array.isArray(entry.components) || entry.components.length === 0) {
     reasons.push(`'components' harus berupa array dan tidak boleh kosong`);
@@ -174,39 +499,68 @@ export function validateEntry(entry, factsMap, pictographsSet) {
     for (const comp of entry.components) {
       if (!comp.part) {
         reasons.push(`Komponen tanpa 'part'`);
-      } else if (!allowedParts.has(comp.part)) {
-        reasons.push(`Komponen '${comp.part}' tidak ada dalam flat_parts KanjiVG, KRADFILE, maupun old_form untuk kanji ${entry.kanji}`);
+        continue;
+      }
+      if (!allowedParts.has(comp.part)) {
+        reasons.push(`Komponen '${comp.part}' tidak ada dalam KRADFILE maupun flat_parts KanjiVG untuk kanji ${entry.kanji}`);
       }
       if (!comp.role || !['meaning', 'phonetic', 'shape'].includes(comp.role)) {
         reasons.push(`Role komponen '${comp.part}' tidak valid: ${comp.role}`);
       }
-      if (!comp.meaning_id || typeof comp.meaning_id !== 'string') {
-        reasons.push(`meaning_id komponen '${comp.part}' tidak valid`);
+
+      // Elemen tanpa arti: Komponen yang TIDAK ada sebagai kanji di KANJIDIC2 hanya boleh 'shape' tanpa meaning_id
+      const inKanjidic = kanjidicMap.has(comp.part);
+      if (!inKanjidic) {
+        if (comp.role !== 'shape') {
+          reasons.push(`Komponen '${comp.part}' bukan kanji di KANJIDIC2, hanya boleh berperan 'shape'`);
+        }
+        if (comp.meaning_id && comp.meaning_id.trim() !== '') {
+          reasons.push(`Komponen '${comp.part}' bukan kanji di KANJIDIC2, tidak boleh memiliki meaning_id`);
+        }
+      } else {
+        if (comp.role !== 'shape' && (!comp.meaning_id || typeof comp.meaning_id !== 'string')) {
+          reasons.push(`meaning_id komponen '${comp.part}' tidak valid`);
+        }
       }
 
-      // Jika komponen ini adalah phonetic_part dari fakta, periksa role-nya
-      if (fact?.phonetic_part) {
-        const isTargetPhon = (
-          comp.part === fact.phonetic_part ||
-          fact.phonetic_part.startsWith(comp.part) ||
-          comp.part === fact.phonetic_part.replace(/[0-9V\/].*$/, '').trim()
-        );
-        if (isTargetPhon && comp.role !== 'phonetic') {
-          reasons.push(`Komponen penanda bunyi '${comp.part}' diberi role '${comp.role}', wajib 'phonetic'`);
-        }
+      if (comp.role === 'phonetic') {
+        phoneticComponent = comp;
       }
     }
   }
 
-  // 3. Aturan phonetic_part: jika facts.phonetic_part ada, output WAJIB menyatakan bagian itu sebagai role 'phonetic' dan memuat reading_hint
-  if (fact?.phonetic_part) {
-    const hasPhoneticRole = (entry.components || []).some(c => c.role === 'phonetic');
-    if (!hasPhoneticRole) {
-      reasons.push(`facts.phonetic_part ada ('${fact.phonetic_part}'), tetapi tidak ada komponen ber-role 'phonetic'`);
+  // 3. Pagar Karakter CJK (Whitelist ketat untuk teks penjelasan Gemini)
+  const allowedCjkChars = new Set();
+  allowedCjkChars.add(kanji);
+  for (const p of fact?.flat_parts || []) {
+    for (const ch of p) allowedCjkChars.add(ch);
+  }
+  for (const c of fact?.components || []) {
+    for (const ch of c) allowedCjkChars.add(ch);
+  }
+  if (fact?.old_form) {
+    for (const ch of fact.old_form) allowedCjkChars.add(ch);
+  }
+  for (const w of fact?.words || []) {
+    if (w.jp) {
+      for (const ch of w.jp) {
+        if (/[\u4e00-\u9fff\u3400-\u4dbf]/.test(ch)) allowedCjkChars.add(ch);
+      }
     }
+  }
 
-    if (!entry.reading_hint || typeof entry.reading_hint !== 'string' || entry.reading_hint.trim().length === 0) {
-      reasons.push(`facts.phonetic_part ada ('${fact.phonetic_part}'), wajib menyertakan 'reading_hint'`);
+  const allGeminiTexts = [
+    { field: 'etymology_id', text: entry.etymology_id || '' },
+    { field: 'mnemonic_id', text: entry.mnemonic_id || '' },
+    { field: 'note_id', text: entry.note_id || '' }
+  ];
+
+  for (const { field, text } of allGeminiTexts) {
+    const cjkMatches = text.match(/[\u4e00-\u9fff\u3400-\u4dbf\u{20000}-\u{2a6df}]/gu) || [];
+    for (const ch of cjkMatches) {
+      if (!allowedCjkChars.has(ch)) {
+        reasons.push(`Karakter CJK '${ch}' pada field '${field}' tidak diizinkan (bukan kanji target, komponen pohon, KRADFILE, old_form, maupun kata konteks)`);
+      }
     }
   }
 
@@ -218,16 +572,10 @@ export function validateEntry(entry, factsMap, pictographsSet) {
     { regex: /pada zaman/i, name: 'frasa "pada zaman"' }
   ];
 
-  const textsToCheck = [
-    { name: 'etymology_id', text: entry.etymology_id || '' },
-    { name: 'mnemonic_id', text: entry.mnemonic_id || '' },
-    { name: 'note_id', text: entry.note_id || '' }
-  ];
-
-  for (const { name, text } of textsToCheck) {
+  for (const { field, text } of allGeminiTexts) {
     for (const { regex, name: patternName } of forbiddenPatterns) {
       if (regex.test(text)) {
-        reasons.push(`Field '${name}' mengandung teks terlarang: ${patternName}`);
+        reasons.push(`Field '${field}' mengandung teks terlarang: ${patternName}`);
       }
     }
   }
@@ -238,14 +586,51 @@ export function validateEntry(entry, factsMap, pictographsSet) {
     reasons.push(`Panjang etymology_id melebihi 50 kata (${etymologyWordCount} kata)`);
   }
 
-  // 6. Validasi kualitas mnemonik (tidak boleh hanya mengulang arti, maks 40 kata)
+  // 6. Larang klaim visual/gambar bila bukan di pictographs.json
+  const hasPictographClaim = /(digambarkan sebagai|melambangkan|berasal dari gambar)/i.test(entry.etymology_id || '');
+  if (hasPictographClaim && !pictographsSet.has(kanji)) {
+    reasons.push(`Klaim visual ('digambarkan sebagai' / 'melambangkan' / 'berasal dari gambar') dilarang karena kanji ${kanji} bukan anggota pictographs.json`);
+  }
+
+  // 7. Validasi kualitas mnemonik
   const mnemonicReasons = checkMnemonicQuality(entry.mnemonic_id, fact, entry);
   for (const r of mnemonicReasons) reasons.push(r);
 
-  // 7. Hitung keyakinan hasil skrip
-  const calculatedConfidence = determineConfidence(entry, fact, pictographsSet);
+  // 8. Evaluasi phonetic role & perhitungan reading_hint & reading_match dari skrip
+  let readingMatchResult = null;
+  let scriptReadingHint = null;
 
-  // Entri 'uncertain': tampilkan hanya struktur + reading_hint; dilarang klaim "berasal dari..."
+  if (phoneticComponent) {
+    const partChar = phoneticComponent.part;
+    const partInKanjidic = kanjidicMap.has(partChar);
+
+    if (!partInKanjidic) {
+      needsReview = true;
+      readingMatchResult = { match: false, reason: `Komponen phonetic '${partChar}' tidak ada di KANJIDIC2` };
+      reasons.push(`Komponen '${partChar}' ditandai phonetic tetapi tidak terdaftar di KANJIDIC2`);
+    } else {
+      const partOn = kanjidicMap.get(partChar)?.on || [];
+      const kanjiOn = fact?.on || kanjidicMap.get(kanji)?.on || [];
+      readingMatchResult = isReadingMatch(partOn, kanjiOn);
+      scriptReadingHint = computeReadingHint(partChar, kanji, kanjidicMap, readingMatchResult);
+
+      if (!readingMatchResult.match) {
+        needsReview = true;
+        reasons.push(`Klaim phonetic pada '${partChar}' tidak cocok rima bacaan on-yomi (${partOn.join(', ') || '-'} vs ${kanjiOn.join(', ') || '-'})`);
+      }
+    }
+  }
+
+  // 9. Kanji ber-old_form: tanpa entri manual status 'needs_review'
+  const hasOldForm = !!fact?.old_form || oldFormsMap.has(kanji);
+  if (hasOldForm) {
+    needsReview = true;
+    reasons.push(`Kanji memiliki old_form ('${fact?.old_form || oldFormsMap.get(kanji)}') tetapi tidak ada di manual_entries.json, wajib peninjauan manual`);
+  }
+
+  // 10. Hitung label keyakinan
+  const calculatedConfidence = determineConfidence(entry, fact, { pictographsSet, establishedSet, manualEntriesMap });
+
   if (calculatedConfidence === 'uncertain') {
     if (/berasal dari/i.test(entry.etymology_id || '')) {
       reasons.push("Entri berkeyakinan 'uncertain' dilarang memuat klaim 'berasal dari ...'");
@@ -255,19 +640,41 @@ export function validateEntry(entry, factsMap, pictographsSet) {
     }
   }
 
-  // Jika ada pelanggaran, status rejected
-  if (reasons.length > 0) {
-    return { valid: false, status: 'rejected', reasons, confidence: calculatedConfidence };
+  // Tolak bila ada pelanggaran fatal
+  // Pisahkan pelanggaran keras (rejection) vs penanda review lunak (needs_review)
+  const fatalReasons = reasons.filter(r => !r.includes('tidak cocok rima bacaan on-yomi') && !r.includes('wajib peninjauan manual'));
+
+  if (fatalReasons.length > 0) {
+    return {
+      valid: false,
+      status: 'rejected',
+      reasons: fatalReasons,
+      confidence: calculatedConfidence,
+      source: 'gemini',
+      reading_hint: scriptReadingHint,
+      reading_match: readingMatchResult ? readingMatchResult.match : null
+    };
   }
 
   let status = 'draft';
-  if (calculatedConfidence === 'uncertain' || entry.formation_type === 'unknown') {
+  if (needsReview || calculatedConfidence === 'uncertain' || entry.formation_type === 'unknown' || entry.claim_kind === 'unknown') {
     status = 'needs_review';
   }
 
-  return { valid: true, status, reasons: [], confidence: calculatedConfidence };
+  return {
+    valid: true,
+    status,
+    reasons: reasons,
+    confidence: calculatedConfidence,
+    source: 'gemini',
+    reading_hint: scriptReadingHint,
+    reading_match: readingMatchResult ? readingMatchResult.match : null
+  };
 }
 
+// -------------------------------------------------------------
+// Validation Runner
+// -------------------------------------------------------------
 export async function runValidation({ specificKanji = null, autoRetry = true } = {}) {
   if (!fs.existsSync(FACTS_FILE)) {
     throw new Error('facts.json tidak ditemukan!');
@@ -275,6 +682,18 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
   const factsList = JSON.parse(fs.readFileSync(FACTS_FILE, 'utf-8'));
   const factsMap = new Map(factsList.map(f => [f.kanji, f]));
   const pictographsSet = loadPictographs();
+  const establishedSet = loadEstablished();
+  const manualEntriesMap = loadManualEntries();
+  const kanjidicMap = getKanjidic();
+  const oldFormsMap = loadOldForms();
+
+  const validatorOpts = {
+    pictographsSet,
+    establishedSet,
+    manualEntriesMap,
+    kanjidicMap,
+    oldFormsMap
+  };
 
   if (!fs.existsSync(RAW_DIR)) {
     throw new Error('Folder out/raw tidak ditemukan!');
@@ -295,13 +714,16 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
     try {
       const rawContent = fs.readFileSync(path.resolve(RAW_DIR, file), 'utf-8');
       const entry = JSON.parse(rawContent);
-      const validation = validateEntry(entry, factsMap, pictographsSet);
+      const validation = validateEntry(entry, factsMap, validatorOpts);
 
       const fact = factsMap.get(entry.kanji);
       const fullEntry = {
         ...entry,
+        source: validation.source || entry.source || 'gemini',
         etymology_confidence: validation.confidence,
         status: validation.status,
+        reading_hint: validation.reading_hint || null,
+        reading_match: validation.reading_match ?? null,
         reasons: validation.reasons,
         facts: {
           meaning: fact?.meaning || [],
@@ -311,6 +733,7 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
           jlpt: fact?.jlpt ?? null,
           grade: fact?.grade ?? null,
           components: fact?.components || [],
+          phon_hints: fact?.phon_hints || [],
           phonetic_part: fact?.phonetic_part || null,
           flat_parts: fact?.flat_parts || [],
           old_form: fact?.old_form || null,
@@ -341,12 +764,15 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
         const rawFile = path.resolve(RAW_DIR, `${k}.json`);
         if (fs.existsSync(rawFile)) {
           const entry = JSON.parse(fs.readFileSync(rawFile, 'utf-8'));
-          const validation = validateEntry(entry, factsMap, pictographsSet);
+          const validation = validateEntry(entry, factsMap, validatorOpts);
           const fact = factsMap.get(entry.kanji);
           const fullEntry = {
             ...entry,
+            source: validation.source || entry.source || 'gemini',
             etymology_confidence: validation.confidence,
             status: validation.status,
+            reading_hint: validation.reading_hint || null,
+            reading_match: validation.reading_match ?? null,
             reasons: validation.reasons,
             facts: {
               meaning: fact?.meaning || [],
@@ -356,6 +782,7 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
               jlpt: fact?.jlpt ?? null,
               grade: fact?.grade ?? null,
               components: fact?.components || [],
+              phon_hints: fact?.phon_hints || [],
               phonetic_part: fact?.phonetic_part || null,
               flat_parts: fact?.flat_parts || [],
               old_form: fact?.old_form || null,
@@ -416,6 +843,9 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
   };
 }
 
+// -------------------------------------------------------------
+// Review Sample Table Generator
+// -------------------------------------------------------------
 export function generateReviewSample(entries, specificKanji = null) {
   let sampleEntries = entries;
   if (!specificKanji || specificKanji.length === 0) {
@@ -426,31 +856,70 @@ export function generateReviewSample(entries, specificKanji = null) {
     sampleEntries = shuffled.slice(0, 30);
   }
 
+  // Header sesuai Poin 6 & Poin E:
+  // status, sumber (manual/gemini), label keyakinan, reading_hint (dari skrip), reading_match, alasan penolakan
   let md = `# Sampel Peninjauan Kanji (${sampleEntries.length} Kanji)\n\n`;
-  md += `Tabel berikut disusun untuk ditinjau secara manual sebelum persetujuan akhir (status \`approved\`).\n\n`;
-  md += `| No | Kanji | Arti | Komponen | Bagian Bunyi | Bentuk Lama | Asal-usul (Etymology) | Claim Kind | Keyakinan | Cara Mengingat (Mnemonic) |\n`;
-  md += `|:---:|:---:|:---|:---|:---:|:---:|:---|:---:|:---:|:---|\n`;
+  md += `Dokumen ini disusun untuk ditinjau secara manual sebelum persetujuan akhir (\`approve.mjs\`).\n\n`;
+
+  // Ringkasan Status
+  const statusCounts = { approved: 0, needs_review: 0, draft: 0, rejected: 0 };
+  const sourceCounts = { manual: 0, gemini: 0 };
+  for (const e of sampleEntries) {
+    statusCounts[e.status] = (statusCounts[e.status] || 0) + 1;
+    const src = e.source || 'gemini';
+    sourceCounts[src] = (sourceCounts[src] || 0) + 1;
+  }
+
+  md += `### Ringkasan Jumlah Sampel:\n`;
+  md += `- **Total Sampel**: ${sampleEntries.length}\n`;
+  md += `- **Sumber**: Manual: ${sourceCounts.manual} | Gemini: ${sourceCounts.gemini}\n`;
+  md += `- **Status**: Approved: ${statusCounts.approved} | Needs Review: ${statusCounts.needs_review} | Draft: ${statusCounts.draft} | Rejected: ${statusCounts.rejected}\n\n`;
+
+  md += `| No | Kanji | Sumber | Status | Keyakinan | Reading Hint (Skrip) | Match | Komponen | Alasan Penolakan / Review | Asal-usul (Etymology) | Cara Mengingat (Mnemonic) |\n`;
+  md += `|:---:|:---:|:---:|:---:|:---:|:---|:---:|:---|:---|:---|:---|\n`;
 
   for (let i = 0; i < sampleEntries.length; i++) {
     const e = sampleEntries[i];
-    const meanings = (e.facts?.meaning || []).slice(0, 3).join(', ');
+    const source = e.source === 'manual' ? '**manual**' : 'gemini';
+    const status = `\`${e.status}\``;
+    const confidence = `\`${e.etymology_confidence || '-'}\``;
+    const readingHint = e.reading_hint ? `\`${e.reading_hint}\`` : '-';
+    const readingMatch = e.reading_match === true ? '✅' : (e.reading_match === false ? '❌' : '-');
     const comps = (e.components || []).map(c => `${c.part}(${c.role === 'phonetic' ? 'fonetik' : (c.role === 'meaning' ? 'makna' : 'bentuk')})`).join(' ');
-    const phonPart = e.facts?.phonetic_part || e.phonetic_part || '-';
-    const oldForm = e.facts?.old_form || e.old_form || '-';
-    const claimKind = e.claim_kind || '-';
-    const confidence = e.etymology_confidence || '-';
+    const reasons = (e.reasons && e.reasons.length > 0) ? e.reasons.join('; ') : '-';
     const cleanEtym = (e.etymology_id || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
     const cleanMnem = (e.mnemonic_id || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
 
-    md += `| ${i + 1} | **${e.kanji}** | ${meanings} | \`${comps}\` | \`${phonPart}\` | \`${oldForm}\` | ${cleanEtym} | \`${claimKind}\` | \`${confidence}\` | ${cleanMnem} |\n`;
+    md += `| ${i + 1} | **${e.kanji}** | ${source} | ${status} | ${confidence} | ${readingHint} | ${readingMatch} | \`${comps}\` | ${reasons} | ${cleanEtym} | ${cleanMnem} |\n`;
   }
 
-  md += `\n\n---\n*Gunakan perintah \`node scripts/kanji/approve.mjs --only <daftar kanji>\` untuk menyetujui hasil setelah tinjauan manual.*\n`;
+  md += `\n\n---\n### Laporan Khusus Komponen Fonetik (reading_match):\n`;
+  md += `| Kanji | Sumber | Komponen Fonetik | On-yomi Komponen | On-yomi Kanji | Match | Catatan |\n`;
+  md += `|:---:|:---:|:---:|:---|:---|:---:|:---|\n`;
+
+  const kanjidicMap = getKanjidic();
+  for (const e of sampleEntries) {
+    const phonComps = (e.components || []).filter(c => c.role === 'phonetic');
+    for (const pc of phonComps) {
+      const partOn = kanjidicMap.get(pc.part)?.on?.join(', ') || '-';
+      const kanjiOn = e.facts?.on?.join(', ') || kanjidicMap.get(e.kanji)?.on?.join(', ') || '-';
+      const matchSym = e.reading_match === true ? '✅ true' : (e.reading_match === false ? '❌ false' : '-');
+      let note = '';
+      if (e.kanji === '顔') note = 'Bentuk historis 彦 memberi bunyi gen → gan (頁 adalah semantik kepala)';
+      if (e.kanji === '強') note = 'Bentuk historis 弘/彊 (bukan 弓 kyū)';
+      md += `| **${e.kanji}** | ${e.source} | **${pc.part}** | \`${partOn}\` | \`${kanjiOn}\` | ${matchSym} | ${note} |\n`;
+    }
+  }
+
+  md += `\n---\n*Jangan menyetujui apa pun sebelum peninjauan selesai. Gunakan \`approve.mjs --only <daftar>\` hanya setelah ditinjau.*\n`;
 
   fs.writeFileSync(REVIEW_SAMPLE_FILE, md, 'utf-8');
   console.log(`📝 Sampel tinjauan ${sampleEntries.length} kanji disimpan ke: ${REVIEW_SAMPLE_FILE}`);
 }
 
+// -------------------------------------------------------------
+// CLI Arguments & Entrypoint
+// -------------------------------------------------------------
 export function parseCliArgs() {
   const args = process.argv.slice(2);
   let specificKanji = null;
@@ -483,9 +952,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   runValidation({ specificKanji, autoRetry }).then(stats => {
     console.log('\n📊 Ringkasan Hasil Validasi:');
     console.log(`Total entri: ${stats.total}`);
-    console.log(`- Draft: ${stats.draft}`);
-    console.log(`- Needs Review: ${stats.needs_review}`);
     console.log(`- Approved: ${stats.approved}`);
+    console.log(`- Needs Review: ${stats.needs_review}`);
+    console.log(`- Draft: ${stats.draft}`);
     console.log(`- Rejected: ${stats.rejected}`);
     if (stats.rejected > 0) {
       console.log('\nDaftar kanji rejected:');

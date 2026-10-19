@@ -1,22 +1,20 @@
 {
   "kanji": "散",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "unknown",
   "components": [
-    {
-      "part": "月",
-      "role": "meaning",
-      "meaning_id": "daging"
-    },
     {
       "part": "攵",
       "role": "meaning",
       "meaning_id": "tindakan"
     }
   ],
-  "etymology_id": "Kanji ini disusun dari komponen 月 dan 攵 untuk menyatakan tindakan menyebar.",
-  "mnemonic_id": "Cara mengingat: Tindakan (攵) membuat sesuatu berserakan.",
-  "note_id": "Kosakata Minna no Nihongo: 散歩します (さんぽします) = berjalan-jalan.",
   "phonetic_part": null,
-  "reading_hint": null
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan; bagian-bagian bentuk modernnya sulit dijelaskan secara pasti. Hafalkan sebagai bentuk.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: 攵 (tindakan) dengan bagian lain yang berhamburan ke mana-mana.",
+  "note_id": "",
+  "source": "manual"
 }

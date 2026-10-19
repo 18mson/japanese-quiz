@@ -6,17 +6,15 @@
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "kata"
+      "meaning_id": "say, word"
     },
     {
       "part": "吾",
       "role": "phonetic",
-      "meaning_id": "saya"
+      "meaning_id": "I, my"
     }
   ],
-  "etymology_id": "Kanji ini dibentuk dari 言 (kata) yang menunjukkan kategori makna bahasa dan 吾 sebagai pemberi bunyi.",
-  "mnemonic_id": "Cara mengingat: Kata-kata (言) yang diucapkan oleh saya (吾).",
-  "note_id": "Kosakata Minna no Nihongo: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang.",
-  "phonetic_part": "吾",
-  "reading_hint": "吾 go → 語 go"
+  "etymology_id": "Terdiri dari 言 (kata/bicara) dan 吾 sebagai petunjuk bunyi (on-yomi: ゴ).",
+  "mnemonic_id": "Cara mengingat: Berbicara (言) menggunakan bahasa (語) kita.",
+  "note_id": "Kosakata: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang."
 }

@@ -1,22 +1,25 @@
 {
   "kanji": "写",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "冖",
+      "part": "宀",
       "role": "meaning",
-      "meaning_id": "penutup"
+      "meaning_id": "atap"
     },
     {
-      "part": "与",
+      "part": "舄",
       "role": "phonetic",
-      "meaning_id": "memberi"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Bentuk lama: 寫. Kanji ini disederhanakan dari bentuk lamanya. Terdiri dari 冖 (penutup) dan 与 sebagai pemberi petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Menutup (冖) dan memberikan (与) hasil salinan atau foto.",
-  "note_id": "Kosakata Minna no Nihongo: 写真 (しゃしん) = foto",
-  "phonetic_part": "与/舄",
-  "reading_hint": "与 シャ → 写 シャ"
+  "phonetic_part": "舄",
+  "reading_hint": "舄 → 寫 しゃ",
+  "old_form": "寫",
+  "etymology_id": "Bentuk lama 寫 terdiri dari 宀 (atap) dan 舄 (penanda bunyi). Bentuk baru 写 adalah penyederhanaan; 与 di dalamnya bukan penanda bunyi.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tutup (冖) lalu beri (与) hasil salinan. Ini trik ingat saja.",
+  "note_id": "",
+  "source": "manual"
 }

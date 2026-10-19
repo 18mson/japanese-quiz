@@ -17,11 +17,11 @@ const lessonStore = useLessonStore();
 </script>
 
 <template>
-  <!-- Dropdown Chapter Picker Grid (Muncul ke bawah tepat di bawah header) -->
+  <!-- Dropdown Chapter Picker Grid (Muncul ke bawah tepat di bawah header, tetap terlihat saat halaman di-scroll) -->
   <Transition name="dropdown-slide">
     <div
       v-if="isOpen"
-      class="fixed sm:absolute top-[59px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
+      class="fixed top-[59px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
     >
       <div class="flex items-center justify-between pb-2.5 border-b border-gray-200/80 dark:border-slate-800 mb-2.5">
         <div class="flex items-center gap-2">

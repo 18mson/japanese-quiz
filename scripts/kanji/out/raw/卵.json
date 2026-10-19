@@ -1,22 +1,30 @@
 {
   "kanji": "卵",
   "formation_type": "unknown",
-  "claim_kind": "unknown",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "卯",
       "role": "shape",
-      "meaning_id": "bagian bentuk"
+      "meaning_id": ""
+    },
+    {
+      "part": "丶",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "丿",
+      "role": "shape",
+      "meaning_id": ""
     },
     {
       "part": "卩",
       "role": "shape",
-      "meaning_id": "bagian bentuk"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari kombinasi garis dan komponen bentuk.",
-  "mnemonic_id": "Cara mengingat: Cangkang telur (卵) yang retak di dalamnya.",
-  "note_id": "",
-  "phonetic_part": null,
-  "reading_hint": null
+  "etymology_id": "Disusun dari struktur komponen garis dan bentuk dasar.",
+  "mnemonic_id": "Cara mengingat: Bentuk cangkang telur (卵) yang berisi kehidupan baru.",
+  "note_id": ""
 }

@@ -6,17 +6,15 @@
     {
       "part": "足",
       "role": "meaning",
-      "meaning_id": "kaki"
+      "meaning_id": "leg, foot"
     },
     {
       "part": "兆",
       "role": "phonetic",
-      "meaning_id": "bagian bunyi"
+      "meaning_id": "portent, 10**12"
     }
   ],
-  "etymology_id": "Kanji ini terbentuk dari komponen meaning 足 (kaki) yang menunjukkan makna gerak fisik, serta bagian phonetic 兆 yang memberikan petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Menggunakan kaki (足) untuk melompat tinggi.",
-  "note_id": "",
-  "phonetic_part": "兆",
-  "reading_hint": "兆 チョウ → 跳 チョウ"
+  "etymology_id": "Terdiri dari kaki 足 dan 兆 sebagai petunjuk bunyi (on-yomi: チョウ).",
+  "mnemonic_id": "Cara mengingat: Menggunakan kaki (足) untuk melompat atau meloncat (跳ぶ).",
+  "note_id": "Kosakata: 跳ぶ (とぶ) = meloncat."
 }

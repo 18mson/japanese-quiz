@@ -1,22 +1,25 @@
 {
   "kanji": "顔",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "彦",
+      "part": "頁",
       "role": "meaning",
-      "meaning_id": "pria elok"
+      "meaning_id": "kepala"
     },
     {
-      "part": "頁",
+      "part": "彦",
       "role": "phonetic",
-      "meaning_id": "kepala"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan 彦 di kiri dan 頁 (kepala/halaman) di kanan sebagai penanda bunyi.",
-  "mnemonic_id": "Cara mengingat: Bagian kepala atau wajah (頁) seseorang.",
-  "note_id": "Kosakata Minna no Nihongo: 顔 (かお) = wajah, muka.",
-  "phonetic_part": "頁",
-  "reading_hint": "頁 gan → 顔 gan"
+  "phonetic_part": "彦",
+  "reading_hint": "彦 げん → 顔 がん",
+  "old_form": null,
+  "etymology_id": "頁 (kepala) menunjukkan bagian tubuh, sedangkan 彦 hanya memberi petunjuk bunyi (げん → がん).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: wajah ada di kepala (頁), dan 彦 mengingatkan bunyi 'gan'.",
+  "note_id": "",
+  "source": "manual"
 }

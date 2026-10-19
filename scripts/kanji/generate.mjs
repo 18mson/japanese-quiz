@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseKanjidic } from './facts.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,24 +35,32 @@ export function getApiKey() {
   throw new Error('GEMINI_API_KEY tidak ditemukan di .env atau environment variables!');
 }
 
+let kanjidicCache = null;
+function getKanjidic() {
+  if (!kanjidicCache) {
+    kanjidicCache = parseKanjidic();
+  }
+  return kanjidicCache;
+}
+
 export const SYSTEM_PROMPT = `Kamu menyusun catatan belajar kanji untuk pelajar Indonesia tingkat pemula (Minna no Nihongo).
 Aturan KETAT:
-1. Fakta yang diberikan adalah pohon komponen (KanjiVG), bagian bunyi (phonetic_part, bisa null), bentuk lama (old_form, bisa null), serta daftar KRADFILE. Gunakan komponen dari pohon KanjiVG; jangan menjelaskan lewat serpihan KRADFILE bila ada komponen induk di pohon. Tiap components[].part HARUS ada di salah satu: pohon KanjiVG, KRADFILE, atau old_form.
-2. Jika phonetic_part ada: jelaskan bahwa bagian itu menunjukkan bunyi, dan komponen lainnya menunjukkan kategori makna. Jangan mengarang makna untuk bagian bunyi. Beri role 'phonetic' pada komponen penanda bunyi tersebut, set formation_type menjadi 'phono_semantic', dan isi field reading_hint dengan pola bacaan bagian itu → bacaan kanji (mis. "交 こう → 校 こう").
-3. Jika old_form ada: sebutkan satu kalimat "Bentuk lama: X" dan jelaskan kanji modern sebagai penyederhanaan; JANGAN menebak bentuk lama bila old_form null.
-4. Jika kamu tidak tahu atau asal-usulnya tidak pasti, gunakan claim_kind "unknown" dan jelaskan hanya struktur komponen (JANGAN mengarang klaim "berasal dari..."). JANGAN menggunakan cerita folk (mis. "orang di bawah atap = menjual") sebagai penjelasan asal-usul.
-5. Jangan mengarang sejarah. Dilarang menyebut tahun, dinasti, tulang ramalan, nama ahli, atau pola "pada zaman".
-6. 'mnemonic_id' adalah alat bantu mengingat, harus diawali "Cara mengingat:", maks 40 kata, memuat minimal satu citra konkret ATAU petunjuk bunyi (mis. "交 (kō) memberi bunyi 'kō'"), dan DILARANG hanya mengulang arti kanji.
-7. Format keluaran JSON memuat field:
+1. Fakta yang diberikan adalah pohon komponen (KanjiVG), daftar on-yomi komponen dari KANJIDIC2, dan kata konteks. Gunakan komponen dari pohon KanjiVG. Tiap components[].part HARUS ada di pohon KanjiVG, KRADFILE, atau old_form.
+2. Penanda Bunyi (Phonetic): Komponen hanya boleh diberi role 'phonetic' bila on-yomi komponen tersebut cocok/berima dengan on-yomi kanji target (berdasarkan fakta on-yomi yang diberikan). Jangan mengarang on-yomi! Jika ber-role 'phonetic', isi formation_type 'phono_semantic'. Model DILARANG mengeluarkan field reading_hint (reading_hint dihitung skrip).
+3. Elemen Bukan Kanji: Komponen yang TIDAK ada di KANJIDIC2 hanya boleh diberi role 'shape' dengan meaning_id string kosong (""). Arti komponen hanya boleh diterjemahkan dari KANJIDIC2.
+4. Karakter CJK: Karakter kanji/CJK pada etymology_id, mnemonic_id, dan note_id hanya boleh karakter yang diizinkan (kanji target itu sendiri, komponen pohon KanjiVG, KRADFILE, atau karakter dalam kata kosakata konteks). Dilarang memakai Hanzi sederhana Tiongkok seperti 买, 关, dll.
+5. Bentuk Lama: Bila old_form ada, sebutkan singkat bentuk lamanya dan kanji modern sebagai penyederhanaan. JANGAN menebak bentuk lama bila old_form null.
+6. Ketidakpastian: Jika asal-usulnya tidak pasti atau kamu ragu, gunakan claim_kind "unknown" dan formation_type "unknown", jelaskan hanya struktur visual (DILARANG mengarang cerita/klaim asal-usul palsu).
+7. Larangan Sejarah & Klaim Gambar: Dilarang menyebut tahun, dinasti, tulang ramalan, atau pola "pada zaman". Dilarang mengklaim "digambarkan sebagai", "melambangkan", "berasal dari gambar" kecuali kanji piktograf benda murni.
+8. Mnemonic (mnemonic_id): Harus diawali "Cara mengingat:", maksimal 40 kata. Wajib memuat citra konkret ATAU petunjuk bunyi. Dilarang hanya mengulang arti kanji. Dilarang menggunakan kalimat "berasal dari..." atau "artinya awalnya...".
+9. Format keluaran JSON memuat field:
    - kanji: karakter kanji
    - formation_type: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown'
-   - phonetic_part: bagian bunyi (string jika ada, atau null jika tidak ada)
-   - reading_hint: petunjuk keterkaitan bacaan (string jika phonetic_part ada, mis. "交 こう → 校 こう", atau null jika tidak ada)
    - claim_kind: 'structure' | 'folk' | 'unknown'
    - components: array objek { part, role: 'meaning' | 'phonetic' | 'shape', meaning_id }
-   - etymology_id: penjelasan asal-usul/hubungan komponen secara ringkas (maks 50 kata). Jika claim_kind "unknown", jelaskan hanya struktur komponen dan petunjuk bacaan bila ada.
-   - mnemonic_id: jembatan keledai dimulai dengan "Cara mengingat:" (maks 40 kata)
-   - note_id: catatan tambahan bila relevan, atau string kosong jika tidak ada.
+   - etymology_id: penjelasan struktur / asal-usul ringkas (maks 50 kata).
+   - mnemonic_id: jembatan keledai diawali "Cara mengingat:" (maks 40 kata).
+   - note_id: catatan tambahan atau string kosong.
 Semua teks dalam bahasa Indonesia yang sederhana.`;
 
 export const RESPONSE_SCHEMA = {
@@ -64,8 +73,6 @@ export const RESPONSE_SCHEMA = {
         type: 'STRING',
         enum: ['pictograph', 'ideograph_simple', 'compound_meaning', 'phono_semantic', 'unknown']
       },
-      phonetic_part: { type: 'STRING', nullable: true },
-      reading_hint: { type: 'STRING', nullable: true },
       claim_kind: {
         type: 'STRING',
         enum: ['structure', 'folk', 'unknown']
@@ -104,7 +111,6 @@ function formatKanjiVgTree(node, depth = 0) {
   const info = [];
   if (node.element) info.push(`elemen: ${node.element}`);
   if (node.original) info.push(`asli: ${node.original}`);
-  if (node.phon) info.push(`bunyi (phon): ${node.phon}`);
   if (node.position) info.push(`posisi: ${node.position}`);
 
   let res = `${indent}- ${info.join(', ') || 'grup'}\n`;
@@ -115,6 +121,7 @@ function formatKanjiVgTree(node, depth = 0) {
 }
 
 export function buildUserPrompt(batchItems) {
+  const kdict = getKanjidic();
   let prompt = `Susun catatan belajar untuk ${batchItems.length} kanji berikut berdasarkan fakta yang tersedia:\n\n`;
 
   for (let i = 0; i < batchItems.length; i++) {
@@ -124,11 +131,34 @@ export function buildUserPrompt(batchItems) {
     prompt += `On: ${(item.on || []).join(', ') || '-'}\n`;
     prompt += `Kun: ${(item.kun || []).join(', ') || '-'}\n`;
     prompt += `Goresan: ${item.stroke_count ?? '-'}\n`;
-    prompt += `Bagian Bunyi (phonetic_part): ${item.phonetic_part ? item.phonetic_part : 'null (tidak ada)'}\n`;
     prompt += `Bentuk Lama (old_form): ${item.old_form ? item.old_form : 'null (tidak ada)'}\n`;
     prompt += `Komponen KanjiVG Flat: ${(item.flat_parts || []).join(', ') || '-'}\n`;
     prompt += `Pohon Struktur KanjiVG:\n${formatKanjiVgTree(item.tree)}`;
     prompt += `Komponen KRADFILE: ${(item.components || []).join(', ') || '-'}\n`;
+
+    // Berikan daftar on-yomi tiap komponen dari KANJIDIC2
+    const compReadings = [];
+    for (const p of item.flat_parts || []) {
+      if (p === item.kanji) continue;
+      const dictEntry = kdict.get(p);
+      if (dictEntry) {
+        const onStr = dictEntry.on?.length ? `on: ${dictEntry.on.join(', ')}` : 'on: -';
+        const kunStr = dictEntry.kun?.length ? `kun: ${dictEntry.kun.join(', ')}` : '';
+        const mStr = dictEntry.meaning?.length ? `arti: ${dictEntry.meaning.slice(0, 2).join(', ')}` : '';
+        compReadings.push(`${p} (${[onStr, kunStr, mStr].filter(Boolean).join('; ')})`);
+      } else {
+        compReadings.push(`${p} (komponen non-KANJIDIC2, role hanya boleh 'shape' tanpa meaning_id)`);
+      }
+    }
+    prompt += `Data Komponen & On-yomi KANJIDIC2:\n`;
+    if (compReadings.length === 0) {
+      prompt += `  - (tidak ada sub-komponen terpisah)\n`;
+    } else {
+      for (const cr of compReadings) {
+        prompt += `  - ${cr}\n`;
+      }
+    }
+
     prompt += `Kosakata proyek Minna no Nihongo:\n`;
     const sampleWords = (item.words || []).slice(0, 3);
     if (sampleWords.length === 0) {
@@ -251,9 +281,38 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
     targetFacts = allFacts.filter(f => filterSet.has(f.kanji));
   }
 
-  // Filter kanji yang belum digenerate (idempoten & resumable)
+  // Load manual entries
+  const manualFile = path.resolve(__dirname, 'data/manual_entries.json');
+  let manualEntriesMap = new Map();
+  if (fs.existsSync(manualFile)) {
+    try {
+      const mData = JSON.parse(fs.readFileSync(manualFile, 'utf-8'));
+      const entries = mData.entries || (Array.isArray(mData) ? mData : []);
+      for (const e of entries) {
+        if (e.kanji) manualEntriesMap.set(e.kanji, e);
+      }
+    } catch (e) {
+      console.warn('Gagal membaca manual_entries.json:', e.message);
+    }
+  }
+
+  // Tulis kanji manual langsung ke out/raw/{kanji}.json jika masuk dalam target
+  for (const item of targetFacts) {
+    if (manualEntriesMap.has(item.kanji)) {
+      const manEntry = manualEntriesMap.get(item.kanji);
+      const rawFile = path.resolve(RAW_DIR, `${item.kanji}.json`);
+      fs.writeFileSync(rawFile, JSON.stringify({ ...manEntry, source: 'manual' }, null, 2), 'utf-8');
+      console.log(`📌 Kanji [${item.kanji}] disimpan langsung dari manual_entries.json (source: manual)`);
+    }
+  }
+
+  // Filter kanji yang belum digenerate (idempoten & resumable, lewati entri manual)
   const pendingFacts = [];
   for (const item of targetFacts) {
+    if (manualEntriesMap.has(item.kanji)) {
+      // Entri manual melewati Gemini sepenuhnya
+      continue;
+    }
     const rawFile = path.resolve(RAW_DIR, `${item.kanji}.json`);
     if (overwrite || !fs.existsSync(rawFile)) {
       pendingFacts.push(item);
@@ -261,8 +320,9 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
   }
 
   console.log(`📌 Total target kanji: ${targetFacts.length}`);
+  console.log(`📌 Entri manual (bypass Gemini): ${targetFacts.filter(t => manualEntriesMap.has(t.kanji)).length}`);
   console.log(`📌 Sudah ada di out/raw/: ${targetFacts.length - pendingFacts.length}`);
-  console.log(`📌 Perlu digenerate: ${pendingFacts.length}`);
+  console.log(`📌 Perlu digenerate lewat Gemini: ${pendingFacts.length}`);
 
   if (pendingFacts.length === 0) {
     console.log('✨ Semua kanji sudah digenerate! Tidak ada tugas pending.');
