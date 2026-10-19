@@ -23,11 +23,16 @@ const emit = defineEmits<{
 
 const lessonStore = useLessonStore();
 
+const isCategoryEmpty = computed(() => {
+  return (props.activeTabInfo.count ?? 0) === 0;
+});
+
 const isCompleted = computed(() => {
   return lessonStore.isCategoryCompleted(props.lessonNumber, props.activeTab);
 });
 
 const handleToggle = () => {
+  if (isCategoryEmpty.value) return;
   lessonStore.toggleCategoryCompletion(props.lessonNumber, props.activeTab);
 };
 
@@ -53,7 +58,7 @@ const nextTab = computed<HandbookTabItem | null>(() => {
 });
 
 const firstUncompletedTab = computed<HandbookTabItem | null>(() => {
-  return props.tabs.find(t => !lessonStore.isCategoryCompleted(props.lessonNumber, t.id)) || null;
+  return props.tabs.find(t => (t.count ?? 0) > 0 && !lessonStore.isCategoryCompleted(props.lessonNumber, t.id)) || null;
 });
 
 const handleNextAction = () => {
@@ -74,7 +79,20 @@ const handleNextAction = () => {
     <!-- Teks Keterangan (Di Kiri Tombol pada Desktop, Tengah pada Mobile) -->
     <div class="text-center sm:text-right px-2 sm:px-0">
       <div 
-        v-if="isCompleted" 
+        v-if="isCategoryEmpty"
+        class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400"
+      >
+        <Trophy v-if="isChapterFullyCompleted" class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
+        <CheckCircle2 v-else class="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+        <span>
+          {{ isChapterFullyCompleted 
+            ? `Semua materi Bab ${lessonNumber} selesai! (${chapterStats.completed}/${chapterStats.total})` 
+            : `Kategori ini tidak ada materi khusus (otomatis selesai).` 
+          }}
+        </span>
+      </div>
+      <div 
+        v-else-if="isCompleted" 
         class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400"
       >
         <Trophy v-if="isChapterFullyCompleted" class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" />
@@ -94,10 +112,11 @@ const handleNextAction = () => {
       </p>
     </div>
 
-    <!-- Tombol Aksi (Rata Kanan pada Desktop, Maksimal 2 Tombol, Tombol Lanjut HANYA Muncul Saat Sudah Dicentang) -->
+    <!-- Tombol Aksi (Rata Kanan pada Desktop, Maksimal 2 Tombol) -->
     <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto shrink-0">
-      <!-- 1. Tombol Centang: Tandai Sudah Dipelajari / Sudah Dimengerti -->
+      <!-- 1. Tombol Centang (HANYA MUNCUL JIKA KATEGORI ADA MATERINYA) -->
       <button
+        v-if="!isCategoryEmpty"
         type="button"
         @click="handleToggle"
         :class="[
@@ -112,10 +131,10 @@ const handleNextAction = () => {
         <span>{{ isCompleted ? 'Sudah Dimengerti' : 'Tandai Sudah Dipelajari' }}</span>
       </button>
 
-      <!-- 2. Tombol Lanjut (HANYA MUNCUL KETIKA SUDAH DICENTANG) -->
+      <!-- 2. Tombol Lanjut (LANGSUNG MUNCUL JIKA KATEGORI KOSONG, ATAU JIKA SUDAH DICENTANG) -->
       <Transition name="fade-slide">
         <button
-          v-if="isCompleted"
+          v-if="isCompleted || isCategoryEmpty"
           type="button"
           @click="handleNextAction"
           :class="[

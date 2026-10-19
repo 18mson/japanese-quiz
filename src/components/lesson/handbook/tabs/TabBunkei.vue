@@ -2,7 +2,7 @@
 import { Search, Lightbulb } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { BunkeiItem } from '../../../../data/lessonGrammarBook';
-import { parseFormulaTokens } from '../utils';
+import { parseFormulaTokens, getBunkeiTitle } from '../utils';
 
 defineProps<{
   items: BunkeiItem[];
@@ -21,19 +21,14 @@ defineProps<{
       :key="item.id"
       class="bg-white dark:bg-slate-850/90 border border-gray-200/90 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-500/40 rounded-3xl p-4 sm:p-6 shadow-xs dark:shadow-md transition flex flex-col gap-3.5"
     >
-      <!-- Pattern & Formula Badge -->
-      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-gray-100 dark:border-slate-800/80">
-        <div class="flex items-center gap-2">
-          <span class="w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200/80 dark:border-indigo-500/30 flex items-center justify-center font-bold text-xs">
-            #{{ item.pointNumber }}
-          </span>
-          <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100 font-jp">
-            {{ item.pattern }}
-          </h2>
-        </div>
-        <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/50">
-          {{ item.meaning }}
+      <!-- Pattern Title Header -->
+      <div class="flex items-center gap-2.5 pb-3 border-b border-gray-100 dark:border-slate-800/80">
+        <span class="w-7 h-7 rounded-xl bg-indigo-50 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 border border-indigo-200/80 dark:border-indigo-500/30 flex items-center justify-center font-bold text-xs shrink-0">
+          #{{ item.pointNumber }}
         </span>
+        <h2 class="text-base sm:text-lg font-black text-slate-900 dark:text-slate-100">
+          {{ getBunkeiTitle(item) }}
+        </h2>
       </div>
 
       <!-- Formula Visual Box -->

@@ -72,7 +72,7 @@ const quizStore = useQuizStore();
         <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
           Tantangan Harian (Audio & Suara)
         </span>
-        <span v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" class="text-amber-600 dark:text-amber-400 font-bold">
+        <span v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" class="text-emerald-600 dark:text-emerald-400 font-bold">
           Wave: {{ currentHitunganWave.title }} • {{ selectedHitunganDirection === 'number_to_kana' ? 'Ketik Kana' : 'Numpad Touch' }}
         </span>
         <span v-else class="text-slate-400 font-bold">
@@ -88,11 +88,15 @@ const quizStore = useQuizStore();
             ? 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25'
             : activeModeId === 'daily'
               ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-indigo-800 hover:from-amber-500 hover:to-indigo-700 shadow-amber-500/25'
-              : (activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType))
-                ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500 hover:from-amber-400 hover:to-orange-400 shadow-amber-500/25 text-slate-950 font-black'
-                : characterType === 'renshuu'
-                  ? 'bg-gradient-to-r from-aizome via-slate-800 to-aizome-hover hover:from-aizome-hover hover:to-slate-900 dark:from-torii dark:via-rose-600 dark:to-amber-700 shadow-aizome/20 dark:shadow-torii/25'
-                  : 'bg-aizome hover:bg-aizome-hover dark:bg-torii dark:hover:bg-torii-hover dark:shadow-torii/30 shadow-aizome/20',
+              : activeModeId === 'lainnya'
+                ? 'bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white shadow-emerald-600/30'
+                : activeModeId === 'kanji'
+                  ? 'bg-gradient-to-r from-matcha-dark via-matcha to-emerald-700 hover:from-matcha hover:to-emerald-600 text-white shadow-emerald-600/25'
+                  : characterType === 'renshuu'
+                    ? 'bg-gradient-to-r from-aizome via-slate-800 to-aizome-hover hover:from-aizome-hover hover:to-slate-900 dark:from-torii dark:via-rose-600 dark:to-amber-700 shadow-aizome/20 dark:shadow-torii/25'
+                    : activeModeId === 'kotoba'
+                      ? 'bg-aizome hover:bg-aizome-hover dark:bg-gradient-to-r dark:from-amber-600 dark:via-orange-600 dark:to-rose-700 dark:hover:from-amber-500 dark:hover:to-rose-600 text-white shadow-aizome/20 dark:shadow-amber-500/25'
+                      : 'bg-aizome hover:bg-aizome-hover dark:bg-torii dark:hover:bg-torii-hover dark:shadow-torii/30 shadow-aizome/20',
           isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-aizome/60 dark:ring-torii-light/60 shadow-lg' : ''
         ]"
         @click="emit('interact'); emit('start');"
@@ -114,9 +118,9 @@ const quizStore = useQuizStore();
             <span>Mulai Latihan Harian</span>
             <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </div>
-          <div v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-slate-950">
+          <div v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" key="hitungan" class="flex items-center justify-center gap-2 w-full font-black text-white">
             <span>Mulai: {{ currentHitunganWave.shortTitle }} ({{ selectedHitunganDirection === 'number_to_kana' ? 'Angka ➔ Kana' : 'Kana ➔ Angka' }})</span>
-            <ArrowRight class="w-5 h-5 sm:w-6 sm:h-6 text-slate-950" />
+            <ArrowRight class="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div v-else-if="characterType === 'renshuu'" key="renshuu" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Sesi Berikutnya (10 Soal)</span>

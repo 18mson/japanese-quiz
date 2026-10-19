@@ -115,7 +115,7 @@ watch(() => props.selectedTab, () => {
 </script>
 
 <template>
-  <div class="bg-gradient-to-r from-amber-50/80 via-orange-50/60 to-rose-50/80 dark:bg-none dark:bg-slate-900 border border-amber-300/80 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
+  <div class="bg-gradient-to-r from-emerald-50/80 via-teal-50/60 to-emerald-50/80 dark:bg-none dark:bg-slate-900 border border-emerald-300/80 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
     <!-- Wave Chips Selector with Prev/Next Navigation + Pattern Modal Trigger -->
     <div class="flex items-center gap-1 sm:gap-1.5 w-full">
       <!-- Prev Button -->
@@ -124,7 +124,7 @@ watch(() => props.selectedTab, () => {
         type="button"
         @click.stop="prevWaves"
         :disabled="!canPrevWaves"
-        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-amber-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+        class="p-2 sm:p-2 rounded-xl border border-emerald-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-emerald-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-emerald-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
         title="Level Sebelumnya"
       >
         <ChevronLeft class="w-3.5 h-3.5" />
@@ -140,8 +140,8 @@ watch(() => props.selectedTab, () => {
           :class="[
             'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
             selectedWaveKey === wave.wave_key
-              ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 font-black shadow-xs scale-[1.02]'
-              : 'bg-white/85 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-amber-200/60 dark:border-slate-700/80'
+              ? 'bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 text-white border-emerald-500 font-black shadow-xs scale-[1.02]'
+              : 'bg-white/85 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-emerald-200/60 dark:border-slate-700/80'
           ]"
         >
           <span class="truncate font-semibold text-[11px] sm:text-xs">
@@ -151,7 +151,7 @@ watch(() => props.selectedTab, () => {
           <CheckCircle2 
             v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen" 
             class="w-3.5 h-3.5 shrink-0" 
-            :class="selectedWaveKey === wave.wave_key ? 'text-slate-950' : 'text-emerald-500'" 
+            :class="selectedWaveKey === wave.wave_key ? 'text-white' : 'text-emerald-500'" 
           />
         </button>
       </div>
@@ -162,41 +162,41 @@ watch(() => props.selectedTab, () => {
         type="button"
         @click.stop="nextWaves"
         :disabled="!canNextWaves"
-        class="p-2 sm:p-2 rounded-xl border border-amber-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-amber-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-amber-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+        class="p-2 sm:p-2 rounded-xl border border-emerald-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/90 text-emerald-900 dark:text-slate-200 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-emerald-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
         title="Level Berikutnya"
       >
         <ChevronRight class="w-3.5 h-3.5" />
       </button>
 
-      <div class="w-px h-6 bg-amber-200 dark:bg-slate-800 shrink-0 mx-0.5"></div>
+      <div class="w-px h-6 bg-emerald-200 dark:bg-slate-800 shrink-0 mx-0.5"></div>
 
       <!-- Preview Pattern Button -->
       <button
         type="button"
         @click.stop="emit('openTutorial', currentWave)"
-        class="py-2 px-2.5 sm:px-3 rounded-xl bg-white/90 dark:bg-slate-800/90 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-slate-700 text-xs font-bold transition hover:bg-amber-100 dark:hover:bg-slate-700 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
+        class="py-2 px-2.5 sm:px-3 rounded-xl bg-white/90 dark:bg-slate-800/90 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-slate-700 text-xs font-bold transition hover:bg-emerald-100 dark:hover:bg-slate-700 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
         title="Buka Penjelasan Pola & Pengecualian"
       >
-        <BookOpen class="w-3.5 h-3.5 text-amber-500" />
+        <BookOpen class="w-3.5 h-3.5 text-emerald-600" />
         <span class="whitespace-nowrap hidden sm:inline">Lihat Pola</span>
         <span class="whitespace-nowrap sm:hidden">Pola</span>
       </button>
     </div>
 
     <!-- Direction Selector -->
-    <div class="flex items-center justify-between pt-1 border-t border-amber-200/60 dark:border-slate-800 flex-wrap gap-1.5">
-      <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 dark:text-slate-400">
+    <div class="flex items-center justify-between pt-1 border-t border-emerald-200/60 dark:border-slate-800 flex-wrap gap-1.5">
+      <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-900 dark:text-slate-400">
         Arah Latihan:
       </span>
 
-      <div class="flex items-center gap-1 bg-white/70 dark:bg-slate-950/80 p-0.5 rounded-xl border border-amber-200 dark:border-slate-800">
+      <div class="flex items-center gap-1 bg-white/70 dark:bg-slate-950/80 p-0.5 rounded-xl border border-emerald-200 dark:border-slate-800">
         <button
           type="button"
           @click.stop="selectDirection('number_to_kana')"
           :class="[
             'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
             direction === 'number_to_kana'
-              ? 'bg-amber-500 text-slate-950 font-black shadow-2xs'
+              ? 'bg-emerald-600 text-white font-black shadow-2xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           ]"
         >
@@ -208,7 +208,7 @@ watch(() => props.selectedTab, () => {
           :class="[
             'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
             direction === 'kana_to_number'
-              ? 'bg-amber-500 text-slate-950 font-black shadow-2xs'
+              ? 'bg-emerald-600 text-white font-black shadow-2xs'
               : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
           ]"
         >

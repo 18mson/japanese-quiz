@@ -79,10 +79,26 @@ export const useLessonStore = defineStore('lesson', () => {
   }
 
   // ── Completion Helper Methods ─────────────────────────────
+  const isCategoryEmpty = (lessonNumber: number, categoryId: string): boolean => {
+    const ch = getLessonChapterData(lessonNumber);
+    if (categoryId === 'bunkei') return (ch?.bunkei?.length || 0) === 0;
+    if (categoryId === 'particles') return (ch?.particles?.length || 0) === 0;
+    if (categoryId === 'vocab') {
+      const vocabCount = wordsData.filter(w => w.lesson === `Pelajaran ${lessonNumber}`).length;
+      return vocabCount === 0;
+    }
+    if (categoryId === 'phrases') {
+      const phrasesCount = wordsData.filter(w => w.lesson === `Pelajaran ${lessonNumber}` && (w.category_word === 'Ungkapan' || w.category_word === 'Kata Seru')).length;
+      return phrasesCount === 0;
+    }
+    if (categoryId === 'tables') return (ch?.tables?.length || 0) === 0;
+    return false;
+  };
+
   const isLessonVocabAutoCompleted = (lessonNumber: number): boolean => {
     const lessonKey = `Pelajaran ${lessonNumber}`;
     const words = wordsData.filter(w => w.lesson === lessonKey);
-    if (words.length === 0) return false;
+    if (words.length === 0) return true;
     const masteryStore = useMasteryStore();
     return words.every(w => {
       const streak = masteryStore.getMasteryStreak(w.character);
@@ -91,6 +107,10 @@ export const useLessonStore = defineStore('lesson', () => {
   };
 
   const isCategoryCompleted = (lessonNumber: number, categoryId: string): boolean => {
+    // Kategori tanpa konten otomatis dianggap sudah selesai / dimengerti
+    if (isCategoryEmpty(lessonNumber, categoryId)) {
+      return true;
+    }
     const key = `${lessonNumber}_${categoryId}`;
     if (completedCategories.value[key] !== undefined) {
       return completedCategories.value[key];
@@ -215,6 +235,7 @@ export const useLessonStore = defineStore('lesson', () => {
     showLessonMaterial,
     isLessonMaterialCompleted,
     completedCategories,
+    isCategoryEmpty,
     isCategoryCompleted,
     setCategoryCompleted,
     toggleCategoryCompletion,

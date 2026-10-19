@@ -12,6 +12,7 @@ export interface BunkeiExample {
 export interface BunkeiItem {
   id: string;
   pointNumber: number;
+  title?: string;
   pattern: string;
   formula: string;
   meaning: string;
