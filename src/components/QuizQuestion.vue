@@ -93,7 +93,7 @@ const instructionText = computed(() => {
             {{ character }}
           </span>
           
-          <!-- Interactive Hints (Only for Words Quiz when not answered yet) -->
+          <!-- Interactive Hints (Only for Words when not answered yet) -->
           <div v-if="isWord" class="mt-2.5 flex gap-2 flex-wrap justify-center items-center min-h-[28px]">
             <template v-if="quizStore.selectedAnswer === null">
               <!-- Reading Hint Button/Pill -->

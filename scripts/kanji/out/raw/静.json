@@ -4,42 +4,22 @@
   "components": [
     {
       "part": "青",
+      "role": "meaning",
+      "meaning_id": "biru"
+    },
+    {
+      "part": "争",
       "role": "phonetic",
-      "meaning_id": "blue"
-    },
-    {
-      "part": "月",
-      "role": "meaning",
-      "meaning_id": "bulan"
-    },
-    {
-      "part": "土",
-      "role": "meaning",
-      "meaning_id": "tanah"
-    },
-    {
-      "part": "亅",
-      "role": "shape",
-      "meaning_id": "kait"
-    },
-    {
-      "part": "亠",
-      "role": "shape",
-      "meaning_id": "tutup"
-    },
-    {
-      "part": "勹",
-      "role": "shape",
-      "meaning_id": "bungkus"
-    },
-    {
-      "part": "ヨ",
-      "role": "shape",
-      "meaning_id": "bentuk"
+      "meaning_id": "bertengkar"
     }
   ],
-  "etymology_id": "Menggunakan komponen biru/tenang untuk menyampaikan suasana sunyi.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Suasana malam saat bulan bersinar di tanah terasa sangat tenang dan sunyi.",
-  "note_id": "Digunakan untuk keadaan yang sunyi atau tenang."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "靜",
+  "etymology_id": "Bentuk lama 靜 = 青 + 爭; menurut kamus kuno 爭 memberi bunyi dan 青 bagian lainnya. 静 menyederhanakan 爭 menjadi 争.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: langit biru (青) setelah pertengkaran (争) mereda: suasana tenang (静か).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,14 @@
 {
   "kanji": "辞",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "辛",
-      "role": "phonetic",
-      "meaning_id": "shin"
-    },
-    {
-      "part": "舌",
-      "role": "meaning",
-      "meaning_id": "lidah"
-    }
-  ],
-  "etymology_id": "Gabungan lidah (舌) dan komponen bunyi untuk menyatakan kata atau pengunduran diri.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "辭",
+  "etymology_id": "Bentuk lama 辭 (𤔔 + 辛) berarti kata-kata atau mengundurkan diri. 辞 mengganti 𤔔 dengan 舌 (lidah) sebagai penyederhanaan.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Menggunakan lidah (舌) untuk mengucapkan kata-kata pengunduran diri (辞).",
-  "note_id": "Arti dasar: resign, word, term."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: lidah (舌) yang pedas (辛) mengucap kata-kata (辞).",
+  "note_id": "",
+  "source": "manual"
 }

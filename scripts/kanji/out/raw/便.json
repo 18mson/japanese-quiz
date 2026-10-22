@@ -1,25 +1,20 @@
 {
   "kanji": "便",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
     },
     {
-      "part": "日",
-      "role": "meaning",
-      "meaning_id": "matahari"
-    },
-    {
-      "part": "田",
-      "role": "meaning",
-      "meaning_id": "sawah"
+      "part": "更",
+      "role": "phonetic",
+      "meaning_id": "grow late, night watch"
     }
   ],
-  "etymology_id": "Terdiri dari komponen orang dan bagian bunyi.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Orang pergi ke sawah setiap hari membawa surat untuk kemudahan.",
-  "note_id": "Digunakan dalam kata 便利な (praktis) dan 郵便局 (kantor pos)."
+  "etymology_id": "Gabungan orang dan 更 yang memberikan bunyi ベン.",
+  "mnemonic_id": "Cara mengingat: Orang yang membuat urusan menjadi praktis.",
+  "note_id": ""
 }

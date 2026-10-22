@@ -1,25 +1,20 @@
 {
   "kanji": "華",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺾",
+      "part": "艹",
       "role": "meaning",
-      "meaning_id": "bunga atau tanaman"
+      "meaning_id": "grass, radical number 140"
     },
     {
-      "part": "一",
+      "part": "丨",
       "role": "shape",
-      "meaning_id": "garis cabang"
-    },
-    {
-      "part": "｜",
-      "role": "shape",
-      "meaning_id": "batang tegak"
+      "meaning_id": "number one, line"
     }
   ],
-  "etymology_id": "Menampilkan keindahan rimbunnya cabang ranting serta mahkota bunga yang sedang mekar berseri.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Bunga (⺾) di atas batang dahan yang mekar megah dan berkilau.",
-  "note_id": "Dipakai dalam seni merangkai bunga Jepang 華道 (かどう)."
+  "etymology_id": "Gabungan radikal tanaman (艹) dan garis (丨) yang melambangkan kemegahan tanaman atau bunga.",
+  "mnemonic_id": "Cara mengingat: Tanaman (艹) tumbuh tegak berkilau dengan kemegahan.",
+  "note_id": ""
 }

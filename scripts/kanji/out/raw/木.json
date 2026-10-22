@@ -1,15 +1,14 @@
 {
   "kanji": "木",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "木",
-      "role": "meaning",
-      "meaning_id": "tree"
-    }
-  ],
-  "etymology_id": "Kanji ini adalah gambar sederhana dari sebuah pohon dengan batang, cabang, dan akar.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar pohon dengan batang, cabang, dan akar.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai gambar pohon dengan dahan dan akar.",
-  "note_id": "Kosakata: 木 (き) = pohon; 木曜日 (もくようび) = hari Kamis"
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: batang tegak dengan cabang ke kiri-kanan dan akar di bawah (木).",
+  "note_id": "",
+  "source": "manual"
 }

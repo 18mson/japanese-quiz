@@ -1,15 +1,14 @@
 {
   "kanji": "大",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "大",
-      "role": "meaning",
-      "meaning_id": "besar"
-    }
-  ],
-  "etymology_id": "Gambar seorang manusia yang merentangkan tangan dan kaki untuk menunjukkan ukuran besar.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar orang (人) yang merentangkan kedua tangan: besar.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Gambar orang berdiri merentangkan tangan dan kaki agar terlihat besar.",
-  "note_id": "Kanji dasar untuk menyatakan ukuran besar."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang yang merentangkan tangan lebar-lebar: besar (大).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,15 +1,14 @@
 {
   "kanji": "毎",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "母",
-      "role": "shape",
-      "meaning_id": "ibu"
-    }
-  ],
-  "etymology_id": "Berasal dari bentuk yang mirip dengan ibu (母), berkembang menjadi arti setiap.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "每",
+  "etymology_id": "Bentuk lama 每 memuat 母 (ibu) di bagian bawah. Arti 'setiap' dipakai belakangan; asal-usulnya diperdebatkan.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seorang ibu (母) yang merawat anak-anaknya setiap hari.",
-  "note_id": "Digunakan dalam kata 毎日 (setiap hari) dan 毎朝 (setiap pagi)."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: ibu (母) dengan topi di atas: setiap hari (毎日) ibu sibuk.",
+  "note_id": "",
+  "source": "manual"
 }

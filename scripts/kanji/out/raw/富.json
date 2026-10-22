@@ -1,25 +1,20 @@
 {
   "kanji": "富",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "宀",
       "role": "meaning",
-      "meaning_id": "atap"
+      "meaning_id": "shaped crown, katakana u radical (no. 40)"
     },
     {
-      "part": "田",
-      "role": "meaning",
-      "meaning_id": "sawah"
-    },
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
+      "part": "畐",
+      "role": "phonetic",
+      "meaning_id": "to fill, roll of cloth"
     }
   ],
-  "etymology_id": "Terdiri dari atap rumah, sawah, dan mulut. Menyampaikan arti rumah yang penuh dengan hasil sawah dan kecukupan untuk semua mulut.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Ada banyak hasil panen di sawah di bawah atap rumah untuk memberi makan banyak mulut, tanda kekayaan.",
-  "note_id": "Kosakata: 富士山 (ふじさん) - Gunung Fuji."
+  "etymology_id": "Gabungan mahkota atap dan komponen 畐 yang memberi bunyi フ. Menggambarkan limpahan kekayaan.",
+  "mnemonic_id": "Cara mengingat: Rumah di bawah atap penuh dengan harta.",
+  "note_id": ""
 }

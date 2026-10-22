@@ -1,15 +1,14 @@
 {
   "kanji": "車",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "車",
-      "role": "meaning",
-      "meaning_id": "car"
-    }
-  ],
-  "etymology_id": "Bentuk asli kanji ini adalah gambar gerobak roda dua dilihat dari atas.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar kereta atau gerobak dilihat dari atas: badan, as, dan roda.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai gerobak dengan roda di tengah.",
-  "note_id": "Kosakata penting: 車 (くるま), 電車 (でんしゃ), 自転車 (じてんしゃ)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: gerobak dari atas dengan satu as dan dua roda (車).",
+  "note_id": "",
+  "source": "manual"
 }

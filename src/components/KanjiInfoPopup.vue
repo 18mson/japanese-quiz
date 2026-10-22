@@ -254,11 +254,20 @@ onUnmounted(() => {
             <template v-else>
               <!-- 1. Top Section: Kanji Hero & Facts -->
               <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-gradient-to-br from-indigo-50/60 to-slate-50 dark:from-slate-800/80 dark:to-slate-850 border border-indigo-100/80 dark:border-slate-700/60">
-                <!-- Large Kanji Character Display -->
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 shadow-md flex items-center justify-center shrink-0">
-                  <span class="text-5xl sm:text-6xl font-black font-jp text-slate-900 dark:text-white select-all">
-                    {{ currentKanjiDetail.kanji }}
-                  </span>
+                <!-- Large Kanji Character Display & Old Form -->
+                <div class="flex flex-col items-center justify-center shrink-0">
+                  <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 shadow-md flex items-center justify-center">
+                    <span class="text-5xl sm:text-6xl font-black font-jp text-slate-900 dark:text-white select-all">
+                      {{ currentKanjiDetail.kanji }}
+                    </span>
+                  </div>
+                  <div 
+                    v-if="currentKanjiDetail.old_form" 
+                    class="mt-1.5 px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800/80 text-[11px] font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-1 shadow-2xs"
+                  >
+                    <span>Lama:</span>
+                    <span class="font-jp font-bold text-sm text-amber-950 dark:text-amber-100 select-all">{{ currentKanjiDetail.old_form }}</span>
+                  </div>
                 </div>
 
                 <!-- Basic Facts & Readings -->
@@ -276,6 +285,10 @@ onUnmounted(() => {
                       </span>
                       <span v-if="currentKanjiDetail.grade" class="px-2 py-0.5 rounded-md bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
                         Kelas {{ currentKanjiDetail.grade }}
+                      </span>
+                      <span v-if="currentKanjiDetail.old_form" class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200 border border-amber-300 dark:border-amber-800 flex items-center gap-1">
+                        <span>Bentuk lama:</span>
+                        <span class="font-jp font-bold text-xs">{{ currentKanjiDetail.old_form }}</span>
                       </span>
                     </div>
                   </div>
@@ -390,7 +403,7 @@ onUnmounted(() => {
               <!-- 6. Footer Feedback & Report Button -->
               <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
                 <span class="text-[11px] text-slate-600 dark:text-slate-400">
-                  Data EDRDG (CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0) • Pembentukan AI
+                  Data: KANJIDIC2 &amp; KRADFILE (EDRDG, CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0)
                 </span>
 
                 <button

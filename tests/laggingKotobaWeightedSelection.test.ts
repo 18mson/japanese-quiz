@@ -7,6 +7,8 @@ import {
   pickWeightedLearningItem,
   getMaxNewUniquePerSession,
   buildKanjiSessionQuestions,
+  getKanjiTierWeights,
+  getKanjiRepeatWeights,
   type KanjiItem
 } from '../src/utils/kanjiQuizComposition';
 
@@ -288,6 +290,83 @@ describe('Lagging Kotoba Adaptive Weighted Selection Suite', () => {
     assert.ok(
       learningRatio >= 80.0,
       `Kategori proses harus mendominasi >= 80%. Hasil simulasi: ${learningRatio}% (${totalLearningQuestions}/${totalQuestions})`
+    );
+  });
+
+  test('8. Saat antrean proses di bawah 10 (< 10), pool kata Hafal (mastered) diperbanyak signifikan', () => {
+    // 1. Verifikasi bobot tier dinamis
+    const weightsNormal = getKanjiTierWeights(15);
+    assert.strictEqual(weightsNormal.learning, 55, 'Normal: learning = 55');
+    assert.strictEqual(weightsNormal.mastered, 15, 'Normal: mastered = 15');
+
+    const weightsLow = getKanjiTierWeights(5);
+    assert.strictEqual(weightsLow.mastered, 50, 'Low (< 10): mastered dinaikkan ke 50 (tertinggi)');
+    assert.strictEqual(weightsLow.learning, 25, 'Low (< 10): learning = 25');
+
+    // 2. Verifikasi bobot repetisi
+    const repeatWeightsLow = getKanjiRepeatWeights(5);
+    assert.strictEqual(repeatWeightsLow.mastered, 2.5, 'Low (< 10): repetisi mastered dinaikkan ke 2.5');
+
+    // 3. Uji integrasi sesi: pool dengan hanya 4 kata proses (< 10), 20 kata hafal (streak 3-4), 30 kata baru
+    const testPool: KanjiItem[] = [];
+    const streaks: Record<string, number> = {};
+
+    // 4 kata proses (< 10)
+    for (let i = 1; i <= 4; i++) {
+      const char = `learning_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 5', romaji: char });
+      streaks[char] = (i % 2) + 1; // streak 1 atau 2
+    }
+
+    // 20 kata hafal
+    for (let i = 1; i <= 20; i++) {
+      const char = `mastered_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 3', romaji: char });
+      streaks[char] = 3;
+    }
+
+    // 30 kata baru
+    for (let i = 1; i <= 30; i++) {
+      const char = `new_item_${i}`;
+      testPool.push({ character: char, lesson: 'Pelajaran 6', romaji: char });
+      streaks[char] = 0;
+    }
+
+    const SESSIONS = 50;
+    let totalQuestions = 0;
+    let totalMasteredQuestions = 0;
+    let totalMasteredUniqueCount = 0;
+
+    for (let s = 0; s < SESSIONS; s++) {
+      const session = buildKanjiSessionQuestions(testPool, 8, char => streaks[char] || 0, 5);
+      assert.strictEqual(session.length, 8);
+
+      const uniqueInSession = new Set<string>();
+      session.forEach(q => {
+        totalQuestions++;
+        uniqueInSession.add(q.character);
+        if (q.tier === 'mastered') {
+          totalMasteredQuestions++;
+        }
+      });
+
+      const masteredUniqueInSession = [...uniqueInSession].filter(c => streaks[c] === 3).length;
+      totalMasteredUniqueCount += masteredUniqueInSession;
+      // Setiap sesi harus memuat minimal 2 kata unik dari pool hafal
+      assert.ok(masteredUniqueInSession >= 2, `Setiap sesi minimal memuat 2 kata hafal. Sesi ini: ${masteredUniqueInSession}`);
+    }
+
+    // Kata hafal harus mendominasi porsi soal (>= 50% dari total soal)
+    const masteredRatio = (totalMasteredQuestions / totalQuestions) * 100;
+    const avgUniqueMastered = totalMasteredUniqueCount / SESSIONS;
+
+    assert.ok(
+      masteredRatio >= 50.0,
+      `Kata hafal harus muncul >= 50% saat proses < 10. Hasil: ${masteredRatio.toFixed(1)}% (${totalMasteredQuestions}/${totalQuestions})`
+    );
+    assert.ok(
+      avgUniqueMastered >= 2.5,
+      `Rata-rata kata hafal per sesi harus >= 2.5. Hasil: ${avgUniqueMastered.toFixed(2)}`
     );
   });
 });

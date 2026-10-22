@@ -1,15 +1,14 @@
 {
   "kanji": "小",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "小",
-      "role": "meaning",
-      "meaning_id": "kecil"
-    }
-  ],
-  "etymology_id": "Menggambarkan sesuatu yang terbelah menjadi bagian-bagian kecil.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Satu benda besar yang dibagi menjadi tiga bagian kecil (小さい).",
-  "note_id": "Menjadi dasar untuk kata sifat kecil (小さい)."
+  "formation_type": "ideograph_simple",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: tiga titik kecil yang melambangkan benda-benda kecil.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tiga titik kecil: kecil (小).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,25 +1,20 @@
 {
   "kanji": "階",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "⻖",
-      "role": "meaning",
-      "meaning_id": "bukit"
+      "role": "shape",
+      "meaning_id": ""
     },
     {
-      "part": "白",
-      "role": "shape",
-      "meaning_id": "putih"
-    },
-    {
-      "part": "比",
-      "role": "shape",
-      "meaning_id": "banding"
+      "part": "皆",
+      "role": "phonetic",
+      "meaning_id": "all, everything"
     }
   ],
-  "etymology_id": "Komponen bukit menunjukkan undakan atau tingkatan seperti lereng bukit.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Tangga bertingkat di gedung seperti undakan di bukit.",
-  "note_id": "Artinya adalah storey, stair, counter for storeys."
+  "etymology_id": "Kanji ini terbentuk dari unsur bukit atau tangga (⻖) sebagai penunjuk makna dan 皆 sebagai penunjuk bunyi.",
+  "mnemonic_id": "Cara mengingat: Tangga (⻖) yang dinaiki bersama-sama oleh semua (皆) orang.",
+  "note_id": "Digunakan untuk menyatakan lantai atau tingkat bangunan."
 }

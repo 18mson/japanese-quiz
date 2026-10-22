@@ -1,25 +1,14 @@
 {
   "kanji": "会",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "𠆢",
-      "role": "meaning",
-      "meaning_id": "berkumpul/atap"
-    },
-    {
-      "part": "二",
-      "role": "meaning",
-      "meaning_id": "dua"
-    },
-    {
-      "part": "厶",
-      "role": "shape",
-      "meaning_id": "wadah atau sudut"
-    }
-  ],
-  "etymology_id": "Gabungan penutup atas (𠆢) dan bagian bawah yang menggambarkan hal-hal atau orang-orang yang dihimpun bersama menjadi satu pertemuan.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "會",
+  "etymology_id": "Bentuk lama 會 berarti bertemu atau berkumpul. 会 adalah penyederhanaan; 人 dan 云 di dalamnya tidak mewakili 'orang' dan 'awan' secara asal-usul.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Di bawah atap (𠆢), dua orang (二) berkumpul secara pribadi (厶) untuk mengadakan pertemuan.",
-  "note_id": "Muncul dalam kosakata penting seperti 会社 (かいしゃ) dan 会議室 (かいぎしつ)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang (人) bertemu di bawah awan (云): bertemu atau berkumpul (会う).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,25 @@
 {
   "kanji": "所",
-  "formation_type": "compound_meaning",
-  "claim_kind": "structure",
+  "formation_type": "unknown",
   "components": [
     {
       "part": "戸",
-      "role": "meaning",
-      "meaning_id": "door, counter for houses"
+      "role": "shape",
+      "meaning_id": "pintu"
     },
     {
       "part": "斤",
-      "role": "meaning",
-      "meaning_id": "axe, 1.32 lb"
+      "role": "shape",
+      "meaning_id": "kapak"
     }
   ],
-  "etymology_id": "Gabungan dari pintu 戸 dan kapak 斤 untuk menggambarkan suatu tempat.",
-  "mnemonic_id": "Cara mengingat: Tempat (所) di dekat pintu (戸) rumah.",
-  "note_id": "Kosakata: 事務所 (じむしょ) = kantor, 所 (ところ) = tempat."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Terdiri dari 戸 (pintu) dan 斤 (kapak). Sebagian kamus menganggap 戸 memberi bunyi; arti 'tempat' berkembang belakangan. Asal-usulnya diperdebatkan.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: kapak (斤) di dekat pintu (戸): sebuah tempat (所) untuk menyimpannya. Ini trik ingat saja.",
+  "note_id": "",
+  "source": "manual"
 }

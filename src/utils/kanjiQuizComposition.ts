@@ -21,7 +21,7 @@ export interface KanjiQuestion extends KanjiItem {
 }
 
 /**
- * Tier weights specifically designed for Kanji / Kotoba mode.
+ * Tier weights specifically designed for Kanji / Kotoba mode when learning queue is normal (>= 10 words).
  * Balanced weights to encourage steady lesson progression while reviewing active words.
  */
 export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
@@ -29,6 +29,27 @@ export const KANJI_TIER_WEIGHTS: Record<MasteryTierKey, number> = {
   new: 25,
   mastered: 15,
   crown: 5
+};
+
+/**
+ * Tier weights specifically designed for Kanji / Kotoba mode when learning queue is low (< 10 words).
+ * Substantially boosts 'mastered' (hafal) tier so memorized words are actively reinforced
+ * when the learning queue drops below 10 words.
+ */
+export const KANJI_TIER_WEIGHTS_LOW_LEARNING: Record<MasteryTierKey, number> = {
+  mastered: 50,
+  learning: 25,
+  new: 20,
+  crown: 5
+};
+
+export const getKanjiTierWeights = (
+  learningQueueCount: number = 0
+): Record<MasteryTierKey, number> => {
+  if (learningQueueCount < 10) {
+    return KANJI_TIER_WEIGHTS_LOW_LEARNING;
+  }
+  return KANJI_TIER_WEIGHTS;
 };
 
 /**
@@ -66,6 +87,20 @@ export const KANJI_REPEAT_WEIGHT: Record<MasteryTierKey, number> = {
   new: 1.5,
   mastered: 1,
   crown: 1
+};
+
+export const getKanjiRepeatWeights = (
+  learningQueueCount: number = 0
+): Record<MasteryTierKey, number> => {
+  if (learningQueueCount < 10) {
+    return {
+      learning: 2.5,
+      mastered: 2.5, // Repetisi kata hafal dinaikkan setara proses saat antrean proses < 10
+      new: 1.5,
+      crown: 1
+    };
+  }
+  return KANJI_REPEAT_WEIGHT;
 };
 
 export const KANJI_TIER_METADATA: Record<MasteryTierKey, { questionReason: string; reasonLabel: string }> = {
@@ -333,6 +368,31 @@ export const selectKanjiUniquePool = (
     return candidates.shift() || null;
   };
 
+  const learningQueueCount = tierBuckets.learning.length;
+  const activeTierWeights = getKanjiTierWeights(learningQueueCount);
+
+  // --- Priority Allocation for Hafal (Mastered) Words when Learning Pool < 10 ---
+  // Jika antrean proses sudah di bawah 10 (< 10), perbanyak kemunculan kata 'mastered' (hafal)
+  if (learningQueueCount < 10 && available.mastered.length > 0) {
+    const minMasteredSlots = Math.min(
+      available.mastered.length,
+      Math.max(2, Math.round(targetUniqueCount * 0.45))
+    );
+    while (
+      selectedUnique.filter(u => u.tier === 'mastered').length < minMasteredSlots &&
+      selectedUnique.length < targetUniqueCount &&
+      available.mastered.length > 0
+    ) {
+      const item = (primaryTheme ? pickCandidateWithTheme(available.mastered, primaryTheme) : null) || available.mastered.shift();
+      if (item) {
+        selectedUnique.push({ item, tier: 'mastered' });
+        if (!primaryTheme && item.sub_category) primaryTheme = item.sub_category;
+      } else {
+        break;
+      }
+    }
+  }
+
   while (selectedUnique.length < targetUniqueCount) {
     const currentThemeCount = primaryTheme
       ? selectedUnique.filter(u => u.item.sub_category === primaryTheme).length
@@ -387,14 +447,14 @@ export const selectKanjiUniquePool = (
       continue;
     }
 
-    // Calculate normalized weights for eligible tiers
-    const tierWeightsSum = eligibleTiers.reduce((sum, tier) => sum + KANJI_TIER_WEIGHTS[tier], 0);
+    // Calculate normalized weights for eligible tiers using activeTierWeights (boosted for mastered when learning < 10)
+    const tierWeightsSum = eligibleTiers.reduce((sum, tier) => sum + activeTierWeights[tier], 0);
     const rand = Math.random() * tierWeightsSum;
     let cum = 0;
     let chosenTier: MasteryTierKey = eligibleTiers[0];
 
     for (const tier of eligibleTiers) {
-      cum += KANJI_TIER_WEIGHTS[tier];
+      cum += activeTierWeights[tier];
       if (rand <= cum) {
         chosenTier = tier;
         break;
@@ -438,14 +498,18 @@ export const selectKanjiUniquePool = (
  */
 export const distributeKanjiSlots = (
   uniqueList: { item: KanjiItem; tier: MasteryTierKey }[],
-  totalSlots: number
+  totalSlots: number,
+  learningQueueCount?: number
 ): { item: KanjiItem; tier: MasteryTierKey }[] => {
   if (uniqueList.length === 0) return [];
   if (uniqueList.length >= totalSlots) {
     return uniqueList.slice(0, totalSlots);
   }
 
-  const repeatWeights = uniqueList.map(u => KANJI_REPEAT_WEIGHT[u.tier] || 1);
+  const activeRepeatWeights = learningQueueCount !== undefined
+    ? getKanjiRepeatWeights(learningQueueCount)
+    : KANJI_REPEAT_WEIGHT;
+  const repeatWeights = uniqueList.map(u => activeRepeatWeights[u.tier] || 1);
   const sumWeights = repeatWeights.reduce((a, b) => a + b, 0);
 
   // Largest remainder allocation
@@ -626,12 +690,17 @@ export const buildKanjiSessionQuestions = (
 ): KanjiQuestion[] => {
   if (!pool || pool.length === 0) return [];
 
-  // 1. Select unique pool with adaptive lesson lag weighting
+  const learningQueueCount = pool.filter(item => {
+    const s = getMasteryStreak(item.character);
+    return s >= 1 && s <= 2;
+  }).length;
+
+  // 1. Select unique pool with adaptive lesson lag weighting & low learning queue boost
   const uniquePool = selectKanjiUniquePool(pool, totalSlots, getMasteryStreak, currentLessonNumber);
   if (uniquePool.length === 0) return [];
 
-  // 2. Distribute repetition slots
-  const distributedSlots = distributeKanjiSlots(uniquePool, totalSlots);
+  // 2. Distribute repetition slots (adjusting repeat weights when learningQueueCount < 10)
+  const distributedSlots = distributeKanjiSlots(uniquePool, totalSlots, learningQueueCount);
 
   // 3. Shuffle with spacing constraint
   const spacedSlots = shuffleWithSpacingConstraint(distributedSlots, 100);

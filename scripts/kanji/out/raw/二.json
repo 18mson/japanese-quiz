@@ -1,15 +1,14 @@
 {
   "kanji": "二",
   "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "二",
-      "role": "meaning",
-      "meaning_id": "dua"
-    }
-  ],
-  "etymology_id": "Merupakan lambang hitungan sederhana berupa dua garis mendatar untuk menyatakan angka dua.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Dua garis untuk angka dua.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Dua garis mendatar melambangkan angka dua (二).",
-  "note_id": "Kanji dasar untuk angka 2."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: dua garis, dua benda (二).",
+  "note_id": "",
+  "source": "manual"
 }

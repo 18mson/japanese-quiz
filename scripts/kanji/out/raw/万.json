@@ -1,20 +1,14 @@
 {
   "kanji": "万",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "一",
-      "role": "meaning",
-      "meaning_id": "one"
-    },
-    {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "slide"
-    }
-  ],
-  "etymology_id": "Kanji ini awalnya adalah gambar kalajengking, lalu dipinjam untuk menyatakan jumlah sepuluh ribu.",
+  "formation_type": "pictograph",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "萬",
+  "etymology_id": "Bentuk lama 萬. Menurut penjelasan tradisional, bentuk aslinya gambar kalajengking; arti 'sepuluh ribu' dipinjam karena bunyi. 万 adalah bentuk lama yang lebih sederhana.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Garis satu dengan goresan melengkung seperti angka sepuluh ribu.",
-  "note_id": "Kosakata penting: 万 (まん), 万里の長城 (ばんりのちょうじょう)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 万 dibaca 'man', dipakai pada 一万円 (sepuluh ribu yen).",
+  "note_id": "",
+  "source": "manual"
 }

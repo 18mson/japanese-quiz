@@ -1,15 +1,14 @@
 {
   "kanji": "一",
   "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "一",
-      "role": "meaning",
-      "meaning_id": "satu atau garis tunggal"
-    }
-  ],
-  "etymology_id": "Garis mendatar tunggal yang secara langsung melambangkan angka satu.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Satu garis untuk angka satu.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Buat satu goresan garis lurus untuk menuliskan angka satu.",
-  "note_id": "Kanji angka paling dasar, terdapat pada 一歳 (1 tahun), 一人で (sendirian), dan 一日 (tanggal 1)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: satu garis, satu benda (一).",
+  "note_id": "",
+  "source": "manual"
 }

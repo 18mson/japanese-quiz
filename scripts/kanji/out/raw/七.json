@@ -1,15 +1,14 @@
 {
   "kanji": "七",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "乙",
-      "role": "shape",
-      "meaning_id": "second"
-    }
-  ],
-  "etymology_id": "Kanji ini adalah penanda abstrak untuk menunjukkan angka tujuh.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Bentuk kuno berupa tanda silang (十); bentuk sekarang berubah. Hafalkan sebagai bentuk.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Garis melintang dipotong garis lengkung, membentuk angka tujuh.",
-  "note_id": "Kosakata penting: 七日 (なのか) dan 七つ (ななつ)."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: seperti angka 7 yang ditebas garis melintang: tujuh (七).",
+  "note_id": "",
+  "source": "manual"
 }

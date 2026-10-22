@@ -3,7 +3,7 @@
   "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
       "meaning_id": "orang"
     },
@@ -13,8 +13,13 @@
       "meaning_id": "pohon"
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan gambar orang (⺅) yang bersandar atau berhenti di dekat pohon (木) untuk beristirahat.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "亻 (orang) bersandar pada 木 (pohon): beristirahat.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Seorang ORANG bersandar pada POHON untuk beristirahat.",
-  "note_id": "Berkaitan dengan arti libur atau istirahat."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang (亻) bersandar di pohon (木): istirahat (休む).",
+  "note_id": "",
+  "source": "manual"
 }

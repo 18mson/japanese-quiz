@@ -1,15 +1,25 @@
 {
   "kanji": "礼",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "礻",
+      "part": "示",
       "role": "meaning",
-      "meaning_id": "altar"
+      "meaning_id": "altar, upacara"
+    },
+    {
+      "part": "豊",
+      "role": "phonetic",
+      "meaning_id": "wadah persembahan"
     }
   ],
-  "etymology_id": "Menggunakan komponen altar (礻) yang berkaitan dengan upacara keagamaan, rasa hormat, dan terima kasih.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "禮",
+  "etymology_id": "Bentuk lama 禮 = 示 (altar, upacara) + 豊 (wadah persembahan): tata cara ritual, lalu sopan santun. 礼 adalah bentuk sederhana yang sudah lama dipakai.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Berdiri di depan altar (礻) untuk memberikan penghormatan.",
-  "note_id": "Digunakan untuk salam dan rasa terima kasih."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 礼 dipakai pada 失礼 dan お礼; bayangkan membungkuk hormat di depan altar (礻).",
+  "note_id": "",
+  "source": "manual"
 }

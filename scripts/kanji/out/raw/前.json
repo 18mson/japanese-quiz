@@ -1,15 +1,30 @@
 {
   "kanji": "前",
-  "formation_type": "compound_meaning",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
+      "part": "八",
+      "role": "shape",
+      "meaning_id": "eight, eight radical (no. 12)"
+    },
+    {
       "part": "月",
-      "role": "meaning",
-      "meaning_id": "daging"
+      "role": "shape",
+      "meaning_id": "month, moon"
+    },
+    {
+      "part": "刂",
+      "role": "shape",
+      "meaning_id": "knife, standing sword radical (no. 18)"
+    },
+    {
+      "part": "刀",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggambarkan posisi bagian depan tubuh.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Sesuatu yang berada di muka atau di depan.",
-  "note_id": "Sangat sering dipakai untuk menyatakan waktu pagi (gozen) atau arti depan (mae)."
+  "etymology_id": "Terdiri dari komponen 八, bulan (月), dan pisau (刂).",
+  "mnemonic_id": "Cara mengingat: Ada bulan (月) dan pisau (刂) di bagian depan.",
+  "note_id": ""
 }

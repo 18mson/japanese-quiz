@@ -1,20 +1,20 @@
 {
   "kanji": "近",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "斤",
       "role": "phonetic",
-      "meaning_id": "kampak"
+      "meaning_id": "axe, 1.32 lb"
     },
     {
-      "part": "辶",
-      "role": "meaning",
-      "meaning_id": "jalan"
+      "part": "⻌",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggabungkan arti berjalan dengan komponen bunyi untuk menyatakan jarak yang dekat.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Berjalan menyusuri jalan menuju tempat yang sudah dekat.",
-  "note_id": "Digunakan untuk menyatakan jarak dekat atau waktu yang baru saja terjadi."
+  "etymology_id": "Gabungan komponen berjalan ⻌ dan 斤.",
+  "mnemonic_id": "Cara mengingat: Berjalan (⻌) membawa kapak (斤) menuju tempat yang dekat.",
+  "note_id": ""
 }

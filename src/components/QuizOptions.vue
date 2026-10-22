@@ -201,15 +201,6 @@ watch(() => quizStore.currentQuestionIndex, () => {
             <Sparkles class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
-            <button
-              v-if="hasKanjiDetails"
-              type="button"
-              class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold rounded-lg bg-emerald-200/70 hover:bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 border border-emerald-300/80 transition cursor-pointer ml-1"
-              @click.stop="showKanjiPopup = true"
-            >
-              <HelpCircle class="w-3 h-3 text-emerald-700 dark:text-emerald-300" />
-              <span>Kanji (?)</span>
-            </button>
           </div>
           <div v-else class="text-sm sm:text-lg font-bold p-3 sm:p-3.5 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/15 dark:text-torii-light border border-rose-200 dark:border-torii/40 animate-fadeIn flex items-center justify-center gap-2 flex-wrap shadow-xs">
             <X class="w-4 h-4 sm:w-5 sm:h-5 text-rose-600 dark:text-torii flex-shrink-0" />
@@ -240,14 +231,6 @@ watch(() => quizStore.currentQuestionIndex, () => {
             <Sparkles class="w-3.5 h-3.5 text-emerald-600 dark:text-matcha flex-shrink-0" />
             <span>{{ feedbackText || 'Benar! 🌟' }}</span>
             <TierTransitionBadge :transition="quizStore.latestTierTransition" size="sm" />
-            <button
-              v-if="hasKanjiDetails"
-              type="button"
-              class="inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-semibold rounded bg-emerald-200/70 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 transition cursor-pointer"
-              @click.stop="showKanjiPopup = true"
-            >
-              <span>Kanji (?)</span>
-            </button>
           </div>
           <div v-else class="text-xs font-bold py-1.5 px-3 rounded-xl w-full text-center bg-rose-100 text-rose-900 dark:bg-torii/20 dark:text-torii-light border border-rose-300/80 dark:border-torii/40 flex items-center justify-center gap-1.5 flex-wrap shadow-xs">
             <X class="w-3.5 h-3.5 text-rose-600 dark:text-torii flex-shrink-0" />

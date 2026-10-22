@@ -1,15 +1,20 @@
 {
   "kanji": "曜",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "matahari"
+      "meaning_id": "day, sun"
+    },
+    {
+      "part": "翟",
+      "role": "phonetic",
+      "meaning_id": "surname, kind of pheasant"
     }
   ],
-  "etymology_id": "Berkaitan dengan cahaya matahari dan penamaan hari.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Matahari bersinar setiap hari dalam sepekan.",
-  "note_id": "Kosakata: 月曜日 (げつようび) = hari Senin, 火曜日 (かようび) = hari Selasa, 水曜日 (すいようび) = hari Rabu."
+  "etymology_id": "Gabungan matahari dan komponen 翟 yang memberi bunyi ヨウ untuk hari.",
+  "mnemonic_id": "Cara mengingat: Matahari bersinar setiap hari dalam seminggu.",
+  "note_id": ""
 }

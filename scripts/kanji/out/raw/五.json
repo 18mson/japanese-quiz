@@ -1,20 +1,14 @@
 {
   "kanji": "五",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
-    },
-    {
-      "part": "二",
-      "role": "shape",
-      "meaning_id": "dua"
-    }
-  ],
-  "etymology_id": "Kanji ini menunjukkan jumlah lima melalui kombinasi garis.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan; hafalkan sebagai bentuk.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Gabungan garis atas dan bawah untuk membentuk angka lima.",
-  "note_id": "Kosakata: 五日 (tanggal 5), 五つ (lima buah)."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: ingat bunyi 'go' pada 五 dan 'itsu' pada 五つ dan 五日.",
+  "note_id": "",
+  "source": "manual"
 }

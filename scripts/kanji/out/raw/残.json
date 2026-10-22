@@ -1,20 +1,25 @@
 {
   "kanji": "残",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "歹",
       "role": "meaning",
-      "meaning_id": "sisa"
+      "meaning_id": "bare bone, bad"
     },
     {
-      "part": "毛",
+      "part": "戋",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "戔",
       "role": "phonetic",
-      "meaning_id": "rambut"
+      "meaning_id": "small, few"
     }
   ],
-  "etymology_id": "Gabungan komponen yang menunjukkan sisa atau bagian yang tertinggal.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Bagian kecil yang tertinggal setelah semuanya habis.",
-  "note_id": "Digunakan untuk menyatakan rasa sayang sekali atau sisa."
+  "etymology_id": "Bentuk lama adalah 殘. Terdiri dari kerangka 歹 dan komponen 戋 yang menunjukkan sisa.",
+  "mnemonic_id": "Cara mengingat: Tulang 歹 yang tersisa sedikit (残).",
+  "note_id": "Bentuk lama kanji ini adalah 殘. Digunakan dalam kata 残念です (sayang sekali)."
 }

@@ -1,15 +1,14 @@
 {
   "kanji": "人",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "人",
-      "role": "shape",
-      "meaning_id": "person"
-    }
-  ],
-  "etymology_id": "Gambar seseorang yang sedang berdiri.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar orang yang berdiri dilihat dari samping.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Dua garis yang membentuk kaki manusia berjalan.",
-  "note_id": "Kanji dasar paling sering muncul untuk menyatakan orang."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang berdiri dengan dua kaki (人).",
+  "note_id": "",
+  "source": "manual"
 }

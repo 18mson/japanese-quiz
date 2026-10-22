@@ -6,10 +6,20 @@
       "part": "言",
       "role": "meaning",
       "meaning_id": "kata"
+    },
+    {
+      "part": "賣",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen kata yang berkaitan dengan kegiatan mengucapkan atau membaca teks.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Membaca (読) menggunakan kata-kata (言).",
-  "note_id": "Digunakan dalam kosakata membaca (読みます)."
+  "phonetic_part": "賣",
+  "reading_hint": "",
+  "old_form": "讀",
+  "etymology_id": "Bentuk lama 讀 = 言 (kata) + 賣 (penanda bunyi). 読 mengganti 賣 dengan 売 (bentuk sederhananya).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kata (言) yang dijual (売) kepada pembaca: membaca (読む).",
+  "note_id": "",
+  "source": "manual"
 }

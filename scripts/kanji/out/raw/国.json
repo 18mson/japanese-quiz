@@ -8,13 +8,18 @@
       "meaning_id": "batas"
     },
     {
-      "part": "王",
+      "part": "玉",
       "role": "meaning",
-      "meaning_id": "raja"
+      "meaning_id": "permata"
     }
   ],
-  "etymology_id": "Wilayah dengan batas teritorial yang dipimpin oleh seorang raja.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Wilayah berpagar/batas (囗) tempat raja (王) berkuasa adalah sebuah negara.",
-  "note_id": "Kosakata: 韓国 (Korea Selatan), 中国 (Cina), お国 (negara)."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "國",
+  "etymology_id": "Bentuk lama 國 = 囗 (batas) + 或 (wilayah yang dijaga senjata). 国 mengganti 或 dengan 玉 (permata) sebagai penyederhanaan: wilayah dalam batas.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: permata (玉) berharga di dalam batas (囗): negara (国).",
+  "note_id": "",
+  "source": "manual"
 }

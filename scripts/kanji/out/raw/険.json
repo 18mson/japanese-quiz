@@ -1,15 +1,30 @@
 {
   "kanji": "険",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "⻖",
-      "role": "meaning",
-      "meaning_id": "bukit"
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "阜",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "㑒",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "僉",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari komponen bukit dan bagian lain sebagai penanda bunyi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Medan di bukit (⻖) yang curam dan berbahaya.",
-  "note_id": "Kanji ini berarti curam atau tempat berbahaya."
+  "etymology_id": "Gabungan bukit (⻖/阜) dan bagian bunyi 㑒.",
+  "mnemonic_id": "Cara mengingat: Tebing atau tempat curam (⻖) di gunung yang berbahaya.",
+  "note_id": "Bentuk lama kanji ini adalah 險."
 }

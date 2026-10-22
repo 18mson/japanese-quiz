@@ -1,15 +1,14 @@
 {
   "kanji": "自",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "自",
-      "role": "shape",
-      "meaning_id": "hidung"
-    }
-  ],
-  "etymology_id": "Gambar hidung, merujuk pada diri sendiri karena orang menunjuk hidungnya saat berkata diri sendiri.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar hidung; orang menunjuk hidung untuk 'diri sendiri'.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Saat menunjuk diri sendiri, kita menunjuk hidung kita (自).",
-  "note_id": "Arti dasar: oneself."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tunjuk hidung berarti aku sendiri (自分).",
+  "note_id": "",
+  "source": "manual"
 }

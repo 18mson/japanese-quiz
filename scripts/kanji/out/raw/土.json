@@ -1,15 +1,14 @@
 {
   "kanji": "土",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "土",
-      "role": "meaning",
-      "meaning_id": "tanah"
-    }
-  ],
-  "etymology_id": "Bentuk asli menggambarkan gundukan tanah di atas permukaan bumi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Garis bawah adalah tanah, dan tunas tumbuh ke atas.",
-  "note_id": "Digunakan dalam kata 土曜日 (hari Sabtu)."
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar gundukan tanah.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tunas di atas tanah: garis atas pendek, garis bawah panjang (土).",
+  "note_id": "",
+  "source": "manual"
 }

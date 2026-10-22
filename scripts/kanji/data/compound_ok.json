@@ -1,0 +1,14 @@
+{
+ "note": "Kanji yang boleh berlabel gabungan makna (compound_meaning) dari hasil Gemini. Disusun manual; selain ini turunkan ke 'uncertain'.",
+ "kanji": [
+  "休",
+  "見",
+  "友",
+  "男",
+  "林",
+  "森",
+  "明",
+  "炎",
+  "岩"
+ ]
+}

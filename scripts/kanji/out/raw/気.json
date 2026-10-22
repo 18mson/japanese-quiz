@@ -1,25 +1,20 @@
 {
   "kanji": "気",
-  "formation_type": "ideograph_simple",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "气",
       "role": "meaning",
-      "meaning_id": "uap atau udara"
-    },
-    {
-      "part": "丶",
-      "role": "shape",
-      "meaning_id": "titik"
-    },
-    {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "goresan miring"
+      "meaning_id": "uap"
     }
   ],
-  "etymology_id": "Menggambarkan uap atau udara yang mengepul melambangkan semangat dan atmosfer.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "氣",
+  "etymology_id": "Bentuk lama 氣 = 气 (uap) + 米 (beras): uap dari nasi yang dimasak, lalu 'tenaga, semangat'. 気 mengganti 米 dengan 乂.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Uap udara mengepul menunjukkan adanya energi atau semangat.",
-  "note_id": "Sangat sering dipakai untuk kondisi fisik dan mental."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: uap (气) mengepul dari nasi (米) panas: semangat atau tenaga (気).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,15 +1,14 @@
 {
   "kanji": "白",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "白",
-      "role": "shape",
-      "meaning_id": "putih"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar biji atau cahaya.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai biji, ada yang sebagai sinar matahari). Hafalkan sebagai bentuk.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Huruf ini melambangkan warna putih.",
-  "note_id": "Berarti putih."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: matahari (日) dengan sinar di atasnya (ノ): terang dan putih (白).",
+  "note_id": "",
+  "source": "manual"
 }

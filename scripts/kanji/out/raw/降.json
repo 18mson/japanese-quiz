@@ -1,25 +1,20 @@
 {
   "kanji": "降",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "⻖",
-      "role": "meaning",
-      "meaning_id": "bukit"
-    },
-    {
-      "part": "夂",
-      "role": "meaning",
-      "meaning_id": "pergi"
-    },
-    {
-      "part": "十",
       "role": "shape",
-      "meaning_id": "sepuluh"
+      "meaning_id": ""
+    },
+    {
+      "part": "夅",
+      "role": "phonetic",
+      "meaning_id": "to descend, to come down from heaven"
     }
   ],
-  "etymology_id": "Menggabungkan bukit dan unsur kaki turun ke bawah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Kaki berjalan menuruni bukit (⻖) atau hujan yang turun (降).",
-  "note_id": "Kosakata: 降ります (ふります) berarti turun (hujan/salju)."
+  "etymology_id": "Gabungan bentuk ⻖ di kiri dan komponen 夅 di kanan yang memberikan bunyi ko/go serta arti turun.",
+  "mnemonic_id": "Cara mengingat: Sesuatu turun (降) dari atas bukit ⻖.",
+  "note_id": "Digunakan dalam kata 降ります (turun hujan)."
 }

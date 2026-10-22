@@ -1,20 +1,20 @@
 {
   "kanji": "勉",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "免",
       "role": "phonetic",
-      "meaning_id": "bebas"
+      "meaning_id": "excuse, dismissal"
     },
     {
       "part": "力",
       "role": "meaning",
-      "meaning_id": "kekuatan"
+      "meaning_id": "power, strength"
     }
   ],
-  "etymology_id": "Terdiri dari komponen kekuatan dan bagian bunyi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Menggunakan kekuatan untuk terus berusaha dan belajar.",
-  "note_id": "Digunakan dalam kata 勉強します (belajar)."
+  "etymology_id": "Gabungan 免 yang memberi bunyi ベン dan kekuatan.",
+  "mnemonic_id": "Cara mengingat: Menggunakan tenaga untuk belajar keras.",
+  "note_id": ""
 }

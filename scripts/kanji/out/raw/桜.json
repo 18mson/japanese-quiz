@@ -8,13 +8,18 @@
       "meaning_id": "pohon"
     },
     {
-      "part": "女",
+      "part": "嬰",
       "role": "phonetic",
-      "meaning_id": "perempuan"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Pohon yang menghasilkan bunga sakura.",
+  "phonetic_part": "嬰",
+  "reading_hint": "",
+  "old_form": "櫻",
+  "etymology_id": "Bentuk lama 櫻 = 木 (pohon) + 嬰 (penanda bunyi). 桜 menyederhanakan 嬰 menjadi 冖 dan 女.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Pohon yang indah dipandang wanita, yaitu pohon sakura.",
-  "note_id": "Menyatakan bunga sakura."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: pohon (木) dengan perempuan (女) di bawah atap kecil (冖) menanti bunga: sakura (桜).",
+  "note_id": "",
+  "source": "manual"
 }

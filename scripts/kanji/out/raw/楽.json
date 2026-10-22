@@ -1,25 +1,14 @@
 {
   "kanji": "楽",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "木",
-      "role": "meaning",
-      "meaning_id": "kayu"
-    },
-    {
-      "part": "白",
-      "role": "meaning",
-      "meaning_id": "putih atau gendang"
-    },
-    {
-      "part": "冫",
-      "role": "shape",
-      "meaning_id": "hiasan atau lonceng"
-    }
-  ],
-  "etymology_id": "Menggambarkan alat musik terbuat dari kayu dengan instrumen di atasnya, menghasilkan alunan bunyi yang menghibur dan menyenangkan hati.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "樂",
+  "etymology_id": "Bentuk lama 樂 menggambarkan alat musik: senar dan gendang di atas rangka kayu (木). Penjelasan tradisional; arti 'senang' berkembang dari 'musik'. 楽 adalah penyederhanaan.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Memainkan alat musik kayu berwarna putih membuat perasaan menjadi sangat senang dan nyaman.",
-  "note_id": "Memiliki bacaan gaku pada 音楽 (musik) dan raku pada 楽しい (menyenangkan)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: alat musik berbingkai kayu (木): musik (音楽) dan menyenangkan (楽しい).",
+  "note_id": "",
+  "source": "manual"
 }

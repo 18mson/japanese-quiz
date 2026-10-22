@@ -13,8 +13,13 @@
       "meaning_id": "mulut"
     }
   ],
-  "etymology_id": "Menggabungkan mulut dan malam. Pada malam hari orang memanggil nama karena tidak bisa melihat.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: pada malam (夕) orang tidak terlihat sehingga menyebut (口) nama.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Saat malam gelap, kita membuka mulut untuk menyebut nama seseorang.",
-  "note_id": "Sangat penting untuk menanyakan nama."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: malam (夕) gelap, jadi sebut nama (口): nama (名).",
+  "note_id": "",
+  "source": "manual"
 }

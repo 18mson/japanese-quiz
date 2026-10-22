@@ -1,20 +1,25 @@
 {
   "kanji": "兄",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "口",
       "role": "meaning",
-      "meaning_id": "mulut"
+      "meaning_id": "mouth"
     },
     {
       "part": "儿",
       "role": "meaning",
-      "meaning_id": "kaki"
+      "meaning_id": "legs radical (no. 10)"
+    },
+    {
+      "part": "八",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan komponen mulut dan kaki untuk menggambarkan seseorang.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang dengan mulut yang banyak bicara seperti seorang kakak laki-laki.",
-  "note_id": "Kosakata penting: 兄 (あに) untuk kakak laki-laki sendiri."
+  "etymology_id": "Terdiri dari komponen mulut (口) dan kaki (儿/八).",
+  "mnemonic_id": "Cara mengingat: Kakak laki-laki membuka mulut (口) untuk memanggil dengan kaki (儿) yang berdiri tegap.",
+  "note_id": ""
 }

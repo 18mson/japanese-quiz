@@ -1,30 +1,20 @@
 {
   "kanji": "葛",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺾",
+      "part": "艹",
       "role": "meaning",
-      "meaning_id": "rumput atau tanaman"
+      "meaning_id": "grass, radical number 140"
     },
     {
-      "part": "日",
-      "role": "shape",
-      "meaning_id": "matahari"
-    },
-    {
-      "part": "勹",
-      "role": "shape",
-      "meaning_id": "bungkusan"
-    },
-    {
-      "part": "匕",
-      "role": "shape",
-      "meaning_id": "sendok"
+      "part": "曷",
+      "role": "phonetic",
+      "meaning_id": "why, how"
     }
   ],
-  "etymology_id": "Komponen ⺾ menunjukkan kelompok tumbuhan atau rumput rambat (kudzu), sedangkan komponen di bawahnya bertindak sebagai penentu bunyi fonetik.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Tanaman obat dari rumput merambat yang tumbuh lebat dan dipanen di bawah terik matahari.",
-  "note_id": "Kerap dijumpai pada nama tempat atau tokoh seperti 葛飾北斎 (Katsushika Hokusai)."
+  "etymology_id": "Gabungan rumput atau tanaman (艹) dan komponen bunyi 曷.",
+  "mnemonic_id": "Cara mengingat: Tanaman rumput (艹) merambat seperti akar kudzu.",
+  "note_id": "Bagian dari nama seniman terkenal Katsushika Hokusai."
 }

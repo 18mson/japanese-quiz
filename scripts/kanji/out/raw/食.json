@@ -1,15 +1,14 @@
 {
   "kanji": "食",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "食",
-      "role": "meaning",
-      "meaning_id": "makanan"
-    }
-  ],
-  "etymology_id": "Bentuk wadah makanan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Mangkuk makanan yang siap disantap.",
-  "note_id": "Kanji dasar untuk makan dan makanan."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: tutup (人 di atas) di atas mangkuk berisi makanan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: mangkuk berisi nasi dengan tutup (人) di atas: makanan (食).",
+  "note_id": "",
+  "source": "manual"
 }

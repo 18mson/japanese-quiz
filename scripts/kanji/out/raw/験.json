@@ -4,17 +4,22 @@
   "components": [
     {
       "part": "馬",
-      "role": "phonetic",
+      "role": "meaning",
       "meaning_id": "kuda"
     },
     {
-      "part": "人",
-      "role": "shape",
-      "meaning_id": "orang"
+      "part": "僉",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan komponen yang memberi petunjuk bunyi dan makna terkait pengujian.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Orang menguji kuda.",
-  "note_id": "Digunakan dalam kata shiken (ujian)."
+  "phonetic_part": "僉",
+  "reading_hint": "",
+  "old_form": "驗",
+  "etymology_id": "Bentuk lama 驗 = 馬 (kuda) + 僉 (penanda bunyi). Hubungan 馬 dengan arti 'menguji' tidak jelas. 験 adalah penyederhanaan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kuda (馬) diuji di depan banyak orang: ujian (試験).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,15 +1,14 @@
 {
   "kanji": "用",
   "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Tidak ada komponen bermakna. Asal-usulnya diperdebatkan; hafalkan sebagai bentuk tersendiri.",
+  "etymology_confidence": "uncertain",
   "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "用",
-      "role": "meaning",
-      "meaning_id": "menggunakan"
-    }
-  ],
-  "etymology_id": "Kanji ini berdiri sendiri sebagai satu bentuk dasar.",
-  "mnemonic_id": "Cara mengingat: Huruf 用 (you) mirip pagar kotak untuk menandai urusan atau kegunaan.",
-  "note_id": ""
+  "mnemonic_id": "Cara mengingat: bentuk kotak berisi garis silang: kotak peralatan yang siap digunakan (用).",
+  "note_id": "",
+  "source": "manual"
 }

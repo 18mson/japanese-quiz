@@ -1,6 +1,6 @@
 {
   "kanji": "見",
-  "formation_type": "ideograph_simple",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "目",
@@ -9,12 +9,17 @@
     },
     {
       "part": "儿",
-      "role": "shape",
-      "meaning_id": "kaki"
+      "role": "meaning",
+      "meaning_id": "kaki orang"
     }
   ],
-  "etymology_id": "Gabungan mata dan kaki, menggambarkan seseorang yang menggunakan matanya untuk melihat.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "目 (mata) di atas 儿 (kaki orang): orang yang melihat.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Ada mata (目) di atas kaki (儿) yang sedang berjalan untuk melihat sesuatu.",
-  "note_id": "Kanji ini berarti melihat."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: mata (目) di atas kaki orang (儿): orang melihat (見る).",
+  "note_id": "",
+  "source": "manual"
 }

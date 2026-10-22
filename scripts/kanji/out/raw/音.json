@@ -1,20 +1,20 @@
 {
   "kanji": "音",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "立",
       "role": "meaning",
-      "meaning_id": "berdiri atau muncul"
+      "meaning_id": "stand up, rise"
     },
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "mulut atau penanda suara"
+      "meaning_id": "day, sun"
     }
   ],
-  "etymology_id": "Merupakan gabungan komponen yang melambangkan bunyi yang berdiri atau keluar dari mulut.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seseorang berdiri (立) di bawah matahari (日) sambil mendengarkan alunan bunyi (音).",
-  "note_id": "Memiliki bacaan ON 'オン' seperti pada 音楽 (おんがく) dan KUN 'おと'."
+  "etymology_id": "Gabungan struktur dari elemen 立 dan 日.",
+  "mnemonic_id": "Cara mengingat: Berdiri (立) di bawah terik matahari (日) sambil mendengarkan suatu bunyi atau suara.",
+  "note_id": ""
 }

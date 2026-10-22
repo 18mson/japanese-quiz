@@ -6,15 +6,15 @@
       "part": "金",
       "role": "meaning",
       "meaning_id": "logam"
-    },
-    {
-      "part": "矢",
-      "role": "phonetic",
-      "meaning_id": "panah"
     }
   ],
-  "etymology_id": "Terdiri dari logam (金) dan penanda bunyi panah (矢) untuk menyatakan besi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Logam yang keras seperti panah adalah besi.",
-  "note_id": "Berkaitan dengan benda dari besi atau kereta bawah tanah."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "鐵",
+  "etymology_id": "Bentuk lama 鐵 = 金 (logam) + bagian kanan yang memberi bunyi. 鉄 adalah penyederhanaan bagian kanannya.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: logam (金) yang kehilangan (失) kilaunya bila berkarat: besi (鉄).",
+  "note_id": "",
+  "source": "manual"
 }

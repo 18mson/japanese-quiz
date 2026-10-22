@@ -1,20 +1,20 @@
 {
   "kanji": "今",
-  "formation_type": "ideograph_simple",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
-      "part": "𠆢",
-      "role": "shape",
-      "meaning_id": "penutup"
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "person"
     },
     {
       "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
+      "role": "meaning",
+      "meaning_id": "one, one radical (no.1)"
     }
   ],
-  "etymology_id": "Menggabungkan komponen penutup dan satu.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menunjukkan waktu saat ini.",
-  "note_id": "Kanji dasar untuk waktu sekarang."
+  "etymology_id": "Gabungan visual dari elemen orang (人) dan garis satu (一).",
+  "mnemonic_id": "Cara mengingat: Seorang (人) dalam satu (一) momen waktu sekarang (今).",
+  "note_id": "Digunakan dalam kata 今 (sekarang)."
 }

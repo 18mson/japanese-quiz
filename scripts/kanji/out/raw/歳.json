@@ -1,20 +1,14 @@
 {
   "kanji": "歳",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "止",
-      "role": "shape",
-      "meaning_id": "berhenti"
-    },
-    {
-      "part": "小",
-      "role": "shape",
-      "meaning_id": "kecil"
-    }
-  ],
-  "etymology_id": "Struktur terdiri dari beberapa komponen termasuk bagian yang memberi petunjuk bunyi.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "歲",
+  "etymology_id": "Bentuk lama 歲. Asal-usul bagian-bagiannya diperdebatkan; arti 'umur, tahun' dipakai belakangan. Hafalkan sebagai bentuk.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Usia bertambah seiring waktu yang berhenti pada angka kecil.",
-  "note_id": "Digunakan untuk menyatakan umur."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: dibaca 'sai' pada umur: 一歳 (1 tahun), 何歳 (umur berapa).",
+  "note_id": "",
+  "source": "manual"
 }

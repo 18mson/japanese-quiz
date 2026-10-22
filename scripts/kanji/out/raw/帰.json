@@ -1,30 +1,14 @@
 {
   "kanji": "帰",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "ヨ",
-      "role": "shape",
-      "meaning_id": "komponenヨ"
-    },
-    {
-      "part": "刂",
-      "role": "shape",
-      "meaning_id": "komponen pisau"
-    },
-    {
-      "part": "巾",
-      "role": "shape",
-      "meaning_id": "komponen kain"
-    },
-    {
-      "part": "冖",
-      "role": "shape",
-      "meaning_id": "komponen penutup"
-    }
-  ],
-  "etymology_id": "Terdiri dari berbagai komponen grafis yang digabungkan untuk membentuk kanji pulang.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang menggunakan kain dan penutup saat kembali pulang.",
-  "note_id": "Digunakan dalam kata kerja pulang."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "歸",
+  "etymology_id": "Bentuk lama 歸 memuat 帚 (sapu); penjelasan tradisional: perempuan yang pulang ke rumah. 帰 menyederhanakan bagian lainnya.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: pulang ke rumah dan langsung mengambil sapu (帚): pulang (帰る).",
+  "note_id": "",
+  "source": "manual"
 }

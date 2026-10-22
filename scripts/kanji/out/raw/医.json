@@ -1,20 +1,20 @@
 {
   "kanji": "医",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "匚",
+      "part": "酉",
       "role": "meaning",
-      "meaning_id": "kotak atau wadah"
-    },
-    {
-      "part": "矢",
-      "role": "meaning",
-      "meaning_id": "anak panah"
+      "meaning_id": "arak, bahan obat"
     }
   ],
-  "etymology_id": "Menggabungkan wadah (匚) yang menyimpan anak panah (矢). Dikaitkan dengan tindakan mencabut atau merawat luka panah dalam pengobatan.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "醫",
+  "etymology_id": "Bentuk lama 醫 = 殹 (penanda bunyi, memuat 医) + 酉 (arak, bahan obat). 医 mengambil bagian bunyinya saja sebagai bentuk sederhana.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Dokter menyimpan obat di wadah (匚) dan mencabut anak panah (矢) yang tertancap.",
-  "note_id": "Muncul pada kata 医者 (dokter) dan 歯医者 (dokter gigi)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kotak (匚) berisi panah (矢) seperti kotak P3K dokter (医者).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,20 @@
 {
   "kanji": "電",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "雨",
       "role": "meaning",
-      "meaning_id": "hujan"
+      "meaning_id": "rain"
     },
     {
-      "part": "田",
+      "part": "日",
       "role": "meaning",
-      "meaning_id": "sawah"
+      "meaning_id": "day, sun"
     }
   ],
-  "etymology_id": "Awalnya menggambarkan kilat di awan hujan, kini berarti listrik.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Hujan di atas sawah disertai kilat listrik.",
-  "note_id": "Digunakan untuk kereta listrik, telepon, dan baterai."
+  "etymology_id": "Gabungan dari awan hujan (雨) dan kilatan/matahari (日).",
+  "mnemonic_id": "Cara mengingat: Saat hujan (雨) turun, terlihat kilatan listrik seperti matahari (日).",
+  "note_id": ""
 }

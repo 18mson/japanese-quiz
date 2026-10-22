@@ -1,30 +1,14 @@
 {
   "kanji": "卵",
-  "formation_type": "unknown",
+  "formation_type": "pictograph",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar butir telur, misalnya telur ikan atau katak.",
+  "etymology_confidence": "traditional",
   "claim_kind": "structure",
-  "components": [
-    {
-      "part": "卯",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "丶",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "丿",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "卩",
-      "role": "shape",
-      "meaning_id": ""
-    }
-  ],
-  "etymology_id": "Disusun dari struktur komponen garis dan bentuk dasar.",
-  "mnemonic_id": "Cara mengingat: Bentuk cangkang telur (卵) yang berisi kehidupan baru.",
-  "note_id": ""
+  "mnemonic_id": "Cara mengingat: bayangkan dua butir telur kecil (丶丶) di tengah bentuk bulat.",
+  "note_id": "",
+  "source": "manual"
 }

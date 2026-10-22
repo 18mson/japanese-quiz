@@ -1,15 +1,14 @@
 {
   "kanji": "火",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "火",
-      "role": "meaning",
-      "meaning_id": "api"
-    }
-  ],
-  "etymology_id": "Piktograf langsung dari bentuk lidah api yang menyala dan berkobar ke atas.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar nyala api dengan percikan ke kiri dan kanan.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Huruf ini menyerupai nyala api yang memercik ke kiri dan kanan.",
-  "note_id": "Kanji dasar untuk hari Selasa yaitu 火曜日 (かようび)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: api unggun dengan percikan ke kiri dan kanan (火).",
+  "note_id": "",
+  "source": "manual"
 }

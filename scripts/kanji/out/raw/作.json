@@ -1,15 +1,25 @@
 {
   "kanji": "作",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
+    },
+    {
+      "part": "人",
+      "role": "shape",
+      "meaning_id": "person"
+    },
+    {
+      "part": "乍",
+      "role": "phonetic",
+      "meaning_id": "though, notwithstanding"
     }
   ],
-  "etymology_id": "Orang yang bekerja atau membuat sesuatu.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Orang yang sedang membuat atau memproduksi sesuatu.",
-  "note_id": "Kanji dasar untuk kata kerja membuat."
+  "etymology_id": "Gabungan orang 亻 di kiri dan komponen 乍 di kanan yang memberikan bunyi saku/sa.",
+  "mnemonic_id": "Cara mengingat: Seseorang 亻 sedang membuat (作) sesuatu dengan tangannya.",
+  "note_id": "Digunakan dalam kata 作ります (membuat)."
 }

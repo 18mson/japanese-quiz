@@ -1,25 +1,20 @@
 {
   "kanji": "願",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
+    {
+      "part": "原",
+      "role": "phonetic",
+      "meaning_id": "meadow, original"
+    },
     {
       "part": "頁",
       "role": "meaning",
-      "meaning_id": "kepala"
-    },
-    {
-      "part": "厂",
-      "role": "shape",
-      "meaning_id": "tebing pelindung"
-    },
-    {
-      "part": "白",
-      "role": "shape",
-      "meaning_id": "putih atau murni"
+      "meaning_id": "page, leaf"
     }
   ],
-  "etymology_id": "Terdiri dari 頁 (kepala) yang menunduk memohon dan bagian kiri yang berfungsi sebagai penanda bunyi ガン, melambangkan permohonan tulus.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Menundukkan kepala (頁) di bawah atap (厂) dengan niat hati yang putih bersih (白) untuk memanjatkan permohonan (願).",
-  "note_id": "Sangat sering digunakan dalam frasa sopan お願いします (tolong / mohon bantuannya)."
+  "etymology_id": "Gabungan komponen 原 (pelafalan) dan 頁 (kepala/halaman).",
+  "mnemonic_id": "Cara mengingat: Seseorang memohon dengan kepala (頁) menunduk di padang rumput (原).",
+  "note_id": ""
 }

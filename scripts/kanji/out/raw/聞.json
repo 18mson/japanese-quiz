@@ -9,12 +9,17 @@
     },
     {
       "part": "門",
-      "role": "meaning",
-      "meaning_id": "pintu"
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Telinga yang diletakkan di dekat pintu untuk mendengarkan suara dari luar.",
+  "phonetic_part": "門",
+  "reading_hint": "門 もん → 聞 ぶん",
+  "old_form": null,
+  "etymology_id": "耳 (telinga) menunjukkan makna, 門 memberi bunyi (もん → ぶん): mendengar.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Menempelkan telinga di pintu untuk mendengarkan suara.",
-  "note_id": "Digunakan dalam kiku (mendengar) dan shinbun (koran)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: telinga (耳) menempel di pintu (門) untuk mendengar (聞く).",
+  "note_id": "",
+  "source": "manual"
 }

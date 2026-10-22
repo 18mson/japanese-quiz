@@ -1,20 +1,20 @@
 {
   "kanji": "建",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "claim_kind": "structure",
   "components": [
+    {
+      "part": "聿",
+      "role": "meaning",
+      "meaning_id": "brush, finally"
+    },
     {
       "part": "廴",
       "role": "meaning",
-      "meaning_id": "jalan"
-    },
-    {
-      "part": "聿",
-      "role": "phonetic",
-      "meaning_id": "kuas"
+      "meaning_id": "long stride or stretching radical (no. 54)"
     }
   ],
-  "etymology_id": "Terdiri dari komponen jalan dan kuas untuk menggambarkan aktivitas membangun.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Orang berjalan (廴) membawa alat untuk membangun sebuah gedung.",
-  "note_id": "Kanji ini berarti membangun."
+  "etymology_id": "Gabungan kuas (聿) dan langkah panjang (廴).",
+  "mnemonic_id": "Cara mengingat: Memegang kuas (聿) sambil melangkah (廴) untuk membangun rumah.",
+  "note_id": ""
 }

@@ -1,20 +1,25 @@
 {
   "kanji": "書",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
-    {
-      "part": "日",
-      "role": "meaning",
-      "meaning_id": "matahari"
-    },
     {
       "part": "聿",
       "role": "meaning",
-      "meaning_id": "kuas penulisan"
+      "meaning_id": "brush, finally"
+    },
+    {
+      "part": "日",
+      "role": "shape",
+      "meaning_id": "day, sun"
+    },
+    {
+      "part": "曰",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggambarkan tangan yang memegang kuas (聿) di atas wadah atau kertas.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Menggunakan kuas untuk menulis (書きます) sesuatu di bawah terik matahari (日).",
-  "note_id": "Digunakan dalam kata menulis (書きます), kamus (辞書), dan perpustakaan (図書館)."
+  "etymology_id": "Terdiri dari kuas tulis (聿) di atas dan kotak (日/曰) di bawah.",
+  "mnemonic_id": "Cara mengingat: Menggunakan kuas (聿) untuk menulis kata-kata setiap hari (日).",
+  "note_id": ""
 }

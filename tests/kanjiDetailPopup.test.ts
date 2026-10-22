@@ -36,7 +36,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
       note_id: ''
     };
 
-    const result = validateEntry(invalidEntry, mockFactsMap);
+    const result = validateEntry(invalidEntry, mockFactsMap, { manualEntriesMap: new Map() });
     assert.strictEqual(result.valid, false);
     assert.strictEqual(result.status, 'rejected');
     assert.ok(
@@ -60,7 +60,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
       note_id: ''
     };
 
-    const resYear = validateEntry(entryWithYear, mockFactsMap);
+    const resYear = validateEntry(entryWithYear, mockFactsMap, { manualEntriesMap: new Map() });
     assert.strictEqual(resYear.valid, false);
     assert.strictEqual(resYear.status, 'rejected');
     assert.ok(
@@ -73,7 +73,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
       ...entryWithYear,
       etymology_id: 'Simbol ini populer pada masa dinasti Han di daratan Asia.'
     };
-    const resDynasty = validateEntry(entryWithDynasty, mockFactsMap);
+    const resDynasty = validateEntry(entryWithDynasty, mockFactsMap, { manualEntriesMap: new Map() });
     assert.strictEqual(resDynasty.valid, false);
     assert.ok(resDynasty.reasons.some(r => r.includes('kata "dinasti"')));
 
@@ -82,7 +82,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
       ...entryWithYear,
       etymology_id: 'Ditemukan inskripsi tulang ramalan kuno yang menunjukkan pohon.'
     };
-    const resOracle = validateEntry(entryWithOracle, mockFactsMap);
+    const resOracle = validateEntry(entryWithOracle, mockFactsMap, { manualEntriesMap: new Map() });
     assert.strictEqual(resOracle.valid, false);
     assert.ok(resOracle.reasons.some(r => r.includes('kata "tulang ramalan"')));
 
@@ -91,7 +91,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
       ...entryWithYear,
       etymology_id: 'Pada zaman lampau orang berteduh di pohon.'
     };
-    const resZaman = validateEntry(entryWithZaman, mockFactsMap);
+    const resZaman = validateEntry(entryWithZaman, mockFactsMap, { manualEntriesMap: new Map() });
     assert.strictEqual(resZaman.valid, false);
     assert.ok(resZaman.reasons.some(r => r.includes('frasa "pada zaman"')));
   });
@@ -104,13 +104,13 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
         { part: '亻', role: 'meaning', meaning_id: 'orang' },
         { part: '木', role: 'meaning', meaning_id: 'pohon' }
       ],
-      etymology_id: 'Gabungan komponen orang dan pohon, menggambarkan seseorang yang bersandar di pohon untuk beristirahat.',
+      etymology_id: 'Gabungan komponen orang dan pohon yang bersandar di pohon untuk beristirahat.',
       etymology_confidence: 'established',
       mnemonic_id: 'Cara mengingat: Seseorang bersandar santai di samping pohon rindang untuk beristirahat.',
       note_id: 'Digunakan dalam kata yasumi.'
     };
 
-    const result = validateEntry(validEntry, mockFactsMap);
+    const result = validateEntry(validEntry, mockFactsMap, { compoundOkSet: new Set(['休']), manualEntriesMap: new Map() });
     assert.strictEqual(result.valid, true);
     assert.strictEqual(result.status, 'draft');
     assert.strictEqual(result.reasons.length, 0);
@@ -183,5 +183,19 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
     assert.strictEqual(resKao.status, 'approved');
     assert.strictEqual(resKao.source, 'manual');
   });
+
+  await t.test('8. Kanji dengan old_form memuat field old_form yang sesuai', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const kanjiInfoPath = path.resolve('src/data/kanjiInfo.json');
+    if (fs.existsSync(kanjiInfoPath)) {
+      const catalog = JSON.parse(fs.readFileSync(kanjiInfoPath, 'utf-8'));
+      assert.strictEqual(catalog['写']?.old_form, '寫', '写 harus memiliki old_form 寫');
+      assert.strictEqual(catalog['学']?.old_form, '學', '学 harus memiliki old_form 學');
+      assert.strictEqual(catalog['売']?.old_form, '賣', '売 harus memiliki old_form 賣');
+      assert.strictEqual(catalog['日']?.old_form || null, null, '日 tidak boleh memiliki old_form');
+    }
+  });
 });
+
 

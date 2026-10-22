@@ -1,15 +1,14 @@
 {
   "kanji": "士",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "士",
-      "role": "meaning",
-      "meaning_id": "samurai"
-    }
-  ],
-  "etymology_id": "Menunjukkan seorang pria terpelajar atau samurai.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk huruf mirip orang dengan topi berdiri.",
-  "note_id": "Kosakata penting: 富士山 (Fujisan) dan 弁護士 (bengoshi)."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan (kapak, atau tanda orang terpelajar). Hafalkan sebagai bentuk.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: 士: garis atas panjang, garis bawah pendek (samurai bertopi lebar); kebalikan 土.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,20 @@
 {
   "kanji": "価",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
     },
     {
-      "part": "西",
-      "role": "phonetic",
-      "meaning_id": "penanda bunyi"
+      "part": "覀",
+      "role": "shape",
+      "meaning_id": "variant of radical 146"
     }
   ],
-  "etymology_id": "Komponen ⺅ (orang) menyatakan kegiatan manusia menentukan harga, sedangkan komponen 西 (penyederhanaan dari 賈) berfungsi sebagai penentu bunyi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Orang (⺅) di wilayah barat (西) sedang menilai harga barang.",
-  "note_id": "Sering muncul pada kata 物価 (ぶっか) yang berarti harga barang kebutuhan hidup."
+  "etymology_id": "Gabungan unsur manusia (亻) dan komponen 覀 untuk menyatakan nilai atau harga.",
+  "mnemonic_id": "Cara mengingat: Seseorang (亻) menilai harga suatu barang.",
+  "note_id": ""
 }

@@ -1,20 +1,20 @@
 {
   "kanji": "頑",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
-    {
-      "part": "頁",
-      "role": "meaning",
-      "meaning_id": "kepala"
-    },
     {
       "part": "元",
       "role": "phonetic",
-      "meaning_id": "penanda bunyi ガン"
+      "meaning_id": "beginning, former time"
+    },
+    {
+      "part": "頁",
+      "role": "meaning",
+      "meaning_id": "page, leaf"
     }
   ],
-  "etymology_id": "Terbentuk dari 頁 (kepala) yang menandakan makna dan 元 yang bertindak sebagai penanda bunyi ガン, melambangkan watak kepala batu atau keteguhan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Seseorang yang memegang teguh pikiran awal (元) di dalam kepala (頁)-nya bersikap gigih dan pantang menyerah (頑).",
-  "note_id": "Umum ditemukan dalam ungkapan penyemangat 頑張ります (berusaha keras/bersemangat)."
+  "etymology_id": "Gabungan komponen 元 (pelafalan) dan 頁 (kepala/halaman).",
+  "mnemonic_id": "Cara mengingat: Gabungan 元 (awal) dan 頁 (kepala) menunjukkan kepala yang keras di awal.",
+  "note_id": ""
 }

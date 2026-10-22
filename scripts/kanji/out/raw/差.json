@@ -1,25 +1,25 @@
 {
   "kanji": "差",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
+    {
+      "part": "羊",
+      "role": "meaning",
+      "meaning_id": "sheep"
+    },
     {
       "part": "ノ",
       "role": "shape",
-      "meaning_id": "garis lengkung"
+      "meaning_id": "katakana no radical (no. 4)"
     },
     {
       "part": "工",
-      "role": "shape",
-      "meaning_id": "tukang"
-    },
-    {
-      "part": "羊",
-      "role": "shape",
-      "meaning_id": "domba"
+      "role": "meaning",
+      "meaning_id": "craft, construction"
     }
   ],
-  "etymology_id": "Terdiri dari komponen bentuk.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menyatakan perbedaan atau jarak.",
-  "note_id": "Digunakan dalam kata perempatan."
+  "etymology_id": "Gabungan struktur visual dari komponen domba 羊, coretan 丿, dan kerajinan 工.",
+  "mnemonic_id": "Cara mengingat: Domba 羊 dan kerajinan 工 memiliki perbedaan (差) kecil.",
+  "note_id": "Digunakan dalam kata 交差点 (perempatan)."
 }

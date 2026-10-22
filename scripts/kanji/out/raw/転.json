@@ -5,16 +5,21 @@
     {
       "part": "車",
       "role": "meaning",
-      "meaning_id": "mobil"
+      "meaning_id": "roda, kereta"
     },
     {
-      "part": "厶",
+      "part": "專",
       "role": "phonetic",
-      "meaning_id": "pribadi"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari unsur kendaraan (車) yang berputar.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Roda mobil berputar saat bergerak.",
-  "note_id": "Dipakai untuk menyetir atau bersepeda."
+  "phonetic_part": "專",
+  "reading_hint": "",
+  "old_form": "轉",
+  "etymology_id": "Bentuk lama 轉 = 車 (roda, kereta) + 專 (penanda bunyi): berputar. 転 mengganti 專 dengan 云.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: roda (車) yang berputar di bawah awan (云): berputar atau berguling (転).",
+  "note_id": "",
+  "source": "manual"
 }

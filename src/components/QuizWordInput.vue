@@ -298,20 +298,17 @@ watch(() => quizStore.currentQuestionIndex, () => {
               （{{ (currentWord as any)?.kana }}）
             </span>
 
-            <!-- Tombol / Ikon '?' Pembuka Detail Kanji -->
+            <!-- Tombol / Ikon '?' Pembuka Detail Kanji (Hanya pada jawaban salah) -->
             <button
-              v-if="hasKanjiDetails"
+              v-if="hasKanjiDetails && !quizStore.isAnswerCorrect"
               type="button"
               id="btn-kanji-detail-input"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border"
-              :class="!quizStore.isAnswerCorrect
-                ? 'bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle'
-                : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 text-[11px]'"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
               @click="showKanjiPopup = true"
               :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
             >
-              <HelpCircle class="w-3.5 h-3.5" :class="!quizStore.isAnswerCorrect ? 'text-rose-600 dark:text-rose-400' : 'text-slate-500 dark:text-slate-400'" />
-              <span>{{ !quizStore.isAnswerCorrect ? 'Bedah Kanji (?)' : 'Kanji (?)' }}</span>
+              <HelpCircle class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+              <span>Bedah Kanji (?)</span>
             </button>
           </div>
           <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 dark:text-slate-300 italic">

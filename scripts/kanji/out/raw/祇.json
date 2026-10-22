@@ -1,20 +1,20 @@
 {
   "kanji": "祇",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "礻",
+      "part": "示",
       "role": "meaning",
-      "meaning_id": "altar atau dewa"
+      "meaning_id": "show, indicate"
     },
     {
       "part": "氏",
       "role": "phonetic",
-      "meaning_id": "klan"
+      "meaning_id": "family name, surname"
     }
   ],
-  "etymology_id": "Gabungan altar dan komponen bunyi untuk dewa lokal.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Dewa lokal yang dipuja di altar kaum.",
-  "note_id": "Berkaitan dengan dewa."
+  "etymology_id": "Gabungan komponen 示 (altar/dewa) dan 氏.",
+  "mnemonic_id": "Cara mengingat: Dewa (示) dari suatu marga atau keluarga (氏).",
+  "note_id": ""
 }

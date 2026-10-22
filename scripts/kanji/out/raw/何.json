@@ -1,25 +1,20 @@
 {
   "kanji": "何",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
     },
     {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "亅",
-      "role": "shape",
-      "meaning_id": "tongkat pengait"
+      "part": "可",
+      "role": "phonetic",
+      "meaning_id": "can, passable"
     }
   ],
-  "etymology_id": "Menampilkan orang (⺅) yang memikul beban di pundak (bagian kanan 可), kemudian maknanya dipinjam untuk kata tanya 'apa'.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seorang (⺅) membuka mulut (口) bertanya apa yang ada di ujung kait (亅).",
-  "note_id": "Bisa dibaca 'なに' atau 'なん' tergantung pada huruf yang mengikutinya."
+  "etymology_id": "Gabungan unsur orang (亻) dan komponen 可 yang memberi petunjuk bunyi bacaan.",
+  "mnemonic_id": "Cara mengingat: Seseorang (亻) bertanya tentang sesuatu dengan kata apa (何).",
+  "note_id": ""
 }

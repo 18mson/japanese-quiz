@@ -1,25 +1,20 @@
 {
   "kanji": "符",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
-    {
-      "part": "⺅",
-      "role": "meaning",
-      "meaning_id": "orang"
-    },
     {
       "part": "竹",
       "role": "meaning",
-      "meaning_id": "bambu"
+      "meaning_id": "bamboo"
     },
     {
-      "part": "寸",
-      "role": "meaning",
-      "meaning_id": "ukuran"
+      "part": "付",
+      "role": "phonetic",
+      "meaning_id": "adhere, attach"
     }
   ],
-  "etymology_id": "Terdiri dari bambu dan ukuran, merujuk pada bilah bambu yang dipotong sebagai tanda atau token.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Potongan bambu kecil dengan ukuran tertentu digunakan sebagai tiket tanda masuk.",
-  "note_id": "Kosakata: 切符 (きっぷ) - karcis, tiket."
+  "etymology_id": "Gabungan bambu dan 付 yang memberi bunyi フ. Berkaitan dengan tanda atau tiket dari bambu.",
+  "mnemonic_id": "Cara mengingat: Potongan bambu yang melekat sebagai tanda tiket.",
+  "note_id": ""
 }

@@ -1,6 +1,6 @@
 {
   "kanji": "駅",
-  "formation_type": "unknown",
+  "formation_type": "phono_semantic",
   "components": [
     {
       "part": "馬",
@@ -8,13 +8,18 @@
       "meaning_id": "kuda"
     },
     {
-      "part": "尸",
-      "role": "shape",
-      "meaning_id": "atap atau penutup"
+      "part": "睪",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Karakter ini menggabungkan komponen kuda (馬) dan penutup (尸). Terkait dengan tempat persinggahan atau stasiun pergantian kuda pada masa lalu.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Kuda (馬) yang beristirahat di bawah atap (尸) menandakan keberadaan sebuah stasiun (駅).",
-  "note_id": "Umum ditemukan pada kata 駅 (stasiun) dan 駅員 (petugas stasiun)."
+  "phonetic_part": "睪",
+  "reading_hint": "",
+  "old_form": "驛",
+  "etymology_id": "Bentuk lama 驛 = 馬 (kuda) + 睪 (penanda bunyi): pos tempat menukar kuda untuk pengantar surat. 駅 mengganti 睪 dengan 尺.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kuda (馬) berhenti sepanjang jalan (尺): stasiun (駅).",
+  "note_id": "",
+  "source": "manual"
 }

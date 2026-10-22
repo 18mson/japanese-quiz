@@ -1,20 +1,25 @@
 {
   "kanji": "新",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
+    {
+      "part": "立",
+      "role": "meaning",
+      "meaning_id": "stand up, rise"
+    },
     {
       "part": "木",
       "role": "meaning",
-      "meaning_id": "tree"
+      "meaning_id": "tree, wood"
     },
     {
-      "part": "辛",
+      "part": "斤",
       "role": "phonetic",
-      "meaning_id": "spicy"
+      "meaning_id": "axe, 1.32 lb"
     }
   ],
-  "etymology_id": "Gabungan komponen pohon dan suara pembacaan untuk menyatakan sesuatu yang baru ditebang.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Kayu pohon yang baru.",
-  "note_id": "Kanji tingkat dasar yang sangat penting untuk kata baru."
+  "etymology_id": "Terdiri dari pohon (木) yang berdiri (立) dan kapak (斤).",
+  "mnemonic_id": "Cara mengingat: Pohon (木) yang berdiri (立) ditebang menggunakan kapak baru (斤).",
+  "note_id": ""
 }

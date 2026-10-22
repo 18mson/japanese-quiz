@@ -1,20 +1,20 @@
 {
   "kanji": "皆",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "比",
       "role": "meaning",
-      "meaning_id": "berbaris bersama/membandingkan"
+      "meaning_id": "compare, race"
     },
     {
       "part": "白",
       "role": "meaning",
-      "meaning_id": "terang/jelas"
+      "meaning_id": "white"
     }
   ],
-  "etymology_id": "Komponen orang yang berbaris berdampingan (比) di atas keterusterangan (白), melambangkan semua orang berkumpul secara seragam.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Orang-orang berbaris bersama (比) di bawah sinar putih (白) yang menyinari semua orang (皆).",
-  "note_id": "Umum dipakai dalam sapaan 皆さん (みなさん)."
+  "etymology_id": "Gabungan komponen perbandingan (比) dan putih (白).",
+  "mnemonic_id": "Cara mengingat: Semua orang membandingkan (比) kain putih (白) yang sama.",
+  "note_id": "Sering dipakai dalam kata sapaan semua orang."
 }

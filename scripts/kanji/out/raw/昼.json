@@ -3,28 +3,18 @@
   "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
-    },
-    {
       "part": "日",
       "role": "meaning",
       "meaning_id": "matahari"
-    },
-    {
-      "part": "尸",
-      "role": "shape",
-      "meaning_id": "atap"
-    },
-    {
-      "part": "丶",
-      "role": "shape",
-      "meaning_id": "titik"
     }
   ],
-  "etymology_id": "Gabungan komponen menggambarkan waktu siang hari saat matahari bersinar di atas.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Matahari di bawah atap menandakan waktu siang hari.",
-  "note_id": "Sering dipakai dalam kata istirahat siang dan makan siang."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "晝",
+  "etymology_id": "Bentuk lama 晝 = 畫 (garis batas) + 日 (matahari): saat matahari berada di atas garis, yaitu siang. 昼 adalah penyederhanaan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari (日) di bawah penggaris (尺): mengukur panjang hari, yaitu siang (昼).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,25 @@
 {
   "kanji": "状",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺦",
-      "role": "shape",
+      "part": "爿",
+      "role": "phonetic",
       "meaning_id": ""
     },
     {
       "part": "犬",
       "role": "meaning",
-      "meaning_id": "dog"
+      "meaning_id": "anjing"
     }
   ],
-  "etymology_id": "Gabungan bentuk sisi kiri (⺦) dan unsur anjing (犬).",
-  "mnemonic_id": "Cara mengingat: Melihat bentuk atau status (状) dari seekor anjing (犬).",
-  "note_id": "Bentuk lama dari kanji ini adalah 狀."
+  "phonetic_part": "爿",
+  "reading_hint": "爿 しょう → 狀 じょう",
+  "old_form": "狀",
+  "etymology_id": "Bentuk lama 狀 = 爿 (penanda bunyi しょう) + 犬 (anjing). Bentuk baru menyederhanakan 爿 menjadi ⺦. Mengapa 犬 dipakai untuk arti 'rupa, keadaan' tidak jelas.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: ⺦ di kiri dan 犬 (anjing) di kanan; 状 dibaca 'jō', mirip 'shō' pada 爿.",
+  "note_id": "",
+  "source": "manual"
 }

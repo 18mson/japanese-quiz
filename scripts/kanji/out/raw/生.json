@@ -1,15 +1,14 @@
 {
   "kanji": "生",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "生",
-      "role": "meaning",
-      "meaning_id": "life"
-    }
-  ],
-  "etymology_id": "Gambar tunas tanaman yang tumbuh dari tanah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya seperti tanaman kecil yang mulai tumbuh hidup dari tanah.",
-  "note_id": "Sangat sering digunakan untuk kata guru, siswa, dan lahir."
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar tunas yang tumbuh dari tanah.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tunas tumbuh dari tanah: hidup atau lahir (生).",
+  "note_id": "",
+  "source": "manual"
 }

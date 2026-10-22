@@ -1,20 +1,25 @@
 {
   "kanji": "百",
-  "formation_type": "ideograph_simple",
+  "formation_type": "phono_semantic",
   "components": [
     {
       "part": "一",
       "role": "meaning",
-      "meaning_id": "one"
+      "meaning_id": "satu"
     },
     {
       "part": "白",
-      "role": "meaning",
-      "meaning_id": "white"
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kombinasi angka satu (一) di atas kanji putih (白), digunakan sebagai angka seratus.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Satu (一) kotak putih (白) penuh berisi seratus (百) buah.",
-  "note_id": "Kosakata penting: 百 (seratus)."
+  "phonetic_part": "白",
+  "reading_hint": "白 はく → 百 ひゃく",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 一 + 白, dengan 白 diduga memberi bunyi (はく → ひゃく).",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 一 + 白: ingat 'hyaku' mirip 'haku' pada 白.",
+  "note_id": "",
+  "source": "manual"
 }

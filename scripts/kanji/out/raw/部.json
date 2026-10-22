@@ -1,25 +1,20 @@
 {
   "kanji": "部",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "立",
-      "role": "meaning",
-      "meaning_id": "berdiri"
-    },
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
+      "part": "咅",
+      "role": "phonetic",
+      "meaning_id": "to spit out"
     },
     {
       "part": "⻏",
-      "role": "meaning",
-      "meaning_id": "wilayah atau bukit"
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan wilayah dan bagian lain yang menunjukkan pembagian suatu area atau kelompok.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Orang-orang berdiri berkelompok di suatu bagian wilayah.",
-  "note_id": "Kosakata: 部屋 (へや) - kamar; 全部で (ぜんぶで) - semuanya; 部長 (ぶちょう) - kepala bagian."
+  "etymology_id": "Gabungan komponen 咅 yang memberi bunyi ブ dan bukit/wilayah.",
+  "mnemonic_id": "Cara mengingat: Bagian wilayah kantor tempat orang bekerja.",
+  "note_id": ""
 }

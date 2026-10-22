@@ -1,20 +1,25 @@
 {
   "kanji": "黒",
-  "formation_type": "ideograph_simple",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
       "part": "里",
       "role": "shape",
-      "meaning_id": "desa"
+      "meaning_id": "ri, village"
     },
     {
       "part": "灬",
-      "role": "meaning",
-      "meaning_id": "api"
+      "role": "shape",
+      "meaning_id": "fire, fire radical (no. 86)"
+    },
+    {
+      "part": "火",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggambarkan jelaga atau asap hitam akibat pembakaran.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Asap dari api (灬) membuat warna batu atau tanah menjadi hitam.",
-  "note_id": "Kosakata: 黒い (hitam)."
+  "etymology_id": "Terdiri dari komponen 里 dan api (灬).",
+  "mnemonic_id": "Cara mengingat: Di desa (里) yang terbakar api (灬) tersisa abu yang hitam (黒).",
+  "note_id": ""
 }

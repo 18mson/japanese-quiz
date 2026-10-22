@@ -1,25 +1,25 @@
 {
   "kanji": "覚",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "見",
-      "role": "meaning",
-      "meaning_id": "melihat"
+      "part": "⺍",
+      "role": "shape",
+      "meaning_id": ""
     },
     {
       "part": "冖",
       "role": "shape",
-      "meaning_id": "penutup"
+      "meaning_id": ""
     },
     {
-      "part": "⺌",
-      "role": "shape",
-      "meaning_id": "bagian atas"
+      "part": "見",
+      "role": "phonetic",
+      "meaning_id": "see, hopes"
     }
   ],
-  "etymology_id": "Komponen 見 (melihat) memberikan makna persepsi atau kesadaran. Bagian atasnya melambangkan proses pencerahan pikiran untuk menyadari, memahami, atau mengingat sesuatu.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Melihat sesuatu secara saksama di bawah atap membantu kita mengingat dan menghafalnya dengan baik.",
-  "note_id": "Biasa ditemukan dalam kosakata 覚えます (mengingat atau menghafal)."
+  "etymology_id": "Terdiri dari bagian atas mahkota dan unsur melihat (見) di bagian bawah.",
+  "mnemonic_id": "Cara mengingat: Melihat (見) dengan penuh perhatian agar dapat mengingat pelajaran.",
+  "note_id": "Bentuk lamanya adalah 覺."
 }

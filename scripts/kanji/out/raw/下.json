@@ -1,20 +1,14 @@
 {
   "kanji": "下",
   "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "一",
-      "role": "meaning",
-      "meaning_id": "garis patokan"
-    },
-    {
-      "part": "卜",
-      "role": "meaning",
-      "meaning_id": "penunjuk arah"
-    }
-  ],
-  "etymology_id": "Tanda garis acuan horizontal dengan garis penunjuk di bagian bawahnya, melambangkan posisi 'bawah'.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Tanda penunjuk: titik di bawah garis berarti 'bawah'.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Dari sebuah garis patokan (一), ada tanda yang mengarah ke bawah (卜).",
-  "note_id": "Lawan kata dari 上 (atas). Memiliki banyak variasi bacaan seperti した, さがる, くだる."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: titik di bawah garis: bawah (下).",
+  "note_id": "",
+  "source": "manual"
 }

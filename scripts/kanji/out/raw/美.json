@@ -1,20 +1,20 @@
 {
   "kanji": "美",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "羊",
-      "role": "meaning",
-      "meaning_id": "sheep"
+      "part": "⺷",
+      "role": "shape",
+      "meaning_id": ""
     },
     {
       "part": "大",
       "role": "meaning",
-      "meaning_id": "big"
+      "meaning_id": "large, big"
     }
   ],
-  "etymology_id": "Gabungan komponen domba (羊) dan besar (大). Domba yang besar dianggap melambangkan keindahan atau sesuatu yang baik.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Domba (羊) yang besar (大) terlihat sangat indah (美).",
-  "note_id": "Kosakata penting: 美術 (museum seni / seni rupa)."
+  "etymology_id": "Gabungan komponen domba dan ukuran besar.",
+  "mnemonic_id": "Cara mengingat: Domba yang bertubuh besar tampak indah.",
+  "note_id": ""
 }

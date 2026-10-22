@@ -1,15 +1,20 @@
 {
   "kanji": "午",
   "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
-      "part": "十",
+      "part": "丿",
       "role": "shape",
-      "meaning_id": "sepuluh"
+      "meaning_id": "katakana no radical (no. 4)"
+    },
+    {
+      "part": "干",
+      "role": "shape",
+      "meaning_id": "dry, parch"
     }
   ],
-  "etymology_id": "Terdiri dari komponen ノ, 干, dan 十.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Simbol waktu siang hari.",
-  "note_id": "Kosakata: 午前 (a.m.), 午後 (p.m.)."
+  "etymology_id": "Terdiri dari komponen 丿 dan 干.",
+  "mnemonic_id": "Cara mengingat: Ada garis miring dan benda kering (干) di siang hari (午).",
+  "note_id": ""
 }

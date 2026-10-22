@@ -1,15 +1,14 @@
 {
   "kanji": "日",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "日",
-      "role": "meaning",
-      "meaning_id": "matahari"
-    }
-  ],
-  "etymology_id": "Gambar bentuk matahari dengan titik di tengahnya.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar matahari.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Kotak dengan garis di tengah melambangkan matahari atau hari (日).",
-  "note_id": "Berarti hari atau matahari, serta bagian dari nama negara Jepang (日本)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari dalam bentuk kotak dengan satu garis di tengah (日).",
+  "note_id": "",
+  "source": "manual"
 }

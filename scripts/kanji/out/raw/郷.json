@@ -1,20 +1,25 @@
 {
   "kanji": "郷",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⻏",
-      "role": "meaning",
-      "meaning_id": "kota"
+      "part": "乡",
+      "role": "shape",
+      "meaning_id": ""
     },
     {
-      "part": "幺",
+      "part": "艮",
+      "role": "phonetic",
+      "meaning_id": "northeast (Oriental zodiac), stopping"
+    },
+    {
+      "part": "⻏",
       "role": "shape",
-      "meaning_id": "kecil"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggabungkan unsur tempat atau desa (⻏) untuk menyatakan kampung halaman.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Desa (⻏) tempat asal kampung halaman.",
-  "note_id": "Digunakan dalam kata kampung halaman (故郷)."
+  "etymology_id": "Gabungan komponen visual kampung 乡, 艮, dan ⻏.",
+  "mnemonic_id": "Cara mengingat: Tempat tinggal di kampung halaman (郷) tempat kita berhenti (艮) dan berkumpul.",
+  "note_id": ""
 }

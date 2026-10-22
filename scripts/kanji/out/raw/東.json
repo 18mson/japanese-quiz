@@ -1,25 +1,25 @@
 {
   "kanji": "東",
   "formation_type": "compound_meaning",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "木",
       "role": "meaning",
-      "meaning_id": "tree, wood"
+      "meaning_id": "pohon"
     },
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "day, sun"
-    },
-    {
-      "part": "丿",
-      "role": "shape",
-      "meaning_id": ""
+      "meaning_id": "matahari"
     }
   ],
-  "etymology_id": "Gabungan dari pohon (木) dan matahari (日).",
-  "mnemonic_id": "Cara mengingat: Matahari (日) terbit di balik pohon (木) di sebelah timur (東).",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: matahari (日) terbit di balik pohon (木). Sebagian peneliti menafsirkan bentuk aslinya sebagai kantong yang diikat; arti 'timur' dipinjam.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari (日) terbit di balik pohon (木): arah timur.",
+  "note_id": "",
+  "source": "manual"
 }

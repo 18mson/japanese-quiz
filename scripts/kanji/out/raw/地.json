@@ -1,20 +1,20 @@
 {
   "kanji": "地",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "土",
       "role": "meaning",
-      "meaning_id": "tanah"
+      "meaning_id": "soil, earth"
     },
     {
       "part": "也",
       "role": "phonetic",
-      "meaning_id": "juga"
+      "meaning_id": "to be (classical)"
     }
   ],
-  "etymology_id": "Tanah (土) dikombinasikan dengan penanda bunyi 也 untuk menyatakan arti tanah atau bumi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Unsur tanah (土) adalah dasar dari daratan atau bumi.",
-  "note_id": "Kosakata: 地下 (bawah tanah), 地下鉄 (kereta bawah tanah), 地図 (peta)."
+  "etymology_id": "Gabungan tanah (土) dan komponen bunyi 也.",
+  "mnemonic_id": "Cara mengingat: Tanah (土) tempat berpijak di bumi.",
+  "note_id": ""
 }

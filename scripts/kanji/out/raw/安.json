@@ -1,20 +1,20 @@
 {
   "kanji": "安",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "宀",
       "role": "meaning",
-      "meaning_id": "atap atau rumah"
+      "meaning_id": "shaped crown, katakana u radical (no. 40)"
     },
     {
       "part": "女",
       "role": "meaning",
-      "meaning_id": "wanita"
+      "meaning_id": "woman, female"
     }
   ],
-  "etymology_id": "Menggabungkan atap rumah (宀) dan wanita (女). Seorang wanita yang berada di dalam rumah melambangkan keadaan yang aman, tenang, dan damai.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seorang wanita (女) berada di bawah atap (宀) rumah merasa aman dan hidupnya tenang.",
-  "note_id": "Digunakan pada kata sifat 安い yang berarti murah atau terjangkau."
+  "etymology_id": "Terdiri dari atap (宀) dan wanita (女).",
+  "mnemonic_id": "Cara mengingat: Seorang wanita (女) di bawah atap rumah (宀) merasa tenang dan aman.",
+  "note_id": ""
 }

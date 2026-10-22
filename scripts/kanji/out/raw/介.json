@@ -1,20 +1,25 @@
 {
   "kanji": "介",
   "formation_type": "unknown",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "𠆢",
-      "role": "shape",
-      "meaning_id": "orang"
+      "part": "人",
+      "role": "meaning",
+      "meaning_id": "person"
     },
     {
-      "part": "ハ",
+      "part": "丿",
       "role": "shape",
-      "meaning_id": "terpisah atau batas"
+      "meaning_id": ""
+    },
+    {
+      "part": "丨",
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari bentuk orang 𠆢 dan garis ハ di kedua sisinya, membentuk arti berada di antara atau menjadi perantara.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang (𠆢) berdiri dengan dua tangan terentang (ハ) untuk menjadi perantara dan memperkenalkan temannya.",
-  "note_id": "Sering muncul dalam kata 紹介 (しょうかい, perkenalan)."
+  "etymology_id": "Kanji ini tersusun dari komponen orang (人) serta goresan tambahan.",
+  "mnemonic_id": "Cara mengingat: Seseorang (人) berdiri di antara garis batas.",
+  "note_id": "Digunakan dalam kata pengantar atau perkenalan."
 }

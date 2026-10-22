@@ -1,15 +1,14 @@
 {
   "kanji": "月",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "月",
-      "role": "meaning",
-      "meaning_id": "bulan"
-    }
-  ],
-  "etymology_id": "Gambar bentuk bulan sabit di langit malam.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar bulan sabit.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk menyerupai bulan sabit.",
-  "note_id": "Kosakata penting: 月曜日 (げつようび) untuk hari Senin."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: bulan sabit dengan dua garis di dalamnya (月).",
+  "note_id": "",
+  "source": "manual"
 }

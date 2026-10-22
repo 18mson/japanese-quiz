@@ -1,25 +1,20 @@
 {
   "kanji": "起",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "走",
       "role": "meaning",
-      "meaning_id": "berlari atau bergerak"
+      "meaning_id": "run"
     },
     {
-      "part": "土",
-      "role": "shape",
-      "meaning_id": "tanah"
-    },
-    {
-      "part": "已",
+      "part": "己",
       "role": "phonetic",
-      "meaning_id": "sudah"
+      "meaning_id": "self"
     }
   ],
-  "etymology_id": "Bergerak bangun dari tanah atau posisi semula.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bergerak bangkit berdiri dari atas tanah.",
-  "note_id": "Digunakan untuk bangun tidur."
+  "etymology_id": "Gabungan lari (走) dan diri sendiri (己).",
+  "mnemonic_id": "Cara mengingat: Berlari (走) untuk membangunkan diri sendiri (己) dari tempat tidur.",
+  "note_id": ""
 }

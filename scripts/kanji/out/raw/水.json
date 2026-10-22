@@ -1,15 +1,14 @@
 {
   "kanji": "水",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "水",
-      "role": "meaning",
-      "meaning_id": "water"
-    }
-  ],
-  "etymology_id": "Kanji ini adalah gambar aliran air.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar air yang mengalir dengan percikan di kiri dan kanan.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai aliran air yang mengalir ke bawah.",
-  "note_id": "Kanji dasar untuk air dan hari Rabu."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: aliran air dengan percikan di kiri dan kanan (水).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,25 +1,20 @@
 {
   "kanji": "右",
   "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
+    {
+      "part": "丆",
+      "role": "shape",
+      "meaning_id": ""
+    },
     {
       "part": "口",
       "role": "meaning",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "garis tangan"
-    },
-    {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "lengan"
+      "meaning_id": "mouth"
     }
   ],
-  "etymology_id": "Gabungan bentuk tangan (ノ dan 一) yang mengarah ke mulut (口) untuk menyuap makanan, yang diasosiasikan dengan tangan kanan.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Tangan yang paling sering membantu menyuap makanan ke mulut (口) adalah tangan kanan (右).",
-  "note_id": "Pasangan dari kanji kiri (左), sering digunakan dalam petunjuk arah jalan seperti 右へ曲がります."
+  "etymology_id": "Terdiri dari garis penutup dan bentuk mulut (口).",
+  "mnemonic_id": "Cara mengingat: Tangan kanan sering dipakai saat mengarahkan makanan ke mulut (口).",
+  "note_id": ""
 }

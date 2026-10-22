@@ -1,20 +1,25 @@
 {
   "kanji": "健",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
     },
     {
-      "part": "聿",
+      "part": "人",
+      "role": "shape",
+      "meaning_id": ""
+    },
+    {
+      "part": "建",
       "role": "phonetic",
-      "meaning_id": "kuas"
+      "meaning_id": "build"
     }
   ],
-  "etymology_id": "Terdiri dari komponen orang dan kuas. Bagian kuas berfungsi sebagai penanda bunyi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Seorang (⺅) yang memegang alat seperti kuas (聿) akan tetap sehat dan kuat.",
-  "note_id": "Kanji ini digunakan dalam kata sehat (kensou/kenkou)."
+  "etymology_id": "Gabungan orang (亻/人) dan bagian bunyi建 (ケン).",
+  "mnemonic_id": "Cara mengingat: Seseorang (亻) yang tubuhnya dibangun (建) dengan kuat menjadi sehat.",
+  "note_id": ""
 }

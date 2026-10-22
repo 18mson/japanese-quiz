@@ -1,15 +1,14 @@
 {
   "kanji": "山",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "山",
-      "role": "meaning",
-      "meaning_id": "gunung"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar puncak-puncak gunung.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar gunung dengan tiga puncak.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Tiga puncak yang menjulang seperti gunung.",
-  "note_id": "Digunakan untuk gunung dan nama tempat."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tiga puncak gunung (山).",
+  "note_id": "",
+  "source": "manual"
 }

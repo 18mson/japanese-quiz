@@ -1,15 +1,20 @@
 {
   "kanji": "供",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
+    },
+    {
+      "part": "共",
+      "role": "phonetic",
+      "meaning_id": "together, both"
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan unsur orang (⺅) untuk menyatakan pelayan atau menemani.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Ada orang (⺅) yang ikut menemani dan melayani.",
-  "note_id": "Digunakan dalam kata anak (子供)."
+  "etymology_id": "Gabungan 亻 (orang) dan 共 (bersama).",
+  "mnemonic_id": "Cara mengingat: Orang (亻) yang bersama-sama (共) menemani atau menyajikan.",
+  "note_id": ""
 }

@@ -1,25 +1,20 @@
 {
   "kanji": "韓",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "十",
+      "part": "𠦝",
       "role": "shape",
-      "meaning_id": "sepuluh"
-    },
-    {
-      "part": "日",
-      "role": "shape",
-      "meaning_id": "matahari"
+      "meaning_id": ""
     },
     {
       "part": "韋",
       "role": "meaning",
-      "meaning_id": "kulit atau batas sekeliling"
+      "meaning_id": "tanned leather radical (no. 178)"
     }
   ],
-  "etymology_id": "Karakter fonosemantik yang menggabungkan penanda bunyi dan komponen pembentuk untuk nama negeri.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Kanji untuk menyebut negara Korea (韓国), ingat kombinasi 十, 日, dan radikal 韋.",
-  "note_id": "Sering dipakai dalam nama negara 韓国 (Korea Selatan)."
+  "etymology_id": "Gabungan komponen atas dan kulit samak (韋) di bagian bawah.",
+  "mnemonic_id": "Cara mengingat: Kulit (韋) dan kerangka sepuluh hari membuat nama negara tetangga.",
+  "note_id": "Digunakan untuk menyebut negara Korea Selatan."
 }

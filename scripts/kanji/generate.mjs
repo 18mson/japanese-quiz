@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseKanjidic } from './facts.mjs';
+import { getDirectComponents } from './validate.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,14 +46,14 @@ function getKanjidic() {
 
 export const SYSTEM_PROMPT = `Kamu menyusun catatan belajar kanji untuk pelajar Indonesia tingkat pemula (Minna no Nihongo).
 Aturan KETAT:
-1. Fakta yang diberikan adalah pohon komponen (KanjiVG), daftar on-yomi komponen dari KANJIDIC2, dan kata konteks. Gunakan komponen dari pohon KanjiVG. Tiap components[].part HARUS ada di pohon KanjiVG, KRADFILE, atau old_form.
+1. Fakta yang diberikan adalah komponen anak langsung pohon KanjiVG, daftar on-yomi komponen dari KANJIDIC2, dan kata konteks. Komponen pada components[] WAJIB HANYA anak langsung dari root di pohon KanjiVG (dua tingkat pertama). DILARANG memasukkan potongan di dalam komponen (mis. 毋 pada 毎, 人/一/口 pada 合, 用/マ pada 甬).
 2. Penanda Bunyi (Phonetic): Komponen hanya boleh diberi role 'phonetic' bila on-yomi komponen tersebut cocok/berima dengan on-yomi kanji target (berdasarkan fakta on-yomi yang diberikan). Jangan mengarang on-yomi! Jika ber-role 'phonetic', isi formation_type 'phono_semantic'. Model DILARANG mengeluarkan field reading_hint (reading_hint dihitung skrip).
 3. Elemen Bukan Kanji: Komponen yang TIDAK ada di KANJIDIC2 hanya boleh diberi role 'shape' dengan meaning_id string kosong (""). Arti komponen hanya boleh diterjemahkan dari KANJIDIC2.
 4. Karakter CJK: Karakter kanji/CJK pada etymology_id, mnemonic_id, dan note_id hanya boleh karakter yang diizinkan (kanji target itu sendiri, komponen pohon KanjiVG, KRADFILE, atau karakter dalam kata kosakata konteks). Dilarang memakai Hanzi sederhana Tiongkok seperti 买, 关, dll.
 5. Bentuk Lama: Bila old_form ada, sebutkan singkat bentuk lamanya dan kanji modern sebagai penyederhanaan. JANGAN menebak bentuk lama bila old_form null.
 6. Ketidakpastian: Jika asal-usulnya tidak pasti atau kamu ragu, gunakan claim_kind "unknown" dan formation_type "unknown", jelaskan hanya struktur visual (DILARANG mengarang cerita/klaim asal-usul palsu).
-7. Larangan Sejarah & Klaim Gambar: Dilarang menyebut tahun, dinasti, tulang ramalan, atau pola "pada zaman". Dilarang mengklaim "digambarkan sebagai", "melambangkan", "berasal dari gambar" kecuali kanji piktograf benda murni.
-8. Mnemonic (mnemonic_id): Harus diawali "Cara mengingat:", maksimal 40 kata. Wajib memuat citra konkret ATAU petunjuk bunyi. Dilarang hanya mengulang arti kanji. Dilarang menggunakan kalimat "berasal dari..." atau "artinya awalnya...".
+7. Larangan Sejarah & Klaim Gambar: Dilarang menyebut tahun, dinasti, tulang ramalan, atau pola "pada zaman". Dilarang mengklaim "digambarkan sebagai", "melambangkan", "berasal dari gambar", "untuk menggambarkan", atau "menyatakan arti" pada etymology_id kecuali kanji piktograf benda murni.
+8. Mnemonic (mnemonic_id): Harus diawali "Cara mengingat:", maksimal 40 kata. Wajib memuat citra konkret ATAU petunjuk bunyi. Dilarang hanya mengulang arti kanji (ditolak bila >= 60% kata mengulang arti). Dilarang menggunakan kanji target itu sendiri sebagai satu-satunya objek citra (misalnya: dilarang menulis 'menggunakan bahasa (語) kita' atau 'bayangkan kanji (語)'). Kreasikan dari komponen pembentuknya. Dilarang menggunakan kalimat "berasal dari..." atau "artinya awalnya...".
 9. Format keluaran JSON memuat field:
    - kanji: karakter kanji
    - formation_type: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown'
@@ -133,6 +134,10 @@ export function buildUserPrompt(batchItems) {
     prompt += `Goresan: ${item.stroke_count ?? '-'}\n`;
     prompt += `Bentuk Lama (old_form): ${item.old_form ? item.old_form : 'null (tidak ada)'}\n`;
     prompt += `Komponen KanjiVG Flat: ${(item.flat_parts || []).join(', ') || '-'}\n`;
+    const directParts = getDirectComponents(item.tree);
+    if (directParts.length > 0) {
+      prompt += `Komponen Anak Langsung (HANYA gunakan ini sebagai components[]): ${directParts.join(', ')}\n`;
+    }
     prompt += `Pohon Struktur KanjiVG:\n${formatKanjiVgTree(item.tree)}`;
     prompt += `Komponen KRADFILE: ${(item.components || []).join(', ') || '-'}\n`;
 

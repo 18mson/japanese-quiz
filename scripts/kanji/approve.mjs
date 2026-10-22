@@ -45,13 +45,14 @@ export function approveEntries({ onlyKanji = new Set() } = {}) {
   let skippedCount = 0;
   let rejectedCount = 0;
 
-  // Baca target final yang sudah ada jika ada agar tidak menimpa entri yang sudah approved sebelumnya
-  let finalMap = {};
-  if (fs.existsSync(TARGET_FINAL_FILE)) {
+  const ESTABLISHED_FILE = path.resolve(__dirname, 'data/established.json');
+  const establishedSet = new Set();
+  if (fs.existsSync(ESTABLISHED_FILE)) {
     try {
-      finalMap = JSON.parse(fs.readFileSync(TARGET_FINAL_FILE, 'utf-8'));
+      const estData = JSON.parse(fs.readFileSync(ESTABLISHED_FILE, 'utf-8'));
+      for (const k of estData.kanji || []) establishedSet.add(k);
     } catch (e) {
-      finalMap = {};
+      console.warn('Gagal membaca established.json:', e.message);
     }
   }
 
@@ -67,30 +68,54 @@ export function approveEntries({ onlyKanji = new Set() } = {}) {
       continue;
     }
 
+    // approve.mjs hanya menerima status 'draft', 'approved' (manual),
+    // atau 'needs_review' yang disebabkan reading_match pada kanji yang ada di established.json
+    if (entry.status === 'needs_review') {
+      const isEstablished = establishedSet.has(entry.kanji);
+      const isOnlyReadingMatchReview = (entry.reasons || []).every(r => 
+        r.includes('tidak cocok rima bacaan on-yomi') || r.includes('Peringatan')
+      );
+      if (!isEstablished || !isOnlyReadingMatchReview) {
+        console.warn(`⚠️ Menolak menyetujui kanji ${entry.kanji} karena berstatus 'needs_review' bukan akibat reading_match pada kanji established.`);
+        rejectedCount++;
+        continue;
+      }
+    } else if (entry.status !== 'draft' && entry.status !== 'approved') {
+      console.warn(`⚠️ Menolak menyetujui kanji ${entry.kanji} dengan status '${entry.status}'.`);
+      rejectedCount++;
+      continue;
+    }
+
     // Setujui entri
     entry.status = 'approved';
     newlyApproved++;
+  }
 
-    finalMap[entry.kanji] = {
-      kanji: entry.kanji,
-      meaning: entry.facts?.meaning || [],
-      on: entry.facts?.on || [],
-      kun: entry.facts?.kun || [],
-      stroke_count: entry.facts?.stroke_count ?? null,
-      jlpt: entry.facts?.jlpt ?? null,
-      grade: entry.facts?.grade ?? null,
-      formation_type: entry.formation_type,
-      components: entry.components || [],
-      etymology_id: entry.etymology_id,
-      etymology_confidence: entry.etymology_confidence,
-      mnemonic_id: entry.mnemonic_id,
-      note_id: entry.note_id || '',
-      phonetic_part: entry.facts?.phonetic_part || entry.phonetic_part || null,
-      reading_hint: entry.reading_hint || null,
-      claim_kind: entry.claim_kind || 'structure',
-      old_form: entry.facts?.old_form || entry.old_form || null,
-      words: entry.facts?.words || []
-    };
+  // Isi finalMap HANYA dari entri 'approved' (manual dan yang disetujui)
+  const finalMap = {};
+  for (const entry of allEntries) {
+    if (entry.status === 'approved') {
+      finalMap[entry.kanji] = {
+        kanji: entry.kanji,
+        meaning: entry.facts?.meaning || [],
+        on: entry.facts?.on || [],
+        kun: entry.facts?.kun || [],
+        stroke_count: entry.facts?.stroke_count ?? null,
+        jlpt: entry.facts?.jlpt ?? null,
+        grade: entry.facts?.grade ?? null,
+        formation_type: entry.formation_type,
+        components: entry.components || [],
+        etymology_id: entry.etymology_id,
+        etymology_confidence: entry.etymology_confidence,
+        mnemonic_id: entry.mnemonic_id,
+        note_id: entry.note_id || '',
+        phonetic_part: entry.facts?.phonetic_part || entry.phonetic_part || null,
+        reading_hint: entry.reading_hint || null,
+        claim_kind: entry.claim_kind || 'structure',
+        old_form: entry.facts?.old_form || entry.old_form || null,
+        words: entry.facts?.words || []
+      };
+    }
   }
 
   // Perbarui kanji-info.json

@@ -1,20 +1,20 @@
 {
   "kanji": "映",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "matahari atau cahaya"
+      "meaning_id": "day, sun"
     },
     {
-      "part": "大",
-      "role": "shape",
-      "meaning_id": "orang besar"
+      "part": "央",
+      "role": "phonetic",
+      "meaning_id": "center, middle"
     }
   ],
-  "etymology_id": "Menggabungkan cahaya matahari (日) dengan komponen bentuk di kanannya, melambangkan cahaya yang bersinar terang sehingga memantulkan bayangan.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Cahaya matahari (日) menyinari sosok besar (大) hingga memantulkan gambar bayangan di layar film.",
-  "note_id": "Paling umum dipelajari pemula dalam kosakata 映画 (film)."
+  "etymology_id": "Gabungan dari matahari (日) dan bagian tengah (央).",
+  "mnemonic_id": "Cara mengingat: Sinar matahari (日) menyinari bagian tengah (央) dan memantulkan bayangan.",
+  "note_id": ""
 }

@@ -6,15 +6,15 @@
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "say, word"
+      "meaning_id": "word"
     },
     {
       "part": "吾",
       "role": "phonetic",
-      "meaning_id": "I, my"
+      "meaning_id": "I"
     }
   ],
-  "etymology_id": "Terdiri dari 言 (kata/bicara) dan 吾 sebagai petunjuk bunyi (on-yomi: ゴ).",
-  "mnemonic_id": "Cara mengingat: Berbicara (言) menggunakan bahasa (語) kita.",
-  "note_id": "Kosakata: 英語 (えいご) = bahasa Inggris, 日本語 (にほんご) = bahasa Jepang."
+  "etymology_id": "Kanji ini adalah gabungan dari 言 (kata) yang memberikan arti dasar dan 吾 yang memberikan petunjuk bunyi bacaan.",
+  "mnemonic_id": "Cara mengingat: Kata (言) yang diucapkan oleh saya (吾) menjadi sebuah bahasa.",
+  "note_id": "Digunakan pada kata 語, 英語, dan 日本語."
 }

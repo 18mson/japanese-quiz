@@ -1,30 +1,25 @@
 {
   "kanji": "最",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
       "part": "日",
-      "role": "shape",
-      "meaning_id": "matahari"
+      "role": "meaning",
+      "meaning_id": "day, sun"
     },
     {
-      "part": "耳",
+      "part": "曰",
       "role": "shape",
-      "meaning_id": "telinga"
+      "meaning_id": ""
     },
     {
-      "part": "又",
-      "role": "shape",
-      "meaning_id": "tangan"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
+      "part": "取",
+      "role": "meaning",
+      "meaning_id": "take, fetch"
     }
   ],
-  "etymology_id": "Menggabungkan beberapa komponen bentuk.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menyatakan yang paling paling.",
-  "note_id": "Digunakan dalam kata akhir-akhir ini."
+  "etymology_id": "Gabungan struktur visual antara matahari/hari 日 dan mengambil 取.",
+  "mnemonic_id": "Cara mengingat: Mengambil (取) setiap hari (日) adalah hal yang paling (最) utama.",
+  "note_id": "Digunakan dalam kata 最近 (akhir-akhir ini)."
 }

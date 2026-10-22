@@ -1,20 +1,15 @@
 {
   "kanji": "行",
-  "formation_type": "pictograph",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
-      "part": "行",
-      "role": "meaning",
-      "meaning_id": "pergi"
-    },
-    {
       "part": "彳",
-      "role": "meaning",
-      "meaning_id": "langkah kaki"
+      "role": "shape",
+      "meaning_id": "stop, linger"
     }
   ],
-  "etymology_id": "Berasal dari gambar persimpangan jalan, melambangkan pergerakan atau berjalan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Langkah kaki (彳) di persimpangan jalan untuk pergi (行).",
-  "note_id": "Kosakata: 銀行 (ぎんこう) berarti bank dan 飛行機 (ひこうき) berarti pesawat terbang."
+  "etymology_id": "Kanji ini terdiri dari komponen 彳 di sisi kiri yang menunjukkan struktur visual.",
+  "mnemonic_id": "Cara mengingat: Bayangkan tanda 彳 untuk berhenti sejenak sebelum berjalan (行).",
+  "note_id": "Digunakan dalam kata 銀行 (bank)."
 }

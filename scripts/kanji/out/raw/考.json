@@ -1,20 +1,25 @@
 {
   "kanji": "考",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺹",
-      "role": "shape",
-      "meaning_id": "bentuk"
+      "part": "耂",
+      "role": "meaning",
+      "meaning_id": "variant of radical 125"
     },
     {
-      "part": "勹",
+      "part": "老",
       "role": "shape",
-      "meaning_id": "membungkus"
+      "meaning_id": ""
+    },
+    {
+      "part": "丂",
+      "role": "meaning",
+      "meaning_id": "obstruction of breath (qi) as it seeks release, variant of other characters"
     }
   ],
-  "etymology_id": "Menggambarkan aktivitas mental atau berpikir.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Memikirkan sesuatu secara mendalam di kepala (考).",
-  "note_id": "Kosakata: 考えます (かんがえます) berarti berpikir."
+  "etymology_id": "Gabungan bagian orang tua (耂/老) dan hambatan napas (丂).",
+  "mnemonic_id": "Cara mengingat: Orang tua (耂) berpikir (考) dengan tenang.",
+  "note_id": ""
 }

@@ -6,15 +6,15 @@
       "part": "木",
       "role": "meaning",
       "meaning_id": "pohon"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "garis dasar"
     }
   ],
-  "etymology_id": "Sebuah pohon (木) dengan garis (一) di bagian bawah yang menandakan akar atau dasar pohon. Berarti asal atau buku.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "木 (pohon) dengan garis di bagian akar: 'pangkal, asal'. Arti 'buku' dipinjam kemudian.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Batang pohon (木) yang diberi tanda garis (一) di akar sebagai tanda buku atau asal.",
-  "note_id": "Digunakan dalam kata 本 (buku) dan 日本 (Jepang)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: pohon (木) dengan tanda di akarnya: pokok atau asal; juga buku (本).",
+  "note_id": "",
+  "source": "manual"
 }

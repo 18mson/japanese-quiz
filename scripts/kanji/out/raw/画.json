@@ -1,25 +1,14 @@
 {
   "kanji": "画",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "田",
-      "role": "meaning",
-      "meaning_id": "petak tanah"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "garis batas"
-    },
-    {
-      "part": "凵",
-      "role": "shape",
-      "meaning_id": "bingkai pembatas"
-    }
-  ],
-  "etymology_id": "Menggambarkan proses menarik garis atau menorehkan tanda untuk membatasi petak sawah.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "畫",
+  "etymology_id": "Bentuk lama 畫: tangan memegang kuas (聿) menarik garis batas pada ladang (田). Penjelasan tradisional: menggambar atau membagi. 画 menyederhanakan bagian kuasnya.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Menarik garis batas berbingkai (一, 凵) untuk menggambar petak sawah (田).",
-  "note_id": "Muncul pada kata bioskop atau film 映画 (えいが) dan pelukis 画家 (がか)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: ladang (田) berbingkai: petak sawah yang digambar (画); dibaca 'ga' pada 映画.",
+  "note_id": "",
+  "source": "manual"
 }

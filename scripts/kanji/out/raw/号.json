@@ -1,25 +1,14 @@
 {
   "kanji": "号",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "satu"
-    },
-    {
-      "part": "勹",
-      "role": "shape",
-      "meaning_id": "membungkus"
-    }
-  ],
-  "etymology_id": "Gabungan mulut yang memanggil atau mengeluarkan suara keras untuk memberi tanda atau nomor.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Mulut (口) yang berseru memanggil nomor atau tanda.",
-  "note_id": "Kosakata: 番号 (nomor), 信号を右へ曲がってください (belok kanan di lampu lalu lintas), 暗証番号 (nomor PIN)."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "號",
+  "etymology_id": "Bentuk lama 號 = 号 (berteriak) + 虎 (harimau): teriakan keras. 号 mengambil bagian 'berteriak' saja. Arti 'nomor' dipakai belakangan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: mulut (口) berteriak menyebut nomor (番号).",
+  "note_id": "",
+  "source": "manual"
 }

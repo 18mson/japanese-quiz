@@ -1,20 +1,14 @@
 {
   "kanji": "六",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "ハ",
-      "role": "shape",
-      "meaning_id": "delapan"
-    },
-    {
-      "part": "亠",
-      "role": "shape",
-      "meaning_id": "tutup"
-    }
-  ],
-  "etymology_id": "Merupakan angka sederhana yang mewakili jumlah enam.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk huruf yang mewakili angka enam.",
-  "note_id": "Artinya adalah enam."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan; hafalkan sebagai bentuk.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: tutup (亠) di atas dua kaki (ハ): enam (六), dibaca 'roku'.",
+  "note_id": "",
+  "source": "manual"
 }

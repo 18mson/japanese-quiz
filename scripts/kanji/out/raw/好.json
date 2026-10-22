@@ -1,20 +1,20 @@
 {
   "kanji": "好",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "女",
       "role": "meaning",
-      "meaning_id": "perempuan"
+      "meaning_id": "woman, female"
     },
     {
       "part": "子",
       "role": "meaning",
-      "meaning_id": "anak"
+      "meaning_id": "child, sign of the rat"
     }
   ],
-  "etymology_id": "Kanji ini menggabungkan komponen perempuan dan anak yang melambangkan kebaikan atau perasaan suka.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seorang wanita (女) dan seorang anak (子) bersama-sama menunjukkan hal yang disukai (好).",
-  "note_id": "Kosakata: 好きな (すき) berarti suka atau gemar."
+  "etymology_id": "Gabungan wanita (女) dan anak (子).",
+  "mnemonic_id": "Cara mengingat: Ibu wanita (女) yang memegang anak (子) karena sangat disukai.",
+  "note_id": ""
 }

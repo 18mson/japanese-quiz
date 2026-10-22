@@ -1,15 +1,14 @@
 {
   "kanji": "十",
   "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "十",
-      "role": "meaning",
-      "meaning_id": "sepuluh"
-    }
-  ],
-  "etymology_id": "Merupakan lambang sederhana untuk angka sepuluh.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Garis bersilang menunjukkan kelengkapan angka sepuluh.",
-  "note_id": "Kosakata: 十日 (tanggal 10), 二十日 (tanggal 20)"
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Tanda sederhana untuk angka sepuluh (garis silang).",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tanda tambah (+) berarti sepuluh (十).",
+  "note_id": "",
+  "source": "manual"
 }

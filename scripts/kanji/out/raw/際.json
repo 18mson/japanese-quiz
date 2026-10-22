@@ -1,20 +1,25 @@
 {
   "kanji": "際",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "⻖",
-      "role": "meaning",
-      "meaning_id": "bukit"
+      "role": "shape",
+      "meaning_id": ""
     },
     {
-      "part": "示",
+      "part": "阜",
       "role": "shape",
-      "meaning_id": "altar"
+      "meaning_id": "mound, dam"
+    },
+    {
+      "part": "祭",
+      "role": "phonetic",
+      "meaning_id": "ritual, offer prayers"
     }
   ],
-  "etymology_id": "Berkaitan dengan batas atau tepi suatu tempat.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Pinggir bukit di dekat altar.",
-  "note_id": "Sering dipakai dalam kata internasional."
+  "etymology_id": "Gabungan bentuk bukit ⻖ di kiri dan komponen 祭 di kanan sebagai pemberi bunyi sai.",
+  "mnemonic_id": "Cara mengingat: Saat festival 祭 di tepi bukit ⻖ adalah kesempatan/kejadian (際) penting.",
+  "note_id": "Digunakan dalam kata 国際 (internasional)."
 }

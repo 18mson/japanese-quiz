@@ -1,15 +1,9 @@
 {
   "kanji": "金",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "金",
-      "role": "shape",
-      "meaning_id": "logam"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar logam atau emas di dalam tanah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Batangan emas berharga yang tersimpan di dalam tanah.",
-  "note_id": "Kanji dasar untuk emas, uang, dan hari Jumat."
+  "claim_kind": "structure",
+  "components": [],
+  "etymology_id": "Karakter piktograf untuk logam atau emas.",
+  "mnemonic_id": "Cara mengingat: Emas atau uang (金) berkilau di dalam tanah.",
+  "note_id": ""
 }

@@ -1,25 +1,25 @@
 {
   "kanji": "京",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
   "components": [
     {
-      "part": "小",
+      "part": "亠",
       "role": "shape",
-      "meaning_id": "kecil"
+      "meaning_id": "kettle lid radical (no. 8)"
     },
     {
       "part": "口",
       "role": "shape",
-      "meaning_id": "mulut"
+      "meaning_id": "mouth"
     },
     {
-      "part": "亠",
+      "part": "小",
       "role": "shape",
-      "meaning_id": "tutup"
+      "meaning_id": "little, small"
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen bentuk yang menggambarkan struktur bangunan besar atau ibu kota.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Bayangkan bangunan ibu kota (京) yang besar memiliki atap (亠) dan banyak bagian.",
-  "note_id": "Digunakan dalam kata Tokyo (東京)."
+  "etymology_id": "Terdiri dari penutup (亠), mulut (口), dan kecil (小).",
+  "mnemonic_id": "Cara mengingat: Kota besar ibu kota dengan bangunan bertingkat.",
+  "note_id": ""
 }

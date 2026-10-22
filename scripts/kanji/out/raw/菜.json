@@ -1,20 +1,25 @@
 {
   "kanji": "菜",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺾",
+      "part": "艹",
       "role": "meaning",
-      "meaning_id": "rumput"
+      "meaning_id": "grass, radical number 140"
     },
     {
-      "part": "木",
+      "part": "艸",
       "role": "shape",
-      "meaning_id": "pohon"
+      "meaning_id": ""
+    },
+    {
+      "part": "采",
+      "role": "phonetic",
+      "meaning_id": "dice, form"
     }
   ],
-  "etymology_id": "Tanaman atau tumbuhan yang dimakan sebagai sayur.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Tanaman rumput dan pohon yang tumbuh menjadi sayuran hijau.",
-  "note_id": "Bagian dari kata sayur."
+  "etymology_id": "Kanji gabungan makna dan bunyi. Komponen rumput (艹) memberikan arti dasar tanaman/sayur, dan 采 memberikan bunyi on-yomi サイ.",
+  "mnemonic_id": "Cara mengingat: Tanaman rumput (艹) dan bentuk (采) menghasilkan sayuran.",
+  "note_id": ""
 }

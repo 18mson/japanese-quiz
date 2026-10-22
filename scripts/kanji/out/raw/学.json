@@ -9,17 +9,17 @@
     },
     {
       "part": "冖",
-      "role": "shape",
+      "role": "meaning",
       "meaning_id": "atap"
-    },
-    {
-      "part": "⺌",
-      "role": "shape",
-      "meaning_id": "bagian atas"
     }
   ],
-  "etymology_id": "Menggambarkan seorang anak (子) yang berada di bawah atap sebuah bangunan untuk belajar dan memperdalam ilmu pengetahuan.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "學",
+  "etymology_id": "Bentuk lama 學: anak (子) di bawah atap (冖) dengan tangan yang menyusun 爻. Penjelasan tradisional: anak yang belajar. 学 menyederhanakan bagian atasnya.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seorang anak di bawah atap gedung sekolah rajin belajar untuk menuntut ilmu.",
-  "note_id": "Sering muncul dalam kata dasar seperti 学生 (siswa) dan 学校 (sekolah)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: anak (子) di bawah atap (冖) sedang belajar; tiga titik di atas seperti keringat usaha.",
+  "note_id": "",
+  "source": "manual"
 }

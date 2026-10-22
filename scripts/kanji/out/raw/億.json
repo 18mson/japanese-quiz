@@ -1,20 +1,20 @@
 {
   "kanji": "億",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺅",
+      "part": "亻",
       "role": "meaning",
-      "meaning_id": "orang"
+      "meaning_id": "radical number 9"
     },
     {
-      "part": "音",
+      "part": "意",
       "role": "phonetic",
-      "meaning_id": "suara"
+      "meaning_id": "idea, mind"
     }
   ],
-  "etymology_id": "Terdiri dari komponen orang (⺅) dan komponen suara (音) sebagai penanda bacaan.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang (⺅) mengeluarkan suara (音) karena melihat jumlah uang seratus juta.",
-  "note_id": "Kanji ini berarti seratus juta."
+  "etymology_id": "Gabungan orang (亻) dan komponen bunyi (意).",
+  "mnemonic_id": "Cara mengingat: Jumlah orang (亻) yang sangat banyak hingga butuh pikiran (意) besar untuk menghitungnya.",
+  "note_id": ""
 }

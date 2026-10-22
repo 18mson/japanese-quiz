@@ -1,25 +1,20 @@
 {
   "kanji": "院",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "⻖",
-      "role": "meaning",
-      "meaning_id": "tembok atau pembatas"
+      "role": "shape",
+      "meaning_id": ""
     },
     {
-      "part": "宀",
-      "role": "meaning",
-      "meaning_id": "atap atau gedung"
-    },
-    {
-      "part": "元",
+      "part": "完",
       "role": "phonetic",
-      "meaning_id": "dasar"
+      "meaning_id": "perfect, completion"
     }
   ],
-  "etymology_id": "Menggabungkan pembatas bukit atau tembok (⻖) dengan gedung beratap (宀) yang memiliki penanda bunyi, menunjukkan sebuah kompleks bangunan atau institusi penting.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Di dalam area bertembok (⻖) ada gedung beratap (宀) yang megah sebagai institusi rumah sakit.",
-  "note_id": "Biasa ditemukan dalam kosakata institusi kesehatan seperti 病院 (rumah sakit)."
+  "etymology_id": "Terdiri dari komponen ⻖ dan 完 yang memberi bunyi.",
+  "mnemonic_id": "Cara mengingat: Kompleks bangunan (⻖) yang selesai (完) dibangun.",
+  "note_id": ""
 }

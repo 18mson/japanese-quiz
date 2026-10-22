@@ -1,15 +1,9 @@
 {
   "kanji": "肉",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "肉",
-      "role": "meaning",
-      "meaning_id": "daging"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar potongan irisan daging.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya menyerupai lapisan potongan daging (肉).",
-  "note_id": "Digunakan dalam kata daging (肉) dan daging babi (豚肉)."
+  "claim_kind": "structure",
+  "components": [],
+  "etymology_id": "Kanji ini adalah gambar penampang daging.",
+  "mnemonic_id": "Cara mengingat: Bayangkan bentuk potongan daging tebal.",
+  "note_id": ""
 }

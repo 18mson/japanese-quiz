@@ -1,15 +1,15 @@
 {
   "kanji": "言",
   "formation_type": "pictograph",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "言",
+      "part": "口",
       "role": "meaning",
-      "meaning_id": "kata"
+      "meaning_id": "mouth"
     }
   ],
-  "etymology_id": "Berasal dari gambar lidah atau mulut yang sedang berbicara.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Bentuk garis seperti ucapan yang keluar dari mulut.",
-  "note_id": "Dasar dari kata iimasu (berkata) dan kotoba (kata)."
+  "etymology_id": "Berasal dari gambar mulut (口) yang mengeluarkan kata-kata.",
+  "mnemonic_id": "Cara mengingat: Dari mulut (口) keluar ucapan dan kata-kata.",
+  "note_id": ""
 }

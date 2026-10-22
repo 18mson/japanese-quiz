@@ -1,20 +1,20 @@
 {
   "kanji": "玄",
-  "formation_type": "ideograph_simple",
+  "formation_type": "unknown",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "亠",
-      "role": "shape",
-      "meaning_id": "tutup"
+      "role": "meaning",
+      "meaning_id": "kettle lid radical (no. 8)"
     },
     {
       "part": "幺",
-      "role": "shape",
-      "meaning_id": "kecil"
+      "role": "meaning",
+      "meaning_id": "short thread radical (no. 52)"
     }
   ],
-  "etymology_id": "Melambangkan warna hitam atau sesuatu yang misterius dan mendalam.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Hal yang tersembunyi di balik penutup.",
-  "note_id": "Digunakan dalam genkan (pintu masuk)."
+  "etymology_id": "Gabungan tutup (亠) dan benang pendek (幺).",
+  "mnemonic_id": "Cara mengingat: Tutup (亠) di atas benang pendek (幺) yang misterius dan gelap.",
+  "note_id": ""
 }

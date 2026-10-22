@@ -5,16 +5,16 @@
     {
       "part": "止",
       "role": "meaning",
-      "meaning_id": "berhenti"
-    },
-    {
-      "part": "小",
-      "role": "meaning",
-      "meaning_id": "kecil"
+      "meaning_id": "telapak kaki"
     }
   ],
-  "etymology_id": "Gabungan langkah kaki dan gerakan.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "步",
+  "etymology_id": "Bentuk lama 步 menggambarkan dua telapak kaki (止) berurutan: melangkah. 歩 mengubah bagian bawah menjadi menyerupai 少.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Berjalan dimulai dengan langkah kecil demi langkah.",
-  "note_id": "Digunakan dalam kata 歩きます (berjalan kaki) dan 散歩します (berjalan-jalan)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 止 (telapak kaki) di atas dan bentuk 少 yang mirip kaki kedua: melangkah (歩く).",
+  "note_id": "",
+  "source": "manual"
 }

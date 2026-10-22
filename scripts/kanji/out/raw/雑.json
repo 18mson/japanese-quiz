@@ -1,20 +1,14 @@
 {
   "kanji": "雑",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "木",
-      "role": "meaning",
-      "meaning_id": "pohon"
-    },
-    {
-      "part": "隹",
-      "role": "phonetic",
-      "meaning_id": "burung"
-    }
-  ],
-  "etymology_id": "Gabungan komponen pohon dan burung untuk hal yang bercampur atau bermacam-macam.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Berbagai macam hal bercampur seperti burung di atas pohon.",
-  "note_id": "Digunakan dalam kata majalah."
+  "formation_type": "compound_meaning",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "雜",
+  "etymology_id": "Bentuk lama 雜 = 衣 (kain) + 集 (berkumpul): beragam kain dijahit jadi satu, lalu 'campur'. 雑 adalah penyederhanaan dengan bentuk berbeda.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 九 + 木 + 隹 (burung): banyak burung di pohon, campur aduk (雑).",
+  "note_id": "",
+  "source": "manual"
 }
