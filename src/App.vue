@@ -144,15 +144,58 @@ const openHandbook = (lessonNum?: number) => {
   }
   showHandbook.value = true;
   localStorage.setItem('active_screen', 'materi');
+  const targetPath = `/materi?lesson=${selectedHandbookLesson.value}`;
   if (!window.location.pathname.includes('/materi')) {
-    history.pushState(null, '', '/materi');
+    history.pushState(null, '', targetPath);
   }
 };
 
 const closeHandbook = () => {
   showHandbook.value = false;
   localStorage.removeItem('active_screen');
-  if (window.location.pathname.includes('/materi') || window.location.search.includes('mode=materi')) {
+  if (window.location.pathname.includes('/materi') || window.location.search.includes('mode=materi') || window.location.hash.includes('materi')) {
+    history.pushState(null, '', '/');
+  }
+};
+
+const openAboutModal = () => {
+  showAboutModal.value = true;
+  if (!window.location.pathname.includes('/about') && !window.location.search.includes('mode=about') && window.location.hash !== '#about') {
+    history.pushState(null, '', '/about');
+  }
+};
+
+const closeAboutModal = () => {
+  showAboutModal.value = false;
+  if (window.location.pathname.includes('/about') || window.location.search.includes('mode=about') || window.location.hash.includes('about')) {
+    history.pushState(null, '', '/');
+  }
+};
+
+const openReferenceModal = () => {
+  showReferenceModal.value = true;
+  if (
+    !window.location.pathname.includes('/furoku') &&
+    !window.location.pathname.includes('/referensi') &&
+    !window.location.search.includes('mode=furoku') &&
+    !window.location.search.includes('mode=referensi') &&
+    window.location.hash !== '#furoku' &&
+    window.location.hash !== '#referensi'
+  ) {
+    history.pushState(null, '', '/furoku');
+  }
+};
+
+const closeReferenceModal = () => {
+  showReferenceModal.value = false;
+  if (
+    window.location.pathname.includes('/furoku') ||
+    window.location.pathname.includes('/referensi') ||
+    window.location.search.includes('mode=furoku') ||
+    window.location.search.includes('mode=referensi') ||
+    window.location.hash.includes('furoku') ||
+    window.location.hash.includes('referensi')
+  ) {
     history.pushState(null, '', '/');
   }
 };
@@ -180,26 +223,33 @@ const checkRouteState = () => {
     searchParams.get('mode') === 'materi' ||
     hash === '#materi';
 
-  showBattleground.value = isBattlegroundRoute;
-  showDailyPractice.value = isDailyRoute;
-  showHandbook.value = isMateriRoute || (localStorage.getItem('active_screen') === 'materi' && !isBattlegroundRoute && !isDailyRoute);
+  const isAboutRoute = pathname.includes('/about') ||
+    searchParams.get('mode') === 'about' ||
+    hash === '#about';
 
-  // Bersihkan active_screen tersimpan jika membuka root home screen agar tidak auto-redirect
-  if (!isBattlegroundRoute && !isDailyRoute && !isMateriRoute && localStorage.getItem('active_screen') !== 'materi') {
-    localStorage.removeItem('active_screen');
-  }
-  if (pathname.includes('/about') || searchParams.get('mode') === 'about' || hash === '#about') {
-    showAboutModal.value = true;
-  }
-  if (
-    pathname.includes('/furoku') || 
+  const isReferenceRoute = pathname.includes('/furoku') || 
     searchParams.get('mode') === 'furoku' || 
     hash === '#furoku' ||
     pathname.includes('/referensi') ||
     searchParams.get('mode') === 'referensi' ||
-    hash === '#referensi'
-  ) {
-    showReferenceModal.value = true;
+    hash === '#referensi';
+
+  showBattleground.value = isBattlegroundRoute;
+  showDailyPractice.value = isDailyRoute;
+  showHandbook.value = isMateriRoute;
+  showAboutModal.value = isAboutRoute;
+  showReferenceModal.value = isReferenceRoute;
+
+  if (isMateriRoute) {
+    const lessonParam = parseInt(searchParams.get('lesson') || searchParams.get('bab') || '');
+    if (lessonParam && lessonParam >= 1 && lessonParam <= 25) {
+      selectedHandbookLesson.value = lessonParam;
+    }
+  }
+
+  // Bersihkan active_screen tersimpan jika membuka root home screen agar tidak auto-redirect
+  if (!isBattlegroundRoute && !isDailyRoute && !isMateriRoute) {
+    localStorage.removeItem('active_screen');
   }
 };
 
@@ -244,6 +294,8 @@ const goToHome = () => {
   closeBattleground();
   closeDailyPractice();
   closeHandbook();
+  closeAboutModal();
+  closeReferenceModal();
 };
 </script>
 
@@ -258,7 +310,7 @@ const goToHome = () => {
         </div>
 
         <button 
-          @click="showReferenceModal = true"
+          @click="openReferenceModal"
           class="px-2.5 py-1.5 bg-gray-50 dark:bg-slate-800 hover:bg-matcha/10 dark:hover:bg-slate-750 hover:text-matcha dark:hover:text-matcha-light border border-gray-200/80 dark:border-slate-700 rounded-xl text-xs font-bold text-gray-700 dark:text-slate-300 transition cursor-pointer flex items-center gap-1.5 shadow-2xs"
           title="Furoku (付録) - Referensi & Lampiran"
         >
@@ -483,7 +535,7 @@ const goToHome = () => {
               <!-- About App Button -->
               <div class="px-1 mt-1">
                 <button
-                  @click="showAboutModal = true; showUserDropdown = false;"
+                  @click="openAboutModal(); showUserDropdown = false;"
                   class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
                 >
                   <div class="flex items-center gap-2">
@@ -604,7 +656,7 @@ const goToHome = () => {
               <!-- About App Button -->
               <div class="px-1 mt-1">
                 <button
-                  @click="showAboutModal = true; showUserDropdown = false;"
+                  @click="openAboutModal(); showUserDropdown = false;"
                   class="w-full px-2.5 py-2 text-left text-xs font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition flex items-center justify-between cursor-pointer border border-transparent hover:border-gray-200 dark:hover:border-slate-700"
                 >
                   <div class="flex items-center gap-2">
@@ -657,11 +709,11 @@ const goToHome = () => {
     />
     <AboutModal
       :is-open="showAboutModal"
-      @close="showAboutModal = false"
+      @close="closeAboutModal"
     />
     <ReferenceModal
       :is-open="showReferenceModal"
-      @close="showReferenceModal = false"
+      @close="closeReferenceModal"
     />
     <LevelUpModal />
     <ProfileBadgeModal />
@@ -724,9 +776,9 @@ const goToHome = () => {
       @start="startQuiz" 
       @open-mastery-grid="showMasteryGridModal = true" 
       @open-leaderboard="showLeaderboardModal = true"
-      @open-about="showAboutModal = true"
+      @open-about="openAboutModal"
       @open-battleground="openBattleground"
-      @open-furoku="showReferenceModal = true"
+      @open-furoku="openReferenceModal"
       @open-daily-practice="openDailyPractice"
       @open-handbook="openHandbook"
     />

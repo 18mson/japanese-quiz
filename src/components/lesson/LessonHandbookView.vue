@@ -314,6 +314,13 @@ watch(() => props.initialLesson, (newVal) => {
   }
 });
 
+// Sync chapter with URL query params so refresh stays on the current chapter without polluting history
+watch(currentLessonNumber, (newLesson) => {
+  if (typeof window !== 'undefined' && (window.location.pathname.includes('/materi') || window.location.search.includes('mode=materi'))) {
+    history.replaceState(null, '', `/materi?lesson=${newLesson}`);
+  }
+});
+
 onMounted(() => {
   scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
   window.addEventListener('scroll', handleScroll, { passive: true });
