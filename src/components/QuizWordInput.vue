@@ -208,6 +208,17 @@ watch(() => quizStore.selectedAnswer, (newVal) => {
 watch(() => quizStore.currentQuestionIndex, () => {
   showKanjiPopup.value = false;
 });
+
+// Efek getar perangkat (haptics) saat jawaban salah
+watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
+  if (isCorrect === false) {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([50, 40, 50]);
+      } catch {}
+    }
+  }
+});
 </script>
 
 <template>
@@ -223,7 +234,7 @@ watch(() => quizStore.currentQuestionIndex, () => {
         class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
           'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
-          'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50': isAnswered && !quizStore.isAnswerCorrect
+          'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect
         }"
         :disabled="isAnswered"
         @keydown.enter.stop="handleEnter"
@@ -386,5 +397,21 @@ watch(() => quizStore.currentQuestionIndex, () => {
 
 .animate-icon-pop {
   animation: iconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  15%, 45%, 75% {
+    transform: translateX(-7px);
+  }
+  30%, 60%, 90% {
+    transform: translateX(7px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 </style>

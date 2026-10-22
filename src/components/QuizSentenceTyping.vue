@@ -370,6 +370,11 @@ const evaluateInput = () => {
   if (typoFound && !isTypoInInput.value) {
     errorCount.value++;
     playIncorrectSound();
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([50, 40, 50]);
+      } catch {}
+    }
   }
   isTypoInInput.value = typoFound;
 
@@ -520,7 +525,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
           class="w-full px-4 sm:px-5 py-2.5 sm:py-3.5 text-base sm:text-lg font-mono text-center bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white border-2 rounded-xl sm:rounded-2xl transition-all duration-200 outline-none focus:bg-white dark:focus:bg-slate-800 shadow-inner"
           :class="[
             isTypoInInput 
-              ? 'border-red-500 dark:border-rose-500 text-red-600 dark:text-rose-400 bg-red-50/50 dark:bg-rose-950/40 focus:ring-4 focus:ring-red-100' 
+              ? 'border-red-500 dark:border-rose-500 text-red-600 dark:text-rose-400 bg-red-50/50 dark:bg-rose-950/40 focus:ring-4 focus:ring-red-100 animate-shake' 
               : 'border-indigo-300 dark:border-slate-700 text-gray-900 dark:text-white focus:border-indigo-600 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20'
           ]"
           @input="handleInput"
@@ -556,3 +561,21 @@ const handleKeyDown = (e: KeyboardEvent) => {
     </VirtualKeyboard>
   </div>
 </template>
+
+<style scoped>
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  15%, 45%, 75% {
+    transform: translateX(-7px);
+  }
+  30%, 60%, 90% {
+    transform: translateX(7px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+</style>
