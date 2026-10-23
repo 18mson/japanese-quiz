@@ -81,13 +81,30 @@ assert(shouldShowLevelUp === true, 'Popup Level Up HARUS muncul saat currentUser
 highestLevelReached = Math.max(highestLevelReached, currentUserLevel);
 assert(highestLevelReached === 3, 'highestLevelReached terupdate menjadi 3');
 
-// Skenario D: Pemain lama yang sudah berada di Level 2 sebelum fitur badge ditambahkan
-let storedHighest = 1; // Belum pernah tercatat di storage
-let existingMasteryLevel = 2; // Tapi sudah menuntaskan Bab 1
-let effectiveHighest = Math.max(storedHighest, existingMasteryLevel);
-assert(effectiveHighest === 2, 'highestLevelReached otomatis tersinkronkan minimal sama dengan level saat ini (2)');
-const unlockedExisting = BADGE_LIST.filter(b => isUnlocked(b, effectiveHighest, 0, 0));
-assert(unlockedExisting.length === 2, 'Pemain level 2 langsung membuka Badge Level 1 (Starter) dan Badge Level 2 (Sakura Hajime)');
+// Skenario E: Pemain sudah klaim badge Bab 9 (Level 10 Sensu Fan)
+// Salah satu kata Bab 9 sempat turun streak sehingga currentUserLevel turun ke 9
+// Lalu kata dijawab benar lagi sehingga currentUserLevel kembali ke 10
+let claimedLevel = 10;
+highestLevelReached = 10;
+let levelBeforeQuiz = 9;
+currentUserLevel = 10; // kembali ke 10 setelah kuis
+
+// Kondisi baru: hanya menggunakan hasUnclaimedLevels
+let effectiveLevel = Math.max(highestLevelReached, currentUserLevel);
+let hasUnclaimedLevels = effectiveLevel > claimedLevel;
+// Sebelumnya bug terjadi karena `hasUnclaimedLevels || currentUserLevel > levelBeforeQuiz` bernilai true (10 > 9)
+let oldBuggyCondition = hasUnclaimedLevels || currentUserLevel > levelBeforeQuiz;
+let newFixedCondition = hasUnclaimedLevels;
+
+assert(oldBuggyCondition === true, 'Kondisi lama memicu popup ulang yang tidak diinginkan');
+assert(newFixedCondition === false, 'Kondisi baru TIDAK memicu popup ulang untuk bab/level yang sudah diklaim');
+
+// Skenario F: Pemain benar-benar membuka bab baru (Bab 10 -> Level 11 Shiro Fortress)
+currentUserLevel = 11;
+highestLevelReached = Math.max(highestLevelReached, currentUserLevel);
+effectiveLevel = Math.max(highestLevelReached, currentUserLevel);
+hasUnclaimedLevels = effectiveLevel > claimedLevel;
+assert(hasUnclaimedLevels === true, 'Popup Level Up HARUS muncul saat menembus level baru yang belum diklaim (Level 11)');
 
 console.log('\n========================================');
 console.log('Hasil Test: Semua skenario Badge & Level Up Milestone BERHASIL! 🎉');

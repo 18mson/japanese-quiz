@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Sparkles, Award } from '@lucide/vue';
-import { computed } from 'vue';
+import { computed, ref, watch, onUnmounted } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { useBadgeStore } from '../stores/badgeStore';
 import { TIER_CONFIG } from '../data/badges';
@@ -9,6 +9,8 @@ import BadgeIcon from './common/BadgeIcon.vue';
 
 const quizStore = useQuizStore();
 const badgeStore = useBadgeStore();
+
+const isClaiming = ref(false);
 
 const currentDisplayLevel = computed(() => {
   return badgeStore.nextUnclaimedLevel || quizStore.currentUserLevel;
@@ -27,18 +29,56 @@ const tier = computed(() => {
 });
 
 const claimLevelUp = async () => {
-  const levelToClaim = currentDisplayLevel.value;
-  await badgeStore.claimLevel(levelToClaim);
+  if (isClaiming.value) return;
+  isClaiming.value = true;
+  try {
+    const levelToClaim = currentDisplayLevel.value;
+    await badgeStore.claimLevel(levelToClaim);
 
-  if (badgeStore.hasUnclaimedLevels) {
-    return;
-  }
+    if (badgeStore.hasUnclaimedLevels) {
+      return;
+    }
 
-  quizStore.showLevelUpScreen = false;
-  if (quizStore.endTime > 0) {
-    quizStore.quizCompleted = true;
+    quizStore.showLevelUpScreen = false;
+    if (quizStore.endTime > 0) {
+      quizStore.quizCompleted = true;
+    }
+  } finally {
+    isClaiming.value = false;
   }
 };
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (!quizStore.showLevelUpScreen) return;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    e.stopPropagation();
+    claimLevelUp();
+  }
+};
+
+watch(
+  () => quizStore.showLevelUpScreen,
+  (isOpen) => {
+    if (isOpen) {
+      if (!badgeStore.hasUnclaimedLevels) {
+        quizStore.showLevelUpScreen = false;
+        if (quizStore.endTime > 0) {
+          quizStore.quizCompleted = true;
+        }
+        return;
+      }
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+  },
+  { immediate: true }
+);
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <template>
@@ -126,7 +166,8 @@ const claimLevelUp = async () => {
       
       <button 
         @click="claimLevelUp"
-        class="w-full mt-2 py-3.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-500 active:scale-[0.99] text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider transition duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 border border-yellow-300/50"
+        :disabled="isClaiming"
+        class="w-full mt-2 py-3.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-600 hover:to-yellow-500 active:scale-[0.99] text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider transition duration-200 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 cursor-pointer flex items-center justify-center gap-2 border border-yellow-300/50 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <Award class="w-4 h-4 text-slate-950" />
         <span>{{ badgeStore.hasMoreThanOneUnclaimed ? 'Klaim Badge & Lanjut' : (quizStore.endTime > 0 ? 'Klaim Badge & Lihat Hasil' : 'Klaim Badge & Selesai') }}</span>

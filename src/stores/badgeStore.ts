@@ -292,6 +292,7 @@ export const useBadgeStore = defineStore('badge', () => {
     claimLevel,
     setAvatarBadge,
     syncFromUser,
+    syncWithMasteryLevel,
     openProfileBadgeModal,
     closeProfileBadgeModal
   };

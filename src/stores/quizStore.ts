@@ -413,7 +413,8 @@ export const useQuizStore = defineStore('quiz', () => {
     if (selectedWordLessonNumber.value) {
       lessonStore.setCategoryCompleted(selectedWordLessonNumber.value, 'vocab', true);
     }
-    if (badgeStore.hasUnclaimedLevels || masteryStore.currentUserLevel > levelBeforeQuiz.value) {
+    badgeStore.syncWithMasteryLevel();
+    if (badgeStore.hasUnclaimedLevels) {
       showLevelUpScreen.value = true;
     } else {
       quizCompleted.value = true;
