@@ -873,6 +873,65 @@
       }
     ]
   },
+  "冷": {
+    "kanji": "冷",
+    "meaning": [
+      "cool",
+      "cold (beer, person)",
+      "chill"
+    ],
+    "on": [
+      "レイ"
+    ],
+    "kun": [
+      "つめ.たい",
+      "ひ.える",
+      "ひ.や",
+      "ひ.ややか",
+      "ひ.やす",
+      "ひ.やかす",
+      "さ.める",
+      "さ.ます"
+    ],
+    "stroke_count": 7,
+    "jlpt": 2,
+    "grade": 4,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "冫",
+        "role": "meaning",
+        "meaning_id": "two-stroke water radical or ice radical (no. 15)"
+      },
+      {
+        "part": "令",
+        "role": "phonetic",
+        "meaning_id": "orders, laws"
+      }
+    ],
+    "etymology_id": "Gabungan es dan 令 yang memberi bunyi レイ.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: Es dan air dingin membuat tubuh membeku.",
+    "note_id": "",
+    "phonetic_part": "令",
+    "reading_hint": "令 (レイ) → 冷 (レイ)",
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "冷たい",
+        "kana": "つめたい",
+        "meaning": "dingin (benda/rasa)",
+        "lesson": "Pelajaran 8"
+      },
+      {
+        "jp": "冷蔵庫",
+        "kana": "れいぞうこ",
+        "meaning": "kulkas, lemari es",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
   "医": {
     "kanji": "医",
     "meaning": [
@@ -4009,6 +4068,58 @@
       }
     ]
   },
+  "究": {
+    "kanji": "究",
+    "meaning": [
+      "research",
+      "study"
+    ],
+    "on": [
+      "キュウ",
+      "ク"
+    ],
+    "kun": [
+      "きわ.める"
+    ],
+    "stroke_count": 7,
+    "jlpt": 3,
+    "grade": 3,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "穴",
+        "role": "meaning",
+        "meaning_id": "hole, aperture"
+      },
+      {
+        "part": "九",
+        "role": "phonetic",
+        "meaning_id": "nine"
+      }
+    ],
+    "etymology_id": "Gabungan lubang (穴) dan unsur sembilan (九) sebagai bunyi.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: Menggali lubang (穴) untuk menyelidiki secara mendalam.",
+    "note_id": "",
+    "phonetic_part": "九",
+    "reading_hint": "九 (キュウ) → 究 (キュウ)",
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "研究者",
+        "kana": "けんきゅうしゃ",
+        "meaning": "peneliti",
+        "lesson": "Pelajaran 1"
+      },
+      {
+        "jp": "研究します",
+        "kana": "けんきゅうします",
+        "meaning": "meneliti",
+        "lesson": "Pelajaran 15"
+      }
+    ]
+  },
   "答": {
     "kanji": "答",
     "meaning": [
@@ -4204,6 +4315,63 @@
         "kana": "じぶんで",
         "meaning": "dengan sendiri, sendiri",
         "lesson": "Pelajaran 24"
+      }
+    ]
+  },
+  "花": {
+    "kanji": "花",
+    "meaning": [
+      "flower"
+    ],
+    "on": [
+      "カ",
+      "ケ"
+    ],
+    "kun": [
+      "はな"
+    ],
+    "stroke_count": 7,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "艹",
+        "role": "meaning",
+        "meaning_id": "grass, radical number 140"
+      },
+      {
+        "part": "化",
+        "role": "phonetic",
+        "meaning_id": "change, take the form of"
+      }
+    ],
+    "etymology_id": "Gabungan rumput (艹) dan unsur perubahan (化).",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: Rumput (艹) yang berubah (化) indah menjadi bunga.",
+    "note_id": "",
+    "phonetic_part": "化",
+    "reading_hint": "化 (カ) → 花 (カ)",
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "お花見",
+        "kana": "おはなみ",
+        "meaning": "melihat / menikmati bunga sakura (Hanami)",
+        "lesson": "Pelajaran 6"
+      },
+      {
+        "jp": "花",
+        "kana": "はな",
+        "meaning": "bunga",
+        "lesson": "Pelajaran 7"
+      },
+      {
+        "jp": "生け花",
+        "kana": "いけばな",
+        "meaning": "seni merangkai bunga",
+        "lesson": "Pelajaran 12"
       }
     ]
   },
@@ -4473,6 +4641,56 @@
         "kana": "ぞう",
         "meaning": "gajah",
         "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "起": {
+    "kanji": "起",
+    "meaning": [
+      "rouse",
+      "wake up",
+      "get up"
+    ],
+    "on": [
+      "キ"
+    ],
+    "kun": [
+      "お.きる",
+      "お.こる",
+      "お.こす",
+      "おこ.す",
+      "た.つ"
+    ],
+    "stroke_count": 10,
+    "jlpt": 3,
+    "grade": 3,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "走",
+        "role": "meaning",
+        "meaning_id": "run"
+      },
+      {
+        "part": "己",
+        "role": "phonetic",
+        "meaning_id": "self"
+      }
+    ],
+    "etymology_id": "Gabungan lari (走) dan diri sendiri (己).",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: Berlari (走) untuk membangunkan diri sendiri (己) dari tempat tidur.",
+    "note_id": "",
+    "phonetic_part": "己",
+    "reading_hint": "己 (キ) → 起 (キ)",
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "起きます",
+        "kana": "おきます",
+        "meaning": "bangun tidur",
+        "lesson": "Pelajaran 4"
       }
     ]
   },
@@ -5030,6 +5248,62 @@
         "kana": "しずか",
         "meaning": "sunyi, tenang",
         "lesson": "Pelajaran 8"
+      }
+    ]
+  },
+  "靴": {
+    "kanji": "靴",
+    "meaning": [
+      "shoes"
+    ],
+    "on": [
+      "カ"
+    ],
+    "kun": [
+      "くつ"
+    ],
+    "stroke_count": 13,
+    "jlpt": 2,
+    "grade": 8,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "革",
+        "role": "meaning",
+        "meaning_id": "leather, skin"
+      },
+      {
+        "part": "化",
+        "role": "phonetic",
+        "meaning_id": "change, take the form of"
+      }
+    ],
+    "etymology_id": "Gabungan kulit (革) dan perubahan (化).",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: Kulit (革) yang diubah (化) menjadi sepatu.",
+    "note_id": "",
+    "phonetic_part": "化",
+    "reading_hint": "化 (カ) → 靴 (カ)",
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "靴",
+        "kana": "くつ",
+        "meaning": "sepatu",
+        "lesson": "Pelajaran 3"
+      },
+      {
+        "jp": "靴下",
+        "kana": "くつした",
+        "meaning": "kaos kaki",
+        "lesson": "Pelajaran 22"
+      },
+      {
+        "jp": "運動靴",
+        "kana": "うんどうぐつ",
+        "meaning": "sepatu olahraga",
+        "lesson": "Pelajaran 22"
       }
     ]
   },

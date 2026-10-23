@@ -232,21 +232,32 @@ export function isReadingMatch(partOnList, kanjiOnList) {
     return { match: false, reason: 'Daftar on-yomi kosong' };
   }
   for (const pKana of partOnList) {
-    const pRomaji = kanaToRomaji(pKana);
-    const pSyl = parseSyllable(pRomaji);
-    for (const kKana of kanjiOnList) {
-      const kRomaji = kanaToRomaji(kKana);
-      const kSyl = parseSyllable(kRomaji);
+    // Varian pembacaan: asli dan tanpa koda bunyi masuk / nyūshō (ク, キ, ツ, チ, フ)
+    const variants = [{ kana: pKana, note: '' }];
+    if (pKana.length >= 2 && /[クキツチフ]$/.test(pKana)) {
+      variants.push({
+        kana: pKana.slice(0, -1),
+        note: ` (tanpa -${pKana.slice(-1)})`
+      });
+    }
 
-      const rimeMatch = (pSyl.normRime === kSyl.normRime) || (pSyl.rime === kSyl.rime);
-      const consMatch = (pSyl.consClass === kSyl.consClass);
+    for (const v of variants) {
+      const pRomaji = kanaToRomaji(v.kana);
+      const pSyl = parseSyllable(pRomaji);
+      for (const kKana of kanjiOnList) {
+        const kRomaji = kanaToRomaji(kKana);
+        const kSyl = parseSyllable(kRomaji);
 
-      if (rimeMatch && consMatch) {
-        return {
-          match: true,
-          pair: `${pKana} → ${kKana}`,
-          detail: `${pKana} (${pRomaji}) ≈ ${kKana} (${kRomaji})`
-        };
+        const rimeMatch = (pSyl.normRime === kSyl.normRime) || (pSyl.rime === kSyl.rime);
+        const consMatch = (pSyl.consClass === kSyl.consClass);
+
+        if (rimeMatch && consMatch) {
+          return {
+            match: true,
+            pair: `${pKana}${v.note} → ${kKana}`,
+            detail: `${pKana}${v.note} (${pRomaji}) ≈ ${kKana} (${kRomaji})`
+          };
+        }
       }
     }
   }
@@ -462,6 +473,21 @@ export function validateEntry(entry, factsMap, options = {}) {
 
   const kanji = entry.kanji;
   const isManual = manualEntriesMap.has(kanji) || entry.source === 'manual';
+
+  // -----------------------------------------------------------
+  // A0. Entri Berstatus 'needs_manual'
+  // -----------------------------------------------------------
+  if (entry.status === 'needs_manual' || entry.source === 'needs_manual') {
+    return {
+      valid: true,
+      status: 'needs_manual',
+      reasons: ['Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)'],
+      confidence: 'uncertain',
+      source: 'needs_manual',
+      reading_hint: null,
+      reading_match: null
+    };
+  }
 
   // -----------------------------------------------------------
   // A. Entri Manual: Menang langsung & lewati filter Gemini
@@ -755,6 +781,23 @@ export function validateEntry(entry, factsMap, options = {}) {
   // Pisahkan pelanggaran keras (rejection) vs penanda review lunak (needs_review / peringatan)
   const fatalReasons = reasons.filter(r => !r.includes('tidak cocok rima bacaan on-yomi') && !r.includes('[Peringatan]') && !r.includes('wajib peninjauan manual'));
 
+  // Aturan Point 4: Jika hanya ditolak karena tidak memuat huruf kanji komponen (atau citra konkret/bunyi)
+  // dan sudah dicoba ulang, jadikan 'needs_review' (bukan 'rejected')
+  const isOnlyMnemonicComponent = fatalReasons.length === 1 && 
+    fatalReasons[0] === 'Mnemonik harus memuat citra konkret atau petunjuk bunyi';
+
+  if (isOnlyMnemonicComponent && options.mnemonicRetryDone) {
+    return {
+      valid: true,
+      status: 'needs_review',
+      reasons: fatalReasons,
+      confidence: calculatedConfidence,
+      source: 'gemini',
+      reading_hint: scriptReadingHint,
+      reading_match: readingMatchResult ? readingMatchResult.match : null
+    };
+  }
+
   if (fatalReasons.length > 0) {
     return {
       valid: false,
@@ -861,13 +904,64 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
     }
   }
 
-  // Regenerasi kanji yang rejected (maksimal 2 kali per aturan FASE C)
+  // Regenerasi kanji yang rejected (maksimal 2 kali per aturan FASE C & aturan Point 4)
   if (autoRetry && rejectedKanji.length > 0) {
-    console.log(`\n⚠️ Terdeteksi ${rejectedKanji.length} kanji dengan status 'rejected'. Mencoba regenerasi maksimal 2 kali...`);
-    const kanjiToRetry = rejectedKanji.map(r => r.kanji);
+    console.log(`\n⚠️ Terdeteksi ${rejectedKanji.length} kanji dengan status 'rejected'. Mencoba regenerasi...`);
 
-    for (let attempt = 1; attempt <= 2; attempt++) {
-      console.log(`\n🔄 [Attempt ${attempt}/2] Regenerasi ${kanjiToRetry.length} kanji rejected...`);
+    // Khusus Point 4: Kanji yang ditolak HANYA karena tidak memuat huruf kanji komponen / citra konkret
+    const mnemonicOnly = rejectedKanji.filter(r => 
+      r.reasons.length === 1 && r.reasons[0] === 'Mnemonik harus memuat citra konkret atau petunjuk bunyi'
+    ).map(r => r.kanji);
+
+    const otherRejected = rejectedKanji.filter(r => 
+      !(r.reasons.length === 1 && r.reasons[0] === 'Mnemonik harus memuat citra konkret atau petunjuk bunyi')
+    ).map(r => r.kanji);
+
+    if (mnemonicOnly.length > 0) {
+      console.log(`\n🔄 [Aturan Point 4] Mengulangi ${mnemonicOnly.length} kanji ditolak akibat mnemonik tanpa kanji komponen dengan instruksi tambahan 'tulis kanji komponen dalam tanda kurung pada mnemonik'...`);
+      await generateAll({
+        specificKanji: mnemonicOnly,
+        overwrite: true,
+        extraInstruction: 'PENTING: Tulis kanji komponen dalam tanda kurung pada mnemonik (misal: (木)).'
+      });
+
+      for (const k of mnemonicOnly) {
+        const rawFile = path.resolve(RAW_DIR, `${k}.json`);
+        if (fs.existsSync(rawFile)) {
+          const entry = JSON.parse(fs.readFileSync(rawFile, 'utf-8'));
+          const validation = validateEntry(entry, factsMap, { ...validatorOpts, mnemonicRetryDone: true });
+          const fact = factsMap.get(k);
+          const fullEntry = {
+            ...entry,
+            source: validation.source || entry.source || 'gemini',
+            etymology_confidence: validation.confidence,
+            status: validation.status,
+            reading_hint: validation.reading_hint || null,
+            reading_match: validation.reading_match ?? null,
+            reasons: validation.reasons,
+            facts: {
+              meaning: fact?.meaning || [],
+              on: fact?.on || [],
+              kun: fact?.kun || [],
+              stroke_count: fact?.stroke_count ?? null,
+              jlpt: fact?.jlpt ?? null,
+              grade: fact?.grade ?? null,
+              components: fact?.components || [],
+              phon_hints: fact?.phon_hints || [],
+              phonetic_part: fact?.phonetic_part || null,
+              flat_parts: fact?.flat_parts || [],
+              old_form: fact?.old_form || null,
+              words: fact?.words || []
+            }
+          };
+          validatedEntries.set(k, fullEntry);
+        }
+      }
+    }
+
+    let kanjiToRetry = [...otherRejected];
+    for (let attempt = 1; attempt <= 2 && kanjiToRetry.length > 0; attempt++) {
+      console.log(`\n🔄 [Attempt ${attempt}/2] Regenerasi ${kanjiToRetry.length} kanji rejected lainnya...`);
       await generateAll({ specificKanji: kanjiToRetry, overwrite: true });
 
       const stillRejected = [];
@@ -911,8 +1005,7 @@ export async function runValidation({ specificKanji = null, autoRetry = true } =
         console.log(`✅ Semua kanji rejected berhasil lolos validasi setelah percobaan ke-${attempt}!`);
         break;
       }
-      kanjiToRetry.length = 0;
-      for (const item of stillRejected) kanjiToRetry.push(item.kanji);
+      kanjiToRetry = stillRejected.map(item => item.kanji);
     }
   }
 

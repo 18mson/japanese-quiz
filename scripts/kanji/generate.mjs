@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseKanjidic } from './facts.mjs';
-import { getDirectComponents } from './validate.mjs';
+import { getDirectComponents, isReadingMatch } from './validate.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -121,7 +121,7 @@ function formatKanjiVgTree(node, depth = 0) {
   return res;
 }
 
-export function buildUserPrompt(batchItems) {
+export function buildUserPrompt(batchItems, extraInstruction = '') {
   const kdict = getKanjidic();
   let prompt = `Susun catatan belajar untuk ${batchItems.length} kanji berikut berdasarkan fakta yang tersedia:\n\n`;
 
@@ -175,6 +175,11 @@ export function buildUserPrompt(batchItems) {
     }
     prompt += `\n`;
   }
+
+  if (extraInstruction) {
+    prompt += `\nINSTRUKSI KHUSUS TAMBAHAN:\n${extraInstruction}\n`;
+  }
+
   return prompt;
 }
 
@@ -269,7 +274,7 @@ export function parseCliArgs() {
   return { specificKanji, maxRequests, overwrite };
 }
 
-export async function generateAll({ specificKanji = null, maxRequests = Infinity, overwrite = false } = {}) {
+export async function generateAll({ specificKanji = null, maxRequests = Infinity, overwrite = false, extraInstruction = '' } = {}) {
   if (!fs.existsSync(FACTS_FILE)) {
     throw new Error(`Berkas facts.json tidak ditemukan di ${FACTS_FILE}. Jalankan facts.mjs dulu!`);
   }
@@ -301,6 +306,19 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
     }
   }
 
+  // Load established entries
+  const ESTABLISHED_FILE = path.resolve(__dirname, 'data/established.json');
+  const establishedSet = new Set();
+  if (fs.existsSync(ESTABLISHED_FILE)) {
+    try {
+      const estData = JSON.parse(fs.readFileSync(ESTABLISHED_FILE, 'utf-8'));
+      for (const k of estData.kanji || []) establishedSet.add(k);
+    } catch (e) {
+      console.warn('Gagal membaca established.json:', e.message);
+    }
+  }
+  const kdict = getKanjidic();
+
   // Tulis kanji manual langsung ke out/raw/{kanji}.json jika masuk dalam target
   for (const item of targetFacts) {
     if (manualEntriesMap.has(item.kanji)) {
@@ -311,13 +329,58 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
     }
   }
 
-  // Filter kanji yang belum digenerate (idempoten & resumable, lewati entri manual)
+  // Filter kanji sesuai Aturan Ketat Gemini (Point 3):
+  // 1. Lewati manual_entries.json
+  // 2. Gunakan Gemini HANYA bila: komponen fonetik ada di KANJIDIC2 dan reading_match = true
+  //    (atau kanji ada di established.json).
+  // 3. Kanji lain: JANGAN panggil Gemini, beri status 'needs_manual' dan kumpulkan per pelajaran.
   const pendingFacts = [];
+  const needsManualList = [];
+  const needsManualPerLesson = new Map();
+
   for (const item of targetFacts) {
     if (manualEntriesMap.has(item.kanji)) {
       // Entri manual melewati Gemini sepenuhnya
       continue;
     }
+
+    const isEstablished = establishedSet.has(item.kanji);
+    let hasPhoneticMatch = false;
+    if (item.phonetic_part && kdict.has(item.phonetic_part)) {
+      const pOn = kdict.get(item.phonetic_part)?.on || [];
+      const kOn = item.on || [];
+      hasPhoneticMatch = isReadingMatch(pOn, kOn).match === true;
+    }
+
+    const isEligibleForGemini = isEstablished || hasPhoneticMatch;
+
+    if (!isEligibleForGemini) {
+      // Tandai sebagai needs_manual dan JANGAN panggil Gemini
+      needsManualList.push(item);
+      const lesson = item.words?.[0]?.lesson || 'Pelajaran Tidak Diketahui';
+      if (!needsManualPerLesson.has(lesson)) {
+        needsManualPerLesson.set(lesson, []);
+      }
+      needsManualPerLesson.get(lesson).push(item.kanji);
+
+      const rawFile = path.resolve(RAW_DIR, `${item.kanji}.json`);
+      if (overwrite || !fs.existsSync(rawFile)) {
+        fs.writeFileSync(rawFile, JSON.stringify({
+          kanji: item.kanji,
+          formation_type: 'unknown',
+          claim_kind: 'unknown',
+          components: [],
+          etymology_id: '',
+          mnemonic_id: '',
+          note_id: '',
+          status: 'needs_manual',
+          source: 'needs_manual',
+          reasons: ['Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)']
+        }, null, 2), 'utf-8');
+      }
+      continue;
+    }
+
     const rawFile = path.resolve(RAW_DIR, `${item.kanji}.json`);
     if (overwrite || !fs.existsSync(rawFile)) {
       pendingFacts.push(item);
@@ -326,11 +389,25 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
 
   console.log(`📌 Total target kanji: ${targetFacts.length}`);
   console.log(`📌 Entri manual (bypass Gemini): ${targetFacts.filter(t => manualEntriesMap.has(t.kanji)).length}`);
-  console.log(`📌 Sudah ada di out/raw/: ${targetFacts.length - pendingFacts.length}`);
+  console.log(`📌 Berstatus 'needs_manual' (hemat kuota, tanpa Gemini): ${needsManualList.length}`);
+  console.log(`📌 Sudah ada di out/raw/: ${targetFacts.length - pendingFacts.length - needsManualList.length}`);
   console.log(`📌 Perlu digenerate lewat Gemini: ${pendingFacts.length}`);
 
+  if (needsManualPerLesson.size > 0) {
+    console.log(`\n📋 Daftar kanji 'needs_manual' per pelajaran:`);
+    const sortedLessons = Array.from(needsManualPerLesson.keys()).sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, ''), 10) || 999;
+      const numB = parseInt(b.replace(/\D/g, ''), 10) || 999;
+      return numA - numB;
+    });
+    for (const l of sortedLessons) {
+      const chars = needsManualPerLesson.get(l).join('');
+      console.log(`  - ${l}: ${chars}`);
+    }
+  }
+
   if (pendingFacts.length === 0) {
-    console.log('✨ Semua kanji sudah digenerate! Tidak ada tugas pending.');
+    console.log('✨ Semua kanji sudah digenerate / tersaring! Tidak ada tugas Gemini pending.');
     return;
   }
 
@@ -348,7 +425,7 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
     const kanjiNames = batch.map(x => x.kanji).join(', ');
     console.log(`\n🚀 [Batch ${b + 1}/${totalBatches}] (${requestCount + 1}/${maxRequests}) Mengirim ${batch.length} kanji: ${kanjiNames}`);
 
-    const prompt = buildUserPrompt(batch);
+    const prompt = buildUserPrompt(batch, extraInstruction);
     const results = await callGeminiApi(apiKey, prompt);
     requestCount++;
 

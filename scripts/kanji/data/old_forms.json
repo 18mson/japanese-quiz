@@ -1,6 +1,6 @@
 {
  "meta": {
-  "note": "Pasangan shinjitai (bentuk sekarang) -> kyujitai (bentuk lama) untuk kanji yang muncul di words.ts. Disusun dari pengetahuan umum. WAJIB diverifikasi terhadap Unihan (kTraditionalVariant) / KANJIDIC2; pasangan yang tidak cocok dilaporkan, bukan dipakai diam-diam.",
+  "note": "Pasangan shinjitai (bentuk sekarang) -> kyujitai (bentuk lama) untuk kanji yang muncul di words.ts. Disusun dari pengetahuan umum. WAJIB diverifikasi terhadap Unihan (kTraditionalVariant) / KANJIDIC2; pasangan yang tidak cocok dilaporkan, bukan dipakai diam-diam. Pasangan 黒, 鶏, 寝, 飲, 髪, 顔, 蔵 ditambahkan setelah ditemukan terlewat. Daftar ini HARUS dibandingkan dengan kolom 旧字体 pada Tabel Kanji Joyo.",
   "ambiguous": {
    "弁": [
     "辨",
@@ -81,6 +81,13 @@
   "毎": "每",
   "礼": "禮",
   "帯": "帶",
-  "静": "靜"
+  "静": "靜",
+  "黒": "黑",
+  "鶏": "鷄",
+  "寝": "寢",
+  "飲": "飮",
+  "髪": "髮",
+  "顔": "顏",
+  "蔵": "藏"
  }
 }

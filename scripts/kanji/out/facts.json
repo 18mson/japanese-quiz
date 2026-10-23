@@ -1044,7 +1044,7 @@
       "飠",
       "欠"
     ],
-    "old_form": null,
+    "old_form": "飮",
     "words": [
       {
         "jp": "飲みます",
@@ -7015,7 +7015,7 @@
     "phon_hints": [
       "頁"
     ],
-    "phonetic_part": "頁",
+    "phonetic_part": null,
     "flat_parts": [
       "顔",
       "彦",
@@ -7026,7 +7026,7 @@
       "貝",
       "目"
     ],
-    "old_form": null,
+    "old_form": "顏",
     "words": [
       {
         "jp": "顔",
@@ -11310,7 +11310,7 @@
     "phon_hints": [
       "奚"
     ],
-    "phonetic_part": "奚",
+    "phonetic_part": null,
     "flat_parts": [
       "鶏",
       "奚",
@@ -11320,7 +11320,7 @@
       "鳥",
       "灬"
     ],
-    "old_form": null,
+    "old_form": "鷄",
     "words": [
       {
         "jp": "鶏肉",
@@ -15174,7 +15174,7 @@
       "日",
       "灬"
     ],
-    "old_form": null,
+    "old_form": "黑",
     "words": [
       {
         "jp": "黒い",
@@ -24925,7 +24925,7 @@
       "⺕",
       "又"
     ],
-    "old_form": null,
+    "old_form": "寢",
     "words": [
       {
         "jp": "寝ます",
@@ -28291,7 +28291,7 @@
       "丿",
       "丶"
     ],
-    "old_form": null,
+    "old_form": "藏",
     "words": [
       {
         "jp": "冷蔵庫",
@@ -37840,7 +37840,7 @@
     "phon_hints": [
       "友"
     ],
-    "phonetic_part": "友",
+    "phonetic_part": null,
     "flat_parts": [
       "髪",
       "髟",
@@ -37850,7 +37850,7 @@
       "友",
       "又"
     ],
-    "old_form": null,
+    "old_form": "髮",
     "words": [
       {
         "jp": "髪",

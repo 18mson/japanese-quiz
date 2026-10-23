@@ -21,7 +21,7 @@
    ],
    "phonetic_part": "彦",
    "reading_hint": "彦 げん → 顔 がん",
-   "old_form": null,
+   "old_form": "顏",
    "etymology_id": "頁 (kepala) menunjukkan bagian tubuh, sedangkan 彦 hanya memberi petunjuk bunyi (げん → がん).",
    "etymology_confidence": "established",
    "claim_kind": "structure",
@@ -1545,6 +1545,669 @@
    "etymology_confidence": "uncertain",
    "claim_kind": "unknown",
    "mnemonic_id": "Cara mengingat: 士: garis atas panjang, garis bawah pendek (samurai bertopi lebar); kebalikan 土.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "中",
+   "formation_type": "ideograph_simple",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: garis (丨) menembus bagian tengah sebuah bidang (口): 'tengah, dalam'.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: garis tegak menembus tengah kotak: tepat di tengah (中).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "京",
+   "formation_type": "pictograph",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: gambar bangunan tinggi di atas gundukan; arti 'ibu kota' berkembang belakangan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: gerbang tinggi dengan atap (亠) di atas bangunan: ibu kota (京), seperti 東京.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "便",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "亻",
+     "role": "meaning",
+     "meaning_id": "orang"
+    },
+    {
+     "part": "更",
+     "role": "meaning",
+     "meaning_id": "mengganti"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "亻 (orang) + 更 (mengganti): orang yang mengubah sesuatu agar nyaman; dari sini 'praktis'. Penjelasan tradisional; 更 bukan penanda bunyi yang jelas.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: orang (亻) mengganti (更) caranya supaya lebih praktis (便利).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "前",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Bentuk sekarang memuat 月 dan 刂 (pisau). Menurut kamus kuno, arti awalnya 'memotong'; arti 'depan' dipakai belakangan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: ada bulan (月) dan pisau (刂) di bagian depan: depan (前).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "午",
+   "formation_type": "pictograph",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: gambar alu (penumbuk); arti 'siang' dipinjam karena bunyi.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 午 dibaca 'go' pada 午前 dan 午後; bayangkan alu tegak saat matahari tepat di atas.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "地",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "土",
+     "role": "meaning",
+     "meaning_id": "tanah"
+    },
+    {
+     "part": "也",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "也",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "土 (tanah) menunjukkan makna; 也 diduga memberi bunyi, meski bacaan Jepangnya kini berbeda (や → ち).",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tanah (土) tempat berpijak: bumi atau tempat (地), seperti 地下.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "富",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "宀",
+     "role": "meaning",
+     "meaning_id": "atap"
+    },
+    {
+     "part": "畐",
+     "role": "phonetic",
+     "meaning_id": "guci penuh"
+    }
+   ],
+   "phonetic_part": "畐",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "宀 (atap) + 畐 (guci yang penuh; juga memberi bunyi ふく → ふ): rumah yang penuh harta, yaitu kaya.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: rumah (宀) dengan guci penuh (畐): kaya (富), seperti 富士山.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "屋",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "尸",
+     "role": "meaning",
+     "meaning_id": "atap, bangunan"
+    },
+    {
+     "part": "至",
+     "role": "meaning",
+     "meaning_id": "tiba"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "尸 (atap, bangunan) + 至 (tiba): tempat orang tiba untuk berteduh, yaitu rumah atau toko. 至 bukan penanda bunyi.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tiba (至) di bawah atap (尸): rumah atau toko (屋), seperti 部屋 dan 本屋.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "新",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "亲",
+     "role": "phonetic",
+     "meaning_id": "(bentuk sekarang 立 + 木)"
+    },
+    {
+     "part": "斤",
+     "role": "meaning",
+     "meaning_id": "kapak"
+    }
+   ],
+   "phonetic_part": "亲",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Bagian kiri 亲 (辛 + 木; bentuk sekarang 立 + 木) memberi bunyi しん; 斤 (kapak) menunjukkan kayu yang baru ditebang: baru.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kapak (斤) menebas pohon (木): kayu segar yang baru (新).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "易",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai kadal yang berubah warna). Hafalkan sebagai bentuk.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: 易 dibaca 'yasu' pada 易しい (mudah) dan 'i' pada 容易.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "美",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "羊",
+     "role": "meaning",
+     "meaning_id": "domba"
+    },
+    {
+     "part": "大",
+     "role": "meaning",
+     "meaning_id": "besar"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 羊 (domba) + 大 (besar): domba besar yang gemuk dan bagus. Sebagian peneliti menafsirkannya sebagai orang berhias tanduk domba.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: domba (羊) yang besar (大) tampak indah (美): museum seni (美術館).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "肉",
+   "formation_type": "pictograph",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Gambar potongan daging dengan serat. Bagian 月 pada banyak kanji anggota tubuh (mis. 腕) berasal dari 肉.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: potongan daging dengan serat di dalamnya (肉).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "電",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "雨",
+     "role": "meaning",
+     "meaning_id": "hujan"
+    },
+    {
+     "part": "申",
+     "role": "meaning",
+     "meaning_id": "kilat (arti asal)"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "雨 (hujan) + 申 (bentuk asalnya gambar kilat): kilat dari awan hujan; kemudian berarti listrik.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: hujan (雨) dengan sambaran kilat (申): listrik (電).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "計",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "言",
+     "role": "meaning",
+     "meaning_id": "kata"
+    },
+    {
+     "part": "十",
+     "role": "meaning",
+     "meaning_id": "sepuluh"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "言 (kata) + 十 (sepuluh): menyebut hitungan sampai sepuluh; menghitung, mengukur, merencanakan. 十 bukan penanda bunyi.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kata (言) yang menghitung sampai sepuluh (十): menghitung atau jam (時計).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "話",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "言",
+     "role": "meaning",
+     "meaning_id": "kata"
+    },
+    {
+     "part": "舌",
+     "role": "shape",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "言 (kata) menunjukkan makna. 舌 di sini bukan 'lidah' menurut asal-usul, melainkan bentuk dari penanda bunyi わ.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kata (言) dan lidah (舌) bekerja sama saat berbicara (話す), seperti 電話.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "活",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "氵",
+     "role": "meaning",
+     "meaning_id": "air"
+    },
+    {
+     "part": "舌",
+     "role": "shape",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "氵 (air) menunjukkan makna (mengalir, hidup). 舌 di sini bukan 'lidah' menurut asal-usul, melainkan bentuk dari penanda bunyi かつ.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: air (氵) mengalir hidup dan lidah (舌) aktif: hidup atau aktif (活), seperti 生活.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "書",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "聿",
+     "role": "meaning",
+     "meaning_id": "kuas"
+    },
+    {
+     "part": "者",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "者",
+   "reading_hint": "者 しゃ → 書 しょ",
+   "old_form": null,
+   "etymology_id": "聿 (kuas) menunjukkan makna menulis; 者 memberi bunyi (しゃ → しょ).",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kuas (聿) di atas 者: menulis (書く), seperti 辞書.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "菜",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "艹",
+     "role": "meaning",
+     "meaning_id": "tumbuhan"
+    },
+    {
+     "part": "采",
+     "role": "phonetic",
+     "meaning_id": "memetik"
+    }
+   ],
+   "phonetic_part": "采",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "艹 (tumbuhan) menunjukkan makna; 采 (memetik) memberi bunyi さい: sayuran yang dipetik.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tumbuhan (艹) yang dipetik (采): sayur (菜), seperti 野菜.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "暑",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "日",
+     "role": "meaning",
+     "meaning_id": "matahari"
+    },
+    {
+     "part": "者",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "者",
+   "reading_hint": "者 しゃ → 暑 しょ",
+   "old_form": null,
+   "etymology_id": "日 (matahari) menunjukkan makna; 者 memberi bunyi (しゃ → しょ): terik, panas.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: matahari (日) menyinari 者: panas terik (暑い).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "曜",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "日",
+     "role": "meaning",
+     "meaning_id": "matahari"
+    },
+    {
+     "part": "翟",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "翟",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "日 (matahari) menunjukkan makna cahaya; 翟 memberi bunyi (seri bunyi 躍・耀・曜).",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: matahari (日) dan 翟 mengingatkan bunyi 'yō': hari dalam seminggu (曜日).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "部",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "阝",
+     "role": "meaning",
+     "meaning_id": "kota, wilayah"
+    },
+    {
+     "part": "咅",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "咅",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "阝 (kota, wilayah) menunjukkan makna; 咅 memberi bunyi ぶ: bagian wilayah.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: wilayah (阝) dibagi-bagi: bagian atau departemen (部), seperti 部屋.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "院",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "阝",
+     "role": "meaning",
+     "meaning_id": "bukit, dinding"
+    },
+    {
+     "part": "完",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "完",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "阝 (bukit, dinding) menunjukkan makna kompleks bangunan berpagar; 完 memberi bunyi (かん → いん).",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kompleks bangunan berpagar (阝) yang selesai (完): rumah sakit (病院).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "勉",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "力",
+     "role": "meaning",
+     "meaning_id": "tenaga"
+    },
+    {
+     "part": "免",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "免",
+   "reading_hint": "免 めん → 勉 べん",
+   "old_form": null,
+   "etymology_id": "力 (tenaga) menunjukkan usaha; 免 memberi bunyi (めん → べん): berusaha keras.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tenaga (力) yang tidak menyerah (免): berusaha keras (勉強).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "符",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "竹",
+     "role": "meaning",
+     "meaning_id": "bambu"
+    },
+    {
+     "part": "付",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "付",
+   "reading_hint": "付 ふ → 符 ふ",
+   "old_form": null,
+   "etymology_id": "竹 (bambu) menunjukkan bahan tanda atau karcis zaman dulu; 付 memberi bunyi ふ.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: potongan bambu (竹) yang ditempelkan (付) sebagai tanda: karcis (切符).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "黒",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "黑",
+   "etymology_id": "Bentuk lama 黑 = 囱 (cerobong) + 灬 (api): jelaga dari api, yaitu hitam. 黒 mengganti 囱 dengan 里.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: api (灬) di bawah dan 里 di atasnya: jelaga hitam (黒い).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "寝",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "宀",
+     "role": "meaning",
+     "meaning_id": "rumah"
+    },
+    {
+     "part": "爿",
+     "role": "meaning",
+     "meaning_id": "ranjang"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "寢",
+   "etymology_id": "Bentuk lama 寢 memuat 宀 (rumah) dan 爿 (ranjang): tidur di rumah. 寝 menyederhanakan bagian kanannya.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: ranjang (爿) di dalam rumah (宀): tidur (寝る).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "飲",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "食",
+     "role": "meaning",
+     "meaning_id": "makanan"
+    },
+    {
+     "part": "欠",
+     "role": "meaning",
+     "meaning_id": "mulut menganga"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "飮",
+   "etymology_id": "Bentuk lama 飮 = 酓 + 欠 (mulut menganga). 飲 mengganti 酓 dengan 食 (makanan): mulut terbuka untuk makan dan minum.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: makanan (食) dan mulut menganga (欠): minum (飲む).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "髪",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "髟",
+     "role": "meaning",
+     "meaning_id": "rambut panjang"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "髮",
+   "etymology_id": "Bentuk lama 髮 = 髟 (rambut panjang) + 犮 (penanda bunyi). 髪 mengganti 犮 dengan 友.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: rambut panjang (髟) yang menutupi teman (友): rambut (髪).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "蔵",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "艹",
+     "role": "meaning",
+     "meaning_id": "rumput"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "藏",
+   "etymology_id": "Bentuk lama 藏 = 艹 (rumput) + 臧 (penanda bunyi ぞう): menyimpan, menyembunyikan. 蔵 menyederhanakan bagian 臧.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 蔵 dibaca 'zō' pada 冷蔵庫 (kulkas): tempat menyimpan makanan dingin.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "鶏",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "鳥",
+     "role": "meaning",
+     "meaning_id": "burung"
+    },
+    {
+     "part": "奚",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "奚",
+   "reading_hint": "",
+   "old_form": "鷄",
+   "etymology_id": "Bentuk lama 鷄 = 奚 (penanda bunyi けい) + 鳥 (burung). 鶏 adalah bentuk sederhananya.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: burung (鳥) dengan bunyi 'kei': ayam (鶏), seperti 鶏肉.",
    "note_id": "",
    "source": "manual"
   }
