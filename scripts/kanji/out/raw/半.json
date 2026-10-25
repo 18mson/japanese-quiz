@@ -1,20 +1,25 @@
 {
   "kanji": "半",
-  "formation_type": "ideograph_simple",
+  "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "十",
-      "role": "shape",
-      "meaning_id": "sepuluh"
+      "part": "八",
+      "role": "meaning",
+      "meaning_id": "membagi"
     },
     {
-      "part": "二",
-      "role": "shape",
-      "meaning_id": "dua"
+      "part": "牛",
+      "role": "meaning",
+      "meaning_id": "sapi"
     }
   ],
-  "etymology_id": "Kanji ini menggambarkan pemisahan suatu benda utuh menjadi dua bagian.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Memotong sesuatu menjadi dua bagian berarti menjadi setengah.",
-  "note_id": "Digunakan untuk menyatakan setengah, seperti pada setengah jam."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "八 (membagi) + 牛 (sapi): sapi dibelah menjadi dua; setengah.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: sapi (牛) dibelah (八): setengah (半).",
+  "note_id": "",
+  "source": "manual"
 }

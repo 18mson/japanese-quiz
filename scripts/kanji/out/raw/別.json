@@ -1,20 +1,14 @@
 {
   "kanji": "別",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "力",
-      "role": "meaning",
-      "meaning_id": "tenaga"
-    }
-  ],
-  "etymology_id": "Menggunakan tenaga untuk memisahkan atau membedakan sesuatu.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Tenaga digunakan untuk memisahkan hal yang berbeda.",
-  "note_id": "Digunakan dalam betsubetsuni (masing-masing)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

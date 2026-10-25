@@ -1,20 +1,25 @@
 {
   "kanji": "活",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "氵",
       "role": "meaning",
-      "meaning_id": "water, water radical (no. 85)"
+      "meaning_id": "air"
     },
     {
       "part": "舌",
-      "role": "phonetic",
-      "meaning_id": "tongue, reed"
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan air (氵) dan unsur lidah (舌) sebagai bunyi.",
-  "mnemonic_id": "Cara mengingat: Air (氵) menghidupkan lidah (舌) yang haus agar kembali aktif.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "氵 (air) menunjukkan makna (mengalir, hidup). 舌 di sini bukan 'lidah' menurut asal-usul, melainkan bentuk dari penanda bunyi かつ.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: air (氵) mengalir hidup dan lidah (舌) aktif: hidup atau aktif (活), seperti 生活.",
+  "note_id": "",
+  "source": "manual"
 }

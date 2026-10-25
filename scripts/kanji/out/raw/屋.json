@@ -1,20 +1,25 @@
 {
   "kanji": "屋",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "尸",
-      "role": "shape",
-      "meaning_id": "corpse, remains"
+      "role": "meaning",
+      "meaning_id": "atap, bangunan"
     },
     {
       "part": "至",
-      "role": "phonetic",
-      "meaning_id": "climax, arrive"
+      "role": "meaning",
+      "meaning_id": "tiba"
     }
   ],
-  "etymology_id": "Terdiri dari komponen 尸 dan 至 yang memberi petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Rumah atau toko tempat orang tiba (至) di bawah atap.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "尸 (atap, bangunan) + 至 (tiba): tempat orang tiba untuk berteduh, yaitu rumah atau toko. 至 bukan penanda bunyi.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tiba (至) di bawah atap (尸): rumah atau toko (屋), seperti 部屋 dan 本屋.",
+  "note_id": "",
+  "source": "manual"
 }

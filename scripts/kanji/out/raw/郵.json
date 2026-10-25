@@ -1,15 +1,20 @@
 {
   "kanji": "郵",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
   "components": [
     {
-      "part": "⻏",
+      "part": "阝",
       "role": "meaning",
-      "meaning_id": "tempat"
+      "meaning_id": "kota"
     }
   ],
-  "etymology_id": "Berkaitan dengan pengiriman surat ke suatu tempat.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Tempat untuk mengirim surat dan pos.",
-  "note_id": "Kosakata: 郵便局 (ゆうびんきょく) = kantor pos, 郵便ポスト (ゆうびんポスト) = kotak pos, 郵便局員 (ゆうびんきょくいん) = petugas kantor pos."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 阝 (kota) + 垂: pos perhentian di perbatasan wilayah; kini berarti pos.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 郵 dibaca 'yū' pada 郵便局 (kantor pos): surat dikirim antar kota (阝).",
+  "note_id": "",
+  "source": "manual"
 }

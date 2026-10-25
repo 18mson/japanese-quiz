@@ -1,20 +1,25 @@
 {
   "kanji": "話",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "say, word"
+      "meaning_id": "kata"
     },
     {
       "part": "舌",
-      "role": "phonetic",
-      "meaning_id": "tongue, reed"
+      "role": "shape",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan kata bicara dan lidah yang memberi bunyi.",
-  "mnemonic_id": "Cara mengingat: Menggerakkan lidah dan kata untuk berbicara.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "言 (kata) menunjukkan makna. 舌 di sini bukan 'lidah' menurut asal-usul, melainkan bentuk dari penanda bunyi わ.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kata (言) dan lidah (舌) bekerja sama saat berbicara (話す), seperti 電話.",
+  "note_id": "",
+  "source": "manual"
 }

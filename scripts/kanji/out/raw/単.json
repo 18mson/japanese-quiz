@@ -1,15 +1,14 @@
 {
   "kanji": "単",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "田",
-      "role": "meaning",
-      "meaning_id": "sawah"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar alat atau bentuk tunggal sederhana.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "單",
+  "etymology_id": "Bentuk lama 單 memuat dua 口 di atas; asal-usulnya diperdebatkan. Arti 'tunggal, sederhana' dipakai belakangan. 単 menyederhanakan bagian atasnya.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Sesuatu yang tunggal dan sederhana (単) seperti satu petak sawah (田).",
-  "note_id": "Digunakan pada kata 簡単な (kantanna) yang berarti mudah atau simpel."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: ladang (田) dengan tanda (丷) di atas dan garis (十): sederhana (単), seperti 簡単.",
+  "note_id": "",
+  "source": "manual"
 }

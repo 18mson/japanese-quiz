@@ -226,7 +226,12 @@ export async function callGeminiApi(apiKey, userPrompt, retryCount = 0) {
       throw new Error('Gemini API mengembalikan respons kosong (tidak ada kandidat teks)');
     }
 
-    return JSON.parse(rawText);
+    const parsed = JSON.parse(rawText);
+    if (Array.isArray(parsed)) {
+      parsed.usageMetadata = data.usageMetadata || {};
+      parsed.modelVersion = data.modelVersion || GEMINI_MODEL;
+    }
+    return parsed;
   } catch (err) {
     if (retryCount < MAX_RETRIES && (err.message.includes('fetch failed') || err.message.includes('ETIMEDOUT'))) {
       const delay = Math.pow(2, retryCount + 1) * 1000;
@@ -241,6 +246,7 @@ export async function callGeminiApi(apiKey, userPrompt, retryCount = 0) {
 export function parseCliArgs() {
   const args = process.argv.slice(2);
   let specificKanji = null;
+  let lessons = null;
   let maxRequests = Infinity;
   let overwrite = false;
 
@@ -258,6 +264,18 @@ export function parseCliArgs() {
         }
       }
       i++;
+    } else if (arg === '--lessons' && args[i + 1]) {
+      const raw = args[i + 1];
+      const matchRange = raw.match(/^(\d+)\s*-\s*(\d+)$/);
+      if (matchRange) {
+        const start = parseInt(matchRange[1], 10);
+        const end = parseInt(matchRange[2], 10);
+        lessons = [];
+        for (let l = start; l <= end; l++) lessons.push(l);
+      } else {
+        lessons = raw.split(/[,\s]+/).map(s => parseInt(s.replace(/\D/g, ''), 10)).filter(n => !isNaN(n));
+      }
+      i++;
     } else if (arg === '--max-requests' && args[i + 1]) {
       maxRequests = parseInt(args[i + 1], 10);
       i++;
@@ -271,10 +289,10 @@ export function parseCliArgs() {
     overwrite = true;
   }
 
-  return { specificKanji, maxRequests, overwrite };
+  return { specificKanji, lessons, maxRequests, overwrite };
 }
 
-export async function generateAll({ specificKanji = null, maxRequests = Infinity, overwrite = false, extraInstruction = '' } = {}) {
+export async function generateAll({ specificKanji = null, lessons = null, maxRequests = Infinity, overwrite = false, extraInstruction = '' } = {}) {
   if (!fs.existsSync(FACTS_FILE)) {
     throw new Error(`Berkas facts.json tidak ditemukan di ${FACTS_FILE}. Jalankan facts.mjs dulu!`);
   }
@@ -286,9 +304,24 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
   const allFacts = JSON.parse(fs.readFileSync(FACTS_FILE, 'utf-8'));
 
   let targetFacts = allFacts;
+  if (lessons && lessons.length > 0) {
+    const lessonSet = new Set(lessons);
+    targetFacts = allFacts.filter(f => {
+      let minLesson = 999;
+      for (const w of f.words || []) {
+        const m = (w.lesson || '').match(/Pelajaran\s+(\d+)/);
+        if (m) {
+          const lNum = parseInt(m[1], 10);
+          if (lNum < minLesson) minLesson = lNum;
+        }
+      }
+      return lessonSet.has(minLesson);
+    });
+  }
+
   if (specificKanji && specificKanji.length > 0) {
     const filterSet = new Set(specificKanji);
-    targetFacts = allFacts.filter(f => filterSet.has(f.kanji));
+    targetFacts = targetFacts.filter(f => filterSet.has(f.kanji));
   }
 
   // Load manual entries
@@ -414,6 +447,10 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
   // Batching 10 kanji per request
   const totalBatches = Math.ceil(pendingFacts.length / BATCH_SIZE);
   let requestCount = 0;
+  let totalPromptTokens = 0;
+  let totalCandidatesTokens = 0;
+  let totalTokens = 0;
+  let detectedModel = GEMINI_MODEL;
 
   for (let b = 0; b < totalBatches; b++) {
     if (requestCount >= maxRequests) {
@@ -428,6 +465,15 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
     const prompt = buildUserPrompt(batch, extraInstruction);
     const results = await callGeminiApi(apiKey, prompt);
     requestCount++;
+
+    if (results?.usageMetadata) {
+      totalPromptTokens += results.usageMetadata.promptTokenCount || 0;
+      totalCandidatesTokens += results.usageMetadata.candidatesTokenCount || 0;
+      totalTokens += results.usageMetadata.totalTokenCount || 0;
+    }
+    if (results?.modelVersion) {
+      detectedModel = results.modelVersion;
+    }
 
     if (!Array.isArray(results)) {
       console.error(`⚠️ Respons batch ${b + 1} bukan array! Mengabaikan...`);
@@ -450,11 +496,17 @@ export async function generateAll({ specificKanji = null, maxRequests = Infinity
   }
 
   console.log('\n🎉 Selesai proses batch generasi Gemini!');
+  console.log('📊 Ringkasan Penggunaan Gemini API:');
+  console.log(`  - Nama Model (Respons API): ${detectedModel}`);
+  console.log(`  - Jumlah Permintaan (Requests): ${requestCount}`);
+  console.log(`  - Prompt Tokens: ${totalPromptTokens}`);
+  console.log(`  - Candidates Tokens: ${totalCandidatesTokens}`);
+  console.log(`  - Total Tokens Sebenarnya: ${totalTokens}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const { specificKanji, maxRequests, overwrite } = parseCliArgs();
-  generateAll({ specificKanji, maxRequests, overwrite }).catch(err => {
+  const { specificKanji, lessons, maxRequests, overwrite } = parseCliArgs();
+  generateAll({ specificKanji, lessons, maxRequests, overwrite }).catch(err => {
     console.error('❌ Gagal menjalankan generate.mjs:', err);
     process.exit(1);
   });

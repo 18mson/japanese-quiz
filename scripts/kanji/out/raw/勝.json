@@ -1,20 +1,14 @@
 {
   "kanji": "勝",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "月",
-      "role": "meaning",
-      "meaning_id": "daging"
-    },
-    {
-      "part": "力",
-      "role": "meaning",
-      "meaning_id": "kekuatan"
-    }
-  ],
-  "etymology_id": "Gabungan arti kekuatan fisik yang unggul untuk mencapai kemenangan.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menggunakan kekuatan (力) penuh untuk menang (勝ちます).",
-  "note_id": "Digunakan dalam kata menang (勝ちます)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

@@ -1,15 +1,25 @@
 {
   "kanji": "後",
-  "formation_type": "phono_semantic",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "彳",
       "role": "meaning",
-      "meaning_id": "langkah kaki"
+      "meaning_id": "jalan"
+    },
+    {
+      "part": "夂",
+      "role": "meaning",
+      "meaning_id": "kaki"
     }
   ],
-  "etymology_id": "Menggabungkan komponen langkah kaki untuk menyatakan posisi di belakang atau kemudian.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 彳 (jalan) + 幺 (benang kecil) + 夂 (kaki tertahan): berjalan tertinggal di belakang.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Orang yang berjalan tertinggal di belakang.",
-  "note_id": "Kosakata: 午後 (p.m.), 後ろ (belakang)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: berjalan (彳) dengan kaki terikat benang (幺): tertinggal di belakang (後ろ), seperti 午後.",
+  "note_id": "",
+  "source": "manual"
 }

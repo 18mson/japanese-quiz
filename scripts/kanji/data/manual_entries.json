@@ -2210,6 +2210,862 @@
    "mnemonic_id": "Cara mengingat: burung (鳥) dengan bunyi 'kei': ayam (鶏), seperti 鶏肉.",
    "note_id": "",
    "source": "manual"
+  },
+  {
+   "kanji": "円",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "囗",
+     "role": "meaning",
+     "meaning_id": "lingkaran"
+    },
+    {
+     "part": "員",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "員",
+   "reading_hint": "",
+   "old_form": "圓",
+   "etymology_id": "Bentuk lama 圓 = 囗 (lingkaran) + 員 (penanda bunyi えん): bulat. 円 adalah penyederhanaan yang lama dipakai sebagai tulisan cepat; juga satuan mata uang yen.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kotak (冂) berisi garis tegak dan datar seperti koin: yen (円).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "研",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "石",
+     "role": "meaning",
+     "meaning_id": "batu"
+    },
+    {
+     "part": "幵",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "幵",
+   "reading_hint": "",
+   "old_form": "硏",
+   "etymology_id": "石 (batu) menunjukkan makna menggosok; 幵 (pada bentuk lama 硏) memberi bunyi けん. 研 adalah bentuk sederhana dari bagian kanannya.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: batu (石) yang digosok rata: meneliti atau mengasah (研究).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "晩",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "日",
+     "role": "meaning",
+     "meaning_id": "matahari"
+    },
+    {
+     "part": "免",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "免",
+   "reading_hint": "",
+   "old_form": "晚",
+   "etymology_id": "日 (matahari) menunjukkan makna waktu; 免 memberi bunyi (めん → ばん): saat matahari redup, yaitu malam. 晩 adalah bentuk sederhana dari 晚.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: matahari (日) yang 'lepas' (免) dari langit: malam (晩), seperti 今晩.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "温",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "氵",
+     "role": "meaning",
+     "meaning_id": "air"
+    },
+    {
+     "part": "昷",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "昷",
+   "reading_hint": "",
+   "old_form": "溫",
+   "etymology_id": "氵 (air) menunjukkan makna; 昷 memberi bunyi おん: air hangat. 温 menyederhanakan 昷 menjadi 日 + 皿.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: matahari (日) menghangatkan air (氵) dalam mangkuk (皿): hangat (温かい).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "焼",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "火",
+     "role": "meaning",
+     "meaning_id": "api"
+    },
+    {
+     "part": "堯",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "堯",
+   "reading_hint": "",
+   "old_form": "燒",
+   "etymology_id": "火 (api) menunjukkan makna; 堯 memberi bunyi (ぎょう → しょう): membakar. 焼 menyederhanakan 堯 menjadi 尭.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: api (火) yang tinggi (尭) membakar: membakar atau memanggang (焼く), seperti すき焼き.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "関",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "門",
+     "role": "meaning",
+     "meaning_id": "gerbang"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "關",
+   "etymology_id": "Bentuk lama 關 = 門 (gerbang) + palang pintu. Penjelasan tradisional: palang pada gerbang, lalu 'pos penjagaan, hubungan'. 関 adalah penyederhanaan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: gerbang (門) yang dipalang: pos penjagaan atau hubungan (関).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "絵",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "糸",
+     "role": "meaning",
+     "meaning_id": "benang"
+    },
+    {
+     "part": "會",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "會",
+   "reading_hint": "",
+   "old_form": "繪",
+   "etymology_id": "Bentuk lama 繪 = 糸 (benang) + 會 (penanda bunyi かい → え): benang berwarna disatukan menjadi gambar. 絵 mengganti 會 dengan 会.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: benang (糸) berwarna-warni yang bertemu (会) membentuk gambar (絵).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "奥",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "宀",
+     "role": "meaning",
+     "meaning_id": "atap"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "奧",
+   "etymology_id": "Bentuk lama 奧 memuat 宀 (atap): bagian terdalam rumah. 奥 adalah penyederhanaan; asal bagian lainnya diperdebatkan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: di bawah atap (宀) ada beras (米) dan benda besar (大) tersimpan di dalam: bagian dalam (奥).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "残",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "歹",
+     "role": "meaning",
+     "meaning_id": "tulang, kematian"
+    },
+    {
+     "part": "戔",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "戔",
+   "reading_hint": "",
+   "old_form": "殘",
+   "etymology_id": "歹 (tulang, kematian) menunjukkan makna sisa; 戔 memberi bunyi (せん → ざん). 残 menyederhanakan 戔 menjadi 戋.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tulang (歹) yang tersisa setelah dipotong (戋): sisa (残る).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "乗",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "乘",
+   "etymology_id": "Bentuk lama 乘. Penjelasan tradisional: orang naik ke atas pohon (木) dengan dua kaki. 乗 adalah penyederhanaan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: orang naik ke atas pohon (木) dan berpijak: naik (乗る), seperti 乗り場.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "県",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "縣",
+   "etymology_id": "Bentuk lama 縣 = 県 (kepala terbalik) + 系 (tali): menggantung. Arti 'wilayah administratif' dipakai belakangan. 県 mengambil bagian atasnya.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 県 dibaca 'ken' pada nama prefektur: 千葉県, 神奈川県.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "隣",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "阝",
+     "role": "meaning",
+     "meaning_id": "bukit, desa"
+    },
+    {
+     "part": "粦",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "粦",
+   "reading_hint": "",
+   "old_form": "鄰",
+   "etymology_id": "Bentuk lama 鄰 = 粦 (penanda bunyi りん) + 阝 (kota). Pada 隣 阝 pindah ke kiri; maknanya desa yang berdampingan, yaitu tetangga.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: desa (阝) dengan nasi (米) dan kaki (舛) berdampingan: tetangga (隣).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "台",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "臺",
+   "etymology_id": "台 menggantikan 臺 (panggung, landasan) sebagai bentuk sederhana. Bentuk 台 yang lama berbeda arti (ム dan 口).",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 台 dipakai pada 台所 (dapur) dan pencacah mobil atau mesin: 一台, 二台.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "両",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "兩",
+   "etymology_id": "Bentuk lama 兩 menggambarkan dua barang berpasangan pada timbangan. Penjelasan tradisional. 両 adalah penyederhanaan; arti 'dua, pasangan'.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: dua orang (从) di bawah bingkai (冂): sepasang (両), seperti 両親 (orang tua).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "単",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": "單",
+   "etymology_id": "Bentuk lama 單 memuat dua 口 di atas; asal-usulnya diperdebatkan. Arti 'tunggal, sederhana' dipakai belakangan. 単 menyederhanakan bagian atasnya.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: ladang (田) dengan tanda (丷) di atas dan garis (十): sederhana (単), seperti 簡単.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "遅",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "辶",
+     "role": "meaning",
+     "meaning_id": "bergerak"
+    },
+    {
+     "part": "犀",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "犀",
+   "reading_hint": "",
+   "old_form": "遲",
+   "etymology_id": "Bentuk lama 遲 = 辶 (bergerak) + 犀 (penanda bunyi). 遅 menyederhanakan 犀 menjadi 尸 + 羊: berjalan lambat.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: berjalan (辶) sambil menggiring domba (羊): lambat (遅い).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "軽",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "車",
+     "role": "meaning",
+     "meaning_id": "kereta"
+    },
+    {
+     "part": "巠",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "巠",
+   "reading_hint": "",
+   "old_form": "輕",
+   "etymology_id": "車 (kereta) menunjukkan makna; 巠 memberi bunyi けい. 軽 menyederhanakan 巠 menjadi 圣: kereta yang ringan.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kereta (車) yang ringan dibawa; 軽 dibaca 'kei' (軽食) dan 'karu' (軽い).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "失",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "手",
+     "role": "meaning",
+     "meaning_id": "tangan"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 手 (tangan) dengan sesuatu yang terlepas darinya: kehilangan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: sesuatu (ノ) terlepas dari tangan (手): kehilangan (失), seperti 失礼.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "先",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "儿",
+     "role": "meaning",
+     "meaning_id": "kaki orang"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: kaki yang melangkah di depan orang (儿): yang berjalan lebih dulu.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kaki melangkah di depan orang (儿): lebih dulu (先), seperti 先生 dan 先週.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "師",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Bentuk sekarang memuat 𠂤 (pasukan) dan 帀 (mengelilingi). Arti asal 'pasukan', lalu 'guru, ahli'. Penjelasan tradisional.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 師 dibaca 'shi' pada 教師 dan 美容師: orang ahli dalam bidangnya.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "員",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan. 員 juga menjadi penanda bunyi pada 円 (圓) dan 韻.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: 員 dibaca 'in' pada 会社員 (karyawan) dan 店員: anggota sebuah kelompok.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "行",
+   "formation_type": "pictograph",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Gambar perempatan jalan.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: perempatan jalan: pergi (行く) menyusuri jalan, atau baris (行).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "者",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan. Dalam kata, 者 berarti 'orang yang melakukan': 医者, 研究者. 者 juga menjadi penanda bunyi pada 暑 dan 書.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: orang tua (耂) di bawah matahari (日): orang yang ahli (者).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "韓",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Bentuk sekarang memuat 倝 (penanda bunyi かん) dan 韋 (kulit samak); dipakai terutama sebagai nama Korea.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 韓 dibaca 'kan' pada 韓国 (Korea Selatan).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "産",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "生",
+     "role": "meaning",
+     "meaning_id": "lahir, tumbuh"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "生 (lahir, tumbuh) menunjukkan makna; bagian atas (立 + 厂) berasal dari 彦 yang memberi bunyi さん.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: tumbuh (生) di bawah tanda 'dirikan' (立): menghasilkan (産), seperti お土産.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "筆",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "竹",
+     "role": "meaning",
+     "meaning_id": "bambu"
+    },
+    {
+     "part": "聿",
+     "role": "meaning",
+     "meaning_id": "kuas"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "聿 (kuas dipegang tangan) diberi 竹 (bambu) sebagai gagang: kuas, alat tulis.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: kuas (聿) bergagang bambu (竹): alat tulis (筆), seperti 鉛筆.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "傘",
+   "formation_type": "pictograph",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: gambar payung dengan kanopi dan rangka.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: payung terbuka dengan orang (人) berteduh di bawahnya: payung (傘).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "事",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai tangan memegang alat tulis atau bendera). Arti 'urusan, pekerjaan'.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: tangan (⺕) memegang alat: urusan atau pekerjaan (事), seperti 仕事 dan 事務所.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "付",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "亻",
+     "role": "meaning",
+     "meaning_id": "orang"
+    },
+    {
+     "part": "寸",
+     "role": "meaning",
+     "meaning_id": "tangan"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "亻 (orang) + 寸 (tangan): orang menyerahkan sesuatu dengan tangan; menempel, memberi.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: orang (亻) menempelkan sesuatu dengan tangan (寸): menempel (付く), seperti 受付.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "郵",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "阝",
+     "role": "meaning",
+     "meaning_id": "kota"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 阝 (kota) + 垂: pos perhentian di perbatasan wilayah; kini berarti pos.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: 郵 dibaca 'yū' pada 郵便局 (kantor pos): surat dikirim antar kota (阝).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "局",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "尸",
+     "role": "meaning",
+     "meaning_id": "bangunan, tubuh"
+    },
+    {
+     "part": "句",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "句",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 尸 (bangunan) + 句 (penanda bunyi く → きょく): ruang kecil, kantor.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: bangunan (尸) dengan 句 di bawah: kantor atau bagian (局), seperti 郵便局.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "今",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai tutup di atas wadah). Arti 'sekarang' dipakai belakangan; 今 juga penanda bunyi pada 金, 含, 念.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: atap (人) menaungi waktu sekarang: sekarang (今), seperti 今週 dan 今晩.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "後",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "彳",
+     "role": "meaning",
+     "meaning_id": "jalan"
+    },
+    {
+     "part": "夂",
+     "role": "meaning",
+     "meaning_id": "kaki"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 彳 (jalan) + 幺 (benang kecil) + 夂 (kaki tertahan): berjalan tertinggal di belakang.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: berjalan (彳) dengan kaki terikat benang (幺): tertinggal di belakang (後ろ), seperti 午後.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "金",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "今",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "今",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: butiran logam di dalam tanah (土) di bawah 今, yang memberi bunyi (こん → きん).",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: emas dalam tanah (土) di bawah atap (人): logam atau uang (金), seperti 金曜日.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "半",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "八",
+     "role": "meaning",
+     "meaning_id": "membagi"
+    },
+    {
+     "part": "牛",
+     "role": "meaning",
+     "meaning_id": "sapi"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "八 (membagi) + 牛 (sapi): sapi dibelah menjadi dua; setengah.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: sapi (牛) dibelah (八): setengah (半).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "分",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "八",
+     "role": "meaning",
+     "meaning_id": "membagi"
+    },
+    {
+     "part": "刀",
+     "role": "meaning",
+     "meaning_id": "pisau"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "八 (membagi) + 刀 (pisau): membelah dengan pisau; membagi, mengerti, menit.",
+   "etymology_confidence": "established",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: pisau (刀) membelah (八): bagian atau menit (分).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "番",
+   "formation_type": "unknown",
+   "components": [
+    {
+     "part": "釆",
+     "role": "meaning",
+     "meaning_id": "jejak hewan"
+    },
+    {
+     "part": "田",
+     "role": "meaning",
+     "meaning_id": "ladang"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: jejak hewan (釆) di ladang (田); arti 'giliran, nomor' berkembang belakangan.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: jejak (釆) berurutan di ladang (田): giliran atau nomor (番), seperti 番号.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "家",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "宀",
+     "role": "meaning",
+     "meaning_id": "atap"
+    },
+    {
+     "part": "豕",
+     "role": "meaning",
+     "meaning_id": "babi"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 宀 (atap) + 豕 (babi): rumah dengan hewan peliharaan di bawah atap; rumah, keluarga.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: babi (豕) di bawah atap (宀): rumah (家).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "族",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "方",
+     "role": "meaning",
+     "meaning_id": "bendera"
+    },
+    {
+     "part": "矢",
+     "role": "meaning",
+     "meaning_id": "panah"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: bendera (方, bentuk asli 㫃) + 矢 (panah): satu klan berkumpul di bawah bendera dengan panah.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: bendera (方) dan panah (矢): satu suku atau keluarga (族), seperti 家族.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "去",
+   "formation_type": "unknown",
+   "components": [],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai orang meninggalkan wadah atau gua). Arti 'pergi, lalu'.",
+   "etymology_confidence": "uncertain",
+   "claim_kind": "unknown",
+   "mnemonic_id": "Cara mengingat: tanah (土) dan ム: tinggalkan tempat ini: lalu atau pergi (去), seperti 去年.",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "年",
+   "formation_type": "phono_semantic",
+   "components": [
+    {
+     "part": "禾",
+     "role": "meaning",
+     "meaning_id": "padi"
+    },
+    {
+     "part": "千",
+     "role": "phonetic",
+     "meaning_id": ""
+    }
+   ],
+   "phonetic_part": "千",
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 禾 (padi) menunjukkan panen; 千 diduga memberi bunyi (せん → ねん); setahun satu panen.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: padi (禾) matang sekali setahun: tahun (年).",
+   "note_id": "",
+   "source": "manual"
+  },
+  {
+   "kanji": "普",
+   "formation_type": "compound_meaning",
+   "components": [
+    {
+     "part": "日",
+     "role": "meaning",
+     "meaning_id": "matahari"
+    }
+   ],
+   "phonetic_part": null,
+   "reading_hint": "",
+   "old_form": null,
+   "etymology_id": "Penjelasan tradisional: 並 (berjajar) + 日 (matahari): cahaya matahari yang menyebar rata; umum, biasa.",
+   "etymology_confidence": "traditional",
+   "claim_kind": "structure",
+   "mnemonic_id": "Cara mengingat: matahari (日) menyinari semua yang berjajar (並): umum atau biasa (普通).",
+   "note_id": "",
+   "source": "manual"
   }
  ]
 }

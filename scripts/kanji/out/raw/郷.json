@@ -1,25 +1,14 @@
 {
   "kanji": "郷",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
-  "components": [
-    {
-      "part": "乡",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "艮",
-      "role": "phonetic",
-      "meaning_id": "northeast (Oriental zodiac), stopping"
-    },
-    {
-      "part": "⻏",
-      "role": "shape",
-      "meaning_id": ""
-    }
-  ],
-  "etymology_id": "Gabungan komponen visual kampung 乡, 艮, dan ⻏.",
-  "mnemonic_id": "Cara mengingat: Tempat tinggal di kampung halaman (郷) tempat kita berhenti (艮) dan berkumpul.",
-  "note_id": ""
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

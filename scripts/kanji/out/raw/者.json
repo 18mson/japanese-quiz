@@ -1,20 +1,14 @@
 {
   "kanji": "者",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "日",
-      "role": "phonetic",
-      "meaning_id": "matahari"
-    },
-    {
-      "part": "⺹",
-      "role": "shape",
-      "meaning_id": "bagian atas"
-    }
-  ],
-  "etymology_id": "Struktur komponen terdiri dari bagian atas dan bentuk hari atau matahari.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan. Dalam kata, 者 berarti 'orang yang melakukan': 医者, 研究者. 者 juga menjadi penanda bunyi pada 暑 dan 書.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang (者) yang bekerja di bawah matahari (日).",
-  "note_id": "Kosakata: 医者 (dokter), 研究者 (peneliti)."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: orang tua (耂) di bawah matahari (日): orang yang ahli (者).",
+  "note_id": "",
+  "source": "manual"
 }

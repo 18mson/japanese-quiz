@@ -3,13 +3,23 @@
   "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "辶",
+      "part": "辶",
       "role": "meaning",
-      "meaning_id": "jalan"
+      "meaning_id": "bergerak"
+    },
+    {
+      "part": "犀",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan elemen jalan (辶) untuk menyatakan gerakan yang lambat atau terlambat.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Berjalan (辶) dengan lambat membuat kita menjadi telat.",
-  "note_id": "Kosakata: 遅い (lambat/telat)."
+  "phonetic_part": "犀",
+  "reading_hint": "",
+  "old_form": "遲",
+  "etymology_id": "Bentuk lama 遲 = 辶 (bergerak) + 犀 (penanda bunyi). 遅 menyederhanakan 犀 menjadi 尸 + 羊: berjalan lambat.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: berjalan (辶) sambil menggiring domba (羊): lambat (遅い).",
+  "note_id": "",
+  "source": "manual"
 }

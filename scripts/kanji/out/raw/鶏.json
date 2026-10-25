@@ -6,10 +6,20 @@
       "part": "鳥",
       "role": "meaning",
       "meaning_id": "burung"
+    },
+    {
+      "part": "奚",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Komponen burung menunjukkan golongan hewan.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Burung yang hidup di darat adalah ayam.",
-  "note_id": "Kosakata penting: 鶏肉 (とりにく) untuk daging ayam."
+  "phonetic_part": "奚",
+  "reading_hint": "",
+  "old_form": "鷄",
+  "etymology_id": "Bentuk lama 鷄 = 奚 (penanda bunyi けい) + 鳥 (burung). 鶏 adalah bentuk sederhananya.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: burung (鳥) dengan bunyi 'kei': ayam (鶏), seperti 鶏肉.",
+  "note_id": "",
+  "source": "manual"
 }

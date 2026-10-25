@@ -1,25 +1,20 @@
 {
   "kanji": "術",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "彳",
-      "role": "meaning",
-      "meaning_id": "jalan"
-    },
-    {
-      "part": "木",
-      "role": "meaning",
-      "meaning_id": "pohon"
-    },
-    {
-      "part": "十",
+      "part": "行",
       "role": "shape",
-      "meaning_id": "sepuluh"
+      "meaning_id": ""
+    },
+    {
+      "part": "朮",
+      "role": "phonetic",
+      "meaning_id": "a type of millet, a type of herb"
     }
   ],
-  "etymology_id": "Berkaitan dengan keahlian atau teknik.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Keahlian atau teknik seni.",
-  "note_id": "Kosakata: 美術 (seni rupa)"
+  "etymology_id": "Kanji gabungan bentuk dan bunyi. (行) berkaitan dengan aktivitas gerak, sedangkan (朮) memberikan petunjuk bacaan ジュツ.",
+  "mnemonic_id": "Cara mengingat: Melakukan suatu tindakan (行) menggunakan teknik atau keahlian khusus seperti ramuan (朮).",
+  "note_id": ""
 }

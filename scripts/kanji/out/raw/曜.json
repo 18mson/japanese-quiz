@@ -1,20 +1,25 @@
 {
   "kanji": "曜",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "day, sun"
+      "meaning_id": "matahari"
     },
     {
       "part": "翟",
       "role": "phonetic",
-      "meaning_id": "surname, kind of pheasant"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan matahari dan komponen 翟 yang memberi bunyi ヨウ untuk hari.",
-  "mnemonic_id": "Cara mengingat: Matahari bersinar setiap hari dalam seminggu.",
-  "note_id": ""
+  "phonetic_part": "翟",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "日 (matahari) menunjukkan makna cahaya; 翟 memberi bunyi (seri bunyi 躍・耀・曜).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari (日) dan 翟 mengingatkan bunyi 'yō': hari dalam seminggu (曜日).",
+  "note_id": "",
+  "source": "manual"
 }

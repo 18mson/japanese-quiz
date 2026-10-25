@@ -1,20 +1,14 @@
 {
   "kanji": "県",
   "formation_type": "unknown",
-  "components": [
-    {
-      "part": "小",
-      "role": "shape",
-      "meaning_id": "kecil"
-    },
-    {
-      "part": "目",
-      "role": "shape",
-      "meaning_id": "mata"
-    }
-  ],
-  "etymology_id": "Struktur terdiri dari komponen mata dan bagian lainnya.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Wilayah prefektur yang luas dilihat dengan mata (目).",
-  "note_id": "Kanji ini berarti prefektur."
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "縣",
+  "etymology_id": "Bentuk lama 縣 = 県 (kepala terbalik) + 系 (tali): menggantung. Arti 'wilayah administratif' dipakai belakangan. 県 mengambil bagian atasnya.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 県 dibaca 'ken' pada nama prefektur: 千葉県, 神奈川県.",
+  "note_id": "",
+  "source": "manual"
 }

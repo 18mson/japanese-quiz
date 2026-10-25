@@ -1,20 +1,20 @@
 {
   "kanji": "関",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "門",
       "role": "meaning",
-      "meaning_id": "gate, counter for cannons"
-    },
-    {
-      "part": "关",
-      "role": "phonetic",
-      "meaning_id": "frontier pass, close"
+      "meaning_id": "gerbang"
     }
   ],
-  "etymology_id": "Gabungan unsur gerbang (門) dan penutup atau batas (关).",
-  "mnemonic_id": "Cara mengingat: Pintu gerbang (門) yang ditutup rapat (关) sebagai penghubung batas.",
-  "note_id": "Digunakan pada kata pintu masuk rumah."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "關",
+  "etymology_id": "Bentuk lama 關 = 門 (gerbang) + palang pintu. Penjelasan tradisional: palang pada gerbang, lalu 'pos penjagaan, hubungan'. 関 adalah penyederhanaan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: gerbang (門) yang dipalang: pos penjagaan atau hubungan (関).",
+  "note_id": "",
+  "source": "manual"
 }

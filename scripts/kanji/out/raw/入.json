@@ -1,15 +1,14 @@
 {
   "kanji": "入",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "入",
-      "role": "shape",
-      "meaning_id": "enter"
-    }
-  ],
-  "etymology_id": "Kanji ini adalah bentuk piktograf yang menggambarkan benda atau orang yang masuk ke dalam suatu celah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya seperti orang yang sedang melangkah masuk melalui celah pintu.",
-  "note_id": "Pelajari kata kerja hairimasu untuk masuk."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

@@ -1,20 +1,25 @@
 {
   "kanji": "勉",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
-    {
-      "part": "免",
-      "role": "phonetic",
-      "meaning_id": "excuse, dismissal"
-    },
     {
       "part": "力",
       "role": "meaning",
-      "meaning_id": "power, strength"
+      "meaning_id": "tenaga"
+    },
+    {
+      "part": "免",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan 免 yang memberi bunyi ベン dan kekuatan.",
-  "mnemonic_id": "Cara mengingat: Menggunakan tenaga untuk belajar keras.",
-  "note_id": ""
+  "phonetic_part": "免",
+  "reading_hint": "免 めん → 勉 べん",
+  "old_form": null,
+  "etymology_id": "力 (tenaga) menunjukkan usaha; 免 memberi bunyi (めん → べん): berusaha keras.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tenaga (力) yang tidak menyerah (免): berusaha keras (勉強).",
+  "note_id": "",
+  "source": "manual"
 }

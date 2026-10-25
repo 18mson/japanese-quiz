@@ -1,20 +1,25 @@
 {
   "kanji": "計",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "say, word"
+      "meaning_id": "kata"
     },
     {
       "part": "十",
-      "role": "phonetic",
-      "meaning_id": "ten"
+      "role": "meaning",
+      "meaning_id": "sepuluh"
     }
   ],
-  "etymology_id": "Gabungan kata (言) dan angka sepuluh (十) sebagai petunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Kata-kata (言) yang dihitung dengan angka (十) untuk membuat rencana.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "言 (kata) + 十 (sepuluh): menyebut hitungan sampai sepuluh; menghitung, mengukur, merencanakan. 十 bukan penanda bunyi.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kata (言) yang menghitung sampai sepuluh (十): menghitung atau jam (時計).",
+  "note_id": "",
+  "source": "manual"
 }

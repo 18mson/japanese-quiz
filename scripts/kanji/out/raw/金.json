@@ -1,9 +1,20 @@
 {
   "kanji": "金",
-  "formation_type": "pictograph",
+  "formation_type": "phono_semantic",
+  "components": [
+    {
+      "part": "今",
+      "role": "phonetic",
+      "meaning_id": ""
+    }
+  ],
+  "phonetic_part": "今",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: butiran logam di dalam tanah (土) di bawah 今, yang memberi bunyi (こん → きん).",
+  "etymology_confidence": "traditional",
   "claim_kind": "structure",
-  "components": [],
-  "etymology_id": "Karakter piktograf untuk logam atau emas.",
-  "mnemonic_id": "Cara mengingat: Emas atau uang (金) berkilau di dalam tanah.",
-  "note_id": ""
+  "mnemonic_id": "Cara mengingat: emas dalam tanah (土) di bawah atap (人): logam atau uang (金), seperti 金曜日.",
+  "note_id": "",
+  "source": "manual"
 }

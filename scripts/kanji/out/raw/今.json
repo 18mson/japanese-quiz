@@ -1,20 +1,14 @@
 {
   "kanji": "今",
   "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai tutup di atas wadah). Arti 'sekarang' dipakai belakangan; 今 juga penanda bunyi pada 金, 含, 念.",
+  "etymology_confidence": "uncertain",
   "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "人",
-      "role": "meaning",
-      "meaning_id": "person"
-    },
-    {
-      "part": "一",
-      "role": "meaning",
-      "meaning_id": "one, one radical (no.1)"
-    }
-  ],
-  "etymology_id": "Gabungan visual dari elemen orang (人) dan garis satu (一).",
-  "mnemonic_id": "Cara mengingat: Seorang (人) dalam satu (一) momen waktu sekarang (今).",
-  "note_id": "Digunakan dalam kata 今 (sekarang)."
+  "mnemonic_id": "Cara mengingat: atap (人) menaungi waktu sekarang: sekarang (今), seperti 今週 dan 今晩.",
+  "note_id": "",
+  "source": "manual"
 }

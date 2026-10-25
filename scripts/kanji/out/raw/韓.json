@@ -1,20 +1,14 @@
 {
   "kanji": "韓",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Bentuk sekarang memuat 倝 (penanda bunyi かん) dan 韋 (kulit samak); dipakai terutama sebagai nama Korea.",
+  "etymology_confidence": "traditional",
   "claim_kind": "structure",
-  "components": [
-    {
-      "part": "𠦝",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "韋",
-      "role": "meaning",
-      "meaning_id": "tanned leather radical (no. 178)"
-    }
-  ],
-  "etymology_id": "Gabungan komponen atas dan kulit samak (韋) di bagian bawah.",
-  "mnemonic_id": "Cara mengingat: Kulit (韋) dan kerangka sepuluh hari membuat nama negara tetangga.",
-  "note_id": "Digunakan untuk menyebut negara Korea Selatan."
+  "mnemonic_id": "Cara mengingat: 韓 dibaca 'kan' pada 韓国 (Korea Selatan).",
+  "note_id": "",
+  "source": "manual"
 }

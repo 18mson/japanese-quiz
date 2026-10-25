@@ -1,20 +1,25 @@
 {
   "kanji": "美",
   "formation_type": "compound_meaning",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "⺷",
-      "role": "shape",
-      "meaning_id": ""
+      "part": "羊",
+      "role": "meaning",
+      "meaning_id": "domba"
     },
     {
       "part": "大",
       "role": "meaning",
-      "meaning_id": "large, big"
+      "meaning_id": "besar"
     }
   ],
-  "etymology_id": "Gabungan komponen domba dan ukuran besar.",
-  "mnemonic_id": "Cara mengingat: Domba yang bertubuh besar tampak indah.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 羊 (domba) + 大 (besar): domba besar yang gemuk dan bagus. Sebagian peneliti menafsirkannya sebagai orang berhias tanduk domba.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: domba (羊) yang besar (大) tampak indah (美): museum seni (美術館).",
+  "note_id": "",
+  "source": "manual"
 }

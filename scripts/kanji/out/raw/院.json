@@ -1,20 +1,25 @@
 {
   "kanji": "院",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "⻖",
-      "role": "shape",
-      "meaning_id": ""
+      "part": "阝",
+      "role": "meaning",
+      "meaning_id": "bukit, dinding"
     },
     {
       "part": "完",
       "role": "phonetic",
-      "meaning_id": "perfect, completion"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari komponen ⻖ dan 完 yang memberi bunyi.",
-  "mnemonic_id": "Cara mengingat: Kompleks bangunan (⻖) yang selesai (完) dibangun.",
-  "note_id": ""
+  "phonetic_part": "完",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "阝 (bukit, dinding) menunjukkan makna kompleks bangunan berpagar; 完 memberi bunyi (かん → いん).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kompleks bangunan berpagar (阝) yang selesai (完): rumah sakit (病院).",
+  "note_id": "",
+  "source": "manual"
 }

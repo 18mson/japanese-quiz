@@ -2,24 +2,13 @@
   "kanji": "最",
   "formation_type": "unknown",
   "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "日",
-      "role": "meaning",
-      "meaning_id": "day, sun"
-    },
-    {
-      "part": "曰",
-      "role": "shape",
-      "meaning_id": ""
-    },
-    {
-      "part": "取",
-      "role": "meaning",
-      "meaning_id": "take, fetch"
-    }
-  ],
-  "etymology_id": "Gabungan struktur visual antara matahari/hari 日 dan mengambil 取.",
-  "mnemonic_id": "Cara mengingat: Mengambil (取) setiap hari (日) adalah hal yang paling (最) utama.",
-  "note_id": "Digunakan dalam kata 最近 (akhir-akhir ini)."
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

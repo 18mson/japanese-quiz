@@ -1,20 +1,25 @@
 {
   "kanji": "寝",
-  "formation_type": "phono_semantic",
+  "formation_type": "unknown",
   "components": [
     {
       "part": "宀",
       "role": "meaning",
-      "meaning_id": "atap"
+      "meaning_id": "rumah"
     },
     {
-      "part": "又",
+      "part": "爿",
       "role": "meaning",
-      "meaning_id": "tangan"
+      "meaning_id": "ranjang"
     }
   ],
-  "etymology_id": "Berbaring di dalam rumah untuk tidur.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Masuk ke bawah atap rumah untuk tidur.",
-  "note_id": "Berarti tidur atau berbaring."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "寢",
+  "etymology_id": "Bentuk lama 寢 memuat 宀 (rumah) dan 爿 (ranjang): tidur di rumah. 寝 menyederhanakan bagian kanannya.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: ranjang (爿) di dalam rumah (宀): tidur (寝る).",
+  "note_id": "",
+  "source": "manual"
 }

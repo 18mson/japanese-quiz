@@ -217,6 +217,10 @@ export function loadOldForms() {
       const map = new Map();
       for (const [k, v] of Object.entries(pairs)) {
         if (!ambiguous.has(k)) {
+          // Buang pasangan bila NFC(old) == new (varian glif)
+          if (v.normalize('NFC') === k.normalize('NFC')) {
+            continue;
+          }
           map.set(k, v);
         }
       }

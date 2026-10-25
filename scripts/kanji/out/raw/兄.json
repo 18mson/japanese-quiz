@@ -1,25 +1,14 @@
 {
   "kanji": "兄",
-  "formation_type": "compound_meaning",
-  "claim_kind": "structure",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mouth"
-    },
-    {
-      "part": "儿",
-      "role": "meaning",
-      "meaning_id": "legs radical (no. 10)"
-    },
-    {
-      "part": "八",
-      "role": "shape",
-      "meaning_id": ""
-    }
-  ],
-  "etymology_id": "Terdiri dari komponen mulut (口) dan kaki (儿/八).",
-  "mnemonic_id": "Cara mengingat: Kakak laki-laki membuka mulut (口) untuk memanggil dengan kaki (儿) yang berdiri tegap.",
-  "note_id": ""
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

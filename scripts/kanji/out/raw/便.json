@@ -1,20 +1,25 @@
 {
   "kanji": "便",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "compound_meaning",
   "components": [
     {
       "part": "亻",
       "role": "meaning",
-      "meaning_id": "radical number 9"
+      "meaning_id": "orang"
     },
     {
       "part": "更",
-      "role": "phonetic",
-      "meaning_id": "grow late, night watch"
+      "role": "meaning",
+      "meaning_id": "mengganti"
     }
   ],
-  "etymology_id": "Gabungan orang dan 更 yang memberikan bunyi ベン.",
-  "mnemonic_id": "Cara mengingat: Orang yang membuat urusan menjadi praktis.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "亻 (orang) + 更 (mengganti): orang yang mengubah sesuatu agar nyaman; dari sini 'praktis'. Penjelasan tradisional; 更 bukan penanda bunyi yang jelas.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang (亻) mengganti (更) caranya supaya lebih praktis (便利).",
+  "note_id": "",
+  "source": "manual"
 }

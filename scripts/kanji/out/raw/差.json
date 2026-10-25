@@ -2,24 +2,13 @@
   "kanji": "差",
   "formation_type": "unknown",
   "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "羊",
-      "role": "meaning",
-      "meaning_id": "sheep"
-    },
-    {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "katakana no radical (no. 4)"
-    },
-    {
-      "part": "工",
-      "role": "meaning",
-      "meaning_id": "craft, construction"
-    }
-  ],
-  "etymology_id": "Gabungan struktur visual dari komponen domba 羊, coretan 丿, dan kerajinan 工.",
-  "mnemonic_id": "Cara mengingat: Domba 羊 dan kerajinan 工 memiliki perbedaan (差) kecil.",
-  "note_id": "Digunakan dalam kata 交差点 (perempatan)."
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

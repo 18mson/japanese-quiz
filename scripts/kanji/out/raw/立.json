@@ -1,15 +1,14 @@
 {
   "kanji": "立",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "立",
-      "role": "meaning",
-      "meaning_id": "stand"
-    }
-  ],
-  "etymology_id": "Kanji 立 adalah piktograf yang menggambarkan seseorang yang sedang berdiri di atas tanah.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuknya seperti orang yang berdiri tegak.",
-  "note_id": "Digunakan dalam kata berdiri (立ちます) dan berguna (役に立ちます)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

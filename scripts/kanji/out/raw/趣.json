@@ -1,30 +1,20 @@
 {
   "kanji": "趣",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
-    {
-      "part": "耳",
-      "role": "shape",
-      "meaning_id": "ear"
-    },
     {
       "part": "走",
       "role": "shape",
-      "meaning_id": "run"
+      "meaning_id": ""
     },
     {
-      "part": "土",
-      "role": "shape",
-      "meaning_id": "earth"
-    },
-    {
-      "part": "又",
-      "role": "shape",
-      "meaning_id": "again"
+      "part": "取",
+      "role": "phonetic",
+      "meaning_id": "take, fetch"
     }
   ],
-  "etymology_id": "Terdiri dari komponen-komponen struktur.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Menggabungkan berbagai bagian untuk membentuk arti minat atau hobi.",
-  "note_id": "Kosakata penting: 趣味 (hobi)."
+  "etymology_id": "Kanji gabungan bentuk dan bunyi. (走) memberikan petunjuk area visual, sementara (取) memberi petunjuk pengucapan on-yomi シュ.",
+  "mnemonic_id": "Cara mengingat: Berlari (走) lalu mengambil (取) sesuatu yang menarik minat dan elegan.",
+  "note_id": ""
 }

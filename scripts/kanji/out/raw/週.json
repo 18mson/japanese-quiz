@@ -1,30 +1,20 @@
 {
   "kanji": "週",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "辶",
-      "role": "meaning",
-      "meaning_id": "movement"
+      "part": "周",
+      "role": "phonetic",
+      "meaning_id": "circumference, circuit"
     },
     {
-      "part": "口",
+      "part": "⻌",
       "role": "shape",
-      "meaning_id": "mouth"
-    },
-    {
-      "part": "土",
-      "role": "shape",
-      "meaning_id": "earth"
-    },
-    {
-      "part": "冂",
-      "role": "shape",
-      "meaning_id": "border"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggabungkan unsur pergerakan (辶) dengan siklus waktu atau putaran minggu.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Waktu yang berputar dari hari ke hari membentuk satu minggu.",
-  "note_id": "Kosakata penting: 先週 (minggu lalu) dan 今週 (minggu ini)."
+  "etymology_id": "Kanji gabungan makna dan bunyi. (⻌) berkaitan dengan gerakan atau perjalanan waktu, dan (周) berfungsi sebagai penunjuk bunyi シュウ.",
+  "mnemonic_id": "Cara mengingat: Perjalanan (⻌) satu putaran penuh atau sirkuit (周) menandakan pergantian waktu.",
+  "note_id": ""
 }

@@ -1,15 +1,25 @@
 {
   "kanji": "年",
-  "formation_type": "compound_meaning",
+  "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "一",
-      "role": "shape",
-      "meaning_id": "one"
+      "part": "禾",
+      "role": "meaning",
+      "meaning_id": "padi"
+    },
+    {
+      "part": "千",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Berkaitan dengan siklus tanaman padi yang dipanen setiap tahun.",
+  "phonetic_part": "千",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 禾 (padi) menunjukkan panen; 千 diduga memberi bunyi (せん → ねん); setahun satu panen.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Periode waktu satu tahun yang terus berputar.",
-  "note_id": "Digunakan dalam keterangan waktu seperti tahun lalu dan tahun depan."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: padi (禾) matang sekali setahun: tahun (年).",
+  "note_id": "",
+  "source": "manual"
 }

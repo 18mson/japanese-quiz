@@ -5,16 +5,21 @@
     {
       "part": "宀",
       "role": "meaning",
-      "meaning_id": "atap atau rumah"
+      "meaning_id": "atap"
     },
     {
       "part": "豕",
       "role": "meaning",
-      "meaning_id": "babi atau hewan ternak"
+      "meaning_id": "babi"
     }
   ],
-  "etymology_id": "Menunjukkan hewan ternak seperti babi (豕) yang dipelihara di bawah atap rumah (宀), mencerminkan tempat tinggal.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 宀 (atap) + 豕 (babi): rumah dengan hewan peliharaan di bawah atap; rumah, keluarga.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Tempat tinggal atau rumah adalah bangunan beratap (宀) yang memelihara ternak (豕).",
-  "note_id": "Dapat berarti bangunan fisik 'rumah' (いえ) maupun 'keluarga' (家族 - かぞく)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: babi (豕) di bawah atap (宀): rumah (家).",
+  "note_id": "",
+  "source": "manual"
 }

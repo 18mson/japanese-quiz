@@ -1,20 +1,14 @@
 {
   "kanji": "員",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut atau orang"
-    },
-    {
-      "part": "貝",
-      "role": "meaning",
-      "meaning_id": "kerang atau harta"
-    }
-  ],
-  "etymology_id": "Menggabungkan mulut (口) yang mewakili kepala atau orang dan kerang (貝) yang mewakili harta, merujuk pada pendaftaran dan penghitungan jumlah orang atau pegawai.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Setiap mulut (口) yang digaji dengan kerang berharga (貝) adalah seorang pegawai atau anggota kantor (員).",
-  "note_id": "Umum dipakai untuk menyebut profesi karyawan atau anggota organisasi seperti 会社員 dan 銀行員."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan. 員 juga menjadi penanda bunyi pada 円 (圓) dan 韻.",
+  "etymology_confidence": "uncertain",
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: 員 dibaca 'in' pada 会社員 (karyawan) dan 店員: anggota sebuah kelompok.",
+  "note_id": "",
+  "source": "manual"
 }

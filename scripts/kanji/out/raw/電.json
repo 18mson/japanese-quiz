@@ -1,20 +1,25 @@
 {
   "kanji": "電",
   "formation_type": "compound_meaning",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "雨",
       "role": "meaning",
-      "meaning_id": "rain"
+      "meaning_id": "hujan"
     },
     {
-      "part": "日",
+      "part": "申",
       "role": "meaning",
-      "meaning_id": "day, sun"
+      "meaning_id": "kilat (arti asal)"
     }
   ],
-  "etymology_id": "Gabungan dari awan hujan (雨) dan kilatan/matahari (日).",
-  "mnemonic_id": "Cara mengingat: Saat hujan (雨) turun, terlihat kilatan listrik seperti matahari (日).",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "雨 (hujan) + 申 (bentuk asalnya gambar kilat): kilat dari awan hujan; kemudian berarti listrik.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: hujan (雨) dengan sambaran kilat (申): listrik (電).",
+  "note_id": "",
+  "source": "manual"
 }

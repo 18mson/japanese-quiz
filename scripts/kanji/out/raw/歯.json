@@ -1,20 +1,14 @@
 {
   "kanji": "歯",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "止",
-      "role": "phonetic",
-      "meaning_id": "berhenti"
-    },
-    {
-      "part": "米",
-      "role": "shape",
-      "meaning_id": "beras"
-    }
-  ],
-  "etymology_id": "Menggambarkan bentuk gigi di dalam mulut.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Gigi (歯) digunakan untuk mengunyah makanan seperti beras (米).",
-  "note_id": "Kosakata penting: 歯 (は) = gigi, 歯医者 (はいしゃ) = dokter gigi."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

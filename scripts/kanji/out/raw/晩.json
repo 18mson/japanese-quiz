@@ -5,11 +5,21 @@
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "matahari atau hari"
+      "meaning_id": "matahari"
+    },
+    {
+      "part": "免",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Komponen 日 berkaitan dengan waktu atau matahari, menunjukkan waktu ketika hari mulai gelap.",
+  "phonetic_part": "免",
+  "reading_hint": "",
+  "old_form": "晚",
+  "etymology_id": "日 (matahari) menunjukkan makna waktu; 免 memberi bunyi (めん → ばん): saat matahari redup, yaitu malam. 晩 adalah bentuk sederhana dari 晚.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Saat matahari (日) hampir tenggelam, hari sudah malam.",
-  "note_id": "Digunakan untuk menyatakan malam (晩), malam ini (今晩), dan setiap malam (毎晩)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari (日) yang 'lepas' (免) dari langit: malam (晩), seperti 今晩.",
+  "note_id": "",
+  "source": "manual"
 }

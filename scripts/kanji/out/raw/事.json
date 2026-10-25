@@ -1,15 +1,14 @@
 {
   "kanji": "事",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mulut"
-    }
-  ],
-  "etymology_id": "Berasal dari gambar bendera atau perkara penting pada masa lalu.",
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai tangan memegang alat tulis atau bendera). Arti 'urusan, pekerjaan'.",
   "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Urusan atau pekerjaan (事) sering kali dibicarakan lewat mulut (口).",
-  "note_id": "Kosakata penting: 仕事 (しごと) = pekerjaan, 事務所 (じむしょ) = kantor."
+  "claim_kind": "unknown",
+  "mnemonic_id": "Cara mengingat: tangan (⺕) memegang alat: urusan atau pekerjaan (事), seperti 仕事 dan 事務所.",
+  "note_id": "",
+  "source": "manual"
 }

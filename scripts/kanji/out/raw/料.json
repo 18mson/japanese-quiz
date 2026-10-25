@@ -1,20 +1,14 @@
 {
   "kanji": "料",
-  "formation_type": "compound_meaning",
-  "components": [
-    {
-      "part": "米",
-      "role": "meaning",
-      "meaning_id": "rice"
-    },
-    {
-      "part": "斗",
-      "role": "meaning",
-      "meaning_id": "measuring cup"
-    }
-  ],
-  "etymology_id": "Kanji 料 menggambarkan takaran bahan.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Mengukur beras (米) dengan alat (斗) sebagai bahan materi (料).",
-  "note_id": "Digunakan dalam masakan (料理) dan bahan materi (資料)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

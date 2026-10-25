@@ -1,20 +1,25 @@
 {
   "kanji": "番",
-  "formation_type": "compound_meaning",
+  "formation_type": "unknown",
   "components": [
+    {
+      "part": "釆",
+      "role": "meaning",
+      "meaning_id": "jejak hewan"
+    },
     {
       "part": "田",
       "role": "meaning",
-      "meaning_id": "sawah"
-    },
-    {
-      "part": "米",
-      "role": "meaning",
-      "meaning_id": "beras"
+      "meaning_id": "ladang"
     }
   ],
-  "etymology_id": "Gabungan dari sawah dan hal terkait pertanian, yang kemudian berkembang menjadi arti giliran atau nomor.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: jejak hewan (釆) di ladang (田); arti 'giliran, nomor' berkembang belakangan.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Mengatur urutan petak sawah (田) dan hasil panen memerlukan nomor urut.",
-  "note_id": "Digunakan untuk nomor (番号) dan nomor berapa (何番)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: jejak (釆) berurutan di ladang (田): giliran atau nomor (番), seperti 番号.",
+  "note_id": "",
+  "source": "manual"
 }

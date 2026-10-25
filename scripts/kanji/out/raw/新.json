@@ -1,25 +1,25 @@
 {
   "kanji": "新",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
-      "part": "立",
-      "role": "meaning",
-      "meaning_id": "stand up, rise"
-    },
-    {
-      "part": "木",
-      "role": "meaning",
-      "meaning_id": "tree, wood"
+      "part": "亲",
+      "role": "phonetic",
+      "meaning_id": "(bentuk sekarang 立 + 木)"
     },
     {
       "part": "斤",
-      "role": "phonetic",
-      "meaning_id": "axe, 1.32 lb"
+      "role": "meaning",
+      "meaning_id": "kapak"
     }
   ],
-  "etymology_id": "Terdiri dari pohon (木) yang berdiri (立) dan kapak (斤).",
-  "mnemonic_id": "Cara mengingat: Pohon (木) yang berdiri (立) ditebang menggunakan kapak baru (斤).",
-  "note_id": ""
+  "phonetic_part": "亲",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Bagian kiri 亲 (辛 + 木; bentuk sekarang 立 + 木) memberi bunyi しん; 斤 (kapak) menunjukkan kayu yang baru ditebang: baru.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kapak (斤) menebas pohon (木): kayu segar yang baru (新).",
+  "note_id": "",
+  "source": "manual"
 }

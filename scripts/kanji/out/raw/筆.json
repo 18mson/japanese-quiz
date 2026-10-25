@@ -5,16 +5,21 @@
     {
       "part": "竹",
       "role": "meaning",
-      "meaning_id": "bamboo"
+      "meaning_id": "bambu"
     },
     {
       "part": "聿",
       "role": "meaning",
-      "meaning_id": "brush"
+      "meaning_id": "kuas"
     }
   ],
-  "etymology_id": "Gabungan bambu (竹) dan kuas (聿), menunjukkan kuas tulis yang gagangnya terbuat dari bambu.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "聿 (kuas dipegang tangan) diberi 竹 (bambu) sebagai gagang: kuas, alat tulis.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Kuas tulis terbuat dari batang bambu (竹) untuk menulis (筆).",
-  "note_id": "Kosakata penting: 鉛筆 (pensil)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kuas (聿) bergagang bambu (竹): alat tulis (筆), seperti 鉛筆.",
+  "note_id": "",
+  "source": "manual"
 }

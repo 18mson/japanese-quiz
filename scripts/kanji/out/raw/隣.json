@@ -3,13 +3,23 @@
   "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "⻖",
+      "part": "阝",
       "role": "meaning",
-      "meaning_id": "bukit"
+      "meaning_id": "bukit, desa"
+    },
+    {
+      "part": "粦",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari komponen bukit (⻖) yang menunjukkan lokasi atau tempat yang berdampingan.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Ada bangunan di sebelah bukit (⻖).",
-  "note_id": "Arti dasar neighboring atau sebelah."
+  "phonetic_part": "粦",
+  "reading_hint": "",
+  "old_form": "鄰",
+  "etymology_id": "Bentuk lama 鄰 = 粦 (penanda bunyi りん) + 阝 (kota). Pada 隣 阝 pindah ke kiri; maknanya desa yang berdampingan, yaitu tetangga.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: desa (阝) dengan nasi (米) dan kaki (舛) berdampingan: tetangga (隣).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,25 +1,14 @@
 {
   "kanji": "黒",
   "formation_type": "unknown",
-  "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "里",
-      "role": "shape",
-      "meaning_id": "ri, village"
-    },
-    {
-      "part": "灬",
-      "role": "shape",
-      "meaning_id": "fire, fire radical (no. 86)"
-    },
-    {
-      "part": "火",
-      "role": "shape",
-      "meaning_id": ""
-    }
-  ],
-  "etymology_id": "Terdiri dari komponen 里 dan api (灬).",
-  "mnemonic_id": "Cara mengingat: Di desa (里) yang terbakar api (灬) tersisa abu yang hitam (黒).",
-  "note_id": ""
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "黑",
+  "etymology_id": "Bentuk lama 黑 = 囱 (cerobong) + 灬 (api): jelaga dari api, yaitu hitam. 黒 mengganti 囱 dengan 里.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: api (灬) di bawah dan 里 di atasnya: jelaga hitam (黒い).",
+  "note_id": "",
+  "source": "manual"
 }

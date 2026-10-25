@@ -1,25 +1,25 @@
 {
   "kanji": "書",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "聿",
       "role": "meaning",
-      "meaning_id": "brush, finally"
+      "meaning_id": "kuas"
     },
     {
-      "part": "日",
-      "role": "shape",
-      "meaning_id": "day, sun"
-    },
-    {
-      "part": "曰",
-      "role": "shape",
+      "part": "者",
+      "role": "phonetic",
       "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari kuas tulis (聿) di atas dan kotak (日/曰) di bawah.",
-  "mnemonic_id": "Cara mengingat: Menggunakan kuas (聿) untuk menulis kata-kata setiap hari (日).",
-  "note_id": ""
+  "phonetic_part": "者",
+  "reading_hint": "者 しゃ → 書 しょ",
+  "old_form": null,
+  "etymology_id": "聿 (kuas) menunjukkan makna menulis; 者 memberi bunyi (しゃ → しょ).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kuas (聿) di atas 者: menulis (書く), seperti 辞書.",
+  "note_id": "",
+  "source": "manual"
 }

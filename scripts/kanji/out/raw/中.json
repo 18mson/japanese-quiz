@@ -1,20 +1,14 @@
 {
   "kanji": "中",
-  "formation_type": "unknown",
-  "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mouth"
-    },
-    {
-      "part": "丨",
-      "role": "shape",
-      "meaning_id": "number one, line"
-    }
-  ],
-  "etymology_id": "Terdiri dari kotak mulut (口) yang ditusuk garis vertikal (丨) tepat di tengahnya.",
-  "mnemonic_id": "Cara mengingat: Garis (丨) membelah kotak (口) tepat di bagian tengah.",
-  "note_id": ""
+  "formation_type": "ideograph_simple",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: garis (丨) menembus bagian tengah sebuah bidang (口): 'tengah, dalam'.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: garis tegak menembus tengah kotak: tepat di tengah (中).",
+  "note_id": "",
+  "source": "manual"
 }

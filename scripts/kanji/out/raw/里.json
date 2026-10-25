@@ -1,15 +1,14 @@
 {
   "kanji": "里",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "里",
-      "role": "meaning",
-      "meaning_id": "village"
-    }
-  ],
-  "etymology_id": "Kanji 里 adalah piktograf yang menggambarkan sawah dan tanah pemukiman desa.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Gabungan sawah dan tanah menunjukkan sebuah desa (里).",
-  "note_id": "Digunakan dalam Tembok Besar Cina (万里の長城)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

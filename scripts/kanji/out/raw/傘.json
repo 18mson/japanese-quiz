@@ -1,15 +1,14 @@
 {
   "kanji": "傘",
   "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "人",
-      "role": "shape",
-      "meaning_id": "orang"
-    }
-  ],
-  "etymology_id": "Bentuk kanji meniru payung yang melindungi orang di bawahnya.",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar payung dengan kanopi dan rangka.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Bentuk payung yang menaungi orang-orang di bawahnya.",
-  "note_id": "Digunakan untuk menyatakan payung."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: payung terbuka dengan orang (人) berteduh di bawahnya: payung (傘).",
+  "note_id": "",
+  "source": "manual"
 }

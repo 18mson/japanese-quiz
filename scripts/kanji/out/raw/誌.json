@@ -1,20 +1,20 @@
 {
   "kanji": "誌",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
       "part": "言",
       "role": "meaning",
-      "meaning_id": "kata atau catatan"
+      "meaning_id": "say, word"
     },
     {
-      "part": "士",
+      "part": "志",
       "role": "phonetic",
-      "meaning_id": "prajurit atau orang terpelajar"
+      "meaning_id": "intention, plan"
     }
   ],
-  "etymology_id": "Menggabungkan unsur kata (言) untuk catatan tertulis dan komponen bunyi.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Majalah atau dokumen (誌) berisi kumpulan kata-kata (言).",
-  "note_id": "Kosakata penting: 雑誌 (ざっし) = majalah."
+  "etymology_id": "Kanji gabungan makna dan bunyi. (言) bermakna kata atau ucapan, digabung dengan (志) yang memberi petunjuk bacaan on-yomi シ.",
+  "mnemonic_id": "Cara mengingat: Dokumen atau majalah berisi kata-kata (言) yang ditulis berdasarkan niat atau rencana (志).",
+  "note_id": ""
 }

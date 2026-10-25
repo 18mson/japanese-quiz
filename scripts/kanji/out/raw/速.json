@@ -1,25 +1,20 @@
 {
   "kanji": "速",
   "formation_type": "phono_semantic",
+  "claim_kind": "structure",
   "components": [
     {
-      "part": "辶",
-      "role": "meaning",
-      "meaning_id": "jalan"
+      "part": "束",
+      "role": "phonetic",
+      "meaning_id": "bundle, sheaf"
     },
     {
-      "part": "木",
+      "part": "⻌",
       "role": "shape",
-      "meaning_id": "pohon"
-    },
-    {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mulut"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggabungkan unsur jalan (辶) dengan komponen yang memberikan arti atau bunyi cepat.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Berjalan (辶) dengan sangat cepat (速い).",
-  "note_id": "Kosakata utama: 速い (はやい) - cepat; 速く (はやく) - dengan cepat."
+  "etymology_id": "Kanji gabungan makna dan bunyi. (⻌) menyatakan pergerakan, dan (束) memberikan petunjuk bunyi ソク.",
+  "mnemonic_id": "Cara mengingat: Bergerak (⻌) secepat ikatan (束) yang dilepaskan dengan sigap.",
+  "note_id": ""
 }

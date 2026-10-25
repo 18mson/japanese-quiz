@@ -1,25 +1,25 @@
 {
   "kanji": "菜",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "艹",
       "role": "meaning",
-      "meaning_id": "grass, radical number 140"
-    },
-    {
-      "part": "艸",
-      "role": "shape",
-      "meaning_id": ""
+      "meaning_id": "tumbuhan"
     },
     {
       "part": "采",
       "role": "phonetic",
-      "meaning_id": "dice, form"
+      "meaning_id": "memetik"
     }
   ],
-  "etymology_id": "Kanji gabungan makna dan bunyi. Komponen rumput (艹) memberikan arti dasar tanaman/sayur, dan 采 memberikan bunyi on-yomi サイ.",
-  "mnemonic_id": "Cara mengingat: Tanaman rumput (艹) dan bentuk (采) menghasilkan sayuran.",
-  "note_id": ""
+  "phonetic_part": "采",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "艹 (tumbuhan) menunjukkan makna; 采 (memetik) memberi bunyi さい: sayuran yang dipetik.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tumbuhan (艹) yang dipetik (采): sayur (菜), seperti 野菜.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,30 +1,14 @@
 {
   "kanji": "前",
   "formation_type": "unknown",
-  "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "八",
-      "role": "shape",
-      "meaning_id": "eight, eight radical (no. 12)"
-    },
-    {
-      "part": "月",
-      "role": "shape",
-      "meaning_id": "month, moon"
-    },
-    {
-      "part": "刂",
-      "role": "shape",
-      "meaning_id": "knife, standing sword radical (no. 18)"
-    },
-    {
-      "part": "刀",
-      "role": "shape",
-      "meaning_id": ""
-    }
-  ],
-  "etymology_id": "Terdiri dari komponen 八, bulan (月), dan pisau (刂).",
-  "mnemonic_id": "Cara mengingat: Ada bulan (月) dan pisau (刂) di bagian depan.",
-  "note_id": ""
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Bentuk sekarang memuat 月 dan 刂 (pisau). Menurut kamus kuno, arti awalnya 'memotong'; arti 'depan' dipakai belakangan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: ada bulan (月) dan pisau (刂) di bagian depan: depan (前).",
+  "note_id": "",
+  "source": "manual"
 }

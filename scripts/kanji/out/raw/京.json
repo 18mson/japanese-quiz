@@ -1,25 +1,14 @@
 {
   "kanji": "京",
-  "formation_type": "unknown",
-  "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "亠",
-      "role": "shape",
-      "meaning_id": "kettle lid radical (no. 8)"
-    },
-    {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mouth"
-    },
-    {
-      "part": "小",
-      "role": "shape",
-      "meaning_id": "little, small"
-    }
-  ],
-  "etymology_id": "Terdiri dari penutup (亠), mulut (口), dan kecil (小).",
-  "mnemonic_id": "Cara mengingat: Kota besar ibu kota dengan bangunan bertingkat.",
-  "note_id": ""
+  "formation_type": "pictograph",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: gambar bangunan tinggi di atas gundukan; arti 'ibu kota' berkembang belakangan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: gerbang tinggi dengan atap (亠) di atas bangunan: ibu kota (京), seperti 東京.",
+  "note_id": "",
+  "source": "manual"
 }

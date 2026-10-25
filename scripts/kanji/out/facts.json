@@ -1779,7 +1779,7 @@
       "円",
       "冂"
     ],
-    "old_form": null,
+    "old_form": "圓",
     "words": [
       {
         "jp": "～円",
@@ -2600,7 +2600,7 @@
       "日",
       "皿"
     ],
-    "old_form": null,
+    "old_form": "溫",
     "words": [
       {
         "jp": "温かい",
@@ -3008,7 +3008,7 @@
       "亻",
       "覀"
     ],
-    "old_form": null,
+    "old_form": "價",
     "words": [
       {
         "jp": "物価",
@@ -6581,7 +6581,7 @@
     "phon_hints": [
       "关"
     ],
-    "phonetic_part": "关",
+    "phonetic_part": null,
     "flat_parts": [
       "関",
       "門",
@@ -6589,7 +6589,7 @@
       "天",
       "大"
     ],
-    "old_form": null,
+    "old_form": "關",
     "words": [
       {
         "jp": "玄関",
@@ -9737,7 +9737,7 @@
       "艮",
       "⻏"
     ],
-    "old_form": null,
+    "old_form": "鄕",
     "words": [
       {
         "jp": "故郷",
@@ -12068,7 +12068,7 @@
       "干",
       "十"
     ],
-    "old_form": null,
+    "old_form": "硏",
     "words": [
       {
         "jp": "研究者",
@@ -16518,7 +16518,7 @@
       "二",
       "小"
     ],
-    "old_form": null,
+    "old_form": "齋",
     "words": [
       {
         "jp": "葛飾北斎",
@@ -22792,7 +22792,7 @@
     "phon_hints": [
       "者"
     ],
-    "phonetic_part": "者",
+    "phonetic_part": null,
     "flat_parts": [
       "緒",
       "糸",
@@ -22801,7 +22801,7 @@
       "土",
       "日"
     ],
-    "old_form": null,
+    "old_form": "緖",
     "words": [
       {
         "jp": "一緒に",
@@ -23543,7 +23543,7 @@
       "一",
       "儿"
     ],
-    "old_form": null,
+    "old_form": "燒",
     "words": [
       {
         "jp": "すき焼き",
@@ -25833,7 +25833,7 @@
       "卒",
       "卆"
     ],
-    "phonetic_part": "卆",
+    "phonetic_part": null,
     "flat_parts": [
       "酔",
       "酉",
@@ -25844,7 +25844,7 @@
       "乙",
       "十"
     ],
-    "old_form": null,
+    "old_form": "醉",
     "words": [
       {
         "jp": "二日酔い",
@@ -33371,7 +33371,7 @@
     "phon_hints": [
       "占"
     ],
-    "phonetic_part": "占",
+    "phonetic_part": null,
     "flat_parts": [
       "点",
       "占",
@@ -33379,7 +33379,7 @@
       "口",
       "灬"
     ],
-    "old_form": null,
+    "old_form": "點",
     "words": [
       {
         "jp": "交差点",
@@ -38070,7 +38070,7 @@
     "phon_hints": [
       "免"
     ],
-    "phonetic_part": "免",
+    "phonetic_part": null,
     "flat_parts": [
       "晩",
       "日",
@@ -38079,7 +38079,7 @@
       "儿",
       "丿"
     ],
-    "old_form": null,
+    "old_form": "晚",
     "words": [
       {
         "jp": "晩",
@@ -38389,7 +38389,7 @@
     "phon_hints": [
       "必"
     ],
-    "phonetic_part": "必",
+    "phonetic_part": null,
     "flat_parts": [
       "秘",
       "禾",
@@ -38398,7 +38398,7 @@
       "必",
       "心"
     ],
-    "old_form": null,
+    "old_form": "祕",
     "words": [
       {
         "jp": "便秘をします",

@@ -5,11 +5,21 @@
     {
       "part": "車",
       "role": "meaning",
-      "meaning_id": "kendaraan"
+      "meaning_id": "kereta"
+    },
+    {
+      "part": "巠",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Komponen kendaraan digabung untuk menyatakan sesuatu yang ringan.",
-  "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Kereta atau kendaraan yang terasa ringan.",
-  "note_id": "Kosakata penting: 軽い (かるい) untuk ringan."
+  "phonetic_part": "巠",
+  "reading_hint": "",
+  "old_form": "輕",
+  "etymology_id": "車 (kereta) menunjukkan makna; 巠 memberi bunyi けい. 軽 menyederhanakan 巠 menjadi 圣: kereta yang ringan.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kereta (車) yang ringan dibawa; 軽 dibaca 'kei' (軽食) dan 'karu' (軽い).",
+  "note_id": "",
+  "source": "manual"
 }

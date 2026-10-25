@@ -1,15 +1,14 @@
 {
   "kanji": "行",
-  "formation_type": "unknown",
-  "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "彳",
-      "role": "shape",
-      "meaning_id": "stop, linger"
-    }
-  ],
-  "etymology_id": "Kanji ini terdiri dari komponen 彳 di sisi kiri yang menunjukkan struktur visual.",
-  "mnemonic_id": "Cara mengingat: Bayangkan tanda 彳 untuk berhenti sejenak sebelum berjalan (行).",
-  "note_id": "Digunakan dalam kata 銀行 (bank)."
+  "formation_type": "pictograph",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar perempatan jalan.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: perempatan jalan: pergi (行く) menyusuri jalan, atau baris (行).",
+  "note_id": "",
+  "source": "manual"
 }

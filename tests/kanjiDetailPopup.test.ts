@@ -157,7 +157,7 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
   await t.test('5. Loader old_forms.json membaca data.pairs dan mengecualikan ambiguous', async () => {
     const { loadOldForms } = await import('../scripts/kanji/facts.mjs');
     const oldFormsMap = loadOldForms();
-    assert.strictEqual(oldFormsMap.size, 77, 'Jumlah pasangan old_forms harus 77');
+    assert.strictEqual(oldFormsMap.size, 90, 'Jumlah pasangan old_forms harus 90');
     assert.strictEqual(oldFormsMap.get('真'), '眞');
     assert.strictEqual(oldFormsMap.get('学'), '學');
     assert.strictEqual(oldFormsMap.get('売'), '賣');

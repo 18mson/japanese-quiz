@@ -1,20 +1,14 @@
 {
   "kanji": "師",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
-    },
-    {
-      "part": "巾",
-      "role": "meaning",
-      "meaning_id": "kain"
-    }
-  ],
-  "etymology_id": "Berkaitan dengan seseorang yang memimpin atau mengajari banyak orang dengan suara.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Guru menggunakan mulut untuk mengajar.",
-  "note_id": "Kosakata penting: 教師 (kyoushi) dan 調理師 (chourishi)."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Bentuk sekarang memuat 𠂤 (pasukan) dan 帀 (mengelilingi). Arti asal 'pasukan', lalu 'guru, ahli'. Penjelasan tradisional.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 師 dibaca 'shi' pada 教師 dan 美容師: orang ahli dalam bidangnya.",
+  "note_id": "",
+  "source": "manual"
 }

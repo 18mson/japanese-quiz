@@ -1,20 +1,25 @@
 {
   "kanji": "飲",
-  "formation_type": "phono_semantic",
-  "claim_kind": "structure",
+  "formation_type": "unknown",
   "components": [
     {
-      "part": "飠",
+      "part": "食",
       "role": "meaning",
-      "meaning_id": "eat, food"
+      "meaning_id": "makanan"
     },
     {
       "part": "欠",
-      "role": "phonetic",
-      "meaning_id": "lack, gap"
+      "role": "meaning",
+      "meaning_id": "mulut menganga"
     }
   ],
-  "etymology_id": "Bagian makanan (飠) memberikan makna dasar yang berkaitan dengan konsumsi.",
-  "mnemonic_id": "Cara mengingat: Saat makanan (飠) berkurang (欠) di mulut, kita perlu minum.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "飮",
+  "etymology_id": "Bentuk lama 飮 = 酓 + 欠 (mulut menganga). 飲 mengganti 酓 dengan 食 (makanan): mulut terbuka untuk makan dan minum.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: makanan (食) dan mulut menganga (欠): minum (飲む).",
+  "note_id": "",
+  "source": "manual"
 }

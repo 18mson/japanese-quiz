@@ -4,12 +4,22 @@
   "components": [
     {
       "part": "糸",
-      "role": "shape",
+      "role": "meaning",
       "meaning_id": "benang"
+    },
+    {
+      "part": "會",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Kanji ini terdiri dari komponen benang. Struktur ini menunjukkan pembentukan kata.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Bayangkan menarik sehelai benang untuk membuat sebuah gambar atau lukisan.",
-  "note_id": "Artinya adalah picture, drawing, painting, sketch."
+  "phonetic_part": "會",
+  "reading_hint": "",
+  "old_form": "繪",
+  "etymology_id": "Bentuk lama 繪 = 糸 (benang) + 會 (penanda bunyi かい → え): benang berwarna disatukan menjadi gambar. 絵 mengganti 會 dengan 会.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: benang (糸) berwarna-warni yang bertemu (会) membentuk gambar (絵).",
+  "note_id": "",
+  "source": "manual"
 }

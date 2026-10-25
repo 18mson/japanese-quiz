@@ -1,20 +1,25 @@
 {
   "kanji": "部",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
+    {
+      "part": "阝",
+      "role": "meaning",
+      "meaning_id": "kota, wilayah"
+    },
     {
       "part": "咅",
       "role": "phonetic",
-      "meaning_id": "to spit out"
-    },
-    {
-      "part": "⻏",
-      "role": "shape",
       "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan komponen 咅 yang memberi bunyi ブ dan bukit/wilayah.",
-  "mnemonic_id": "Cara mengingat: Bagian wilayah kantor tempat orang bekerja.",
-  "note_id": ""
+  "phonetic_part": "咅",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "阝 (kota, wilayah) menunjukkan makna; 咅 memberi bunyi ぶ: bagian wilayah.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: wilayah (阝) dibagi-bagi: bagian atau departemen (部), seperti 部屋.",
+  "note_id": "",
+  "source": "manual"
 }

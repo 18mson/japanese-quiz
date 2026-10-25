@@ -1,15 +1,14 @@
 {
   "kanji": "角",
-  "formation_type": "pictograph",
-  "components": [
-    {
-      "part": "角",
-      "role": "meaning",
-      "meaning_id": "tanduk atau sudut"
-    }
-  ],
-  "etymology_id": "Karakter ini merupakan piktograf bentuk tanduk binatang yang memiliki ujung tajam dan membentuk sudut. Maknanya berkembang mencakup sudut atau pojok.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk karakter ini menyerupai kepala binatang dengan tanduk runcing yang membentuk sudut tajam.",
-  "note_id": "Dapat dibaca かど untuk sudut atau pojok, serta つの untuk tanduk binatang."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

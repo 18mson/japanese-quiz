@@ -1,15 +1,14 @@
 {
   "kanji": "台",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "口",
-      "role": "meaning",
-      "meaning_id": "mulut"
-    }
-  ],
-  "etymology_id": "Bentuk sederhana dari struktur panggung atau penyangga.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Alas atau meja (台) tempat meletakkan sesuatu seperti mulut (口) terbuka.",
-  "note_id": "Digunakan sebagai akhiran penghitung mesin."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "臺",
+  "etymology_id": "台 menggantikan 臺 (panggung, landasan) sebagai bentuk sederhana. Bentuk 台 yang lama berbeda arti (ム dan 口).",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 台 dipakai pada 台所 (dapur) dan pencacah mobil atau mesin: 一台, 二台.",
+  "note_id": "",
+  "source": "manual"
 }

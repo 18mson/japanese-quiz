@@ -3,23 +3,18 @@
   "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "⺾",
+      "part": "艹",
       "role": "meaning",
       "meaning_id": "rumput"
-    },
-    {
-      "part": "臣",
-      "role": "shape",
-      "meaning_id": "pelayan"
-    },
-    {
-      "part": "戈",
-      "role": "shape",
-      "meaning_id": "tombak"
     }
   ],
-  "etymology_id": "Komponen rumput atau penutup di atas dengan bagian dalam yang melambangkan tempat penyimpanan atau gudang.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Gudang (蔵) tempat menyimpan barang dilindungi dengan pengaman tombak (戈).",
-  "note_id": "Kosakata utama: 冷蔵庫 (れいぞうこ) - kulkas."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "藏",
+  "etymology_id": "Bentuk lama 藏 = 艹 (rumput) + 臧 (penanda bunyi ぞう): menyimpan, menyembunyikan. 蔵 menyederhanakan bagian 臧.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: 蔵 dibaca 'zō' pada 冷蔵庫 (kulkas): tempat menyimpan makanan dingin.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,15 +1,25 @@
 {
   "kanji": "円",
-  "formation_type": "pictograph",
-  "claim_kind": "structure",
+  "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "冂",
+      "part": "囗",
       "role": "meaning",
-      "meaning_id": "upside-down box radical (no. 13)"
+      "meaning_id": "lingkaran"
+    },
+    {
+      "part": "員",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Bentuk dasar melingkar dengan bingkai penutup (冂).",
-  "mnemonic_id": "Cara mengingat: Bentuk kotak terbuka (冂) yang melingkar sempurna menjadi simbol mata uang yen.",
-  "note_id": ""
+  "phonetic_part": "員",
+  "reading_hint": "",
+  "old_form": "圓",
+  "etymology_id": "Bentuk lama 圓 = 囗 (lingkaran) + 員 (penanda bunyi えん): bulat. 円 adalah penyederhanaan yang lama dipakai sebagai tulisan cepat; juga satuan mata uang yen.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kotak (冂) berisi garis tegak dan datar seperti koin: yen (円).",
+  "note_id": "",
+  "source": "manual"
 }

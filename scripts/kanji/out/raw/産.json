@@ -3,18 +3,18 @@
   "formation_type": "phono_semantic",
   "components": [
     {
-      "part": "立",
-      "role": "meaning",
-      "meaning_id": "berdiri"
-    },
-    {
       "part": "生",
-      "role": "phonetic",
-      "meaning_id": "hidup"
+      "role": "meaning",
+      "meaning_id": "lahir, tumbuh"
     }
   ],
-  "etymology_id": "Gabungan komponen hidup dan berdiri untuk melahirkan atau produk.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Sesuatu yang hidup dan berdiri tegak baru dilahirkan.",
-  "note_id": "Digunakan untuk oleh-oleh."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "生 (lahir, tumbuh) menunjukkan makna; bagian atas (立 + 厂) berasal dari 彦 yang memberi bunyi さん.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tumbuh (生) di bawah tanda 'dirikan' (立): menghasilkan (産), seperti お土産.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,25 +1,25 @@
 {
   "kanji": "残",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "歹",
       "role": "meaning",
-      "meaning_id": "bare bone, bad"
-    },
-    {
-      "part": "戋",
-      "role": "shape",
-      "meaning_id": ""
+      "meaning_id": "tulang, kematian"
     },
     {
       "part": "戔",
       "role": "phonetic",
-      "meaning_id": "small, few"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Bentuk lama adalah 殘. Terdiri dari kerangka 歹 dan komponen 戋 yang menunjukkan sisa.",
-  "mnemonic_id": "Cara mengingat: Tulang 歹 yang tersisa sedikit (残).",
-  "note_id": "Bentuk lama kanji ini adalah 殘. Digunakan dalam kata 残念です (sayang sekali)."
+  "phonetic_part": "戔",
+  "reading_hint": "",
+  "old_form": "殘",
+  "etymology_id": "歹 (tulang, kematian) menunjukkan makna sisa; 戔 memberi bunyi (せん → ざん). 残 menyederhanakan 戔 menjadi 戋.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tulang (歹) yang tersisa setelah dipotong (戋): sisa (残る).",
+  "note_id": "",
+  "source": "manual"
 }

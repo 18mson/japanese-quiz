@@ -1,20 +1,25 @@
 {
   "kanji": "符",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "竹",
       "role": "meaning",
-      "meaning_id": "bamboo"
+      "meaning_id": "bambu"
     },
     {
       "part": "付",
       "role": "phonetic",
-      "meaning_id": "adhere, attach"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan bambu dan 付 yang memberi bunyi フ. Berkaitan dengan tanda atau tiket dari bambu.",
-  "mnemonic_id": "Cara mengingat: Potongan bambu yang melekat sebagai tanda tiket.",
-  "note_id": ""
+  "phonetic_part": "付",
+  "reading_hint": "付 ふ → 符 ふ",
+  "old_form": null,
+  "etymology_id": "竹 (bambu) menunjukkan bahan tanda atau karcis zaman dulu; 付 memberi bunyi ふ.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: potongan bambu (竹) yang ditempelkan (付) sebagai tanda: karcis (切符).",
+  "note_id": "",
+  "source": "manual"
 }

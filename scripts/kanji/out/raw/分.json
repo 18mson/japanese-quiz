@@ -1,20 +1,25 @@
 {
   "kanji": "分",
-  "formation_type": "ideograph_simple",
+  "formation_type": "compound_meaning",
   "components": [
+    {
+      "part": "八",
+      "role": "meaning",
+      "meaning_id": "membagi"
+    },
     {
       "part": "刀",
       "role": "meaning",
       "meaning_id": "pisau"
-    },
-    {
-      "part": "ハ",
-      "role": "shape",
-      "meaning_id": "membagi"
     }
   ],
-  "etymology_id": "Menggunakan pisau untuk memotong atau membagi suatu benda menjadi bagian-bagian terpisah.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "八 (membagi) + 刀 (pisau): membelah dengan pisau; membagi, mengerti, menit.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Pisau memotong sesuatu menjadi dua bagian atau menit.",
-  "note_id": "Digunakan untuk menyatakan menit (fun) dan bagian."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: pisau (刀) membelah (八): bagian atau menit (分).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,9 +1,14 @@
 {
   "kanji": "肉",
   "formation_type": "pictograph",
-  "claim_kind": "structure",
   "components": [],
-  "etymology_id": "Kanji ini adalah gambar penampang daging.",
-  "mnemonic_id": "Cara mengingat: Bayangkan bentuk potongan daging tebal.",
-  "note_id": ""
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Gambar potongan daging dengan serat. Bagian 月 pada banyak kanji anggota tubuh (mis. 腕) berasal dari 肉.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: potongan daging dengan serat di dalamnya (肉).",
+  "note_id": "",
+  "source": "manual"
 }

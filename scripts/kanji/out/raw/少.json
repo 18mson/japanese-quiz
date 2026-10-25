@@ -1,20 +1,14 @@
 {
   "kanji": "少",
-  "formation_type": "ideograph_simple",
-  "components": [
-    {
-      "part": "小",
-      "role": "meaning",
-      "meaning_id": "kecil"
-    },
-    {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "titik atau coretan"
-    }
-  ],
-  "etymology_id": "Modifikasi dari kanji kecil (小) dengan tambahan coretan untuk menunjukkan jumlah yang berkurang atau sedikit.",
-  "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Bentuk kecil (小) ditambah satu titik/coretan (ノ) menunjukkan jumlah yang sedikit (少し).",
-  "note_id": "Digunakan pada kata sedikit (少し), sedikit orang/barang (少ない), dan ungkapan mohon tunggu sebentar (少々お待ちください)."
+  "formation_type": "unknown",
+  "claim_kind": "unknown",
+  "components": [],
+  "etymology_id": "",
+  "mnemonic_id": "",
+  "note_id": "",
+  "status": "needs_manual",
+  "source": "needs_manual",
+  "reasons": [
+    "Membutuhkan entri manual (tidak memenuhi syarat ketat Gemini)"
+  ]
 }

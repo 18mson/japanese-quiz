@@ -1,20 +1,25 @@
 {
   "kanji": "地",
-  "formation_type": "compound_meaning",
-  "claim_kind": "structure",
+  "formation_type": "phono_semantic",
   "components": [
     {
       "part": "土",
       "role": "meaning",
-      "meaning_id": "soil, earth"
+      "meaning_id": "tanah"
     },
     {
       "part": "也",
       "role": "phonetic",
-      "meaning_id": "to be (classical)"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Gabungan tanah (土) dan komponen bunyi 也.",
-  "mnemonic_id": "Cara mengingat: Tanah (土) tempat berpijak di bumi.",
-  "note_id": ""
+  "phonetic_part": "也",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "土 (tanah) menunjukkan makna; 也 diduga memberi bunyi, meski bacaan Jepangnya kini berbeda (や → ち).",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: tanah (土) tempat berpijak: bumi atau tempat (地), seperti 地下.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -3,18 +3,18 @@
   "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "人",
+      "part": "手",
       "role": "meaning",
-      "meaning_id": "person"
-    },
-    {
-      "part": "大",
-      "role": "meaning",
-      "meaning_id": "big"
+      "meaning_id": "tangan"
     }
   ],
-  "etymology_id": "Terdiri dari komponen orang dan bentuk besar, melambangkan sesuatu yang terlepas dari genggaman.",
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 手 (tangan) dengan sesuatu yang terlepas darinya: kehilangan.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Seseorang yang kehilangan barang besar.",
-  "note_id": "Kosakata penting: 失礼ですが (しつれいですが)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: sesuatu (ノ) terlepas dari tangan (手): kehilangan (失), seperti 失礼.",
+  "note_id": "",
+  "source": "manual"
 }

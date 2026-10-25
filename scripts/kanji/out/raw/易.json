@@ -1,20 +1,14 @@
 {
   "kanji": "易",
   "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai kadal yang berubah warna). Hafalkan sebagai bentuk.",
+  "etymology_confidence": "uncertain",
   "claim_kind": "unknown",
-  "components": [
-    {
-      "part": "日",
-      "role": "shape",
-      "meaning_id": "day, sun"
-    },
-    {
-      "part": "勿",
-      "role": "shape",
-      "meaning_id": "not, must not"
-    }
-  ],
-  "etymology_id": "Terdiri dari komponen 日 dan 勿.",
-  "mnemonic_id": "Cara mengingat: Hari (日) tanpa (勿) beban terasa mudah.",
-  "note_id": ""
+  "mnemonic_id": "Cara mengingat: 易 dibaca 'yasu' pada 易しい (mudah) dan 'i' pada 容易.",
+  "note_id": "",
+  "source": "manual"
 }

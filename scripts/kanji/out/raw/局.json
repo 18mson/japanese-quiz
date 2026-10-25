@@ -4,17 +4,22 @@
   "components": [
     {
       "part": "尸",
-      "role": "shape",
-      "meaning_id": "atap"
+      "role": "meaning",
+      "meaning_id": "bangunan, tubuh"
     },
     {
-      "part": "口",
-      "role": "shape",
-      "meaning_id": "mulut"
+      "part": "句",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Menggabungkan unsur atap (尸) untuk menunjukkan gedung atau kantor tempat bekerja.",
+  "phonetic_part": "句",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: 尸 (bangunan) + 句 (penanda bunyi く → きょく): ruang kecil, kantor.",
   "etymology_confidence": "traditional",
-  "mnemonic_id": "Cara mengingat: Kantor pos (局) adalah sebuah gedung beratap (尸).",
-  "note_id": "Digunakan dalam kata kantor pos (郵便局)."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: bangunan (尸) dengan 句 di bawah: kantor atau bagian (局), seperti 郵便局.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,6 +1,6 @@
 {
  "meta": {
-  "note": "Pasangan shinjitai (bentuk sekarang) -> kyujitai (bentuk lama) untuk kanji yang muncul di words.ts. Disusun dari pengetahuan umum. WAJIB diverifikasi terhadap Unihan (kTraditionalVariant) / KANJIDIC2; pasangan yang tidak cocok dilaporkan, bukan dipakai diam-diam. Pasangan 黒, 鶏, 寝, 飲, 髪, 顔, 蔵 ditambahkan setelah ditemukan terlewat. Daftar ini HARUS dibandingkan dengan kolom 旧字体 pada Tabel Kanji Joyo.",
+  "note": "Pasangan shinjitai (bentuk sekarang) -> kyujitai (bentuk lama) untuk kanji yang muncul di words.ts. Disusun dari pengetahuan umum. WAJIB diverifikasi terhadap Unihan (kTraditionalVariant) / KANJIDIC2; pasangan yang tidak cocok dilaporkan, bukan dipakai diam-diam. Pasangan 黒, 鶏, 寝, 飲, 髪, 顔, 蔵 ditambahkan setelah ditemukan terlewat. Daftar ini HARUS dibandingkan dengan kolom 旧字体 pada Tabel Kanji Joyo. Pasangan 円, 温, 価, 関, 郷, 研, 斎, 緒, 焼, 酔, 点, 晩, 秘 ditambahkan dari perbandingan dengan Tabel Joyo. Pasangan yang hanya berbeda GLIF (mis. 海, 漢, 社, 者, 暑, 梅, 勉, 神, 節, 都, 難, 練, 廊, 祈, 勤) TIDAK dimasukkan: bentuk lamanya tampil identik. Aturan: buang pasangan bila NFC(old) == new.",
   "ambiguous": {
    "弁": [
     "辨",
@@ -9,7 +9,8 @@
     "辦"
    ]
   },
-  "ambiguous_note": "弁 adalah hasil penggabungan beberapa kanji lama; JANGAN menampilkan bentuk lama untuk kanji ini."
+  "ambiguous_note": "弁 adalah hasil penggabungan beberapa kanji lama; JANGAN menampilkan bentuk lama untuk kanji ini.",
+  "source_note": "歳, 隣, 脱, 舎, 飲, 顔 tidak tercantum dalam tanda kurung Tabel Joyo; tetap dipakai berdasarkan Unihan (kTraditionalVariant) dan harus diverifikasi."
  },
  "pairs": {
   "学": "學",
@@ -88,6 +89,19 @@
   "飲": "飮",
   "髪": "髮",
   "顔": "顏",
-  "蔵": "藏"
+  "蔵": "藏",
+  "円": "圓",
+  "温": "溫",
+  "価": "價",
+  "関": "關",
+  "郷": "鄕",
+  "研": "硏",
+  "斎": "齋",
+  "緒": "緖",
+  "焼": "燒",
+  "酔": "醉",
+  "点": "點",
+  "晩": "晚",
+  "秘": "祕"
  }
 }

@@ -3,23 +3,18 @@
   "formation_type": "compound_meaning",
   "components": [
     {
-      "part": "ノ",
-      "role": "shape",
-      "meaning_id": "stroke"
-    },
-    {
-      "part": "土",
-      "role": "shape",
-      "meaning_id": "earth"
-    },
-    {
       "part": "儿",
-      "role": "shape",
-      "meaning_id": "legs"
+      "role": "meaning",
+      "meaning_id": "kaki orang"
     }
   ],
-  "etymology_id": "Menggambarkan seseorang yang berjalan mendahului di depan.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Seseorang berjalan di depan mendahului yang lain.",
-  "note_id": "Digunakan pada kata guru (sensei)."
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "Penjelasan tradisional: kaki yang melangkah di depan orang (儿): yang berjalan lebih dulu.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: kaki melangkah di depan orang (儿): lebih dulu (先), seperti 先生 dan 先週.",
+  "note_id": "",
+  "source": "manual"
 }

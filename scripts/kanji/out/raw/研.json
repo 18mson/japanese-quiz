@@ -6,10 +6,20 @@
       "part": "石",
       "role": "meaning",
       "meaning_id": "batu"
+    },
+    {
+      "part": "幵",
+      "role": "phonetic",
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari komponen batu dan bagian lain untuk menyatakan kegiatan mengasah.",
+  "phonetic_part": "幵",
+  "reading_hint": "",
+  "old_form": "硏",
+  "etymology_id": "石 (batu) menunjukkan makna menggosok; 幵 (pada bentuk lama 硏) memberi bunyi けん. 研 adalah bentuk sederhana dari bagian kanannya.",
   "etymology_confidence": "established",
-  "mnemonic_id": "Cara mengingat: Menggunakan batu (石) untuk mengasah atau memoles sesuatu.",
-  "note_id": "Digunakan dalam kata penelitian."
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: batu (石) yang digosok rata: meneliti atau mengasah (研究).",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,20 +1,25 @@
 {
   "kanji": "富",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "宀",
       "role": "meaning",
-      "meaning_id": "shaped crown, katakana u radical (no. 40)"
+      "meaning_id": "atap"
     },
     {
       "part": "畐",
       "role": "phonetic",
-      "meaning_id": "to fill, roll of cloth"
+      "meaning_id": "guci penuh"
     }
   ],
-  "etymology_id": "Gabungan mahkota atap dan komponen 畐 yang memberi bunyi フ. Menggambarkan limpahan kekayaan.",
-  "mnemonic_id": "Cara mengingat: Rumah di bawah atap penuh dengan harta.",
-  "note_id": ""
+  "phonetic_part": "畐",
+  "reading_hint": "",
+  "old_form": null,
+  "etymology_id": "宀 (atap) + 畐 (guci yang penuh; juga memberi bunyi ふく → ふ): rumah yang penuh harta, yaitu kaya.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: rumah (宀) dengan guci penuh (畐): kaya (富), seperti 富士山.",
+  "note_id": "",
+  "source": "manual"
 }

@@ -1,15 +1,14 @@
 {
   "kanji": "乗",
-  "formation_type": "phono_semantic",
-  "components": [
-    {
-      "part": "禾",
-      "role": "meaning",
-      "meaning_id": "tanaman"
-    }
-  ],
-  "etymology_id": "Terdiri dari komponen yang menunjukkan arti dasar.",
-  "etymology_confidence": "uncertain",
-  "mnemonic_id": "Cara mengingat: Orang naik ke atas tanaman atau kendaraan.",
-  "note_id": "Digunakan dalam kata kerja naik kendaraan (のります)."
+  "formation_type": "unknown",
+  "components": [],
+  "phonetic_part": null,
+  "reading_hint": "",
+  "old_form": "乘",
+  "etymology_id": "Bentuk lama 乘. Penjelasan tradisional: orang naik ke atas pohon (木) dengan dua kaki. 乗 adalah penyederhanaan.",
+  "etymology_confidence": "traditional",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: orang naik ke atas pohon (木) dan berpijak: naik (乗る), seperti 乗り場.",
+  "note_id": "",
+  "source": "manual"
 }

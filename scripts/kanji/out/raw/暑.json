@@ -1,20 +1,25 @@
 {
   "kanji": "暑",
   "formation_type": "phono_semantic",
-  "claim_kind": "structure",
   "components": [
     {
       "part": "日",
       "role": "meaning",
-      "meaning_id": "day, sun"
+      "meaning_id": "matahari"
     },
     {
       "part": "者",
       "role": "phonetic",
-      "meaning_id": "someone, person"
+      "meaning_id": ""
     }
   ],
-  "etymology_id": "Terdiri dari matahari (日) di bagian atas dan 者 di bagian bawah sebagai penunjuk bunyi.",
-  "mnemonic_id": "Cara mengingat: Matahari (日) bersinar panas pada seseorang (者) saat musim panas.",
-  "note_id": ""
+  "phonetic_part": "者",
+  "reading_hint": "者 しゃ → 暑 しょ",
+  "old_form": null,
+  "etymology_id": "日 (matahari) menunjukkan makna; 者 memberi bunyi (しゃ → しょ): terik, panas.",
+  "etymology_confidence": "established",
+  "claim_kind": "structure",
+  "mnemonic_id": "Cara mengingat: matahari (日) menyinari 者: panas terik (暑い).",
+  "note_id": "",
+  "source": "manual"
 }
