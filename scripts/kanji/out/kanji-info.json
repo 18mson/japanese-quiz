@@ -1105,7 +1105,7 @@
   },
   {
     "kanji": "乳",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "子",
@@ -1113,15 +1113,14 @@
         "meaning_id": "anak"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 子.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan kaitan antara ibu dan anak dalam pemberian susu.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Seorang anak (子) yang masih bayi memerlukan susu (乳).",
     "note_id": "Digunakan dalam kata susu (牛乳).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -4145,7 +4144,7 @@
   },
   {
     "kanji": "元",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "二",
@@ -4158,15 +4157,14 @@
         "meaning_id": "kaki"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 二 dan 儿.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan bagian atas dan dasar atau awal mula sesuatu.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Dua garis di atas kaki menunjukkan asal mula.",
     "note_id": "Dasar dari kata genki (sehat).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -4237,6 +4235,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "elder brother",
@@ -4379,6 +4378,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "enter",
@@ -5562,17 +5562,15 @@
       }
     ],
     "etymology_id": "Gabungan tanaman padi/biji (禾) dan pisau (刂) yang melambangkan pemotongan hasil panen untuk mendapatkan keuntungan.",
-    "etymology_confidence": "uncertain",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Memotong (刂) tanaman (禾) memberikan keuntungan (利).",
     "note_id": "Kosakata penting: 便利な (praktis).",
-    "source": "needs_manual",
-    "status": "needs_manual",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
-    "reasons": [
-      "Klaim asal-gambar fiktif: membutuhkan entri manual"
-    ],
+    "reasons": [],
     "facts": {
       "meaning": [
         "profit",
@@ -7367,7 +7365,7 @@
   },
   {
     "kanji": "古",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "十",
@@ -7380,15 +7378,14 @@
         "meaning_id": "mulut"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 十 dan 口.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Cerita yang disampaikan dari mulut ke mulut selama sepuluh generasi menjadi sesuatu yang kuno.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Cerita dari sepuluh mulut adalah cerita lama.",
     "note_id": "Digunakan dalam furui (lama/tua).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -11408,8 +11405,8 @@
   },
   {
     "kanji": "安",
-    "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "formation_type": "compound_meaning",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "宀",
@@ -11422,14 +11419,14 @@
         "meaning_id": "woman, female"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 宀 dan 女.",
+    "etymology_id": "Terdiri dari atap (宀) dan wanita (女).",
     "mnemonic_id": "Cara mengingat: Seorang wanita (女) di bawah atap rumah (宀) merasa tenang dan aman.",
     "note_id": "",
-    "source": "gemini",
-    "etymology_confidence": "uncertain",
-    "status": "needs_review",
+    "source": "manual",
+    "etymology_confidence": "traditional",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -11903,17 +11900,26 @@
         "part": "宀",
         "role": "meaning",
         "meaning_id": "atap"
+      },
+      {
+        "part": "白",
+        "role": "phonetic",
+        "meaning_id": "putih"
+      },
+      {
+        "part": "⺅",
+        "role": "meaning",
+        "meaning_id": "orang"
       }
     ],
     "etymology_id": "Terdiri dari atap dan orang.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Orang tinggal di bawah atap untuk menginap.",
     "note_id": "Kosakata: 宿題 (PR)",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -12117,23 +12123,37 @@
   },
   {
     "kanji": "寒",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "宀",
         "role": "meaning",
         "meaning_id": "atap atau rumah"
+      },
+      {
+        "part": "井",
+        "role": "shape",
+        "meaning_id": "jerami atau rangka"
+      },
+      {
+        "part": "ハ",
+        "role": "meaning",
+        "meaning_id": "es atau titik beku"
+      },
+      {
+        "part": "一",
+        "role": "shape",
+        "meaning_id": "garis alas"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 宀.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan suasana di dalam rumah (宀) di mana seseorang menumpuk jerami untuk melindungi diri dari udara es yang dingin membeku.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Di dalam rumah menumpuk jerami rapat-rapat karena lantai membeku dan udara sangat dingin.",
     "note_id": "Khusus digunakan untuk dinginnya cuaca atau suhu udara (寒い).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -20017,7 +20037,7 @@
   },
   {
     "kanji": "有",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "月",
@@ -20025,15 +20045,14 @@
         "meaning_id": "daging"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 月.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Gabungan unsur tangan dan daging, menyatakan kepemilikan atau keberadaan.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Ada daging di tangan menunjukkan kepemilikan atau sesuatu yang ada.",
     "note_id": "Kosakata: 有名な (ゆうめい) = terkenal.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -20293,6 +20312,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "end",
@@ -20894,7 +20914,7 @@
   },
   {
     "kanji": "果",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "田",
@@ -20907,15 +20927,14 @@
         "meaning_id": "pohon"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 田 dan 木.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan buah bulat matang yang tampak menggantung di ujung dahan pohon.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Buah berbentuk kotak bulat seperti sawah (田) tumbuh di atas pohon (木).",
     "note_id": "Terdapat dalam kosakata umum buah-buahan yaitu 果物 (くだもの).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -22534,14 +22553,13 @@
       }
     ],
     "etymology_id": "Gambar seorang wanita dengan tanda khusus yang menunjukkan seorang ibu.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bentuk figur seorang ibu.",
     "note_id": "Digunakan dalam kata 母 (ibu sendiri) dan お母さん (ibu orang lain).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -29188,6 +29206,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "stand up",
@@ -29593,17 +29612,21 @@
         "part": "竹",
         "role": "meaning",
         "meaning_id": "bambu"
+      },
+      {
+        "part": "日",
+        "role": "phonetic",
+        "meaning_id": "matahari"
       }
     ],
     "etymology_id": "Alat makan dari bambu.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Alat makan dari bambu (竹) untuk makan setiap hari (日).",
     "note_id": "Berarti sumpit.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -31000,7 +31023,7 @@
   },
   {
     "kanji": "習",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "羽",
@@ -31011,17 +31034,21 @@
         "part": "白",
         "role": "shape",
         "meaning_id": "white"
+      },
+      {
+        "part": "冫",
+        "role": "shape",
+        "meaning_id": "ice"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 羽 dan 白.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan burung yang mengepakkan sayapnya (羽) berulang kali untuk belajar terbang.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Burung belajar terbang dengan mengepakkan sayapnya terus-menerus.",
     "note_id": "Kosakata penting: 習います (belajar) dan 練習 (latihan).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -34017,6 +34044,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "angle",
@@ -35664,23 +35692,27 @@
   },
   {
     "kanji": "買",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "貝",
         "role": "meaning",
         "meaning_id": "kerang atau uang"
+      },
+      {
+        "part": "目",
+        "role": "meaning",
+        "meaning_id": "mata"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 貝.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggunakan kerang (uang zaman dulu) untuk melakukan transaksi.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Menggunakan uang kerang (貝) dengan mengamati (目) barang yang ingin dibeli.",
     "note_id": "Berarti membeli.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -36012,23 +36044,27 @@
   },
   {
     "kanji": "赤",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
+      {
+        "part": "赤",
+        "role": "meaning",
+        "meaning_id": "red"
+      },
       {
         "part": "土",
         "role": "shape",
         "meaning_id": "earth"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 土.",
+    "etymology_id": "Gabungan komponen api atau warna merah dengan tanah.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Tanah yang terpanggang api menjadi berwarna merah.",
     "note_id": "Memiliki arti dasar merah.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -38764,18 +38800,15 @@
       }
     ],
     "etymology_id": "Terdiri dari air (氵) dan wadah fermentasi atau alkohol (酉).",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Air yang berada di dekat wadah adalah minuman sake atau alkohol.",
     "note_id": "Kosakata penting: お酒 (sake/alkohol).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
-    "reading_hint": "bacaan Jepang kini berbeda (酉: ユウ / 酒: シュ)",
-    "reading_match": false,
-    "series_support": 12,
-    "reasons": [
-      "Klaim phonetic pada '酉' tidak cocok rima bacaan on-yomi (ユウ vs シュ)"
-    ],
+    "source": "manual",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
+    "reasons": [],
     "facts": {
       "meaning": [
         "sake",
@@ -38904,6 +38937,7 @@
     "etymology_confidence": "uncertain",
     "reading_hint": null,
     "reading_match": null,
+    "series_support": 0,
     "facts": {
       "meaning": [
         "ri",
@@ -40709,20 +40743,24 @@
     "formation_type": "phono_semantic",
     "components": [
       {
+        "part": "大",
+        "role": "meaning",
+        "meaning_id": "besar"
+      },
+      {
         "part": "口",
         "role": "meaning",
         "meaning_id": "mulut"
       }
     ],
     "etymology_id": "Terdiri dari beberapa komponen yang digabungkan untuk menyatakan kesulitan.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Masalah yang besar (大) membuat orang mengeluh dengan mulut (口) karena sulit (難).",
     "note_id": "Digunakan dalam kata sulit (難しい).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -41016,14 +41054,12 @@
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Tumbuhan hijau dan biru tumbuh subur di atas tanah.",
     "note_id": "Menyatakan warna biru atau hijau.",
-    "source": "needs_manual",
-    "status": "needs_manual",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
-    "reasons": [
-      "Klaim asal-gambar fiktif: membutuhkan entri manual"
-    ],
+    "reasons": [],
     "facts": {
       "meaning": [
         "blue",
@@ -42996,17 +43032,21 @@
         "part": "口",
         "role": "meaning",
         "meaning_id": "mulut"
+      },
+      {
+        "part": "冂",
+        "role": "shape",
+        "meaning_id": "batas"
       }
     ],
     "etymology_id": "Gambar menara atau bangunan bertingkat yang tinggi.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Bangunan dengan atap dan jendela bertingkat yang menjulang tinggi ke atas.",
     "note_id": "Kosakata: 高い (mahal, tinggi), 高校 (SMA), 残高照会 (cek saldo).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
