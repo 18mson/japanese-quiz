@@ -317,13 +317,13 @@ export const useQuizStore = defineStore('quiz', () => {
       if (!sessionCharAttempts.value[charKey]) {
         sessionCharAttempts.value[charKey] = {
           attempts: 1,
-          failed: !isCorrectVal,
+          failed: !isCorrectVal && !isTypo,
           initialStreak: oldStreak,
           streakEvaluated: false
         };
       } else {
         sessionCharAttempts.value[charKey].attempts++;
-        if (!isCorrectVal) {
+        if (!isCorrectVal && !isTypo) {
           sessionCharAttempts.value[charKey].failed = true;
         }
       }

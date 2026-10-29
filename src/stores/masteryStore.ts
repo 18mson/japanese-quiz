@@ -11,6 +11,7 @@ import {
   checkTierTransition,
   type TierTransition
 } from '../utils/masteryStats';
+import { parseLessonNumber } from '../utils/kanjiQuizComposition';
 
 const getLocalStreaks = (): Record<string, number> => {
   try {
@@ -203,6 +204,30 @@ export const useMasteryStore = defineStore('mastery', () => {
         local[char] = true;
       }
     });
+
+    // Cleanup: jika ada kata kosakata (wordsData) dengan streak 0 dari bab jauh (>= earliestUnfinishedLesson + 2)
+    // yang sempat tertandai introduced akibat bug loncat bab, bersihkan agar tidak tersangkut di limbo
+    const wordsMap = new Map(wordsData.map(w => [w.character, w]));
+    let earliestUnfinishedLesson = 25;
+    for (const w of wordsData) {
+      if ((userStreaks.value[w.character] || 0) === 0) {
+        const lNum = parseLessonNumber(w.lesson);
+        if (lNum < earliestUnfinishedLesson) {
+          earliestUnfinishedLesson = lNum;
+        }
+      }
+    }
+
+    Object.keys(local).forEach(char => {
+      const w = wordsMap.get(char);
+      if (w && (userStreaks.value[char] || 0) === 0) {
+        const lNum = parseLessonNumber(w.lesson);
+        if (lNum >= earliestUnfinishedLesson + 2) {
+          delete local[char];
+        }
+      }
+    });
+
     introducedChars.value = local;
     saveIntroducedToStorage();
   };
@@ -411,11 +436,22 @@ export const useMasteryStore = defineStore('mastery', () => {
     } else {
       // isCorrectVal === true
       if (charSessionState) {
-        if (!charSessionState.failed && !charSessionState.streakEvaluated) {
-          charSessionState.streakEvaluated = true;
-          newStreak = charSessionState.initialStreak + 1;
-          userStreaks.value[charKey] = newStreak;
-          streakChanged = true;
+        if (!charSessionState.streakEvaluated) {
+          if (charSessionState.initialStreak === 0) {
+            // Karakter baru yang berhasil dijawab benar (baik percobaan pertama maupun babak perbaikan)
+            // masuk ke status Proses (Streak 1).
+            charSessionState.streakEvaluated = true;
+            newStreak = 1;
+            userStreaks.value[charKey] = newStreak;
+            streakChanged = true;
+          } else if (!charSessionState.failed) {
+            // Untuk karakter yang sudah pernah dipelajari (streak >= 1),
+            // hanya naik +1 streak jika tidak pernah salah dalam sesi ini.
+            charSessionState.streakEvaluated = true;
+            newStreak = charSessionState.initialStreak + 1;
+            userStreaks.value[charKey] = newStreak;
+            streakChanged = true;
+          }
         }
       } else {
         newStreak = pointsEarned === 4 ? oldStreak + 1 : oldStreak;

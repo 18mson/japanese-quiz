@@ -322,7 +322,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
               <span>Bedah Kanji (?)</span>
             </button>
           </div>
-          <p v-if="(currentWord as any)?.meaning" class="mt-2 text-sm text-gray-600 dark:text-slate-300 italic">
+          <p v-if="(currentWord as any)?.meaning" class="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-center text-gray-800 dark:text-slate-100">
             Arti: {{ (currentWord as any)?.meaning }}
           </p>
         </div>

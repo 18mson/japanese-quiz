@@ -338,8 +338,12 @@ export const selectKanjiUniquePool = (
     primaryTheme = initialThemeWord.item.sub_category;
   } else {
     // Detect theme with highest representation in remaining candidates (>= 2 items)
+    // Only count new items from the current and immediately next lesson (currentNewLesson + 1)
+    // to prevent distant future lessons from dictating the theme of earlier lessons
     const themeCounts: Record<string, number> = {};
-    [...available.learning, ...available.new, ...available.mastered].forEach(it => {
+    const currentNewLesson = available.new.length > 0 ? parseLessonNumber(available.new[0].lesson) : 1;
+    const scopedNew = available.new.filter(it => parseLessonNumber(it.lesson) <= currentNewLesson + 1);
+    [...available.learning, ...scopedNew, ...available.mastered].forEach(it => {
       if (it.sub_category) {
         themeCounts[it.sub_category] = (themeCounts[it.sub_category] || 0) + 1;
       }
@@ -365,6 +369,63 @@ export const selectKanjiUniquePool = (
         return candidates.splice(matchIdx, 1)[0];
       }
     }
+    return candidates.shift() || null;
+  };
+
+  /**
+   * Picks a candidate from 'new' tier respecting strict lesson progression.
+   * Prioritizes the earliest unfinished lesson (currentNewLesson).
+   * Allows at most currentNewLesson + 1 with a small probability (<= 15%)
+   * IF matching primaryTheme, but NEVER leaps to currentNewLesson + 2 or beyond.
+   */
+  const pickNewCandidate = (
+    candidates: KanjiItem[],
+    theme?: string | null
+  ): KanjiItem | null => {
+    if (!candidates || candidates.length === 0) return null;
+
+    const currentNewLesson = parseLessonNumber(candidates[0].lesson);
+    const maxAllowedLesson = currentNewLesson + 1;
+
+    // Items in the current earliest unfinished lesson
+    const currentLessonIndices: number[] = [];
+    // Items in the immediately next lesson (currentNewLesson + 1)
+    const nextLessonIndices: number[] = [];
+
+    for (let i = 0; i < candidates.length; i++) {
+      const lNum = parseLessonNumber(candidates[i].lesson);
+      if (lNum === currentNewLesson) {
+        currentLessonIndices.push(i);
+      } else if (lNum === maxAllowedLesson) {
+        nextLessonIndices.push(i);
+      } else if (lNum > maxAllowedLesson) {
+        // Candidates are sorted by lesson ascending; once exceeded, stop scanning
+        break;
+      }
+    }
+
+    if (theme) {
+      // 1. First priority: match theme within the current earliest unfinished lesson
+      const matchCurrentIdx = currentLessonIndices.find(idx => candidates[idx].sub_category === theme);
+      if (matchCurrentIdx !== undefined) {
+        return candidates.splice(matchCurrentIdx, 1)[0];
+      }
+
+      // 2. Second priority: small possibility (15%) to pick matching theme from immediately next lesson (L+1)
+      if (nextLessonIndices.length > 0 && Math.random() < 0.15) {
+        const matchNextIdx = nextLessonIndices.find(idx => candidates[idx].sub_category === theme);
+        if (matchNextIdx !== undefined) {
+          return candidates.splice(matchNextIdx, 1)[0];
+        }
+      }
+    }
+
+    // 3. Default: Pick from the current lesson (first available)
+    if (currentLessonIndices.length > 0) {
+      return candidates.splice(currentLessonIndices[0], 1)[0];
+    }
+
+    // 4. Fallback if current lesson empty
     return candidates.shift() || null;
   };
 
@@ -437,6 +498,8 @@ export const selectKanjiUniquePool = (
           const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
           item = picked || available.learning.shift()!;
         }
+      } else if (fallbackTier === 'new') {
+        item = pickNewCandidate(available.new, shouldBoostTheme ? primaryTheme : null)!;
       } else {
         item = (shouldBoostTheme ? pickCandidateWithTheme(available[fallbackTier], primaryTheme) : null) || available[fallbackTier].shift()!;
       }
@@ -480,6 +543,8 @@ export const selectKanjiUniquePool = (
         const picked = pickWeightedLearningItem(available.learning, effectiveCurrentLesson, getMasteryStreak);
         item = picked || available.learning.shift()!;
       }
+    } else if (chosenTier === 'new') {
+      item = pickNewCandidate(available.new, shouldBoostTheme ? primaryTheme : null)!;
     } else {
       item = (shouldBoostTheme ? pickCandidateWithTheme(available[chosenTier], primaryTheme) : null) || available[chosenTier].shift()!;
     }
