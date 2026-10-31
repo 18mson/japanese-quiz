@@ -33,7 +33,7 @@ const selectCategory = (key: KanaCategoryType) => {
 </script>
 
 <template>
-  <div class="bg-slate-50/80 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2 w-full animate-fadeIn">
+  <div class="bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-700/60 rounded-2xl p-2 sm:p-2.5 flex flex-col gap-1.5 w-full animate-fadeIn">
     <div class="flex items-center justify-between gap-2">
       <div class="flex items-center gap-2 min-w-0">
         <div class="w-7 h-7 rounded-lg bg-aizome dark:bg-torii text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs">

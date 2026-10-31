@@ -443,16 +443,6 @@ watch(characterTypes, (newVal) => {
               @open-tutorial="openHitunganTutorial"
               @interact="deactivateKeyboardNav"
             />
-
-            <!-- Kotoba Info -->
-            <div v-else-if="activeMode.id === 'kotoba'" key="kotoba-info" class="text-xs text-slate-500 dark:text-slate-400 font-medium text-center">
-              Pilih salah satu format kuis di bawah untuk langsung mulai belajar.
-            </div>
-
-            <!-- Default Fallback Info -->
-            <div v-else key="mode-info" class="text-xs text-slate-500 dark:text-slate-400 font-medium text-center">
-              Pilih mode kuis di bawah untuk langsung mulai.
-            </div>
           </Transition>
         </StartWheelSelector>
       </main>

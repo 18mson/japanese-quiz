@@ -136,7 +136,7 @@ function getCardStyle(index: number) {
       @touchmove.prevent="handleTouchMove"
       @touchend="handleTouchEnd"
       :class="[
-        'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[440px] sm:min-h-[460px] flex flex-col justify-between select-none touch-none overscroll-contain cursor-pointer',
+        'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[420px] sm:min-h-[460px] flex flex-col justify-center select-none touch-none overscroll-contain cursor-pointer',
         isKeyboardNav && focusedSection === 'mode'
           ? 'border-aizome dark:border-torii shadow-md ring-2 ring-aizome/40 dark:ring-torii/40'
           : 'border-slate-200/90 dark:border-slate-800 shadow-sm'
@@ -151,7 +151,7 @@ function getCardStyle(index: number) {
       </div>
 
       <!-- Top Area: Semi-Circle Disk + Mode Orbit Carousel -->
-      <div class="relative w-full flex-shrink-0 flex items-center justify-center h-[310px] sm:h-[340px]">
+      <div class="relative w-full flex-shrink-0 flex items-center justify-center min-h-[340px] sm:min-h-[380px]">
         <!-- Left Semi-Circle Disk -->
         <div class="absolute -left-20 xs:-left-20 sm:-left-28 md:-left-32 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
           <div class="w-[130px] h-[130px] xs:w-[160px] xs:h-[160px] sm:w-[230px] sm:h-[230px] md:w-[260px] md:h-[260px] rounded-full border-2 sm:border-4 border-white dark:border-slate-800 overflow-hidden shadow-lg relative">
@@ -223,7 +223,7 @@ function getCardStyle(index: number) {
             <div 
               class="transition-all duration-500 ease-out overflow-hidden"
               :style="{
-                maxHeight: index === activeModeIndex ? '100px' : '0px',
+                maxHeight: index === activeModeIndex ? '500px' : '0px',
                 opacity: index === activeModeIndex ? '1' : '0',
                 marginTop: index === activeModeIndex ? '4px' : '0px',
                 transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
@@ -233,14 +233,14 @@ function getCardStyle(index: number) {
               <p class="text-xs text-slate-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
                 {{ getModeDescription(mode, characterType, selectedHitunganTab) }}
               </p>
+
+              <!-- Category Panel inside Active Card -->
+              <div v-if="index === activeModeIndex" class="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <slot />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Bottom Info Slot inside mode box (Panels) -->
-      <div class="w-full pt-3.5 mt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-3 relative z-20 min-h-[58px] justify-center">
-        <slot />
       </div>
     </div>
   </div>
