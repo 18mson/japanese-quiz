@@ -9685,6 +9685,1384 @@
       }
     ]
   },
+  "好": {
+    "kanji": "好",
+    "meaning": [
+      "fond",
+      "pleasing",
+      "like something"
+    ],
+    "on": [
+      "コウ"
+    ],
+    "kun": [
+      "この.む",
+      "す.く",
+      "よ.い",
+      "い.い"
+    ],
+    "stroke_count": 6,
+    "jlpt": 3,
+    "grade": 4,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "女",
+        "role": "meaning",
+        "meaning_id": "perempuan"
+      },
+      {
+        "part": "子",
+        "role": "meaning",
+        "meaning_id": "anak"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 女 (perempuan) + 子 (anak): kasih sayang ibu kepada anaknya; menyukai.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: perempuan (女) dengan anak (子): kasih sayang, menyukai (好き).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "好きな",
+        "kana": "すき",
+        "meaning": "suka, gemar",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "上": {
+    "kanji": "上",
+    "meaning": [
+      "above",
+      "up"
+    ],
+    "on": [
+      "ジョウ",
+      "ショウ",
+      "シャン"
+    ],
+    "kun": [
+      "うえ",
+      "-うえ",
+      "うわ-",
+      "かみ",
+      "あ.げる",
+      "-あ.げる",
+      "あ.がる",
+      "-あ.がる",
+      "あ.がり",
+      "-あ.がり",
+      "のぼ.る",
+      "のぼ.り",
+      "のぼ.せる",
+      "のぼ.す",
+      "たてまつ.る"
+    ],
+    "stroke_count": 3,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "ideograph_simple",
+    "components": [],
+    "etymology_id": "Tanda penunjuk: titik di atas garis berarti 'atas'.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: titik di atas garis: atas (上), seperti 上手 (pandai).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "上手な",
+        "kana": "じょうず",
+        "meaning": "pandai, pintar, mahir",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "上",
+        "kana": "うえ",
+        "meaning": "atas",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "上着",
+        "kana": "うわぎ",
+        "meaning": "jaket, pakaian luar",
+        "lesson": "Pelajaran 17"
+      },
+      {
+        "jp": "持ち上げる",
+        "kana": "もちあげる",
+        "meaning": "mengangkat",
+        "lesson": "Pelajaran 18"
+      }
+    ]
+  },
+  "料": {
+    "kanji": "料",
+    "meaning": [
+      "fee",
+      "materials"
+    ],
+    "on": [
+      "リョウ"
+    ],
+    "kun": [],
+    "stroke_count": 10,
+    "jlpt": 3,
+    "grade": 4,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "米",
+        "role": "meaning",
+        "meaning_id": "beras"
+      },
+      {
+        "part": "斗",
+        "role": "meaning",
+        "meaning_id": "gayung takar"
+      }
+    ],
+    "etymology_id": "米 (beras) + 斗 (gayung takar): menakar beras; bahan, biaya.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: gayung (斗) menakar beras (米): bahan (料), seperti 料理 dan 料金.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "料理",
+        "kana": "りょうり",
+        "meaning": "masakan, hidangan",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "資料",
+        "kana": "しりょう",
+        "meaning": "data, bahan materi",
+        "lesson": "Pelajaran 15"
+      }
+    ]
+  },
+  "旅": {
+    "kanji": "旅",
+    "meaning": [
+      "trip",
+      "travel"
+    ],
+    "on": [
+      "リョ"
+    ],
+    "kun": [
+      "たび"
+    ],
+    "stroke_count": 10,
+    "jlpt": 3,
+    "grade": 3,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "方",
+        "role": "meaning",
+        "meaning_id": "bendera"
+      }
+    ],
+    "etymology_id": "Bentuk memuat bendera (方, bentuk asli 㫃) dan orang-orang di bawahnya: rombongan yang bepergian di bawah bendera; perjalanan. Penjelasan tradisional.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: rombongan di bawah bendera (方): bepergian (旅), seperti 旅行.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "旅行",
+        "kana": "りょこう",
+        "meaning": "tamasya, perjalanan, traveling",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "音": {
+    "kanji": "音",
+    "meaning": [
+      "sound",
+      "noise"
+    ],
+    "on": [
+      "オン",
+      "イン",
+      "-ノン"
+    ],
+    "kun": [
+      "おと",
+      "ね"
+    ],
+    "stroke_count": 9,
+    "jlpt": 3,
+    "grade": 1,
+    "formation_type": "unknown",
+    "components": [
+      {
+        "part": "言",
+        "role": "meaning",
+        "meaning_id": "kata"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 言 (kata) dengan satu garis di dalam mulut (一): bunyi tanpa kata yang jelas; bunyi, suara.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: kata (言) dengan satu garis di mulutnya: bunyi atau suara (音), seperti 音楽.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "音楽",
+        "kana": "おんがく",
+        "meaning": "musik",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "音楽家",
+        "kana": "おんがくか",
+        "meaning": "musisi",
+        "lesson": "Pelajaran 15"
+      },
+      {
+        "jp": "音",
+        "kana": "おと",
+        "meaning": "bunyi, suara",
+        "lesson": "Pelajaran 23"
+      }
+    ]
+  },
+  "伎": {
+    "kanji": "伎",
+    "meaning": [
+      "deed",
+      "skill"
+    ],
+    "on": [
+      "ギ",
+      "キ"
+    ],
+    "kun": [
+      "わざ",
+      "わざおぎ"
+    ],
+    "stroke_count": 6,
+    "jlpt": 1,
+    "grade": 8,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "亻",
+        "role": "meaning",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "支",
+        "role": "phonetic",
+        "meaning_id": ""
+      }
+    ],
+    "etymology_id": "亻 (orang) + 支 (penanda bunyi し → き): orang yang cakap; penampil, seni pertunjukan. Bacaan Jepang kini berbeda dari bunyi aslinya.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: orang (亻) dengan keahlian: penampil (伎), seperti 歌舞伎 (kabuki).",
+    "note_id": "",
+    "phonetic_part": "支",
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "歌舞伎",
+        "kana": "かぶき",
+        "meaning": "kabuki (seni teater Jepang)",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "間": {
+    "kanji": "間",
+    "meaning": [
+      "interval",
+      "space"
+    ],
+    "on": [
+      "カン",
+      "ケン"
+    ],
+    "kun": [
+      "あいだ",
+      "ま",
+      "あい"
+    ],
+    "stroke_count": 12,
+    "jlpt": 4,
+    "grade": 2,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "門",
+        "role": "meaning",
+        "meaning_id": "gerbang"
+      },
+      {
+        "part": "日",
+        "role": "meaning",
+        "meaning_id": "matahari"
+      }
+    ],
+    "etymology_id": "Bentuk lama 閒 = 門 (gerbang) + 月 (bulan): cahaya bulan masuk lewat celah gerbang; celah, selang. 間 mengganti 月 dengan 日.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: matahari (日) mengintip lewat celah gerbang (門): selang atau antara (間), seperti 時間.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "時間",
+        "kana": "じかん",
+        "meaning": "jam, waktu",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "間",
+        "kana": "あいだ",
+        "meaning": "antara",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "居間",
+        "kana": "いま",
+        "meaning": "ruang tamu, ruang keluarga",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "～時間",
+        "kana": "～じかん",
+        "meaning": "durasi jam",
+        "lesson": "Pelajaran 11"
+      },
+      {
+        "jp": "～週間",
+        "kana": "～しゅうかん",
+        "meaning": "durasi minggu",
+        "lesson": "Pelajaran 11"
+      }
+    ]
+  },
+  "約": {
+    "kanji": "約",
+    "meaning": [
+      "promise",
+      "approximately",
+      "shrink"
+    ],
+    "on": [
+      "ヤク"
+    ],
+    "kun": [
+      "つづ.まる",
+      "つづ.める",
+      "つづま.やか"
+    ],
+    "stroke_count": 9,
+    "jlpt": 2,
+    "grade": 4,
+    "formation_type": "phono_semantic",
+    "components": [
+      {
+        "part": "糸",
+        "role": "meaning",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "勺",
+        "role": "phonetic",
+        "meaning_id": ""
+      }
+    ],
+    "etymology_id": "糸 (benang) + 勺 (penanda bunyi しゃく → やく): mengikat; janji, ringkas.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: benang (糸) mengikat sendok kecil (勺): janji (約束).",
+    "note_id": "",
+    "phonetic_part": "勺",
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "約束",
+        "kana": "やくそく",
+        "meaning": "janji",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "予約します",
+        "kana": "よやくします",
+        "meaning": "memesan, reservasi",
+        "lesson": "Pelajaran 18"
+      }
+    ]
+  },
+  "束": {
+    "kanji": "束",
+    "meaning": [
+      "bundle",
+      "sheaf",
+      "ream",
+      "tie in bundles",
+      "govern",
+      "manage",
+      "control"
+    ],
+    "on": [
+      "ソク"
+    ],
+    "kun": [
+      "たば",
+      "たば.ねる",
+      "つか",
+      "つか.ねる"
+    ],
+    "stroke_count": 7,
+    "jlpt": 2,
+    "grade": 4,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "木",
+        "role": "meaning",
+        "meaning_id": "kayu"
+      },
+      {
+        "part": "口",
+        "role": "meaning",
+        "meaning_id": "ikatan"
+      }
+    ],
+    "etymology_id": "木 (kayu) dengan ikatan (口) di tengah: seikat kayu; mengikat, seikat.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: kayu (木) diikat dengan tali (口): seikat atau janji (約束).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "約束",
+        "kana": "やくそく",
+        "meaning": "janji",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "主": {
+    "kanji": "主",
+    "meaning": [
+      "lord",
+      "chief",
+      "master",
+      "main thing",
+      "principal"
+    ],
+    "on": [
+      "シュ",
+      "ス",
+      "シュウ"
+    ],
+    "kun": [
+      "ぬし",
+      "おも",
+      "あるじ"
+    ],
+    "stroke_count": 5,
+    "jlpt": 3,
+    "grade": 3,
+    "formation_type": "pictograph",
+    "components": [],
+    "etymology_id": "Penjelasan tradisional: gambar lampu dengan nyala api (丶) di atas penyangga; arti 'yang utama, tuan' dipakai belakangan.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: nyala (丶) di atas penyangga lampu: yang utama atau tuan (主), seperti 主人.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "ご主人",
+        "kana": "ごしゅじん",
+        "meaning": "suami (orang lain)",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "主人",
+        "kana": "しゅじん",
+        "meaning": "suami (sendiri)",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "夫": {
+    "kanji": "夫",
+    "meaning": [
+      "husband",
+      "man"
+    ],
+    "on": [
+      "フ",
+      "フウ",
+      "ブ"
+    ],
+    "kun": [
+      "おっと",
+      "それ"
+    ],
+    "stroke_count": 4,
+    "jlpt": 2,
+    "grade": 4,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "大",
+        "role": "meaning",
+        "meaning_id": "orang dewasa"
+      },
+      {
+        "part": "一",
+        "role": "meaning",
+        "meaning_id": "tusuk rambut"
+      }
+    ],
+    "etymology_id": "大 (orang dewasa) + 一 (tusuk rambut): pria yang sudah dewasa; suami.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: pria dewasa (大) dengan tusuk rambut (一): suami (夫).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "夫",
+        "kana": "おっと",
+        "meaning": "suami (sendiri)",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "大丈夫な",
+        "kana": "だいじょうぶ",
+        "meaning": "tidak apa-apa, aman",
+        "lesson": "Pelajaran 17"
+      }
+    ]
+  },
+  "妻": {
+    "kanji": "妻",
+    "meaning": [
+      "wife",
+      "spouse"
+    ],
+    "on": [
+      "サイ"
+    ],
+    "kun": [
+      "つま"
+    ],
+    "stroke_count": 8,
+    "jlpt": 2,
+    "grade": 5,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "女",
+        "role": "meaning",
+        "meaning_id": "perempuan"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 女 (perempuan) dengan tangan (⺕) yang menata rambutnya: istri.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: tangan (⺕) menata rambut perempuan (女): istri (妻).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "妻",
+        "kana": "つま",
+        "meaning": "istri (sendiri)",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "子": {
+    "kanji": "子",
+    "meaning": [
+      "child",
+      "sign of the rat",
+      "11PM-1AM",
+      "first sign of Chinese zodiac"
+    ],
+    "on": [
+      "シ",
+      "ス",
+      "ツ"
+    ],
+    "kun": [
+      "こ",
+      "-こ",
+      "ね"
+    ],
+    "stroke_count": 3,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "pictograph",
+    "components": [],
+    "etymology_id": "Gambar anak kecil dengan kepala besar dan tangan terentang.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: anak kecil berkepala besar dengan tangan terentang (子), seperti 子供.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "子供",
+        "kana": "こども",
+        "meaning": "anak",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "男の子",
+        "kana": "おとこのこ",
+        "meaning": "anak laki-laki",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "女の子",
+        "kana": "おんなのこ",
+        "meaning": "anak perempuan",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "電子辞書",
+        "kana": "でんしじしょ",
+        "meaning": "kamus elektronik",
+        "lesson": "Pelajaran 15"
+      },
+      {
+        "jp": "調子",
+        "kana": "ちょうし",
+        "meaning": "kondisi, keadaan fisik",
+        "lesson": "Pelajaran 19"
+      },
+      {
+        "jp": "帽子",
+        "kana": "ぼうし",
+        "meaning": "topi",
+        "lesson": "Pelajaran 22"
+      },
+      {
+        "jp": "お菓子",
+        "kana": "おかし",
+        "meaning": "kue, makanan ringan, camilan",
+        "lesson": "Pelajaran 24"
+      }
+    ]
+  },
+  "少": {
+    "kanji": "少",
+    "meaning": [
+      "few",
+      "little"
+    ],
+    "on": [
+      "ショウ"
+    ],
+    "kun": [
+      "すく.ない",
+      "すこ.し"
+    ],
+    "stroke_count": 4,
+    "jlpt": 4,
+    "grade": 2,
+    "formation_type": "ideograph_simple",
+    "components": [
+      {
+        "part": "小",
+        "role": "meaning",
+        "meaning_id": "kecil"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 小 (kecil) dengan goresan yang mengurangi (ノ): lebih kecil lagi; sedikit.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: yang kecil (小) dikurangi (ノ): sedikit (少し).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "少し",
+        "kana": "すこし",
+        "meaning": "sedikit",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "少ない",
+        "kana": "すくない",
+        "meaning": "sedikit (orang/barang)",
+        "lesson": "Pelajaran 12"
+      },
+      {
+        "jp": "少々 お待ちください",
+        "kana": "しょうしょう おまちください",
+        "meaning": "Tunggu sebentar",
+        "lesson": "Pelajaran 13"
+      },
+      {
+        "jp": "もう少し",
+        "kana": "もう すこし",
+        "meaning": "sedikit lagi",
+        "lesson": "Pelajaran 14"
+      }
+    ]
+  },
+  "全": {
+    "kanji": "全",
+    "meaning": [
+      "whole",
+      "entire",
+      "all",
+      "complete",
+      "fulfill"
+    ],
+    "on": [
+      "ゼン"
+    ],
+    "kun": [
+      "まった.く",
+      "すべ.て"
+    ],
+    "stroke_count": 6,
+    "jlpt": 2,
+    "grade": 3,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "入",
+        "role": "meaning",
+        "meaning_id": "masuk"
+      },
+      {
+        "part": "王",
+        "role": "meaning",
+        "meaning_id": "giok"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 入 (masuk) + 王 (giok, bentuk lama 玉): giok yang sempurna tanpa cacat; lengkap, seluruh.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: masukkan (入) giok (王) yang sempurna: lengkap (全), seperti 全然 dan 全部.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "全然",
+        "kana": "ぜんぜん",
+        "meaning": "sama sekali tidak",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "全部で",
+        "kana": "ぜんぶで",
+        "meaning": "semuanya, total",
+        "lesson": "Pelajaran 11"
+      },
+      {
+        "jp": "全部",
+        "kana": "ぜんぶ",
+        "meaning": "semua, seluruhnya",
+        "lesson": "Pelajaran 24"
+      }
+    ]
+  },
+  "然": {
+    "kanji": "然",
+    "meaning": [
+      "sort of thing",
+      "so",
+      "if so",
+      "in that case",
+      "well"
+    ],
+    "on": [
+      "ゼン",
+      "ネン"
+    ],
+    "kun": [
+      "しか",
+      "しか.り",
+      "しか.し",
+      "さ"
+    ],
+    "stroke_count": 12,
+    "jlpt": 2,
+    "grade": 4,
+    "formation_type": "unknown",
+    "components": [
+      {
+        "part": "灬",
+        "role": "meaning",
+        "meaning_id": "api"
+      }
+    ],
+    "etymology_id": "Bentuk lama memuat daging dan anjing di atas api (灬): membakar. Arti 'begitu, demikian' dipinjam belakangan. Penjelasan tradisional.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: api (灬) di bawah daging dan anjing: begitu (然), dibaca 'zen' pada 全然.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "全然",
+        "kana": "ぜんぜん",
+        "meaning": "sama sekali tidak",
+        "lesson": "Pelajaran 9"
+      }
+    ]
+  },
+  "早": {
+    "kanji": "早",
+    "meaning": [
+      "early",
+      "fast"
+    ],
+    "on": [
+      "ソウ",
+      "サッ"
+    ],
+    "kun": [
+      "はや.い",
+      "はや",
+      "はや-",
+      "はや.まる",
+      "はや.める",
+      "さ-"
+    ],
+    "stroke_count": 6,
+    "jlpt": 3,
+    "grade": 1,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "日",
+        "role": "meaning",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "十",
+        "role": "meaning",
+        "meaning_id": "ufuk"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: 日 (matahari) di atas 十 (ufuk atau bentuk lama 甲): matahari baru terbit; pagi.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: matahari (日) di atas tanda silang ufuk (十): pagi atau awal (早い), seperti 早く.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "早く",
+        "kana": "はやく",
+        "meaning": "dengan cepat, pagi-pagi",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "早い",
+        "kana": "はやい",
+        "meaning": "pagi, awal",
+        "lesson": "Pelajaran 12"
+      }
+    ]
+  },
+  "内": {
+    "kanji": "内",
+    "meaning": [
+      "inside",
+      "within",
+      "between",
+      "among",
+      "house",
+      "home"
+    ],
+    "on": [
+      "ナイ",
+      "ダイ"
+    ],
+    "kun": [
+      "うち"
+    ],
+    "stroke_count": 4,
+    "jlpt": 2,
+    "grade": 2,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "冂",
+        "role": "meaning",
+        "meaning_id": "bingkai"
+      },
+      {
+        "part": "入",
+        "role": "meaning",
+        "meaning_id": "masuk"
+      }
+    ],
+    "etymology_id": "入 (masuk) di dalam 冂 (bingkai): bagian dalam.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: masuk (入) ke dalam bingkai (冂): dalam (内), seperti 家内.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "家内",
+        "kana": "かない",
+        "meaning": "istri (sendiri)",
+        "lesson": "Pelajaran 9"
+      },
+      {
+        "jp": "案内します",
+        "kana": "あんないします",
+        "meaning": "mengantarkan, memandu jalan",
+        "lesson": "Pelajaran 24"
+      }
+    ]
+  },
+  "男": {
+    "kanji": "男",
+    "meaning": [
+      "male"
+    ],
+    "on": [
+      "ダン",
+      "ナン"
+    ],
+    "kun": [
+      "おとこ",
+      "お"
+    ],
+    "stroke_count": 7,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "田",
+        "role": "meaning",
+        "meaning_id": "ladang"
+      },
+      {
+        "part": "力",
+        "role": "meaning",
+        "meaning_id": "tenaga"
+      }
+    ],
+    "etymology_id": "田 (ladang) + 力 (tenaga): orang yang mengerahkan tenaga di ladang; laki-laki.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: tenaga (力) di ladang (田): laki-laki (男), seperti 男の人.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "男の人",
+        "kana": "おとこのひと",
+        "meaning": "orang laki-laki, pria",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "男の子",
+        "kana": "おとこのこ",
+        "meaning": "anak laki-laki",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "犬": {
+    "kanji": "犬",
+    "meaning": [
+      "dog"
+    ],
+    "on": [
+      "ケン"
+    ],
+    "kun": [
+      "いぬ",
+      "いぬ-"
+    ],
+    "stroke_count": 4,
+    "jlpt": 3,
+    "grade": 1,
+    "formation_type": "pictograph",
+    "components": [],
+    "etymology_id": "Gambar anjing dilihat dari samping; titik (丶) menandai telinga.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: titik (丶) di samping 大: telinga anjing (犬).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "犬",
+        "kana": "いぬ",
+        "meaning": "anjing",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "庫": {
+    "kanji": "庫",
+    "meaning": [
+      "warehouse",
+      "storehouse"
+    ],
+    "on": [
+      "コ",
+      "ク"
+    ],
+    "kun": [
+      "くら"
+    ],
+    "stroke_count": 10,
+    "jlpt": 2,
+    "grade": 3,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "广",
+        "role": "meaning",
+        "meaning_id": "bangunan beratap"
+      },
+      {
+        "part": "車",
+        "role": "meaning",
+        "meaning_id": "kereta"
+      }
+    ],
+    "etymology_id": "广 (bangunan beratap) + 車 (kereta): tempat menyimpan kereta atau perlengkapan; gudang.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: kereta (車) disimpan di bawah atap (广): gudang (庫), seperti 冷蔵庫.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "冷蔵庫",
+        "kana": "れいぞうこ",
+        "meaning": "kulkas, lemari es",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "公": {
+    "kanji": "公",
+    "meaning": [
+      "public",
+      "prince",
+      "official",
+      "governmental"
+    ],
+    "on": [
+      "コウ",
+      "ク"
+    ],
+    "kun": [
+      "おおやけ"
+    ],
+    "stroke_count": 4,
+    "jlpt": 2,
+    "grade": 2,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "八",
+        "role": "meaning",
+        "meaning_id": "membuka"
+      },
+      {
+        "part": "厶",
+        "role": "meaning",
+        "meaning_id": "pribadi"
+      }
+    ],
+    "etymology_id": "八 (membuka, memisah) + ム (pribadi): meniadakan kepentingan pribadi; umum.",
+    "etymology_confidence": "established",
+    "mnemonic_id": "Cara mengingat: buka (八) yang pribadi (ム): umum (公), seperti 公園.",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "公園",
+        "kana": "こうえん",
+        "meaning": "taman",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "公務員",
+        "kana": "こうむいん",
+        "meaning": "pegawai negeri sipil (PNS)",
+        "lesson": "Pelajaran 15"
+      }
+    ]
+  },
+  "右": {
+    "kanji": "右",
+    "meaning": [
+      "right"
+    ],
+    "on": [
+      "ウ",
+      "ユウ"
+    ],
+    "kun": [
+      "みぎ"
+    ],
+    "stroke_count": 5,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "ナ",
+        "role": "meaning",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "口",
+        "role": "meaning",
+        "meaning_id": "mulut"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: ナ (tangan kanan) + 口 (mulut): tangan yang menyuap ke mulut; kanan.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: tangan (ナ) menyuap ke mulut (口): kanan (右).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "右",
+        "kana": "みぎ",
+        "meaning": "kanan",
+        "lesson": "Pelajaran 10"
+      },
+      {
+        "jp": "信号を右へ曲がってください",
+        "kana": "しんごうを みぎへ まがってください",
+        "meaning": "Belok kanan di lampu lalu lintas",
+        "lesson": "Pelajaran 14"
+      }
+    ]
+  },
+  "左": {
+    "kanji": "左",
+    "meaning": [
+      "left"
+    ],
+    "on": [
+      "サ",
+      "シャ"
+    ],
+    "kun": [
+      "ひだり"
+    ],
+    "stroke_count": 5,
+    "jlpt": 4,
+    "grade": 1,
+    "formation_type": "compound_meaning",
+    "components": [
+      {
+        "part": "ナ",
+        "role": "meaning",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "工",
+        "role": "meaning",
+        "meaning_id": "alat"
+      }
+    ],
+    "etymology_id": "Penjelasan tradisional: ナ (tangan kiri) + 工 (alat): tangan yang membantu memegang alat; kiri.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: tangan (ナ) memegang alat (工): kiri (左).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "左",
+        "kana": "ひだり",
+        "meaning": "kiri",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "玄": {
+    "kanji": "玄",
+    "meaning": [
+      "mysterious",
+      "occultness",
+      "black",
+      "deep",
+      "profound"
+    ],
+    "on": [
+      "ゲン"
+    ],
+    "kun": [
+      "くろ",
+      "くろ.い"
+    ],
+    "stroke_count": 5,
+    "jlpt": 1,
+    "grade": 8,
+    "formation_type": "unknown",
+    "components": [],
+    "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai benang yang dicelup gelap di bawah penutup). Arti 'gelap, dalam, misterius'.",
+    "etymology_confidence": "uncertain",
+    "mnemonic_id": "Cara mengingat: 玄 dibaca 'gen' pada 玄関 (pintu masuk rumah): atap (亠) di atas benang (幺).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "unknown",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "玄関",
+        "kana": "げんかん",
+        "meaning": "pintu masuk, ruang depan",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "呂": {
+    "kanji": "呂",
+    "meaning": [
+      "spine",
+      "backbone"
+    ],
+    "on": [
+      "ロ",
+      "リョ"
+    ],
+    "kun": [
+      "せぼね"
+    ],
+    "stroke_count": 7,
+    "jlpt": 1,
+    "grade": 8,
+    "formation_type": "unknown",
+    "components": [],
+    "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai dua ruas tulang belakang). Dalam kosakata dipakai terutama pada 風呂 (bak mandi).",
+    "etymology_confidence": "uncertain",
+    "mnemonic_id": "Cara mengingat: dua kotak bertumpuk (口口): 風呂 (bak mandi).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "unknown",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "風呂場",
+        "kana": "ふろば",
+        "meaning": "kamar mandi",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
+  "面": {
+    "kanji": "面",
+    "meaning": [
+      "mask",
+      "face",
+      "features",
+      "surface"
+    ],
+    "on": [
+      "メン",
+      "ベン"
+    ],
+    "kun": [
+      "おも",
+      "おもて",
+      "つら"
+    ],
+    "stroke_count": 9,
+    "jlpt": 2,
+    "grade": 3,
+    "formation_type": "pictograph",
+    "components": [],
+    "etymology_id": "Penjelasan tradisional: gambar wajah, garis luar dengan bagian dalam: muka, permukaan.",
+    "etymology_confidence": "traditional",
+    "mnemonic_id": "Cara mengingat: bingkai wajah (囗) dengan hidung (丨) dan dahi (一): muka atau permukaan (面).",
+    "note_id": "",
+    "phonetic_part": null,
+    "reading_hint": null,
+    "claim_kind": "structure",
+    "old_form": null,
+    "words": [
+      {
+        "jp": "洗面所",
+        "kana": "せんめんじょ",
+        "meaning": "tempat cuci tangan, wastafel",
+        "lesson": "Pelajaran 10"
+      }
+    ]
+  },
   "梅": {
     "kanji": "梅",
     "meaning": [

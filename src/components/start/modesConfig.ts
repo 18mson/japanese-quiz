@@ -97,7 +97,7 @@ export const modesList: QuizModeDef[] = [
     defaultType: 'words',
     desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
     subTypes: [
-      { key: 'words', label: 'Kotoba (言葉)' },
+      { key: 'words', label: 'Kotoba' },
       { key: 'renshuu', label: 'Renshuu (練習)', beta: true },
       { key: 'kaiwa', label: 'Kaiwa (会話)', beta: true },
     ],
@@ -160,9 +160,11 @@ export function getModeDescription(mode: QuizModeDef, characterType: string, hit
     return 'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.';
   }
   if (mode.id === 'kotoba') {
-    if (characterType === 'words') return 'Latihan mengetik kosakata berhuruf Kanji';
-    if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play';
-    if (characterType === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5';
+    if (characterType === 'words') return 'Latihan kosakata berhuruf Kanji — pilih variasi kuis di sub-menu bawah.';
+    if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
+    if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji, Kana, atau Romaji.';
+    if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play.';
+    if (characterType === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5.';
   }
   if (mode.id === 'online_game') {
     if (characterType === 'quiz_blitz') return 'Adu refleks kuis cepat 10 detik per soal bersama pemain lain.';

@@ -144,11 +144,14 @@ const isAnswered = computed(() => quizStore.selectedAnswer !== null);
 
 const currentWord = computed(() => quizStore.currentQuestion);
 
-const correctRomajiDisplay = computed(() => {
-  if (!currentWord.value) return '';
-  return Array.isArray(currentWord.value.romaji) 
-    ? currentWord.value.romaji.join(' or ') 
-    : currentWord.value.romaji;
+const placeholderText = computed(() => {
+  if (quizStore.questionType === 'words_meaning') {
+    return 'Ketik arti bahasa Indonesia di sini...';
+  }
+  if (quizStore.questionType === 'meaning_to_words') {
+    return 'Ketik kanji, kana, atau romaji...';
+  }
+  return 'Type romaji here...';
 });
 
 import { useMasteryStore } from '../stores/masteryStore';
@@ -230,7 +233,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         v-model="userInput"
         type="text"
         :inputmode="isTouchDevice ? 'none' : 'text'"
-        placeholder="Type romaji here..."
+        :placeholder="placeholderText"
         class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
           'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
@@ -290,22 +293,12 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           >
             {{ typoStatusMessage }}
           </p>
-          
-          <div class="mt-2 space-y-1">
-            <p v-if="!quizStore.isAnswerCorrect" class="text-sm">
-              Jawabanmu: <span class="font-mono px-2 py-0.5 rounded" :class="isTypo ? 'bg-amber-100 dark:bg-amber-900/70 text-amber-900 dark:text-amber-100' : 'bg-rose-100 dark:bg-rose-900/70 text-rose-900 dark:text-rose-100'">{{ userInput || '(dilewati)' }}</span>
-            </p>
-            <p class="text-base font-semibold">
-              Romaji yang benar: <span class="font-mono bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-2 py-0.5 rounded text-indigo-700 dark:text-torii-light shadow-sm">{{ correctRomajiDisplay }}</span>
-            </p>
-          </div>
         </div>
 
         <!-- Explanation Block -->
         <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex flex-col items-center">
           <div class="flex items-center gap-2 flex-wrap justify-center">
-            <span class="text-2xl font-bold text-gray-800 dark:text-slate-100 font-jp">{{ currentWord?.character }}</span>
-            <span v-if="(currentWord as any)?.kana" class="text-base text-gray-500 dark:text-slate-400 font-medium font-jp">
+            <span v-if="(currentWord as any)?.kana" class="text-xl sm:text-2xl font-bold text-gray-700 dark:text-slate-200 font-jp">
               （{{ (currentWord as any)?.kana }}）
             </span>
 

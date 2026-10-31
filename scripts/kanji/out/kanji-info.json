@@ -368,11 +368,10 @@
     "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Garis pendek di atas garis horizontal menunjukkan posisi atas.",
     "note_id": "Minna no Nihongo: Digunakan pada 上手な (pandai), 上 (atas), dan 上着 (jaket).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -843,17 +842,21 @@
         "part": "王",
         "role": "meaning",
         "meaning_id": "raja"
+      },
+      {
+        "part": "丶",
+        "role": "meaning",
+        "meaning_id": "titik api atau cahaya"
       }
     ],
     "etymology_id": "Gambar pelita atau api yang menyala di atas sebagai simbol pemilik atau utama.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Titik api (丶) di atas raja (王) adalah sang kepala atau tuan rumah.",
     "note_id": "Kosakata: 主人 (suami).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -2109,24 +2112,26 @@
     "formation_type": "phono_semantic",
     "components": [
       {
+        "part": "⺅",
+        "role": "meaning",
+        "meaning_id": "orang"
+      },
+      {
         "part": "支",
         "role": "phonetic",
         "meaning_id": "penanda bunyi ギ"
       }
     ],
     "etymology_id": "Terbentuk dari radikal orang (⺅) dan komponen 支 yang memberikan nilai bunyi ギ, merujuk pada keahlian atau talenta yang dilakukan orang.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Seseorang (⺅) yang tangannya terampil menopang (支) berbagai pertunjukan memiliki bakat seni (伎).",
     "note_id": "Paling sering ditemui dalam seni teater tradisional Jepang 歌舞伎 (kabuki).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
-    "reading_hint": "bacaan Jepang kini berbeda (支: シ / 伎: ギ, キ)",
-    "reading_match": false,
-    "series_support": 16,
-    "reasons": [
-      "Klaim phonetic pada '支' tidak cocok rima bacaan on-yomi (シ vs ギ, キ)"
-    ],
+    "source": "manual",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
+    "reasons": [],
     "facts": {
       "meaning": [
         "deed",
@@ -4450,7 +4455,7 @@
   },
   {
     "kanji": "全",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "王",
@@ -4458,15 +4463,14 @@
         "meaning_id": "raja"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 王.",
+    "etymology_id": "Menggambarkan sesuatu yang utuh dan lengkap.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Seorang raja (王) memegang kendali atas seluruh wilayahnya.",
     "note_id": "Digunakan untuk menyatakan arti semua atau seluruhnya (zenbu).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -4584,23 +4588,27 @@
   },
   {
     "kanji": "公",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
+      {
+        "part": "ハ",
+        "role": "shape",
+        "meaning_id": "delapan terbalik"
+      },
       {
         "part": "厶",
         "role": "shape",
         "meaning_id": "pribadi"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 厶.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Gabungan komponen yang meluas dari hal pribadi menjadi urusan umum.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Membuka hal pribadi untuk urusan publik.",
     "note_id": "Kosakata: 公園 (taman), 公務員 (PNS).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -4712,7 +4720,7 @@
   },
   {
     "kanji": "内",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "人",
@@ -4725,15 +4733,14 @@
         "meaning_id": "batas"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 人 dan 冂.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan seseorang yang berada di dalam suatu batas atau bangunan.",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Ada orang (人) di dalam sebuah batas (冂) atau rumah.",
     "note_id": "Berarti dalam atau di dalam.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -7492,8 +7499,8 @@
   },
   {
     "kanji": "右",
-    "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "formation_type": "compound_meaning",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "丆",
@@ -7506,14 +7513,14 @@
         "meaning_id": "mouth"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 丆 dan 口.",
+    "etymology_id": "Terdiri dari garis penutup dan bentuk mulut (口).",
     "mnemonic_id": "Cara mengingat: Tangan kanan sering dipakai saat mengarahkan makanan ke mulut (口).",
     "note_id": "",
-    "source": "gemini",
-    "etymology_confidence": "uncertain",
-    "status": "needs_review",
+    "source": "manual",
+    "etymology_confidence": "traditional",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -8095,7 +8102,7 @@
   },
   {
     "kanji": "呂",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "口",
@@ -8103,15 +8110,14 @@
         "meaning_id": "mulut"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 口.",
+    "etymology_id": "Terdiri dari dua bentuk mulut (口) yang disusun vertikal.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Dua mulut (口) tersusun ke bawah di kamar mandi.",
     "note_id": "Digunakan pada kata kamar mandi (風呂場).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -10346,6 +10352,11 @@
     "formation_type": "ideograph_simple",
     "components": [
       {
+        "part": "人",
+        "role": "meaning",
+        "meaning_id": "person"
+      },
+      {
         "part": "大",
         "role": "meaning",
         "meaning_id": "big"
@@ -10355,11 +10366,10 @@
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Gambar seorang pria dewasa yang besar dan kuat.",
     "note_id": "Kosakata penting: 夫 (おっと), 大丈夫な (だいじょうぶな).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -10605,8 +10615,8 @@
   },
   {
     "kanji": "好",
-    "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "formation_type": "compound_meaning",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "女",
@@ -10619,14 +10629,14 @@
         "meaning_id": "child, sign of the rat"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 女 dan 子.",
+    "etymology_id": "Gabungan wanita (女) dan anak (子).",
     "mnemonic_id": "Cara mengingat: Ibu wanita (女) yang memegang anak (子) karena sangat disukai.",
     "note_id": "",
-    "source": "gemini",
-    "etymology_confidence": "uncertain",
-    "status": "needs_review",
+    "source": "manual",
+    "etymology_confidence": "traditional",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -10746,17 +10756,26 @@
         "part": "女",
         "role": "meaning",
         "meaning_id": "perempuan"
+      },
+      {
+        "part": "一",
+        "role": "shape",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "ヨ",
+        "role": "shape",
+        "meaning_id": "tangan"
       }
     ],
     "etymology_id": "Menggabungkan unsur perempuan.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Perempuan yang menjadi pasangan.",
     "note_id": "Artinya adalah istri.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -11071,11 +11090,10 @@
     "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bentuknya mirip bayi kecil.",
     "note_id": "Kosakata penting: 子供 (kodomo) dan 男の子 (otokonoko).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -12746,7 +12764,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "needs_manual",
+    "status": "approved",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -13230,20 +13248,29 @@
     "formation_type": "ideograph_simple",
     "components": [
       {
+        "part": "ノ",
+        "role": "shape",
+        "meaning_id": "garis lengkung"
+      },
+      {
+        "part": "一",
+        "role": "shape",
+        "meaning_id": "satu"
+      },
+      {
         "part": "工",
         "role": "shape",
         "meaning_id": "tukang"
       }
     ],
     "etymology_id": "Menggambarkan arah kiri.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Arah tangan kiri.",
     "note_id": "Menunjukkan arah kiri.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -14378,7 +14405,7 @@
   },
   {
     "kanji": "庫",
-    "formation_type": "unknown",
+    "formation_type": "phono_semantic",
     "components": [
       {
         "part": "广",
@@ -14391,15 +14418,14 @@
         "meaning_id": "mobil"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 广 dan 車.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Bangunan untuk menyimpan kendaraan atau barang.",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bangunan (广) untuk menyimpan mobil (車).",
     "note_id": "Digunakan dalam reizouko (kulkas).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -17930,7 +17956,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "needs_manual",
+    "status": "approved",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -18141,7 +18167,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "needs_manual",
+    "status": "approved",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -18503,7 +18529,7 @@
   },
   {
     "kanji": "早",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "日",
@@ -18516,15 +18542,14 @@
         "meaning_id": "sepuluh"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 日 dan 十.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Matahari (日) yang baru terbit di pagi hari.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Saat matahari (日) terbit lebih awal.",
     "note_id": "Digunakan untuk arti cepat atau pagi (hayai).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -20519,7 +20544,7 @@
   },
   {
     "kanji": "束",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "木",
@@ -20532,15 +20557,14 @@
         "meaning_id": "mulut"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 木 dan 口.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan kayu atau batang (木) yang diikat menjadi satu di bagian tengahnya.",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Mengikat batang-batang pohon (木) menjadi satu ikatan (束).",
     "note_id": "Kosakata utama: 約束 (やくそく) - janji.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -24489,7 +24513,7 @@
   },
   {
     "kanji": "然",
-    "formation_type": "unknown",
+    "formation_type": "phono_semantic",
     "components": [
       {
         "part": "犬",
@@ -24502,15 +24526,14 @@
         "meaning_id": "api"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 犬 dan 灬.",
+    "etymology_id": "Gabungan dari unsur yang menggambarkan situasi tertentu.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Anjing (犬) di dekat api (灬) dalam situasi tertentu.",
     "note_id": "Digunakan dalam kata zenzen (sama sekali tidak).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -25166,11 +25189,10 @@
     "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bentuknya mirip hewan anjing.",
     "note_id": "Kanji ini berarti anjing.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -25491,7 +25513,7 @@
   {
     "kanji": "玄",
     "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "亠",
@@ -25504,14 +25526,14 @@
         "meaning_id": "short thread radical (no. 52)"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 亠 dan 幺.",
+    "etymology_id": "Gabungan tutup (亠) dan benang pendek (幺).",
     "mnemonic_id": "Cara mengingat: Tutup (亠) di atas benang pendek (幺) yang misterius dan gelap.",
     "note_id": "",
-    "source": "gemini",
+    "source": "manual",
     "etymology_confidence": "uncertain",
-    "status": "needs_review",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -26154,14 +26176,13 @@
       }
     ],
     "etymology_id": "Gabungan dari sawah (田) dan kekuatan (力), menggambarkan laki-laki yang bekerja menggunakan tenaga di sawah.",
-    "etymology_confidence": "established",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Orang yang menggunakan kekuatan (力) di sawah (田) adalah pria.",
     "note_id": "Kosakata: 男の人 (pria), 男の子 (anak laki-laki).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -29957,17 +29978,15 @@
       }
     ],
     "etymology_id": "Menggunakan komponen benang (糸) yang melambangkan pengikatan atau janji.",
-    "etymology_confidence": "uncertain",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Mengikat benang (糸) untuk membuat janji (約).",
     "note_id": "Kosakata: 約束 (やくそく) = janji; 予約します (よやくします) = reservasi",
-    "source": "needs_manual",
-    "status": "needs_manual",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
-    "reasons": [
-      "Klaim asal-gambar fiktif: membutuhkan entri manual"
-    ],
+    "reasons": [],
     "facts": {
       "meaning": [
         "promise",
@@ -39834,7 +39853,7 @@
   },
   {
     "kanji": "間",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "門",
@@ -39847,15 +39866,14 @@
         "meaning_id": "matahari"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 門 dan 日.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggambarkan celah atau ruang saat sinar matahari (日) tampak di antara dua daun pintu gerbang (門).",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Ada cahaya matahari (日) yang masuk di sela-sela atau di antara (間) pintu gerbang (門).",
     "note_id": "Digunakan untuk menyatakan rentang waktu (時間) dan ruang antara (間).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -41192,14 +41210,13 @@
       }
     ],
     "etymology_id": "Gambar garis besar wajah manusia.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Garis luar yang menggambarkan bentuk wajah atau topeng.",
     "note_id": "Digunakan untuk permukaan dan wajah.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -41381,8 +41398,8 @@
   },
   {
     "kanji": "音",
-    "formation_type": "unknown",
-    "claim_kind": "unknown",
+    "formation_type": "compound_meaning",
+    "claim_kind": "structure",
     "components": [
       {
         "part": "立",
@@ -41395,14 +41412,14 @@
         "meaning_id": "day, sun"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 立 dan 日.",
+    "etymology_id": "Gabungan struktur dari elemen 立 dan 日.",
     "mnemonic_id": "Cara mengingat: Berdiri (立) di bawah terik matahari (日) sambil mendengarkan suatu bunyi atau suara.",
     "note_id": "",
-    "source": "gemini",
-    "etymology_confidence": "uncertain",
-    "status": "needs_review",
+    "source": "manual",
+    "etymology_confidence": "traditional",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {

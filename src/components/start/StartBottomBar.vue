@@ -76,7 +76,7 @@ const quizStore = useQuizStore();
           Wave: {{ currentHitunganWave.title }} • {{ selectedHitunganDirection === 'number_to_kana' ? 'Ketik Kana' : 'Numpad Touch' }}
         </span>
         <span v-else class="text-slate-400 font-bold">
-          {{ characterType === 'words' ? '8 Kosakata N5' : (characterType === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
+          {{ ['words', 'words_meaning', 'meaning_to_words'].includes(characterType) ? '8 Kosakata N5' : (characterType === 'kaiwa' ? '9 Baris Percakapan' : '16 Soal') }}
         </span>
       </div>
 

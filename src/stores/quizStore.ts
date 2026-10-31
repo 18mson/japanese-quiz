@@ -2,7 +2,16 @@ import { defineStore } from 'pinia';
 import { ref, computed, watch, toRef } from 'vue';
 import { kanjiN5Data } from '../data/kanji';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
-import { checkIsCorrect, checkIsTypo, getFallbackLocalPool, buildRepeatedQuestion } from '../utils/quizHelpers';
+import { 
+  checkIsCorrect, 
+  checkIsTypo, 
+  checkIsMeaningCorrect, 
+  checkIsMeaningTypo, 
+  checkIsJapaneseCorrect, 
+  checkIsJapaneseTypo, 
+  getFallbackLocalPool, 
+  buildRepeatedQuestion 
+} from '../utils/quizHelpers';
 import { submitLeaderboardScore } from '../services/leaderboardService';
 import { useGoalsStore } from './goalsStore';
 import { useMasteryStore } from './masteryStore';
@@ -28,7 +37,14 @@ export const useQuizStore = defineStore('quiz', () => {
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const selectedWordLessonNumber = ref<number | null>(null);
   const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>('multiple_choice');
-  const isTypingMode = computed(() => selectedMode.value === 'keyboard_typing' || quizLevel.value === 'n5' || questionType.value === 'words' || questionType.value === 'sentences' || questionType.value === 'renshuu' || questionType.value === 'kaiwa');
+  const isTypingMode = computed(() => 
+    selectedMode.value === 'keyboard_typing' || 
+    quizLevel.value === 'n5' || 
+    ['words', 'words_meaning', 'meaning_to_words'].includes(questionType.value) || 
+    questionType.value === 'sentences' || 
+    questionType.value === 'renshuu' || 
+    questionType.value === 'kaiwa'
+  );
 
   // ── Kanji Lesson Panel ──────────────────────────────────────
   const {
@@ -58,7 +74,7 @@ export const useQuizStore = defineStore('quiz', () => {
     isMeaningHintAutoOpened.value = false;
 
     const current = currentQuestion.value;
-    if (current && (questionType.value === 'words' || current.type === 'word') && isTypingMode.value) {
+    if (current && questionType.value === 'words' && isTypingMode.value) {
       const streak = masteryStore.getMasteryStreak(current.character);
       if (streak < 2) {
         showMeaningHint.value = true;
@@ -74,6 +90,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const initialQuestionCount = ref<number>(0);
   const selectedAnswer = ref<string | null>(null);
   const isAnswerCorrect = ref<boolean | null>(null);
+  const isAnswerTypo = ref<boolean>(false);
   const quizCompleted = ref(false);
   const startTime = ref(0);
   const endTime = ref(0);
@@ -128,6 +145,7 @@ export const useQuizStore = defineStore('quiz', () => {
     quizCompleted.value = false;
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
+    isAnswerTypo.value = false;
     userAnswers.value = [];
     userInput.value = '';
     showReadingHint.value = false;
@@ -273,8 +291,16 @@ export const useQuizStore = defineStore('quiz', () => {
     let isCorrectVal = false, isTypo = false;
 
     if (current) {
-      isCorrectVal = checkIsCorrect(userAnswerClean, current.romaji);
-      isTypo = isTypingMode.value && !isCorrectVal && checkIsTypo(userAnswerClean, current.romaji);
+      if (questionType.value === 'words_meaning') {
+        isCorrectVal = checkIsMeaningCorrect(userAnswerClean, (current as any).meaning || '');
+        isTypo = isTypingMode.value && !isCorrectVal && checkIsMeaningTypo(userAnswerClean, (current as any).meaning || '');
+      } else if (questionType.value === 'meaning_to_words') {
+        isCorrectVal = checkIsJapaneseCorrect(userAnswerClean, current);
+        isTypo = isTypingMode.value && !isCorrectVal && checkIsJapaneseTypo(userAnswerClean, current);
+      } else {
+        isCorrectVal = checkIsCorrect(userAnswerClean, current.romaji);
+        isTypo = isTypingMode.value && !isCorrectVal && checkIsTypo(userAnswerClean, current.romaji);
+      }
 
       let hintsUsed = 0;
       if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
@@ -310,6 +336,7 @@ export const useQuizStore = defineStore('quiz', () => {
       score.value += pointsEarned;
       selectedAnswer.value = romaji;
       isAnswerCorrect.value = isCorrectVal;
+      isAnswerTypo.value = isTypo;
 
       const charKey = current.character;
       const oldStreak = masteryStore.userStreaks[charKey] || 0;
@@ -328,7 +355,7 @@ export const useQuizStore = defineStore('quiz', () => {
         }
       }
 
-      const isWordOrKanji = questionType.value === 'words' || current.type === 'word' || current.type === 'kanji';
+      const isWordOrKanji = ['words', 'words_meaning', 'meaning_to_words'].includes(questionType.value) || current.type === 'word' || current.type === 'kanji';
       masteryStore.recordAnswerStreak(
         charKey,
         isWordOrKanji,
@@ -346,7 +373,9 @@ export const useQuizStore = defineStore('quiz', () => {
 
       userAnswers.value.push({
         character: current.character,
-        correctRomaji: Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji,
+        correctRomaji: questionType.value === 'words_meaning'
+          ? ((current as any).meaning || '')
+          : (Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji),
         userRomaji: romaji || '(skipped)',
         isCorrect: isCorrectVal,
         kana: (current as any).kana,
@@ -426,6 +455,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const nextQuestion = () => {
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
+    isAnswerTypo.value = false;
     userInput.value = '';
     showReadingHint.value = false;
     showMeaningHint.value = false;
@@ -505,6 +535,7 @@ export const useQuizStore = defineStore('quiz', () => {
     questions,
     selectedAnswer,
     isAnswerCorrect,
+    isAnswerTypo,
     quizCompleted,
     startTime,
     endTime,

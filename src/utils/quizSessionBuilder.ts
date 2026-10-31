@@ -82,7 +82,7 @@ export async function prepareStandardQuestions(params: {
         romaji: item.romaji,
         kana: item.kana,
         meaning: item.meaning,
-        type: type === 'words' ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
+        type: ['words', 'words_meaning', 'meaning_to_words'].includes(type) ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
         lesson: item.lesson
       }));
     }
@@ -93,7 +93,7 @@ export async function prepareStandardQuestions(params: {
     if (filtered.length > 0) finalPool = filtered;
   }
 
-  if (type === 'words') {
+  if (['words', 'words_meaning', 'meaning_to_words'].includes(type)) {
     const wordsMap = new Map(wordsData.map(w => [w.character, w]));
     finalPool = finalPool
       .filter(w => !!w.character && w.character.trim().length > 0)
@@ -228,7 +228,7 @@ export async function prepareWeakItemsQuestions(params: {
   if (weakPool.length === 0) weakPool = [...pool];
 
   let questions: any[] = [];
-  if (type === 'words') {
+  if (['words', 'words_meaning', 'meaning_to_words'].includes(type)) {
     questions = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak, currentLessonNumber);
   } else if (type === 'kanji') {
     const weakEntries = kanjiWritingEntries.filter(e => getMasteryStreak(e.kanji) < 3);
