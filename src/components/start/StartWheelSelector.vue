@@ -223,7 +223,7 @@ function getCardStyle(index: number) {
             <div 
               class="transition-all duration-500 ease-out overflow-hidden"
               :style="{
-                maxHeight: index === activeModeIndex ? '200px' : '0px',
+                maxHeight: index === activeModeIndex ? '100px' : '0px',
                 opacity: index === activeModeIndex ? '1' : '0',
                 marginTop: index === activeModeIndex ? '4px' : '0px',
                 transform: index === activeModeIndex ? 'translateY(0)' : 'translateY(-8px)',
@@ -233,26 +233,6 @@ function getCardStyle(index: number) {
               <p class="text-xs text-slate-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
                 {{ getModeDescription(mode, characterType, selectedHitunganTab) }}
               </p>
-
-              <!-- Sub-types buttons (Horizontal list under desc) -->
-              <div v-if="mode.subTypes && mode.subTypes.length > 0" class="flex items-center gap-1.5 sm:gap-2 pt-2 border-t border-slate-100 dark:border-slate-700/60 flex-wrap">
-                <button
-                  v-for="sub in mode.subTypes"
-                  :key="sub.key"
-                  type="button"
-                  @click.stop="emit('interact'); emit('selectSubType', sub.key);"
-                  :class="[
-                    'px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-bold transition-all cursor-pointer flex items-center gap-1',
-                    characterType === sub.key
-                      ? 'bg-aizome dark:bg-slate-100 text-white dark:text-slate-900 shadow-md'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-transparent dark:border-slate-700/50'
-                  ]"
-                >
-                  <span>{{ sub.label }}</span>
-                  <span v-if="sub.beta" class="text-[8px] sm:text-[9px] font-black px-1 py-px rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">Beta</span>
-                  <span v-if="sub.tag" class="text-[8px] sm:text-[9px] font-extrabold px-1 rounded bg-amber-400 text-amber-950 uppercase flex-shrink-0">{{ sub.tag }}</span>
-                </button>
-              </div>
             </div>
           </div>
         </div>

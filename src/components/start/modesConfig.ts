@@ -97,7 +97,9 @@ export const modesList: QuizModeDef[] = [
     defaultType: 'words',
     desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
     subTypes: [
-      { key: 'words', label: 'Kotoba' },
+      { key: 'words', label: 'Jepang → Romaji' },
+      { key: 'words_meaning', label: 'Jepang → Arti' },
+      { key: 'meaning_to_words', label: 'Arti → Jepang' },
       { key: 'renshuu', label: 'Renshuu (練習)', beta: true },
       { key: 'kaiwa', label: 'Kaiwa (会話)', beta: true },
     ],

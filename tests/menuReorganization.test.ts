@@ -48,8 +48,8 @@ test('2. Sub-types availability per category', () => {
   assert.ok(kotoba, 'Kotoba must exist');
   assert.deepStrictEqual(
     kotoba.subTypes?.map(s => s.key),
-    ['words', 'renshuu', 'kaiwa'],
-    'Kotoba must have words, renshuu, kaiwa'
+    ['words', 'words_meaning', 'meaning_to_words', 'renshuu', 'kaiwa'],
+    'Kotoba must have words, words_meaning, meaning_to_words, renshuu, kaiwa'
   );
 
   const onlineGame = modesList.find(m => m.id === 'online_game')!;

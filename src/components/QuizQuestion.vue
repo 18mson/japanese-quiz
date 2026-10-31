@@ -110,7 +110,10 @@ const instructionText = computed(() => {
     <!-- Question Character / Word Area -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-transparent border-0 shadow-none mb-3 px-4 py-2 transition-all duration-300 min-h-[90px] sm:min-h-[110px]',
+        'flex flex-col items-center justify-center bg-transparent border-0 shadow-none px-4 transition-all duration-300',
+        quizStore.selectedAnswer !== null 
+          ? 'mb-1 py-0 min-h-0' 
+          : 'mb-3 py-2 min-h-[90px] sm:min-h-[110px]',
         isWord 
           ? 'w-full max-w-md' 
           : 'w-full max-w-xs sm:max-w-sm'
@@ -125,33 +128,31 @@ const instructionText = computed(() => {
             </span>
 
             <!-- Hints for Meaning to Words Mode -->
-            <div class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
-              <template v-if="quizStore.selectedAnswer === null">
-                <!-- Audio Speech Hint -->
-                <button 
-                  type="button"
-                  class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
-                  @click="playWordAudio"
-                  title="Dengarkan pelafalan bahasa Jepang"
-                >
-                  <Volume2 class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
-                  <span>Dengar Pelafalan</span>
-                </button>
+            <div v-if="quizStore.selectedAnswer === null" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
+              <!-- Audio Speech Hint -->
+              <button 
+                type="button"
+                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
+                @click="playWordAudio"
+                title="Dengarkan pelafalan bahasa Jepang"
+              >
+                <Volume2 class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
+                <span>Dengar Pelafalan</span>
+              </button>
 
-                <!-- First Letter Hint -->
-                <button 
-                  v-if="!showReadingHint"
-                  type="button"
-                  class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
-                  @click="showReadingHint = true"
-                >
-                  <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
-                  <span>Petunjuk Huruf</span>
-                </button>
-                <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
-                  Awal: <span class="font-jp">{{ firstCharKana }}</span> ({{ firstCharRomaji }}...)
-                </span>
-              </template>
+              <!-- First Letter Hint -->
+              <button 
+                v-if="!showReadingHint"
+                type="button"
+                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
+                @click="showReadingHint = true"
+              >
+                <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
+                <span>Petunjuk Huruf</span>
+              </button>
+              <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
+                Awal: <span class="font-jp">{{ firstCharKana }}</span> ({{ firstCharRomaji }}...)
+              </span>
             </div>
           </template>
 
@@ -169,37 +170,35 @@ const instructionText = computed(() => {
             </span>
             
             <!-- Interactive Hints (Only for Words when not answered yet) -->
-            <div v-if="isWord" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
-              <template v-if="quizStore.selectedAnswer === null">
-                <!-- Reading Hint Button/Pill (Available in both words and words_meaning) -->
-                <template v-if="hasValidReadingHint">
-                  <button 
-                    v-if="!showReadingHint"
-                    class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
-                    @click="showReadingHint = true"
-                  >
-                    <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
-                    <span>Reading Hint</span>
-                  </button>
-                  <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
-                    Reading: <span class="font-jp">{{ currentKana }}</span>
-                  </span>
-                </template>
+            <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
+              <!-- Reading Hint Button/Pill (Available in both words and words_meaning) -->
+              <template v-if="hasValidReadingHint">
+                <button 
+                  v-if="!showReadingHint"
+                  class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
+                  @click="showReadingHint = true"
+                >
+                  <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
+                  <span>Reading Hint</span>
+                </button>
+                <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
+                  Reading: <span class="font-jp">{{ currentKana }}</span>
+                </span>
+              </template>
 
-                <!-- Meaning Hint Button/Pill (Only in standard words mode, NOT words_meaning) -->
-                <template v-if="currentMeaning && quizStore.questionType !== 'words_meaning'">
-                  <button 
-                    v-if="!showMeaningHint"
-                    class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
-                    @click="quizStore.openMeaningHint()"
-                  >
-                    <BookOpen class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
-                    <span>Petunjuk Arti</span>
-                  </button>
-                  <span v-else class="text-xs sm:text-sm font-bold text-teal-800 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
-                    Arti: {{ currentMeaning }}
-                  </span>
-                </template>
+              <!-- Meaning Hint Button/Pill (Only in standard words mode, NOT words_meaning) -->
+              <template v-if="currentMeaning && quizStore.questionType !== 'words_meaning'">
+                <button 
+                  v-if="!showMeaningHint"
+                  class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 shadow-xs cursor-pointer hover:shadow focus:outline-none flex items-center gap-1.5 active:scale-95"
+                  @click="quizStore.openMeaningHint()"
+                >
+                  <BookOpen class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
+                  <span>Petunjuk Arti</span>
+                </button>
+                <span v-else class="text-xs sm:text-sm font-bold text-teal-800 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-xs">
+                  Arti: {{ currentMeaning }}
+                </span>
               </template>
             </div>
           </template>
@@ -210,33 +209,33 @@ const instructionText = computed(() => {
     <!-- Answer Feedback directly below the question (Shown on incorrect or typo, hidden on correct answer) -->
     <div 
       v-if="quizStore.selectedAnswer !== null && (!quizStore.isAnswerCorrect || isTypo)" 
-      class="flex flex-col sm:flex-row items-center justify-center gap-1.5 text-center px-4 animate-fadeIn"
+      class="flex flex-col items-center justify-center gap-1.5 text-center px-4 animate-fadeIn mt-0.5 mb-2"
     >
       <template v-if="quizStore.questionType === 'words_meaning'">
-        <span class="text-sm sm:text-base font-semibold text-gray-700 dark:text-slate-200">Arti yang benar:</span>
-        <span class="text-sm sm:text-base font-bold bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-1 rounded-lg text-indigo-700 dark:text-torii-light shadow-xs">
+        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Arti yang benar:</span>
+        <span class="text-base sm:text-xl md:text-2xl font-bold bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md">
           {{ currentMeaning }}
         </span>
       </template>
 
       <template v-else-if="quizStore.questionType === 'meaning_to_words'">
-        <span class="text-sm sm:text-base font-semibold text-gray-700 dark:text-slate-200">Jawaban yang benar:</span>
-        <div class="inline-flex items-center gap-1.5 flex-wrap justify-center">
-          <span class="text-base font-bold bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-1 rounded-lg text-indigo-700 dark:text-torii-light shadow-xs font-jp">
+        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
+        <div class="inline-flex items-center gap-2 flex-wrap justify-center">
+          <span class="text-xl sm:text-2xl md:text-3xl font-black bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md font-jp">
             {{ character }}
           </span>
-          <span v-if="currentKana && currentKana !== character" class="text-sm text-gray-500 dark:text-slate-400 font-jp">
+          <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
             （{{ currentKana }}）
           </span>
-          <span class="text-xs sm:text-sm font-mono text-indigo-600 dark:text-torii-light">
+          <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light">
             / {{ correctRomajiDisplay }}
           </span>
         </div>
       </template>
 
       <template v-else>
-        <span class="text-sm sm:text-base font-semibold text-gray-700 dark:text-slate-200">Romaji yang benar:</span>
-        <span class="text-sm sm:text-base font-mono font-bold bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 px-3 py-1 rounded-lg text-indigo-700 dark:text-torii-light shadow-xs">
+        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
+        <span class="text-xl sm:text-2xl md:text-3xl font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md tracking-wider">
           {{ correctRomajiDisplay }}
         </span>
       </template>

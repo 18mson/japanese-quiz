@@ -17,7 +17,6 @@ import StartBottomBar from './start/StartBottomBar.vue';
 import KanaCategoryPanel, { type KanaCategoryType } from './start/panels/KanaCategoryPanel.vue';
 import KanjiLessonPanel from './start/panels/KanjiLessonPanel.vue';
 import HitunganWavePanel from './start/panels/HitunganWavePanel.vue';
-import KotobaSubModePanel, { type KotobaSubModeType } from './start/panels/KotobaSubModePanel.vue';
 import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
 import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
 import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
@@ -58,7 +57,7 @@ const characterTypes = ref(modesList[activeModeIndex.value].defaultType);
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>(modesList[activeModeIndex.value].level);
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<KanaCategoryType>('all');
-const selectedKotobaSubMode = ref<KotobaSubModeType>('words');
+const selectedKotobaSubMode = ref<'words' | 'words_meaning' | 'meaning_to_words'>('words');
 
 // Hitungan State
 const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
@@ -195,11 +194,22 @@ const handleStart = async () => {
   if (modeId === 'kotoba') {
     quizStore.selectedWordLessonNumber = null;
     quizStore.selectedMode = 'sentence_typing';
-    const targetType = subType === 'words' ? selectedKotobaSubMode.value : subType;
+    const targetType = ['words', 'words_meaning', 'meaning_to_words'].includes(subType)
+      ? subType
+      : (subType === 'words' ? selectedKotobaSubMode.value : subType);
     await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
     emit('start');
     return;
   }
+};
+
+const handleStartSubtype = async (subKey: string) => {
+  hasUserInteracted.value = true;
+  characterTypes.value = subKey;
+  if (['words', 'words_meaning', 'meaning_to_words'].includes(subKey)) {
+    selectedKotobaSubMode.value = subKey as any;
+  }
+  await handleStart();
 };
 
 // Keyboard Section Navigation
@@ -434,16 +444,14 @@ watch(characterTypes, (newVal) => {
               @interact="deactivateKeyboardNav"
             />
 
-            <!-- Kotoba Sub-Mode Panel (Jepang -> Romaji, Jepang -> Arti, Arti -> Jepang) -->
-            <KotobaSubModePanel
-              v-else-if="activeMode.id === 'kotoba' && characterTypes === 'words'"
-              v-model="selectedKotobaSubMode"
-              @interact="deactivateKeyboardNav"
-            />
+            <!-- Kotoba Info -->
+            <div v-else-if="activeMode.id === 'kotoba'" key="kotoba-info" class="text-xs text-slate-500 dark:text-slate-400 font-medium text-center">
+              Pilih salah satu format kuis di bawah untuk langsung mulai belajar.
+            </div>
 
-            <!-- Default Subtype Fallback Info -->
-            <div v-else key="mode-info" class="text-xs text-gray-500 dark:text-slate-400 font-medium text-center">
-              Pilihan Sub-menu: {{ activeMode.subTypes?.map(s => s.label).join(', ') }}
+            <!-- Default Fallback Info -->
+            <div v-else key="mode-info" class="text-xs text-slate-500 dark:text-slate-400 font-medium text-center">
+              Pilih mode kuis di bawah untuk langsung mulai.
             </div>
           </Transition>
         </StartWheelSelector>
@@ -461,12 +469,13 @@ watch(characterTypes, (newVal) => {
       :focused-section="focusedSection"
       :active-mode-id="activeMode.id"
       :selected-level="selectedLevel"
-      :character-type="activeMode.id === 'kotoba' && characterTypes === 'words' ? selectedKotobaSubMode : characterTypes"
+      :character-type="characterTypes"
       :selected-kana-category="selectedKanaCategory"
       :current-hitungan-wave="currentHitunganWave"
       :selected-hitungan-direction="selectedHitunganDirection"
       :is-loading="quizStore.isLoading"
       @start="handleStart"
+      @start-subtype="handleStartSubtype"
       @interact="deactivateKeyboardNav"
     />
 

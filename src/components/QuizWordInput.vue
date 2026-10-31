@@ -151,7 +151,7 @@ const placeholderText = computed(() => {
   if (quizStore.questionType === 'meaning_to_words') {
     return 'Ketik kanji, kana, atau romaji...';
   }
-  return 'Type romaji here...';
+  return 'Ketik romaji di sini...';
 });
 
 import { useMasteryStore } from '../stores/masteryStore';
