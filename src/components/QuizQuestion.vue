@@ -220,8 +220,15 @@ const instructionText = computed(() => {
       class="flex flex-col items-center justify-center gap-1.5 text-center px-4 animate-fadeIn mt-0.5 mb-2"
     >
       <template v-if="quizStore.questionType === 'words_meaning'">
+        <!-- Romaji: muncul setelah submit di bawah soal tanpa highlight seperti jawaban -->
+        <div v-if="correctRomajiDisplay" class="mt-1 flex items-center justify-center gap-2 flex-wrap">
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji:</span>
+          <span class="text-base sm:text-lg font-mono font-bold text-gray-800 dark:text-slate-200">{{ correctRomajiDisplay }}</span>
+        </div>
+
+        <!-- Jawaban arti yang benar (hanya jika salah atau typo) -->
         <template v-if="!quizStore.isAnswerCorrect || isTypo">
-          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Artinya:</span>
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mt-1">Artinya yang benar:</span>
           <span class="text-base sm:text-xl md:text-2xl font-bold bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md">
             {{ currentMeaning }}
           </span>
