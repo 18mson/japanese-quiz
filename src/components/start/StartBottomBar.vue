@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { 
-  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen
+  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen,
+  ChevronLeft, ChevronRight, CheckCircle2
 } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
-import type { HitunganWaveDef } from '../../data/hitunganWaves';
+import { HITUNGAN_WAVES, type HitunganWaveDef } from '../../data/hitunganWaves';
 import { modesList, type QuizModeDef, type QuizModeSubType } from './modesConfig';
 
 const props = defineProps<{
@@ -22,6 +23,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'start'): void;
   (e: 'start-subtype', subKey: string): void;
+  (e: 'start-hitungan-wave', wave: HitunganWaveDef): void;
   (e: 'interact'): void;
 }>();
 
@@ -34,20 +36,98 @@ const activeMode = computed<QuizModeDef | undefined>(() => {
 // Menentukan apakah mode ini memiliki multi sub-menu di tombol mulai
 const hasMultipleSubTypes = computed(() => {
   if (!activeMode.value?.subTypes) return false;
-  // Kanji hanya memiliki 1 subType (writing), jadi tetap tombol tunggal
-  if (props.activeModeId === 'kanji') return false;
+  // Kanji, Kotoba, dan Lainnya memiliki custom start layout
+  if (props.activeModeId === 'kanji' || props.activeModeId === 'kotoba' || props.activeModeId === 'lainnya') return false;
   return activeMode.value.subTypes.length > 1;
 });
 
-// Pemetaan sub-menu untuk Kotoba (dikelompokkan agar tampilan sangat rapi)
-const kotobaVocabSubTypes = computed(() => {
-  if (props.activeModeId !== 'kotoba') return [];
-  return activeMode.value?.subTypes?.filter(s => ['words', 'words_meaning', 'meaning_to_words'].includes(s.key)) || [];
+// 3 opsi sub-mode kuis kosakata untuk Kotoba
+const kotobaVocabOptions = [
+  { key: 'words', label: 'Jepang → Romaji' },
+  { key: 'words_meaning', label: 'Jepang → Arti' },
+  { key: 'meaning_to_words', label: 'Arti → Jepang' },
+];
+
+// Opsi kuis untuk Mix Kana pada Mode Lainnya
+const mixKanaSubTypes = [
+  { key: 'multiple_choice', label: 'Pilihan Ganda' },
+  { key: 'keyboard_typing', label: 'Ketik Kana' },
+  { key: 'writing', label: 'Tulis Huruf' },
+];
+
+// Gelombang hitungan yang sesuai dengan sub-menu yang aktif pada mode Lainnya
+const hitunganWavesForMode = computed(() => {
+  if (props.characterType === 'angka') {
+    return HITUNGAN_WAVES.filter(w => w.type === 'number_range');
+  }
+  if (props.characterType === 'counter') {
+    return HITUNGAN_WAVES.filter(w => w.type === 'counter');
+  }
+  if (props.characterType === 'campuran') {
+    return HITUNGAN_WAVES.filter(w => w.type === 'mixed');
+  }
+  return [];
 });
 
-const kotobaSentenceSubTypes = computed(() => {
-  if (props.activeModeId !== 'kotoba') return [];
-  return activeMode.value?.subTypes?.filter(s => ['renshuu', 'kaiwa'].includes(s.key)) || [];
+// Paginasi tombol wave pada navbar bawah (3 item per tampilan)
+const hitunganWaveStartIndex = ref(0);
+const hitunganPageSize = computed(() => 3);
+
+watch(() => props.characterType, () => {
+  hitunganWaveStartIndex.value = 0;
+});
+
+const canPrevHitunganWaves = computed(() => hitunganWaveStartIndex.value > 0);
+const canNextHitunganWaves = computed(() => {
+  return hitunganWaveStartIndex.value + hitunganPageSize.value < hitunganWavesForMode.value.length;
+});
+
+const prevHitunganWaves = () => {
+  emit('interact');
+  hitunganWaveStartIndex.value = Math.max(0, hitunganWaveStartIndex.value - hitunganPageSize.value);
+};
+
+const nextHitunganWaves = () => {
+  emit('interact');
+  if (canNextHitunganWaves.value) {
+    hitunganWaveStartIndex.value = Math.min(
+      hitunganWavesForMode.value.length - hitunganPageSize.value,
+      hitunganWaveStartIndex.value + hitunganPageSize.value
+    );
+  }
+};
+
+const visibleHitunganWaves = computed(() => {
+  return hitunganWavesForMode.value.slice(
+    hitunganWaveStartIndex.value,
+    hitunganWaveStartIndex.value + hitunganPageSize.value
+  );
+});
+
+// Detail deskripsi kategori huruf untuk Session Info Pill bawah
+const detailedKanaCategoryLabel = computed(() => {
+  const isKatakana = props.activeModeId === 'katakana';
+  const isMix = props.activeModeId === 'lainnya';
+
+  if (isMix) {
+    if (props.selectedKanaCategory === 'basic') return 'Kategori: 46 Huruf Dasar (Hiragana & Katakana)';
+    if (props.selectedKanaCategory === 'dakuten') return 'Kategori: 25 Huruf Dakuten & Handakuten (Campuran)';
+    if (props.selectedKanaCategory === 'combination') return 'Kategori: 33 Huruf Kombinasi / Youon (Campuran)';
+    return 'Kategori: Semua Variasi Huruf (Campuran Hiragana & Katakana)';
+  }
+
+  if (isKatakana) {
+    if (props.selectedKanaCategory === 'basic') return 'Kategori: 46 Huruf Dasar Seion (ア - ン)';
+    if (props.selectedKanaCategory === 'dakuten') return 'Kategori: 25 Huruf Dakuten & Handakuten (ガ - パ)';
+    if (props.selectedKanaCategory === 'combination') return 'Kategori: 33 Huruf Kombinasi / Youon (キャ - リョ)';
+    return 'Kategori: Semua Variasi Huruf (104 Huruf Katakana)';
+  }
+
+  // Hiragana
+  if (props.selectedKanaCategory === 'basic') return 'Kategori: 46 Huruf Dasar Seion (あ - ん)';
+  if (props.selectedKanaCategory === 'dakuten') return 'Kategori: 25 Huruf Dakuten & Handakuten (が - ぱ)';
+  if (props.selectedKanaCategory === 'combination') return 'Kategori: 33 Huruf Kombinasi / Youon (きゃ - りょ)';
+  return 'Kategori: Semua Variasi Huruf (104 Huruf Hiragana)';
 });
 
 const standardSubTypes = computed<QuizModeSubType[]>(() => {
@@ -69,8 +149,11 @@ const getButtonThemeClass = (modeId: string, subKey?: string) => {
     return 'bg-gradient-to-r from-matcha-dark via-matcha to-emerald-700 hover:from-matcha hover:to-emerald-600 shadow-emerald-600/25';
   }
   if (modeId === 'kotoba') {
-    if (subKey === 'renshuu' || subKey === 'kaiwa') {
-      return 'bg-gradient-to-r from-slate-800 via-aizome to-aizome-hover hover:from-slate-700 hover:to-aizome dark:from-slate-800 dark:via-rose-700 dark:to-amber-700 shadow-aizome/25';
+    if (subKey === 'renshuu') {
+      return 'bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-800 hover:from-indigo-600 hover:to-indigo-700 shadow-indigo-500/25';
+    }
+    if (subKey === 'kaiwa') {
+      return 'bg-gradient-to-r from-purple-700 via-purple-600 to-indigo-800 hover:from-purple-600 hover:to-indigo-700 shadow-purple-500/25';
     }
     return 'bg-aizome hover:bg-aizome-hover dark:bg-gradient-to-r dark:from-amber-600 dark:via-orange-600 dark:to-rose-700 dark:hover:from-amber-500 dark:hover:to-rose-600 shadow-aizome/20 dark:shadow-amber-500/25';
   }
@@ -122,28 +205,43 @@ const handleSubClick = (subKey: string) => {
         class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium"
       >
         <span v-if="['hiragana', 'katakana'].includes(activeModeId) || (activeModeId === 'lainnya' && characterType === 'mix')" class="text-aizome dark:text-torii-light font-bold">
-          Kategori: {{ selectedKanaCategory === 'all' ? 'Semua Huruf' : (selectedKanaCategory === 'basic' ? 'Dasar' : (selectedKanaCategory === 'dakuten' ? 'Dakuten' : 'Kombinasi')) }}
+          {{ detailedKanaCategoryLabel }}
         </span>
         <span v-else-if="activeModeId === 'kanji'" class="text-matcha dark:text-matcha font-bold">
-          Target: {{ quizStore.currentKanjiLessonLabel }} ({{ quizStore.currentKanjiLessonStats.total }} Kanji N5)
+          Target: {{ quizStore.currentKanjiLessonLabel }} • {{ quizStore.currentKanjiLessonStats.mastered }} / {{ quizStore.currentKanjiLessonStats.total }} Kanji Dikuasai ({{ quizStore.currentKanjiLessonStats.percentage }}%)
+        </span>
+        <span v-else-if="activeModeId === 'kotoba' && characterType === 'renshuu'" class="text-indigo-600 dark:text-indigo-400 font-bold">
+          Pelajaran {{ quizStore.currentLessonNumber }}: {{ quizStore.renshuuProgressStats.masteredCount }} / {{ quizStore.renshuuProgressStats.totalCount }} Soal Dikuasai ({{ quizStore.renshuuProgressStats.progressPercent }}%)
+        </span>
+        <span v-else-if="activeModeId === 'kotoba' && characterType === 'kaiwa'" class="text-purple-600 dark:text-purple-400 font-bold">
+          Pelajaran {{ quizStore.currentLessonNumber }}: Dialog Percakapan N5
+        </span>
+        <span v-else-if="activeModeId === 'kotoba'" class="text-slate-500 dark:text-slate-400 font-bold">
+          Pilih variasi kuis kosakata untuk langsung mulai
         </span>
         <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
           Tantangan Harian (Audio & Suara)
         </span>
-        <span v-else-if="activeModeId === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterType)" class="text-emerald-600 dark:text-emerald-400 font-bold">
-          Wave: {{ currentHitunganWave.title }} • {{ selectedHitunganDirection === 'number_to_kana' ? 'Ketik Kana' : 'Numpad Touch' }}
+        <span v-else-if="activeModeId === 'lainnya' && characterType === 'angka'" class="text-emerald-600 dark:text-emerald-400 font-bold">
+          Level Angka N5 (1–10.000) • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Angka ➔ かな' : 'かな ➔ Angka' }}
+        </span>
+        <span v-else-if="activeModeId === 'lainnya' && characterType === 'counter'" class="text-emerald-600 dark:text-emerald-400 font-bold">
+          9 Variasi Kata Bantu Hitung (助数詞) • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Counter ➔ かな' : 'かな ➔ Counter' }}
+        </span>
+        <span v-else-if="activeModeId === 'lainnya' && characterType === 'campuran'" class="text-emerald-600 dark:text-emerald-400 font-bold">
+          Review Campuran Angka & Counter • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Campuran ➔ かな' : 'かな ➔ Angka' }}
         </span>
         <span v-else class="text-slate-400 font-bold">
           Pilih sub-menu untuk langsung mulai kuis
         </span>
       </div>
 
-      <!-- KONDISI A: MODE KOTOBA (Dikelompokkan Kosakata & Pola Kalimat) -->
-      <div v-if="activeModeId === 'kotoba'" class="flex flex-col gap-1.5 w-full">
-        <!-- 3 Tombol Varian Kosakata -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
+      <!-- KONDISI A: MODE KOTOBA -->
+      <div v-if="activeModeId === 'kotoba'" class="w-full">
+        <!-- Sub-menu 1: Kotoba (Kosakata) -> 3 opsi langsung mulai -->
+        <div v-if="characterType === 'words' || ['words_meaning', 'meaning_to_words'].includes(characterType)" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
           <button
-            v-for="sub in kotobaVocabSubTypes"
+            v-for="sub in kotobaVocabOptions"
             :key="sub.key"
             type="button"
             :disabled="isLoading"
@@ -155,25 +253,117 @@ const handleSubClick = (subKey: string) => {
           >
             <component :is="getSubTypeIcon(sub.key)" class="w-4 h-4 text-amber-300 shrink-0" />
             <span class="truncate">{{ sub.label }}</span>
+            <Zap class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
           </button>
         </div>
 
-        <!-- 2 Tombol Pola Kalimat (Renshuu & Kaiwa) -->
-        <div class="grid grid-cols-2 gap-1.5 sm:gap-2.5 w-full">
+        <!-- Sub-menu 2: Renshuu -> Tombol Mulai Tunggal -->
+        <div v-else-if="characterType === 'renshuu'" class="flex flex-col gap-2 w-full">
           <button
-            v-for="sub in kotobaSentenceSubTypes"
+            type="button"
+            :disabled="isLoading"
+            @click.stop="emit('interact'); emit('start');"
+            :class="[
+              'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-[0.99]',
+              getButtonThemeClass(activeModeId, 'renshuu')
+            ]"
+          >
+            <span>Mulai Sesi Berikutnya (10 Soal)</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </button>
+        </div>
+
+        <!-- Sub-menu 3: Kaiwa -> Tombol Mulai Tunggal -->
+        <button
+          v-else-if="characterType === 'kaiwa'"
+          type="button"
+          :disabled="isLoading"
+          @click.stop="emit('interact'); emit('start');"
+          :class="[
+            'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-[0.99]',
+            getButtonThemeClass(activeModeId, 'kaiwa')
+          ]"
+        >
+          <span>Mulai Percakapan Kaiwa</span>
+          <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+        </button>
+      </div>
+
+      <!-- KONDISI B: MODE LAINNYA (Angka, Counter, Campuran -> Paginated Waves; Mix -> 3 Sub-mode Kana) -->
+      <div v-else-if="activeModeId === 'lainnya'" class="w-full">
+        <!-- Jika Sub-menu Angka / Counter / Campuran: Paginated Wave Action Buttons -->
+        <div v-if="['angka', 'counter', 'campuran'].includes(characterType)" class="flex items-center gap-1.5 sm:gap-2.5 w-full">
+          <!-- Prev Button -->
+          <button
+            v-if="hitunganWavesForMode.length > hitunganPageSize"
+            type="button"
+            @click.stop="prevHitunganWaves"
+            :disabled="!canPrevHitunganWaves || isLoading"
+            class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm"
+            title="Sebelumnya"
+          >
+            <ChevronLeft class="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+
+          <!-- Wave Action Buttons -->
+          <div 
+            :class="[
+              'grid gap-1.5 sm:gap-2.5 flex-1 min-w-0',
+              visibleHitunganWaves.length === 1 
+                ? 'grid-cols-1' 
+                : (visibleHitunganWaves.length === 2 ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-3')
+            ]"
+          >
+            <button
+              v-for="wave in visibleHitunganWaves"
+              :key="wave.wave_key"
+              type="button"
+              :disabled="isLoading"
+              @click.stop="emit('interact'); emit('start-hitungan-wave', wave)"
+              :class="[
+                'py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
+                getButtonThemeClass(activeModeId)
+              ]"
+            >
+              <Calculator class="w-4 h-4 text-emerald-200 shrink-0" />
+              <span class="truncate">{{ wave.shortTitle }}</span>
+              <CheckCircle2 
+                v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen"
+                class="w-3.5 h-3.5 text-emerald-200 shrink-0" 
+              />
+              <Zap class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
+            </button>
+          </div>
+
+          <!-- Next Button -->
+          <button
+            v-if="hitunganWavesForMode.length > hitunganPageSize"
+            type="button"
+            @click.stop="nextHitunganWaves"
+            :disabled="!canNextHitunganWaves || isLoading"
+            class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm"
+            title="Berikutnya"
+          >
+            <ChevronRight class="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+        </div>
+
+        <!-- Jika Sub-menu Mix Kana: 3 Tombol Kuis (Pilihan Ganda, Ketik Kana, Tulis Huruf) -->
+        <div v-else-if="characterType === 'mix'" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
+          <button
+            v-for="sub in mixKanaSubTypes"
             :key="sub.key"
             type="button"
             :disabled="isLoading"
             @click.stop="handleSubClick(sub.key)"
             :class="[
-              'py-2.5 sm:py-3 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-sm hover:shadow-md flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
+              'py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
               getButtonThemeClass(activeModeId, sub.key)
             ]"
           >
-            <component :is="getSubTypeIcon(sub.key)" class="w-3.5 h-3.5 text-amber-300 shrink-0" />
+            <component :is="getSubTypeIcon(sub.key)" class="w-4 h-4 text-amber-300 shrink-0" />
             <span class="truncate">{{ sub.label }}</span>
-            <span v-if="sub.beta" class="text-[8px] sm:text-[9px] font-black px-1 rounded bg-amber-400 text-amber-950 uppercase shrink-0">Beta</span>
+            <Zap class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
           </button>
         </div>
       </div>

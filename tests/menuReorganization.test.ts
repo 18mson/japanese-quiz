@@ -48,8 +48,8 @@ test('2. Sub-types availability per category', () => {
   assert.ok(kotoba, 'Kotoba must exist');
   assert.deepStrictEqual(
     kotoba.subTypes?.map(s => s.key),
-    ['words', 'words_meaning', 'meaning_to_words', 'renshuu', 'kaiwa'],
-    'Kotoba must have words, words_meaning, meaning_to_words, renshuu, kaiwa'
+    ['words', 'renshuu', 'kaiwa'],
+    'Kotoba must have words, renshuu, kaiwa'
   );
 
   const onlineGame = modesList.find(m => m.id === 'online_game')!;
@@ -125,4 +125,87 @@ test('4. Descriptions for all modes and sub-types', () => {
       assert.ok(desc && desc.length > 5, `Description for ${mode.id} should not be empty`);
     }
   });
+});
+
+test('5. Dynamic Kana Category Descriptions', () => {
+  const hiragana = modesList.find(m => m.id === 'hiragana')!;
+  assert.strictEqual(
+    getModeDescription(hiragana, 'multiple_choice', 'angka', 'basic'),
+    'Kuasai 46 huruf dasar Hiragana (seion) dari baris A (あ) hingga N (ん).'
+  );
+  assert.strictEqual(
+    getModeDescription(hiragana, 'multiple_choice', 'angka', 'dakuten'),
+    'Kuasai variasi bunyi tebal Dakuten ( が, ざ, だ, ば ) dan Handakuten ( ぱ ).'
+  );
+  assert.strictEqual(
+    getModeDescription(hiragana, 'multiple_choice', 'angka', 'combination'),
+    'Kuasai variasi gabungan huruf Kombinasi / Youon ( きゃ, しゃ, ちゃ, dll ).'
+  );
+  assert.strictEqual(
+    getModeDescription(hiragana, 'multiple_choice', 'angka', 'all'),
+    'Kuasai 46 huruf dasar Hiragana, variasi Dakuten, dan Kombinasi (Youon).'
+  );
+
+  const katakana = modesList.find(m => m.id === 'katakana')!;
+  assert.strictEqual(
+    getModeDescription(katakana, 'multiple_choice', 'angka', 'basic'),
+    'Kuasai 46 huruf dasar Katakana (seion) dari baris A (ア) hingga N (ン).'
+  );
+  assert.strictEqual(
+    getModeDescription(katakana, 'multiple_choice', 'angka', 'dakuten'),
+    'Kuasai variasi bunyi tebal Dakuten Katakana ( ガ, ザ, ダ, バ ) dan Handakuten ( パ ).'
+  );
+  assert.strictEqual(
+    getModeDescription(katakana, 'multiple_choice', 'angka', 'combination'),
+    'Kuasai variasi gabungan huruf Kombinasi / Youon Katakana ( キャ, シャ, チャ, dll ).'
+  );
+
+  const kanji = modesList.find(m => m.id === 'kanji')!;
+  assert.strictEqual(
+    getModeDescription(kanji, 'writing', 'angka', undefined, 0),
+    'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.'
+  );
+  assert.strictEqual(
+    getModeDescription(kanji, 'writing', 'angka', undefined, 1),
+    'Latihan menggambar langsung huruf Kanji N5 Pelajaran 1 dengan urutan goresan di layar.'
+  );
+  assert.strictEqual(
+    getModeDescription(kanji, 'writing', 'angka', undefined, 5),
+    'Latihan menggambar langsung huruf Kanji N5 Pelajaran 5 dengan urutan goresan di layar.'
+  );
+});
+
+test('6. Subtypes of Lainnya navigation cycle', () => {
+  const lainnya = modesList.find(m => m.id === 'lainnya')!;
+  const subKeys = lainnya.subTypes!.map(s => s.key);
+  assert.deepStrictEqual(subKeys, ['angka', 'counter', 'campuran', 'mix']);
+
+  // Simulate ArrowRight cycling
+  let idx = 0; // angka
+  idx = (idx + 1) % subKeys.length;
+  assert.strictEqual(subKeys[idx], 'counter');
+  idx = (idx + 1) % subKeys.length;
+  assert.strictEqual(subKeys[idx], 'campuran');
+  idx = (idx + 1) % subKeys.length;
+  assert.strictEqual(subKeys[idx], 'mix');
+  idx = (idx + 1) % subKeys.length;
+  assert.strictEqual(subKeys[idx], 'angka');
+
+  // Descriptions for all Lainnya sub-modes
+  assert.strictEqual(
+    getModeDescription(lainnya, 'angka', 'angka'),
+    'Latihan angka dasar 1-10, puluhan, ratusan, dan ribuan bertahap.'
+  );
+  assert.strictEqual(
+    getModeDescription(lainnya, 'counter', 'counter'),
+    'Latihan kata bantu hitung (counter) seperti 本, 杯, 匹, 個, dll.'
+  );
+  assert.strictEqual(
+    getModeDescription(lainnya, 'campuran', 'campuran'),
+    'Review gabungan dari seluruh wave hitungan yang sudah dipelajari.'
+  );
+  assert.strictEqual(
+    getModeDescription(lainnya, 'mix', 'angka', 'combination'),
+    'Latihan campuran variasi kombinasi / youon Hiragana & Katakana.'
+  );
 });

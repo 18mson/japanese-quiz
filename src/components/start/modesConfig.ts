@@ -97,9 +97,7 @@ export const modesList: QuizModeDef[] = [
     defaultType: 'words',
     desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
     subTypes: [
-      { key: 'words', label: 'Jepang → Romaji' },
-      { key: 'words_meaning', label: 'Jepang → Arti' },
-      { key: 'meaning_to_words', label: 'Arti → Jepang' },
+      { key: 'words', label: 'Kotoba' },
       { key: 'renshuu', label: 'Renshuu (練習)', beta: true },
       { key: 'kaiwa', label: 'Kaiwa (会話)', beta: true },
     ],
@@ -144,25 +142,36 @@ export const modesList: QuizModeDef[] = [
   },
 ];
 
-export function getModeDescription(mode: QuizModeDef, characterType: string, hitunganTab: string): string {
+export function getModeDescription(
+  mode: QuizModeDef, 
+  characterType: string, 
+  hitunganTab: string,
+  kanaCategory?: string,
+  kanjiLessonNumber?: number
+): string {
   if (mode.id === 'daily') {
     return 'Tantangan 5–10 kalimat acak harian dengan input suara & ketik.';
   }
   if (mode.id === 'hiragana') {
-    if (characterType === 'multiple_choice') return 'Latihan pilihan ganda huruf Hiragana secara cepat & interaktif.';
-    if (characterType === 'keyboard_typing') return 'Ketik huruf Hiragana dengan keyboard presisi.';
-    if (characterType === 'writing') return 'Latihan menggambar langsung huruf Hiragana dengan urutan goresan di layar.';
+    if (kanaCategory === 'basic') return 'Kuasai 46 huruf dasar Hiragana (seion) dari baris A (あ) hingga N (ん).';
+    if (kanaCategory === 'dakuten') return 'Kuasai variasi bunyi tebal Dakuten ( が, ざ, だ, ば ) dan Handakuten ( ぱ ).';
+    if (kanaCategory === 'combination') return 'Kuasai variasi gabungan huruf Kombinasi / Youon ( きゃ, しゃ, ちゃ, dll ).';
+    return 'Kuasai 46 huruf dasar Hiragana, variasi Dakuten, dan Kombinasi (Youon).';
   }
   if (mode.id === 'katakana') {
-    if (characterType === 'multiple_choice') return 'Latihan pilihan ganda huruf Katakana secara cepat & interaktif.';
-    if (characterType === 'keyboard_typing') return 'Ketik huruf Katakana dengan keyboard presisi.';
-    if (characterType === 'writing') return 'Latihan menggambar langsung huruf Katakana dengan urutan goresan di layar.';
+    if (kanaCategory === 'basic') return 'Kuasai 46 huruf dasar Katakana (seion) dari baris A (ア) hingga N (ン).';
+    if (kanaCategory === 'dakuten') return 'Kuasai variasi bunyi tebal Dakuten Katakana ( ガ, ザ, ダ, バ ) dan Handakuten ( パ ).';
+    if (kanaCategory === 'combination') return 'Kuasai variasi gabungan huruf Kombinasi / Youon Katakana ( キャ, シャ, チャ, dll ).';
+    return 'Kuasai huruf Katakana untuk kata serapan asing, nama, dan istilah modern.';
   }
   if (mode.id === 'kanji') {
+    if (kanjiLessonNumber && kanjiLessonNumber > 0) {
+      return `Latihan menggambar langsung huruf Kanji N5 Pelajaran ${kanjiLessonNumber} dengan urutan goresan di layar.`;
+    }
     return 'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.';
   }
   if (mode.id === 'kotoba') {
-    if (characterType === 'words') return 'Latihan kosakata berhuruf Kanji — pilih variasi kuis di sub-menu bawah.';
+    if (characterType === 'words') return 'Latihan kosakata berhuruf Kanji — pilih variasi kuis di tombol bawah.';
     if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
     if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji, Kana, atau Romaji.';
     if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play.';
@@ -173,7 +182,12 @@ export function getModeDescription(mode: QuizModeDef, characterType: string, hit
     return 'Adu kecepatan mengetik romaji eliminasi bertahap (2–8 pemain).';
   }
   if (mode.id === 'lainnya') {
-    if (characterType === 'mix') return 'Latihan campuran huruf Hiragana & Katakana secara bersamaan.';
+    if (characterType === 'mix') {
+      if (kanaCategory === 'basic') return 'Latihan campuran huruf dasar Hiragana & Katakana (seion).';
+      if (kanaCategory === 'dakuten') return 'Latihan campuran variasi bunyi Dakuten Hiragana & Katakana.';
+      if (kanaCategory === 'combination') return 'Latihan campuran variasi kombinasi / youon Hiragana & Katakana.';
+      return 'Latihan campuran huruf Hiragana & Katakana secara bersamaan.';
+    }
     if (characterType === 'angka' || hitunganTab === 'angka') return 'Latihan angka dasar 1-10, puluhan, ratusan, dan ribuan bertahap.';
     if (characterType === 'counter' || hitunganTab === 'counter') return 'Latihan kata bantu hitung (counter) seperti 本, 杯, 匹, 個, dll.';
     if (characterType === 'campuran' || hitunganTab === 'campuran') return 'Review gabungan dari seluruh wave hitungan yang sudah dipelajari.';

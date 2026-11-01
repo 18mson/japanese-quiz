@@ -9,6 +9,8 @@ const props = defineProps<{
   prevActiveModeIndex: number;
   scrollDirection: 'down' | 'up';
   characterType: string;
+  selectedKanaCategory?: string;
+  selectedKanjiLessonNumber?: number;
   selectedHitunganTab: string;
   isKeyboardNav: boolean;
   focusedSection: string;
@@ -231,7 +233,7 @@ function getCardStyle(index: number) {
             >
               <!-- Description -->
               <p class="text-xs text-slate-600 dark:text-slate-300 mb-1 sm:mb-1 font-medium leading-relaxed">
-                {{ getModeDescription(mode, characterType, selectedHitunganTab) }}
+                {{ getModeDescription(mode, characterType, selectedHitunganTab, selectedKanaCategory, selectedKanjiLessonNumber) }}
               </p>
 
               <!-- Category Panel inside Active Card -->

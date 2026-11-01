@@ -30,13 +30,9 @@ onUnmounted(() => {
   window.removeEventListener('resize', updateResponsive);
 });
 
-// Kanji Lesson Pagination State (2 on narrow mobile, 3 on standard mobile, 4 on desktop)
+// Kanji Lesson Pagination State (2 bab per view agar teks jelas dan tidak terpotong)
 const kanjiLessonStartIndex = ref(0);
-const kanjiPageSize = computed(() => {
-  if (isSmallScreen.value) return 2;
-  if (isMobile.value) return 3;
-  return 4;
-});
+const kanjiPageSize = computed(() => 2);
 
 const visibleKanjiLessons = computed(() => {
   return kanjiLessonList.slice(
@@ -93,90 +89,69 @@ watch(kanjiPageSize, (newSize) => {
 </script>
 
 <template>
-  <div class="bg-slate-50/80 dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col gap-2.5 w-full animate-fadeIn">
-    <div class="flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 min-w-0">
-        <div class="w-7 h-7 rounded-lg bg-emerald-600 dark:bg-matcha text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-xs font-jp">
-          漢
-        </div>
-        <div>
-          <div class="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-            <span>Target Menulis:</span>
-            <span class="text-[10px] px-1.5 py-0.2 rounded-md font-bold bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-matcha-light border border-transparent dark:border-slate-700">
-              {{ quizStore.currentKanjiLessonLabel }}
-            </span>
-          </div>
-          <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-            {{ quizStore.currentKanjiLessonStats.mastered }} / {{ quizStore.currentKanjiLessonStats.total }} kanji dikuasai ({{ quizStore.currentKanjiLessonStats.percentage }}%)
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Lesson Selector: Sticky "Semua" + Paginated Lessons with Prev/Next buttons (Tanpa Border/Header Box) -->
+  <div class="flex items-center gap-1 sm:gap-1.5 w-full pt-1 animate-fadeIn">
+    <!-- Sticky "Semua" Pill -->
+    <button
+      type="button"
+      @click.stop="selectLesson(0)"
+      :class="[
+        'py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1 sm:gap-1.5 shadow-2xs',
+        quizStore.selectedKanjiLessonNumber === 0
+          ? 'bg-emerald-600 dark:bg-matcha text-white border-emerald-500 dark:border-matcha font-black shadow-xs scale-[1.02]'
+          : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
+      ]"
+    >
+      <span class="whitespace-nowrap flex items-center gap-1">
+        <Sparkles class="w-3.5 h-3.5 shrink-0" />
+        <span>Semua</span>
+      </span>
+      <span class="hidden sm:inline text-[10px] opacity-80">(1–25)</span>
+    </button>
 
-    <!-- Lesson Selector: Sticky "Semua" + Paginated Lessons with Prev/Next buttons -->
-    <div class="flex items-center gap-1 sm:gap-1.5 w-full pt-0.5">
-      <!-- Sticky "Semua" Pill -->
+    <div class="w-px h-6 bg-gray-200 dark:bg-slate-700 shrink-0 mx-0.5"></div>
+
+    <!-- Prev Button -->
+    <button
+      type="button"
+      @click.stop="prevKanjiLessons"
+      :disabled="!canPrevKanjiLessons"
+      class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+      title="Pelajaran Sebelumnya"
+    >
+      <ChevronLeft class="w-3.5 h-3.5" />
+    </button>
+
+    <!-- Paginated Visible Lessons -->
+    <div class="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
       <button
+        v-for="les in visibleKanjiLessons"
+        :key="les.lessonNumber"
         type="button"
-        @click.stop="selectLesson(0)"
+        @click.stop="selectLesson(les.lessonNumber)"
         :class="[
-          'py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all cursor-pointer border shrink-0 flex items-center gap-1 sm:gap-1.5 shadow-2xs',
-          quizStore.selectedKanjiLessonNumber === 0
+          'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
+          quizStore.selectedKanjiLessonNumber === les.lessonNumber
             ? 'bg-emerald-600 dark:bg-matcha text-white border-emerald-500 dark:border-matcha font-black shadow-xs scale-[1.02]'
-            : 'bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/80 dark:border-slate-800'
+            : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
         ]"
       >
-        <span class="whitespace-nowrap flex items-center gap-1">
-          <Sparkles class="w-3.5 h-3.5 shrink-0" />
-          <span>Semua</span>
+        <span class="truncate font-semibold text-xs sm:text-xs">
+          {{ isMobile ? `Pel. ${les.lessonNumber}` : les.lesson }}
         </span>
-        <span class="hidden sm:inline text-[10px] opacity-80">(1–25)</span>
-      </button>
-
-      <div class="w-px h-6 bg-gray-200 dark:bg-slate-700 shrink-0 mx-0.5"></div>
-
-      <!-- Prev Button -->
-      <button
-        type="button"
-        @click.stop="prevKanjiLessons"
-        :disabled="!canPrevKanjiLessons"
-        class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
-        title="Pelajaran Sebelumnya"
-      >
-        <ChevronLeft class="w-3.5 h-3.5" />
-      </button>
-
-      <!-- Paginated Visible Lessons -->
-      <div class="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
-        <button
-          v-for="les in visibleKanjiLessons"
-          :key="les.lessonNumber"
-          type="button"
-          @click.stop="selectLesson(les.lessonNumber)"
-          :class="[
-            'flex-1 py-2 px-1 sm:px-2 rounded-xl text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs min-w-0',
-            quizStore.selectedKanjiLessonNumber === les.lessonNumber
-              ? 'bg-emerald-600 dark:bg-matcha text-white border-emerald-500 dark:border-matcha font-black shadow-xs scale-[1.02]'
-              : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 border-gray-200/80 dark:border-slate-800'
-          ]"
-        >
-          <span class="truncate font-semibold text-[11px] sm:text-xs">
-            {{ isMobile ? `Pel. ${les.lessonNumber}` : les.lesson }}
-          </span>
-          <span class="hidden sm:inline text-[10px] opacity-80 shrink-0">({{ les.count }})</span>
-        </button>
-      </div>
-
-      <!-- Next Button -->
-      <button
-        type="button"
-        @click.stop="nextKanjiLessons"
-        :disabled="!canNextKanjiLessons"
-        class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
-        title="Pelajaran Berikutnya"
-      >
-        <ChevronRight class="w-3.5 h-3.5" />
+        <span class="text-[10px] opacity-80 shrink-0">({{ les.count }})</span>
       </button>
     </div>
+
+    <!-- Next Button -->
+    <button
+      type="button"
+      @click.stop="nextKanjiLessons"
+      :disabled="!canNextKanjiLessons"
+      class="p-2 sm:p-2 rounded-xl border border-gray-200/80 dark:border-slate-700/80 bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-2xs"
+      title="Pelajaran Berikutnya"
+    >
+      <ChevronRight class="w-3.5 h-3.5" />
+    </button>
   </div>
 </template>
