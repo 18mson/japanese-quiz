@@ -383,7 +383,8 @@ export const useQuizStore = defineStore('quiz', () => {
         pointsEarned,
         maxPoints: 4,
         isTypo,
-        hintsUsed
+        hintsUsed,
+        isInitialRound
       });
 
       if (!isCorrectVal && !isTypo) {
@@ -507,6 +508,15 @@ export const useQuizStore = defineStore('quiz', () => {
 
   const isMistakeRound = computed(() => currentQuestionIndex.value >= initialQuestionCount.value);
 
+  const reportAnswers = computed(() => {
+    if (initialQuestionCount.value <= 0) return userAnswers.value;
+    const initialOnly = userAnswers.value.filter(a => a.isInitialRound !== false);
+    if (initialOnly.length > 0) {
+      return initialOnly.slice(0, initialQuestionCount.value);
+    }
+    return userAnswers.value.slice(0, initialQuestionCount.value);
+  });
+
   const finishSentenceQuiz = (stats: { wpm: number; cpm: number; accuracy: number; errorCount: number; totalKeystrokes: number }) => {
     sentenceStats.value = stats;
     firstTryCorrectCount.value = Math.round((stats.accuracy / 100) * (initialQuestionCount.value || 1));
@@ -546,6 +556,7 @@ export const useQuizStore = defineStore('quiz', () => {
     targetDurationMinutes,
     speedAchievement,
     userAnswers,
+    reportAnswers,
     currentQuestion,
     options,
     progress,

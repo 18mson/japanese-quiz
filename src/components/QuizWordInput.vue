@@ -295,29 +295,18 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           </p>
         </div>
 
-        <!-- Explanation Block -->
-        <div class="mt-4 pt-4 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex flex-col items-center">
-          <div class="flex items-center gap-2 flex-wrap justify-center">
-            <span v-if="(currentWord as any)?.kana" class="text-xl sm:text-2xl font-bold text-gray-700 dark:text-slate-200 font-jp">
-              （{{ (currentWord as any)?.kana }}）
-            </span>
-
-            <!-- Tombol / Ikon '?' Pembuka Detail Kanji (Hanya pada jawaban salah) -->
-            <button
-              v-if="hasKanjiDetails && !quizStore.isAnswerCorrect"
-              type="button"
-              id="btn-kanji-detail-input"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
-              @click="showKanjiPopup = true"
-              :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
-            >
-              <HelpCircle class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-              <span>Bedah Kanji (?)</span>
-            </button>
-          </div>
-          <p v-if="(currentWord as any)?.meaning" class="mt-3 text-xl sm:text-2xl font-bold tracking-tight text-center text-gray-800 dark:text-slate-100">
-            Arti: {{ (currentWord as any)?.meaning }}
-          </p>
+        <!-- Tombol / Ikon '?' Pembuka Detail Kanji (Hanya pada jawaban salah berkanji) -->
+        <div v-if="hasKanjiDetails && !quizStore.isAnswerCorrect" class="mt-3 pt-3 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex justify-center">
+          <button
+            type="button"
+            id="btn-kanji-detail-input"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
+            @click="showKanjiPopup = true"
+            :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
+          >
+            <HelpCircle class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+            <span>Bedah Kanji (?)</span>
+          </button>
         </div>
       </div>
 

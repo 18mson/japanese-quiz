@@ -138,6 +138,16 @@ console.log('\n--- 2. SCORING TYPO (3 POIN & DETAIL LIST) ---');
   // Akurasi: 2 benar/typo dari 3 soal awal = 67%
   assert(quizStore.firstTryCorrectCount === 2, `firstTryCorrectCount = 2`);
   assert(quizStore.finalScore === 67, `finalScore = ${quizStore.finalScore}% (Math.round(2/3 * 100))`);
+
+  // Soal 4: Babak Perbaikan (tes ulang Soal 3 'chikatetsu' yang tadi salah)
+  quizStore.currentQuestionIndex = 3;
+  quizStore.selectedAnswer = null;
+  quizStore.submitAnswer('chikatetsu');
+
+  assert(quizStore.userAnswers.length === 4, 'userAnswers mencatat total 4 percobaan termasuk tes ulang');
+  assert(quizStore.reportAnswers.length === 3, 'reportAnswers HANYA mencakup 3 soal awal (tidak termasuk soal tes ulang)');
+  assert(quizStore.reportAnswers[2].character === '地下鉄', 'Soal 3 di report tetap 地下鉄');
+  assert(quizStore.reportAnswers[2].isCorrect === false, 'Hasil soal 3 di report tetap merefleksikan hasil ronde awal (salah)');
 }
 
 console.log(`\n========================================`);

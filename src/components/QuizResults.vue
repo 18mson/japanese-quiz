@@ -107,6 +107,11 @@ const getScoreMessage = () => {
 };
 
 import { TierTransition } from '../utils/masteryStats';
+import { decomposeWordToSegments } from '../utils/furiganaParser';
+
+const getWordSegments = (character: string, kana?: string) => {
+  return decomposeWordToSegments(character, kana || '');
+};
 
 const masteredPromotions = computed(() => {
   return quizStore.sessionTierChanges.filter((t: TierTransition) => t.newTier === 'mastered' && t.direction === 'up');
@@ -126,130 +131,142 @@ const hasTierChanges = computed(() => {
 </script>
 
 <template>
-  <div class="p-2 sm:p-4 pb-20 sm:pb-24 max-w-3xl mx-auto animate-slide-up w-full flex flex-col" v-if="quizStore.quizCompleted">
-    <h2 class="text-xl text-slate-800 dark:text-slate-100 text-center mb-2 font-black flex-shrink-0">Quiz Results</h2>
+  <div class="p-2 sm:p-4 pb-24 sm:pb-28 max-w-7xl mx-auto animate-slide-up w-full flex flex-col lg:flex-row gap-5 sm:gap-6 items-start" v-if="quizStore.quizCompleted">
+    <!-- Kolom Kiri (Desktop): Title, Banners & Card Akurasi Jawaban -->
+    <div class="w-full lg:w-[320px] xl:w-[360px] flex-shrink-0 flex flex-col gap-3 lg:sticky lg:top-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl sm:text-3xl text-slate-900 dark:text-slate-100 font-black tracking-tight">Quiz Results</h2>
+        <span class="lg:hidden text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+          {{ quizStore.reportAnswers.length }} Soal Selesai
+        </span>
+      </div>
 
-    <!-- Speed Achievement Celebration Banner -->
-    <div 
-      v-if="quizStore.speedAchievement && quizStore.speedAchievement.isFaster" 
-      class="mb-2 p-3 bg-gradient-to-r from-indigo-50 via-purple-50 to-amber-50/50 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border border-indigo-200 dark:border-amber-500/30 rounded-2xl text-slate-800 dark:text-white shadow-xs relative overflow-hidden flex-shrink-0 animate-fadeIn"
-    >
-      <div class="flex items-center gap-3 relative z-10">
-        <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-amber-500/15 backdrop-blur-md border border-indigo-200 dark:border-amber-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 shadow-inner flex-shrink-0">
-          <Zap class="w-5 h-5 animate-pulse" />
+      <!-- Speed Achievement Celebration Banner -->
+      <div 
+        v-if="quizStore.speedAchievement && quizStore.speedAchievement.isFaster" 
+        class="p-3 bg-gradient-to-r from-indigo-50 via-purple-50 to-amber-50/50 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border border-indigo-200 dark:border-amber-500/30 rounded-2xl text-slate-800 dark:text-white shadow-xs relative overflow-hidden flex-shrink-0 animate-fadeIn"
+      >
+        <div class="flex items-center gap-3 relative z-10">
+          <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-amber-500/15 backdrop-blur-md border border-indigo-200 dark:border-amber-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 shadow-inner flex-shrink-0">
+            <Zap class="w-5 h-5 animate-pulse" />
+          </div>
+          <div class="text-left flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full">
+                {{ quizStore.speedAchievement.rankText }}
+              </span>
+              <span class="text-xs text-indigo-700 dark:text-amber-200 font-bold truncate">
+                +{{ quizStore.speedAchievement.bonusPoints }} Poin!
+              </span>
+            </div>
+            <h4 class="text-xs font-black text-slate-900 dark:text-stone-100 mt-0.5 line-clamp-2">
+              Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat!
+            </h4>
+          </div>
         </div>
-        <div class="text-left flex-1">
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] font-black uppercase tracking-wider bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full">
-              {{ quizStore.speedAchievement.rankText }}
-            </span>
-            <span class="text-xs text-indigo-700 dark:text-amber-200 font-bold">
-              +{{ quizStore.speedAchievement.bonusPoints }} Bonus Poin Kecepatan!
+      </div>
+
+      <!-- New Record Celebration Banner -->
+      <div 
+        v-if="quizStore.newRecordAchieved" 
+        class="p-3 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-amber-950/30 border border-amber-200 dark:border-amber-500/40 rounded-2xl text-center shadow-xs relative overflow-hidden animate-pulse-border flex-shrink-0"
+      >
+        <div class="flex items-center justify-center gap-2 relative z-10">
+          <Trophy class="w-5 h-5 text-amber-500 fill-amber-500/20 drop-shadow-xs" />
+          <span class="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">New Leaderboard Record!</span>
+        </div>
+      </div>
+
+      <!-- Tier Transition Recap Banner -->
+      <div 
+        v-if="hasTierChanges" 
+        class="p-3.5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs text-left animate-fadeIn flex-shrink-0"
+      >
+        <h4 class="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2.5 flex items-center gap-1.5">
+          <Sparkles class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
+          <span>Perubahan Tier (Sesi Ini)</span>
+        </h4>
+
+        <div class="flex flex-col gap-1.5 text-xs text-slate-700 dark:text-slate-200">
+          <!-- Crown promotions -->
+          <div v-if="crownPromotions.length > 0" class="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/10 p-2 rounded-xl border border-amber-200 dark:border-amber-500/20">
+            <Crown class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+            <span>{{ crownPromotions.length }} huruf ke Crown:</span>
+            <span class="font-jp text-base font-black tracking-widest text-amber-950 dark:text-amber-200">
+              {{ crownPromotions.map((t: TierTransition) => t.character).join(' ') }}
             </span>
           </div>
-          <h4 class="text-xs font-black text-slate-900 dark:text-stone-100 mt-0.5">
-            Selesai {{ formatTimeSaved(quizStore.speedAchievement.timeSavedSeconds) }} Lebih Cepat Dari Estimasi Target!
-          </h4>
+
+          <!-- Mastered promotions -->
+          <div v-if="masteredPromotions.length > 0" class="flex items-center gap-2 font-semibold text-emerald-900 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 p-2 rounded-xl border border-emerald-200 dark:border-emerald-500/20">
+            <CheckCircle2 class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+            <span>{{ masteredPromotions.length }} huruf ke Hafal:</span>
+            <span class="font-jp text-base font-bold tracking-widest text-emerald-950 dark:text-emerald-200">
+              {{ masteredPromotions.map((t: TierTransition) => t.character).join(' ') }}
+            </span>
+          </div>
+
+          <!-- Demotions -->
+          <div v-if="demotions.length > 0" class="flex items-center gap-2 font-medium text-rose-900 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 p-2 rounded-xl border border-rose-200 dark:border-rose-500/20">
+            <RotateCcw class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0" />
+            <span>{{ demotions.length }} huruf diulang:</span>
+            <span class="font-jp text-base font-bold tracking-widest text-rose-950 dark:text-rose-200">
+              {{ demotions.map((t: TierTransition) => t.character).join(' ') }}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- New Record Celebration Banner -->
-    <div 
-      v-if="quizStore.newRecordAchieved" 
-      class="mb-2 p-3 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-amber-950/30 border border-amber-200 dark:border-amber-500/40 rounded-2xl text-center shadow-xs relative overflow-hidden animate-pulse-border flex-shrink-0"
-    >
-      <div class="flex items-center justify-center gap-2 relative z-10">
-        <Trophy class="w-5 h-5 text-amber-500 fill-amber-500/20 drop-shadow-xs" />
-        <span class="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">New Leaderboard Record!</span>
+      
+      <!-- Sentence Typing Custom Stats Banner -->
+      <div 
+        v-if="quizStore.sentenceStats" 
+        class="grid grid-cols-3 gap-1.5 sm:gap-2 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white rounded-2xl p-3 shadow-xs flex-shrink-0 text-center"
+      >
+        <div class="flex flex-col justify-center">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
+          <span class="text-lg sm:text-xl font-black text-amber-600 dark:text-amber-400 my-0.5">{{ quizStore.sentenceStats.cpm }} <span class="text-[10px] font-normal text-slate-500 dark:text-slate-400">CPM</span></span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400">{{ quizStore.sentenceStats.wpm }} WPM</span>
+        </div>
+        <div class="flex flex-col justify-center border-x border-slate-100 dark:border-slate-800">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
+          <span class="text-lg sm:text-xl font-black text-emerald-600 dark:text-emerald-400 my-0.5">{{ quizStore.sentenceStats.accuracy }}%</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400">{{ quizStore.sentenceStats.errorCount }} Typo</span>
+        </div>
+        <div class="flex flex-col justify-center">
+          <span class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Total</span>
+          <span class="text-lg sm:text-xl font-black text-indigo-600 dark:text-indigo-300 my-0.5">{{ quizStore.sentenceStats.totalKeystrokes }}</span>
+          <span class="text-[10px] text-slate-500 dark:text-slate-400">Karakter</span>
+        </div>
       </div>
-    </div>
-
-    <!-- Tier Transition Recap Banner -->
-    <div 
-      v-if="hasTierChanges" 
-      class="mb-3 p-3.5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs text-left animate-fadeIn flex-shrink-0"
-    >
-      <h4 class="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2.5 flex items-center gap-1.5">
-        <Sparkles class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
-        <span>Perubahan Tier (Sesi Ini)</span>
-      </h4>
-
-      <div class="flex flex-col gap-1.5 text-xs text-slate-700 dark:text-slate-200">
-        <!-- Crown promotions -->
-        <div v-if="crownPromotions.length > 0" class="flex items-center gap-2 font-bold text-amber-900 dark:text-amber-300 bg-amber-50 dark:bg-amber-500/10 p-2 rounded-xl border border-amber-200 dark:border-amber-500/20">
-          <Crown class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-          <span>{{ crownPromotions.length }} huruf naik ke Crown:</span>
-          <span class="font-jp text-base font-black tracking-widest text-amber-950 dark:text-amber-200">
-            {{ crownPromotions.map((t: TierTransition) => t.character).join(' ') }}
-          </span>
+      
+      <!-- Score Circle & Message Header Card -->
+      <div class="flex flex-col sm:flex-row lg:flex-col items-center sm:items-start lg:items-center text-center sm:text-left lg:text-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-aizome to-teal-500 dark:from-indigo-600 dark:to-teal-400 flex flex-col items-center justify-center shadow-md border-4 border-white dark:border-slate-800 flex-shrink-0">
+          <span class="text-2xl sm:text-3xl font-black text-white leading-none">{{ displayAccuracy }}%</span>
         </div>
-
-        <!-- Mastered promotions -->
-        <div v-if="masteredPromotions.length > 0" class="flex items-center gap-2 font-semibold text-emerald-900 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-500/10 p-2 rounded-xl border border-emerald-200 dark:border-emerald-500/20">
-          <CheckCircle2 class="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-          <span>{{ masteredPromotions.length }} huruf naik ke Hafal:</span>
-          <span class="font-jp text-base font-bold tracking-widest text-emerald-950 dark:text-emerald-200">
-            {{ masteredPromotions.map((t: TierTransition) => t.character).join(' ') }}
-          </span>
-        </div>
-
-        <!-- Demotions -->
-        <div v-if="demotions.length > 0" class="flex items-center gap-2 font-medium text-rose-900 dark:text-rose-300 bg-rose-50 dark:bg-rose-500/10 p-2 rounded-xl border border-rose-200 dark:border-rose-500/20">
-          <RotateCcw class="w-4 h-4 text-rose-600 dark:text-rose-400 flex-shrink-0" />
-          <span>{{ demotions.length }} huruf perlu diulang lagi:</span>
-          <span class="font-jp text-base font-bold tracking-widest text-rose-950 dark:text-rose-200">
-            {{ demotions.map((t: TierTransition) => t.character).join(' ') }}
-          </span>
+        <div class="flex-1 min-w-0">
+          <h3 class="text-xs font-black text-slate-400 uppercase tracking-wider mb-1">Akurasi Jawaban</h3>
+          <p class="text-sm sm:text-base text-slate-800 dark:text-slate-100 font-bold leading-snug break-words">
+            {{ getScoreMessage() }}
+          </p>
         </div>
       </div>
     </div>
     
-    <!-- Sentence Typing Custom Stats Banner -->
-    <div 
-      v-if="quizStore.sentenceStats" 
-      class="mb-3 grid grid-cols-3 gap-1.5 sm:gap-3 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white rounded-2xl p-3 sm:p-4 shadow-xs flex-shrink-0 text-center"
-    >
-      <div class="flex flex-col justify-center">
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
-        <span class="text-xl sm:text-2xl font-black text-amber-600 dark:text-amber-400 my-0.5">{{ quizStore.sentenceStats.cpm }} <span class="text-xs font-normal text-slate-500 dark:text-slate-400">CPM</span></span>
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">{{ quizStore.sentenceStats.wpm }} WPM</span>
-      </div>
-      <div class="flex flex-col justify-center border-x border-slate-100 dark:border-slate-800">
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Akurasi</span>
-        <span class="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400 my-0.5">{{ quizStore.sentenceStats.accuracy }}%</span>
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">{{ quizStore.sentenceStats.errorCount }} Salah Ketik</span>
-      </div>
-      <div class="flex flex-col justify-center">
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Total Ketikan</span>
-        <span class="text-xl sm:text-2xl font-black text-indigo-600 dark:text-indigo-300 my-0.5">{{ quizStore.sentenceStats.totalKeystrokes }}</span>
-        <span class="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Karakter</span>
-      </div>
-    </div>
-    
-    <!-- Score Circle & Message Header -->
-    <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3 flex-shrink-0 bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
-      <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-aizome to-teal-500 dark:from-indigo-600 dark:to-teal-400 flex flex-col items-center justify-center shadow-md border-2 border-white dark:border-slate-800 flex-shrink-0">
-        <span class="text-base sm:text-lg font-black text-white leading-none">{{ displayAccuracy }}%</span>
-      </div>
-      <div class="text-left flex-1 min-w-0">
-        <h3 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Akurasi Jawaban</h3>
-        <p class="text-xs sm:text-sm text-slate-800 dark:text-slate-100 font-bold leading-snug mt-0.5 break-words">{{ getScoreMessage() }}</p>
-      </div>
-    </div>
-    
-    <!-- Question Summary List Box -->
-    <div class="bg-white dark:bg-slate-900 rounded-2xl p-3 sm:p-4 border border-slate-200 dark:border-slate-800 shadow-xs mb-3">
-      <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-100 dark:border-slate-800">
-        <h3 class="text-xs sm:text-xs font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
-        <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ quizStore.userAnswers.length }} Soal Selesai</span>
+    <!-- Kolom Kanan (Desktop): Ringkasan Jawaban Soal dalam Grid 3 Kolom -->
+    <div class="flex-1 min-w-0 w-full bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs mb-3">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
+        <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
+        <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+          {{ quizStore.reportAnswers.length }} Soal Selesai
+        </span>
       </div>
 
-      <ul ref="listRef" class="space-y-2">
+      <ul ref="listRef" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-3.5">
         <li 
-          v-for="(answer, index) in quizStore.userAnswers" 
+          v-for="(answer, index) in quizStore.reportAnswers" 
           :key="index"
-          class="flex items-start p-3 sm:p-3.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/70 transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-xs"
+          class="flex flex-col p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/70 transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-xs justify-between"
           :class="{ 
             'border-l-4 border-emerald-500': answer.pointsEarned === 4, 
             'border-l-4 border-amber-500': answer.isTypo || answer.pointsEarned === 1,
@@ -257,97 +274,106 @@ const hasTierChanges = computed(() => {
             'border-l-4 border-rose-500': !answer.isCorrect && !answer.isTypo && (answer.pointsEarned === 0 || !answer.pointsEarned)
           }"
         >
-          <!-- SVG Circular Progress around Character / Index Number -->
-          <div class="relative w-16 h-16 sm:w-[72px] sm:h-[72px] flex items-center justify-center mr-3.5 flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-700/80 shadow-xs">
-            <svg class="absolute inset-0 w-full h-full transform -rotate-90 p-0.5" viewBox="0 0 64 64">
-              <circle cx="32" cy="32" r="27" stroke="#e2e8f0" class="dark:stroke-slate-800" stroke-width="4" fill="transparent" />
-              <circle 
-                cx="32" 
-                cy="32" 
-                r="27" 
-                :stroke="getProgressColor(answer)" 
-                stroke-width="4.5" 
-                fill="transparent" 
-                :stroke-dasharray="2 * Math.PI * 27" 
-                :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 27) : (2 * Math.PI * 27 * (1 - (answer.pointsEarned || 0) / 4))" 
-                stroke-linecap="round"
-                class="transition-all duration-500 ease-out"
-              />
-            </svg>
-            <span 
-              class="font-black text-slate-800 dark:text-slate-100 z-10 select-none text-center font-jp flex items-center justify-center leading-none" 
-              :class="answer.character.length > 4 ? 'text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400' : (answer.character.length > 2 ? 'text-base sm:text-lg font-bold' : 'text-2xl sm:text-3xl font-black')"
-            >
-              {{ answer.character.length > 4 ? `#${index + 1}` : answer.character }}
-            </span>
-          </div>
-
-          <div class="flex-1 flex flex-col min-w-0">
-            <!-- Full Japanese sentence title if character is long -->
-            <h4 v-if="answer.character.length > 4" class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-snug font-jp mb-1 break-words">
-              {{ answer.character }}
-            </h4>
-
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <!-- Correct/Incorrect badge -->
-              <span 
-                class="font-extrabold text-xs sm:text-xs" 
-                :class="[
-                  (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
-                    ? (answer.isCorrect ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400')
-                    : (answer.pointsEarned === 4 ? 'text-emerald-700 dark:text-matcha' : (answer.isTypo ? 'text-amber-700 dark:text-amber-400' : (answer.pointsEarned >= 1 ? 'text-indigo-700 dark:text-indigo-300' : 'text-rose-700 dark:text-rose-400')))
-                ]"
-              >
-                <template v-if="quizStore.questionType === 'sentences' || quizStore.sentenceStats">
-                  {{ answer.isCorrect ? (answer.isTypo ? 'Selesai (Typo)' : 'Selesai') : 'Belum Tepat' }}
-                </template>
-                <template v-else>
-                  {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.isTypo ? 'Salah Ketik' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah')) }}
-                </template>
-              </span>
-              
-              <!-- Points score badge (Only for Non-Sentence modes) -->
-              <span 
-                v-if="quizStore.questionType !== 'sentences' && !quizStore.sentenceStats"
-                class="text-xs font-bold px-1.5 py-0.5 rounded border" 
-                :class="{ 
-                  'bg-emerald-50 text-emerald-800 border-emerald-200/80 dark:bg-emerald-950/80 dark:text-matcha dark:border-emerald-800/50': answer.pointsEarned === 4, 
-                  'bg-amber-50 text-amber-800 border-amber-200/80 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800/50': answer.isTypo || answer.pointsEarned === 1,
-                  'bg-indigo-50 text-indigo-800 border-indigo-200/80 dark:bg-torii/15 dark:text-torii-light dark:border-torii/30': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
-                  'bg-rose-50 text-rose-800 border-rose-200/80 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/50': answer.pointsEarned === 0 
-                }"
-              >
-                {{ answer.pointsEarned }}/4 poin
-              </span>
-
-              <!-- Typo badge -->
-              <span v-if="answer.isTypo" class="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.5 rounded">
-                Salah Ketik
-              </span>
-
-              <!-- Hints badge -->
-              <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-50 text-violet-800 border border-violet-200/80 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800/50 px-1.5 py-0.5 rounded flex items-center gap-1">
-                <Lightbulb class="w-3 h-3 text-violet-700 dark:text-amber-300" />
-                <span>{{ answer.hintsUsed }} Petunjuk</span>
-              </span>
-
-              <!-- Kana reading badge -->
-              <span v-if="answer.kana" class="text-xs font-semibold text-indigo-800 dark:text-indigo-200 bg-indigo-50/90 dark:bg-slate-800/90 px-2 py-0.5 rounded-full border border-indigo-200/70 dark:border-slate-700 font-jp">
-                {{ answer.kana }}
+          <!-- Card Top: Circular Progress (#No) + Main Kanji/Word Character -->
+          <div class="flex items-center gap-3 mb-2.5">
+            <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-700/80 shadow-xs">
+              <svg class="absolute inset-0 w-full h-full transform -rotate-90 p-0.5" viewBox="0 0 64 64">
+                <circle cx="32" cy="32" r="27" stroke="#e2e8f0" class="dark:stroke-slate-800" stroke-width="4" fill="transparent" />
+                <circle 
+                  cx="32" 
+                  cy="32" 
+                  r="27" 
+                  :stroke="getProgressColor(answer)" 
+                  stroke-width="4.5" 
+                  fill="transparent" 
+                  :stroke-dasharray="2 * Math.PI * 27" 
+                  :stroke-dashoffset="(quizStore.questionType === 'sentences' || quizStore.sentenceStats) ? (answer.isCorrect ? 0 : 2 * Math.PI * 27) : (2 * Math.PI * 27 * (1 - (answer.pointsEarned || 0) / 4))" 
+                  stroke-linecap="round"
+                  class="transition-all duration-500 ease-out"
+                />
+              </svg>
+              <span class="font-black text-slate-800 dark:text-slate-100 z-10 select-none text-center font-jp text-xs sm:text-sm">
+                #{{ index + 1 }}
               </span>
             </div>
 
-            <span class="text-xs text-slate-700 dark:text-slate-300 mt-1 leading-normal break-words">
-              <template v-if="answer.isCorrect && !answer.isTypo">
-                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-slate-200/80 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs text-slate-800 dark:text-slate-100 font-semibold">{{ answer.userRomaji }}</code>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 leading-normal font-jp" :title="answer.character">
+                <template v-for="(seg, idx) in getWordSegments(answer.character, answer.kana)" :key="idx"><ruby v-if="seg.isRuby" class="ruby-word">{{ seg.text }}<rt class="text-[0.55em] font-bold text-rose-500 dark:text-torii-light select-none">{{ seg.reading }}</rt></ruby><template v-else>{{ seg.text }}</template></template>
+              </h4>
+            </div>
+          </div>
+
+          <!-- Card Middle: Badges Row -->
+          <div class="flex items-center gap-1.5 flex-wrap mb-2">
+            <!-- Correct/Incorrect badge -->
+            <span 
+              class="font-black text-xs px-2 py-0.5 rounded-md" 
+              :class="[
+                (quizStore.questionType === 'sentences' || quizStore.sentenceStats)
+                  ? (answer.isCorrect ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300')
+                  : (answer.pointsEarned === 4 ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300' : (answer.isTypo ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300' : (answer.pointsEarned >= 1 ? 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300' : 'bg-rose-100 text-rose-800 dark:bg-rose-950/80 dark:text-rose-300')))
+              ]"
+            >
+              <template v-if="quizStore.questionType === 'sentences' || quizStore.sentenceStats">
+                {{ answer.isCorrect ? (answer.isTypo ? 'Selesai (Typo)' : 'Selesai') : 'Belum Tepat' }}
               </template>
               <template v-else>
-                {{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }} <code class="font-mono bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 px-1.5 py-0.5 rounded text-xs font-semibold" v-if="answer.isTypo">{{ answer.userRomaji }}</code><code class="font-mono bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 px-1.5 py-0.5 rounded text-xs font-semibold" v-else>{{ answer.userRomaji }}</code> | Benar: <code class="font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 px-1.5 py-0.5 rounded text-xs font-bold">{{ answer.correctRomaji }}</code>
+                {{ answer.pointsEarned === 4 ? 'Dikuasai' : (answer.isTypo ? 'Salah Ketik' : (answer.pointsEarned > 0 ? 'Benar' : 'Salah')) }}
               </template>
             </span>
-            <span v-if="answer.meaning" class="text-xs text-slate-600 dark:text-slate-400 italic mt-0.5 leading-snug break-words">
-              Arti: {{ answer.meaning }}
+            
+            <!-- Points score badge -->
+            <span 
+              v-if="quizStore.questionType !== 'sentences' && !quizStore.sentenceStats"
+              class="text-xs font-bold px-1.5 py-0.5 rounded-md border" 
+              :class="{ 
+                'bg-emerald-50 text-emerald-800 border-emerald-200/80 dark:bg-emerald-950/80 dark:text-matcha dark:border-emerald-800/50': answer.pointsEarned === 4, 
+                'bg-amber-50 text-amber-800 border-amber-200/80 dark:bg-amber-950/80 dark:text-amber-300 dark:border-amber-800/50': answer.isTypo || answer.pointsEarned === 1,
+                'bg-indigo-50 text-indigo-800 border-indigo-200/80 dark:bg-torii/15 dark:text-torii-light dark:border-torii/30': !answer.isTypo && answer.pointsEarned >= 2 && answer.pointsEarned < 4, 
+                'bg-rose-50 text-rose-800 border-rose-200/80 dark:bg-rose-950/80 dark:text-rose-300 dark:border-rose-800/50': answer.pointsEarned === 0 
+              }"
+            >
+              {{ answer.pointsEarned }}/4 poin
             </span>
+
+            <!-- Typo badge -->
+            <span v-if="answer.isTypo" class="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-amber-500 text-white px-1.5 py-0.5 rounded">
+              Typo
+            </span>
+
+            <!-- Hints badge -->
+            <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-50 text-violet-800 border border-violet-200/80 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800/50 px-1.5 py-0.5 rounded flex items-center gap-1">
+              <Lightbulb class="w-3 h-3 text-violet-700 dark:text-amber-300" />
+              <span>{{ answer.hintsUsed }}</span>
+            </span>
+          </div>
+
+          <!-- Card Content: User Answer vs Correct Answer -->
+          <div class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 mb-2 leading-relaxed break-words">
+            <template v-if="answer.isCorrect && !answer.isTypo">
+              <span class="text-slate-500 dark:text-slate-400 font-medium">{{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }}</span>
+              <code class="font-mono bg-slate-200/80 dark:bg-slate-700 px-2 py-0.5 rounded-md text-xs sm:text-sm text-slate-900 dark:text-slate-100 font-bold ml-1">{{ answer.userRomaji }}</code>
+            </template>
+            <template v-else>
+              <div class="flex flex-col gap-1">
+                <div>
+                  <span class="text-slate-500 dark:text-slate-400 font-medium">{{ quizStore.isTypingMode ? 'Ketik:' : 'Pilih:' }}</span>
+                  <code class="font-mono bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 px-2 py-0.5 rounded-md text-xs sm:text-sm font-bold ml-1" v-if="answer.isTypo">{{ answer.userRomaji }}</code>
+                  <code class="font-mono bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 px-2 py-0.5 rounded-md text-xs sm:text-sm font-bold ml-1" v-else>{{ answer.userRomaji }}</code>
+                </div>
+                <div>
+                  <span class="text-slate-500 dark:text-slate-400 font-medium">Benar:</span>
+                  <code class="font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 px-2 py-0.5 rounded-md text-xs sm:text-sm font-extrabold ml-1">{{ answer.correctRomaji }}</code>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Card Bottom: Meaning (Artinya) -->
+          <div v-if="answer.meaning" class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-medium pt-2 border-t border-slate-200/60 dark:border-slate-700/60 leading-snug break-words">
+            <span class="text-slate-400 dark:text-slate-500 uppercase tracking-wider text-[10px] font-bold block mb-0.5">Artinya:</span>
+            <span>{{ answer.meaning }}</span>
           </div>
         </li>
       </ul>
@@ -446,4 +472,16 @@ const hasTierChanges = computed(() => {
 .s2 { top: 40%; left: 80%; animation-delay: 0.6s; }
 .s3 { top: 70%; left: 25%; animation-delay: 1.2s; }
 .s4 { top: 20%; left: 70%; animation-delay: 1.8s; }
+
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+
+rt {
+  user-select: none;
+  font-family: inherit;
+  line-height: 1;
+  text-align: center;
+}
 </style>

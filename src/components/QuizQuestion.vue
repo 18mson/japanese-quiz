@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Lightbulb, BookOpen, RotateCcw, Volume2 } from '@lucide/vue';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
+import { decomposeWordToSegments } from '../utils/furiganaParser';
 
 const quizStore = useQuizStore();
 const { speak } = useTextToSpeech();
@@ -29,6 +30,11 @@ const isWord = computed(() => {
 
 const currentKana = computed(() => {
   return (quizStore.currentQuestion as any)?.kana || '';
+});
+
+const wordSegments = computed(() => {
+  if (!character.value) return [];
+  return decomposeWordToSegments(character.value, currentKana.value || '');
 });
 
 const hasValidReadingHint = computed(() => {
@@ -110,10 +116,7 @@ const instructionText = computed(() => {
     <!-- Question Character / Word Area -->
     <div
       :class="[
-        'flex flex-col items-center justify-center bg-transparent border-0 shadow-none px-4 transition-all duration-300',
-        quizStore.selectedAnswer !== null 
-          ? 'mb-1 py-0 min-h-0' 
-          : 'mb-3 py-2 min-h-[90px] sm:min-h-[110px]',
+        'flex flex-col items-center justify-start bg-transparent border-0 shadow-none px-4 pt-2 pb-1 mb-2',
         isWord 
           ? 'w-full max-w-md' 
           : 'w-full max-w-xs sm:max-w-sm'
@@ -156,18 +159,23 @@ const instructionText = computed(() => {
             </div>
           </template>
 
-          <!-- Mode 2 & Standard: Display Japanese Character/Word -->
+          <!-- Mode 2 & Standard: Display Japanese Character/Word with Furigana -->
           <template v-else>
             <span 
               :class="[
-                'text-gray-900 dark:text-slate-100 font-black tracking-wide transition-all duration-300 leading-none font-jp drop-shadow-xs whitespace-nowrap select-none',
+                'text-gray-900 dark:text-slate-100 font-black tracking-wide font-jp drop-shadow-xs whitespace-nowrap select-none inline-block text-center',
                 isWord 
                   ? (character.length > 6 ? 'text-3xl sm:text-4xl' : (character.length > 3 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'))
                   : (character.length >= 2 ? 'text-5xl sm:text-6xl' : 'text-6xl sm:text-7xl')
               ]"
-            >
-              {{ character }}
-            </span>
+            ><template v-for="(seg, idx) in wordSegments" :key="idx"><ruby v-if="seg.isRuby" class="ruby-word">{{ seg.text }}<rt 
+                    :class="[
+                      'text-[0.52em] font-bold tracking-tight transition-opacity duration-300 select-none pointer-events-none text-rose-500 dark:text-torii-light',
+                      quizStore.selectedAnswer !== null 
+                        ? 'opacity-100' 
+                        : 'opacity-0'
+                    ]"
+                  >{{ seg.reading }}</rt></ruby><template v-else>{{ seg.text }}</template></template></span>
             
             <!-- Interactive Hints (Only for Words when not answered yet) -->
             <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
@@ -206,38 +214,51 @@ const instructionText = computed(() => {
       </transition>
     </div>
     
-    <!-- Answer Feedback directly below the question (Shown on incorrect or typo, hidden on correct answer) -->
+    <!-- Answer Feedback directly below the question (Shown on answered state) -->
     <div 
-      v-if="quizStore.selectedAnswer !== null && (!quizStore.isAnswerCorrect || isTypo)" 
+      v-if="quizStore.selectedAnswer !== null" 
       class="flex flex-col items-center justify-center gap-1.5 text-center px-4 animate-fadeIn mt-0.5 mb-2"
     >
       <template v-if="quizStore.questionType === 'words_meaning'">
-        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Arti yang benar:</span>
-        <span class="text-base sm:text-xl md:text-2xl font-bold bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md">
-          {{ currentMeaning }}
-        </span>
+        <template v-if="!quizStore.isAnswerCorrect || isTypo">
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Artinya:</span>
+          <span class="text-base sm:text-xl md:text-2xl font-bold bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md">
+            {{ currentMeaning }}
+          </span>
+        </template>
       </template>
 
       <template v-else-if="quizStore.questionType === 'meaning_to_words'">
-        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
-        <div class="inline-flex items-center gap-2 flex-wrap justify-center">
-          <span class="text-xl sm:text-2xl md:text-3xl font-black bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md font-jp">
-            {{ character }}
-          </span>
-          <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
-            （{{ currentKana }}）
-          </span>
-          <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light">
-            / {{ correctRomajiDisplay }}
-          </span>
-        </div>
+        <template v-if="!quizStore.isAnswerCorrect || isTypo">
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
+          <div class="inline-flex items-center gap-2 flex-wrap justify-center">
+            <span class="text-xl sm:text-2xl md:text-3xl font-black bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md font-jp">
+              {{ character }}
+            </span>
+            <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
+              （{{ currentKana }}）
+            </span>
+            <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light">
+              / {{ correctRomajiDisplay }}
+            </span>
+          </div>
+        </template>
       </template>
 
       <template v-else>
-        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
-        <span class="text-xl sm:text-2xl md:text-3xl font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md tracking-wider">
-          {{ correctRomajiDisplay }}
-        </span>
+        <!-- Romaji yang benar: Hanya muncul jika salah atau typo -->
+        <template v-if="!quizStore.isAnswerCorrect || isTypo">
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
+          <span class="text-xl sm:text-2xl md:text-3xl font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light shadow-md tracking-wider">
+            {{ correctRomajiDisplay }}
+          </span>
+        </template>
+
+        <!-- Artinya: dipindah ke bawah romaji di atas input -->
+        <div v-if="currentMeaning" class="mt-1.5 flex items-center justify-center gap-2 flex-wrap">
+          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Artinya:</span>
+          <span class="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100">{{ currentMeaning }}</span>
+        </div>
       </template>
     </div>
 
@@ -278,5 +299,17 @@ const instructionText = computed(() => {
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
+}
+
+ruby {
+  ruby-position: over;
+  ruby-align: center;
+}
+
+rt {
+  user-select: none;
+  font-family: inherit;
+  line-height: 1;
+  text-align: center;
 }
 </style>

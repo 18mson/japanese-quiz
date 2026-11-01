@@ -785,7 +785,7 @@ const goToHome = () => {
     <div 
       v-else 
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
-      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-3xl pb-24 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'))"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'))"
     >
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       
@@ -794,9 +794,7 @@ const goToHome = () => {
         :class="[
           quizStore.selectedMode === 'writing' || quizStore.selectedMode === 'hitungan'
             ? 'justify-center md:my-auto bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
-            : (quizStore.questionType === 'words' || quizStore.currentQuestion?.type === 'word' || quizStore.isTypingMode
-                ? 'justify-start pt-2 sm:pt-4 md:pt-6 mb-2 sm:mb-4 bg-transparent border-0 shadow-none p-1 sm:p-2'
-                : 'justify-center md:my-auto bg-transparent border-0 shadow-none p-1 sm:p-2 mb-2 sm:mb-4 min-h-[180px] sm:min-h-[300px]')
+            : 'justify-start pt-2 sm:pt-4 md:pt-6 mb-2 sm:mb-4 bg-transparent border-0 shadow-none p-1 sm:p-2'
         ]"
         v-if="!quizStore.quizCompleted"
       >
