@@ -785,7 +785,7 @@ const goToHome = () => {
     <div 
       v-else 
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
-      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl pb-48 md:pb-20'))"
+      :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl md:max-w-4xl lg:max-w-5xl pb-48 md:pb-20'))"
     >
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       
@@ -815,7 +815,7 @@ const goToHome = () => {
           <RenshuuPlayer v-else-if="quizStore.questionType === 'renshuu'" />
           <QuizSentenceTyping v-else-if="quizStore.questionType === 'sentences'" />
           <template v-else>
-            <QuizQuestion class="flex-shrink-0" />
+            <QuizQuestion class="flex-shrink-0 w-full" />
             <div class="w-full flex flex-col justify-start items-center py-1 sm:py-2">
               <QuizWordInput v-if="quizStore.isTypingMode" />
               <QuizOptions v-else />

@@ -44,8 +44,8 @@ const hasMultipleSubTypes = computed(() => {
 // 3 opsi sub-mode kuis kosakata untuk Kotoba
 const kotobaVocabOptions = [
   { key: 'words', label: 'Jepang → Romaji' },
-  { key: 'words_meaning', label: 'Jepang → Arti' },
-  { key: 'meaning_to_words', label: 'Arti → Jepang' },
+  { key: 'words_meaning', label: 'Jepang → Indonesia' },
+  { key: 'meaning_to_words', label: 'Indonesia → Jepang' },
 ];
 
 // Opsi kuis untuk Mix Kana pada Mode Lainnya

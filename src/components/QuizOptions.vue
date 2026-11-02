@@ -166,7 +166,7 @@ watch(() => quizStore.currentQuestionIndex, () => {
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full max-w-2xl mx-auto">
     <!-- Desktop Options Grid (Shown on sm: and up inside the card) -->
     <div class="hidden sm:block w-full">
       <!-- Desktop Options Grid (Shown on sm: and up inside the card) -->

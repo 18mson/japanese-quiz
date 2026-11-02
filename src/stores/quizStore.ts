@@ -95,6 +95,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const startTime = ref(0);
   const endTime = ref(0);
   const newRecordAchieved = ref(false);
+  const newRecordMessage = ref('');
   const levelBeforeQuiz = ref(1);
   const showLevelUpScreen = ref(false);
   const quizLesson = ref<string>('Pelajaran 1');
@@ -155,6 +156,7 @@ export const useQuizStore = defineStore('quiz', () => {
     startTime.value = Date.now();
     endTime.value = 0;
     newRecordAchieved.value = false;
+    newRecordMessage.value = '';
     levelBeforeQuiz.value = masteryStore.currentUserLevel;
     showLevelUpScreen.value = false;
     speedAchievement.value = null;
@@ -399,7 +401,7 @@ export const useQuizStore = defineStore('quiz', () => {
     if (!authStore.user) return;
 
     const durationSeconds = (endTime.value - startTime.value) / 1000;
-    const { isNewRecord } = await submitLeaderboardScore({
+    const { isNewRecord, recordMessage } = await submitLeaderboardScore({
       userId: authStore.user.id,
       username: authStore.displayUsername || 'Anonymous',
       submissionScore,
@@ -407,7 +409,10 @@ export const useQuizStore = defineStore('quiz', () => {
       questionType: questionType.value,
       quizLevel: quizLevel.value
     });
-    if (isNewRecord) newRecordAchieved.value = true;
+    if (isNewRecord) {
+      newRecordAchieved.value = true;
+      if (recordMessage) newRecordMessage.value = recordMessage;
+    }
   };
 
   const finishQuiz = () => {
@@ -550,6 +555,7 @@ export const useQuizStore = defineStore('quiz', () => {
     startTime,
     endTime,
     newRecordAchieved,
+    newRecordMessage,
     levelBeforeQuiz,
     showLevelUpScreen,
     quizLesson,

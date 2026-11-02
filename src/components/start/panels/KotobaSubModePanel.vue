@@ -21,12 +21,12 @@ const options = [
   },
   {
     key: 'words_meaning' as const,
-    label: 'Jepang → Arti',
+    label: 'Jepang → Indonesia',
     desc: 'Soal tulisan Jepang — ketik arti bahasa Indonesia'
   },
   {
     key: 'meaning_to_words' as const,
-    label: 'Arti → Jepang',
+    label: 'Indonesia → Jepang',
     desc: 'Soal arti Indonesia — ketik Kanji, Kana, atau Romaji'
   }
 ] as const;

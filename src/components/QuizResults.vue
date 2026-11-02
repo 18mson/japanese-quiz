@@ -144,10 +144,10 @@ const hasTierChanges = computed(() => {
       <!-- Speed Achievement Celebration Banner -->
       <div 
         v-if="quizStore.speedAchievement && quizStore.speedAchievement.isFaster" 
-        class="p-3 bg-gradient-to-r from-indigo-50 via-purple-50 to-amber-50/50 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border border-indigo-200 dark:border-amber-500/30 rounded-2xl text-slate-800 dark:text-white shadow-xs relative overflow-hidden flex-shrink-0 animate-fadeIn"
+        class="p-3 bg-gradient-to-r from-indigo-50 via-purple-50 to-amber-50/50 dark:from-slate-950 dark:via-[#19191E] dark:to-slate-950 border border-indigo-200 dark:border-amber-500/30 rounded-2xl text-slate-800 dark:text-white relative overflow-hidden flex-shrink-0 animate-fadeIn"
       >
         <div class="flex items-center gap-3 relative z-10">
-          <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-amber-500/15 backdrop-blur-md border border-indigo-200 dark:border-amber-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 shadow-inner flex-shrink-0">
+          <div class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-amber-500/15 backdrop-blur-md border border-indigo-200 dark:border-amber-500/30 flex items-center justify-center text-indigo-600 dark:text-amber-300 flex-shrink-0">
             <Zap class="w-5 h-5 animate-pulse" />
           </div>
           <div class="text-left flex-1 min-w-0">
@@ -169,18 +169,20 @@ const hasTierChanges = computed(() => {
       <!-- New Record Celebration Banner -->
       <div 
         v-if="quizStore.newRecordAchieved" 
-        class="p-3 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-amber-950/30 border border-amber-200 dark:border-amber-500/40 rounded-2xl text-center shadow-xs relative overflow-hidden animate-pulse-border flex-shrink-0"
+        class="p-3 bg-gradient-to-r from-amber-50 via-yellow-50 to-amber-50 dark:from-amber-950/30 dark:via-yellow-950/20 dark:to-amber-950/30 border border-amber-300 dark:border-amber-500/40 rounded-2xl text-center relative overflow-hidden flex-shrink-0"
       >
         <div class="flex items-center justify-center gap-2 relative z-10">
-          <Trophy class="w-5 h-5 text-amber-500 fill-amber-500/20 drop-shadow-xs" />
-          <span class="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">New Leaderboard Record!</span>
+          <Trophy class="w-5 h-5 text-amber-500 fill-amber-500/20" />
+          <span class="text-xs font-black text-amber-900 dark:text-amber-300 uppercase tracking-wider">
+            {{ quizStore.newRecordMessage || 'New Leaderboard Record!' }}
+          </span>
         </div>
       </div>
 
       <!-- Tier Transition Recap Banner -->
       <div 
         v-if="hasTierChanges" 
-        class="p-3.5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs text-left animate-fadeIn flex-shrink-0"
+        class="p-3.5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl text-left animate-fadeIn flex-shrink-0"
       >
         <h4 class="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2.5 flex items-center gap-1.5">
           <Sparkles class="w-3.5 h-3.5 text-amber-500 dark:text-amber-400" />
@@ -220,7 +222,7 @@ const hasTierChanges = computed(() => {
       <!-- Sentence Typing Custom Stats Banner -->
       <div 
         v-if="quizStore.sentenceStats" 
-        class="grid grid-cols-3 gap-1.5 sm:gap-2 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white rounded-2xl p-3 shadow-xs flex-shrink-0 text-center"
+        class="grid grid-cols-3 gap-1.5 sm:gap-2 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-white rounded-2xl p-3 flex-shrink-0 text-center"
       >
         <div class="flex flex-col justify-center">
           <span class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Kecepatan</span>
@@ -240,8 +242,8 @@ const hasTierChanges = computed(() => {
       </div>
       
       <!-- Score Circle & Message Header Card -->
-      <div class="flex flex-col sm:flex-row lg:flex-col items-center sm:items-start lg:items-center text-center sm:text-left lg:text-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xs">
-        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-aizome to-teal-500 dark:from-indigo-600 dark:to-teal-400 flex flex-col items-center justify-center shadow-md border-4 border-white dark:border-slate-800 flex-shrink-0">
+      <div class="flex flex-col sm:flex-row lg:flex-col items-center sm:items-start lg:items-center text-center sm:text-left lg:text-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-aizome to-teal-500 dark:from-indigo-600 dark:to-teal-400 flex flex-col items-center justify-center border-4 border-white dark:border-slate-800 flex-shrink-0">
           <span class="text-2xl sm:text-3xl font-black text-white leading-none">{{ displayAccuracy }}%</span>
         </div>
         <div class="flex-1 min-w-0">
@@ -435,8 +437,8 @@ const hasTierChanges = computed(() => {
 }
 
 @keyframes pulse-border {
-  0%, 100% { box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.1), 0 2px 4px -1px rgba(245, 158, 11, 0.06); border-color: rgba(245, 158, 11, 0.3); }
-  50% { box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3), 0 4px 6px -2px rgba(245, 158, 11, 0.2); border-color: rgba(245, 158, 11, 0.8); }
+  0%, 100% { border-color: rgba(245, 158, 11, 0.4); }
+  50% { border-color: rgba(245, 158, 11, 0.9); }
 }
 .animate-pulse-border {
   animation: pulse-border 2s infinite ease-in-out;
