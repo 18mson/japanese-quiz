@@ -73,6 +73,13 @@ const questionReason = computed(() => {
   return (quizStore.currentQuestion as any)?.questionReason || 'weak';
 });
 
+const romajiList = computed<string[]>(() => {
+  const current = quizStore.currentQuestion;
+  if (!current) return [];
+  if (Array.isArray(current.romaji)) return current.romaji;
+  return current.romaji ? [current.romaji] : [];
+});
+
 const correctRomajiDisplay = computed(() => {
   const current = quizStore.currentQuestion;
   if (!current) return '';
@@ -221,9 +228,19 @@ const instructionText = computed(() => {
     >
       <template v-if="quizStore.questionType === 'words_meaning'">
         <!-- Romaji: muncul setelah submit di bawah soal tanpa highlight seperti jawaban -->
-        <div v-if="correctRomajiDisplay" class="mt-1 flex items-center justify-center gap-2 flex-wrap max-w-2xl md:max-w-3xl">
+        <div v-if="romajiList.length > 0" class="mt-1 flex items-center justify-center gap-1.5 flex-wrap max-w-2xl md:max-w-3xl">
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji:</span>
-          <span class="text-base sm:text-lg font-mono font-bold text-gray-800 dark:text-slate-200">{{ correctRomajiDisplay }}</span>
+          <span class="text-base sm:text-lg font-mono font-bold text-gray-800 dark:text-slate-200 inline-flex items-center flex-wrap justify-center">
+            <template v-for="(rom, idx) in romajiList" :key="idx">
+              <span>{{ rom }}</span>
+              <span 
+                v-if="idx < romajiList.length - 1" 
+                class="text-xs sm:text-sm font-sans font-medium text-slate-400 dark:text-slate-500 mx-2 select-none tracking-normal"
+              >
+                atau
+              </span>
+            </template>
+          </span>
         </div>
 
         <!-- Jawaban arti yang benar (hanya jika salah atau typo) -->
@@ -245,8 +262,17 @@ const instructionText = computed(() => {
             <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
               （{{ currentKana }}）
             </span>
-            <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light">
-              / {{ correctRomajiDisplay }}
+            <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light inline-flex items-center flex-wrap justify-center">
+              <span class="text-slate-400 dark:text-slate-500 mx-1">/</span>
+              <template v-for="(rom, idx) in romajiList" :key="idx">
+                <span>{{ rom }}</span>
+                <span 
+                  v-if="idx < romajiList.length - 1" 
+                  class="text-xs sm:text-sm font-sans font-medium text-slate-400 dark:text-slate-500 mx-1.5 select-none tracking-normal"
+                >
+                  atau
+                </span>
+              </template>
             </span>
           </div>
         </template>
@@ -258,13 +284,21 @@ const instructionText = computed(() => {
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
           <span 
             :class="[
-              'font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2.5 sm:py-3 rounded-2xl text-indigo-700 dark:text-torii-light shadow-md tracking-wider inline-block max-w-full break-words',
+              'font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2.5 sm:py-3 rounded-2xl text-indigo-700 dark:text-torii-light shadow-md tracking-wider inline-flex items-center justify-center flex-wrap max-w-full break-words',
               correctRomajiDisplay.length > 30 
                 ? 'text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed' 
                 : 'text-xl sm:text-2xl md:text-3xl'
             ]"
           >
-            {{ correctRomajiDisplay }}
+            <template v-for="(rom, idx) in romajiList" :key="idx">
+              <span>{{ rom }}</span>
+              <span 
+                v-if="idx < romajiList.length - 1" 
+                class="text-xs sm:text-sm font-sans font-medium text-slate-400 dark:text-slate-500 mx-2 select-none tracking-normal"
+              >
+                atau
+              </span>
+            </template>
           </span>
         </template>
 
