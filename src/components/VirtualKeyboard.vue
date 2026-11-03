@@ -57,8 +57,20 @@ watch(() => props.targetAnswer, () => {
   initScramble();
 }, { immediate: true });
 
+const activeTileId = ref<string | null>(null);
+let activeTileTimer: ReturnType<typeof setTimeout> | null = null;
+
+function triggerTileVisualEffect(tileId: string) {
+  activeTileId.value = tileId;
+  if (activeTileTimer) clearTimeout(activeTileTimer);
+  activeTileTimer = setTimeout(() => {
+    activeTileId.value = null;
+  }, 120);
+}
+
 function handleTileClick(tile: ScrambleTile) {
   if (props.disabled || selectedTiles.value.includes(tile.id)) return;
+  triggerTileVisualEffect(tile.id);
   playClickSound();
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     try { navigator.vibrate(10); } catch {}
@@ -225,20 +237,25 @@ const activeKeyClass = computed(() => isDark.value
             :key="tile.id"
             type="button"
             :disabled="disabled || selectedTiles.includes(tile.id)"
-            @click="handleTileClick(tile)"
-            class="min-h-[52px] min-w-[52px] px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl font-black border-2 transition-all duration-150 transform flex items-center justify-center cursor-pointer select-none shadow-xs"
+            @touchstart.prevent="handleTileClick(tile)"
+            @mousedown.prevent="handleTileClick(tile)"
+            class="relative box-border min-h-[52px] min-w-[52px] px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl font-black border-2 transition-all duration-100 transform flex items-center justify-center cursor-pointer select-none shadow-xs touch-manipulation"
             :class="[
               tile.text.length <= 2 
                 ? 'text-2xl sm:text-3xl' 
                 : (tile.text.length <= 5 ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'),
               selectedTiles.includes(tile.id)
                 ? 'opacity-20 scale-90 border-dashed bg-slate-200 dark:bg-slate-800 text-slate-400 border-slate-300 dark:border-slate-700 pointer-events-none'
-                : (isDark 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-slate-100 border-slate-700 active:scale-95 active:bg-torii' 
-                  : 'bg-white hover:bg-slate-50 text-slate-900 border-slate-300 active:scale-95 active:bg-indigo-600 active:text-white')
+                : (activeTileId === tile.id
+                  ? (isDark ? '!scale-90 !bg-torii !text-white !border-torii-light' : '!scale-90 !bg-indigo-600 !text-white !border-indigo-400')
+                  : (isDark 
+                    ? 'bg-slate-900 hover:bg-slate-800 text-slate-100 border-slate-700 active:scale-95 active:bg-torii' 
+                    : 'bg-white hover:bg-slate-50 text-slate-900 border-slate-300 active:scale-95 active:bg-indigo-600 active:text-white'))
             ]"
           >
-            <span :class="{'font-jp': scrambleMode === 'kana'}">{{ tile.text }}</span>
+            <!-- Hit-area expansion: pastikan area sentuh hingga batas border & 4px keluar tetap clickable -->
+            <span class="absolute -inset-1 rounded-2xl pointer-events-none" aria-hidden="true"></span>
+            <span class="pointer-events-none select-none" :class="{'font-jp': scrambleMode === 'kana'}">{{ tile.text }}</span>
           </button>
         </div>
 
@@ -248,8 +265,9 @@ const activeKeyClass = computed(() => isDark.value
           <button
             type="button"
             :disabled="disabled || selectedTiles.length === 0"
-            @click="handleScrambleReset"
-            class="h-12 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95"
+            @touchstart.prevent="handleScrambleReset"
+            @mousedown.prevent="handleScrambleReset"
+            class="h-12 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95 touch-manipulation"
             :class="selectedTiles.length === 0
               ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
               : (isDark
@@ -263,8 +281,9 @@ const activeKeyClass = computed(() => isDark.value
           <button
             type="button"
             :disabled="disabled || selectedTiles.length === 0"
-            @click="handleScrambleBackspace"
-            class="h-12 flex-1 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 border cursor-pointer select-none active:scale-95"
+            @touchstart.prevent="handleScrambleBackspace"
+            @mousedown.prevent="handleScrambleBackspace"
+            class="h-12 flex-1 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 border cursor-pointer select-none active:scale-95 touch-manipulation"
             :class="selectedTiles.length === 0
               ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
               : backspaceClass"
@@ -276,8 +295,9 @@ const activeKeyClass = computed(() => isDark.value
           <button
             type="button"
             :disabled="disabled"
-            @click="handleEnter"
-            class="h-12 px-6 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1.5 cursor-pointer transform select-none active:scale-95"
+            @touchstart.prevent="handleEnter"
+            @mousedown.prevent="handleEnter"
+            class="h-12 px-6 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1.5 cursor-pointer transform select-none active:scale-95 touch-manipulation"
             :class="enterClass"
           >
             <span>{{ enterLabel }}</span>

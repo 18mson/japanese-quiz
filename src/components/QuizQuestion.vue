@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Lightbulb, BookOpen, RotateCcw, Volume2 } from '@lucide/vue';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
@@ -64,6 +64,21 @@ const playWordAudio = () => {
   const text = currentKana.value || character.value;
   if (text) speak(text);
 };
+
+// Putar otomatis pelafalan kata kotoba secara instan ketika jawaban salah
+watch(() => quizStore.selectedAnswer, (ans) => {
+  if (ans !== null && quizStore.isAnswerCorrect === false) {
+    const text = currentKana.value || character.value;
+    if (text) {
+      setTimeout(() => {
+        // Pastikan masih di state yang sama
+        if (quizStore.selectedAnswer !== null && quizStore.isAnswerCorrect === false) {
+          playWordAudio();
+        }
+      }, 180);
+    }
+  }
+});
 
 const reasonLabel = computed(() => {
   return (quizStore.currentQuestion as any)?.reasonLabel || '';
@@ -281,7 +296,18 @@ const instructionText = computed(() => {
       <template v-else>
         <!-- Romaji yang benar: Hanya muncul jika salah atau typo -->
         <template v-if="!quizStore.isAnswerCorrect || isTypo">
-          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
+          <div class="flex items-center justify-center gap-2">
+            <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
+            <button
+              type="button"
+              class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-md text-indigo-600 dark:text-torii-light hover:bg-indigo-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              @click="playWordAudio"
+              title="Dengarkan pelafalan suara lagi"
+            >
+              <Volume2 class="w-3.5 h-3.5" />
+              <span>🔊</span>
+            </button>
+          </div>
           <span 
             :class="[
               'font-black font-mono bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2.5 sm:py-3 rounded-2xl text-indigo-700 dark:text-torii-light tracking-wider inline-flex items-center justify-center flex-wrap w-auto max-w-full md:max-w-3xl lg:max-w-4xl break-words',

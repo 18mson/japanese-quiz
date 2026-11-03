@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Check, X, AlertTriangle, HelpCircle } from '@lucide/vue';
+import { Check, X, AlertTriangle, HelpCircle, Volume2 } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
 import { extractKanjiFromWord } from '../services/kanjiInfoService';
+import { useTextToSpeech } from '../composables/useTextToSpeech';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
@@ -138,6 +139,15 @@ const handleVirtualEnter = () => {
   if (isAnswered.value) return;
   handleEnter();
   focusInput();
+};
+
+const { speak } = useTextToSpeech();
+
+const playWordAudio = () => {
+  const current = currentWord.value;
+  if (!current) return;
+  const text = (current as any).kana || current.character;
+  if (text) speak(text);
 };
 
 // Mobile Scramble/Bubble Input Mode State
@@ -357,9 +367,21 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           </p>
         </div>
 
-        <!-- Tombol / Ikon '?' Pembuka Detail Kanji (Hanya pada jawaban salah berkanji) -->
-        <div v-if="hasKanjiDetails && !quizStore.isAnswerCorrect" class="mt-3 pt-3 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex justify-center">
+        <!-- Tombol Aksi Tambahan Saat Jawaban Salah: Dengar Pelafalan & Bedah Kanji -->
+        <div v-if="!quizStore.isAnswerCorrect" class="mt-3 pt-3 border-t border-dashed border-gray-300/50 dark:border-slate-700/60 flex items-center justify-center gap-2 flex-wrap">
           <button
+            type="button"
+            id="btn-play-word-audio-input"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer border bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-700 dark:text-torii-light border-indigo-200 dark:border-slate-700 active:scale-95"
+            @click="playWordAudio"
+            title="Dengarkan pelafalan bahasa Jepang lagi"
+          >
+            <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-torii shrink-0" />
+            <span>Dengar Pelafalan 🔊</span>
+          </button>
+
+          <button
+            v-if="hasKanjiDetails"
             type="button"
             id="btn-kanji-detail-input"
             class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
@@ -404,8 +426,9 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         <!-- Tombol Skip (Kiri) -->
         <button
           type="button"
-          class="px-3.5 py-1.5 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg text-xs transition border border-gray-300 dark:border-slate-600 flex items-center gap-1 cursor-pointer select-none active:scale-95"
-          @click="quizStore.submitAnswer('')"
+          class="px-3.5 py-1.5 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg text-xs transition border border-gray-300 dark:border-slate-600 flex items-center gap-1 cursor-pointer select-none active:scale-95 touch-manipulation"
+          @touchstart.prevent="quizStore.submitAnswer('')"
+          @mousedown.prevent="quizStore.submitAnswer('')"
         >
           <span>Skip</span>
           <span class="text-[10px]">⏭</span>
@@ -414,11 +437,12 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         <!-- Tombol Switch Mode Input (Di seberang tombol Skip / Kanan) -->
         <button
           type="button"
-          class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95"
+          class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95 touch-manipulation"
           :class="mobileInputMode === 'scramble' 
             ? 'bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/80 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700 ring-2 ring-amber-400/30' 
-            : 'bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-700 dark:text-torii-light border-indigo-200 dark:border-slate-700'"
-          @click="toggleMobileInputMode"
+            : 'bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-700 dark:text-torii-light border-indigo-200 dark:border-slate-700'"
+          @touchstart.prevent="toggleMobileInputMode"
+          @mousedown.prevent="toggleMobileInputMode"
           :title="mobileInputMode === 'scramble' ? 'Beralih ke Keyboard Ketik Biasa' : 'Beralih ke Mode Susun Kata/Huruf'"
         >
           <span v-if="mobileInputMode === 'scramble'">🧩 Mode Susun</span>
