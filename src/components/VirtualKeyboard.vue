@@ -217,22 +217,25 @@ const activeKeyClass = computed(() => isDark.value
 
     <!-- Scramble Mode: Tile Bubbles & Action Buttons -->
     <template v-if="inputMode === 'scramble' && enableScramble">
-      <div class="w-full flex flex-col gap-2 py-1 px-1">
+      <div class="w-full flex flex-col gap-2.5 py-1 px-1">
         <!-- Tile Bubbles Container -->
-        <div class="w-full flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 min-h-[96px] max-h-[160px] overflow-y-auto p-1.5 bg-slate-100/60 dark:bg-slate-900/60 rounded-xl border border-slate-200/60 dark:border-slate-800/60">
+        <div class="w-full flex flex-wrap justify-center items-center content-center gap-2.5 sm:gap-3 min-h-[150px] sm:min-h-[175px] p-3 bg-slate-100/70 dark:bg-slate-900/70 rounded-2xl border border-slate-200/70 dark:border-slate-800/70">
           <button
             v-for="tile in scrambleData?.tiles || []"
             :key="tile.id"
             type="button"
             :disabled="disabled || selectedTiles.includes(tile.id)"
             @click="handleTileClick(tile)"
-            class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold text-base sm:text-lg border transition-all duration-150 transform flex items-center justify-center cursor-pointer select-none"
+            class="min-h-[52px] min-w-[52px] px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl font-black border-2 transition-all duration-150 transform flex items-center justify-center cursor-pointer select-none shadow-xs"
             :class="[
+              tile.text.length <= 2 
+                ? 'text-2xl sm:text-3xl' 
+                : (tile.text.length <= 5 ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'),
               selectedTiles.includes(tile.id)
                 ? 'opacity-20 scale-90 border-dashed bg-slate-200 dark:bg-slate-800 text-slate-400 border-slate-300 dark:border-slate-700 pointer-events-none'
                 : (isDark 
-                  ? 'bg-slate-900 hover:bg-slate-800 text-slate-100 border-slate-700/80 active:scale-95 active:bg-torii' 
-                  : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300 active:scale-95 active:bg-indigo-600 active:text-white shadow-xs')
+                  ? 'bg-slate-900 hover:bg-slate-800 text-slate-100 border-slate-700 active:scale-95 active:bg-torii' 
+                  : 'bg-white hover:bg-slate-50 text-slate-900 border-slate-300 active:scale-95 active:bg-indigo-600 active:text-white')
             ]"
           >
             <span :class="{'font-jp': scrambleMode === 'kana'}">{{ tile.text }}</span>
@@ -240,18 +243,18 @@ const activeKeyClass = computed(() => isDark.value
         </div>
 
         <!-- Scramble Action Row (Reset, Backspace, Submit) -->
-        <div class="flex items-center justify-between gap-2 w-full pt-0.5">
+        <div class="flex items-center justify-between gap-2.5 w-full pt-1">
           <!-- Reset Button -->
           <button
             type="button"
             :disabled="disabled || selectedTiles.length === 0"
             @click="handleScrambleReset"
-            class="px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1 border cursor-pointer select-none"
+            class="h-12 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95"
             :class="selectedTiles.length === 0
               ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
               : (isDark
-                ? 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700 active:scale-95'
-                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 active:scale-95')"
+                ? 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300')"
           >
             <span>↺ Reset</span>
           </button>
@@ -261,7 +264,7 @@ const activeKeyClass = computed(() => isDark.value
             type="button"
             :disabled="disabled || selectedTiles.length === 0"
             @click="handleScrambleBackspace"
-            class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border cursor-pointer select-none"
+            class="h-12 flex-1 px-4 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-1.5 border cursor-pointer select-none active:scale-95"
             :class="selectedTiles.length === 0
               ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
               : backspaceClass"
@@ -274,7 +277,7 @@ const activeKeyClass = computed(() => isDark.value
             type="button"
             :disabled="disabled"
             @click="handleEnter"
-            class="py-2.5 px-5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform select-none"
+            class="h-12 px-6 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1.5 cursor-pointer transform select-none active:scale-95"
             :class="enterClass"
           >
             <span>{{ enterLabel }}</span>
