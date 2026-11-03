@@ -1,0 +1,4719 @@
+{
+  "暗": {
+    "kanji": "暗",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "音",
+        "meaning_id": "suara"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat matahari (日) tenggelam dan tidak ada suara (音) lagi, suasana di luar menjadi gelap gulita."
+  },
+  "案": {
+    "kanji": "案",
+    "components": [
+      {
+        "part": "安",
+        "meaning_id": "aman"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rencana (案) dibuat di bawah pohon (木) supaya merasa aman (安) dan tenang."
+  },
+  "囲": {
+    "kanji": "囲",
+    "components": [
+      {
+        "part": "囗",
+        "meaning_id": "kotak"
+      },
+      {
+        "part": "井",
+        "meaning_id": "sumur"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada kotak pagar (囗) yang mengelilingi sebuah sumur (井) di tengah desa."
+  },
+  "意": {
+    "kanji": "意",
+    "components": [
+      {
+        "part": "音",
+        "meaning_id": "suara"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ide atau pendapat (意) muncul di dalam hati (心) saat mendengar suara (音) yang inspiratif."
+  },
+  "違": {
+    "kanji": "違",
+    "components": [
+      {
+        "part": "韋",
+        "meaning_id": "kulit"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang salah jalan (辶) memakai baju kulit (韋) yang berbeda (違) dari yang lain."
+  },
+  "引": {
+    "kanji": "引",
+    "components": [
+      {
+        "part": "弓",
+        "meaning_id": "busur"
+      },
+      {
+        "part": "丨",
+        "meaning_id": "batang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Aksi menarik (引) tali busur (弓) menggunakan satu batang (丨) jari."
+  },
+  "運": {
+    "kanji": "運",
+    "components": [
+      {
+        "part": "軍",
+        "meaning_id": "militer"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pasukan militer (軍) berjalan (辶) untuk membawa dan memindahkan (運) barang."
+  },
+  "映": {
+    "kanji": "映",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "央",
+        "meaning_id": "tengah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Cahaya matahari (日) di tengah (央) hari memantulkan dan merefleksikan (映) bayangan benda."
+  },
+  "泳": {
+    "kanji": "泳",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "永",
+        "meaning_id": "selamanya"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang bisa berenang (泳) di dalam air (氵) ingin terus melakukannya selamanya (永)."
+  },
+  "英": {
+    "kanji": "英",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "央",
+        "meaning_id": "tengah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bunga di tengah (央) padang rumput (艹) tampak sangat unggul dan hebat seperti pahlawan Inggris (英)."
+  },
+  "越": {
+    "kanji": "越",
+    "components": [
+      {
+        "part": "走",
+        "meaning_id": "lari"
+      },
+      {
+        "part": "戉",
+        "meaning_id": "senjata kapak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang (走) lari sambil membawa (戉) senjata kapak pasti bisa melompati rintangan dan (越) menyeberang atau melampaui batas dengan cepat."
+  },
+  "園": {
+    "kanji": "園",
+    "components": [
+      {
+        "part": "囗",
+        "meaning_id": "kotak pagar"
+      },
+      {
+        "part": "袁",
+        "meaning_id": "panjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah (囗) kotak pagar yang luas berisi tanaman panjang yang indah, membentuk area (園) taman yang asri."
+  },
+  "煙": {
+    "kanji": "煙",
+    "components": [
+      {
+        "part": "火",
+        "meaning_id": "api"
+      },
+      {
+        "part": "垔",
+        "meaning_id": "sumbat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat (火) api yang tersumbat (垔) dipanaskan, tiba-tiba muncul gumpalan (煙) asap tebal ke udara."
+  },
+  "遠": {
+    "kanji": "遠",
+    "components": [
+      {
+        "part": "袁",
+        "meaning_id": "panjang"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Perjalanan (辶) jalan yang amat (袁) panjang akan terasa sangat (遠) jauh."
+  },
+  "塩": {
+    "kanji": "塩",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "皿",
+        "meaning_id": "piring"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Butiran putih dari (土) tanah di atas (皿) piring jika dimasukkan ke (口) mulut akan terasa asin seperti (塩) garam."
+  },
+  "押": {
+    "kanji": "押",
+    "components": [
+      {
+        "part": "手",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "甲",
+        "meaning_id": "cangkang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan (手) tangan untuk (押) menekan atau mendorong cangkang (甲) kura-kura dengan kuat."
+  },
+  "億": {
+    "kanji": "億",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "意",
+        "meaning_id": "perasaan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (亻) orang kaya raya memiliki niat dan (意) perasaan gembira karena punya uang sebanyak (億) seratus juta."
+  },
+  "何": {
+    "kanji": "何",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "可",
+        "meaning_id": "boleh"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (亻) orang bertanya kepada temannya, \"Apa (何) yang boleh (可) saya beli hari ini?\""
+  },
+  "価": {
+    "kanji": "価",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "覀",
+        "meaning_id": "penutup"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (亻) orang membayar uang untuk membeli barang di bawah (覀) penutup atap toko, lalu mengecek (価) harga dan nilainya."
+  },
+  "暇": {
+    "kanji": "暇",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "hari"
+      },
+      {
+        "part": "叚",
+        "meaning_id": "peminjaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Hari (日) libur adalah saat peminjaman (叚) waktu untuk bersantai dan menikmati waktu (暇) senggang."
+  },
+  "歌": {
+    "kanji": "歌",
+    "components": [
+      {
+        "part": "哥",
+        "meaning_id": "kakak laki-laki"
+      },
+      {
+        "part": "欠",
+        "meaning_id": "kurang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kakak laki-laki (哥) bernyanyi sampai kekurangan (欠) napas saat menyanyikan lagu (歌)."
+  },
+  "華": {
+    "kanji": "華",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "丨",
+        "meaning_id": "garis"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rumput (艹) dan tangkai tegak (丨) tumbuh indah membentuk bunga yang sangat menawan (華)."
+  },
+  "菓": {
+    "kanji": "菓",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "果",
+        "meaning_id": "buah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanaman rumput (艹) menghasilkan buah (果) yang manis, sangat enak dijadikan kue atau camilan (菓)."
+  },
+  "課": {
+    "kanji": "課",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "果",
+        "meaning_id": "hasil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kata-kata (言) dan hasil kerja (果) dibahas bersama dalam setiap pelajaran atau bab (課)."
+  },
+  "賀": {
+    "kanji": "賀",
+    "components": [
+      {
+        "part": "加",
+        "meaning_id": "tambah"
+      },
+      {
+        "part": "貝",
+        "meaning_id": "kerang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menambah (加) hadiah kerang berharga (貝) sebagai ucapan selamat dan kebahagiaan (賀)."
+  },
+  "介": {
+    "kanji": "介",
+    "components": [
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "丿",
+        "meaning_id": "garis"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (人) berdiri di tengah untuk menjadi perantara atau memperkenalkan sesuatu (介)."
+  },
+  "海": {
+    "kanji": "海",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "毎",
+        "meaning_id": "tiap"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Air (氵) yang ada setiap (毎) hari di bumi ini adalah laut (海) yang luas."
+  },
+  "界": {
+    "kanji": "界",
+    "components": [
+      {
+        "part": "田",
+        "meaning_id": "sawah"
+      },
+      {
+        "part": "介",
+        "meaning_id": "perantara"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Petak sawah (田) yang dihubungkan oleh perantara (介) membentuk batas wilayah dunia (界)."
+  },
+  "皆": {
+    "kanji": "皆",
+    "components": [
+      {
+        "part": "比",
+        "meaning_id": "banding"
+      },
+      {
+        "part": "白",
+        "meaning_id": "putih"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membandingkan (比) orang-orang berwajah putih (白) bersih, ternyata semua orang (皆) itu mirip."
+  },
+  "開": {
+    "kanji": "開",
+    "components": [
+      {
+        "part": "門",
+        "meaning_id": "gerbang"
+      },
+      {
+        "part": "开",
+        "meaning_id": "buka"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gerbang besar (門) didorong buka (开) agar bisa masuk dan membuka (開) pintu."
+  },
+  "階": {
+    "kanji": "階",
+    "components": [
+      {
+        "part": "皆",
+        "meaning_id": "semua"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Semua (皆) orang naik ke bukit (⻖) lewat tangga tingkat demi tingkat (階)."
+  },
+  "外": {
+    "kanji": "外",
+    "components": [
+      {
+        "part": "夕",
+        "meaning_id": "malam"
+      },
+      {
+        "part": "卜",
+        "meaning_id": "ramalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat malam (夕) tiba dan ramalan (卜) cuaca buruk, orang lebih memilih berada di luar (外) rumah."
+  },
+  "確": {
+    "kanji": "確",
+    "components": [
+      {
+        "part": "石",
+        "meaning_id": "batu"
+      },
+      {
+        "part": "寉",
+        "meaning_id": "burung bangau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Batu (石) dan burung bangau (寉) memberikan kepastian (確) yang kuat dan padat."
+  },
+  "覚": {
+    "kanji": "覚",
+    "components": [
+      {
+        "part": "冖",
+        "meaning_id": "penutup"
+      },
+      {
+        "part": "見",
+        "meaning_id": "melihat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat melihat (見) sesuatu di balik penutup (冖), kita harus menghafal dan mengingatnya (覚)."
+  },
+  "角": {
+    "kanji": "角",
+    "components": [
+      {
+        "part": "勹",
+        "meaning_id": "membungkus"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanduk hewan atau sudut (角) bangunan bentuknya melengkung lancip mirip kepala (𠂊) yang membungkus (勹)."
+  },
+  "額": {
+    "kanji": "額",
+    "components": [
+      {
+        "part": "客",
+        "meaning_id": "tamu"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tamu (客) datang membawa halaman (頁) berisi daftar jumlah uang (額) untuk lukisan berbingkai."
+  },
+  "葛": {
+    "kanji": "葛",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "曷",
+        "meaning_id": "kapan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanaman rumput atau umbi kuzu (葛) ditanya orang, kapan (曷) bisa dipanen?"
+  },
+  "乾": {
+    "kanji": "乾",
+    "components": [
+      {
+        "part": "乞",
+        "meaning_id": "meminta"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah terik matahari (𠦝), pakaian meminta (乞) untuk segera kering (乾)."
+  },
+  "官": {
+    "kanji": "官",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah satu atap (宀) kantor pemerintahan, pejabat dan birokrat (官) berbicara lewat mulut (口)."
+  },
+  "幹": {
+    "kanji": "幹",
+    "components": [],
+    "mnemonic_id": "Cara mengingat: Batang pohon (幹) yang kokoh tumbuh tinggi menjulang ke arah matahari (𠦝)."
+  },
+  "換": {
+    "kanji": "換",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "手",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "奐",
+        "meaning_id": "pertukaran"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan (扌) tangan untuk (換) menukar atau mengganti barang lama dengan yang baru."
+  },
+  "漢": {
+    "kanji": "漢",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "水",
+        "meaning_id": "air"
+      },
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "艸",
+        "meaning_id": "rumput"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang Tiongkok zaman dulu menyeduh teh dari (氵) air dan (艹) tanaman untuk belajar (漢) Kanji."
+  },
+  "看": {
+    "kanji": "看",
+    "components": [
+      {
+        "part": "手",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Meletakkan (手) tangan di atas (目) mata untuk (看) mengawasi atau menjaga sesuatu."
+  },
+  "簡": {
+    "kanji": "簡",
+    "components": [
+      {
+        "part": "竹",
+        "meaning_id": "bambu"
+      },
+      {
+        "part": "間",
+        "meaning_id": "celah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bilah (竹) bambu yang diberi (間) jarak agar tulisan menjadi (簡) simpel dan mudah dibaca."
+  },
+  "館": {
+    "kanji": "館",
+    "components": [
+      {
+        "part": "飠",
+        "meaning_id": "makanan"
+      },
+      {
+        "part": "食",
+        "meaning_id": "makan"
+      },
+      {
+        "part": "官",
+        "meaning_id": "kantor"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah (官) gedung kantor besar yang menyediakan (食) makanan disebut (館) bangunan megah."
+  },
+  "眼": {
+    "kanji": "眼",
+    "components": [
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      },
+      {
+        "part": "艮",
+        "meaning_id": "berhenti"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (目) Mata yang (艮) berhenti berkedip untuk melihat bagian (眼) bola mata dengan jelas."
+  },
+  "頑": {
+    "kanji": "頑",
+    "components": [
+      {
+        "part": "元",
+        "meaning_id": "asal"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dari (元) awal kepala halaman buku, seseorang bersikap (頑) keras kepala atau gigih."
+  },
+  "願": {
+    "kanji": "願",
+    "components": [
+      {
+        "part": "原",
+        "meaning_id": "padang rumput"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Berdiri di (原) padang luas sambil menulis (頁) permohonan dan (願) harapan di buku."
+  },
+  "危": {
+    "kanji": "危",
+    "components": [
+      {
+        "part": "勹",
+        "meaning_id": "membungkus"
+      },
+      {
+        "part": "厄",
+        "meaning_id": "bencana"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Situasi yang (危) berbahaya karena ada ancaman (厄) musibah yang mengintai."
+  },
+  "机": {
+    "kanji": "机",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "几",
+        "meaning_id": "meja kecil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (木) Kayu pohon yang diubah menjadi (机) meja tulis atau meja belajar."
+  },
+  "棋": {
+    "kanji": "棋",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "其",
+        "meaning_id": "itu"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Papan catur shogi (棋) dibuat dari bahan kayu (木) khusus yang sudah ada sejak zaman itu (其)."
+  },
+  "機": {
+    "kanji": "機",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "幾",
+        "meaning_id": "beberapa"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mesin atau pesawat (機) dulunya terbuat dari kayu (木) dengan beberapa (幾) komponen bergerak."
+  },
+  "祈": {
+    "kanji": "祈",
+    "components": [
+      {
+        "part": "礻",
+        "meaning_id": "altar"
+      },
+      {
+        "part": "示",
+        "meaning_id": "menunjukkan"
+      },
+      {
+        "part": "斤",
+        "meaning_id": "kapak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di altar (礻) yang menunjukkan (示) tempat suci, orang membawa kapak (斤) untuk berdoa (祈) memohon perlindungan."
+  },
+  "記": {
+    "kanji": "記",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "己",
+        "meaning_id": "diri sendiri"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Catatan harian atau diari (記) berisi kata-kata (言) tentang diri sendiri (己)."
+  },
+  "議": {
+    "kanji": "議",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "義",
+        "meaning_id": "keadilan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rapat atau diskusi (議) adalah saat orang-orang bertukar kata (言) untuk membahas keadilan (義)."
+  },
+  "喫": {
+    "kanji": "喫",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "契",
+        "meaning_id": "janji"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membuka mulut (口) untuk makan, minum, atau merokok di kafe sesuai janji (契) temu."
+  },
+  "逆": {
+    "kanji": "逆",
+    "components": [
+      {
+        "part": "屰",
+        "meaning_id": "terbalik"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kondisi terbalik (逆) saat seseorang berjalan (辶) dengan arah yang berlawanan."
+  },
+  "久": {
+    "kanji": "久",
+    "components": [
+      {
+        "part": "勹",
+        "meaning_id": "membungkus"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Waktu yang sudah lama (久) berlalu ibarat cerita lama yang terbungkus rapi."
+  },
+  "吸": {
+    "kanji": "吸",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "及",
+        "meaning_id": "mencapai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan mulut (口) untuk menghisap udara atau rokok hingga mencapai (及) paru-paru."
+  },
+  "急": {
+    "kanji": "急",
+    "components": [
+      {
+        "part": "勹",
+        "meaning_id": "membungkus"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Keadaan darurat atau terburu-buru (急) membuat hati (心) berdebar kencang."
+  },
+  "球": {
+    "kanji": "球",
+    "components": [
+      {
+        "part": "王",
+        "meaning_id": "raja"
+      },
+      {
+        "part": "求",
+        "meaning_id": "minta"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Raja (王) meminta (求) sebuah bola (球) emas untuk mainan di istana."
+  },
+  "居": {
+    "kanji": "居",
+    "components": [
+      {
+        "part": "尸",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "古",
+        "meaning_id": "kuno"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (尸) rumah kuno (古), orang tinggal dan berada (居) di sana."
+  },
+  "供": {
+    "kanji": "供",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "共",
+        "meaning_id": "bersama"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) bekerja bersama-sama (共) untuk melayani atau mempersembahkan (供) sesuatu."
+  },
+  "教": {
+    "kanji": "教",
+    "components": [
+      {
+        "part": "孝",
+        "meaning_id": "berbakti"
+      },
+      {
+        "part": "攵",
+        "meaning_id": "tindakan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Guru melakukan tindakan (攵) untuk mengajarkan (教) ilmu dan cara berbakti (孝)."
+  },
+  "橋": {
+    "kanji": "橋",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "喬",
+        "meaning_id": "tinggi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jembatan (橋) dibuat dari kayu (木) yang disusun tinggi (喬) melintasi sungai."
+  },
+  "狭": {
+    "kanji": "狭",
+    "components": [
+      {
+        "part": "夹",
+        "meaning_id": "diapit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Anjing (⺨) terjepit di tempat yang diapit (夹) sehingga ruangnya sangat sempit (狭)."
+  },
+  "郷": {
+    "kanji": "郷",
+    "components": [
+      {
+        "part": "乡",
+        "meaning_id": "desa"
+      },
+      {
+        "part": "邑",
+        "meaning_id": "kota"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gabungan desa (乡) dan daerah (邑) menjadi kampung halaman (郷) tercinta."
+  },
+  "鏡": {
+    "kanji": "鏡",
+    "components": [
+      {
+        "part": "金",
+        "meaning_id": "logam"
+      },
+      {
+        "part": "竟",
+        "meaning_id": "akhir"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Cermin (鏡) terbuat dari logam (金) berkilau sampai akhir (竟) bentuknya."
+  },
+  "業": {
+    "kanji": "業",
+    "components": [
+      {
+        "part": "羊",
+        "meaning_id": "domba"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bisnis atau pekerjaan (業) peternakan domba (羊) di dekat pohon (木)."
+  },
+  "曲": {
+    "kanji": "曲",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "廾",
+        "meaning_id": "dua tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dua tangan (廾) memegang bilah kayu untuk membengkokkan (曲) batang bambu saat matahari (日) terbenam."
+  },
+  "勤": {
+    "kanji": "勤",
+    "components": [
+      {
+        "part": "菫",
+        "meaning_id": "bunga violet"
+      },
+      {
+        "part": "力",
+        "meaning_id": "tenaga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang bekerja rajin dan melayani (勤) harus mengerahkan seluruh (力) tenaga demi merawat bunga (菫)."
+  },
+  "禁": {
+    "kanji": "禁",
+    "components": [
+      {
+        "part": "林",
+        "meaning_id": "hutan"
+      },
+      {
+        "part": "示",
+        "meaning_id": "menunjukkan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Papan (示) di tengah hutan (林) menunjukkan larangan atau aturan (禁) yang harus dipatuhi."
+  },
+  "近": {
+    "kanji": "近",
+    "components": [
+      {
+        "part": "斤",
+        "meaning_id": "kampak"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jalan (辶) kaki membawa kapak (斤) menuju tempat yang sudah sangat dekat (近)."
+  },
+  "銀": {
+    "kanji": "銀",
+    "components": [
+      {
+        "part": "金",
+        "meaning_id": "logam"
+      },
+      {
+        "part": "艮",
+        "meaning_id": "berhenti"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Logam (金) berharga yang membuat orang berhenti (艮) untuk melihat kilau perak (銀)."
+  },
+  "空": {
+    "kanji": "空",
+    "components": [
+      {
+        "part": "穴",
+        "meaning_id": "gua"
+      },
+      {
+        "part": "工",
+        "meaning_id": "tukang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tukang (工) membuat lubang (穴) di atap hingga tampak langit kosong (空) di atas."
+  },
+  "君": {
+    "kanji": "君",
+    "components": [
+      {
+        "part": "尹",
+        "meaning_id": "pemimpin"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pemimpin (尹) membuka mulut (口) memanggil kamu (君) dengan akrab."
+  },
+  "経": {
+    "kanji": "経",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "圣",
+        "meaning_id": "suci"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) suci (圣) ditenun melewati (経) waktu yang panjang."
+  },
+  "結": {
+    "kanji": "結",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "吉",
+        "meaning_id": "keberuntungan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) keberuntungan (吉) diikat (結) erat saat menikah."
+  },
+  "血": {
+    "kanji": "血",
+    "components": [
+      {
+        "part": "皿",
+        "meaning_id": "piring"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Darah (血) menetes ke dalam sebuah piring (皿)."
+  },
+  "健": {
+    "kanji": "健",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "建",
+        "meaning_id": "membangun"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang (亻) yang rajin membangun (建) tubuhnya agar tetap sehat dan kuat (健)."
+  },
+  "剣": {
+    "kanji": "剣",
+    "components": [
+      {
+        "part": "刀",
+        "meaning_id": "pedang"
+      },
+      {
+        "part": "刂",
+        "meaning_id": "pisau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bayangkan sebuah (刀) pedang dan (刂) pisau tajam yang disatukan menjadi senjata (剣) pedang hebat untuk Kendo."
+  },
+  "嫌": {
+    "kanji": "嫌",
+    "components": [
+      {
+        "part": "女",
+        "meaning_id": "wanita"
+      },
+      {
+        "part": "兼",
+        "meaning_id": "rangkap"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (女) wanita merasa (嫌) benci karena pekerjaannya dirangkap rangkap (兼) tanpa henti."
+  },
+  "建": {
+    "kanji": "建",
+    "components": [
+      {
+        "part": "聿",
+        "meaning_id": "kuas"
+      },
+      {
+        "part": "廴",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Memakai kuas (聿) berjalan (廴) merancang denah untuk (建) membangun sebuah gedung baru."
+  },
+  "肩": {
+    "kanji": "肩",
+    "components": [
+      {
+        "part": "戸",
+        "meaning_id": "pintu"
+      },
+      {
+        "part": "月",
+        "meaning_id": "daging"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bagian daging (月) tubuh manusia yang sering menabrak pintu (戸) adalah (肩) pundak."
+  },
+  "原": {
+    "kanji": "原",
+    "components": [
+      {
+        "part": "厂",
+        "meaning_id": "tebing"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah tebing (厂) terhampar luas (原) padang rumput dan tanah lapang yang hijau."
+  },
+  "現": {
+    "kanji": "現",
+    "components": [
+      {
+        "part": "王",
+        "meaning_id": "permata"
+      },
+      {
+        "part": "見",
+        "meaning_id": "melihat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat (見) melihat permata (王) raja yang berkilau, uang tunai (現) tampak di mata."
+  },
+  "言": {
+    "kanji": "言",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan (口) mulut untuk (言) berkata dan mengatakan suatu kata."
+  },
+  "呼": {
+    "kanji": "呼",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "乎",
+        "meaning_id": "tanya"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membuka (口) mulut untuk berseru tanya (乎) dan (呼) memanggil seseorang."
+  },
+  "故": {
+    "kanji": "故",
+    "components": [
+      {
+        "part": "古",
+        "meaning_id": "lama"
+      },
+      {
+        "part": "攵",
+        "meaning_id": "tindakan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Karena hal yang sudah lama (古) lewat akibat suatu tindakan (攵), timbullah (故) alasan dan kerusakan."
+  },
+  "険": {
+    "kanji": "険",
+    "tier": "basic"
+  },
+  "碁": {
+    "kanji": "碁",
+    "components": [
+      {
+        "part": "其",
+        "meaning_id": "itu"
+      },
+      {
+        "part": "石",
+        "meaning_id": "batu"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Permainan papan (碁) dimainkan dengan menaruh batu (石) di atas papan itu (其) satu per satu."
+  },
+  "語": {
+    "kanji": "語",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "吾",
+        "meaning_id": "saya"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bahasa atau kata (語) adalah hal yang diucapkan oleh saya (吾) lewat kata-kata (言)."
+  },
+  "護": {
+    "kanji": "護",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "蒦",
+        "meaning_id": "menangkap"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Untuk melindungi (護) seseorang, kita memberi kata-kata (言) dukungan agar tidak tertangkap (蒦) bahaya."
+  },
+  "交": {
+    "kanji": "交",
+    "components": [
+      {
+        "part": "亠",
+        "meaning_id": "tutup"
+      },
+      {
+        "part": "父",
+        "meaning_id": "ayah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ayah (父) yang memakai topi penutup (亠) sedang bergaul dan bergaul campur (交) dengan tetangga."
+  },
+  "口": {
+    "kanji": "口",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk kanji ini sangat jelas seperti kotak mulut (口) yang sedang terbuka."
+  },
+  "向": {
+    "kanji": "向",
+    "components": [
+      {
+        "part": "冂",
+        "meaning_id": "kotak"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mulut (口) di dalam bangunan (冂) menghadap (向) ke luar arah garis (ノ)."
+  },
+  "広": {
+    "kanji": "広",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "厶",
+        "meaning_id": "pribadi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (广) rumah pribadi (厶) yang sangat luas (広) dan lapang."
+  },
+  "康": {
+    "kanji": "康",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "隶",
+        "meaning_id": "mengikuti"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Hidup damai dan sehat (康) saat berada di bawah atap (广) yang mengikuti (隶) aturan."
+  },
+  "港": {
+    "kanji": "港",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "巷",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pelabuhan (港) adalah jalan (巷) air (氵) tempat kapal merapat."
+  },
+  "紅": {
+    "kanji": "紅",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "工",
+        "meaning_id": "tukang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) buatan tukang (工) dicelup hingga berwarna merah tua atau crimson (紅)."
+  },
+  "考": {
+    "kanji": "考",
+    "components": [
+      {
+        "part": "老",
+        "meaning_id": "orang tua"
+      },
+      {
+        "part": "丂",
+        "meaning_id": "membungkuk"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (老) orang tua sedang membungkuk (丂) karena berpikir keras (考) mencari solusi."
+  },
+  "航": {
+    "kanji": "航",
+    "components": [
+      {
+        "part": "舟",
+        "meaning_id": "perahu"
+      },
+      {
+        "part": "亢",
+        "meaning_id": "tinggi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah perahu (舟) berlayar tinggi (亢) menembus ombak untuk bernavigasi (航)."
+  },
+  "合": {
+    "kanji": "合",
+    "components": [
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Satu (一) orang (人) membuka mulut (口) berbicara agar pas dan cocok (合) dengan lainnya."
+  },
+  "刻": {
+    "kanji": "刻",
+    "components": [
+      {
+        "part": "亥",
+        "meaning_id": "babi"
+      },
+      {
+        "part": "刂",
+        "meaning_id": "pisau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan pisau (刂) untuk memotong daging dengan cermat, lalu mengukirnya (刻)."
+  },
+  "腰": {
+    "kanji": "腰",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "要",
+        "meaning_id": "penting"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bagian daging (月) tubuh yang paling penting untuk membungkuk adalah pinggang atau pinggul (腰)."
+  },
+  "骨": {
+    "kanji": "骨",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "daging"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di balik lapisan daging (月) tubuh manusia, terdapat rangka keras berupa tulang (骨)."
+  },
+  "込": {
+    "kanji": "込",
+    "components": [
+      {
+        "part": "入",
+        "meaning_id": "masuk"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Berjalan (辶) ke arah dalam untuk masuk (入) ke tempat yang sangat padat dan ramai terisi (込)."
+  },
+  "頃": {
+    "kanji": "頃",
+    "components": [
+      {
+        "part": "匕",
+        "meaning_id": "sendok"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membuka halaman (頁) buku sambil memegang sendok (匕) setiap kali waktu atau saat (頃) makan tiba."
+  },
+  "婚": {
+    "kanji": "婚",
+    "components": [
+      {
+        "part": "女",
+        "meaning_id": "perempuan"
+      },
+      {
+        "part": "昏",
+        "meaning_id": "petang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang perempuan (女) bertemu kekasihnya saat petang (昏) untuk melangsungkan pernikahan (婚)."
+  },
+  "降": {
+    "kanji": "降",
+    "components": [
+      {
+        "part": "夅",
+        "meaning_id": "turun"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada orang dari atas bukit (⻖) sedang turun (夅) ke bawah. Pas banget buat ingat arti turun hujan (ふります)!"
+  },
+  "差": {
+    "kanji": "差",
+    "components": [
+      {
+        "part": "羊",
+        "meaning_id": "domba"
+      },
+      {
+        "part": "工",
+        "meaning_id": "tukang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada seekor domba (羊) dan tukang (工) yang punya perbedaan tinggi badan yang sangat jelas."
+  },
+  "砂": {
+    "kanji": "砂",
+    "components": [
+      {
+        "part": "石",
+        "meaning_id": "batu"
+      },
+      {
+        "part": "少",
+        "meaning_id": "sedikit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Batu (石) yang ditumbuk menjadi sangat sedikit (少) dan halus seperti pasir."
+  },
+  "座": {
+    "kanji": "座",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap rumah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap rumah (广), orang-orang berkumpul untuk duduk bersama di kursi."
+  },
+  "最": {
+    "kanji": "最",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "取",
+        "meaning_id": "mengambil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Matahari (日) adalah hal yang paling (最) ingin saya ambil."
+  },
+  "才": {
+    "kanji": "才",
+    "components": [
+      {
+        "part": "手",
+        "meaning_id": "tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk tangan (手) yang terampil menunjukkan bakat seorang yang jenius."
+  },
+  "済": {
+    "kanji": "済",
+    "components": [
+      {
+        "part": "水",
+        "meaning_id": "air"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Urusan keuangan selesai (済) setelah semua tagihan dibayar bersih seperti air (水)."
+  },
+  "斎": {
+    "kanji": "斎",
+    "components": [
+      {
+        "part": "示",
+        "meaning_id": "menunjukkan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tempat ibadah menunjukkan (示) ritual penyucian diri dan pantangan makanan."
+  },
+  "細": {
+    "kanji": "細",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "田",
+        "meaning_id": "sawah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sehelai benang (糸) tipis melintasi petak sawah (田) yang kecil dan sempit."
+  },
+  "際": {
+    "kanji": "際",
+    "components": [
+      {
+        "part": "祭",
+        "meaning_id": "festival"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pada saat (際) festival (祭) besar, banyak orang berkumpul di tepi jalan."
+  },
+  "作": {
+    "kanji": "作",
+    "components": [
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (人) bekerja keras untuk membuat (作) sesuatu karya."
+  },
+  "察": {
+    "kanji": "察",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "祭",
+        "meaning_id": "festival"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada orang di bawah atap (宀) yang sedang menebak isi acara festival (祭) untuk bisa memahami situasinya."
+  },
+  "撮": {
+    "kanji": "撮",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "最",
+        "meaning_id": "paling"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangan (扌) kita menggunakan kamera untuk mengambil foto pemandangan yang paling (最) indah."
+  },
+  "仕": {
+    "kanji": "仕",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "士",
+        "meaning_id": "prajurit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) bekerja melayani sebagai prajurit (士) di kantor."
+  },
+  "使": {
+    "kanji": "使",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "吏",
+        "meaning_id": "pegawai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) yang bekerja sebagai pegawai (吏) bertugas untuk memakai barang kantor."
+  },
+  "刺": {
+    "kanji": "刺",
+    "components": [
+      {
+        "part": "朿",
+        "meaning_id": "duri"
+      },
+      {
+        "part": "刂",
+        "meaning_id": "pisau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Duri (朿) yang tajam seperti pisau (刂) menusuk kulit dengan sakit."
+  },
+  "始": {
+    "kanji": "始",
+    "components": [
+      {
+        "part": "女",
+        "meaning_id": "wanita"
+      },
+      {
+        "part": "台",
+        "meaning_id": "panggung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang wanita (女) naik ke atas panggung (台) untuk memulai acara."
+  },
+  "姉": {
+    "kanji": "姉",
+    "components": [
+      {
+        "part": "女",
+        "meaning_id": "wanita"
+      },
+      {
+        "part": "市",
+        "meaning_id": "pasar"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kakak perempuan adalah seorang wanita (女) yang suka belanja di pasar (市)."
+  },
+  "市": {
+    "kanji": "市",
+    "components": [
+      {
+        "part": "亠",
+        "meaning_id": "tutup"
+      },
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pasar (市) kota yang ramai ditutup (亠) menggunakan tenda kain (巾)."
+  },
+  "思": {
+    "kanji": "思",
+    "components": [
+      {
+        "part": "田",
+        "meaning_id": "sawah"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kita berpikir menggunakan hati (心) sambil membayangkan sawah (田) di desa."
+  },
+  "止": {
+    "kanji": "止",
+    "components": [
+      {
+        "part": "卜",
+        "meaning_id": "ramal"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanda garis tegak seperti tongkat untuk menghentikan laju kendaraan."
+  },
+  "試": {
+    "kanji": "試",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "bicara"
+      },
+      {
+        "part": "式",
+        "meaning_id": "acara"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat (言) berbicara di sebuah (式) acara, kita harus siap mental karena itu seperti sebuah ujian (試)."
+  },
+  "誌": {
+    "kanji": "誌",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "bicara"
+      },
+      {
+        "part": "志",
+        "meaning_id": "niat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Catatan dan dokumen (誌) berisi (言) kata-kata yang ditulis dengan penuh (志) niat."
+  },
+  "資": {
+    "kanji": "資",
+    "components": [
+      {
+        "part": "次",
+        "meaning_id": "berikutnya"
+      },
+      {
+        "part": "貝",
+        "meaning_id": "uang kerang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Aset dan modal (資) berupa uang (貝) yang disimpan untuk kebutuhan (次) berikutnya."
+  },
+  "歯": {
+    "kanji": "歯",
+    "components": [
+      {
+        "part": "止",
+        "meaning_id": "berhenti"
+      },
+      {
+        "part": "米",
+        "meaning_id": "beras"
+      },
+      {
+        "part": "凵",
+        "meaning_id": "wadah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gigi (歯) berfungsi untuk mengunyah (米) beras di dalam (凵) mulut hingga (止) halus."
+  },
+  "字": {
+    "kanji": "字",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "子",
+        "meaning_id": "anak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Huruf atau kanji (字) diajarkan kepada (子) anak-anak di bawah (宀) atap sekolah."
+  },
+  "持": {
+    "kanji": "持",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "寺",
+        "meaning_id": "kuil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan (扌) tangan untuk membawa dan memegang (持) barang saat pergi ke (寺) kuil."
+  },
+  "時": {
+    "kanji": "時",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "寺",
+        "meaning_id": "kuil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Waktu dan jam (時) diukur berdasarkan posisi (日) matahari di atas (寺) kuil."
+  },
+  "次": {
+    "kanji": "次",
+    "components": [
+      {
+        "part": "冫",
+        "meaning_id": "es"
+      },
+      {
+        "part": "二",
+        "meaning_id": "dua"
+      },
+      {
+        "part": "欠",
+        "meaning_id": "kurang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Giliran berikutnya (次) akan tiba setelah hal yang (欠) kurang diselesaikan sebanyak (二) dua kali."
+  },
+  "治": {
+    "kanji": "治",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "台",
+        "meaning_id": "panggung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mengatur dan menenangkan (治) situasi dengan menyiramkan (氵) air ke atas (台) panggung."
+  },
+  "耳": {
+    "kanji": "耳",
+    "components": [
+      {
+        "part": "耳",
+        "meaning_id": "telinga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk kanji (耳) ini memang sengaja digambar mirip seperti bentuk daun telinga."
+  },
+  "室": {
+    "kanji": "室",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "至",
+        "meaning_id": "tiba"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (宀) saat Anda tiba (至) di rumah, Anda masuk ke dalam kamar atau ruang (室) untuk istirahat."
+  },
+  "舎": {
+    "kanji": "舎",
+    "components": [
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "吉",
+        "meaning_id": "keberuntungan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rumah pondok atau asrama (舎) adalah tempat orang (人) tinggal dengan penuh keberuntungan (吉)."
+  },
+  "捨": {
+    "kanji": "捨",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "舎",
+        "meaning_id": "rumah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan tangan (扌) untuk membuang (捨) barang-barang lama keluar dari rumah (舎)."
+  },
+  "社": {
+    "kanji": "社",
+    "components": [
+      {
+        "part": "礻",
+        "meaning_id": "altar"
+      },
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kuil atau perusahaan (社) berdiri di atas altar (礻) suci di atas tanah (土)."
+  },
+  "借": {
+    "kanji": "借",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "昔",
+        "meaning_id": "masa lalu"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang (亻) meminjam (借) barang dari masa lalu (昔) untuk dipakai lagi."
+  },
+  "若": {
+    "kanji": "若",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "右",
+        "meaning_id": "kanan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rumput (艹) di sebelah kanan (右) tumbuh segar dan kelihatan masih muda (若)."
+  },
+  "寂": {
+    "kanji": "寂",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "叔",
+        "meaning_id": "paman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (宀) rumah paman (叔) terasa sangat sepi dan kesepian (寂)."
+  },
+  "弱": {
+    "kanji": "弱",
+    "components": [
+      {
+        "part": "弓",
+        "meaning_id": "busur"
+      },
+      {
+        "part": "冫",
+        "meaning_id": "es"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Busur panah (弓) yang terkena tetesan es (冫) menjadi rapuh dan lemah (弱)."
+  },
+  "取": {
+    "kanji": "取",
+    "components": [
+      {
+        "part": "耳",
+        "meaning_id": "telinga"
+      },
+      {
+        "part": "又",
+        "meaning_id": "tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan tangan (又) untuk memegang telinga (耳) dan mengambilnya (取)."
+  },
+  "趣": {
+    "kanji": "趣",
+    "components": [
+      {
+        "part": "走",
+        "meaning_id": "lari"
+      },
+      {
+        "part": "取",
+        "meaning_id": "mengambil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Berlari (走) untuk mengambil (取) hobi dan minat atau kesan yang elegan (趣)."
+  },
+  "受": {
+    "kanji": "受",
+    "components": [
+      {
+        "part": "冖",
+        "meaning_id": "penutup"
+      },
+      {
+        "part": "又",
+        "meaning_id": "tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada (⺤) cakar di bawah (冖) penutup yang (又) tangan tangkap untuk Menerima (受) barang kiriman."
+  },
+  "終": {
+    "kanji": "終",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "冬",
+        "meaning_id": "musim dingin"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (糸) Benang rajut untuk (冬) musim dingin akhirnya (終) Selesai dirajut."
+  },
+  "週": {
+    "kanji": "週",
+    "components": [
+      {
+        "part": "周",
+        "meaning_id": "keliling"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Waktu yang (辶) berjalan (周) berkeliling menandakan satu (週) Minggu."
+  },
+  "集": {
+    "kanji": "集",
+    "components": [
+      {
+        "part": "隹",
+        "meaning_id": "burung"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Banyak (隹) burung yang (木) di atas pohon (集) Berkumpul."
+  },
+  "住": {
+    "kanji": "住",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "主",
+        "meaning_id": "utama"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (亻) Orang (主) utama (住) Tinggal di rumah ini."
+  },
+  "柔": {
+    "kanji": "柔",
+    "components": [
+      {
+        "part": "矛",
+        "meaning_id": "tombak"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (矛) Tombak menusuk (木) kayu yang (柔) Lembut."
+  },
+  "術": {
+    "kanji": "術",
+    "components": [
+      {
+        "part": "行",
+        "meaning_id": "pergi"
+      },
+      {
+        "part": "朮",
+        "meaning_id": "seni"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat (行) Pergi kita butuh (術) Teknik atau keahlian khusus."
+  },
+  "準": {
+    "kanji": "準",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "隼",
+        "meaning_id": "elang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (氵) Air dan (隼) elang jadi standar (準) Persiapan yang matang."
+  },
+  "緒": {
+    "kanji": "緒",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "者",
+        "meaning_id": "orang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: (糸) Benang yang dipegang (者) orang untuk Bersama-sama (緒) ditarik."
+  },
+  "除": {
+    "kanji": "除",
+    "components": [
+      {
+        "part": "余",
+        "meaning_id": "sisa"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada bukit (⻖) penuh sisa (余) barang rusak yang harus dibuang atau disingkirkan."
+  },
+  "勝": {
+    "kanji": "勝",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "bulan"
+      },
+      {
+        "part": "肉",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "劵",
+        "meaning_id": "tiket"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Untuk menang (勝) lomba, kita harus sering makan daging (肉), melihat bulan (月), dan mengumpulkan tiket (劵) kemenangan!"
+  },
+  "将": {
+    "kanji": "将",
+    "components": [
+      {
+        "part": "爿",
+        "meaning_id": "tempat tidur"
+      },
+      {
+        "part": "寸",
+        "meaning_id": "inci"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang pemimpin (将) menggerakkan tangan (⺦) di atas tempat tidur (爿) seluas satu inci (寸) untuk merencanakan strategi."
+  },
+  "床": {
+    "kanji": "床",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (广), lantai rumah terbuat dari kayu pohon (木) yang dijadikan tempat tidur (床)."
+  },
+  "消": {
+    "kanji": "消",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "肖",
+        "meaning_id": "menyerupai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Api yang menyerupai (肖) sesuatu akan padam dan lenyap jika disiram air (氵)."
+  },
+  "照": {
+    "kanji": "照",
+    "components": [
+      {
+        "part": "昭",
+        "meaning_id": "terang"
+      },
+      {
+        "part": "灬",
+        "meaning_id": "api"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sinar yang terang (昭) dari kobaran api (灬) menerangi dan menyinari (照) ruangan gelap."
+  },
+  "紹": {
+    "kanji": "紹",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "召",
+        "meaning_id": "memanggil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kita menarik benang (糸) untuk memanggil (召) dan memperkenalkan (紹) teman baru."
+  },
+  "証": {
+    "kanji": "証",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "正",
+        "meaning_id": "benar"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kata-kata (言) yang benar (正) adalah bukti dan saksi (証) yang kuat."
+  },
+  "障": {
+    "kanji": "障",
+    "components": [
+      {
+        "part": "章",
+        "meaning_id": "bab"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jalan di bukit (⻖) yang berbatu menjadi bab (章) penghalang atau rintangan (障) perjalanan."
+  },
+  "丈": {
+    "kanji": "丈",
+    "components": [
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "乂",
+        "meaning_id": "membunuh"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Satu (一) orang yang kuat ukurannya (丈) membuat kita merasa aman."
+  },
+  "城": {
+    "kanji": "城",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      },
+      {
+        "part": "成",
+        "meaning_id": "menjadi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Timbunan tanah (土) yang dibentuk hingga menjadi (成) sebuah istana atau benteng (城)."
+  },
+  "場": {
+    "kanji": "場",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      },
+      {
+        "part": "昜",
+        "meaning_id": "terang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah tempat (場) adalah sebidang tanah (土) yang disinari matahari dengan terang (昜), seperti di tempat penjualan (売り場)."
+  },
+  "飾": {
+    "kanji": "飾",
+    "components": [
+      {
+        "part": "食",
+        "meaning_id": "makanan"
+      },
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menghias (飾) meja makan dengan makanan (食) yang ditutup kain (巾) cantik."
+  },
+  "触": {
+    "kanji": "触",
+    "components": [
+      {
+        "part": "角",
+        "meaning_id": "tanduk"
+      },
+      {
+        "part": "虫",
+        "meaning_id": "serangga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat menyentuh (触) serangga (虫) bertanduk (角), kita bisa merasakannya."
+  },
+  "伸": {
+    "kanji": "伸",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "申",
+        "meaning_id": "berkata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) meluruskan dan merentangkan tangan saat berkata (申) untuk meluruskan (伸ばす) badan."
+  },
+  "信": {
+    "kanji": "信",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Iman dan kepercayaan (信) lahir dari orang (亻) yang memegang teguh kata-kata (言) yang diucapkannya."
+  },
+  "心": {
+    "kanji": "心",
+    "components": [
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk kanji ini menyerupai organ hati (心) manusia yang penuh perasaan dan semangat."
+  },
+  "振": {
+    "kanji": "振",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "辰",
+        "meaning_id": "naga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggerakkan tangan (扌) dengan kuat seperti naga (辰) yang mengibaskan ekornya atau melambaikan tangan."
+  },
+  "神": {
+    "kanji": "神",
+    "components": [
+      {
+        "part": "礻",
+        "meaning_id": "altar"
+      },
+      {
+        "part": "申",
+        "meaning_id": "menyatakan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di depan altar (礻), dewa atau Tuhan (神) menyatakan (申) kehendaknya di kuil Shinto (神社)."
+  },
+  "親": {
+    "kanji": "親",
+    "components": [
+      {
+        "part": "立",
+        "meaning_id": "berdiri"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "見",
+        "meaning_id": "melihat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang tua (親) berdiri (立) di dekat pohon (木) untuk mengawasi dan melihat (見) anak-anaknya."
+  },
+  "酔": {
+    "kanji": "酔",
+    "components": [
+      {
+        "part": "酉",
+        "meaning_id": "alkohol"
+      },
+      {
+        "part": "卆",
+        "meaning_id": "tentara"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang tentara (卆) minum terlalu banyak alkohol (酉) sampai mabuk (酔) dan pusing."
+  },
+  "政": {
+    "kanji": "政",
+    "components": [
+      {
+        "part": "正",
+        "meaning_id": "benar"
+      },
+      {
+        "part": "攵",
+        "meaning_id": "tindakan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pemerintah atau politik (政) harus selalu melakukan tindakan (攵) yang benar (正) untuk rakyat."
+  },
+  "正": {
+    "kanji": "正",
+    "components": [
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "止",
+        "meaning_id": "berhenti"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Satu (一) aturan yang harus kita taati dan buat berhenti (止) pelanggaran adalah hal yang benar (正)."
+  },
+  "製": {
+    "kanji": "製",
+    "components": [
+      {
+        "part": "制",
+        "meaning_id": "sistem"
+      },
+      {
+        "part": "衣",
+        "meaning_id": "pakaian"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Barang buatan (製) pabrik dibuat dengan sistem (制) khusus pada bahan pakaian (衣)."
+  },
+  "西": {
+    "kanji": "西",
+    "components": [
+      {
+        "part": "西",
+        "meaning_id": "barat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk kanji ini (西) menyerupai sarang burung di arah barat (西) tempat matahari terbenam."
+  },
+  "切": {
+    "kanji": "切",
+    "components": [
+      {
+        "part": "七",
+        "meaning_id": "tujuh"
+      },
+      {
+        "part": "刀",
+        "meaning_id": "pisau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pakai pisau (刀) untuk memotong (切) kue menjadi tujuh (七) bagian."
+  },
+  "折": {
+    "kanji": "折",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "斤",
+        "meaning_id": "kapak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangan (扌) menggunakan kapak (斤) untuk memotong kayu lalu melipat atau mematahkan (折) rantingnya."
+  },
+  "節": {
+    "kanji": "節",
+    "components": [
+      {
+        "part": "竹",
+        "meaning_id": "bambu"
+      },
+      {
+        "part": "即",
+        "meaning_id": "segera"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Batang bambu (竹) memiliki ruas atau musim (節) yang segera (即) terlihat."
+  },
+  "説": {
+    "kanji": "説",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "兌",
+        "meaning_id": "pertukaran"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Penjelasan atau teori (説) disampaikan lewat kata-kata (言) saat ada pertukaran (兌) pendapat."
+  },
+  "専": {
+    "kanji": "専",
+    "components": [
+      {
+        "part": "由",
+        "meaning_id": "alasan"
+      },
+      {
+        "part": "寸",
+        "meaning_id": "ukuran"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dengan satu ukuran (寸) dan alasan (由) tertentu, dia punya keahlian khusus atau spesialisasi (専)."
+  },
+  "川": {
+    "kanji": "川",
+    "components": [
+      {
+        "part": "川",
+        "meaning_id": "sungai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tiga garis vertikal pada kanji ini (川) menggambarkan aliran air di sungai (川)."
+  },
+  "洗": {
+    "kanji": "洗",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "先",
+        "meaning_id": "duluan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Air (氵) dipakai duluan (先) untuk mencuci piring atau tangan."
+  },
+  "線": {
+    "kanji": "線",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "泉",
+        "meaning_id": "mata air"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) ditarik lurus di atas mata air (泉) membentuk garis."
+  },
+  "船": {
+    "kanji": "船",
+    "components": [
+      {
+        "part": "舟",
+        "meaning_id": "perahu"
+      },
+      {
+        "part": "㕣",
+        "meaning_id": "lembah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Perahu (舟) melewati lembah (㕣) air untuk menjadi kapal."
+  },
+  "選": {
+    "kanji": "選",
+    "components": [
+      {
+        "part": "巽",
+        "meaning_id": "pantas"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat berjalan (辶) di toko, kita memilih (巽) barang yang paling pantas."
+  },
+  "掃": {
+    "kanji": "掃",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "帚",
+        "meaning_id": "sapu"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangan (扌) memegang sapu (帚) untuk menyapu lantai."
+  },
+  "相": {
+    "kanji": "相",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mata (目) melihat pohon (木) bersama-sama secara timbal balik."
+  },
+  "窓": {
+    "kanji": "窓",
+    "components": [
+      {
+        "part": "穴",
+        "meaning_id": "gua"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dari lubang gua (穴) dengan hati (心) terbuka, kita melihat jendela (窓)."
+  },
+  "走": {
+    "kanji": "走",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      },
+      {
+        "part": "龰",
+        "meaning_id": "kaki"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kaki (龰) menghentak tanah (土) saat mulai berlari kencang."
+  },
+  "足": {
+    "kanji": "足",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "龰",
+        "meaning_id": "kaki"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kaki (龰) lelah berjalan, lalu mulut (口) bilang sudah cukup."
+  },
+  "速": {
+    "kanji": "速",
+    "components": [
+      {
+        "part": "束",
+        "meaning_id": "bundel"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bundel (束) barang dikirim lewat jalan (辶) dengan cepat."
+  },
+  "駄": {
+    "kanji": "駄",
+    "components": [
+      {
+        "part": "馬",
+        "meaning_id": "kuda"
+      },
+      {
+        "part": "太",
+        "meaning_id": "gemuk"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Beban yang berat (駄) terjadi saat seekor (馬) kuda harus membawa muatan yang (太) gemuk dan berlebihan."
+  },
+  "体": {
+    "kanji": "体",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "本",
+        "meaning_id": "asal"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tubuh (体) adalah aset (本) utama bagi setiap (亻) orang untuk hidup."
+  },
+  "帯": {
+    "kanji": "帯",
+    "components": [
+      {
+        "part": "冖",
+        "meaning_id": "penutup"
+      },
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sabuk atau ikat pinggang (帯) adalah sehelai (巾) kain yang dilingkarkan (冖) di pinggang."
+  },
+  "待": {
+    "kanji": "待",
+    "components": [
+      {
+        "part": "彳",
+        "meaning_id": "langkah"
+      },
+      {
+        "part": "寺",
+        "meaning_id": "kuil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kita harus sabar menunggu (待) saat melangkah (彳) berjalan menuju (寺) kuil."
+  },
+  "替": {
+    "kanji": "替",
+    "components": [
+      {
+        "part": "夫",
+        "meaning_id": "suami"
+      },
+      {
+        "part": "日",
+        "meaning_id": "hari"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang (夫) suami mengganti (替) jadwal kerjanya setiap (日) hari."
+  },
+  "袋": {
+    "kanji": "袋",
+    "components": [
+      {
+        "part": "代",
+        "meaning_id": "menggantikan"
+      },
+      {
+        "part": "衣",
+        "meaning_id": "pakaian"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kantong atau tas (袋) dipakai untuk menyimpan (衣) pakaian ganti (代)."
+  },
+  "貸": {
+    "kanji": "貸",
+    "components": [
+      {
+        "part": "代",
+        "meaning_id": "menggantikan"
+      },
+      {
+        "part": "貝",
+        "meaning_id": "kerang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Meminjamkan (貸) uang atau barang berharga seperti (貝) kerang agar bisa dipakai dan dikembalikan (代)."
+  },
+  "題": {
+    "kanji": "題",
+    "components": [
+      {
+        "part": "是",
+        "meaning_id": "benar"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Judul atau soal ujian (題) di setiap (頁) halaman buku harus dijawab dengan (是) benar."
+  },
+  "濯": {
+    "kanji": "濯",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "翟",
+        "meaning_id": "burung pegar"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mencuci pakaian (濯) menggunakan kucuran (氵) air bersih agar kilau bulunya seindah (翟) burung."
+  },
+  "達": {
+    "kanji": "達",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      },
+      {
+        "part": "羊",
+        "meaning_id": "domba"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sekelompok (達) teman berjalan (辶) bersama di atas (土) tanah menggembalakan (羊) domba."
+  },
+  "脱": {
+    "kanji": "脱",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "肉",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "兌",
+        "meaning_id": "pertukaran"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Daging (肉) yang menempel harus dilepas atau ditukar (兌) saat kamu melepas pakaian (ぬぎます)."
+  },
+  "棚": {
+    "kanji": "棚",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "朋",
+        "meaning_id": "teman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rak (たな) terbuat dari kayu (木) tempat menaruh barang bersama teman-teman (朋)."
+  },
+  "探": {
+    "kanji": "探",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "手",
+        "meaning_id": "tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kamu meraba dan mencari sesuatu dengan menggunakan tangan (扌/手) saat sedang mencari (さがします)."
+  },
+  "短": {
+    "kanji": "短",
+    "components": [
+      {
+        "part": "矢",
+        "meaning_id": "panah"
+      },
+      {
+        "part": "豆",
+        "meaning_id": "kacang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Anak panah (矢) yang pendek diberi makan biji kacang (豆) agar ukurannya pendek (みじかい)."
+  },
+  "誕": {
+    "kanji": "誕",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "延",
+        "meaning_id": "memanjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ucapan (言) selamat ulang tahun (たんじょうび) yang panjang (延) diberikan saat hari lahir."
+  },
+  "弾": {
+    "kanji": "弾",
+    "components": [
+      {
+        "part": "弓",
+        "meaning_id": "busur"
+      },
+      {
+        "part": "単",
+        "meaning_id": "sederhana"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Busur panah (弓) sederhana (単) dipakai untuk menembak peluru atau memainkan alat musik petik (ひきます)."
+  },
+  "暖": {
+    "kanji": "暖",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "爰",
+        "meaning_id": "di sini"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sinar matahari (日) bersinar di sini (爰) membuat udara terasa hangat (あたたかい)."
+  },
+  "段": {
+    "kanji": "段",
+    "components": [
+      {
+        "part": "殳",
+        "meaning_id": "senjata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangga atau tingkat (かいだん) naik ke atas dibuat bertahap seperti pijakan senjata (殳)."
+  },
+  "知": {
+    "kanji": "知",
+    "components": [
+      {
+        "part": "矢",
+        "meaning_id": "panah"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Informasi meluncur cepat seperti anak panah (矢) dari mulut (口) orang yang tahu (しります)."
+  },
+  "池": {
+    "kanji": "池",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "水",
+        "meaning_id": "air"
+      },
+      {
+        "part": "也",
+        "meaning_id": "juga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kumpulan air (氵/水) yang juga (也) menggenang di tanah membentuk sebuah kolam (いけ)."
+  },
+  "置": {
+    "kanji": "置",
+    "components": [
+      {
+        "part": "罒",
+        "meaning_id": "jaring"
+      },
+      {
+        "part": "直",
+        "meaning_id": "lurus"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jaring (罒) yang lurus (直) ditaruh atau diletakkan di lantai."
+  },
+  "築": {
+    "kanji": "築",
+    "components": [
+      {
+        "part": "筑",
+        "meaning_id": "bangunan"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membangun (築) rumah dari bahan bangunan (筑) dan kayu (木)."
+  },
+  "茶": {
+    "kanji": "茶",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanaman teh (艹) dipetik orang (人) di dekat pohon (木) untuk diseduh."
+  },
+  "着": {
+    "kanji": "着",
+    "components": [
+      {
+        "part": "羊",
+        "meaning_id": "domba"
+      },
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Domba (羊) memakai baju agar terlihat oleh mata (目) saat tiba (着) di tujuan."
+  },
+  "注": {
+    "kanji": "注",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "主",
+        "meaning_id": "utama"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Air (氵) utama (主) yang dituangkan ke dalam gelas."
+  },
+  "駐": {
+    "kanji": "駐",
+    "components": [
+      {
+        "part": "馬",
+        "meaning_id": "kuda"
+      },
+      {
+        "part": "主",
+        "meaning_id": "utama"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kuda (馬) utama (主) berhenti atau parkir (駐) di garasi."
+  },
+  "帳": {
+    "kanji": "帳",
+    "components": [
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      },
+      {
+        "part": "長",
+        "meaning_id": "panjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Buku catatan (帳) dibuat dari kain (巾) panjang (長) yang dijilid rapi."
+  },
+  "張": {
+    "kanji": "張",
+    "components": [
+      {
+        "part": "弓",
+        "meaning_id": "busur"
+      },
+      {
+        "part": "長",
+        "meaning_id": "panjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Busur (弓) ditarik (張) agar menjadi panjang (長)."
+  },
+  "朝": {
+    "kanji": "朝",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "bulan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Pagi hari (朝) ditandai matahari (𠦝) terbit saat bulan (月) masih tampak."
+  },
+  "町": {
+    "kanji": "町",
+    "components": [
+      {
+        "part": "田",
+        "meaning_id": "sawah"
+      },
+      {
+        "part": "丁",
+        "meaning_id": "wilayah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kota (町) yang penuh dengan sawah (田) di setiap wilayah (丁)."
+  },
+  "腸": {
+    "kanji": "腸",
+    "components": [
+      {
+        "part": "月",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "肉",
+        "meaning_id": "daging"
+      },
+      {
+        "part": "昜",
+        "meaning_id": "terang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bagian tubuh (月/肉) yang berada di dalam perut kita dan tampak terang (昜) saat diperiksa dokter adalah usus atau bagian pencernaan."
+  },
+  "調": {
+    "kanji": "調",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "周",
+        "meaning_id": "keliling"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kata-kata (言) yang diucapkan berputar-putar keliling (周) untuk mengatur dan memeriksa suatu kondisi agar pas."
+  },
+  "長": {
+    "kanji": "長",
+    "components": [
+      {
+        "part": "長",
+        "meaning_id": "panjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bayangkan bentuk rambut orang tua atau pemimpin (長) yang sudah sangat panjang karena senioritasnya."
+  },
+  "直": {
+    "kanji": "直",
+    "components": [
+      {
+        "part": "十",
+        "meaning_id": "sepuluh"
+      },
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan satu mata (目) dengan teliti ditambah sepuluh (十) kali pengecekan untuk memperbaiki sesuatu secara lurus."
+  },
+  "賃": {
+    "kanji": "賃",
+    "components": [
+      {
+        "part": "任",
+        "meaning_id": "tugas"
+      },
+      {
+        "part": "貝",
+        "meaning_id": "uang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seseorang diberi tugas (任) lalu membayar uang (貝) sebagai biaya sewa atau upah kerja."
+  },
+  "痛": {
+    "kanji": "痛",
+    "components": [
+      {
+        "part": "疒",
+        "meaning_id": "penyakit"
+      },
+      {
+        "part": "甬",
+        "meaning_id": "tabung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ketika bagian tubuh sakit (疒) rasanya seperti ditusuk-tusuk di dalam tabung (甬) yang membuat kita merasa ngilu."
+  },
+  "釣": {
+    "kanji": "釣",
+    "components": [
+      {
+        "part": "金",
+        "meaning_id": "logam"
+      },
+      {
+        "part": "勺",
+        "meaning_id": "sendok"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Besi logam (金) yang dibentuk melengkung seperti sendok (勺) dipakai untuk kail saat memancing ikan."
+  },
+  "低": {
+    "kanji": "低",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "氏",
+        "meaning_id": "klan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) dari klan (氏) tertentu berdiri dengan postur tubuh yang rendah."
+  },
+  "定": {
+    "kanji": "定",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "疋",
+        "meaning_id": "kaki"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seseorang berdiri diam di bawah atap (宀) dengan kaki (疋) terpancang tetap untuk menetapkan suatu keputusan."
+  },
+  "庭": {
+    "kanji": "庭",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "rumah"
+      },
+      {
+        "part": "廷",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Area terbuka di luar bangunan rumah (广) yang luas dipakai sebagai halaman atau kebun (庭) bermain."
+  },
+  "店": {
+    "kanji": "店",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "占",
+        "meaning_id": "menempati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah bangunan beratap (广) yang mulai menempati (占) tempat untuk dijadikan toko."
+  },
+  "点": {
+    "kanji": "点",
+    "components": [
+      {
+        "part": "占",
+        "meaning_id": "menempati"
+      },
+      {
+        "part": "灬",
+        "meaning_id": "api"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Titik api (灬) yang menempati (占) kertas ujian menjadi sebuah nilai atau poin."
+  },
+  "伝": {
+    "kanji": "伝",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "云",
+        "meaning_id": "berkata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) yang sedang berkata (云) untuk meneruskan atau menyampaikan pesan."
+  },
+  "田": {
+    "kanji": "田",
+    "components": [
+      {
+        "part": "田",
+        "meaning_id": "sawah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk kanji ini sudah sangat mirip dengan petakan sawah (田) di desa."
+  },
+  "吐": {
+    "kanji": "吐",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mulut (口) mengeluarkan isi perut ke atas tanah (土) saat muntah."
+  },
+  "渡": {
+    "kanji": "渡",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "度",
+        "meaning_id": "derajat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Melewati air (氵) sebanyak beberapa derajat (度) atau kali saat menyeberang sungai."
+  },
+  "登": {
+    "kanji": "登",
+    "components": [
+      {
+        "part": "癶",
+        "meaning_id": "kaki"
+      },
+      {
+        "part": "豆",
+        "meaning_id": "kacang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggunakan kaki (癶) untuk mendaki gunung demi memanen biji kacang (豆)."
+  },
+  "都": {
+    "kanji": "都",
+    "components": [
+      {
+        "part": "者",
+        "meaning_id": "orang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Banyak orang (者) berkumpul di suatu wilayah kota besar (⻏) atau metropolis."
+  },
+  "度": {
+    "kanji": "度",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "又",
+        "meaning_id": "tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangan (又) di bawah atap (广) mengukur suhu sebanyak satu derajat (度) atau kali."
+  },
+  "投": {
+    "kanji": "投",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "殳",
+        "meaning_id": "senjata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tangan (扌) yang menggunakan alat (殳) untuk melempar sesuatu jauh ke depan."
+  },
+  "湯": {
+    "kanji": "湯",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "昜",
+        "meaning_id": "terang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Air (氵) yang diterpa matahari jadi sangat terang dan panas, cocok dipakai untuk mandi air panas (お湯)."
+  },
+  "当": {
+    "kanji": "当",
+    "components": [
+      {
+        "part": "小",
+        "meaning_id": "kecil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Barang kecil (小) yang ditutup pas (⺕) di kotak bekal (お弁当) adalah hal yang benar (当)."
+  },
+  "筒": {
+    "kanji": "筒",
+    "components": [
+      {
+        "part": "竹",
+        "meaning_id": "bambu"
+      },
+      {
+        "part": "同",
+        "meaning_id": "sama"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Batang bambu (竹) yang dipotong sama (同) panjang membentuk pipa atau silinder (筒)."
+  },
+  "糖": {
+    "kanji": "糖",
+    "components": [
+      {
+        "part": "米",
+        "meaning_id": "beras"
+      },
+      {
+        "part": "唐",
+        "meaning_id": "cina"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Beras (米) manis dari seberang lautan adalah gula (砂糖) yang lezat."
+  },
+  "頭": {
+    "kanji": "頭",
+    "components": [
+      {
+        "part": "豆",
+        "meaning_id": "kacang"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kepala (頭) manusia bentuknya bulat mirip kacang (豆) dan penuh isi seperti halaman (頁) buku."
+  },
+  "働": {
+    "kanji": "働",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "動",
+        "meaning_id": "bergerak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang (亻) yang terus bergerak (動) artinya dia sedang bekerja (働きます)."
+  },
+  "動": {
+    "kanji": "動",
+    "components": [
+      {
+        "part": "重",
+        "meaning_id": "berat"
+      },
+      {
+        "part": "力",
+        "meaning_id": "tenaga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Barang berat (重) butuh tenaga (力) besar supaya bisa bergerak (動)."
+  },
+  "堂": {
+    "kanji": "堂",
+    "components": [
+      {
+        "part": "土",
+        "meaning_id": "tanah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Aula atau balai (堂) adalah bangunan besar yang berdiri kokoh di atas tanah (土)."
+  },
+  "道": {
+    "kanji": "道",
+    "components": [
+      {
+        "part": "首",
+        "meaning_id": "kepala"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kepala (首) menengok ke depan saat kita berjalan menyusuri jalan (道) panjang."
+  },
+  "特": {
+    "kanji": "特",
+    "components": [
+      {
+        "part": "牛",
+        "meaning_id": "sapi"
+      },
+      {
+        "part": "寺",
+        "meaning_id": "kuil"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada sapi (牛) spesial yang dipelihara di dalam kuil (寺)."
+  },
+  "独": {
+    "kanji": "独",
+    "components": [
+      {
+        "part": "虫",
+        "meaning_id": "serangga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Hewan (⺨) dan serangga (虫) yang hidup sendirian (single) di tengah hutan."
+  },
+  "南": {
+    "kanji": "南",
+    "components": [
+      {
+        "part": "十",
+        "meaning_id": "sepuluh"
+      },
+      {
+        "part": "冂",
+        "meaning_id": "kotak"
+      },
+      {
+        "part": "干",
+        "meaning_id": "kering"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di arah selatan (南), ada sepuluh (十) kotak (冂) tempat menjemur barang kering (干)."
+  },
+  "入": {
+    "kanji": "入",
+    "components": [
+      {
+        "part": "入",
+        "meaning_id": "masuk"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk (入) seperti dua kaki orang yang melangkah masuk ke dalam ruangan."
+  },
+  "認": {
+    "kanji": "認",
+    "components": [
+      {
+        "part": "言",
+        "meaning_id": "kata"
+      },
+      {
+        "part": "忍",
+        "meaning_id": "sabar"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dengan perkataan (言) dan kesabaran (忍), kita mengakui (認) kesalahan."
+  },
+  "猫": {
+    "kanji": "猫",
+    "components": [
+      {
+        "part": "苗",
+        "meaning_id": "bibit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Hewan (⺨) peliharaan yang suka bermain di dekat bibit (苗) tanaman adalah kucing (猫)."
+  },
+  "熱": {
+    "kanji": "熱",
+    "components": [
+      {
+        "part": "火",
+        "meaning_id": "api"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Ada banyak api (火) yang membuat tubuh menjadi panas dan demam (熱)."
+  },
+  "念": {
+    "kanji": "念",
+    "components": [
+      {
+        "part": "今",
+        "meaning_id": "sekarang"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Apa yang ada di dalam hati (心) sekarang (今) adalah suatu keinginan atau ide (念)."
+  },
+  "能": {
+    "kanji": "能",
+    "components": [
+      {
+        "part": "匕",
+        "meaning_id": "sendok"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang memiliki kemampuan (能) hebat bisa makan menggunakan sendok (匕) kecil."
+  },
+  "馬": {
+    "kanji": "馬",
+    "components": [
+      {
+        "part": "火",
+        "meaning_id": "api"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kuda (馬) berlari sangat kencang bagaikan api (火) yang membara."
+  },
+  "俳": {
+    "kanji": "俳",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "非",
+        "meaning_id": "bukan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) yang pura-pura bukan (非) dirinya sendiri adalah seorang aktor (俳)."
+  },
+  "杯": {
+    "kanji": "杯",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      },
+      {
+        "part": "不",
+        "meaning_id": "tidak"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gelas terbuat dari kayu (木) tidak (不) mudah pecah saat kita bersulang (乾杯) bersama teman."
+  },
+  "背": {
+    "kanji": "背",
+    "components": [
+      {
+        "part": "北",
+        "meaning_id": "utara"
+      },
+      {
+        "part": "月",
+        "meaning_id": "bulan"
+      },
+      {
+        "part": "肉",
+        "meaning_id": "daging"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Punggung (背) terasa dingin saat menghadap utara (北) di bawah bulan (月) dan daging (肉) tubuh menggigil."
+  },
+  "配": {
+    "kanji": "配",
+    "components": [
+      {
+        "part": "酉",
+        "meaning_id": "alkohol"
+      },
+      {
+        "part": "己",
+        "meaning_id": "diri sendiri"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kita membagikan (配) minuman (酉) kepada diri sendiri (己) saat merasa cemas (心配)."
+  },
+  "泊": {
+    "kanji": "泊",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "白",
+        "meaning_id": "putih"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menginap (泊まります) di hotel dekat air (氵) yang jernih dan berbusa putih (白)."
+  },
+  "箱": {
+    "kanji": "箱",
+    "components": [
+      {
+        "part": "竹",
+        "meaning_id": "bambu"
+      },
+      {
+        "part": "相",
+        "meaning_id": "saling"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kotak (箱) bambu (竹) ini saling (相) menumpuk rapi di gudang."
+  },
+  "販": {
+    "kanji": "販",
+    "components": [
+      {
+        "part": "貝",
+        "meaning_id": "uang"
+      },
+      {
+        "part": "反",
+        "meaning_id": "melawan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menjual (販) barang di mesin otomatis dengan memasukkan uang (貝) yang dibalik (反)."
+  },
+  "彼": {
+    "kanji": "彼",
+    "components": [
+      {
+        "part": "彳",
+        "meaning_id": "langkah"
+      },
+      {
+        "part": "皮",
+        "meaning_id": "kulit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dia (彼) melangkah (彳) memakai jaket kulit (皮)."
+  },
+  "疲": {
+    "kanji": "疲",
+    "components": [
+      {
+        "part": "疒",
+        "meaning_id": "penyakit"
+      },
+      {
+        "part": "皮",
+        "meaning_id": "kulit"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Lelah (疲れます) membuat kulit (皮) terasa sakit seperti tertimpa penyakit (疒)."
+  },
+  "秘": {
+    "kanji": "秘",
+    "components": [
+      {
+        "part": "禾",
+        "meaning_id": "tanaman"
+      },
+      {
+        "part": "必",
+        "meaning_id": "pasti"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rahasia (秘) tanaman (禾) ini pasti (必) disembunyikan dengan rapat."
+  },
+  "備": {
+    "kanji": "備",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "厂",
+        "meaning_id": "tebing"
+      },
+      {
+        "part": "用",
+        "meaning_id": "pakai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang (亻) menyiapkan (準備) perlengkapan di dekat rumput (艹) tebing (厂) untuk dipakai (用)."
+  },
+  "鼻": {
+    "kanji": "鼻",
+    "components": [
+      {
+        "part": "自",
+        "meaning_id": "diri sendiri"
+      },
+      {
+        "part": "畀",
+        "meaning_id": "memberi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Hidung (鼻) adalah bagian (自) diri sendiri yang selalu menonjol dan siap (畀) diberi napas segar setiap saat."
+  },
+  "表": {
+    "kanji": "表",
+    "components": [
+      {
+        "part": "二",
+        "meaning_id": "dua"
+      },
+      {
+        "part": "丨",
+        "meaning_id": "garis"
+      },
+      {
+        "part": "衣",
+        "meaning_id": "pakaian"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Permukaan (表) luar dari (衣) pakaian kita adalah bagian yang dilihat orang."
+  },
+  "病": {
+    "kanji": "病",
+    "components": [
+      {
+        "part": "疒",
+        "meaning_id": "penyakit"
+      },
+      {
+        "part": "丙",
+        "meaning_id": "ketiga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang sakit (病) karena ada tanda (疒) penyakit yang membuat tubuhnya lemas."
+  },
+  "品": {
+    "kanji": "品",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Barang atau produk (品) ditumpuk rapi seperti tiga buah kotak (口) mulut kardus tersusun."
+  },
+  "不": {
+    "kanji": "不",
+    "components": [
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "丿",
+        "meaning_id": "miring"
+      },
+      {
+        "part": "丨",
+        "meaning_id": "garis"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanda silang atau garis penolakan melambangkan arti tidak atau negatif (不)."
+  },
+  "布": {
+    "kanji": "布",
+    "components": [
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kain (布) terbuat dari gulungan (巾) bahan tenun yang dibentangkan."
+  },
+  "負": {
+    "kanji": "負",
+    "components": [
+      {
+        "part": "勹",
+        "meaning_id": "bungkus"
+      },
+      {
+        "part": "貝",
+        "meaning_id": "kerang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat kalah (負) dalam taruhan, kita kehilangan harta kerang (貝) dan harus menanggung beban."
+  },
+  "舞": {
+    "kanji": "舞",
+    "components": [
+      {
+        "part": "丿",
+        "meaning_id": "miring"
+      },
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "舛",
+        "meaning_id": "berlawanan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menari (舞) adalah gerakan kaki melangkah ke sana kemari dengan lincah."
+  },
+  "風": {
+    "kanji": "風",
+    "components": [
+      {
+        "part": "几",
+        "meaning_id": "meja"
+      },
+      {
+        "part": "虫",
+        "meaning_id": "serangga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Angin (風) berhembus kencang menerbangkan seekor serangga (虫) di atas meja (几)."
+  },
+  "払": {
+    "kanji": "払",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "厶",
+        "meaning_id": "pribadi"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Membayar (払) menggunakan tangan (扌) untuk menyerahkan uang."
+  },
+  "物": {
+    "kanji": "物",
+    "components": [
+      {
+        "part": "牛",
+        "meaning_id": "sapi"
+      },
+      {
+        "part": "勿",
+        "meaning_id": "jangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jangan (勿) menyembelih sapi (牛) sembarangan karena itu adalah barang atau benda (物) berharga milik orang lain."
+  },
+  "文": {
+    "kanji": "文",
+    "components": [
+      {
+        "part": "亠",
+        "meaning_id": "tutup"
+      },
+      {
+        "part": "乂",
+        "meaning_id": "silang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebuah penutup (亠) dengan coretan silang (乂) di atasnya melambangkan sebuah kalimat atau karya sastra (文) yang ditulis rapi."
+  },
+  "閉": {
+    "kanji": "閉",
+    "components": [
+      {
+        "part": "門",
+        "meaning_id": "gerbang"
+      },
+      {
+        "part": "才",
+        "meaning_id": "bakat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gerbang (門) yang ditutup rapat karena orang-orang berbakat (才) sudah pulang dan mengunci pintu."
+  },
+  "別": {
+    "kanji": "別",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "刂",
+        "meaning_id": "pisau"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mulut (口) yang dipotong dengan pisau (刂) untuk memisahkan (別) diri dan jalan masing-masing."
+  },
+  "変": {
+    "kanji": "変",
+    "components": [
+      {
+        "part": "亦",
+        "meaning_id": "juga"
+      },
+      {
+        "part": "夂",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sesuatu yang aneh dan berubah (変) ketika ada hal lain yang berjalan (夂) tidak sesuai kebiasaan."
+  },
+  "返": {
+    "kanji": "返",
+    "components": [
+      {
+        "part": "反",
+        "meaning_id": "anti"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Jalan (辶) memutar balik arah karena melawan (反) arus, lalu mengembalikan (返) barang ke asalnya."
+  },
+  "弁": {
+    "kanji": "弁",
+    "components": [
+      {
+        "part": "厶",
+        "meaning_id": "pribadi"
+      },
+      {
+        "part": "廾",
+        "meaning_id": "dua tangan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Dua tangan (廾) membawa bekal pribadi (厶) untuk makan siang, atau berbicara dengan dialek (弁) khas."
+  },
+  "保": {
+    "kanji": "保",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "呆",
+        "meaning_id": "bingung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang orang (亻) membantu orang lain yang bingung (呆) untuk melindungi dan menjaga (保) keselamatannya."
+  },
+  "放": {
+    "kanji": "放",
+    "components": [
+      {
+        "part": "方",
+        "meaning_id": "arah"
+      },
+      {
+        "part": "攵",
+        "meaning_id": "tindakan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Melakukan tindakan (攵) mengarahkan (方) sesuatu agar dilepaskan bebas atau disiarkan (放)."
+  },
+  "帽": {
+    "kanji": "帽",
+    "components": [
+      {
+        "part": "巾",
+        "meaning_id": "kain"
+      },
+      {
+        "part": "冒",
+        "meaning_id": "berisiko"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kain (巾) yang dipakai di kepala untuk menutupi risiko (冒) panas matahari, yaitu topi (帽)."
+  },
+  "忘": {
+    "kanji": "忘",
+    "components": [
+      {
+        "part": "亡",
+        "meaning_id": "hilang"
+      },
+      {
+        "part": "心",
+        "meaning_id": "hati"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat sesuatu yang penting di (心) hati sudah (亡) hilang, artinya kita sudah lupa."
+  },
+  "忙": {
+    "kanji": "忙",
+    "components": [
+      {
+        "part": "忄",
+        "meaning_id": "hati"
+      },
+      {
+        "part": "亡",
+        "meaning_id": "hilang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang yang sangat sibuk membuat (忄) hatinya serasa (亡) hilang karena kelelahan bekerja."
+  },
+  "僕": {
+    "kanji": "僕",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "菐",
+        "meaning_id": "pekerja"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Kata 'aku' atau 'saya' (亻) orang biasa yang bertindak sebagai pelayan (菐)."
+  },
+  "撲": {
+    "kanji": "撲",
+    "components": [
+      {
+        "part": "扌",
+        "meaning_id": "tangan"
+      },
+      {
+        "part": "菐",
+        "meaning_id": "pelayan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Aksi memukul atau menampar menggunakan (扌) tangan kepada seorang (菐) pelayan."
+  },
+  "盆": {
+    "kanji": "盆",
+    "components": [
+      {
+        "part": "分",
+        "meaning_id": "membagi"
+      },
+      {
+        "part": "皿",
+        "meaning_id": "piring"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Nampan atau (皿) piring besar yang dipakai untuk (分) membagi makanan saat festival."
+  },
+  "妹": {
+    "kanji": "妹",
+    "components": [
+      {
+        "part": "女",
+        "meaning_id": "perempuan"
+      },
+      {
+        "part": "未",
+        "meaning_id": "belum"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Anggota keluarga (女) perempuan yang usianya (未) belum dewasa adalah adik perempuan."
+  },
+  "末": {
+    "kanji": "末",
+    "components": [
+      {
+        "part": "木",
+        "meaning_id": "pohon"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Garis tambahan di atas batang (木) pohon menandakan bagian ujung atau akhir."
+  },
+  "漫": {
+    "kanji": "漫",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "曼",
+        "meaning_id": "panjang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Cerita komik yang alurnya mengalir seperti (氵) air dan (曼) panjang tanpa batas."
+  },
+  "味": {
+    "kanji": "味",
+    "components": [
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      },
+      {
+        "part": "未",
+        "meaning_id": "belum"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Makanan yang masuk ke (口) mulut rasanya (未) belum ketahuan sampai dicicipi."
+  },
+  "眠": {
+    "kanji": "眠",
+    "components": [
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      },
+      {
+        "part": "民",
+        "meaning_id": "rakyat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Saat (民) rakyat sudah menutup (目) mata mereka, tandanya waktunya tidur."
+  },
+  "務": {
+    "kanji": "務",
+    "components": [
+      {
+        "part": "矛",
+        "meaning_id": "tombak"
+      },
+      {
+        "part": "攵",
+        "meaning_id": "tindakan"
+      },
+      {
+        "part": "力",
+        "meaning_id": "tenaga"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tugas (務) kantor butuh (力) tenaga dan (矛) tombak untuk hadapi masalah."
+  },
+  "夢": {
+    "kanji": "夢",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "罒",
+        "meaning_id": "jaring"
+      },
+      {
+        "part": "夕",
+        "meaning_id": "malam"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mimpi (夢) indah di (夕) malam hari seperti melihat (艹) rumput lewat (罒) jaring."
+  },
+  "無": {
+    "kanji": "無",
+    "components": [
+      {
+        "part": "一",
+        "meaning_id": "satu"
+      },
+      {
+        "part": "火",
+        "meaning_id": "api"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tidak ada (無) apa-apa karena (火) api sudah padam jadi (一) abu."
+  },
+  "明": {
+    "kanji": "明",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      },
+      {
+        "part": "月",
+        "meaning_id": "bulan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Terang (明) karena ada (日) matahari dan (月) bulan bersinar bersama."
+  },
+  "盲": {
+    "kanji": "盲",
+    "components": [
+      {
+        "part": "亡",
+        "meaning_id": "hilang"
+      },
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Buta (盲) artinya (目) mata yang (亡) hilang fungsinya."
+  },
+  "目": {
+    "kanji": "目",
+    "components": [
+      {
+        "part": "目",
+        "meaning_id": "mata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bentuk (目) mata kotak mirip jendela kecil."
+  },
+  "問": {
+    "kanji": "問",
+    "components": [
+      {
+        "part": "門",
+        "meaning_id": "gerbang"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Bertanya (問) dengan membuka (口) mulut di depan (門) gerbang."
+  },
+  "門": {
+    "kanji": "門",
+    "components": [
+      {
+        "part": "門",
+        "meaning_id": "gerbang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Gerbang (門) besar dua daun pintu."
+  },
+  "夜": {
+    "kanji": "夜",
+    "components": [
+      {
+        "part": "人",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "夕",
+        "meaning_id": "malam"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Malam (夜) tiba saat (人) orang pulang di waktu (夕) senja."
+  },
+  "野": {
+    "kanji": "野",
+    "components": [
+      {
+        "part": "里",
+        "meaning_id": "desa"
+      },
+      {
+        "part": "予",
+        "meaning_id": "sebelum"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Lapangan (野) luas terletak di (里) desa."
+  },
+  "役": {
+    "kanji": "役",
+    "components": [
+      {
+        "part": "彳",
+        "meaning_id": "langkah"
+      },
+      {
+        "part": "殳",
+        "meaning_id": "senjata"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seseorang melangkah (彳) membawa senjata (殳) untuk menjalankan tugas dinas atau kewajiban (役)."
+  },
+  "薬": {
+    "kanji": "薬",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "楽",
+        "meaning_id": "nyaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanaman rumput (艹) yang membuat tubuh terasa nyaman (楽) adalah obat (薬)."
+  },
+  "優": {
+    "kanji": "優",
+    "components": [
+      {
+        "part": "亻",
+        "meaning_id": "orang"
+      },
+      {
+        "part": "憂",
+        "meaning_id": "sedih"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang aktor (亻) yang tadinya terlihat sedih (憂) kini aktingnya sangat luar biasa dan lembut (優)."
+  },
+  "遊": {
+    "kanji": "遊",
+    "components": [
+      {
+        "part": "⻌",
+        "meaning_id": "jalan"
+      },
+      {
+        "part": "斿",
+        "meaning_id": "mengalir"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Anak-anak berjalan (⻌) dengan bebas mengalir seperti air untuk pergi bermain (遊)."
+  },
+  "予": {
+    "kanji": "予",
+    "components": [
+      {
+        "part": "了",
+        "meaning_id": "selesai"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Memakai topi (マ) sebelum semuanya selesai (了) adalah persiapan yang dilakukan sebelumnya (予)."
+  },
+  "預": {
+    "kanji": "預",
+    "components": [
+      {
+        "part": "予",
+        "meaning_id": "sebelumnya"
+      },
+      {
+        "part": "頁",
+        "meaning_id": "halaman"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Sebelum (予) menyerahkan banyak halaman (頁) buku, kamu menitipkannya dulu (預) ke penjaga."
+  },
+  "容": {
+    "kanji": "容",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "谷",
+        "meaning_id": "lembah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (宀) rumah terdapat lembah (谷) yang dapat menampung (容) banyak air."
+  },
+  "葉": {
+    "kanji": "葉",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "枼",
+        "meaning_id": "lembaran"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Tanaman (艹) yang berbentuk lembaran-lembaran (枼) tipis adalah daun (葉)."
+  },
+  "要": {
+    "kanji": "要",
+    "components": [
+      {
+        "part": "覀",
+        "meaning_id": "penutup"
+      },
+      {
+        "part": "女",
+        "meaning_id": "wanita"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seorang wanita (女) memakai penutup kepala (覀) karena itu sangat penting dan diperlukan (要)."
+  },
+  "踊": {
+    "kanji": "踊",
+    "components": [
+      {
+        "part": "足",
+        "meaning_id": "kaki"
+      },
+      {
+        "part": "甬",
+        "meaning_id": "tabung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Menggerakkan kaki (足) di dalam tabung besar (甬) sambil melompat dan menari (踊)."
+  },
+  "欲": {
+    "kanji": "欲",
+    "components": [
+      {
+        "part": "谷",
+        "meaning_id": "lembah"
+      },
+      {
+        "part": "欠",
+        "meaning_id": "kurang"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Orang di lembah (谷) merasa kekurangan (欠), sehingga dia sangat ingin dan punya hasrat besar untuk meminta sesuatu."
+  },
+  "浴": {
+    "kanji": "浴",
+    "components": [
+      {
+        "part": "氵",
+        "meaning_id": "air"
+      },
+      {
+        "part": "谷",
+        "meaning_id": "lembah"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Air (氵) mengalir deras dari atas lembah (谷), cocok dipakai untuk mandi dan berendam."
+  },
+  "落": {
+    "kanji": "落",
+    "components": [
+      {
+        "part": "艹",
+        "meaning_id": "rumput"
+      },
+      {
+        "part": "洛",
+        "meaning_id": "nama tempat"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Rumput (艹) dan pepohonan di tempat itu (洛) mulai gugur dan jatuh ke tanah satu per satu."
+  },
+  "履": {
+    "kanji": "履",
+    "components": [
+      {
+        "part": "尸",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "復",
+        "meaning_id": "kembali"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (尸), kita kembali (復) memakai sepatu atau alas kaki sebelum keluar rumah."
+  },
+  "理": {
+    "kanji": "理",
+    "components": [
+      {
+        "part": "王",
+        "meaning_id": "raja"
+      },
+      {
+        "part": "里",
+        "meaning_id": "desa"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Raja (王) mengatur desa (里) dengan penuh logika, alasan, dan keadilan yang benar."
+  },
+  "痢": {
+    "kanji": "痢",
+    "components": [
+      {
+        "part": "疒",
+        "meaning_id": "penyakit"
+      },
+      {
+        "part": "利",
+        "meaning_id": "untung"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Penyakit (疒) perut ini sama sekali tidak menguntungkan (利), malah bikin bolak-balik karena diare."
+  },
+  "里": {
+    "kanji": "里",
+    "components": [
+      {
+        "part": "日",
+        "meaning_id": "matahari"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah terik matahari (日), kita berjalan menyusuri kampung halaman dan desa (里) tercinta."
+  },
+  "立": {
+    "kanji": "立",
+    "components": [
+      {
+        "part": "亠",
+        "meaning_id": "penutup"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Seseorang dengan topi di kepala (亠) sedang berdiri tegak di atas tanah."
+  },
+  "寮": {
+    "kanji": "寮",
+    "components": [
+      {
+        "part": "宀",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "尞",
+        "meaning_id": "tumpukan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah satu atap (宀) besar ini, terdapat tumpukan (尞) kamar-kamar yang disebut asrama."
+  },
+  "緑": {
+    "kanji": "緑",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "彔",
+        "meaning_id": "merekam"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) berwarna hijau dipakai untuk merajut pemandangan alam yang asri."
+  },
+  "練": {
+    "kanji": "練",
+    "components": [
+      {
+        "part": "糸",
+        "meaning_id": "benang"
+      },
+      {
+        "part": "東",
+        "meaning_id": "timur"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Benang (糸) di sebelah timur (東) harus sering kita latih dan tenun dengan rajin agar hasil bajunya bagus."
+  },
+  "連": {
+    "kanji": "連",
+    "components": [
+      {
+        "part": "車",
+        "meaning_id": "mobil"
+      },
+      {
+        "part": "辶",
+        "meaning_id": "jalan"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Mobil (車) yang berjalan (辶) di jalan raya siap membawa dan mengajak kita bepergian bersama."
+  },
+  "廊": {
+    "kanji": "廊",
+    "components": [
+      {
+        "part": "广",
+        "meaning_id": "atap"
+      },
+      {
+        "part": "郎",
+        "meaning_id": "pemuda"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Di bawah atap (广) rumah besar, seorang pemuda (郎) berjalan mondar-mandir di koridor."
+  },
+  "和": {
+    "kanji": "和",
+    "components": [
+      {
+        "part": "禾",
+        "meaning_id": "padi"
+      },
+      {
+        "part": "口",
+        "meaning_id": "mulut"
+      }
+    ],
+    "mnemonic_id": "Cara mengingat: Padi (禾) untuk dimakan bersama oleh mulut-mulut (口) warga menciptakan kedamaian dan keharmonisan."
+  }
+}

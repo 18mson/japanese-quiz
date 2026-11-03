@@ -2,7 +2,7 @@
 
 export interface KanjiComponent {
   part: string;
-  role: 'meaning' | 'phonetic' | 'shape';
+  role?: 'meaning' | 'phonetic' | 'shape';
   meaning_id: string;
 }
 
@@ -15,17 +15,18 @@ export interface KanjiWordContext {
 
 export interface KanjiDetail {
   kanji: string;
+  tier: 'manual' | 'ai' | 'basic';
   meaning: string[];
   on: string[];
   kun: string[];
   stroke_count: number | null;
   jlpt: number | null;
   grade: number | null;
-  formation_type: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown';
+  formation_type?: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown';
   components: KanjiComponent[];
-  etymology_id: string;
-  etymology_confidence: 'established' | 'traditional' | 'uncertain';
-  mnemonic_id: string;
+  etymology_id?: string;
+  etymology_confidence?: 'established' | 'traditional' | 'uncertain';
+  mnemonic_id?: string;
   note_id?: string;
   phonetic_part?: string | null;
   reading_hint?: string | null;

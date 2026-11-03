@@ -307,8 +307,27 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <!-- 2. Formation Type & Etymology Card -->
-              <div class="rounded-2xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-xs space-y-3">
+              <!-- 2. Components Chip Bar: "亻 orang + 木 pohon" -->
+              <div v-if="currentKanjiDetail.components?.length" class="space-y-1.5">
+                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Komponen Pembentuk
+                </h5>
+                <div class="flex flex-wrap items-center gap-2">
+                  <template v-for="(comp, cIdx) in currentKanjiDetail.components" :key="cIdx">
+                    <span v-if="cIdx > 0" class="text-xs font-black text-slate-400 dark:text-slate-500 select-none">+</span>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      <span class="font-jp font-black text-sm text-indigo-600 dark:text-torii-light">{{ comp.part }}</span>
+                      <span class="text-slate-600 dark:text-slate-300 font-medium">{{ comp.meaning_id }}</span>
+                    </span>
+                  </template>
+                </div>
+              </div>
+
+              <!-- 3. Tier MANUAL: Formation Type & Etymology Card -->
+              <div 
+                v-if="currentKanjiDetail.tier === 'manual' && currentKanjiDetail.etymology_id" 
+                class="rounded-2xl p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700/80 shadow-xs space-y-3"
+              >
                 <div class="flex items-center justify-between gap-2 flex-wrap">
                   <div class="flex items-center gap-1.5 text-xs font-bold text-indigo-700 dark:text-torii-light">
                     <Layers class="w-4 h-4" />
@@ -335,37 +354,14 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <!-- 3. Components Breakdown -->
-              <div v-if="currentKanjiDetail.components?.length" class="space-y-2">
-                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1">
-                  <span>Komponen Pembentuk (Radikal)</span>
-                </h5>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div 
-                    v-for="(comp, cIdx) in currentKanjiDetail.components"
-                    :key="cIdx"
-                    class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-xs"
-                  >
-                    <div class="w-9 h-9 rounded-lg bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-lg font-black font-jp text-slate-900 dark:text-white shrink-0">
-                      {{ comp.part }}
-                    </div>
-                    <div class="min-w-0 flex-1">
-                      <div class="font-bold text-slate-800 dark:text-slate-100 truncate">
-                        {{ comp.meaning_id }}
-                      </div>
-                      <span class="text-[10px] font-medium px-1.5 py-0.2 rounded bg-slate-200/80 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-                        {{ comp.role === 'meaning' ? 'Makna' : (comp.role === 'phonetic' ? 'Penanda Bunyi' : 'Bentuk Visual') }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 4. Mnemonic Box (Cara Mengingat) -->
-              <div class="rounded-2xl p-4 bg-amber-50/70 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 space-y-1.5">
+              <!-- 4. Tier MANUAL: Mnemonic Box (Cara Mengingat) -->
+              <div 
+                v-if="currentKanjiDetail.tier === 'manual' && currentKanjiDetail.mnemonic_id" 
+                class="rounded-2xl p-4 bg-amber-50/70 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 space-y-1.5"
+              >
                 <div class="flex items-center gap-1.5 text-xs font-bold text-amber-900 dark:text-amber-300">
                   <Lightbulb class="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                  <span>Jembatan Keledai / Pengingat</span>
+                  <span>Cara Mengingat</span>
                 </div>
                 <p class="text-sm font-medium text-amber-950 dark:text-amber-100 leading-relaxed">
                   {{ currentKanjiDetail.mnemonic_id }}
@@ -374,6 +370,27 @@ onUnmounted(() => {
                   Catatan: {{ currentKanjiDetail.note_id }}
                 </p>
               </div>
+
+              <!-- 5. Tier AI: Mnemonic Box (Trik ingat dari AI) -->
+              <div 
+                v-if="currentKanjiDetail.tier === 'ai' && currentKanjiDetail.mnemonic_id" 
+                class="rounded-2xl p-4 bg-violet-50/70 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/60 space-y-1.5"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-violet-900 dark:text-violet-300">
+                    <Lightbulb class="w-4 h-4 text-violet-600 dark:text-violet-400" />
+                    <span>Cara Mengingat</span>
+                  </div>
+                  <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-violet-100 text-violet-800 dark:bg-violet-900/60 dark:text-violet-300 border border-violet-300 dark:border-violet-700">
+                    Trik ingat dari AI
+                  </span>
+                </div>
+                <p class="text-sm font-medium text-violet-950 dark:text-violet-100 leading-relaxed">
+                  {{ currentKanjiDetail.mnemonic_id }}
+                </p>
+              </div>
+
+              <!-- 6. Tier BASIC: tanpa bagian Cara Mengingat & tanpa asal-usul -->
 
               <!-- 5. Related Vocabulary in Project -->
               <div v-if="currentKanjiDetail.words?.length" class="space-y-2">
@@ -400,27 +417,32 @@ onUnmounted(() => {
                 </ul>
               </div>
 
-              <!-- 6. Footer Feedback & Report Button -->
-              <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between flex-wrap gap-2 text-xs">
-                <span class="text-[11px] text-slate-600 dark:text-slate-400">
-                  Data: KANJIDIC2 &amp; KRADFILE (EDRDG, CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0)
-                </span>
-
-                <button
-                  type="button"
-                  class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all cursor-pointer font-semibold text-xs"
-                  :class="reportedKanji.has(currentKanjiDetail.kanji)
-                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
-                    : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'"
-                  :disabled="reportedKanji.has(currentKanjiDetail.kanji)"
-                  @click="handleReport(currentKanjiDetail.kanji)"
-                >
-                  <CheckCircle2 v-if="reportedKanji.has(currentKanjiDetail.kanji)" class="w-3.5 h-3.5 text-emerald-600" />
-                  <Flag v-else class="w-3.5 h-3.5 text-slate-400" />
-                  <span>
-                    {{ reportedKanji.has(currentKanjiDetail.kanji) ? 'Laporan Terkirim' : 'Laporkan penjelasan ini' }}
+              <!-- 6. Footer Note, Feedback & Report Button -->
+              <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 italic">
+                  Penjelasan ini membantu menghafal dan tidak selalu akurat secara sejarah.
+                </p>
+                <div class="flex items-center justify-between flex-wrap gap-2 text-xs">
+                  <span class="text-[11px] text-slate-500 dark:text-slate-500">
+                    Data: KANJIDIC2 &amp; KRADFILE (EDRDG, CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0)
                   </span>
-                </button>
+
+                  <button
+                    type="button"
+                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all cursor-pointer font-semibold text-xs"
+                    :class="reportedKanji.has(currentKanjiDetail.kanji)
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
+                      : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'"
+                    :disabled="reportedKanji.has(currentKanjiDetail.kanji)"
+                    @click="handleReport(currentKanjiDetail.kanji)"
+                  >
+                    <CheckCircle2 v-if="reportedKanji.has(currentKanjiDetail.kanji)" class="w-3.5 h-3.5 text-emerald-600" />
+                    <Flag v-else class="w-3.5 h-3.5 text-slate-400" />
+                    <span>
+                      {{ reportedKanji.has(currentKanjiDetail.kanji) ? 'Laporan Terkirim' : 'Laporkan penjelasan ini' }}
+                    </span>
+                  </button>
+                </div>
               </div>
             </template>
           </div>

@@ -4058,6 +4058,585 @@
             "mnemonic_id": "Cara mengingat: bingkai wajah (囗) dengan hidung (丨) dan dahi (一): muka atau permukaan (面).",
             "note_id": "",
             "source": "manual"
+        },
+        {
+            "kanji": "枚",
+            "formation_type": "unknown",
+            "components": [
+                {
+                    "part": "木",
+                    "role": "meaning",
+                    "meaning_id": "kayu"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 木 (kayu) + 攵 (tangan yang memukul): sebatang kayu atau tongkat. Pemakaiannya sebagai pencacah lembaran muncul belakangan.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: 枚 dibaca 'mai' sebagai pencacah benda tipis: 一枚, 二枚 (selembar, dua lembar).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "回",
+            "formation_type": "pictograph",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Gambar putaran atau pusaran: lingkaran di dalam lingkaran; berputar, kali.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: kotak di dalam kotak seperti pusaran: berputar atau kali (回), seperti 一回.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "封",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "寸",
+                    "role": "meaning",
+                    "meaning_id": "tangan"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: tangan (寸) menimbun tanah (圭) sebagai batas: memberi batas, menyegel; kemudian 'amplop'.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tangan (寸) menimbun tanah (圭): menyegel (封), seperti 封筒 (amplop).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "兄",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "口",
+                    "role": "meaning",
+                    "meaning_id": "mulut"
+                },
+                {
+                    "part": "儿",
+                    "role": "meaning",
+                    "meaning_id": "kaki orang"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 口 (mulut) di atas 儿 (orang): yang memberi arahan kepada adik; kakak laki-laki.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: mulut (口) di atas orang (儿): kakak laki-laki (兄), seperti お兄さん.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "弟",
+            "formation_type": "pictograph",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: gambar tali yang dililitkan berurutan pada sebuah tongkat: urutan; dari sini 'adik laki-laki'.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tali melilit tongkat berurutan: adik (弟); 弟 dibaca 'otōto' dan 'dai' pada 兄弟 (saudara).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "留",
+            "formation_type": "phono_semantic",
+            "components": [
+                {
+                    "part": "田",
+                    "role": "meaning",
+                    "meaning_id": "ladang"
+                },
+                {
+                    "part": "卯",
+                    "role": "phonetic",
+                    "meaning_id": ""
+                }
+            ],
+            "phonetic_part": "卯",
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 田 (ladang) + 卯 (bentuk 丣, penanda bunyi りゅう): menetap di ladang; tinggal, tertahan.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: ladang (田) yang membuat orang menetap (留): tinggal, seperti 留学生.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "天",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "大",
+                    "role": "meaning",
+                    "meaning_id": "orang"
+                },
+                {
+                    "part": "一",
+                    "role": "meaning",
+                    "meaning_id": "garis di atas"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "大 (orang) dengan garis di atas kepalanya (一): yang berada di atas manusia, yaitu langit.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: garis (一) di atas orang (大): langit (天), seperti 天気.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "出",
+            "formation_type": "unknown",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: tunas (屮) bertumpuk tumbuh keluar dari wadah atau gua (凵): keluar.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tunas bertumpuk keluar dari wadah (凵): keluar (出る), seperti 出口.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "多",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "夕",
+                    "role": "meaning",
+                    "meaning_id": "malam, potongan daging"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Dua 夕 (malam, atau potongan daging) bertumpuk: banyak. Penjelasan tradisional.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: dua malam (夕夕) berturut-turut: banyak (多い).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "身",
+            "formation_type": "unknown",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: gambar orang dengan perut membuncit (hamil); arti 'tubuh' berkembang kemudian.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tubuh dengan perut besar (身), seperti 出身 (asal) dan 独身 (lajang).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "涼",
+            "formation_type": "phono_semantic",
+            "components": [
+                {
+                    "part": "氵",
+                    "role": "meaning",
+                    "meaning_id": "air"
+                },
+                {
+                    "part": "京",
+                    "role": "phonetic",
+                    "meaning_id": ""
+                }
+            ],
+            "phonetic_part": "京",
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "氵 (air) + 京 (penanda bunyi けい → りょう): sejuk seperti air. Bacaan Jepang kini berbeda dari bunyi aslinya.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: air (氵) dari ibu kota (京) yang menyejukkan: sejuk (涼しい).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "甘",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "口",
+                    "role": "meaning",
+                    "meaning_id": "mulut"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 口 (mulut) dengan satu garis di dalamnya (一): sesuatu yang manis ditahan di mulut; manis.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: mulut (口) menahan makanan manis (一): manis (甘い).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "辛",
+            "formation_type": "pictograph",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: gambar alat penato atau pisau hukuman; arti 'pedas, pahit, perih' dipakai belakangan.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: seperti pisau bergagang (辛): pedas dan perih (辛い).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "重",
+            "formation_type": "unknown",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: orang berdiri (壬) memikul karung (東): berat. Sebagian kamus menganggap 東 memberi bunyi.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: orang berdiri memikul karung (東): berat (重い), seperti 重要.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "季",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "禾",
+                    "role": "meaning",
+                    "meaning_id": "padi"
+                },
+                {
+                    "part": "子",
+                    "role": "meaning",
+                    "meaning_id": "anak"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 禾 (padi) + 子 (anak): padi muda; kemudian 'yang bungsu' dan 'musim'.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: padi (禾) dan anak (子) tumbuh tiap musim: musim (季節).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "春",
+            "formation_type": "unknown",
+            "components": [
+                {
+                    "part": "日",
+                    "role": "meaning",
+                    "meaning_id": "matahari"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Bentuk lama memuat tumbuhan (艸), matahari (日), dan 屯 (penanda bunyi): tumbuhan bermunculan; musim semi. Bentuk sekarang menyederhanakan bagian atasnya.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tunas bermunculan (三 + 人) di bawah matahari (日): musim semi (春).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "夏",
+            "formation_type": "unknown",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Asal-usulnya diperdebatkan (ada yang menafsirkan sebagai orang berpakaian upacara yang menari; arti 'musim panas' dipinjam). Hafalkan sebagai bentuk.",
+            "etymology_confidence": "uncertain",
+            "claim_kind": "unknown",
+            "mnemonic_id": "Cara mengingat: 夏 dibaca 'natsu': garis atas (一) dan 自 di atas kaki (夂), seperti orang berjalan di bawah terik musim panas.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "秋",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "禾",
+                    "role": "meaning",
+                    "meaning_id": "padi"
+                },
+                {
+                    "part": "火",
+                    "role": "meaning",
+                    "meaning_id": "api"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 禾 (padi) + 火 (api): padi yang menguning seperti nyala; musim gugur, panen. 火 mungkin hanya bagian penanda bunyi.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: padi (禾) menguning membara seperti api (火): musim gugur (秋).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "冬",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "夂",
+                    "role": "meaning",
+                    "meaning_id": "akhir"
+                },
+                {
+                    "part": "冫",
+                    "role": "meaning",
+                    "meaning_id": "es"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 夂 (akhir) + 冫 (es): akhir tahun yang membeku; musim dingin.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: es (冫) di akhir (夂) tahun: musim dingin (冬).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "雨",
+            "formation_type": "pictograph",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Gambar awan dengan tetes air yang jatuh: hujan.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: awan dengan tetes air jatuh (雨), seperti 雨天 (hari hujan).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "雪",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "雨",
+                    "role": "meaning",
+                    "meaning_id": "hujan"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: 雨 (hujan) + ヨ (bentuk sederhana 彗, sapu): hujan beku yang bisa disapu; salju.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: hujan (雨) beku yang disapu (ヨ): salju (雪).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "曇",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "日",
+                    "role": "meaning",
+                    "meaning_id": "matahari"
+                },
+                {
+                    "part": "雲",
+                    "role": "meaning",
+                    "meaning_id": "awan"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "日 (matahari) di bawah 雲 (awan): matahari tertutup awan; mendung.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: matahari (日) tertutup awan (云): mendung (曇り).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "世",
+            "formation_type": "compound_meaning",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Penjelasan tradisional: tiga 十 yang bersambung: tiga puluh tahun, satu generasi; zaman, dunia.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tiga puluh tahun (三十 bersambung) satu generasi: dunia (世), seperti 世界.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "祭",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "示",
+                    "role": "meaning",
+                    "meaning_id": "altar"
+                },
+                {
+                    "part": "又",
+                    "role": "meaning",
+                    "meaning_id": "tangan"
+                },
+                {
+                    "part": "肉",
+                    "role": "meaning",
+                    "meaning_id": "daging"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "示 (altar) + 又 (tangan) + 月 (bentuk 肉, daging): tangan mempersembahkan daging di altar; upacara, festival.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: tangan (又) mempersembahkan daging (月) di altar (示): festival (祭り).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "豚",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "豕",
+                    "role": "meaning",
+                    "meaning_id": "babi"
+                },
+                {
+                    "part": "肉",
+                    "role": "meaning",
+                    "meaning_id": "daging"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "豕 (babi) + 月 (bentuk 肉, daging): babi atau daging babi. Penjelasan tradisional.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: daging (月) babi (豕): babi (豚), seperti 豚肉.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "初",
+            "formation_type": "compound_meaning",
+            "components": [
+                {
+                    "part": "衤",
+                    "role": "meaning",
+                    "meaning_id": "pakaian"
+                },
+                {
+                    "part": "刀",
+                    "role": "meaning",
+                    "meaning_id": "pisau"
+                }
+            ],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "衤 (pakaian) + 刀 (pisau): memotong kain untuk membuat pakaian, langkah pertama; awal, pertama.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: pisau (刀) memotong kain (衤): langkah pertama (初めて).",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "北",
+            "formation_type": "compound_meaning",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Dua orang saling membelakangi: arti asal 'membelakangi'; arti 'utara' dipinjam kemudian.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: dua orang saling membelakangi: utara (北), seperti 北海道.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "祇",
+            "formation_type": "phono_semantic",
+            "components": [
+                {
+                    "part": "礻",
+                    "role": "meaning",
+                    "meaning_id": "altar"
+                },
+                {
+                    "part": "氏",
+                    "role": "phonetic",
+                    "meaning_id": ""
+                }
+            ],
+            "phonetic_part": "氏",
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "礻 (altar, dewa) + 氏 (penanda bunyi): dewa bumi; dalam kosakata dipakai terutama pada 祇園 (Gion). Bacaan Jepang kini berbeda.",
+            "etymology_confidence": "established",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: altar (礻) dengan 氏 sebagai petunjuk bunyi: dewa bumi (祇), seperti 祇園祭.",
+            "note_id": "",
+            "source": "manual"
+        },
+        {
+            "kanji": "香",
+            "formation_type": "unknown",
+            "components": [],
+            "phonetic_part": null,
+            "reading_hint": "",
+            "old_form": null,
+            "etymology_id": "Bentuk lama memuat 黍 (jawawut) dan 甘 (manis di mulut): bau harum biji-bijian. Bentuk sekarang (禾 + 日) menyederhanakan bagian atasnya. Penjelasan tradisional.",
+            "etymology_confidence": "traditional",
+            "claim_kind": "structure",
+            "mnemonic_id": "Cara mengingat: padi (禾) di bawah matahari (日) yang wangi: harum (香), seperti 香港 (Hong Kong).",
+            "note_id": "",
+            "source": "manual"
         }
     ]
 }

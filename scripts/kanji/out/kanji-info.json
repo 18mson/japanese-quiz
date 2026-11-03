@@ -648,18 +648,17 @@
       {
         "part": "｜",
         "role": "shape",
-        "meaning_id": ""
+        "meaning_id": "garis"
       }
     ],
     "etymology_id": "Menggambarkan tiga generasi dalam satu garis waktu.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Tiga garis yang terhubung menunjukkan generasi yang terus berjalan di dunia.",
     "note_id": "Digunakan dalam kata dunia dan bantuan.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -4951,17 +4950,21 @@
         "part": "夂",
         "role": "shape",
         "meaning_id": "kaki"
+      },
+      {
+        "part": "丶",
+        "role": "shape",
+        "meaning_id": "titik"
       }
     ],
     "etymology_id": "Menggambarkan akhir dari segala sesuatu atau musim dingin.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Musim dingin membuat orang meringkuk di bawah titik salju.",
     "note_id": "Digunakan dalam kata 冬 (musim dingin).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -5021,7 +5024,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "令 (レイ) → 冷 (レイ)",
     "reading_match": true,
     "series_support": 0,
@@ -5094,14 +5097,13 @@
       }
     ],
     "etymology_id": "Menggambarkan sesuatu yang bergerak keluar.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Bergerak keluar dari dalam gunung.",
     "note_id": "Kosakata: 出ます (keluar), 出口 (pintu keluar)",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -5419,7 +5421,7 @@
   },
   {
     "kanji": "初",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "衤",
@@ -5432,15 +5434,14 @@
         "meaning_id": "pisau"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 衤 dan 刀.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Berkaitan dengan memotong kain sebagai langkah awal membuat pakaian.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Memotong kain dengan pisau untuk pertama kali.",
     "note_id": "Kosakata: 初めて (pertama kali)",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -6313,7 +6314,7 @@
   },
   {
     "kanji": "北",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "匕",
@@ -6321,15 +6322,14 @@
         "meaning_id": "sendok atau orang berbalik"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 匕.",
+    "etymology_id": "Terdiri dari bentuk dua orang yang saling membelakangi. Menyatakan arah utara.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Dua orang saling membelakangi dan berjalan ke arah utara.",
     "note_id": "Digunakan dalam kata 北海道 (Hokkaido) dan 北口 (pintu utara).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -8746,14 +8746,13 @@
       }
     ],
     "etymology_id": "Menggambarkan bentuk pusaran atau lingkaran berputar ganda, membentuk arti berputar atau hitungan perulangan (kali).",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Kotak di dalam kotak (囗 dan 口) menggambarkan putaran yang berputar berulang kali.",
     "note_id": "Digunakan untuk kata kerja 回します (まわします) dan penghitung frekuensi ～回 (～かい).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -9857,11 +9856,10 @@
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Saat musim panas, lindungi wajah (自) dan kepala (一) saat kaki (夂) melangkah santai.",
     "note_id": "Dibaca 'なつ' untuk musim panas, salah satu dari empat musim di Jepang.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -9986,7 +9984,7 @@
   },
   {
     "kanji": "多",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "夕",
@@ -9994,15 +9992,14 @@
         "meaning_id": "petang"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 夕.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Pengulangan simbol petang (夕) untuk menunjukkan jumlah yang banyak atau bertumpuk.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Ada dua bulan atau waktu petang (夕) yang bertumpuk menandakan jumlah yang banyak (多).",
     "note_id": "Kosakata utama: 多い (おおい) - banyak.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -10289,11 +10286,10 @@
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Ada garis di atas orang besar (大) menunjukkan langit.",
     "note_id": "Sering dipakai dalam kata cuaca.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -11272,15 +11268,12 @@
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Tanaman padi tumbuh seiring bergantinya musim.",
     "note_id": "Dasar pembentukan kata musim.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
-    "reading_hint": "bacaan Jepang kini berbeda (子: シ, ス, ツ / 季: キ)",
-    "reading_match": false,
-    "series_support": 1,
-    "reasons": [
-      "Klaim phonetic pada '子' tidak cocok rima bacaan on-yomi (シ, ス, ツ vs キ)"
-    ],
+    "source": "manual",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
+    "reasons": [],
     "facts": {
       "meaning": [
         "seasons"
@@ -12510,6 +12503,11 @@
     "formation_type": "phono_semantic",
     "components": [
       {
+        "part": "土",
+        "role": "meaning",
+        "meaning_id": "tanah"
+      },
+      {
         "part": "寸",
         "role": "meaning",
         "meaning_id": "ukuran atau tangan"
@@ -12519,11 +12517,10 @@
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Menekan tanah dengan tangan untuk menyegel surat atau barang.",
     "note_id": "Kosakata: 封筒 (ふうとう) - amplop.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -12764,7 +12761,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "approved",
+    "status": "needs_manual",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -14920,18 +14917,15 @@
       }
     ],
     "etymology_id": "Komponen 并 berfungsi sebagai penanda bunyi, sedangkan komponen lainnya membentuk bentuk dasar kanji ini.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Bentuk adik laki-laki yang sedang memegang busur.",
     "note_id": "Digunakan untuk menyatakan adik laki-laki.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
-    "reading_hint": "bacaan Jepang kini berbeda (并: ヘイ, ヒョウ / 弟: テイ, ダイ, デ)",
-    "reading_match": false,
-    "series_support": 57,
-    "reasons": [
-      "Klaim phonetic pada '并' tidak cocok rima bacaan on-yomi (ヘイ, ヒョウ vs テイ, ダイ, デ)"
-    ],
+    "source": "manual",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
+    "reasons": [],
     "facts": {
       "meaning": [
         "younger brother",
@@ -17956,7 +17950,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "approved",
+    "status": "needs_manual",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -18167,7 +18161,7 @@
     "etymology_id": "",
     "mnemonic_id": "",
     "note_id": "",
-    "status": "approved",
+    "status": "needs_manual",
     "source": "needs_manual",
     "reasons": [
       "Membutuhkan entri manual (tidak memenuhi kriteria ketat Gemini)"
@@ -18819,17 +18813,21 @@
         "part": "日",
         "role": "meaning",
         "meaning_id": "matahari"
+      },
+      {
+        "part": "人",
+        "role": "meaning",
+        "meaning_id": "orang"
       }
     ],
     "etymology_id": "Menggambarkan suasana musim semi di bawah matahari.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Matahari bersinar hangat di musim semi.",
     "note_id": "Kosakata: 春 (musim semi)",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -19501,6 +19499,11 @@
     "formation_type": "phono_semantic",
     "components": [
       {
+        "part": "雨",
+        "role": "meaning",
+        "meaning_id": "hujan"
+      },
+      {
         "part": "日",
         "role": "meaning",
         "meaning_id": "matahari"
@@ -19510,11 +19513,10 @@
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Matahari (日) tertutup saat akan turun hujan (雨), menjadi mendung (曇).",
     "note_id": "Digunakan untuk kata mendung (曇り).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -20886,18 +20888,15 @@
       }
     ],
     "etymology_id": "Gabungan komponen pohon dan tindakan, awalnya merujuk pada sehelai papan tipis dari kayu.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Pohon yang dipotong menjadi lembaran tipis.",
     "note_id": "Kosakata penting: ～枚 (～まい).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "needs_review",
-    "reading_hint": "bacaan Jepang kini berbeda (攵: ホク / 枚: マイ, バイ)",
-    "reading_match": false,
-    "series_support": 5,
-    "reasons": [
-      "Klaim phonetic pada '攵' tidak cocok rima bacaan on-yomi (ホク vs マイ, バイ)"
-    ],
+    "source": "manual",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
+    "reasons": [],
     "facts": {
       "meaning": [
         "sheet of...",
@@ -21325,7 +21324,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "毎 (マイ) → 梅 (バイ)",
     "reading_match": true,
     "series_support": 0,
@@ -23613,14 +23612,13 @@
       }
     ],
     "etymology_id": "Kanji 涼 menggunakan unsur air 氵 untuk menunjukkan suasana yang sejuk dan dingin.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Air (氵) yang dingin membuat udara terasa sejuk (涼).",
     "note_id": "Digunakan dalam kata sejuk (涼しい).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -25818,14 +25816,13 @@
       }
     ],
     "etymology_id": "Bentuk simbolik yang menggambarkan sesuatu yang terasa enak dan manis tertahan di dalam mulut.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Kotak menyerupai mulut yang sedang mengecap rasa makanan yang manis (甘い).",
     "note_id": "Membentuk kata sifat-i dasar 甘い (manis).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -26431,23 +26428,27 @@
   },
   {
     "kanji": "留",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "田",
         "role": "meaning",
         "meaning_id": "field"
+      },
+      {
+        "part": "刀",
+        "role": "meaning",
+        "meaning_id": "sword"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 田.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Kanji 留 menggambarkan tindakan menahan atau tinggal di suatu tempat.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Berhenti (留) di ladang (田) membawa pisau (刀).",
     "note_id": "Digunakan dalam pelajar asing (留学生).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -28510,12 +28511,12 @@
     "etymology_id": "Gabungan komponen 示 (altar/dewa) dan 氏.",
     "mnemonic_id": "Cara mengingat: Dewa (示) dari suatu marga atau keluarga (氏).",
     "note_id": "",
-    "source": "gemini",
-    "etymology_confidence": "traditional",
-    "status": "draft",
-    "reading_hint": "氏 (シ) → 祇 (シ)",
-    "reading_match": true,
-    "series_support": 25,
+    "source": "manual",
+    "etymology_confidence": "established",
+    "status": "approved",
+    "reading_hint": null,
+    "reading_match": "manual",
+    "series_support": 0,
     "reasons": [],
     "facts": {
       "meaning": [
@@ -28693,7 +28694,7 @@
   },
   {
     "kanji": "祭",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
       {
         "part": "示",
@@ -28701,15 +28702,14 @@
         "meaning_id": "altar"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 示.",
-    "etymology_confidence": "uncertain",
+    "etymology_id": "Menggabungkan altar dan tangan yang memegang sesuatu untuk ritual pemujaan.",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Ada altar untuk mengadakan festival atau ritual.",
     "note_id": "Sering dipakai untuk kata festival.",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -28844,17 +28844,15 @@
       }
     ],
     "etymology_id": "Menggabungkan tanaman padi (禾) dan api (火) yang melambangkan musim panen atau musim gugur.",
-    "etymology_confidence": "uncertain",
+    "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Musim panen gandum atau tanaman di bawah terik matahari.",
     "note_id": "Kosakata penting: 秋 (musim gugur) dan 秋葉原 (Akihabara).",
-    "source": "needs_manual",
-    "status": "needs_manual",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
-    "reasons": [
-      "Klaim asal-gambar fiktif: membutuhkan entri manual"
-    ],
+    "reasons": [],
     "facts": {
       "meaning": [
         "autumn"
@@ -28989,7 +28987,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "九 (キュウ) → 究 (キュウ)",
     "reading_match": true,
     "series_support": 10,
@@ -29512,7 +29510,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "traditional",
-    "status": "approved",
+    "status": "needs_review",
     "reading_hint": "bacaan Jepang kini berbeda (合: ゴウ, ガッ, カッ / 答: トウ)",
     "reading_match": false,
     "series_support": 0,
@@ -30134,7 +30132,7 @@
     "note_id": "Kosakata: 手紙 (てがみ) = surat.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "氏 (シ) → 紙 (シ)",
     "reading_match": true,
     "series_support": 25,
@@ -32233,7 +32231,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "化 (カ) → 花 (カ)",
     "reading_match": true,
     "series_support": 0,
@@ -32538,7 +32536,7 @@
     "note_id": "Digunakan pada kata 荷物 (にもつ).",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "何 (カ) → 荷 (カ)",
     "reading_match": true,
     "series_support": 0,
@@ -35236,7 +35234,7 @@
     "note_id": "Kosakata: 警察官 (けいさつかん) = polisi, petugas kepolisian.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "敬 (ケイ) → 警 (ケイ)",
     "reading_match": true,
     "series_support": 0,
@@ -35461,14 +35459,13 @@
       }
     ],
     "etymology_id": "Terdiri dari komponen daging dan babi yang menunjukkan arti daging babi atau hewan babi.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Hewan babi (豕) menghasilkan daging (月).",
     "note_id": "Digunakan dalam kata daging babi (豚肉).",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -35523,7 +35520,7 @@
     "note_id": "Kosakata: 象 (ぞう) = gajah.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": null,
     "reading_match": null,
     "series_support": 0,
@@ -36202,7 +36199,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "己 (キ) → 起 (キ)",
     "reading_match": true,
     "series_support": 0,
@@ -36493,7 +36490,7 @@
     "note_id": "Kosakata: 跳ぶ (とぶ) = meloncat.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "兆 (チョウ) → 跳 (チョウ)",
     "reading_match": true,
     "series_support": 0,
@@ -36627,14 +36624,13 @@
       }
     ],
     "etymology_id": "Gambar tubuh manusia.",
-    "etymology_confidence": "traditional",
+    "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bentuk menyerupai postur tubuh manusia.",
     "note_id": "Digunakan pada kata yang berhubungan dengan diri sendiri.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -37145,7 +37141,7 @@
     "note_id": "Kosakata: 迎えます (むかえます) = menjemput, menyambut.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "bacaan Jepang kini berbeda (卬: キョウ, ゴウ / 迎: ゲイ)",
     "reading_match": false,
     "series_support": 0,
@@ -37511,7 +37507,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "bacaan Jepang kini berbeda (甬: ヨウ / 通: ツウ, ツ)",
     "reading_match": false,
     "series_support": 0,
@@ -38995,23 +38991,27 @@
   },
   {
     "kanji": "重",
-    "formation_type": "unknown",
+    "formation_type": "compound_meaning",
     "components": [
+      {
+        "part": "日",
+        "role": "meaning",
+        "meaning_id": "matahari"
+      },
       {
         "part": "里",
         "role": "meaning",
         "meaning_id": "desa"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 里.",
+    "etymology_id": "Gabungan unsur yang menunjukkan beban atau tumpukan.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Sesuatu yang menumpuk terasa berat.",
     "note_id": "Kosakata: 重い (berat)",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -39388,7 +39388,7 @@
     "note_id": "Kosakata: 鉛筆 (えんぴつ) = pensil.",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": null,
     "reading_match": false,
     "series_support": 0,
@@ -40846,11 +40846,10 @@
     "etymology_confidence": "established",
     "mnemonic_id": "Cara mengingat: Bayangkan langit berawan di atas dan empat titik tetesan air hujan (雨) yang turun.",
     "note_id": "Merupakan kanji dasar dan juga berfungsi sebagai radikal untuk berbagai kanji cuaca.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -40895,17 +40894,21 @@
         "part": "雨",
         "role": "meaning",
         "meaning_id": "rain"
+      },
+      {
+        "part": "ヨ",
+        "role": "shape",
+        "meaning_id": "hand"
       }
     ],
     "etymology_id": "Tetesan air hujan yang turun dalam wujud salju.",
     "etymology_confidence": "traditional",
     "mnemonic_id": "Cara mengingat: Air hujan yang membeku turun menjadi salju.",
     "note_id": "Kanji dasar untuk musim dingin dan salju.",
-    "claim_kind": "structure",
-    "source": "gemini",
-    "status": "draft",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
@@ -41278,7 +41281,7 @@
     "note_id": "",
     "source": "gemini",
     "etymology_confidence": "established",
-    "status": "approved",
+    "status": "draft",
     "reading_hint": "化 (カ) → 靴 (カ)",
     "reading_match": true,
     "series_support": 0,
@@ -42572,7 +42575,7 @@
   },
   {
     "kanji": "香",
-    "formation_type": "unknown",
+    "formation_type": "phono_semantic",
     "components": [
       {
         "part": "禾",
@@ -42585,15 +42588,14 @@
         "meaning_id": "matahari"
       }
     ],
-    "etymology_id": "Terdiri dari komponen 禾 dan 日.",
+    "etymology_id": "Terdiri dari komponen 禾 (tanaman) dan 日 (matahari) yang digabungkan untuk merepresentasikan aroma atau bau harum dari tanaman.",
     "etymology_confidence": "uncertain",
     "mnemonic_id": "Cara mengingat: Tanaman (禾) di bawah terik matahari (日) menghasilkan wangi atau aroma yang harum.",
     "note_id": "Kosakata: 香港 (Hong Kong).",
-    "claim_kind": "unknown",
-    "source": "gemini",
-    "status": "needs_review",
+    "source": "manual",
+    "status": "approved",
     "reading_hint": null,
-    "reading_match": null,
+    "reading_match": "manual",
     "series_support": 0,
     "reasons": [],
     "facts": {
