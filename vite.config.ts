@@ -44,5 +44,19 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,woff2}']
       }
     })
-  ]
+  ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/@supabase')) {
+            return 'vendor-supabase';
+          }
+          if (id.includes('node_modules/vue') || id.includes('node_modules/@vue') || id.includes('node_modules/pinia')) {
+            return 'vendor-vue';
+          }
+        }
+      }
+    }
+  }
 })
