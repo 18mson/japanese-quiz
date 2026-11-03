@@ -87,7 +87,7 @@ const loadData = async () => {
   if (!props.isOpen) return;
   isLoading.value = true;
   try {
-    const data = await loadKanjiInfo();
+    const data = await loadKanjiInfo(kanjiList.value);
     kanjiDataMap.value = data;
 
     // Tentukan kanji aktif pertama

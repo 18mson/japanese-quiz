@@ -4,7 +4,7 @@ import { useQuizStore } from '../stores/quizStore';
 import { Sparkles, X, ArrowRight, HelpCircle } from '@lucide/vue';
 import { getRandomCorrectFeedback, getRandomRetryFeedback } from '../utils/feedbackMessages';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
-import { extractKanjiFromWord, loadKanjiInfo } from '../services/kanjiInfoService';
+import { extractKanjiFromWord } from '../services/kanjiInfoService';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
@@ -133,31 +133,13 @@ const isLastQuestion = computed(() => {
 
 // Kanji Details Popup State
 const showKanjiPopup = ref(false);
-const availableKanjiSet = ref<Set<string>>(new Set());
 
 const currentWordKanji = computed(() => {
   return extractKanjiFromWord(quizStore.currentQuestion?.character || '');
 });
 
 const hasKanjiDetails = computed(() => {
-  if (currentWordKanji.value.length === 0) return false;
-  return currentWordKanji.value.some(k => availableKanjiSet.value.has(k));
-});
-
-const checkKanjiAvailability = async () => {
-  if (currentWordKanji.value.length === 0) return;
-  try {
-    const data = await loadKanjiInfo();
-    availableKanjiSet.value = new Set(Object.keys(data));
-  } catch (err) {
-    console.error('Gagal mengecek ketersediaan kanji:', err);
-  }
-};
-
-watch(() => quizStore.selectedAnswer, (newVal) => {
-  if (newVal !== null && currentWordKanji.value.length > 0) {
-    checkKanjiAvailability();
-  }
+  return currentWordKanji.value.length > 0;
 });
 
 watch(() => quizStore.currentQuestionIndex, () => {

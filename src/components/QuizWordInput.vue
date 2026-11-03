@@ -4,7 +4,7 @@ import { useQuizStore } from '../stores/quizStore';
 import { Check, X, AlertTriangle, HelpCircle } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
-import { extractKanjiFromWord, loadKanjiInfo } from '../services/kanjiInfoService';
+import { extractKanjiFromWord } from '../services/kanjiInfoService';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
@@ -181,31 +181,13 @@ const typoStatusMessage = computed(() => {
 
 // Kanji Details Popup State
 const showKanjiPopup = ref(false);
-const availableKanjiSet = ref<Set<string>>(new Set());
 
 const currentWordKanji = computed(() => {
   return extractKanjiFromWord(currentWord.value?.character || '');
 });
 
 const hasKanjiDetails = computed(() => {
-  if (currentWordKanji.value.length === 0) return false;
-  return currentWordKanji.value.some(k => availableKanjiSet.value.has(k));
-});
-
-const checkKanjiAvailability = async () => {
-  if (currentWordKanji.value.length === 0) return;
-  try {
-    const data = await loadKanjiInfo();
-    availableKanjiSet.value = new Set(Object.keys(data));
-  } catch (err) {
-    console.error('Gagal mengecek ketersediaan kanji:', err);
-  }
-};
-
-watch(() => quizStore.selectedAnswer, (newVal) => {
-  if (newVal !== null && currentWordKanji.value.length > 0) {
-    checkKanjiAvailability();
-  }
+  return currentWordKanji.value.length > 0;
 });
 
 watch(() => quizStore.currentQuestionIndex, () => {
@@ -225,7 +207,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
 </script>
 
 <template>
-  <div class="w-full max-w-md mx-auto flex flex-col items-center pb-36 sm:pb-0">
+  <div class="w-full max-w-md md:max-w-xl lg:max-w-2xl mx-auto flex flex-col items-center pb-36 sm:pb-0">
     <!-- Typing Area -->
     <div class="w-full mb-6 relative">
       <input
@@ -234,7 +216,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         type="text"
         :inputmode="isTouchDevice ? 'none' : 'text'"
         :placeholder="placeholderText"
-        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl shadow-inner transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="{
           'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
           'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect
@@ -257,20 +239,20 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
     <div v-if="isAnswered" class="w-full flex flex-col items-center animate-slideUp">
       <!-- Status Card -->
       <div 
-        class="w-full rounded-2xl p-4 sm:p-5 mb-4 text-center border shadow-sm transition-all duration-300 animate-pulse-subtle"
+        class="w-full rounded-2xl p-4 sm:p-5 mb-4 text-center border transition-all duration-300 animate-pulse-subtle"
         :class="[
           quizStore.isAnswerCorrect 
-            ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200 shadow-emerald-100/50' 
+            ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200' 
             : (isTypo 
-              ? 'bg-amber-50 dark:bg-amber-950/80 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200 shadow-amber-100/50' 
-              : 'bg-rose-50 dark:bg-rose-950/80 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200 shadow-rose-100/50')
+              ? 'bg-amber-50 dark:bg-amber-950/80 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-200' 
+              : 'bg-rose-50 dark:bg-rose-950/80 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200')
         ]"
       >
         <div class="flex flex-col items-center gap-2">
           <!-- Checkmark/cross icon & Mastery Tier Transition Toast Row -->
           <div class="flex items-center justify-center gap-2.5 sm:gap-3 mb-2 flex-wrap">
             <div 
-              class="w-12 h-12 rounded-full flex items-center justify-center text-white shadow-md transition-transform scale-100 duration-500 animate-icon-pop shrink-0"
+              class="w-12 h-12 rounded-full flex items-center justify-center text-white transition-transform scale-100 duration-500 animate-icon-pop shrink-0"
               :class="quizStore.isAnswerCorrect ? 'bg-emerald-500' : (isTypo ? 'bg-amber-500' : 'bg-rose-500')"
             >
               <Check v-if="quizStore.isAnswerCorrect" class="w-6 h-6 stroke-[3px]" />
@@ -300,7 +282,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           <button
             type="button"
             id="btn-kanji-detail-input"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-xs border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer border bg-rose-100 hover:bg-rose-200 dark:bg-rose-950/80 dark:hover:bg-rose-900 text-rose-800 dark:text-rose-200 border-rose-300 dark:border-rose-700 ring-2 ring-rose-400/40 animate-pulse-subtle"
             @click="showKanjiPopup = true"
             :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
           >

@@ -256,7 +256,7 @@ const hasTierChanges = computed(() => {
     </div>
     
     <!-- Kolom Kanan (Desktop): Ringkasan Jawaban Soal dalam Grid 3 Kolom -->
-    <div class="flex-1 min-w-0 w-full bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs mb-3">
+    <div class="flex-1 min-w-0 w-full bg-white dark:bg-slate-900 rounded-3xl p-4 sm:p-5 border border-slate-200 dark:border-slate-800 mb-3">
       <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
         <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
         <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
@@ -268,7 +268,7 @@ const hasTierChanges = computed(() => {
         <li 
           v-for="(answer, index) in quizStore.reportAnswers" 
           :key="index"
-          class="flex flex-col p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/70 transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 hover:shadow-xs justify-between"
+          class="flex flex-col p-3.5 sm:p-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/70 transition-all duration-200 hover:bg-white dark:hover:bg-slate-800 justify-between"
           :class="{ 
             'border-l-4 border-emerald-500': answer.pointsEarned === 4, 
             'border-l-4 border-amber-500': answer.isTypo || answer.pointsEarned === 1,
@@ -278,7 +278,7 @@ const hasTierChanges = computed(() => {
         >
           <!-- Card Top: Circular Progress (#No) + Main Kanji/Word Character -->
           <div class="flex items-center gap-3 mb-2.5">
-            <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-700/80 shadow-xs">
+            <div class="relative w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center flex-shrink-0 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-700/80">
               <svg class="absolute inset-0 w-full h-full transform -rotate-90 p-0.5" viewBox="0 0 64 64">
                 <circle cx="32" cy="32" r="27" stroke="#e2e8f0" class="dark:stroke-slate-800" stroke-width="4" fill="transparent" />
                 <circle 

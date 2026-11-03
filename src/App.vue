@@ -35,6 +35,7 @@ import { useSettingsStore } from './stores/settingsStore';
 import { useBadgeStore } from './stores/badgeStore';
 import { useMasteryStore } from './stores/masteryStore';
 import { useLessonStore } from './stores/lessonStore';
+import { syncAllKanjiToLocal } from './services/kanjiInfoService';
 import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, BookOpen, Award, Sliders, RotateCcw, Cloud, RefreshCw, LogIn } from '@lucide/vue';
 
 const quizStore = useQuizStore();
@@ -53,9 +54,13 @@ const handleManualSync = async () => {
     return;
   }
   try {
-    const res = await masteryStore.syncWithServer(authStore.user.id);
+    const [res, kanjiRes] = await Promise.all([
+      masteryStore.syncWithServer(authStore.user.id),
+      syncAllKanjiToLocal()
+    ]);
     const totalMastered = quizStore.overallMasteryStats.mastered;
-    syncToastMessage.value = `Sinkronisasi selesai! ${totalMastered} karakter dihafal (${res.pushed} diunggah, ${res.pulled} diperbarui).`;
+    const kanjiMsg = kanjiRes.success ? ` • ${kanjiRes.count} kanji offline siap` : '';
+    syncToastMessage.value = `Sinkronisasi selesai! ${totalMastered} karakter dihafal (${res.pushed} diunggah, ${res.pulled} diperbarui)${kanjiMsg}.`;
   } catch (e) {
     syncToastMessage.value = 'Gagal sinkronisasi. Periksa koneksi internet.';
   }

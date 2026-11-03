@@ -187,9 +187,11 @@ test('Kanji Detail & Offline Validation Suite', async (t) => {
   await t.test('8. Kanji dengan old_form memuat field old_form yang sesuai', async () => {
     const fs = await import('node:fs');
     const path = await import('node:path');
-    const kanjiInfoPath = path.resolve('src/data/kanjiInfo.json');
-    if (fs.existsSync(kanjiInfoPath)) {
-      const catalog = JSON.parse(fs.readFileSync(kanjiInfoPath, 'utf-8'));
+    const targetPath = fs.existsSync(path.resolve('src/data/kanjiInfo.json'))
+      ? path.resolve('src/data/kanjiInfo.json')
+      : path.resolve('scripts/kanji/out/kanjiInfo.json');
+    if (fs.existsSync(targetPath)) {
+      const catalog = JSON.parse(fs.readFileSync(targetPath, 'utf-8'));
       assert.strictEqual(catalog['写']?.old_form, '寫', '写 harus memiliki old_form 寫');
       assert.strictEqual(catalog['学']?.old_form, '學', '学 harus memiliki old_form 學');
       assert.strictEqual(catalog['売']?.old_form, '賣', '売 harus memiliki old_form 賣');

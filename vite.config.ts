@@ -41,24 +41,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,woff2}'],
-        globIgnores: ['**/kanjiInfo*.*', '**/assets/kanjiInfo-*.js'],
-        runtimeCaching: [
-          {
-            urlPattern: /\/assets\/kanjiInfo-[^/]+\.js$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'kanji-info-cache',
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 hari
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
-        ],
+        globPatterns: ['**/*.{js,css,html,svg,woff2}']
       }
     })
   ]

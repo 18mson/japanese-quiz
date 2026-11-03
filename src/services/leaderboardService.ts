@@ -35,7 +35,7 @@ export const submitLeaderboardScore = async (
         .limit(1);
 
       const prevPersonalBest = userBestScores && userBestScores.length > 0 ? userBestScores[0].score : 0;
-      if (submissionScore > prevPersonalBest && prevPersonalBest > 0) {
+      if (prevPersonalBest > 0 && submissionScore > prevPersonalBest) {
         isNewRecord = true;
         recordMessage = 'Rekor Skor Tertinggi Pribadi!';
       }
@@ -57,20 +57,24 @@ export const submitLeaderboardScore = async (
     const newTotalScore = prevTotal + submissionScore;
 
     if (topCumulative && topCumulative.length > 0) {
-      const highestTopScore = Math.max(...topCumulative.map(r => r.total_score || 0));
-      const lowestTopScore = topCumulative.length >= 10
-        ? Math.min(...topCumulative.map(r => r.total_score || 0))
+      // Dapatkan skor tertinggi dari PEMAIN LAIN (kompetitor)
+      const otherPlayers = topCumulative.filter(r => r.username !== username);
+      const competitorTopScore = otherPlayers.length > 0
+        ? Math.max(...otherPlayers.map(r => r.total_score || 0))
         : 0;
 
-      // Merebut peringkat #1 Global
-      if (newTotalScore > highestTopScore && prevTotal <= highestTopScore) {
+      // Merebut peringkat #1 Global: hanya jika sebelumnya di bawah/sama dengan kompetitor dan kini melampauinya
+      if (competitorTopScore > 0 && prevTotal <= competitorTopScore && newTotalScore > competitorTopScore) {
         isNewRecord = true;
         recordMessage = '#1 Rekor Tertinggi Global!';
       }
-      // Tembus Top 10 pertama kali
-      else if (topCumulative.length >= 10 && prevTotal < lowestTopScore && newTotalScore >= lowestTopScore) {
-        isNewRecord = true;
-        recordMessage = 'Masuk Top 10 Leaderboard!';
+      // Tembus Top 10 pertama kali: jika minimal ada 10 pemain, dan user sebelumnya di luar top 10
+      else if (topCumulative.length >= 10 && otherPlayers.length >= 10) {
+        const lowestTopScore = Math.min(...topCumulative.map(r => r.total_score || 0));
+        if (prevTotal < lowestTopScore && newTotalScore >= lowestTopScore) {
+          isNewRecord = true;
+          recordMessage = 'Masuk Top 10 Leaderboard!';
+        }
       }
     }
 
@@ -78,7 +82,7 @@ export const submitLeaderboardScore = async (
     if (submissionScore >= 16) {
       const { data: topSpeed } = await supabase
         .from('leaderboard_speed')
-        .select('duration_seconds')
+        .select('duration_seconds, username')
         .order('duration_seconds', { ascending: true })
         .limit(1);
 

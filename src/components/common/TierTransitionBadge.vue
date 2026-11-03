@@ -18,7 +18,7 @@ const config = computed(() => {
 
   if (props.transition.direction === 'down') {
     return {
-      classes: 'bg-white/95 dark:bg-slate-900/95 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-700/80 shadow-xs',
+      classes: 'bg-white/95 dark:bg-slate-900/95 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-700/80',
       icon: TrendingDown,
       iconClass: 'text-rose-500 shrink-0'
     };
@@ -27,25 +27,25 @@ const config = computed(() => {
   switch (props.transition.newTier) {
     case 'crown':
       return {
-        classes: 'bg-white/95 dark:bg-slate-900/95 text-amber-800 dark:text-amber-300 border-amber-300/90 dark:border-amber-600/80 shadow-xs',
+        classes: 'bg-white/95 dark:bg-slate-900/95 text-amber-800 dark:text-amber-300 border-amber-300/90 dark:border-amber-600/80',
         icon: Crown,
         iconClass: 'text-amber-500 fill-amber-500/20 shrink-0'
       };
     case 'mastered':
       return {
-        classes: 'bg-white/95 dark:bg-slate-900/95 text-emerald-800 dark:text-emerald-300 border-emerald-300/90 dark:border-emerald-600/80 shadow-xs',
+        classes: 'bg-white/95 dark:bg-slate-900/95 text-emerald-800 dark:text-emerald-300 border-emerald-300/90 dark:border-emerald-600/80',
         icon: CheckCircle2,
         iconClass: 'text-emerald-600 dark:text-emerald-400 fill-emerald-500/20 shrink-0'
       };
     case 'learning':
       return {
-        classes: 'bg-white/95 dark:bg-slate-900/95 text-aizome dark:text-indigo-300 border-aizome/30 dark:border-indigo-600/80 shadow-xs',
+        classes: 'bg-white/95 dark:bg-slate-900/95 text-aizome dark:text-indigo-300 border-aizome/30 dark:border-indigo-600/80',
         icon: TrendingUp,
         iconClass: 'text-aizome dark:text-indigo-400 shrink-0'
       };
     default:
       return {
-        classes: 'bg-white/95 dark:bg-slate-900/95 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700 shadow-xs',
+        classes: 'bg-white/95 dark:bg-slate-900/95 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-700',
         icon: Sparkles,
         iconClass: 'text-slate-500 shrink-0'
       };
