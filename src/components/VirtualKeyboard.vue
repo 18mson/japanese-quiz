@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useSettingsStore, type KeyboardHeight } from '../stores/settingsStore';
+import { generateScrambleTiles, type ScrambleResult, type ScrambleTile } from '../utils/scrambleGenerator';
 
 const props = withDefaults(defineProps<{
   theme?: 'light' | 'dark' | 'auto';
@@ -9,21 +10,90 @@ const props = withDefaults(defineProps<{
   enterLabel?: string;
   enableSound?: boolean;
   keyboardHeight?: KeyboardHeight;
+  // Scramble mode props
+  inputMode?: 'qwerty' | 'scramble';
+  enableScramble?: boolean;
+  targetAnswer?: string;
+  scrambleMode?: 'romaji' | 'kana' | 'meaning';
 }>(), {
   theme: 'auto',
   disabled: false,
   showEnter: true,
   enterLabel: 'SUBMIT',
   enableSound: true,
+  inputMode: 'qwerty',
+  enableScramble: false,
+  targetAnswer: '',
+  scrambleMode: 'romaji',
 });
 
 const emit = defineEmits<{
   (e: 'key', char: string): void;
   (e: 'backspace'): void;
   (e: 'enter'): void;
+  (e: 'append', payload: { text: string; isMultiWord: boolean }): void;
+  (e: 'undoChunk', payload: { text: string; isMultiWord: boolean }): void;
+  (e: 'clear'): void;
+  (e: 'update:inputMode', mode: 'qwerty' | 'scramble'): void;
 }>();
 
 const settingsStore = useSettingsStore();
+
+// Scramble state
+const scrambleData = ref<ScrambleResult | null>(null);
+const selectedTiles = ref<string[]>([]); // stack of selected tile IDs
+
+function initScramble() {
+  if (!props.targetAnswer) {
+    scrambleData.value = null;
+    selectedTiles.value = [];
+    return;
+  }
+  scrambleData.value = generateScrambleTiles(props.targetAnswer, props.scrambleMode);
+  selectedTiles.value = [];
+}
+
+watch(() => props.targetAnswer, () => {
+  initScramble();
+}, { immediate: true });
+
+function handleTileClick(tile: ScrambleTile) {
+  if (props.disabled || selectedTiles.value.includes(tile.id)) return;
+  playClickSound();
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try { navigator.vibrate(10); } catch {}
+  }
+  selectedTiles.value.push(tile.id);
+  emit('append', { 
+    text: tile.text, 
+    isMultiWord: scrambleData.value?.isMultiWord ?? false 
+  });
+}
+
+function handleScrambleBackspace() {
+  if (props.disabled) return;
+  playClickSound();
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try { navigator.vibrate(12); } catch {}
+  }
+  if (selectedTiles.value.length === 0) {
+    emit('backspace');
+    return;
+  }
+  const lastId = selectedTiles.value.pop();
+  const lastTile = scrambleData.value?.tiles.find(t => t.id === lastId);
+  emit('undoChunk', { 
+    text: lastTile?.text || '', 
+    isMultiWord: scrambleData.value?.isMultiWord ?? false 
+  });
+}
+
+function handleScrambleReset() {
+  if (props.disabled) return;
+  playClickSound();
+  selectedTiles.value = [];
+  emit('clear');
+}
 
 const activeKeyboardHeight = computed(() => props.keyboardHeight || settingsStore.keyboardHeight);
 
@@ -145,146 +215,218 @@ const activeKeyClass = computed(() => isDark.value
       <slot name="top" />
     </div>
 
-    <!-- Row 1 -->
-    <div class="flex justify-center gap-1 w-full">
-      <button
-        v-for="key in row1"
-        :key="key"
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress(key)"
-        @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === key ? activeKeyClass : ''
-        ]"
-      >
-        {{ key }}
-      </button>
-    </div>
+    <!-- Scramble Mode: Tile Bubbles & Action Buttons -->
+    <template v-if="inputMode === 'scramble' && enableScramble">
+      <div class="w-full flex flex-col gap-2 py-1 px-1">
+        <!-- Tile Bubbles Container -->
+        <div class="w-full flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 min-h-[96px] max-h-[160px] overflow-y-auto p-1.5 bg-slate-100/60 dark:bg-slate-900/60 rounded-xl border border-slate-200/60 dark:border-slate-800/60">
+          <button
+            v-for="tile in scrambleData?.tiles || []"
+            :key="tile.id"
+            type="button"
+            :disabled="disabled || selectedTiles.includes(tile.id)"
+            @click="handleTileClick(tile)"
+            class="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl font-bold text-base sm:text-lg border transition-all duration-150 transform flex items-center justify-center cursor-pointer select-none"
+            :class="[
+              selectedTiles.includes(tile.id)
+                ? 'opacity-20 scale-90 border-dashed bg-slate-200 dark:bg-slate-800 text-slate-400 border-slate-300 dark:border-slate-700 pointer-events-none'
+                : (isDark 
+                  ? 'bg-slate-900 hover:bg-slate-800 text-slate-100 border-slate-700/80 active:scale-95 active:bg-torii' 
+                  : 'bg-white hover:bg-slate-50 text-slate-800 border-slate-300 active:scale-95 active:bg-indigo-600 active:text-white shadow-xs')
+            ]"
+          >
+            <span :class="{'font-jp': scrambleMode === 'kana'}">{{ tile.text }}</span>
+          </button>
+        </div>
 
-    <!-- Row 2 -->
-    <div class="flex justify-center gap-1 w-full px-1.5">
-      <button
-        v-for="key in row2"
-        :key="key"
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress(key)"
-        @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === key ? activeKeyClass : ''
-        ]"
-      >
-        {{ key }}
-      </button>
-    </div>
+        <!-- Scramble Action Row (Reset, Backspace, Submit) -->
+        <div class="flex items-center justify-between gap-2 w-full pt-0.5">
+          <!-- Reset Button -->
+          <button
+            type="button"
+            :disabled="disabled || selectedTiles.length === 0"
+            @click="handleScrambleReset"
+            class="px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1 border cursor-pointer select-none"
+            :class="selectedTiles.length === 0
+              ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
+              : (isDark
+                ? 'bg-slate-900 hover:bg-slate-800 text-slate-200 border-slate-700 active:scale-95'
+                : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 active:scale-95')"
+          >
+            <span>↺ Reset</span>
+          </button>
 
-    <!-- Row 3: Comma, Z X C V B N M, Backspace -->
-    <div class="flex justify-between gap-1 w-full">
-      <!-- Comma key (flush to the left edge, matching Q on Row 1) -->
-      <button
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress(',')"
-        @mousedown.prevent="handleKeyPress(',')"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-lg sm:text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === ',' ? activeKeyClass : ''
-        ]"
-        title="Comma"
-      >
-        ,
-      </button>
+          <!-- Backspace Button -->
+          <button
+            type="button"
+            :disabled="disabled || selectedTiles.length === 0"
+            @click="handleScrambleBackspace"
+            class="flex-1 py-2.5 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1 border cursor-pointer select-none"
+            :class="selectedTiles.length === 0
+              ? 'opacity-40 cursor-not-allowed bg-slate-100 dark:bg-slate-900 text-slate-400 border-slate-200 dark:border-slate-800'
+              : backspaceClass"
+          >
+            <span>⌫ Hapus Kata</span>
+          </button>
 
-      <button
-        v-for="key in row3"
-        :key="key"
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress(key)"
-        @mousedown.prevent="handleKeyPress(key)"
-        class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === key ? activeKeyClass : ''
-        ]"
-      >
-        {{ key }}
-      </button>
+          <!-- Submit Button -->
+          <button
+            type="button"
+            :disabled="disabled"
+            @click="handleEnter"
+            class="py-2.5 px-5 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform select-none"
+            :class="enterClass"
+          >
+            <span>{{ enterLabel }}</span>
+            <span class="text-sm font-normal">⏎</span>
+          </button>
+        </div>
+      </div>
+    </template>
 
-      <!-- Backspace key (flush to the right edge, matching P on Row 1) -->
-      <button
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleBackspace"
-        @mousedown.prevent="handleBackspace"
-        class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          backspaceClass,
-          keyHeightClass,
-          activeKey === 'backspace' ? '!scale-90 !bg-torii !text-white !ring-2 !ring-torii-light shadow-md' : ''
-        ]"
-        title="Backspace"
-      >
-        ⌫
-      </button>
-    </div>
+    <!-- Standard QWERTY Keyboard Layout -->
+    <template v-else>
+      <!-- Row 1 -->
+      <div class="flex justify-center gap-1 w-full">
+        <button
+          v-for="key in row1"
+          :key="key"
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress(key)"
+          @mousedown.prevent="handleKeyPress(key)"
+          class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === key ? activeKeyClass : ''
+          ]"
+        >
+          {{ key }}
+        </button>
+      </div>
 
-    <!-- Row 4: Hyphen, Space bar & Enter/Submit -->
-    <div class="flex justify-center gap-1.5 w-full px-1">
-      <button
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress('-')"
-        @mousedown.prevent="handleKeyPress('-')"
-        class="w-11 sm:w-14 rounded-lg font-bold text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === '-' ? activeKeyClass : ''
-        ]"
-      >
-        -
-      </button>
-      <button
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleKeyPress(' ')"
-        @mousedown.prevent="handleKeyPress(' ')"
-        class="flex-1 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
-        :class="[
-          keyBaseClass,
-          keyHeightClass,
-          activeKey === ' ' ? activeKeyClass : ''
-        ]"
-      >
-        SPACE
-      </button>
-      <button
-        v-if="showEnter"
-        type="button"
-        :disabled="disabled"
-        @touchstart.prevent="handleEnter"
-        @mousedown.prevent="handleEnter"
-        class="w-20 sm:w-24 rounded-lg text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform"
-        :class="[
-          enterClass,
-          keyHeightClass,
-          activeKey === 'enter' ? (isDark ? '!scale-90 !bg-torii-600 !ring-2 !ring-torii-light shadow-lg' : '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg') : ''
-        ]"
-      >
-        <span>{{ enterLabel }}</span>
-        <span class="text-sm font-normal">⏎</span>
-      </button>
-    </div>
+      <!-- Row 2 -->
+      <div class="flex justify-center gap-1 w-full px-1.5">
+        <button
+          v-for="key in row2"
+          :key="key"
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress(key)"
+          @mousedown.prevent="handleKeyPress(key)"
+          class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === key ? activeKeyClass : ''
+          ]"
+        >
+          {{ key }}
+        </button>
+      </div>
+
+      <!-- Row 3: Comma, Z X C V B N M, Backspace -->
+      <div class="flex justify-between gap-1 w-full">
+        <!-- Comma key (flush to the left edge, matching Q on Row 1) -->
+        <button
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress(',')"
+          @mousedown.prevent="handleKeyPress(',')"
+          class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-lg sm:text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === ',' ? activeKeyClass : ''
+          ]"
+          title="Comma"
+        >
+          ,
+        </button>
+
+        <button
+          v-for="key in row3"
+          :key="key"
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress(key)"
+          @mousedown.prevent="handleKeyPress(key)"
+          class="flex-1 max-w-[38px] sm:max-w-[46px] rounded-lg font-bold text-lg sm:text-xl uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === key ? activeKeyClass : ''
+          ]"
+        >
+          {{ key }}
+        </button>
+
+        <!-- Backspace key (flush to the right edge, matching P on Row 1) -->
+        <button
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleBackspace"
+          @mousedown.prevent="handleBackspace"
+          class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            backspaceClass,
+            keyHeightClass,
+            activeKey === 'backspace' ? '!scale-90 !bg-torii !text-white !ring-2 !ring-torii-light shadow-md' : ''
+          ]"
+          title="Backspace"
+        >
+          ⌫
+        </button>
+      </div>
+
+      <!-- Row 4: Hyphen, Space bar & Enter/Submit -->
+      <div class="flex justify-center gap-1.5 w-full px-1">
+        <button
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress('-')"
+          @mousedown.prevent="handleKeyPress('-')"
+          class="w-11 sm:w-14 rounded-lg font-bold text-xl border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === '-' ? activeKeyClass : ''
+          ]"
+        >
+          -
+        </button>
+        <button
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleKeyPress(' ')"
+          @mousedown.prevent="handleKeyPress(' ')"
+          class="flex-1 rounded-lg font-semibold text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          :class="[
+            keyBaseClass,
+            keyHeightClass,
+            activeKey === ' ' ? activeKeyClass : ''
+          ]"
+        >
+          SPACE
+        </button>
+        <button
+          v-if="showEnter"
+          type="button"
+          :disabled="disabled"
+          @touchstart.prevent="handleEnter"
+          @mousedown.prevent="handleEnter"
+          class="w-20 sm:w-24 rounded-lg text-xs sm:text-sm tracking-wider uppercase border transition-all duration-75 flex items-center justify-center gap-1 cursor-pointer transform"
+          :class="[
+            enterClass,
+            keyHeightClass,
+            activeKey === 'enter' ? (isDark ? '!scale-90 !bg-torii-600 !ring-2 !ring-torii-light shadow-lg' : '!scale-90 !bg-indigo-700 !ring-2 !ring-indigo-400 shadow-lg') : ''
+          ]"
+        >
+          <span>{{ enterLabel }}</span>
+          <span class="text-sm font-normal">⏎</span>
+        </button>
+      </div>
+    </template>
   </div>
 </template>

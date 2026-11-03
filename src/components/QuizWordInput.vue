@@ -140,6 +140,86 @@ const handleVirtualEnter = () => {
   focusInput();
 };
 
+// Mobile Scramble/Bubble Input Mode State
+const mobileInputMode = ref<'qwerty' | 'scramble'>('qwerty');
+
+onMounted(() => {
+  try {
+    const saved = localStorage.getItem('nihongo_mobile_input_mode');
+    if (saved === 'scramble' || saved === 'qwerty') {
+      mobileInputMode.value = saved;
+    }
+  } catch {}
+});
+
+const toggleMobileInputMode = () => {
+  mobileInputMode.value = mobileInputMode.value === 'qwerty' ? 'scramble' : 'qwerty';
+  try {
+    localStorage.setItem('nihongo_mobile_input_mode', mobileInputMode.value);
+  } catch {}
+};
+
+const activeTargetAnswer = computed(() => {
+  const current = currentWord.value;
+  if (!current) return '';
+  if (quizStore.questionType === 'words_meaning') {
+    return (current as any).meaning || '';
+  }
+  if (quizStore.questionType === 'meaning_to_words') {
+    return (current as any).kana || current.character || '';
+  }
+  if (Array.isArray(current.romaji)) {
+    return current.romaji[0] || '';
+  }
+  return current.romaji || '';
+});
+
+const activeScrambleMode = computed<'romaji' | 'kana' | 'meaning'>(() => {
+  if (quizStore.questionType === 'words_meaning') return 'meaning';
+  if (quizStore.questionType === 'meaning_to_words') return 'kana';
+  return 'romaji';
+});
+
+const handleAppendChunk = ({ text, isMultiWord }: { text: string; isMultiWord: boolean }) => {
+  if (isAnswered.value) return;
+  if (isMultiWord) {
+    if (userInput.value.length > 0 && !userInput.value.endsWith(' ')) {
+      userInput.value += ' ' + text;
+    } else {
+      userInput.value += text;
+    }
+  } else {
+    userInput.value += text;
+  }
+  focusInput();
+};
+
+const handleUndoChunk = ({ text, isMultiWord }: { text: string; isMultiWord: boolean }) => {
+  if (isAnswered.value) return;
+  if (isMultiWord) {
+    const trimmed = userInput.value.trimEnd();
+    const lastSpace = trimmed.lastIndexOf(' ');
+    if (lastSpace >= 0) {
+      userInput.value = trimmed.slice(0, lastSpace);
+    } else {
+      userInput.value = '';
+    }
+  } else {
+    if (userInput.value.endsWith(text)) {
+      userInput.value = userInput.value.slice(0, -text.length);
+    } else {
+      userInput.value = userInput.value.slice(0, -1);
+    }
+  }
+  focusInput();
+};
+
+const handleClearInput = () => {
+  if (isAnswered.value) return;
+  userInput.value = '';
+  focusInput();
+};
+
 const isAnswered = computed(() => quizStore.selectedAnswer !== null);
 
 const currentWord = computed(() => quizStore.currentQuestion);
@@ -309,23 +389,41 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
       theme="auto"
       enter-label="SUBMIT"
       :disabled="isAnswered"
+      :enable-scramble="true"
+      :input-mode="mobileInputMode"
+      :target-answer="activeTargetAnswer"
+      :scramble-mode="activeScrambleMode"
       @key="handleVirtualKey"
       @backspace="handleVirtualBackspace"
       @enter="handleVirtualEnter"
+      @append="handleAppendChunk"
+      @undo-chunk="handleUndoChunk"
+      @clear="handleClearInput"
     >
       <template #top>
+        <!-- Tombol Skip (Kiri) -->
         <button
           type="button"
-          class="px-4 py-1.5 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg text-xs transition border border-gray-300 dark:border-slate-600 flex items-center gap-1 cursor-pointer shadow-xs"
+          class="px-3.5 py-1.5 bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600 text-gray-700 dark:text-slate-200 font-bold rounded-lg text-xs transition border border-gray-300 dark:border-slate-600 flex items-center gap-1 cursor-pointer select-none active:scale-95"
           @click="quizStore.submitAnswer('')"
         >
           <span>Skip</span>
           <span class="text-[10px]">⏭</span>
         </button>
 
-        <span class="text-[11px] font-medium text-slate-400 dark:text-slate-400">
-          Ketik romaji & tekan Submit ⏎
-        </span>
+        <!-- Tombol Switch Mode Input (Di seberang tombol Skip / Kanan) -->
+        <button
+          type="button"
+          class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 border cursor-pointer select-none active:scale-95"
+          :class="mobileInputMode === 'scramble' 
+            ? 'bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/80 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-700 ring-2 ring-amber-400/30' 
+            : 'bg-indigo-50 hover:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-indigo-700 dark:text-torii-light border-indigo-200 dark:border-slate-700'"
+          @click="toggleMobileInputMode"
+          :title="mobileInputMode === 'scramble' ? 'Beralih ke Keyboard Ketik Biasa' : 'Beralih ke Mode Susun Kata/Huruf'"
+        >
+          <span v-if="mobileInputMode === 'scramble'">🧩 Mode Susun</span>
+          <span v-else>⌨️ Mode Ketik</span>
+        </button>
       </template>
     </VirtualKeyboard>
   </div>
