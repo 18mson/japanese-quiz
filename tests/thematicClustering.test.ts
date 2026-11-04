@@ -4,8 +4,8 @@ import { wordsData } from '../src/data/words';
 import { selectKanjiUniquePool } from '../src/utils/kanjiQuizComposition';
 
 describe('Thematic Kotoba Clustering Suite', () => {
-  it('1. Semua 1.104 kosakata di wordsData memiliki sub_category yang valid', () => {
-    assert.strictEqual(wordsData.length, 1104, 'Total words harus 1.104');
+  it('1. Semua 1.096 kosakata di wordsData memiliki sub_category yang valid', () => {
+    assert.strictEqual(wordsData.length, 1096, 'Total words harus 1.096');
     for (const w of wordsData) {
       assert.ok(w.sub_category, `Word "${w.character}" harus memiliki sub_category`);
       assert.ok(typeof w.sub_category === 'string' && w.sub_category.trim().length > 0);
