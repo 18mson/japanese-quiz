@@ -37,6 +37,10 @@ function saveLocalProgress(itemId: string, itemType: 'a' | 'b' | 'c', status: 'b
 }
 
 export async function fetchLessonBunkei(lessonNumber: number = 1): Promise<GrammarPoint[]> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return lesson1Data.bunkei;
+  }
+
   try {
     const { data: lesson } = await supabase
       .from('lessons')
@@ -63,6 +67,10 @@ export async function fetchLessonBunkei(lessonNumber: number = 1): Promise<Gramm
 }
 
 export async function fetchLessonVocabulary(lessonNumber: number = 1): Promise<LessonVocabulary[]> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return [];
+  }
+
   try {
     const { data: lesson } = await supabase
       .from('lessons')
@@ -89,6 +97,10 @@ export async function fetchLessonVocabulary(lessonNumber: number = 1): Promise<L
 }
 
 export async function fetchLessonReferenceTables(lessonNumber: number = 1, tableType?: string): Promise<LessonReferenceTable[]> {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return [];
+  }
+
   try {
     const { data: lesson } = await supabase
       .from('lessons')
@@ -281,29 +293,32 @@ export function japaneseSentenceToRomaji(japanese: string): string {
 
 export async function fetchRenshuuProgress(lessonNumber: number = 1, userId?: string | null): Promise<{ masteredCount: number; totalCount: number; progressPercent: number }> {
   let allAtomicItems: Array<{ id: string }> = [];
+  const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
 
-  try {
-    const { data: lesson } = await supabase
-      .from('lessons')
-      .select('id')
-      .eq('lesson_number', lessonNumber)
-      .maybeSingle();
+  if (!isOffline) {
+    try {
+      const { data: lesson } = await supabase
+        .from('lessons')
+        .select('id')
+        .eq('lesson_number', lessonNumber)
+        .maybeSingle();
 
-    if (lesson?.id) {
-      const [resA, resB, resC] = await Promise.all([
-        supabase.from('renshuu_a_items').select('id').eq('lesson_id', lesson.id),
-        supabase.from('renshuu_b_items').select('id').eq('lesson_id', lesson.id),
-        supabase.from('renshuu_c_items').select('id').eq('lesson_id', lesson.id)
-      ]);
+      if (lesson?.id) {
+        const [resA, resB, resC] = await Promise.all([
+          supabase.from('renshuu_a_items').select('id').eq('lesson_id', lesson.id),
+          supabase.from('renshuu_b_items').select('id').eq('lesson_id', lesson.id),
+          supabase.from('renshuu_c_items').select('id').eq('lesson_id', lesson.id)
+        ]);
 
-      allAtomicItems = [
-        ...(resA.data || []),
-        ...(resB.data || []),
-        ...(resC.data || [])
-      ];
+        allAtomicItems = [
+          ...(resA.data || []),
+          ...(resB.data || []),
+          ...(resC.data || [])
+        ];
+      }
+    } catch (e) {
+      console.warn('Error fetching atomic items count from Supabase, using fallback count:', e);
     }
-  } catch (e) {
-    console.warn('Error fetching atomic items count from Supabase, using fallback count:', e);
   }
 
   const totalCount = allAtomicItems.length > 0 ? allAtomicItems.length : 45;
@@ -311,7 +326,7 @@ export async function fetchRenshuuProgress(lessonNumber: number = 1, userId?: st
   let masteredSet = new Set<string>();
 
   // Check Supabase if user is logged in
-  if (userId) {
+  if (userId && !isOffline) {
     try {
       const { data: progressRows } = await supabase
         .from('renshuu_progress')
@@ -388,34 +403,37 @@ export async function buildRenshuuSession(
   let atomicB: any[] = [];
   let atomicC: any[] = [];
   let charMap: Record<string, RenshuuBCharacter> = {};
+  const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
 
-  try {
-    const { data: lesson } = await supabase
-      .from('lessons')
-      .select('id')
-      .eq('lesson_number', lessonNumber)
-      .maybeSingle();
+  if (!isOffline) {
+    try {
+      const { data: lesson } = await supabase
+        .from('lessons')
+        .select('id')
+        .eq('lesson_number', lessonNumber)
+        .maybeSingle();
 
-    if (lesson?.id) {
-      const [resA, resB, resC, resChars] = await Promise.all([
-        supabase.from('renshuu_a_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('sub_order', { ascending: true }),
-        supabase.from('renshuu_b_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('sub_order', { ascending: true }),
-        supabase.from('renshuu_c_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('option_key', { ascending: true }),
-        supabase.from('renshuu_b_characters').select('*').eq('lesson_id', lesson.id)
-      ]);
+      if (lesson?.id) {
+        const [resA, resB, resC, resChars] = await Promise.all([
+          supabase.from('renshuu_a_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('sub_order', { ascending: true }),
+          supabase.from('renshuu_b_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('sub_order', { ascending: true }),
+          supabase.from('renshuu_c_items').select('*').eq('lesson_id', lesson.id).order('question_order', { ascending: true }).order('option_key', { ascending: true }),
+          supabase.from('renshuu_b_characters').select('*').eq('lesson_id', lesson.id)
+        ]);
 
-      if (resA.data && resA.data.length > 0) atomicA = resA.data;
-      if (resB.data && resB.data.length > 0) atomicB = resB.data;
-      if (resC.data && resC.data.length > 0) atomicC = resC.data;
-      if (resChars.data) {
-        resChars.data.forEach(c => {
-          charMap[c.id] = c;
-          charMap[`${c.table_id}_${c.key}`] = c;
-        });
+        if (resA.data && resA.data.length > 0) atomicA = resA.data;
+        if (resB.data && resB.data.length > 0) atomicB = resB.data;
+        if (resC.data && resC.data.length > 0) atomicC = resC.data;
+        if (resChars.data) {
+          resChars.data.forEach(c => {
+            charMap[c.id] = c;
+            charMap[`${c.table_id}_${c.key}`] = c;
+          });
+        }
       }
+    } catch (e) {
+      console.warn('Error fetching atomic items from Supabase, generating fallback pool:', e);
     }
-  } catch (e) {
-    console.warn('Error fetching atomic items from Supabase, generating fallback pool:', e);
   }
 
   // Fallback if atomic tables not yet reachable

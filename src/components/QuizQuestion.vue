@@ -65,17 +65,20 @@ const playWordAudio = () => {
   if (text) speak(text);
 };
 
-// Putar otomatis pelafalan kata kotoba secara instan ketika jawaban salah
+// Putar otomatis pelafalan kata kotoba secara instan setiap selesai submit soal (baik benar maupun salah)
 watch(() => quizStore.selectedAnswer, (ans) => {
-  if (ans !== null && quizStore.isAnswerCorrect === false) {
+  if (ans !== null) {
+    const isKotoba = isWord.value || ['words', 'words_meaning', 'meaning_to_words'].includes(quizStore.questionType);
+    if (!isKotoba) return;
+
     const text = currentKana.value || character.value;
     if (text) {
       setTimeout(() => {
-        // Pastikan masih di state yang sama
-        if (quizStore.selectedAnswer !== null && quizStore.isAnswerCorrect === false) {
+        // Pastikan masih di soal yang sama setelah jeda efek bunyi
+        if (quizStore.selectedAnswer !== null) {
           playWordAudio();
         }
-      }, 180);
+      }, 160);
     }
   }
 });
@@ -250,7 +253,7 @@ const instructionText = computed(() => {
               <span>{{ rom }}</span>
               <span 
                 v-if="idx < romajiList.length - 1" 
-                class="inline-flex items-center mx-2 px-2.5 py-0.5 rounded-full text-xs font-semibold font-sans bg-slate-200/80 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 border border-slate-300/80 dark:border-slate-600 select-none tracking-normal not-italic"
+                class="mx-1.5 sm:mx-2 text-xs sm:text-sm font-normal font-sans text-slate-400 dark:text-slate-500 select-none tracking-normal not-italic lowercase"
               >
                 atau
               </span>
@@ -283,7 +286,7 @@ const instructionText = computed(() => {
                 <span>{{ rom }}</span>
                 <span 
                   v-if="idx < romajiList.length - 1" 
-                  class="inline-flex items-center mx-2 px-2.5 py-0.5 rounded-full text-xs font-semibold font-sans bg-slate-200/80 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 border border-slate-300/80 dark:border-slate-600 select-none tracking-normal not-italic"
+                  class="mx-1.5 sm:mx-2 text-xs sm:text-sm font-normal font-sans text-slate-400 dark:text-slate-500 select-none tracking-normal not-italic lowercase"
                 >
                   atau
                 </span>
@@ -320,7 +323,7 @@ const instructionText = computed(() => {
               <span>{{ rom }}</span>
               <span 
                 v-if="idx < romajiList.length - 1" 
-                class="inline-flex items-center mx-2 px-2.5 py-0.5 rounded-full text-xs font-semibold font-sans bg-slate-200/80 dark:bg-slate-700/80 text-slate-600 dark:text-slate-300 border border-slate-300/80 dark:border-slate-600 select-none tracking-normal not-italic"
+                class="mx-1.5 sm:mx-2 text-xs sm:text-sm font-normal font-sans text-slate-400 dark:text-slate-500 select-none tracking-normal not-italic lowercase"
               >
                 atau
               </span>

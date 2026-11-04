@@ -17,6 +17,10 @@ export interface LeaderboardSubmissionResult {
 export const submitLeaderboardScore = async (
   params: LeaderboardSubmissionParams
 ): Promise<LeaderboardSubmissionResult> => {
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return { isNewRecord: false, recordMessage: '' };
+  }
+
   const { userId, submissionScore, durationSeconds, questionType, quizLevel } = params;
   const username = params.username.includes('@') ? params.username.split('@')[0] : params.username;
 

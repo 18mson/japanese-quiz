@@ -65,6 +65,10 @@ export const useMasteryStore = defineStore('mastery', () => {
   const syncError = ref<string | null>(null);
 
   const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      return {};
+    }
+
     let allData: Array<{ character: string; streak: number }> = [];
     const pageSize = 1000;
     let from = 0;
@@ -96,6 +100,9 @@ export const useMasteryStore = defineStore('mastery', () => {
   };
 
   const syncWithServer = async (userId: string): Promise<{ pushed: number; pulled: number }> => {
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      return { pushed: 0, pulled: 0 };
+    }
     if (isSyncing.value) return { pushed: 0, pulled: 0 };
     isSyncing.value = true;
     syncError.value = null;

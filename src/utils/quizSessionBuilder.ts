@@ -66,27 +66,31 @@ export async function prepareStandardQuestions(params: {
   const questionCount = getQuestionCountFromDuration(targetDuration, type);
   let finalPool = getFallbackLocalPool(type, level);
 
-  try {
-    let query = type === 'mix'
-      ? supabase.from('quiz_items').select('*').in('category', ['hiragana', 'katakana'])
-      : supabase.from('quiz_items').select('*').eq('category', type);
+  const isOffline = typeof navigator !== 'undefined' && !navigator.onLine;
 
-    if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory !== 'all') {
-      query = query.eq('type', selectedKanaCategory);
-    }
+  if (!isOffline) {
+    try {
+      let query = type === 'mix'
+        ? supabase.from('quiz_items').select('*').in('category', ['hiragana', 'katakana'])
+        : supabase.from('quiz_items').select('*').eq('category', type);
 
-    const { data, error } = await query;
-    if (!error && data && data.length > 0) {
-      finalPool = data.map(item => ({
-        character: item.character,
-        romaji: item.romaji,
-        kana: item.kana,
-        meaning: item.meaning,
-        type: ['words', 'words_meaning', 'meaning_to_words'].includes(type) ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
-        lesson: item.lesson
-      }));
-    }
-  } catch (err) { }
+      if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory !== 'all') {
+        query = query.eq('type', selectedKanaCategory);
+      }
+
+      const { data, error } = await query;
+      if (!error && data && data.length > 0) {
+        finalPool = data.map(item => ({
+          character: item.character,
+          romaji: item.romaji,
+          kana: item.kana,
+          meaning: item.meaning,
+          type: ['words', 'words_meaning', 'meaning_to_words'].includes(type) ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
+          lesson: item.lesson
+        }));
+      }
+    } catch (err) { }
+  }
 
   if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory !== 'all') {
     const filtered = finalPool.filter(item => item.type === selectedKanaCategory);

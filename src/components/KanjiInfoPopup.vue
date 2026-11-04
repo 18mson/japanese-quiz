@@ -5,7 +5,8 @@ import {
   type KanjiDetail, 
   loadKanjiInfo, 
   extractKanjiFromWord, 
-  reportKanjiExplanation 
+  reportKanjiExplanation,
+  getMinimalFallbackDetail 
 } from '../services/kanjiInfoService';
 
 const props = withDefaults(defineProps<{
@@ -27,6 +28,7 @@ const isLoading = ref(true);
 const kanjiDataMap = ref<Record<string, KanjiDetail>>({});
 const activeKanji = ref<string>('');
 const reportedKanji = ref<Set<string>>(new Set());
+const isSubmittingReport = ref<boolean>(false);
 
 // Ekstrak kanji unik dari kata target
 const kanjiList = computed(() => {
@@ -36,10 +38,11 @@ const kanjiList = computed(() => {
   return [];
 });
 
-// Detail untuk kanji yang sedang aktif ditab
+// Detail untuk kanji yang sedang aktif ditab (dengan offline fallback minimal dari words.ts)
 const currentKanjiDetail = computed<KanjiDetail | null>(() => {
   if (!activeKanji.value) return null;
-  return kanjiDataMap.value[activeKanji.value] || null;
+  return kanjiDataMap.value[activeKanji.value] 
+    || getMinimalFallbackDetail(activeKanji.value, props.targetWord);
 });
 
 // Jenis pembentukan terjemahan Indonesia
@@ -82,22 +85,31 @@ const confidenceBadge = computed(() => {
   }
 });
 
-// Muat data saat modal dibuka
+// Muat data saat modal dibuka (Stale-While-Revalidate: baca cache dulu, update di latar belakang)
 const loadData = async () => {
   if (!props.isOpen) return;
   isLoading.value = true;
-  try {
-    const data = await loadKanjiInfo(kanjiList.value);
-    kanjiDataMap.value = data;
 
-    // Tentukan kanji aktif pertama
-    if (props.initialKanji && kanjiList.value.includes(props.initialKanji)) {
-      activeKanji.value = props.initialKanji;
-    } else if (kanjiList.value.length > 0) {
-      activeKanji.value = kanjiList.value[0];
-    }
+  // Tentukan kanji aktif pertama segera
+  if (props.initialKanji && kanjiList.value.includes(props.initialKanji)) {
+    activeKanji.value = props.initialKanji;
+  } else if (kanjiList.value.length > 0) {
+    activeKanji.value = kanjiList.value[0];
+  }
+
+  try {
+    const data = await loadKanjiInfo(kanjiList.value, (updated) => {
+      // Callback background update dari Supabase
+      kanjiDataMap.value = { ...kanjiDataMap.value, ...updated };
+    });
+    kanjiDataMap.value = data;
   } catch (err) {
-    console.error('Gagal memuat detail kanji:', err);
+    console.warn('Gagal memuat detail kanji dari cache:', err);
+    const fallbackMap: Record<string, KanjiDetail> = {};
+    for (const k of kanjiList.value) {
+      fallbackMap[k] = getMinimalFallbackDetail(k, props.targetWord);
+    }
+    kanjiDataMap.value = fallbackMap;
   } finally {
     isLoading.value = false;
   }
@@ -118,9 +130,21 @@ watch(() => props.targetWord, () => {
   }
 });
 
-const handleReport = (kanji: string) => {
-  reportKanjiExplanation(kanji);
-  reportedKanji.value.add(kanji);
+const handleReport = async (kanji: string) => {
+  if (isSubmittingReport.value || reportedKanji.value.has(kanji)) return;
+  isSubmittingReport.value = true;
+  try {
+    const res = await reportKanjiExplanation(kanji);
+    if (res.success) {
+      reportedKanji.value.add(kanji);
+    } else if (res.error) {
+      alert(res.error);
+    }
+  } catch (err) {
+    console.error('Error saat melaporkan kanji:', err);
+  } finally {
+    isSubmittingReport.value = false;
+  }
 };
 
 // Keyboard Accessibility: Escape key & focus trapping
@@ -423,8 +447,8 @@ onUnmounted(() => {
                   Penjelasan ini membantu menghafal dan tidak selalu akurat secara sejarah.
                 </p>
                 <div class="flex items-center justify-between flex-wrap gap-2 text-xs">
-                  <span class="text-[11px] text-slate-500 dark:text-slate-500">
-                    Data: KANJIDIC2 &amp; KRADFILE (EDRDG, CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0)
+                  <span class="text-[11px] text-slate-500 dark:text-slate-400">
+                    Credits: KANJIDIC2 (EDRDG, CC BY-SA 4.0) • KanjiVG (CC BY-SA 3.0)
                   </span>
 
                   <button
@@ -433,13 +457,13 @@ onUnmounted(() => {
                     :class="reportedKanji.has(currentKanjiDetail.kanji)
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800'
                       : 'bg-white hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'"
-                    :disabled="reportedKanji.has(currentKanjiDetail.kanji)"
+                    :disabled="reportedKanji.has(currentKanjiDetail.kanji) || isSubmittingReport"
                     @click="handleReport(currentKanjiDetail.kanji)"
                   >
                     <CheckCircle2 v-if="reportedKanji.has(currentKanjiDetail.kanji)" class="w-3.5 h-3.5 text-emerald-600" />
                     <Flag v-else class="w-3.5 h-3.5 text-slate-400" />
                     <span>
-                      {{ reportedKanji.has(currentKanjiDetail.kanji) ? 'Laporan Terkirim' : 'Laporkan penjelasan ini' }}
+                      {{ reportedKanji.has(currentKanjiDetail.kanji) ? 'Laporan Terkirim' : (isSubmittingReport ? 'Mengirim...' : 'Laporkan penjelasan ini') }}
                     </span>
                   </button>
                 </div>

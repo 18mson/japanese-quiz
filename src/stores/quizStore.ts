@@ -21,6 +21,7 @@ import { prepareStandardQuestions, prepareWeakItemsQuestions } from '../utils/qu
 import { useQuizPreview } from '../composables/useQuizPreview';
 import { useKanjiLessonPanel } from '../composables/useKanjiLessonPanel';
 import { useBadgeStore } from './badgeStore';
+import { extractKanjiFromWord, prefetchKanjiForSession } from '../services/kanjiInfoService';
 
 export const useQuizStore = defineStore('quiz', () => {
   const masteryStore = useMasteryStore();
@@ -216,6 +217,12 @@ export const useQuizStore = defineStore('quiz', () => {
     initialQuestionCount.value = res.initialQuestionCount;
     isLoading.value = false;
     initQuestionHints();
+
+    // Prefetch kanji sesi aktif ke IndexedDB via 1 batch query
+    const sessionKanjis = res.questions.flatMap(q => extractKanjiFromWord(q.character || ''));
+    if (sessionKanjis.length > 0) {
+      prefetchKanjiForSession(sessionKanjis);
+    }
   };
 
   const startLessonKotobaQuiz = async (lessonNumber: number, duration: number = 1) => {
@@ -247,6 +254,11 @@ export const useQuizStore = defineStore('quiz', () => {
     initialQuestionCount.value = res.initialQuestionCount;
     isLoading.value = false;
     initQuestionHints();
+
+    const sessionKanjis = res.questions.flatMap(q => extractKanjiFromWord(q.character || ''));
+    if (sessionKanjis.length > 0) {
+      prefetchKanjiForSession(sessionKanjis);
+    }
   };
 
   const options = computed(() => {

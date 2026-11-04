@@ -6,6 +6,7 @@ import {
   getAllStoredKanji,
   getStoredKanjiCount
 } from '../lib/kanjiLocalDb';
+import { wordsData } from '../data/words';
 
 export interface KanjiComponent {
   part: string;
@@ -23,12 +24,14 @@ export interface KanjiWordContext {
 export interface KanjiDetail {
   kanji: string;
   tier: 'manual' | 'ai' | 'basic';
+  tier_rank?: number;
+  meaning_en?: string;
   meaning: string[];
   on: string[];
   kun: string[];
   stroke_count: number | null;
   jlpt: number | null;
-  grade: number | null;
+  grade?: number | null;
   formation_type?: 'pictograph' | 'ideograph_simple' | 'compound_meaning' | 'phono_semantic' | 'unknown';
   components: KanjiComponent[];
   etymology_id?: string;
@@ -39,20 +42,28 @@ export interface KanjiDetail {
   reading_hint?: string | null;
   claim_kind?: 'structure' | 'folk' | 'unknown';
   old_form?: string | null;
+  source?: string;
   words?: KanjiWordContext[];
+  updated_at?: string;
 }
 
 // L1 In-Memory Cache
 const memoryCache = new Map<string, KanjiDetail>();
 
 function mapRowToDetail(row: any): KanjiDetail {
+  const meaningList = Array.isArray(row.meaning)
+    ? row.meaning
+    : (row.meaning_en ? row.meaning_en.split(',').map((s: string) => s.trim()) : []);
+
   return {
     kanji: row.kanji,
     tier: row.tier || 'basic',
-    meaning: Array.isArray(row.meaning) ? row.meaning : [],
-    on: Array.isArray(row.on_readings) ? row.on_readings : (Array.isArray(row.on) ? row.on : []),
-    kun: Array.isArray(row.kun_readings) ? row.kun_readings : (Array.isArray(row.kun) ? row.kun : []),
-    stroke_count: row.stroke_count ?? null,
+    tier_rank: row.tier_rank ?? (row.tier === 'manual' ? 3 : (row.tier === 'ai' ? 2 : 1)),
+    meaning_en: row.meaning_en || (meaningList.length > 0 ? meaningList.join(', ') : undefined),
+    meaning: meaningList,
+    on: Array.isArray(row.on_yomi) ? row.on_yomi : (Array.isArray(row.on_readings) ? row.on_readings : (Array.isArray(row.on) ? row.on : [])),
+    kun: Array.isArray(row.kun_yomi) ? row.kun_yomi : (Array.isArray(row.kun_readings) ? row.kun_readings : (Array.isArray(row.kun) ? row.kun : [])),
+    stroke_count: row.strokes ?? row.stroke_count ?? null,
     jlpt: row.jlpt ?? null,
     grade: row.grade ?? null,
     formation_type: row.formation_type || undefined,
@@ -65,7 +76,38 @@ function mapRowToDetail(row: any): KanjiDetail {
     reading_hint: row.reading_hint || null,
     claim_kind: row.claim_kind || undefined,
     old_form: row.old_form || null,
-    words: Array.isArray(row.words) ? row.words : []
+    source: row.source || undefined,
+    words: Array.isArray(row.words) ? row.words : [],
+    updated_at: row.updated_at || new Date().toISOString()
+  };
+}
+
+/**
+ * Fallback data minimal langsung dari words.ts saat offline dan kanji belum ada di cache.
+ */
+export function getMinimalFallbackDetail(kanji: string, targetWord?: string): KanjiDetail {
+  const matched = (targetWord ? wordsData.find(w => w.character === targetWord && w.character.includes(kanji)) : null)
+    || wordsData.find(w => w.character && w.character.includes(kanji));
+
+  return {
+    kanji,
+    tier: 'basic',
+    tier_rank: 1,
+    meaning: matched?.meaning ? [matched.meaning] : ['Kosakata bahasa Jepang'],
+    meaning_en: undefined,
+    on: [],
+    kun: [],
+    stroke_count: null,
+    jlpt: null,
+    components: [],
+    source: 'words.ts',
+    words: matched ? [{
+      jp: matched.character,
+      kana: matched.kana,
+      meaning: matched.meaning,
+      lesson: matched.lesson ? `Bab ${matched.lesson}` : undefined
+    }] : [],
+    updated_at: new Date().toISOString()
   };
 }
 
@@ -79,17 +121,68 @@ export function extractKanjiFromWord(word: string): string[] {
 }
 
 /**
+ * Prefetch semua kanji pada kata-kata di sesi / pelajaran aktif dengan 1 query .in('kanji', [...]).
+ * Hasil disimpan di IndexedDB dengan kunci kanji dan field updated_at.
+ */
+export async function prefetchKanjiForSession(kanjiList: string[]): Promise<Record<string, KanjiDetail>> {
+  if (!kanjiList || kanjiList.length === 0) return {};
+
+  const uniqueKanji = Array.from(new Set(kanjiList.filter(k => k && /[\u4e00-\u9fff]/.test(k))));
+  if (uniqueKanji.length === 0) return {};
+
+  // 1. Muat dari IndexedDB / Memory
+  const stored = await getMultipleStoredKanji(uniqueKanji);
+  for (const [k, d] of Object.entries(stored)) {
+    memoryCache.set(k, d);
+  }
+
+  // Jika device sedang offline, langsung gunakan cache lokal tanpa tunggu network timeout
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return stored;
+  }
+
+  // 2. Satu query .in('kanji', [...]) ke tabel public.kanjiinfo
+  try {
+    const { data, error } = await supabase
+      .from('kanjiinfo')
+      .select('*')
+      .in('kanji', uniqueKanji);
+
+    if (error) {
+      console.warn('Gagal prefetch kanji dari Supabase:', error.message);
+      return stored;
+    }
+
+    if (Array.isArray(data) && data.length > 0) {
+      const fetchedDetails = data.map(mapRowToDetail);
+      for (const d of fetchedDetails) {
+        stored[d.kanji] = d;
+        memoryCache.set(d.kanji, d);
+      }
+      await setMultipleStoredKanji(fetchedDetails);
+    }
+  } catch (err) {
+    console.warn('Error saat prefetch kanji session:', err);
+  }
+
+  return stored;
+}
+
+/**
  * Ambil detail untuk beberapa kanji sekaligus dengan multi-tier cache:
- * L1 (Memory) -> L2 (IndexedDB Lokal) -> L3 (Supabase kanji_catalog).
+ * L1 (Memory) -> L2 (IndexedDB Lokal) -> L3 (Supabase kanjiinfo).
  */
 export async function getMultipleKanjiDetails(kanjiList: string[]): Promise<Record<string, KanjiDetail>> {
   if (!kanjiList || kanjiList.length === 0) return {};
+
+  const validKanji = Array.from(new Set(kanjiList.filter(k => k && /[\u4e00-\u9fff]/.test(k))));
+  if (validKanji.length === 0) return {};
 
   const result: Record<string, KanjiDetail> = {};
   const missingFromMemory: string[] = [];
 
   // 1. Cek L1 Memory
-  for (const k of kanjiList) {
+  for (const k of validKanji) {
     if (memoryCache.has(k)) {
       result[k] = memoryCache.get(k)!;
     } else {
@@ -118,15 +211,31 @@ export async function getMultipleKanjiDetails(kanjiList: string[]): Promise<Reco
     return result;
   }
 
-  // 3. Fetch L3 Supabase
+  // Fast-path: bila offline, gunakan minimal fallback tanpa menunggu network timeout
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    for (const k of missingFromDb) {
+      if (!result[k]) {
+        result[k] = getMinimalFallbackDetail(k);
+      }
+    }
+    return result;
+  }
+
+  // 3. Fetch L3 Supabase kanjiinfo
   try {
     const { data, error } = await supabase
-      .from('kanji_catalog')
+      .from('kanjiinfo')
       .select('*')
       .in('kanji', missingFromDb);
 
     if (error) {
       console.warn('Gagal fetch kanji dari Supabase:', error.message);
+      // Fallback minimal dari words.ts agar popup tidak error saat offline
+      for (const k of missingFromDb) {
+        if (!result[k]) {
+          result[k] = getMinimalFallbackDetail(k);
+        }
+      }
       return result;
     }
 
@@ -136,11 +245,22 @@ export async function getMultipleKanjiDetails(kanjiList: string[]): Promise<Reco
         result[d.kanji] = d;
         memoryCache.set(d.kanji, d);
       }
-      // Simpan ke L2 IndexedDB secara asinkron
       await setMultipleStoredKanji(fetchedDetails);
+    }
+
+    // Pastikan tidak ada yang null
+    for (const k of missingFromDb) {
+      if (!result[k]) {
+        result[k] = getMinimalFallbackDetail(k);
+      }
     }
   } catch (err) {
     console.error('Error saat fetch kanji dari remote:', err);
+    for (const k of missingFromDb) {
+      if (!result[k]) {
+        result[k] = getMinimalFallbackDetail(k);
+      }
+    }
   }
 
   return result;
@@ -150,7 +270,7 @@ export async function getMultipleKanjiDetails(kanjiList: string[]): Promise<Reco
  * Dapatkan data detail untuk satu kanji (L1 -> L2 -> L3).
  */
 export async function getKanjiDetail(kanji: string): Promise<KanjiDetail | null> {
-  if (!kanji) return null;
+  if (!kanji || !/[\u4e00-\u9fff]/.test(kanji)) return null;
   const res = await getMultipleKanjiDetails([kanji]);
   return res[kanji] || null;
 }
@@ -174,30 +294,91 @@ export async function wordContainsSupportedKanji(word: string): Promise<boolean>
 }
 
 /**
- * Muat kanji untuk target kanji tertentu (atau dari local storage jika parameter kosong).
+ * Muat kanji untuk target kanji tertentu (Stale-While-Revalidate: baca cache dulu, update di latar belakang).
  */
-export async function loadKanjiInfo(kanjiList?: string[]): Promise<Record<string, KanjiDetail>> {
-  if (kanjiList && kanjiList.length > 0) {
-    return getMultipleKanjiDetails(kanjiList);
+export async function loadKanjiInfo(
+  kanjiList?: string[],
+  onBackgroundUpdated?: (updated: Record<string, KanjiDetail>) => void
+): Promise<Record<string, KanjiDetail>> {
+  if (!kanjiList || kanjiList.length === 0) {
+    const allStored = await getAllStoredKanji();
+    for (const [k, v] of Object.entries(allStored)) {
+      memoryCache.set(k, v);
+    }
+    return allStored;
   }
 
-  // Jika tanpa parameter, muat data yang sudah tersimpan di lokal
-  const allStored = await getAllStoredKanji();
-  for (const [k, v] of Object.entries(allStored)) {
-    memoryCache.set(k, v);
+  const result: Record<string, KanjiDetail> = {};
+  const missingFromMemory: string[] = [];
+
+  // 1. Cek L1 Memory
+  for (const k of kanjiList) {
+    if (memoryCache.has(k)) {
+      result[k] = memoryCache.get(k)!;
+    } else {
+      missingFromMemory.push(k);
+    }
   }
-  return allStored;
+
+  // 2. Cek L2 Local DB (IndexedDB)
+  if (missingFromMemory.length > 0) {
+    const stored = await getMultipleStoredKanji(missingFromMemory);
+    for (const k of missingFromMemory) {
+      if (stored[k]) {
+        result[k] = stored[k];
+        memoryCache.set(k, stored[k]);
+      }
+    }
+  }
+
+  // 3. Fallback minimal dari words.ts untuk kanji yang belum dicache sama sekali
+  for (const k of kanjiList) {
+    if (!result[k]) {
+      result[k] = getMinimalFallbackDetail(k);
+    }
+  }
+
+  // Jika offline, skip background revalidation remote
+  if (typeof navigator !== 'undefined' && !navigator.onLine) {
+    return result;
+  }
+
+  // 4. Background revalidation: fetch dari Supabase kanjiinfo dan perbarui cache
+  (async () => {
+    try {
+      const { data, error } = await supabase
+        .from('kanjiinfo')
+        .select('*')
+        .in('kanji', kanjiList);
+
+      if (!error && Array.isArray(data) && data.length > 0) {
+        const fetchedDetails = data.map(mapRowToDetail);
+        const updated: Record<string, KanjiDetail> = {};
+        for (const d of fetchedDetails) {
+          memoryCache.set(d.kanji, d);
+          result[d.kanji] = d;
+          updated[d.kanji] = d;
+        }
+        await setMultipleStoredKanji(fetchedDetails);
+        if (onBackgroundUpdated) {
+          onBackgroundUpdated(updated);
+        }
+      }
+    } catch {}
+  })();
+
+  return result;
 }
 
 /**
- * Sinkronkan seluruh 591 kanji dari Supabase ke IndexedDB lokal HP/browser pengguna.
- * Dipanggil saat tombol "Sinkronisasi Cloud" di menu Profil ditekan.
+ * Sinkronkan seluruh 13.108 kanji (atau tier manual/ai) dari Supabase ke IndexedDB lokal.
  */
 export async function syncAllKanjiToLocal(): Promise<{ success: boolean; count: number; error?: string }> {
   try {
     const { data, error } = await supabase
-      .from('kanji_catalog')
-      .select('*');
+      .from('kanjiinfo')
+      .select('*')
+      .order('tier_rank', { ascending: false });
 
     if (error) {
       console.error('Gagal download katalog kanji dari Supabase:', error);
@@ -222,31 +403,34 @@ export async function syncAllKanjiToLocal(): Promise<{ success: boolean; count: 
 }
 
 /**
- * Simpan laporan penjelasan kanji ke localStorage 'kanji_reports' (maks 100 entri).
+ * Simpan laporan penjelasan kanji ke tabel public.kanji_reports di Supabase.
  */
-export function reportKanjiExplanation(kanji: string): { success: boolean; totalReports: number } {
+export async function reportKanjiExplanation(
+  kanji: string, 
+  note: string = ''
+): Promise<{ success: boolean; error?: string }> {
   try {
-    const STORAGE_KEY = 'kanji_reports';
-    const raw = localStorage.getItem(STORAGE_KEY);
-    let list: Array<{ kanji: string; ts: number }> = [];
-    if (raw) {
-      try {
-        list = JSON.parse(raw);
-        if (!Array.isArray(list)) list = [];
-      } catch {
-        list = [];
-      }
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return { success: false, error: 'Silakan login terlebih dahulu untuk mengirim laporan.' };
     }
 
-    list.unshift({ kanji, ts: Date.now() });
-    if (list.length > 100) {
-      list = list.slice(0, 100);
+    const { error } = await supabase
+      .from('kanji_reports')
+      .insert({
+        user_id: user.id,
+        kanji,
+        note
+      });
+
+    if (error) {
+      console.warn('Gagal menyimpan laporan kanji ke Supabase:', error.message);
+      return { success: false, error: error.message };
     }
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-    return { success: true, totalReports: list.length };
-  } catch (err) {
-    console.error('Gagal menyimpan laporan kanji:', err);
-    return { success: false, totalReports: 0 };
+    return { success: true };
+  } catch (err: any) {
+    console.error('Error saat reportKanjiExplanation:', err);
+    return { success: false, error: err.message };
   }
 }

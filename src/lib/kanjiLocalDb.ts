@@ -2,8 +2,8 @@
 import type { KanjiDetail } from '../services/kanjiInfoService';
 
 const DB_NAME = 'nihongo_master_kanji_db';
-const STORE_NAME = 'kanji_catalog';
-const DB_VERSION = 1;
+const STORE_NAME = 'kanjiinfo';
+const DB_VERSION = 2;
 
 let dbPromise: Promise<IDBDatabase | null> | null = null;
 
@@ -20,6 +20,9 @@ function getDb(): Promise<IDBDatabase | null> {
           const db = (e.target as IDBOpenDBRequest).result;
           if (!db.objectStoreNames.contains(STORE_NAME)) {
             db.createObjectStore(STORE_NAME, { keyPath: 'kanji' });
+          }
+          if (!db.objectStoreNames.contains('kanji_catalog')) {
+            db.createObjectStore('kanji_catalog', { keyPath: 'kanji' });
           }
         };
         req.onsuccess = () => resolve(req.result);
@@ -38,7 +41,7 @@ function getDb(): Promise<IDBDatabase | null> {
 }
 
 // Fallback localStorage key prefix
-const LS_PREFIX = 'kanji_item_';
+const LS_PREFIX = 'kanji_info_';
 
 let cachedNodeFallback: Record<string, KanjiDetail> | null = null;
 export function setLocalFallbackData(data: Record<string, KanjiDetail> | null) {
