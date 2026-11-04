@@ -327,15 +327,23 @@ export const useQuizStore = defineStore('quiz', () => {
       if (hintsUsed === 1) basePoints = 3;
       else if (hintsUsed >= 2) basePoints = 2;
 
+      const isKotoba = ['words', 'words_meaning', 'meaning_to_words'].includes(questionType.value) ||
+                       (current as any)?.type === 'word' ||
+                       !!(current as any)?.kana;
+
       if (isCorrectVal) {
-        playCorrectSound();
+        if (!isKotoba) {
+          playCorrectSound();
+        }
         pointsEarned = basePoints;
         masteredChars.value[current.character] = true;
         if (isInitialRound) {
           firstTryCorrectCount.value++;
         }
       } else if (isTypo) {
-        playCorrectSound();
+        if (!isKotoba) {
+          playCorrectSound();
+        }
         pointsEarned = Math.max(1, basePoints - 1);
         delete masteredChars.value[current.character];
         if (isInitialRound) {
