@@ -303,12 +303,11 @@ const instructionText = computed(() => {
             <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji yang benar:</span>
             <button
               type="button"
-              class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-semibold rounded-md text-indigo-600 dark:text-torii-light hover:bg-indigo-50 dark:hover:bg-slate-800 transition cursor-pointer"
+              class="inline-flex items-center justify-center p-1 rounded-md text-indigo-600 dark:text-torii-light hover:bg-indigo-50 dark:hover:bg-slate-800 transition cursor-pointer active:scale-95"
               @click="playWordAudio"
               title="Dengarkan pelafalan suara lagi"
             >
-              <Volume2 class="w-3.5 h-3.5" />
-              <span>🔊</span>
+              <Volume2 class="w-4 h-4" />
             </button>
           </div>
           <span 
