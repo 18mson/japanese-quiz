@@ -27,6 +27,31 @@ const RADICAL_VARIANTS_FILE = path.resolve(DATA_DIR, 'radical_variants.json');
 const INTERMEDIATE_FILE = path.resolve(OUT_DIR, 'kanji-info.json');
 const KANJIVG_DIR = path.resolve(RAW_DIR, 'kanjivg/kanji');
 
+const KANJI_TS_FILE = path.resolve(__dirname, '../../src/data/kanji.ts');
+
+function loadN5KanjiSet() {
+  if (fs.existsSync(KANJI_TS_FILE)) {
+    const content = fs.readFileSync(KANJI_TS_FILE, 'utf-8');
+    const matches = content.matchAll(/character:\s*['"]([^'"]+)['"]/g);
+    const set = new Set();
+    for (const m of matches) {
+      set.add(m[1]);
+    }
+    return set;
+  }
+  return new Set();
+}
+
+function normalizeJlpt(rawJlpt, kanji, n5Set) {
+  if (kanji && n5Set && n5Set.has(kanji)) return 5;
+  if (!rawJlpt) return null;
+  if (rawJlpt === 4) return 5;
+  if (rawJlpt === 3) return 4;
+  if (rawJlpt === 2) return 3;
+  if (rawJlpt === 1) return 1;
+  return rawJlpt;
+}
+
 export const GEMINI_APPROVED_KANJI = new Set([
   '梅', '紙', '荷', '警', '跳', '象', '迎', '通', '鉛', '答', '冷', '究', '花', '起', '靴'
 ]);
@@ -85,6 +110,7 @@ export async function buildAndSeedKanjiinfo() {
   const dict = parseKanjidic();
   const oldForms = loadOldForms();
   const radicalVariants = loadRadicalVariants();
+  const n5KanjiSet = loadN5KanjiSet();
 
   // 1. Manual entries
   let manualEntries = [];
@@ -139,7 +165,7 @@ export async function buildAndSeedKanjiinfo() {
         on_yomi: d.on || [],
         kun_yomi: d.kun || [],
         strokes: d.stroke_count ?? null,
-        jlpt: d.jlpt ?? null,
+        jlpt: normalizeJlpt(d.jlpt, k, n5KanjiSet),
         old_form: m.old_form || oldForm,
         components: (m.components || []).map(c => ({
           part: c.part,
@@ -165,7 +191,7 @@ export async function buildAndSeedKanjiinfo() {
         on_yomi: d.on || [],
         kun_yomi: d.kun || [],
         strokes: d.stroke_count ?? null,
-        jlpt: d.jlpt ?? null,
+        jlpt: normalizeJlpt(d.jlpt, k, n5KanjiSet),
         old_form: im.old_form || oldForm,
         components: (im.components || []).map(c => ({
           part: c.part,
@@ -192,7 +218,7 @@ export async function buildAndSeedKanjiinfo() {
         on_yomi: d.on || [],
         kun_yomi: d.kun || [],
         strokes: d.stroke_count ?? null,
-        jlpt: d.jlpt ?? null,
+        jlpt: normalizeJlpt(d.jlpt, k, n5KanjiSet),
         old_form: oldForm,
         components: (aiEntry.components || []).map(c => ({
           part: c.part,
@@ -238,7 +264,7 @@ export async function buildAndSeedKanjiinfo() {
       on_yomi: d.on || [],
       kun_yomi: d.kun || [],
       strokes: d.stroke_count ?? null,
-      jlpt: d.jlpt ?? null,
+      jlpt: normalizeJlpt(d.jlpt, k, n5KanjiSet),
       old_form: oldForm,
       components: basicComponents,
       mnemonic_id: null,

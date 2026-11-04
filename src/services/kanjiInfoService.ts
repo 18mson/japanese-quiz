@@ -7,6 +7,26 @@ import {
   getStoredKanjiCount
 } from '../lib/kanjiLocalDb';
 import { wordsData } from '../data/words';
+import { kanjiN5Data } from '../data/kanji';
+
+const n5KanjiSet = new Set(kanjiN5Data.map(k => k.character));
+
+/**
+ * Normalisasi level JLPT: KANJIDIC2 memakai sistem lama 1-4 (4 = N5, 3 = N4, 2 = N3/N2, 1 = N1).
+ * Sistem modern menggunakan skala N1 s/d N5.
+ */
+export function normalizeModernJlptLevel(rawJlpt: number | null | undefined, kanji?: string): number | null {
+  if (kanji && n5KanjiSet.has(kanji)) {
+    return 5;
+  }
+  if (!rawJlpt) return null;
+  if (rawJlpt === 5) return 5;
+  if (rawJlpt === 4) return 5;
+  if (rawJlpt === 3) return 4;
+  if (rawJlpt === 2) return 3;
+  if (rawJlpt === 1) return 1;
+  return rawJlpt;
+}
 
 export interface KanjiComponent {
   part: string;
@@ -64,7 +84,7 @@ function mapRowToDetail(row: any): KanjiDetail {
     on: Array.isArray(row.on_yomi) ? row.on_yomi : (Array.isArray(row.on_readings) ? row.on_readings : (Array.isArray(row.on) ? row.on : [])),
     kun: Array.isArray(row.kun_yomi) ? row.kun_yomi : (Array.isArray(row.kun_readings) ? row.kun_readings : (Array.isArray(row.kun) ? row.kun : [])),
     stroke_count: row.strokes ?? row.stroke_count ?? null,
-    jlpt: row.jlpt ?? null,
+    jlpt: normalizeModernJlptLevel(row.jlpt, row.kanji),
     grade: row.grade ?? null,
     formation_type: row.formation_type || undefined,
     components: Array.isArray(row.components) ? row.components : [],
@@ -98,7 +118,7 @@ export function getMinimalFallbackDetail(kanji: string, targetWord?: string): Ka
     on: [],
     kun: [],
     stroke_count: null,
-    jlpt: null,
+    jlpt: normalizeModernJlptLevel(null, kanji),
     components: [],
     source: 'words.ts',
     words: matched ? [{

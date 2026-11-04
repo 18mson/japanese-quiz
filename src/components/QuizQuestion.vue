@@ -65,7 +65,7 @@ const playWordAudio = () => {
   if (text) speak(text);
 };
 
-// Putar otomatis pelafalan kata kotoba setelah submit: instan (0ms) saat benar, jeda singkat saat salah
+// Putar otomatis pelafalan kata kotoba setelah submit: berbarengan (0ms) saat benar, jeda singkat saat salah
 watch(() => quizStore.selectedAnswer, (ans) => {
   if (ans !== null) {
     const isKotoba = isWord.value || ['words', 'words_meaning', 'meaning_to_words'].includes(quizStore.questionType);
@@ -73,11 +73,11 @@ watch(() => quizStore.selectedAnswer, (ans) => {
 
     const text = currentKana.value || character.value;
     if (text) {
-      if (quizStore.isAnswerCorrect) {
-        // Ketika benar, putar langsung secara instan tanpa delay (sound effect benar sudah dinonaktifkan)
+      if (quizStore.isAnswerCorrect || quizStore.isAnswerTypo) {
+        // Ketika benar: putar suara kotoba langsung berbarengan dengan efek suara chime (0ms)
         playWordAudio();
       } else {
-        // Ketika salah, beri jeda singkat agar sound effect buzzer selesai berbunyi
+        // Ketika salah: beri jeda singkat agar efek buzzer selesai berbunyi sebelum pelafalan diputar
         setTimeout(() => {
           if (quizStore.selectedAnswer !== null && !quizStore.isAnswerCorrect) {
             playWordAudio();
