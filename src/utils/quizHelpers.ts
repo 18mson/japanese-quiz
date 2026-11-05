@@ -103,22 +103,36 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     .replace(/\s+/g, ' ')
     .trim();
 
+  const addWithVariants = (s: string) => {
+    const c = cleanBase(s);
+    if (!c || c.length < 2) return;
+    results.add(c);
+    if (c.includes('-')) {
+      results.add(cleanBase(c.replace(/-/g, ' ')));
+      results.add(cleanBase(c.replace(/-/g, '')));
+      // Reduplication support: e.g. "sendiri-sendiri" also accepts "sendiri"
+      const parts = c.split('-');
+      if (parts[0] && parts[0].length >= 3) {
+        results.add(cleanBase(parts[0]));
+      }
+    }
+  };
+
   // 1. Direct raw clean
-  const base = cleanBase(raw);
-  if (base) results.add(base);
+  addWithVariants(raw);
 
   // 2. Remove parenthesized text
-  const noParens = cleanBase(raw.replace(/\(.*?\)|（.*?）|\[.*?\]/g, ''));
-  if (noParens) results.add(noParens);
+  const noParens = cleanBase(raw.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, ''));
+  if (noParens) addWithVariants(noParens);
 
   // 3. Extract text inside parentheses as possible synonym or colon phrase
-  const parenMatches = raw.match(/\((.*?)\)|（(.*?)）|\[(.*?)\]/g);
+  const parenMatches = raw.match(/\((.*?)\)|（(.*?)）|\[(.*?)\]|【.*?】/g);
   if (parenMatches) {
     for (const m of parenMatches) {
       const inner = m.slice(1, -1);
       if (inner.includes(':')) {
         const afterColon = inner.split(':')[1];
-        if (afterColon) results.add(cleanBase(afterColon));
+        if (afterColon) addWithVariants(afterColon);
       } else if (
         !inner.includes('dekat') && 
         !inner.includes('sebagai') && 
@@ -126,7 +140,7 @@ export const extractMeaningCandidates = (raw: string): string[] => {
         !inner.includes('profesi') && 
         inner.length < 30
       ) {
-        results.add(cleanBase(inner));
+        addWithVariants(inner);
       }
     }
   }
@@ -135,10 +149,9 @@ export const extractMeaningCandidates = (raw: string): string[] => {
   const splitChunks = (str: string) => {
     const parts = str.split(/[/;,\n]| atau /i);
     for (const p of parts) {
-      const c = cleanBase(p);
-      if (c && c.length >= 2) results.add(c);
-      const cNoParen = cleanBase(p.replace(/\(.*?\)|（.*?）|\[.*?\]/g, ''));
-      if (cNoParen && cNoParen.length >= 2) results.add(cNoParen);
+      addWithVariants(p);
+      const pNoParen = p.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '');
+      addWithVariants(pNoParen);
     }
   };
 
@@ -159,7 +172,12 @@ export const checkIsMeaningCorrect = (userInput: string, targetMeaning: string):
   if (!cleanUser) return false;
 
   const candidates = extractMeaningCandidates(targetMeaning);
-  return candidates.some(c => c === cleanUser);
+  if (candidates.some(c => c === cleanUser)) return true;
+
+  const cleanUserNoHyphen = cleanUser.replace(/-/g, ' ');
+  if (candidates.some(c => c === cleanUserNoHyphen)) return true;
+
+  return false;
 };
 
 export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): boolean => {

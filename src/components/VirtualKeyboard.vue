@@ -231,7 +231,12 @@ const activeKeyClass = computed(() => isDark.value
     <template v-if="inputMode === 'scramble' && enableScramble">
       <div class="w-full flex flex-col gap-2.5 py-1 px-1">
         <!-- Tile Bubbles Container -->
-        <div class="w-full flex flex-wrap justify-center items-center content-center gap-2.5 sm:gap-3 min-h-[150px] sm:min-h-[175px] p-3 bg-slate-100/70 dark:bg-slate-900/70 rounded-2xl border border-slate-200/70 dark:border-slate-800/70">
+        <div 
+          class="w-full flex flex-wrap justify-center items-center content-center gap-2 sm:gap-2.5 p-3 bg-slate-100/70 dark:bg-slate-900/70 rounded-2xl border border-slate-200/70 dark:border-slate-800/70 overflow-y-auto"
+          :class="activeKeyboardHeight === 'tall' 
+            ? 'min-h-[225px] max-h-[255px] sm:min-h-[245px] sm:max-h-[275px]' 
+            : 'min-h-[175px] max-h-[200px] sm:min-h-[195px] sm:max-h-[220px]'"
+        >
           <button
             v-for="tile in scrambleData?.tiles || []"
             :key="tile.id"
@@ -239,11 +244,13 @@ const activeKeyClass = computed(() => isDark.value
             :disabled="disabled || selectedTiles.includes(tile.id)"
             @touchstart.prevent="handleTileClick(tile)"
             @mousedown.prevent="handleTileClick(tile)"
-            class="relative box-border min-h-[52px] min-w-[52px] px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl font-black border-2 transition-all duration-100 transform flex items-center justify-center cursor-pointer select-none shadow-xs touch-manipulation"
+            class="relative box-border min-h-[46px] min-w-[46px] sm:min-h-[50px] sm:min-w-[50px] px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl font-black border-2 transition-all duration-100 transform flex items-center justify-center cursor-pointer select-none shadow-xs touch-manipulation"
             :class="[
-              tile.text.length <= 2 
+              tile.text.length <= 1 
                 ? 'text-2xl sm:text-3xl' 
-                : (tile.text.length <= 5 ? 'text-lg sm:text-xl' : 'text-base sm:text-lg'),
+                : (tile.text.length <= 3 
+                  ? 'text-xl sm:text-2xl' 
+                  : (tile.text.length <= 6 ? 'text-base sm:text-lg' : 'text-xs sm:text-sm')),
               selectedTiles.includes(tile.id)
                 ? 'opacity-20 scale-90 border-dashed bg-slate-200 dark:bg-slate-800 text-slate-400 border-slate-300 dark:border-slate-700 pointer-events-none'
                 : (activeTileId === tile.id

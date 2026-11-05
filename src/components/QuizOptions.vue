@@ -197,7 +197,7 @@ watch(() => quizStore.currentQuestionIndex, () => {
               :title="`Bedah komponen & arti kanji ${quizStore.currentQuestion?.character}`"
             >
               <HelpCircle class="w-3.5 h-3.5 text-rose-700 dark:text-rose-300" />
-              <span>Bedah Kanji (?)</span>
+              <span>Bedah Kanji</span>
             </button>
           </div>
         </div>
@@ -226,7 +226,7 @@ watch(() => quizStore.currentQuestionIndex, () => {
               @click.stop="showKanjiPopup = true"
             >
               <HelpCircle class="w-3 h-3 text-rose-700 dark:text-rose-300" />
-              <span>Bedah Kanji (?)</span>
+              <span>Bedah Kanji</span>
             </button>
           </div>
         </div>

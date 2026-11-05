@@ -51,43 +51,101 @@ export function splitKanaIntoMorae(kana: string, attachSokuon = false): string[]
 /**
  * Common distractor morae pool for Japanese kana and romaji.
  */
-const COMMON_KANA_DISTRACTORS = [
+export const COMMON_KANA_DISTRACTORS = [
   'か', 'し', 'た', 'な', 'て', 'り', 'ま', 'く', 'と', 'ん',
-  'さ', 'き', 'す', 'る', 'い', 'よ', 'ら', 'こ', 'に', 'わ'
+  'さ', 'き', 'す', 'る', 'い', 'よ', 'ら', 'こ', 'に', 'わ',
+  'お', 'え', 'う', 'あ', 'め', 'み', 'ね', 'け', 'せ', 'そ'
 ];
 
-const COMMON_ROMAJI_DISTRACTORS = [
+export const COMMON_ROMAJI_DISTRACTORS = [
   'ka', 'shi', 'ta', 'te', 'na', 'to', 'ma', 'ri', 'ku', 'ru',
-  'sa', 'ki', 'su', 'ko', 'ni', 'wa', 'ya', 'mo', 'no', 'ne'
+  'sa', 'ki', 'su', 'ko', 'ni', 'wa', 'ya', 'mo', 'no', 'ne',
+  'o', 'e', 'u', 'a', 'me', 'mi', 'ke', 'se', 'so', 'ha'
 ];
 
 /**
- * Split Indonesian meaning string into meaningful chunks.
+ * Common distractor letter pool for Indonesian words (huruf).
  */
-export function splitMeaningIntoChunks(meaning: string): string[] {
-  // If multiple words, split by space
-  const words = meaning.trim().split(/\s+/).filter(Boolean);
-  if (words.length > 1) {
-    return words;
+export const COMMON_INDONESIAN_LETTERS = [
+  'a', 'e', 'i', 'o', 'u',
+  'b', 'd', 'g', 'h', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'w', 'y'
+];
+
+/**
+ * Common distractor word pool for Indonesian multi-word phrases.
+ */
+export const COMMON_INDONESIAN_WORDS = [
+  'rumah', 'kamar', 'tempat', 'jalan', 'orang', 'waktu', 'buku', 'makan',
+  'air', 'uang', 'toko', 'hari', 'kota', 'baju', 'mobil', 'meja', 'pintu',
+  'kantor', 'stasiun', 'sekolah', 'besar', 'kecil', 'baru', 'masuk', 'keluar'
+];
+
+/**
+ * Extracts clean individual meanings from raw Indonesian meaning string.
+ */
+export function extractCleanMeanings(rawMeaning: string): string[] {
+  if (!rawMeaning) return [];
+  const parts = rawMeaning.split(/[/;,\n]| atau /i);
+  const cleanList: string[] = [];
+
+  for (const part of parts) {
+    const noNotes = part.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '');
+    const cleaned = noNotes
+      .replace(/[~～.。!！?？\"'“”]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+    if (cleaned && cleaned.length >= 2 && !cleanList.includes(cleaned)) {
+      cleanList.push(cleaned);
+    }
   }
-  // Single word: if longer than 5 chars, split into 2-3 parts
-  const word = words[0] || '';
-  if (word.length <= 4) {
-    return [word];
+
+  if (cleanList.length === 0) {
+    const fallback = rawMeaning.replace(/[~～.。!！?？\"'“”]/g, '').trim().toLowerCase();
+    if (fallback) cleanList.push(fallback);
   }
-  const mid = Math.ceil(word.length / 2);
-  return [word.slice(0, mid), word.slice(mid)];
+
+  return cleanList;
 }
 
 /**
- * Calculate dynamic distractor quota based on target chunk length N.
- * Max total tiles on mobile: <= 7.
+ * Split Indonesian meaning string into meaningful chunks.
+ * For single words: splits into individual letters (huruf) so user has rich letter suggestions!
+ * For multi-word phrases: splits into words.
+ */
+export function splitMeaningIntoChunks(meaning: string): { chunks: string[]; isMultiWord: boolean } {
+  const cleanMeanings = extractCleanMeanings(meaning);
+  const primary = cleanMeanings[0] || meaning.trim().toLowerCase();
+  
+  if (primary.includes(' ')) {
+    return {
+      chunks: primary.split(/\s+/).filter(Boolean),
+      isMultiWord: true
+    };
+  }
+
+  // Single word: split into individual letters (saran huruf)
+  // If it has hyphens e.g. "sendiri-sendiri", strip hyphen so user spells letters
+  const letters = Array.from(primary).filter(ch => ch !== ' ' && ch !== '-');
+  return {
+    chunks: letters.length > 0 ? letters : [primary],
+    isMultiWord: false
+  };
+}
+
+/**
+ * Calculate dynamic distractor quota.
+ * Target: total tiles around 9-14 so that the bubble area is comfortably filled
+ * matching the tall keyboard height.
  */
 export function calculateDistractorCount(targetLength: number): number {
-  if (targetLength >= 6) return 0;
-  if (targetLength >= 4) return 1;
-  if (targetLength === 3) return 2;
-  return 2; // For 1 or 2 chunks, add 2 distractors (total 3-4 tiles)
+  if (targetLength >= 14) return 0;
+  if (targetLength >= 11) return 2;
+  if (targetLength >= 8) return 3;
+  if (targetLength >= 6) return 5;
+  if (targetLength >= 4) return 6;
+  if (targetLength === 3) return 7;
+  return 8; // For 1 or 2 chunks, add 8 distractors (total 9-10 tiles)
 }
 
 /**
@@ -111,21 +169,49 @@ export function generateScrambleTiles(
   mode: 'romaji' | 'kana' | 'meaning'
 ): ScrambleResult {
   const cleanTarget = target.trim();
-  const isMultiWord = cleanTarget.includes(' ');
   let targetChunks: string[] = [];
+  let isMultiWord = false;
+  const secondaryChunks: string[] = [];
 
-  if (isMultiWord) {
+  if (mode === 'meaning') {
+    const cleanMeanings = extractCleanMeanings(cleanTarget);
+    const primary = cleanMeanings[0] || cleanTarget;
+    const split = splitMeaningIntoChunks(primary);
+    targetChunks = split.chunks;
+    isMultiWord = split.isMultiWord;
+
+    // Collect letters or words from secondary meanings as high-priority distractors/alternatives
+    const secondaries = cleanMeanings.slice(1);
+    for (const sec of secondaries) {
+      if (isMultiWord) {
+        const secWords = sec.split(/\s+/).filter(Boolean);
+        for (const w of secWords) {
+          if (!targetChunks.includes(w) && !secondaryChunks.includes(w)) {
+            secondaryChunks.push(w);
+          }
+        }
+      } else {
+        const secLetters = Array.from(sec).filter(ch => ch !== ' ' && ch !== '-');
+        for (const l of secLetters) {
+          if (!targetChunks.includes(l) && !secondaryChunks.includes(l)) {
+            secondaryChunks.push(l);
+          }
+        }
+      }
+    }
+  } else if (cleanTarget.includes(' ')) {
+    // Multi-word romaji sentence
     targetChunks = cleanTarget.split(/\s+/).filter(Boolean);
+    isMultiWord = true;
   } else if (mode === 'kana') {
     targetChunks = splitKanaIntoMorae(cleanTarget, false);
-  } else if (mode === 'romaji') {
+    isMultiWord = false;
+  } else {
     // Single romaji word: convert to kana morae, then to romaji chunks
     const kana = toHiragana(cleanTarget);
     const morae = splitKanaIntoMorae(kana, true);
     targetChunks = morae.map(m => toRomaji(m).toLowerCase());
-  } else {
-    // meaning
-    targetChunks = splitMeaningIntoChunks(cleanTarget);
+    isMultiWord = false;
   }
 
   // Fallback if split produced empty
@@ -137,18 +223,34 @@ export function generateScrambleTiles(
   const distractors: string[] = [];
 
   if (distractorCount > 0) {
-    if (mode === 'kana') {
+    if (mode === 'meaning') {
+      // 1. Add secondary meaning chunks first
+      for (const s of secondaryChunks) {
+        if (distractors.length < distractorCount && !distractors.includes(s)) {
+          distractors.push(s);
+        }
+      }
+
+      // 2. Fill remaining from common pool
+      if (distractors.length < distractorCount) {
+        const needed = distractorCount - distractors.length;
+        if (isMultiWord) {
+          const candidates = COMMON_INDONESIAN_WORDS.filter(w => !targetChunks.includes(w) && !distractors.includes(w));
+          const shuffled = shuffleArray(candidates);
+          distractors.push(...shuffled.slice(0, needed));
+        } else {
+          const candidates = COMMON_INDONESIAN_LETTERS.filter(l => !targetChunks.includes(l) && !distractors.includes(l));
+          const shuffled = shuffleArray(candidates);
+          distractors.push(...shuffled.slice(0, needed));
+        }
+      }
+    } else if (mode === 'kana') {
       const candidates = COMMON_KANA_DISTRACTORS.filter(d => !targetChunks.includes(d));
       const shuffledCandidates = shuffleArray(candidates);
       distractors.push(...shuffledCandidates.slice(0, distractorCount));
-    } else if (mode === 'romaji') {
-      const candidates = COMMON_ROMAJI_DISTRACTORS.filter(d => !targetChunks.map(c => c.toLowerCase()).includes(d));
-      const shuffledCandidates = shuffleArray(candidates);
-      distractors.push(...shuffledCandidates.slice(0, distractorCount));
     } else {
-      // Meaning distractors
-      const generalMeaningWords = ['tidak', 'selalu', 'sudah', 'bisa', 'akan', 'lebih'];
-      const candidates = generalMeaningWords.filter(d => !targetChunks.includes(d));
+      // Romaji
+      const candidates = COMMON_ROMAJI_DISTRACTORS.filter(d => !targetChunks.map(c => c.toLowerCase()).includes(d));
       const shuffledCandidates = shuffleArray(candidates);
       distractors.push(...shuffledCandidates.slice(0, distractorCount));
     }
@@ -180,4 +282,3 @@ export function generateScrambleTiles(
     targetChunks
   };
 }
-

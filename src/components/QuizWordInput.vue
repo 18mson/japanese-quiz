@@ -377,7 +377,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
             title="Dengarkan pelafalan bahasa Jepang lagi"
           >
             <Volume2 class="w-3.5 h-3.5 text-indigo-600 dark:text-torii shrink-0" />
-            <span>Dengar Pelafalan 🔊</span>
+            <span>Dengar Pelafalan</span>
           </button>
 
           <button
@@ -389,7 +389,7 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
             :title="`Bedah komponen & arti kanji ${currentWord?.character}`"
           >
             <HelpCircle class="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-            <span>Bedah Kanji (?)</span>
+            <span>Bedah Kanji</span>
           </button>
         </div>
       </div>
