@@ -1,4 +1,7 @@
 import { FURIGANA_DICT } from './furiganaDict';
+import { KANJI_DECOMPOSITION_MAP, type KanjiFuriganaUnit } from './kanjiDecompositionData';
+
+export type { KanjiFuriganaUnit };
 
 export interface FuriganaSegment {
   text: string;
@@ -69,6 +72,52 @@ export function decomposeWordToSegments(word: string, reading: string): Furigana
   }
 
   return segments;
+}
+
+/**
+ * Memecah pasangan kata dan bacaan menjadi unit-unit per huruf kanji & kana
+ * dengan furigana individual di atas setiap huruf kanji.
+ * Contoh: '市役所' & 'しやくしょ' -> [
+ *   { text: '市', reading: 'し', isKanji: true },
+ *   { text: '役', reading: 'やく', isKanji: true },
+ *   { text: '所', reading: 'しょ', isKanji: true }
+ * ]
+ */
+export function decomposeWordToKanjiUnits(word: string, reading: string): KanjiFuriganaUnit[] {
+  if (!word) return [];
+
+  // 1. Cek kamus dekomposisi statis
+  if (KANJI_DECOMPOSITION_MAP[word]) {
+    return KANJI_DECOMPOSITION_MAP[word];
+  }
+
+  // 2. Jika tidak mengandung kanji, kembalikan sebagai non-kanji tunggal
+  if (!KANJI_REGEX.test(word)) {
+    return [{ text: word, isKanji: false }];
+  }
+
+  // 3. Fallback dinamis jika kata tidak terdaftar di kamus
+  const segments = decomposeWordToSegments(word, reading);
+  const units: KanjiFuriganaUnit[] = [];
+  for (const seg of segments) {
+    if (seg.isRuby) {
+      if (seg.text.length === 1) {
+        units.push({ text: seg.text, reading: seg.reading, isKanji: true });
+      } else {
+        const chars = [...seg.text];
+        for (let i = 0; i < chars.length; i++) {
+          units.push({
+            text: chars[i],
+            reading: i === 0 ? seg.reading : '',
+            isKanji: KANJI_REGEX.test(chars[i])
+          });
+        }
+      }
+    } else {
+      units.push({ text: seg.text, isKanji: false });
+    }
+  }
+  return units;
 }
 
 /**

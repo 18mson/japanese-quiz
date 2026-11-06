@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { ref, computed, watch, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
 import { Lightbulb, BookOpen, RotateCcw, Volume2 } from '@lucide/vue';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
-import { decomposeWordToSegments } from '../utils/furiganaParser';
+import { decomposeWordToKanjiUnits, type KanjiFuriganaUnit } from '../utils/furiganaParser';
+
+const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
 const quizStore = useQuizStore();
 const { speak } = useTextToSpeech();
+
+const showKanjiPopup = ref(false);
+const selectedKanjiForPopup = ref('');
+
+const handleKanjiClick = (kanjiChar: string) => {
+  if (quizStore.selectedAnswer === null) return;
+  selectedKanjiForPopup.value = kanjiChar;
+  showKanjiPopup.value = true;
+};
 
 const showReadingHint = computed({
   get: () => quizStore.showReadingHint,
@@ -32,9 +43,9 @@ const currentKana = computed(() => {
   return (quizStore.currentQuestion as any)?.kana || '';
 });
 
-const wordSegments = computed(() => {
+const kanjiUnits = computed<KanjiFuriganaUnit[]>(() => {
   if (!character.value) return [];
-  return decomposeWordToSegments(character.value, currentKana.value || '');
+  return decomposeWordToKanjiUnits(character.value, currentKana.value || '');
 });
 
 const hasValidReadingHint = computed(() => {
@@ -225,20 +236,44 @@ const questionStyle = computed(() => {
           <template v-else>
             <span 
               :class="[
-                'font-black tracking-wide font-jp whitespace-nowrap select-none inline-block text-center transition-colors duration-200',
+                'font-black font-jp whitespace-nowrap select-none inline-flex items-end justify-center text-center transition-colors duration-200',
                 questionStyle.fontColor,
                 isWord 
                   ? (character.length > 6 ? 'text-3xl sm:text-4xl' : (character.length > 3 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'))
                   : (character.length >= 2 ? 'text-5xl sm:text-6xl' : 'text-6xl sm:text-7xl')
               ]"
-            ><template v-for="(seg, idx) in wordSegments" :key="idx"><ruby v-if="seg.isRuby" class="ruby-word">{{ seg.text }}<rt 
+            >
+              <template v-for="(unit, idx) in kanjiUnits" :key="idx">
+                <!-- Kanji unit: mengelilingi huruf kanji dan hiragana di atasnya sebagai satu kesatuan border hover -->
+                <div 
+                  v-if="unit.isKanji"
+                  :class="[
+                    'inline-flex flex-col items-center justify-end align-bottom border border-transparent transition-all select-none m-0 p-0 relative',
+                    quizStore.selectedAnswer !== null 
+                      ? 'hover:border-indigo-400/90 dark:hover:border-torii/90 hover:bg-indigo-50/70 dark:hover:bg-torii/15 rounded-lg cursor-pointer active:scale-95' 
+                      : 'cursor-default pointer-events-none'
+                  ]"
+                  @click="quizStore.selectedAnswer !== null && handleKanjiClick(unit.text)"
+                  :title="quizStore.selectedAnswer !== null ? `Bedah Kanji: ${unit.text}` : ''"
+                >
+                  <span 
                     :class="[
-                      'text-[0.52em] font-bold tracking-tight transition-opacity duration-300 select-none pointer-events-none text-rose-500 dark:text-torii-light',
+                      'text-[0.45em] sm:text-[0.48em] font-bold tracking-tight transition-opacity duration-300 select-none pointer-events-none text-rose-500 dark:text-torii-light leading-none mb-1 h-[1.15em] flex items-center justify-center',
                       quizStore.selectedAnswer !== null 
                         ? 'opacity-100' 
                         : 'opacity-0'
                     ]"
-                  >{{ seg.reading }}</rt></ruby><template v-else>{{ seg.text }}</template></template></span>
+                  >{{ unit.reading || '　' }}</span>
+                  <span class="leading-none select-none">{{ unit.text }}</span>
+                </div>
+
+                <!-- Non-kanji unit (okurigana, kana, simbol, dsb) tanpa border hover dan tanpa margin/padding -->
+                <div v-else class="inline-flex flex-col items-center justify-end align-bottom border border-transparent m-0 p-0 pointer-events-none">
+                  <span class="text-[0.45em] sm:text-[0.48em] invisible leading-none mb-1 h-[1.15em] select-none pointer-events-none">　</span>
+                  <span class="leading-none select-none">{{ unit.text }}</span>
+                </div>
+              </template>
+            </span>
             
             <!-- Interactive Hints (Only for Words when not answered yet) -->
             <div v-if="isWord && quizStore.selectedAnswer === null" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
@@ -388,6 +423,13 @@ const questionStyle = computed(() => {
         {{ instructionText }}
       </span>
     </div>
+    <!-- Modal Bedah Kanji saat Kanji diklik setelah submit -->
+    <KanjiInfoPopup
+      :is-open="showKanjiPopup"
+      :target-word="character"
+      :initial-kanji="selectedKanjiForPopup"
+      @close="showKanjiPopup = false"
+    />
   </div>
 </template>
 

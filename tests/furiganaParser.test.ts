@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert';
 import { 
   decomposeWordToSegments, 
+  decomposeWordToKanjiUnits,
   parseFuriganaSegments, 
   renderFuriganaHtml 
 } from '../src/utils/furiganaParser';
@@ -72,5 +73,52 @@ test('Furigana Parser Suite', async (t) => {
     const segments = parseFuriganaSegments('これはペンです。');
     const rubyCount = segments.filter(s => s.isRuby).length;
     assert.strictEqual(rubyCount, 0);
+  });
+
+  await t.test('5. decomposeWordToKanjiUnits mendekomposisi kata per-karakter kanji', () => {
+    // Multi-kanji compound: 市役所
+    const shiyakusho = decomposeWordToKanjiUnits('市役所', 'しやくしょ');
+    assert.deepStrictEqual(shiyakusho, [
+      { text: '市', reading: 'し', isKanji: true },
+      { text: '役', reading: 'やく', isKanji: true },
+      { text: '所', reading: 'しょ', isKanji: true }
+    ]);
+
+    // Multi-kanji compound: 図書館
+    const toshokan = decomposeWordToKanjiUnits('図書館', 'としょかん');
+    assert.deepStrictEqual(toshokan, [
+      { text: '図', reading: 'と', isKanji: true },
+      { text: '書', reading: 'しょ', isKanji: true },
+      { text: '館', reading: 'かん', isKanji: true }
+    ]);
+
+    // Kanji majemuk dengan okurigana di tengah & akhir: 乗り換えます
+    const norikaemasu = decomposeWordToKanjiUnits('乗り換えます', 'のりかえます');
+    assert.deepStrictEqual(norikaemasu, [
+      { text: '乗', reading: 'の', isKanji: true },
+      { text: 'り', isKanji: false },
+      { text: '換', reading: 'か', isKanji: true },
+      { text: 'えます', isKanji: false }
+    ]);
+
+    // Single kanji dengan okurigana di akhir: 浴びます
+    const abimasu = decomposeWordToKanjiUnits('浴びます', 'あびます');
+    assert.deepStrictEqual(abimasu, [
+      { text: '浴', reading: 'あ', isKanji: true },
+      { text: 'びます', isKanji: false }
+    ]);
+
+    // Single kanji dengan okurigana di akhir: 下ろします
+    const oroshimasu = decomposeWordToKanjiUnits('下ろします', 'おろします');
+    assert.deepStrictEqual(oroshimasu, [
+      { text: '下', reading: 'お', isKanji: true },
+      { text: 'ろします', isKanji: false }
+    ]);
+
+    // Non-kanji
+    const anata = decomposeWordToKanjiUnits('あなた', 'あなた');
+    assert.deepStrictEqual(anata, [
+      { text: 'あなた', isKanji: false }
+    ]);
   });
 });
