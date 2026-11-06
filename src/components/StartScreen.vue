@@ -58,7 +58,6 @@ const characterTypes = ref(modesList[activeModeIndex.value].defaultType);
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>(modesList[activeModeIndex.value].level);
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<KanaCategoryType>('all');
-const selectedKotobaSubMode = ref<'words_mixed' | 'words' | 'words_meaning' | 'meaning_to_words'>('words_mixed');
 
 // Hitungan State
 const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
@@ -223,9 +222,7 @@ const handleStart = async () => {
     }
     quizStore.selectedWordLessonNumber = null;
     quizStore.selectedMode = 'sentence_typing';
-    const targetType = ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(subType)
-      ? subType
-      : (subType === 'words' ? selectedKotobaSubMode.value : 'words_mixed');
+    const targetType = subType === 'words' ? 'words_mixed' : (subType || 'words_mixed');
     await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
     emit('start');
     return;
@@ -235,11 +232,11 @@ const handleStart = async () => {
 const handleStartSubtype = async (subKey: string) => {
   hasUserInteracted.value = true;
   if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(subKey)) {
-    selectedKotobaSubMode.value = subKey as any;
     characterTypes.value = 'words';
     quizStore.selectedWordLessonNumber = null;
     quizStore.selectedMode = 'sentence_typing';
-    await quizStore.startQuiz(1, subKey, 'n5', selectedKanaCategory.value);
+    const targetType = subKey === 'words' ? 'words_mixed' : subKey;
+    await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
     emit('start');
     return;
   }

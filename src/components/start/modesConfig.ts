@@ -95,7 +95,7 @@ export const modesList: QuizModeDef[] = [
     levelTag: 'Kosakata (言葉)',
     level: 'n5',
     defaultType: 'words',
-    desc: 'Latihan mengetik kosakata berhuruf Kanji, pola kalimat, & percakapan.',
+    desc: 'Latihan kosakata berhuruf Kanji dengan soal acak (Romaji, Arti, & Huruf), pola kalimat, & percakapan.',
     subTypes: [
       { key: 'words', label: 'Kotoba' },
       { key: 'renshuu', label: 'Renshuu (練習)', beta: true },
@@ -171,8 +171,9 @@ export function getModeDescription(
     return 'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.';
   }
   if (mode.id === 'kotoba') {
-    if (characterType === 'words_mixed') return 'Campuran otomatis: soal bergantian acak antara Jepang → Romaji, Jepang → Indo, dan Indo → Jepang.';
-    if (characterType === 'words') return 'Latihan kosakata berhuruf Kanji — pilih variasi kuis di tombol bawah.';
+    if (characterType === 'words' || characterType === 'words_mixed') {
+      return 'Kuis kosakata adaptif dengan variasi soal acak: tebak arti bahasa Indonesia, baca kanji/kana ke romaji, dan ketik bahasa Jepang dari artinya.';
+    }
     if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
     if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji, Kana, atau Romaji.';
     if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play.';

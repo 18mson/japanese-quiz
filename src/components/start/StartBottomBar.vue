@@ -41,14 +41,6 @@ const hasMultipleSubTypes = computed(() => {
   return activeMode.value.subTypes.length > 1;
 });
 
-// 4 opsi sub-mode kuis kosakata untuk Kotoba
-const kotobaVocabOptions = [
-  { key: 'words_mixed', label: 'Random (Semua)' },
-  { key: 'words', label: 'Jepang → Romaji' },
-  { key: 'words_meaning', label: 'Jepang → Indonesia' },
-  { key: 'meaning_to_words', label: 'Indonesia → Jepang' },
-];
-
 // Opsi kuis untuk Mix Kana pada Mode Lainnya
 const mixKanaSubTypes = [
   { key: 'multiple_choice', label: 'Pilihan Ganda' },
@@ -218,8 +210,9 @@ const handleSubClick = (subKey: string) => {
         <span v-else-if="activeModeId === 'kotoba' && characterType === 'kaiwa'" class="text-purple-600 dark:text-purple-400 font-bold">
           Pelajaran {{ quizStore.currentLessonNumber }}: Dialog Percakapan N5
         </span>
-        <span v-else-if="activeModeId === 'kotoba'" class="text-slate-500 dark:text-slate-400 font-bold">
-          Pilih variasi kuis kosakata untuk langsung mulai
+        <span v-else-if="activeModeId === 'kotoba'" class="text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center gap-1.5 flex-wrap text-center">
+          <span class="text-amber-600 dark:text-amber-400">🎲 Soal Acak:</span>
+          <span>Jepang ➔ Romaji • Jepang ➔ Arti • Arti ➔ Jepang</span>
         </span>
         <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
           Tantangan Harian (Audio & Suara)
@@ -240,22 +233,19 @@ const handleSubClick = (subKey: string) => {
 
       <!-- KONDISI A: MODE KOTOBA -->
       <div v-if="activeModeId === 'kotoba'" class="w-full">
-        <!-- Sub-menu 1: Kotoba (Kosakata) -> 4 opsi langsung mulai -->
-        <div v-if="characterType === 'words' || ['words_meaning', 'meaning_to_words', 'words_mixed'].includes(characterType)" class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 w-full">
+        <!-- Sub-menu 1: Kotoba (Kosakata) -> Tombol Mulai Tunggal (Semua Mode Acak) -->
+        <div v-if="characterType === 'words' || ['words_meaning', 'meaning_to_words', 'words_mixed'].includes(characterType)" class="flex flex-col gap-2 w-full">
           <button
-            v-for="sub in kotobaVocabOptions"
-            :key="sub.key"
             type="button"
             :disabled="isLoading"
-            @click.stop="handleSubClick(sub.key)"
+            @click.stop="emit('interact'); emit('start');"
             :class="[
-              'py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
-              getButtonThemeClass(activeModeId, sub.key)
+              'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-[0.99]',
+              getButtonThemeClass(activeModeId, 'words')
             ]"
           >
-            <component :is="getSubTypeIcon(sub.key)" class="w-4 h-4 text-amber-300 shrink-0" />
-            <span class="truncate">{{ sub.label }}</span>
-            <Zap class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
+            <span>Mulai Kuis Kotoba</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </button>
         </div>
 
