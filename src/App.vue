@@ -10,6 +10,7 @@ import StartScreen from './components/StartScreen.vue';
 import QuizBottomNav from './components/QuizBottomNav.vue';
 import BadgeIcon from './components/common/BadgeIcon.vue';
 import GoalCelebrationToast from './components/goals/GoalCelebrationToast.vue';
+import QuizDoodleBackground from './components/quiz/QuizDoodleBackground.vue';
 
 // Heavy views and modals loaded on-demand via code-splitting
 const BattlegroundMode = defineAsyncComponent(() => import('./components/BattlegroundMode.vue'));
@@ -802,6 +803,9 @@ const goToHome = () => {
       class="flex-1 min-h-0 w-full mx-auto p-2 sm:p-4 flex flex-col items-center overflow-y-auto relative transition-all duration-300"
       :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl md:max-w-4xl lg:max-w-5xl pb-48 md:pb-20'))"
     >
+      <!-- Dynamic Doodle Background for Quiz Modes -->
+      <QuizDoodleBackground v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" />
+
       <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
       
       <main 

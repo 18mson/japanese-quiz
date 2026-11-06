@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Check, X, AlertTriangle, HelpCircle, Volume2 } from '@lucide/vue';
+import { Check, X, AlertTriangle, HelpCircle, Volume2, CornerDownLeft } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
 import { extractKanjiFromWord } from '../services/kanjiInfoService';
@@ -394,8 +394,13 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         autocapitalize="off"
         spellcheck="false"
       />
-      <div v-if="!isAnswered" class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center">
-        <span class="hidden md:inline text-xs text-gray-400 dark:text-slate-400 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded border border-gray-200 dark:border-slate-700 font-mono">⏎ Enter</span>
+      <div v-if="!isAnswered" class="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center select-none pointer-events-none">
+        <span 
+          class="hidden md:flex items-center justify-center p-1.5 text-gray-400 dark:text-slate-400 bg-gray-100/90 dark:bg-slate-800/90 rounded-lg border border-gray-200/90 dark:border-slate-700/80 shadow-2xs"
+          title="Enter"
+        >
+          <CornerDownLeft class="w-3.5 h-3.5 stroke-[2.25]" />
+        </span>
       </div>
     </div>
 
