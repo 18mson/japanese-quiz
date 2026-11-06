@@ -31,7 +31,7 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
   });
 });
 
-test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji, Kana, Romaji)', async (t) => {
+test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan Romaji)', async (t) => {
   const item = {
     character: '閉めます',
     kana: 'しめます',
@@ -46,22 +46,24 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji, Kana, Romaji)',
     assert.strictEqual(checkIsJapaneseCorrect('しめます', item), true);
   });
 
-  await t.test('menerima input Romaji Hepburn & Kunrei-shiki yang tepat', () => {
-    assert.strictEqual(checkIsJapaneseCorrect('shimemasu', item), true);
-    assert.strictEqual(checkIsJapaneseCorrect('simemasu', item), true);
-  });
-
   await t.test('menerima input Katakana ekuivalen', () => {
     assert.strictEqual(checkIsJapaneseCorrect('シメマス', item), true);
   });
 
-  await t.test('mendeteksi typo pada input romaji/kana', () => {
-    // chimemasu bukan jawaban benar tapi typo dekat dengan shimemasu
-    assert.strictEqual(checkIsJapaneseCorrect('chimemasu', item), false);
-    assert.strictEqual(checkIsJapaneseTypo('chimemasu', item), true);
+  await t.test('menolak input Romaji karena hanya tulisan Jepang yang diperbolehkan', () => {
+    assert.strictEqual(checkIsJapaneseCorrect('shimemasu', item), false);
+    assert.strictEqual(checkIsJapaneseCorrect('simemasu', item), false);
+    // Bukan typo Jepang jika inputnya berupa romaji
+    assert.strictEqual(checkIsJapaneseTypo('shimemasu', item), false);
+  });
+
+  await t.test('mendeteksi typo pada input kana', () => {
+    // 1 huruf kana salah pada kata 4 karakter kana
+    assert.strictEqual(checkIsJapaneseCorrect('しめむす', item), false);
+    assert.strictEqual(checkIsJapaneseTypo('しめむす', item), true);
 
     // Jawaban salah jauh
-    assert.strictEqual(checkIsJapaneseTypo('tabemasu', item), false);
+    assert.strictEqual(checkIsJapaneseTypo('たべます', item), false);
   });
 });
 

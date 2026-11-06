@@ -175,7 +175,7 @@ export function getModeDescription(
       return 'Kuis kosakata adaptif dengan variasi soal acak: tebak arti bahasa Indonesia, baca kanji/kana ke romaji, dan ketik bahasa Jepang dari artinya.';
     }
     if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
-    if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji, Kana, atau Romaji.';
+    if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji atau Kana.';
     if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play.';
     if (characterType === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5.';
   }

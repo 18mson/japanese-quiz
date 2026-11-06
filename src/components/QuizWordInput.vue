@@ -8,6 +8,7 @@ import { extractKanjiFromWord } from '../services/kanjiInfoService';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
+import * as wanakana from 'wanakana';
 
 const quizStore = useQuizStore();
 const userInput = computed({
@@ -17,6 +18,48 @@ const userInput = computed({
 const inputRef = ref<HTMLInputElement | null>(null);
 
 const isTouchDevice = ref(false);
+
+// Mode Input Huruf Jepang (Hiragana vs Katakana) khusus untuk meaning_to_words
+const kanaInputMode = ref<'hiragana' | 'katakana'>('hiragana');
+
+const isTargetKatakana = (word: any): boolean => {
+  if (!word) return false;
+  const katakanaRegex = /[\u30a1-\u30f6]/;
+  const hiraganaRegex = /[\u3040-\u309f]/;
+  const kanjiRegex = /[\u4e00-\u9faf]/;
+  const char = word.character || '';
+  const kana = word.kana || '';
+  if (katakanaRegex.test(char) && !hiraganaRegex.test(char) && !kanjiRegex.test(char)) return true;
+  if (katakanaRegex.test(kana) && !hiraganaRegex.test(kana)) return true;
+  return false;
+};
+
+const setKanaMode = (mode: 'hiragana' | 'katakana') => {
+  if (isAnswered.value) return;
+  kanaInputMode.value = mode;
+  if (userInput.value) {
+    userInput.value = mode === 'katakana'
+      ? wanakana.toKatakana(userInput.value)
+      : wanakana.toHiragana(userInput.value);
+  }
+  focusInput();
+};
+
+const convertInputToKana = (val: string): string => {
+  if (quizStore.activeQuestionType !== 'meaning_to_words') return val;
+  return kanaInputMode.value === 'katakana'
+    ? wanakana.toKatakana(val, { IMEMode: true })
+    : wanakana.toHiragana(val, { IMEMode: true });
+};
+
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
+    const converted = convertInputToKana(target.value);
+    userInput.value = converted;
+    target.value = converted;
+  }
+};
 
 const focusInput = () => {
   nextTick(() => {
@@ -28,7 +71,15 @@ const focusInput = () => {
 
 const submitAnswer = () => {
   if (userInput.value.trim() === '') return;
-  quizStore.submitAnswer(userInput.value);
+  let finalAnswer = userInput.value.trim();
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
+    // Finalize trailing single consonants like 'n' -> 'ん' / 'ン'
+    finalAnswer = kanaInputMode.value === 'katakana'
+      ? wanakana.toKatakana(finalAnswer)
+      : wanakana.toHiragana(finalAnswer);
+    userInput.value = finalAnswer;
+  }
+  quizStore.submitAnswer(finalAnswer);
 };
 
 const handleEnter = () => {
@@ -65,7 +116,11 @@ const handleKeydown = (event: KeyboardEvent) => {
     if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
       if (document.activeElement !== inputRef.value) {
         inputRef.value?.focus();
-        userInput.value += event.key;
+        if (quizStore.activeQuestionType === 'meaning_to_words') {
+          userInput.value = convertInputToKana(userInput.value + event.key.toLowerCase());
+        } else {
+          userInput.value += event.key;
+        }
         event.preventDefault();
       }
     } else if (event.key === 'Backspace' && document.activeElement !== inputRef.value) {
@@ -99,11 +154,16 @@ onUnmounted(() => {
   window.removeEventListener('click', handleGlobalClick);
 });
 
-// Refocus input and clear on next question
+// Refocus input, clear, and initialize kana input mode on next question
 watch(() => quizStore.currentQuestionIndex, () => {
   userInput.value = '';
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
+    kanaInputMode.value = isTargetKatakana(quizStore.currentQuestion) ? 'katakana' : 'hiragana';
+  } else {
+    kanaInputMode.value = 'hiragana';
+  }
   focusInput();
-});
+}, { immediate: true });
 
 // Watch preview modal dismissals to refocus input automatically
 watch(
@@ -125,7 +185,11 @@ watch(
 
 const handleVirtualKey = (char: string) => {
   if (isAnswered.value) return;
-  userInput.value += char;
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
+    userInput.value = convertInputToKana(userInput.value + char.toLowerCase());
+  } else {
+    userInput.value += char;
+  }
   focusInput();
 };
 
@@ -239,7 +303,9 @@ const placeholderText = computed(() => {
     return 'Ketik artinya...';
   }
   if (quizStore.activeQuestionType === 'meaning_to_words') {
-    return 'Ketik kanji, kana, atau romaji...';
+    return kanaInputMode.value === 'katakana' 
+      ? 'Ketik dalam Katakana (atau Kanji)...' 
+      : 'Ketik dalam Hiragana (atau Kanji)...';
   }
   return 'Ketik romaji di sini...';
 });
@@ -259,7 +325,7 @@ const inputModeInfo = computed(() => {
     return {
       type: 'japan',
       label: 'JP',
-      title: 'Target jawaban: Bahasa Jepang (Kanji, Kana, atau Romaji)',
+      title: 'Target jawaban: Bahasa Jepang (Kanji atau Kana)',
       inputBorderClass: 'border-indigo-300/90 dark:border-indigo-900/70 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-100/60 dark:focus:ring-indigo-950/40',
       badgeBg: 'bg-indigo-50/90 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200/90 dark:border-indigo-800/80'
     };
@@ -379,8 +445,9 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
         type="text"
         :inputmode="isTouchDevice ? 'none' : 'text'"
         :placeholder="placeholderText"
-        class="w-full pl-20 pr-16 sm:pl-24 sm:pr-20 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 rounded-xl transition-all duration-300 outline-none focus:ring-4 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+        class="w-full pl-20 sm:pl-24 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 rounded-xl transition-all duration-300 outline-none focus:ring-4 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="[
+          quizStore.activeQuestionType === 'meaning_to_words' ? 'pr-28 sm:pr-32' : 'pr-16 sm:pr-20',
           !isAnswered ? inputModeInfo.inputBorderClass : '',
           {
             'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
@@ -388,16 +455,50 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           }
         ]"
         :disabled="isAnswered"
+        @input="handleInput"
         @keydown.enter.stop="handleEnter"
         autocomplete="off"
         autocorrect="off"
         autocapitalize="off"
         spellcheck="false"
       />
-      <div v-if="!isAnswered" class="absolute right-3.5 top-1/2 -translate-y-1/2 flex items-center select-none pointer-events-none">
+      <!-- Right Side Controls inside Input -->
+      <div v-if="!isAnswered" class="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-20">
+        <!-- Switch Hiragana / Katakana khusus mode Kotoba Indonesia -> Jepang -->
+        <div 
+          v-if="quizStore.activeQuestionType === 'meaning_to_words'"
+          class="inline-flex items-center p-0.5 rounded-lg bg-gray-100 dark:bg-slate-700/80 border border-gray-200/90 dark:border-slate-600/80 shadow-2xs"
+          role="group"
+          aria-label="Pilih mode huruf Jepang"
+        >
+          <button
+            type="button"
+            class="px-2 py-0.5 text-xs font-bold rounded-md transition-all duration-150 cursor-pointer select-none font-jp active:scale-95"
+            :class="kanaInputMode === 'hiragana' 
+              ? 'bg-indigo-600 text-white shadow-xs dark:bg-torii' 
+              : 'text-gray-500 dark:text-slate-300 hover:text-gray-800 dark:hover:text-white'"
+            @click.stop="setKanaMode('hiragana')"
+            title="Ubah ke mode Hiragana (あ)"
+          >
+            あ
+          </button>
+          <button
+            type="button"
+            class="px-2 py-0.5 text-xs font-bold rounded-md transition-all duration-150 cursor-pointer select-none font-jp active:scale-95"
+            :class="kanaInputMode === 'katakana' 
+              ? 'bg-indigo-600 text-white shadow-xs dark:bg-torii' 
+              : 'text-gray-500 dark:text-slate-300 hover:text-gray-800 dark:hover:text-white'"
+            @click.stop="setKanaMode('katakana')"
+            title="Ubah ke mode Katakana (ア)"
+          >
+            ア
+          </button>
+        </div>
+
+        <!-- Enter Icon (Desktop) -->
         <span 
-          class="hidden md:flex items-center justify-center p-1.5 text-gray-400 dark:text-slate-400 bg-gray-100/90 dark:bg-slate-800/90 rounded-lg border border-gray-200/90 dark:border-slate-700/80 shadow-2xs"
-          title="Enter"
+          class="hidden md:flex items-center justify-center p-1.5 text-gray-400 dark:text-slate-400 bg-gray-100/90 dark:bg-slate-800/90 rounded-lg border border-gray-200/90 dark:border-slate-700/80 shadow-2xs pointer-events-none select-none"
+          title="Tekan Enter untuk kirim"
         >
           <CornerDownLeft class="w-3.5 h-3.5 stroke-[2.25]" />
         </span>

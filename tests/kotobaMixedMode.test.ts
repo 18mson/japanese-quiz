@@ -156,18 +156,24 @@ test('Kotoba Mixed Mode (words_mixed) & Crown Streak 6', async (t) => {
     assert.strictEqual(quizStore.isAnswerCorrect, true, 'Jawaban arti Indonesia "kamus" harus benar');
     assert.strictEqual(quizStore.userAnswers[0].correctRomaji, 'kamus');
 
-    // --- Soal 1: meaning_to_words (menjawab dalam Kanji/Kana/Romaji) ---
+    // --- Soal 1: meaning_to_words (menjawab dalam tulisan Jepang: Kanji/Kana - Romaji ditolak) ---
     quizStore.selectedAnswer = null;
     quizStore.currentQuestionIndex = 1;
     assert.strictEqual(quizStore.activeQuestionType, 'meaning_to_words');
     quizStore.submitAnswer('ほん'); // Menjawab dengan Hiragana
     assert.strictEqual(quizStore.isAnswerCorrect, true, 'Jawaban Hiragana "ほん" harus benar');
 
-    // Coba juga jawaban Romaji pada meaning_to_words
+    // Menjawab dengan Kanji pada meaning_to_words
+    quizStore.selectedAnswer = null;
+    quizStore.currentQuestionIndex = 1;
+    quizStore.submitAnswer('本');
+    assert.strictEqual(quizStore.isAnswerCorrect, true, 'Jawaban Kanji "本" harus benar');
+
+    // Jawaban Romaji harus ditolak pada meaning_to_words
     quizStore.selectedAnswer = null;
     quizStore.currentQuestionIndex = 1;
     quizStore.submitAnswer('hon'); // Menjawab dengan Romaji
-    assert.strictEqual(quizStore.isAnswerCorrect, true, 'Jawaban Romaji "hon" harus benar untuk meaning_to_words');
+    assert.strictEqual(quizStore.isAnswerCorrect, false, 'Jawaban Romaji "hon" harus ditolak untuk meaning_to_words');
 
     // --- Soal 2: words (menjawab Romaji) ---
     quizStore.selectedAnswer = null;

@@ -131,7 +131,7 @@ const instructionText = computed(() => {
     return 'Ketik arti bahasa Indonesia dari kata ini!';
   }
   if (quizStore.activeQuestionType === 'meaning_to_words') {
-    return 'Ketik dalam bahasa Jepang (Kanji, Kana, atau Romaji)!';
+    return 'Ketik dalam bahasa Jepang (Kanji atau Kana)!';
   }
   if (quizStore.isTypingMode) {
     return isWord.value 

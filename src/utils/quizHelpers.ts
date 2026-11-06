@@ -210,28 +210,26 @@ export const checkIsJapaneseCorrect = (
   const rawClean = userInput.trim().replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
   if (!rawClean) return false;
 
+  // Hanya perbolehkan tulisan Jepang (Kanji, Hiragana, Katakana) - BUKAN dalam Romaji (huruf Latin)
+  if (/[a-zA-Z]/.test(rawClean)) {
+    return false;
+  }
+
   // 1. Direct character match (Kanji or Kana)
   const targetCharClean = word.character.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
   if (rawClean === targetCharClean) return true;
 
-  // 2. Direct Kana match
+  // 2. Direct Kana match (Hiragana or Katakana)
   if (word.kana) {
     const targetKanaClean = word.kana.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
     if (rawClean === targetKanaClean) return true;
     if (wanakana.toHiragana(rawClean) === wanakana.toHiragana(targetKanaClean)) return true;
   }
 
-  // 3. Convert user input to Hiragana and compare with target Kana or Character
+  // 3. User input converted to Hiragana and compared with target Kana or Character
   const inputAsHiragana = wanakana.toHiragana(rawClean);
   if (word.kana && inputAsHiragana === word.kana) return true;
   if (inputAsHiragana === targetCharClean) return true;
-
-  // 4. Romaji match (using existing robust normalizeRomajiForComparison)
-  if (checkIsCorrect(rawClean, word.romaji)) return true;
-
-  // 5. User input converted to Romaji compared to target romaji
-  const inputAsRomaji = wanakana.toRomaji(rawClean);
-  if (checkIsCorrect(inputAsRomaji, word.romaji)) return true;
 
   return false;
 };
@@ -246,10 +244,12 @@ export const checkIsJapaneseTypo = (
   const rawClean = userInput.trim().replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
   if (!rawClean) return false;
 
-  // 1. Check romaji typo
-  if (checkIsTypo(rawClean, word.romaji)) return true;
+  // Jika input masih berupa huruf latin / romaji, jangan anggap sebagai typo tulisan Jepang
+  if (/[a-zA-Z]/.test(rawClean)) {
+    return false;
+  }
 
-  // 2. Check kana typo
+  // Check kana typo (jarak Levenshtein 1 pada hiragana)
   if (word.kana) {
     const inputHiragana = wanakana.toHiragana(rawClean);
     const targetHiragana = wanakana.toHiragana(word.kana);
