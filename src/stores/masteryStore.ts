@@ -286,7 +286,7 @@ export const useMasteryStore = defineStore('mastery', () => {
       new: 0,
       learning: 1,
       mastered: 3,
-      crown: 5
+      crown: 6
     };
     const targetStreak = streakMap[targetTier];
 
@@ -406,11 +406,11 @@ export const useMasteryStore = defineStore('mastery', () => {
 
     if (isTypo && !isCorrectVal) {
       // Logic saat typo (salah ketik 1 huruf):
-      // 1. Level Mahkota (streak >= 5):
-      //    Turun 1 streak (bisa tetap di Mahkota jika streak > 5, atau turun ke Hafal jika 5 -> 4).
-      // 2. Di bawah Mahkota (Hafal & Proses/Belum - streak < 5):
+      // 1. Level Mahkota (streak >= 6):
+      //    Turun 1 streak (bisa tetap di Mahkota jika streak > 6, atau turun ke Hafal jika 6 -> 5).
+      // 2. Di bawah Mahkota (Hafal & Proses/Belum - streak < 6):
       //    Streak TIDAK BERUBAH (tidak ter-reset, tidak berkurang, dan tidak bertambah).
-      if (oldStreak >= 5) {
+      if (oldStreak >= 6) {
         newStreak = oldStreak - 1;
       } else {
         newStreak = oldStreak;
@@ -422,11 +422,11 @@ export const useMasteryStore = defineStore('mastery', () => {
       }
     } else if (!isCorrectVal) {
       // Salah total (bukan typo / dilewati):
-      if (oldStreak >= 5) {
-        // Level Mahkota (streak >= 5): turun 2 level -> Level Proses (streak 2)
+      if (oldStreak >= 6) {
+        // Level Mahkota (streak >= 6): turun 2 level -> Level Proses (streak 2)
         newStreak = 2;
       } else if (oldStreak >= 3) {
-        // Level Hafal (streak 3-4): turun 1 level -> Level Proses (streak 2)
+        // Level Hafal (streak 3-5): turun 1 level -> Level Proses (streak 2)
         newStreak = 2;
       } else if (oldStreak >= 1) {
         // Level Proses (streak 1-2): turun 1 streak (minimal streak 1)

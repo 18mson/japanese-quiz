@@ -3,7 +3,7 @@
 
 let audioCtx: AudioContext | null = null;
 let bgmOscillatorGroup: { stop: () => void } | null = null;
-let isMutedState = localStorage.getItem('battleground_sound_muted') === 'true';
+let isMutedState = typeof localStorage !== 'undefined' ? localStorage.getItem('battleground_sound_muted') === 'true' : false;
 
 export function getAudioContext(): AudioContext {
   if (!audioCtx) {
@@ -22,7 +22,9 @@ export function isMuted(): boolean {
 
 export function toggleMute(): boolean {
   isMutedState = !isMutedState;
-  localStorage.setItem('battleground_sound_muted', isMutedState ? 'true' : 'false');
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('battleground_sound_muted', isMutedState ? 'true' : 'false');
+  }
   if (isMutedState) {
     stopRoundBgm();
   }

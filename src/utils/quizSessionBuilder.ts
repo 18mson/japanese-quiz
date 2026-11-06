@@ -85,7 +85,7 @@ export async function prepareStandardQuestions(params: {
           romaji: item.romaji,
           kana: item.kana,
           meaning: item.meaning,
-          type: ['words', 'words_meaning', 'meaning_to_words'].includes(type) ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
+          type: ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type) ? ('word' as const) : (item.type as 'basic' | 'dakuten' | 'combination'),
           lesson: item.lesson
         }));
       }
@@ -97,7 +97,7 @@ export async function prepareStandardQuestions(params: {
     if (filtered.length > 0) finalPool = filtered;
   }
 
-  if (['words', 'words_meaning', 'meaning_to_words'].includes(type)) {
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type)) {
     const wordsMap = new Map(wordsData.map(w => [w.character, w]));
     finalPool = finalPool
       .filter(w => !!w.character && w.character.trim().length > 0)
@@ -132,7 +132,7 @@ export async function prepareStandardQuestions(params: {
           activeKanjiLessonNumber || 1,
           selectedKanjiLessonNumber || 1
         );
-    const kanjiQuestions = buildKanjiSessionQuestions(poolForSelection, questionCount, getMasteryStreak, effectiveLesson);
+    const kanjiQuestions = buildKanjiSessionQuestions(poolForSelection, questionCount, getMasteryStreak, effectiveLesson, type);
 
     const uniqueUnlearnedInSession: any[] = [];
     const seenChars = new Set<string>();
@@ -232,8 +232,8 @@ export async function prepareWeakItemsQuestions(params: {
   if (weakPool.length === 0) weakPool = [...pool];
 
   let questions: any[] = [];
-  if (['words', 'words_meaning', 'meaning_to_words'].includes(type)) {
-    questions = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak, currentLessonNumber);
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type)) {
+    questions = buildKanjiSessionQuestions(weakPool, questionCount, getMasteryStreak, currentLessonNumber, type);
   } else if (type === 'kanji') {
     const weakEntries = kanjiWritingEntries.filter(e => getMasteryStreak(e.kanji) < 3);
     const poolEntries = weakEntries.length > 0 ? weakEntries : kanjiWritingEntries;

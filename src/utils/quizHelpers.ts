@@ -79,7 +79,7 @@ export const getQuestionCountFromDuration = (targetDurationMinutes: number, type
     if (targetDurationMinutes <= 3) return 14;
     return 25;
   }
-  if (['words', 'words_meaning', 'meaning_to_words', 'kanji'].includes(type)) {
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed', 'kanji'].includes(type)) {
     if (targetDurationMinutes <= 1) return 8;
     if (targetDurationMinutes <= 3) return 24;
     return 40;
@@ -273,7 +273,7 @@ export const getFallbackLocalPool = (type: string, _level: string = 'basic'): an
   if (type === 'mix') {
     return [...hiraganaData, ...katakanaData];
   }
-  if (['words', 'words_meaning', 'meaning_to_words'].includes(type)) {
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type)) {
     return wordsData.filter(w => !!w.character && w.character.trim().length > 0);
   }
   if (type === 'kanji') {
@@ -285,7 +285,7 @@ export const getFallbackLocalPool = (type: string, _level: string = 'basic'): an
 export type MasteryTierKey = 'new' | 'learning' | 'mastered' | 'crown';
 
 export const getTierFromStreak = (streak: number): MasteryTierKey => {
-  if (streak >= 5) return 'crown';
+  if (streak >= 6) return 'crown';
   if (streak >= 3) return 'mastered';
   if (streak >= 1) return 'learning';
   return 'new';

@@ -58,7 +58,7 @@ const characterTypes = ref(modesList[activeModeIndex.value].defaultType);
 const selectedLevel = ref<'basic' | 'n5' | 'battleground'>(modesList[activeModeIndex.value].level);
 const selectedQuizBlitzCategory = ref<'hiragana' | 'katakana' | 'mix' | 'kotoba_kanji'>('hiragana');
 const selectedKanaCategory = ref<KanaCategoryType>('all');
-const selectedKotobaSubMode = ref<'words' | 'words_meaning' | 'meaning_to_words'>('words');
+const selectedKotobaSubMode = ref<'words_mixed' | 'words' | 'words_meaning' | 'meaning_to_words'>('words_mixed');
 
 // Hitungan State
 const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
@@ -223,9 +223,9 @@ const handleStart = async () => {
     }
     quizStore.selectedWordLessonNumber = null;
     quizStore.selectedMode = 'sentence_typing';
-    const targetType = ['words', 'words_meaning', 'meaning_to_words'].includes(subType)
+    const targetType = ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(subType)
       ? subType
-      : (subType === 'words' ? selectedKotobaSubMode.value : 'words');
+      : (subType === 'words' ? selectedKotobaSubMode.value : 'words_mixed');
     await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
     emit('start');
     return;
@@ -234,7 +234,7 @@ const handleStart = async () => {
 
 const handleStartSubtype = async (subKey: string) => {
   hasUserInteracted.value = true;
-  if (['words', 'words_meaning', 'meaning_to_words'].includes(subKey)) {
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(subKey)) {
     selectedKotobaSubMode.value = subKey as any;
     characterTypes.value = 'words';
     quizStore.selectedWordLessonNumber = null;
@@ -528,7 +528,7 @@ watch(characterTypes, (newVal) => {
                 @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
                 :class="[
                   'px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 border shadow-2xs',
-                  (characterTypes === sub.key || (sub.key === 'words' && ['words_meaning', 'meaning_to_words'].includes(characterTypes)))
+                  (characterTypes === sub.key || (sub.key === 'words' && ['words_meaning', 'meaning_to_words', 'words_mixed'].includes(characterTypes)))
                     ? 'bg-aizome dark:bg-amber-500 text-white border-aizome dark:border-amber-500 font-black shadow-xs scale-[1.02]'
                     : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
                 ]"

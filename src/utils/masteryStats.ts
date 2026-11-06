@@ -10,7 +10,7 @@ export interface MasteryCategoryStats {
 }
 
 export const getMasteryTierFromStreak = (streak: number): MasteryTier => {
-  if (streak >= 5) return 'crown';
+  if (streak >= 6) return 'crown';
   if (streak >= 3) return 'mastered';
   if (streak >= 1) return 'learning';
   return 'new';

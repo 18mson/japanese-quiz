@@ -68,7 +68,7 @@ const playWordAudio = () => {
 // Putar otomatis pelafalan kata kotoba setelah submit: berbarengan (0ms) saat benar, jeda singkat saat salah
 watch(() => quizStore.selectedAnswer, (ans) => {
   if (ans !== null) {
-    const isKotoba = isWord.value || ['words', 'words_meaning', 'meaning_to_words'].includes(quizStore.questionType);
+    const isKotoba = isWord.value || ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(quizStore.questionType) || ['words', 'words_meaning', 'meaning_to_words'].includes(quizStore.activeQuestionType as any);
     if (!isKotoba) return;
 
     const text = currentKana.value || character.value;
@@ -116,10 +116,10 @@ const isTypo = computed(() => {
 });
 
 const instructionText = computed(() => {
-  if (quizStore.questionType === 'words_meaning') {
+  if (quizStore.activeQuestionType === 'words_meaning') {
     return 'Ketik arti bahasa Indonesia dari kata ini!';
   }
-  if (quizStore.questionType === 'meaning_to_words') {
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
     return 'Ketik dalam bahasa Jepang (Kanji, Kana, atau Romaji)!';
   }
   if (quizStore.isTypingMode) {
@@ -155,7 +155,7 @@ const instructionText = computed(() => {
       <transition name="question-blur" mode="out-in">
         <div :key="quizStore.currentQuestionIndex" class="flex flex-col items-center text-center w-full">
           <!-- Mode 1: Meaning to Words (Prompt is the Indonesian Meaning) -->
-          <template v-if="quizStore.questionType === 'meaning_to_words'">
+          <template v-if="quizStore.activeQuestionType === 'meaning_to_words'">
             <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-slate-100 tracking-tight leading-snug select-none px-2 max-w-2xl lg:max-w-3xl">
               {{ currentMeaning }}
             </span>
@@ -225,7 +225,7 @@ const instructionText = computed(() => {
               </template>
 
               <!-- Meaning Hint Button/Pill (Only in standard words mode, NOT words_meaning) -->
-              <template v-if="currentMeaning && quizStore.questionType !== 'words_meaning'">
+              <template v-if="currentMeaning && quizStore.activeQuestionType !== 'words_meaning'">
                 <button 
                   v-if="!showMeaningHint"
                   class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95"
@@ -249,7 +249,7 @@ const instructionText = computed(() => {
       v-if="quizStore.selectedAnswer !== null" 
       class="flex flex-col items-center justify-center gap-1.5 text-center px-2 sm:px-4 animate-fadeIn mt-0.5 mb-2 w-full max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto"
     >
-      <template v-if="quizStore.questionType === 'words_meaning'">
+      <template v-if="quizStore.activeQuestionType === 'words_meaning'">
         <!-- Romaji: muncul setelah submit di bawah soal tanpa highlight seperti jawaban -->
         <div v-if="romajiList.length > 0" class="mt-1 flex items-center justify-center gap-1.5 flex-wrap w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Romaji:</span>
@@ -275,7 +275,7 @@ const instructionText = computed(() => {
         </template>
       </template>
 
-      <template v-else-if="quizStore.questionType === 'meaning_to_words'">
+      <template v-else-if="quizStore.activeQuestionType === 'meaning_to_words'">
         <template v-if="!quizStore.isAnswerCorrect || isTypo">
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
           <div class="inline-flex items-center gap-2 flex-wrap justify-center w-auto max-w-full md:max-w-3xl lg:max-w-4xl">

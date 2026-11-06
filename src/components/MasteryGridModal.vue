@@ -50,7 +50,7 @@ const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown', string> =
   new: 'Belum Dipelajari',
   learning: 'Sedang Belajar (Streak 1)',
   mastered: 'Hafal / Mastered (Streak 3)',
-  crown: 'Mahkota / Crown (Streak 5)'
+  crown: 'Mahkota / Crown (Streak 6)'
 };
 
 const toggleEditMode = () => {
@@ -515,7 +515,7 @@ const nextPreviewItem = () => {
                   <option value="new" class="bg-slate-900 text-slate-200">🔴 Belum (Reset ke 0)</option>
                   <option value="learning" class="bg-slate-900 text-slate-200">🟡 Proses (Streak 1)</option>
                   <option value="mastered" class="bg-slate-900 text-slate-200">🟢 Mastered (Streak 3)</option>
-                  <option value="crown" class="bg-slate-900 text-slate-200">👑 Crown (Streak 5)</option>
+                  <option value="crown" class="bg-slate-900 text-slate-200">👑 Crown (Streak 6)</option>
                 </select>
               </div>
 

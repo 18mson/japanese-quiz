@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { 
-  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen,
+  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen, Shuffle,
   ChevronLeft, ChevronRight, CheckCircle2
 } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
@@ -41,8 +41,9 @@ const hasMultipleSubTypes = computed(() => {
   return activeMode.value.subTypes.length > 1;
 });
 
-// 3 opsi sub-mode kuis kosakata untuk Kotoba
+// 4 opsi sub-mode kuis kosakata untuk Kotoba
 const kotobaVocabOptions = [
+  { key: 'words_mixed', label: 'Random (Semua)' },
   { key: 'words', label: 'Jepang → Romaji' },
   { key: 'words_meaning', label: 'Jepang → Indonesia' },
   { key: 'meaning_to_words', label: 'Indonesia → Jepang' },
@@ -166,6 +167,7 @@ const getSubTypeIcon = (subKey: string) => {
     case 'multiple_choice': return Layers;
     case 'keyboard_typing': return Keyboard;
     case 'writing': return PenTool;
+    case 'words_mixed': return Shuffle;
     case 'words': return Zap;
     case 'words_meaning': return BookOpen;
     case 'meaning_to_words': return Keyboard;
@@ -238,8 +240,8 @@ const handleSubClick = (subKey: string) => {
 
       <!-- KONDISI A: MODE KOTOBA -->
       <div v-if="activeModeId === 'kotoba'" class="w-full">
-        <!-- Sub-menu 1: Kotoba (Kosakata) -> 3 opsi langsung mulai -->
-        <div v-if="characterType === 'words' || ['words_meaning', 'meaning_to_words'].includes(characterType)" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
+        <!-- Sub-menu 1: Kotoba (Kosakata) -> 4 opsi langsung mulai -->
+        <div v-if="characterType === 'words' || ['words_meaning', 'meaning_to_words', 'words_mixed'].includes(characterType)" class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 w-full">
           <button
             v-for="sub in kotobaVocabOptions"
             :key="sub.key"

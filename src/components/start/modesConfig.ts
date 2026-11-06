@@ -171,6 +171,7 @@ export function getModeDescription(
     return 'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.';
   }
   if (mode.id === 'kotoba') {
+    if (characterType === 'words_mixed') return 'Campuran otomatis: soal bergantian acak antara Jepang → Romaji, Jepang → Indo, dan Indo → Jepang.';
     if (characterType === 'words') return 'Latihan kosakata berhuruf Kanji — pilih variasi kuis di tombol bawah.';
     if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
     if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji, Kana, atau Romaji.';

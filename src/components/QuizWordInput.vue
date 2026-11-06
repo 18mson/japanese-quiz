@@ -172,10 +172,10 @@ const toggleMobileInputMode = () => {
 const activeTargetAnswer = computed(() => {
   const current = currentWord.value;
   if (!current) return '';
-  if (quizStore.questionType === 'words_meaning') {
+  if (quizStore.activeQuestionType === 'words_meaning') {
     return (current as any).meaning || '';
   }
-  if (quizStore.questionType === 'meaning_to_words') {
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
     return (current as any).kana || current.character || '';
   }
   if (Array.isArray(current.romaji)) {
@@ -185,8 +185,8 @@ const activeTargetAnswer = computed(() => {
 });
 
 const activeScrambleMode = computed<'romaji' | 'kana' | 'meaning'>(() => {
-  if (quizStore.questionType === 'words_meaning') return 'meaning';
-  if (quizStore.questionType === 'meaning_to_words') return 'kana';
+  if (quizStore.activeQuestionType === 'words_meaning') return 'meaning';
+  if (quizStore.activeQuestionType === 'meaning_to_words') return 'kana';
   return 'romaji';
 });
 
@@ -235,10 +235,10 @@ const isAnswered = computed(() => quizStore.selectedAnswer !== null);
 const currentWord = computed(() => quizStore.currentQuestion);
 
 const placeholderText = computed(() => {
-  if (quizStore.questionType === 'words_meaning') {
-    return 'Ketik arti bahasa Indonesia di sini...';
+  if (quizStore.activeQuestionType === 'words_meaning') {
+    return 'Ketik artinya...';
   }
-  if (quizStore.questionType === 'meaning_to_words') {
+  if (quizStore.activeQuestionType === 'meaning_to_words') {
     return 'Ketik kanji, kana, atau romaji...';
   }
   return 'Ketik romaji di sini...';
@@ -260,7 +260,7 @@ const typoStatusMessage = computed(() => {
   if (quizStore.latestTierTransition && quizStore.latestTierTransition.direction === 'down') {
     return 'Turun ke Hafal (Streak -1)';
   }
-  if (currentStreak >= 5) {
+  if (currentStreak >= 6) {
     return 'Tetap Mahkota (Streak -1)';
   }
   if (currentStreak >= 3) {

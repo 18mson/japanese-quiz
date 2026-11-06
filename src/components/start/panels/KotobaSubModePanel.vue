@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { BookOpen } from '@lucide/vue';
 
-export type KotobaSubModeType = 'words' | 'words_meaning' | 'meaning_to_words';
+export type KotobaSubModeType = 'words_mixed' | 'words' | 'words_meaning' | 'meaning_to_words';
 
 const props = defineProps<{
   modelValue: KotobaSubModeType;
@@ -14,6 +14,11 @@ const emit = defineEmits<{
 }>();
 
 const options = [
+  {
+    key: 'words_mixed' as const,
+    label: '🎲 Random (Semua)',
+    desc: 'Campuran otomatis Jepang → Romaji / Indo / Indo → Jepang bergantian di tiap soal'
+  },
   {
     key: 'words' as const,
     label: 'Jepang → Romaji',
@@ -63,8 +68,8 @@ const selectMode = (key: KotobaSubModeType) => {
       </div>
     </div>
 
-    <!-- 3 Sub-menu Selector Pills -->
-    <div class="grid grid-cols-3 gap-1.5 pt-0.5">
+    <!-- 4 Sub-menu Selector Pills -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 pt-0.5">
       <button
         v-for="opt in options"
         :key="opt.key"

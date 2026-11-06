@@ -18,6 +18,7 @@ export interface KanjiQuestion extends KanjiItem {
   reasonLabel: string;
   isFirstAppearance: boolean;
   tier: MasteryTierKey;
+  questionType?: 'words' | 'words_meaning' | 'meaning_to_words';
 }
 
 /**
@@ -711,11 +712,16 @@ export const shuffleWithSpacingConstraint = (
 /**
  * Assigns question metadata and sets isFirstAppearance = true ONLY on the first appearance
  * of each word in the session.
+ * For 'words_mixed' sessions, dynamically assigns alternating/random questionType
+ * ('words' | 'words_meaning' | 'meaning_to_words') to ensure varied practice.
  */
 export const assignFirstAppearanceFlags = (
-  slots: { item: KanjiItem; tier: MasteryTierKey }[]
+  slots: { item: KanjiItem; tier: MasteryTierKey }[],
+  sessionMode?: string
 ): KanjiQuestion[] => {
   const seenCharacters = new Set<string>();
+  const charSubModes = new Map<string, ('words' | 'words_meaning' | 'meaning_to_words')[]>();
+  const availableModes: ('words' | 'words_meaning' | 'meaning_to_words')[] = ['words', 'words_meaning', 'meaning_to_words'];
 
   return slots.map(slot => {
     const char = slot.item.character;
@@ -729,13 +735,26 @@ export const assignFirstAppearanceFlags = (
       reasonLabel: 'Latihan Kanji'
     };
 
+    let assignedType: 'words' | 'words_meaning' | 'meaning_to_words' | undefined = undefined;
+    if (sessionMode === 'words_mixed') {
+      const usedForChar = charSubModes.get(char) || [];
+      const remainingForChar = availableModes.filter(m => !usedForChar.includes(m));
+      const poolToPick = remainingForChar.length > 0 ? remainingForChar : availableModes;
+      const picked = poolToPick[Math.floor(Math.random() * poolToPick.length)];
+      charSubModes.set(char, [...usedForChar, picked]);
+      assignedType = picked;
+    } else if (sessionMode && ['words', 'words_meaning', 'meaning_to_words'].includes(sessionMode)) {
+      assignedType = sessionMode as 'words' | 'words_meaning' | 'meaning_to_words';
+    }
+
     return {
       ...slot.item,
       type: 'word',
       tier: slot.tier,
       isFirstAppearance: isFirst,
       questionReason: meta.questionReason,
-      reasonLabel: meta.reasonLabel
+      reasonLabel: meta.reasonLabel,
+      ...(assignedType ? { questionType: assignedType } : {})
     };
   });
 };
@@ -745,13 +764,14 @@ export const assignFirstAppearanceFlags = (
  * 1. Selects unique pool (max 2 new words, weighted by KANJI_TIER_WEIGHTS).
  * 2. Distributes 8 slots proportional to REPEAT_WEIGHT.
  * 3. Shuffles with spacing constraint (|idx1 - idx2| >= 2).
- * 4. Assigns isFirstAppearance flag.
+ * 4. Assigns isFirstAppearance flag and sub-mode questionType.
  */
 export const buildKanjiSessionQuestions = (
   pool: KanjiItem[],
   totalSlots: number,
   getMasteryStreak: (character: string) => number,
-  currentLessonNumber?: number
+  currentLessonNumber?: number,
+  sessionMode?: string
 ): KanjiQuestion[] => {
   if (!pool || pool.length === 0) return [];
 
@@ -770,6 +790,6 @@ export const buildKanjiSessionQuestions = (
   // 3. Shuffle with spacing constraint
   const spacedSlots = shuffleWithSpacingConstraint(distributedSlots, 100);
 
-  // 4. Assign isFirstAppearance flags and metadata
-  return assignFirstAppearanceFlags(spacedSlots);
+  // 4. Assign isFirstAppearance flags, metadata, and sub-mode question types
+  return assignFirstAppearanceFlags(spacedSlots, sessionMode);
 };

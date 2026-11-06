@@ -41,7 +41,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const isTypingMode = computed(() => 
     selectedMode.value === 'keyboard_typing' || 
     quizLevel.value === 'n5' || 
-    ['words', 'words_meaning', 'meaning_to_words'].includes(questionType.value) || 
+    ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(questionType.value) || 
     questionType.value === 'sentences' || 
     questionType.value === 'renshuu' || 
     questionType.value === 'kaiwa'
@@ -64,6 +64,10 @@ export const useQuizStore = defineStore('quiz', () => {
   const score = ref(0);
   const questions = ref<any[]>([]);
   const currentQuestion = computed(() => questions.value[currentQuestionIndex.value] || null);
+
+  const activeQuestionType = computed<'words' | 'words_meaning' | 'meaning_to_words' | string>(() => {
+    return currentQuestion.value?.questionType || questionType.value;
+  });
 
   const openMeaningHint = () => {
     showMeaningHint.value = true;
@@ -305,10 +309,11 @@ export const useQuizStore = defineStore('quiz', () => {
     let isCorrectVal = false, isTypo = false;
 
     if (current) {
-      if (questionType.value === 'words_meaning') {
+      const effectiveType = activeQuestionType.value;
+      if (effectiveType === 'words_meaning') {
         isCorrectVal = checkIsMeaningCorrect(userAnswerClean, (current as any).meaning || '');
         isTypo = isTypingMode.value && !isCorrectVal && checkIsMeaningTypo(userAnswerClean, (current as any).meaning || '');
-      } else if (questionType.value === 'meaning_to_words') {
+      } else if (effectiveType === 'meaning_to_words') {
         isCorrectVal = checkIsJapaneseCorrect(userAnswerClean, current);
         isTypo = isTypingMode.value && !isCorrectVal && checkIsJapaneseTypo(userAnswerClean, current);
       } else {
@@ -369,7 +374,7 @@ export const useQuizStore = defineStore('quiz', () => {
         }
       }
 
-      const isWordOrKanji = ['words', 'words_meaning', 'meaning_to_words'].includes(questionType.value) || current.type === 'word' || current.type === 'kanji';
+      const isWordOrKanji = ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(questionType.value) || ['words', 'words_meaning', 'meaning_to_words'].includes(effectiveType) || current.type === 'word' || current.type === 'kanji';
       masteryStore.recordAnswerStreak(
         charKey,
         isWordOrKanji,
@@ -387,7 +392,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
       userAnswers.value.push({
         character: current.character,
-        correctRomaji: questionType.value === 'words_meaning'
+        correctRomaji: effectiveType === 'words_meaning'
           ? ((current as any).meaning || '')
           : (Array.isArray(current.romaji) ? current.romaji.join(' / ') : current.romaji),
         userRomaji: romaji || '(skipped)',
@@ -576,6 +581,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userAnswers,
     reportAnswers,
     currentQuestion,
+    activeQuestionType,
     options,
     progress,
     finalScore,

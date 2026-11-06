@@ -44,7 +44,7 @@ const assert = (condition: boolean, msg: string) => {
   }
 };
 
-console.log('=== TEST SUITE: Penurunan 1 Tingkat Saat Typo (Hiragana, Kotoba, & Kanji) ===\n');
+console.log('=== TEST SUITE: Penurunan 1 Tingkat Saat Typo (Hiragana, Kotoba, & Kanji) - Mahkota Streak 6 ===\n');
 
 // ─────────────────────────────────────────────────────────────
 // TEST GROUP 1: Hiragana di Mode Typing
@@ -65,26 +65,26 @@ console.log('--- 1. HIRAGANA TYPING MODE ---');
   ];
   quizStore.currentQuestionIndex = 0;
 
-  // Case 1.1: Hiragana Mahkota (streak 5) -> typo 'ko' (dist 1) -> harus turun ke Hafal (streak 4), bukan 0!
-  masteryStore.userStreaks['か'] = 5;
+  // Case 1.1: Hiragana Mahkota (streak 6) -> typo 'ko' (dist 1) -> harus turun ke Hafal (streak 5), bukan 0!
+  masteryStore.userStreaks['か'] = 6;
   quizStore.submitAnswer('ko');
-  assert(masteryStore.userStreaks['か'] === 4, 'Hiragana Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
+  assert(masteryStore.userStreaks['か'] === 5, 'Hiragana Mahkota (streak 6) typo 1 huruf -> streak turun ke 5 (Hafal)');
   assert(quizStore.userAnswers[0].isTypo === true, 'userAnswers mencatat isTypo === true');
   assert(quizStore.userAnswers[0].pointsEarned === 3, 'Jawaban typo mendapat 3 poin');
 
-  // Case 1.2: Hiragana Hafal (streak 3) -> typo 'so' (dist 1) -> streak < 5 tidak berubah (tetap 3)
+  // Case 1.2: Hiragana Hafal (streak 5) -> typo 'so' (dist 1) -> streak < 6 tidak berubah (tetap 5)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
-  masteryStore.userStreaks['さ'] = 3;
+  masteryStore.userStreaks['さ'] = 5;
   quizStore.submitAnswer('so');
-  assert(masteryStore.userStreaks['さ'] === 3, 'Hiragana Hafal (streak 3) typo 1 huruf -> streak tidak berubah (tetap 3)');
+  assert(masteryStore.userStreaks['さ'] === 5, 'Hiragana Hafal (streak 5) typo 1 huruf -> streak tidak berubah (tetap 5)');
 
-  // Case 1.3: Hiragana Mahkota (streak 5) -> Salah total 'xyz' (bukan typo) -> turun ke Level Proses (streak 2)
+  // Case 1.3: Hiragana Mahkota (streak 6) -> Salah total 'xyz' (bukan typo) -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
-  masteryStore.userStreaks['た'] = 5;
+  masteryStore.userStreaks['た'] = 6;
   quizStore.submitAnswer('xyz');
-  assert(masteryStore.userStreaks['た'] === 2, 'Hiragana Mahkota (streak 5) salah total (xyz) -> turun ke Level Proses (streak 2)');
+  assert(masteryStore.userStreaks['た'] === 2, 'Hiragana Mahkota (streak 6) salah total (xyz) -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -106,25 +106,25 @@ console.log('\n--- 2. KOTOBA (WORDS) TYPING MODE ---');
   ];
   quizStore.currentQuestionIndex = 0;
 
-  // Case 2.1: Kotoba Mahkota (streak 5) -> typo 'watshi' (dist 1) -> turun ke 4 (Hafal)
-  masteryStore.userStreaks['わたし'] = 5;
+  // Case 2.1: Kotoba Mahkota (streak 6) -> typo 'watshi' (dist 1) -> turun ke 5 (Hafal)
+  masteryStore.userStreaks['わたし'] = 6;
   quizStore.submitAnswer('watshi');
-  assert(masteryStore.userStreaks['わたし'] === 4, 'Kotoba Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
+  assert(masteryStore.userStreaks['わたし'] === 5, 'Kotoba Mahkota (streak 6) typo 1 huruf -> streak turun ke 5 (Hafal)');
   assert(quizStore.userAnswers[0].isTypo === true, 'Kotoba isTypo === true');
 
-  // Case 2.2: Kotoba Hafal (streak 4) -> typo 'anat' (dist 1) -> streak < 5 tidak berubah (tetap 4)
+  // Case 2.2: Kotoba Hafal (streak 5) -> typo 'anat' (dist 1) -> streak < 6 tidak berubah (tetap 5)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
-  masteryStore.userStreaks['あなた'] = 4;
+  masteryStore.userStreaks['あなた'] = 5;
   quizStore.submitAnswer('anat');
-  assert(masteryStore.userStreaks['あなた'] === 4, 'Kotoba Hafal (streak 4) typo 1 huruf -> streak tidak berubah (tetap 4)');
+  assert(masteryStore.userStreaks['あなた'] === 5, 'Kotoba Hafal (streak 5) typo 1 huruf -> streak tidak berubah (tetap 5)');
 
-  // Case 2.3: Kotoba Mahkota (streak 6) -> Salah total 'arigatou' -> turun ke Level Proses (streak 2)
+  // Case 2.3: Kotoba Mahkota (streak 7) -> Salah total 'arigatou' -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
-  masteryStore.userStreaks['せんせい'] = 6;
+  masteryStore.userStreaks['せんせい'] = 7;
   quizStore.submitAnswer('arigatou');
-  assert(masteryStore.userStreaks['せんせい'] === 2, 'Kotoba Mahkota (streak 6) salah total -> turun ke Level Proses (streak 2)');
+  assert(masteryStore.userStreaks['せんせい'] === 2, 'Kotoba Mahkota (streak 7) salah total -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -146,24 +146,24 @@ console.log('\n--- 3. KANJI TYPING MODE ---');
   ];
   quizStore.currentQuestionIndex = 0;
 
-  // Case 3.1: Kanji Mahkota (streak 5) -> typo 'hii' (dist 1) -> turun ke 4 (Hafal)
-  masteryStore.userStreaks['日'] = 5;
+  // Case 3.1: Kanji Mahkota (streak 6) -> typo 'hii' (dist 1) -> turun ke 5 (Hafal)
+  masteryStore.userStreaks['日'] = 6;
   quizStore.submitAnswer('hii');
-  assert(masteryStore.userStreaks['日'] === 4, 'Kanji Mahkota (streak 5) typo 1 huruf -> streak turun ke 4 (Hafal)');
+  assert(masteryStore.userStreaks['日'] === 5, 'Kanji Mahkota (streak 6) typo 1 huruf -> streak turun ke 5 (Hafal)');
 
-  // Case 3.2: Kanji Hafal (streak 3) -> typo 'tsuk' (dist 1) -> streak < 5 tidak berubah (tetap 3)
+  // Case 3.2: Kanji Hafal (streak 5) -> typo 'tsuk' (dist 1) -> streak < 6 tidak berubah (tetap 5)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 1;
-  masteryStore.userStreaks['月'] = 3;
+  masteryStore.userStreaks['月'] = 5;
   quizStore.submitAnswer('tsuk');
-  assert(masteryStore.userStreaks['月'] === 3, 'Kanji Hafal (streak 3) typo 1 huruf -> streak tidak berubah (tetap 3)');
+  assert(masteryStore.userStreaks['月'] === 5, 'Kanji Hafal (streak 5) typo 1 huruf -> streak tidak berubah (tetap 5)');
 
-  // Case 3.3: Kanji Mahkota (streak 5) -> salah total 'ki' -> turun ke Level Proses (streak 2)
+  // Case 3.3: Kanji Mahkota (streak 6) -> salah total 'ki' -> turun ke Level Proses (streak 2)
   quizStore.selectedAnswer = null;
   quizStore.currentQuestionIndex = 2;
-  masteryStore.userStreaks['水'] = 5;
+  masteryStore.userStreaks['水'] = 6;
   quizStore.submitAnswer('ki');
-  assert(masteryStore.userStreaks['水'] === 2, 'Kanji Mahkota (streak 5) salah total -> turun ke Level Proses (streak 2)');
+  assert(masteryStore.userStreaks['水'] === 2, 'Kanji Mahkota (streak 6) salah total -> turun ke Level Proses (streak 2)');
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -175,7 +175,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
   const quizStore = useQuizStore();
   const masteryStore = useMasteryStore();
 
-  // Case 4.1: Jawaban kosong / skip tidak boleh dianggap typo, streak 5 turun ke Level Proses (streak 2)
+  // Case 4.1: Jawaban kosong / skip tidak boleh dianggap typo, streak 6 turun ke Level Proses (streak 2)
   quizStore.selectedMode = 'keyboard_typing';
   quizStore.questionType = 'hiragana';
   quizStore.quizLevel = 'basic';
@@ -183,7 +183,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
     { character: 'あ', romaji: 'a', kana: 'あ', type: 'basic' }
   ];
   quizStore.currentQuestionIndex = 0;
-  masteryStore.userStreaks['あ'] = 5;
+  masteryStore.userStreaks['あ'] = 6;
   quizStore.submitAnswer('');
   assert(masteryStore.userStreaks['あ'] === 2, 'Skip/jawaban kosong pada huruf 1 karakter (あ) -> turun ke Level Proses (streak 2, bukan typo)');
   assert(quizStore.userAnswers[0].isTypo === false, 'isTypo adalah false untuk input kosong');
@@ -195,7 +195,7 @@ console.log('\n--- 4. EDGE CASES (EMPTY/SKIP & MULTIPLE CHOICE) ---');
     { character: 'か', romaji: 'ka', kana: 'か', type: 'basic' }
   ];
   quizStore.currentQuestionIndex = 0;
-  masteryStore.userStreaks['か'] = 5;
+  masteryStore.userStreaks['か'] = 6;
   // Memilih 'ko' pada pilihan ganda
   quizStore.submitAnswer('ko');
   assert(masteryStore.userStreaks['か'] === 2, 'Mode Pilihan Ganda salah pilih -> turun ke Level Proses (streak 2, typo tidak aktif)');
