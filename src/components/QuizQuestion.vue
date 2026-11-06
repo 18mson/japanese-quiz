@@ -130,6 +130,32 @@ const instructionText = computed(() => {
     return 'Pilih romaji yang tepat untuk karakter ini!';
   }
 });
+
+const questionStyle = computed(() => {
+  const mode = quizStore.activeQuestionType;
+  if (mode === 'words_meaning') {
+    // Soal: Tulisan Jepang -> Target Jawaban: Bahasa Indonesia
+    return {
+      containerBorder: 'border border-rose-200/70 dark:border-rose-900/40 bg-gradient-to-b from-rose-50/30 to-transparent dark:from-rose-950/20 dark:to-transparent shadow-2xs',
+      fontColor: 'text-rose-950 dark:text-rose-100',
+      instructionColor: 'text-rose-700 dark:text-rose-300 bg-rose-50/90 dark:bg-rose-950/60 border-rose-200/90 dark:border-rose-800/80'
+    };
+  }
+  if (mode === 'meaning_to_words') {
+    // Soal: Arti Indonesia -> Target Jawaban: Bahasa Jepang
+    return {
+      containerBorder: 'border border-indigo-200/70 dark:border-indigo-900/40 bg-gradient-to-b from-indigo-50/30 to-transparent dark:from-indigo-950/20 dark:to-transparent shadow-2xs',
+      fontColor: 'text-indigo-950 dark:text-indigo-100',
+      instructionColor: 'text-indigo-700 dark:text-indigo-300 bg-indigo-50/90 dark:bg-indigo-950/60 border-indigo-200/90 dark:border-indigo-800/80'
+    };
+  }
+  // Mode words (Jepang -> Romaji) atau kuis huruf lainnya
+  return {
+    containerBorder: 'border border-slate-200/70 dark:border-slate-800/70 bg-gradient-to-b from-slate-50/30 to-transparent dark:from-slate-900/20 dark:to-transparent shadow-2xs',
+    fontColor: 'text-slate-900 dark:text-slate-100',
+    instructionColor: 'text-slate-600 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/70 border-slate-200/90 dark:border-slate-700/80'
+  };
+});
 </script>
 
 <template>
@@ -146,9 +172,10 @@ const instructionText = computed(() => {
     <!-- Question Character / Word Area -->
     <div
       :class="[
-        'flex flex-col items-center justify-start bg-transparent border-0 shadow-none px-4 pt-2 pb-1 mb-2',
+        'flex flex-col items-center justify-start rounded-2xl sm:rounded-3xl px-5 sm:px-8 py-3.5 sm:py-5 mb-2.5 transition-all duration-300',
+        questionStyle.containerBorder,
         isWord 
-          ? 'w-full max-w-xl md:max-w-3xl lg:max-w-4xl' 
+          ? 'w-full max-w-xl md:max-w-2xl lg:max-w-3xl' 
           : 'w-full max-w-xs sm:max-w-sm'
       ]"
     >
@@ -156,7 +183,12 @@ const instructionText = computed(() => {
         <div :key="quizStore.currentQuestionIndex" class="flex flex-col items-center text-center w-full">
           <!-- Mode 1: Meaning to Words (Prompt is the Indonesian Meaning) -->
           <template v-if="quizStore.activeQuestionType === 'meaning_to_words'">
-            <span class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-slate-100 tracking-tight leading-snug select-none px-2 max-w-2xl lg:max-w-3xl">
+            <span 
+              :class="[
+                'text-2xl sm:text-3xl md:text-4xl font-extrabold font-sans tracking-tight leading-snug select-none px-2 max-w-2xl lg:max-w-3xl transition-colors duration-200',
+                questionStyle.fontColor
+              ]"
+            >
               {{ currentMeaning }}
             </span>
 
@@ -165,7 +197,7 @@ const instructionText = computed(() => {
               <!-- Audio Speech Hint -->
               <button 
                 type="button"
-                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95"
+                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95 shadow-2xs"
                 @click="playWordAudio"
                 title="Dengarkan pelafalan bahasa Jepang"
               >
@@ -177,13 +209,13 @@ const instructionText = computed(() => {
               <button 
                 v-if="!showReadingHint"
                 type="button"
-                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95"
+                class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95 shadow-2xs"
                 @click="showReadingHint = true"
               >
                 <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
                 <span>Petunjuk Huruf</span>
               </button>
-              <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop">
+              <span v-else class="text-xs sm:text-sm font-bold text-indigo-700 dark:text-torii-light bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop shadow-2xs">
                 Awal: <span class="font-jp">{{ firstCharKana }}</span> ({{ firstCharRomaji }}...)
               </span>
             </div>
@@ -193,7 +225,8 @@ const instructionText = computed(() => {
           <template v-else>
             <span 
               :class="[
-                'text-gray-900 dark:text-slate-100 font-black tracking-wide font-jp whitespace-nowrap select-none inline-block text-center',
+                'font-black tracking-wide font-jp whitespace-nowrap select-none inline-block text-center transition-colors duration-200',
+                questionStyle.fontColor,
                 isWord 
                   ? (character.length > 6 ? 'text-3xl sm:text-4xl' : (character.length > 3 ? 'text-4xl sm:text-5xl' : 'text-5xl sm:text-6xl'))
                   : (character.length >= 2 ? 'text-5xl sm:text-6xl' : 'text-6xl sm:text-7xl')
@@ -344,12 +377,17 @@ const instructionText = computed(() => {
     </div>
 
     <!-- Instruction Text (Only visible before answering / submitting) -->
-    <p 
+    <div 
       v-else-if="quizStore.selectedAnswer === null" 
-      class="text-sm text-gray-500 dark:text-slate-400 m-0 text-center font-medium"
+      class="mt-1 flex items-center justify-center animate-fadeIn"
     >
-      {{ instructionText }}
-    </p>
+      <span 
+        class="text-xs sm:text-sm font-semibold px-3 py-1 rounded-full border transition-all duration-200 text-center shadow-2xs"
+        :class="questionStyle.instructionColor"
+      >
+        {{ instructionText }}
+      </span>
+    </div>
   </div>
 </template>
 

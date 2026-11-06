@@ -244,6 +244,35 @@ const placeholderText = computed(() => {
   return 'Ketik romaji di sini...';
 });
 
+const inputModeInfo = computed(() => {
+  const mode = quizStore.activeQuestionType;
+  if (mode === 'words_meaning') {
+    return {
+      type: 'indonesia',
+      label: 'ID',
+      title: 'Target jawaban: Bahasa Indonesia',
+      inputBorderClass: 'border-rose-300/90 dark:border-rose-900/70 focus:border-rose-500 dark:focus:border-rose-400 focus:ring-rose-100/60 dark:focus:ring-rose-950/40',
+      badgeBg: 'bg-rose-50/90 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border-rose-200/90 dark:border-rose-800/80'
+    };
+  }
+  if (mode === 'meaning_to_words') {
+    return {
+      type: 'japan',
+      label: 'JP',
+      title: 'Target jawaban: Bahasa Jepang (Kanji, Kana, atau Romaji)',
+      inputBorderClass: 'border-indigo-300/90 dark:border-indigo-900/70 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-100/60 dark:focus:ring-indigo-950/40',
+      badgeBg: 'bg-indigo-50/90 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200/90 dark:border-indigo-800/80'
+    };
+  }
+  return {
+    type: 'romaji',
+    label: 'RO',
+    title: 'Target jawaban: Romaji (Huruf Latin)',
+    inputBorderClass: 'border-slate-300 dark:border-slate-700 focus:border-indigo-500 dark:focus:border-indigo-400 focus:ring-indigo-100/60 dark:focus:ring-indigo-950/40',
+    badgeBg: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+  };
+});
+
 import { useMasteryStore } from '../stores/masteryStore';
 
 const masteryStore = useMasteryStore();
@@ -300,17 +329,64 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
   <div class="w-full max-w-md md:max-w-xl lg:max-w-2xl mx-auto flex flex-col items-center pb-36 sm:pb-0">
     <!-- Typing Area -->
     <div class="w-full mb-6 relative">
+      <!-- Input Mode / Flag Badge on the Left -->
+      <div 
+        v-if="!isAnswered" 
+        class="absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2 flex items-center select-none pointer-events-none z-10"
+        :title="inputModeInfo.title"
+      >
+        <div 
+          class="flex items-center gap-1.5 px-2 py-1 rounded-lg border text-xs font-bold shadow-2xs transition-all duration-200"
+          :class="inputModeInfo.badgeBg"
+        >
+          <!-- Indonesia Flat Flag SVG -->
+          <svg 
+            v-if="inputModeInfo.type === 'indonesia'"
+            class="w-4 h-3 rounded-[2.5px] overflow-hidden border border-black/15 dark:border-white/20 shrink-0" 
+            viewBox="0 0 20 14" 
+            fill="none"
+          >
+            <rect width="20" height="7" fill="#E11D48" />
+            <rect y="7" width="20" height="7" fill="#FFFFFF" />
+          </svg>
+
+          <!-- Japan Flat Flag SVG -->
+          <svg 
+            v-else-if="inputModeInfo.type === 'japan'"
+            class="w-4 h-3 rounded-[2.5px] overflow-hidden border border-black/15 dark:border-white/20 shrink-0" 
+            viewBox="0 0 20 14" 
+            fill="none"
+          >
+            <rect width="20" height="14" fill="#FFFFFF" />
+            <circle cx="10" cy="7" r="4.2" fill="#BC002D" />
+          </svg>
+
+          <!-- Romaji Flat Badge Icon -->
+          <div 
+            v-else
+            class="w-4 h-3 rounded-[2.5px] bg-slate-200 dark:bg-slate-700 flex items-center justify-center border border-black/15 dark:border-white/20 shrink-0"
+          >
+            <span class="text-[9px] font-black font-mono leading-none text-slate-700 dark:text-slate-200">A</span>
+          </div>
+
+          <span class="text-[11px] font-extrabold font-mono tracking-tight">{{ inputModeInfo.label }}</span>
+        </div>
+      </div>
+
       <input
         ref="inputRef"
         v-model="userInput"
         type="text"
         :inputmode="isTouchDevice ? 'none' : 'text'"
         :placeholder="placeholderText"
-        class="w-full px-6 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 border-gray-300 dark:border-slate-700/80 rounded-xl transition-all duration-300 outline-none focus:border-indigo-500 dark:focus:border-torii focus:ring-4 focus:ring-indigo-100/50 dark:focus:ring-torii/20 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
-        :class="{
-          'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
-          'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect
-        }"
+        class="w-full pl-20 pr-16 sm:pl-24 sm:pr-20 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 rounded-xl transition-all duration-300 outline-none focus:ring-4 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
+        :class="[
+          !isAnswered ? inputModeInfo.inputBorderClass : '',
+          {
+            'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
+            'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect
+          }
+        ]"
         :disabled="isAnswered"
         @keydown.enter.stop="handleEnter"
         autocomplete="off"
