@@ -16,7 +16,7 @@ const emit = defineEmits<{
 const options = [
   {
     key: 'words_mixed' as const,
-    label: '🎲 Random (Semua)',
+    label: 'Random (Semua)',
     desc: 'Campuran otomatis Jepang → Romaji / Indo / Indo → Jepang bergantian di tiap soal'
   },
   {

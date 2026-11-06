@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { 
-  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen, Shuffle,
+  Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen, Shuffle, Dices,
   ChevronLeft, ChevronRight, CheckCircle2
 } from '@lucide/vue';
 import { useQuizStore } from '../../stores/quizStore';
@@ -211,8 +211,11 @@ const handleSubClick = (subKey: string) => {
           Pelajaran {{ quizStore.currentLessonNumber }}: Dialog Percakapan N5
         </span>
         <span v-else-if="activeModeId === 'kotoba'" class="text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center gap-1.5 flex-wrap text-center">
-          <span class="text-amber-600 dark:text-amber-400">🎲 Soal Acak:</span>
-          <span>Jepang ➔ Romaji • Jepang ➔ Arti • Arti ➔ Jepang</span>
+          <span class="text-amber-600 dark:text-amber-400 flex items-center gap-1">
+            <Dices class="w-4 h-4 shrink-0 text-amber-500" />
+            <span>Soal Acak:</span>
+          </span>
+          <span>Jepang ➔ Romaji • Jepang ➔ Indonesia • Indonesia ➔ Jepang</span>
         </span>
         <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
           Tantangan Harian (Audio & Suara)
