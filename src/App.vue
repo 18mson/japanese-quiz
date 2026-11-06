@@ -83,6 +83,14 @@ const quizStarted = ref(false);
 const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
 const showMasteryGridModal = ref(false);
+const initialMasteryCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>('hiragana');
+
+const handleOpenMasteryGrid = (category?: 'hiragana' | 'katakana' | 'words' | 'kanji') => {
+  if (category) {
+    initialMasteryCategory.value = category;
+  }
+  showMasteryGridModal.value = true;
+};
 const showAboutModal = ref(false);
 const showReferenceModal = ref(false);
 const showBattleground = ref(false);
@@ -710,6 +718,7 @@ const goToHome = () => {
     />
     <MasteryGridModal 
       :is-open="showMasteryGridModal" 
+      :initial-category="initialMasteryCategory"
       @close="showMasteryGridModal = false" 
       @start-weak-quiz="handleStartWeakQuiz"
     />
@@ -780,7 +789,7 @@ const goToHome = () => {
     <StartScreen 
       v-else-if="!quizStarted" 
       @start="startQuiz" 
-      @open-mastery-grid="showMasteryGridModal = true" 
+      @open-mastery-grid="handleOpenMasteryGrid" 
       @open-leaderboard="showLeaderboardModal = true"
       @open-about="openAboutModal"
       @open-battleground="openBattleground"

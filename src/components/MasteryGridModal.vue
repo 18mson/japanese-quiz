@@ -25,15 +25,41 @@ import {
 } from '@lucide/vue';
 import { watch } from 'vue';
 
-defineProps<{
-  isOpen: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    isOpen: boolean;
+    initialCategory?: 'hiragana' | 'katakana' | 'words' | 'kanji';
+  }>(),
+  {
+    initialCategory: 'hiragana'
+  }
+);
 
 const emit = defineEmits(['close', 'startWeakQuiz']);
 const quizStore = useQuizStore();
 
 // Filter States
-const activeCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>('hiragana');
+const activeCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>(props.initialCategory || 'hiragana');
+
+watch(
+  () => props.initialCategory,
+  (newCat) => {
+    if (newCat) {
+      activeCategory.value = newCat;
+      activeSubtype.value = 'all';
+    }
+  }
+);
+
+watch(
+  () => props.isOpen,
+  (isOpen) => {
+    if (isOpen && props.initialCategory) {
+      activeCategory.value = props.initialCategory;
+      activeSubtype.value = 'all';
+    }
+  }
+);
 const activeSubtype = ref<string>('all');
 const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
 const searchQuery = ref<string>('');

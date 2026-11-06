@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Target, LayoutGrid, Crown, CheckCircle2 } from '@lucide/vue';
+import { Target, LayoutGrid, Crown, CheckCircle2, ChevronRight } from '@lucide/vue';
 import { useQuizStore } from '../../../stores/quizStore';
 
 const emit = defineEmits<{
-  (e: 'openMasteryGrid'): void;
+  (e: 'openMasteryGrid', category?: 'hiragana' | 'katakana' | 'words' | 'kanji'): void;
 }>();
 
 const quizStore = useQuizStore();
@@ -45,15 +45,26 @@ const quizStore = useQuizStore();
     <!-- Category Breakdown Rows -->
     <div class="flex flex-col gap-2.5">
       <!-- Hiragana -->
-      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+      <div 
+        role="button"
+        tabindex="0"
+        @click="emit('openMasteryGrid', 'hiragana')"
+        @keydown.enter.prevent="emit('openMasteryGrid', 'hiragana')"
+        @keydown.space.prevent="emit('openMasteryGrid', 'hiragana')"
+        class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-aizome/30 dark:hover:border-torii/30 cursor-pointer select-none transition-all group shadow-2xs active:scale-[0.985]"
+        title="Buka Peta Penguasaan Hiragana"
+      >
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
-            <span class="w-5 h-5 rounded-md bg-aizome/10 text-aizome dark:bg-torii/15 dark:text-torii font-jp flex items-center justify-center text-[10px] font-bold border border-aizome/20 dark:border-torii/25">あ</span>
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200 group-hover:text-aizome dark:group-hover:text-torii transition-colors">
+            <span class="w-5 h-5 rounded-md bg-aizome/10 text-aizome dark:bg-torii/15 dark:text-torii font-jp flex items-center justify-center text-[10px] font-bold border border-aizome/20 dark:border-torii/25 group-hover:scale-105 transition-transform">あ</span>
             Hiragana
           </span>
-          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-            {{ quizStore.hiraganaMasteryStats.mastered }}/{{ quizStore.hiraganaMasteryStats.total }}
-          </span>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+              {{ quizStore.hiraganaMasteryStats.mastered }}/{{ quizStore.hiraganaMasteryStats.total }}
+            </span>
+            <ChevronRight class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-aizome dark:group-hover:text-torii group-hover:translate-x-0.5 transition-all" />
+          </div>
         </div>
         <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
           <div 
@@ -64,15 +75,26 @@ const quizStore = useQuizStore();
       </div>
 
       <!-- Katakana -->
-      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+      <div 
+        role="button"
+        tabindex="0"
+        @click="emit('openMasteryGrid', 'katakana')"
+        @keydown.enter.prevent="emit('openMasteryGrid', 'katakana')"
+        @keydown.space.prevent="emit('openMasteryGrid', 'katakana')"
+        class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-aizome-light/40 dark:hover:border-amber-500/40 cursor-pointer select-none transition-all group shadow-2xs active:scale-[0.985]"
+        title="Buka Peta Penguasaan Katakana"
+      >
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
-            <span class="w-5 h-5 rounded-md bg-aizome/10 text-aizome dark:bg-amber-500/15 dark:text-amber-500 font-jp flex items-center justify-center text-[10px] font-bold border border-aizome/20 dark:border-amber-500/25">ア</span>
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200 group-hover:text-aizome-light dark:group-hover:text-amber-500 transition-colors">
+            <span class="w-5 h-5 rounded-md bg-aizome/10 text-aizome dark:bg-amber-500/15 dark:text-amber-500 font-jp flex items-center justify-center text-[10px] font-bold border border-aizome/20 dark:border-amber-500/25 group-hover:scale-105 transition-transform">ア</span>
             Katakana
           </span>
-          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-            {{ quizStore.katakanaMasteryStats.mastered }}/{{ quizStore.katakanaMasteryStats.total }}
-          </span>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+              {{ quizStore.katakanaMasteryStats.mastered }}/{{ quizStore.katakanaMasteryStats.total }}
+            </span>
+            <ChevronRight class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-aizome-light dark:group-hover:text-amber-500 group-hover:translate-x-0.5 transition-all" />
+          </div>
         </div>
         <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
           <div 
@@ -83,15 +105,26 @@ const quizStore = useQuizStore();
       </div>
 
       <!-- Kanji N5 -->
-      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+      <div 
+        role="button"
+        tabindex="0"
+        @click="emit('openMasteryGrid', 'kanji')"
+        @keydown.enter.prevent="emit('openMasteryGrid', 'kanji')"
+        @keydown.space.prevent="emit('openMasteryGrid', 'kanji')"
+        class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-matcha/40 cursor-pointer select-none transition-all group shadow-2xs active:scale-[0.985]"
+        title="Buka Peta Penguasaan Kanji N5"
+      >
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
-            <span class="w-5 h-5 rounded-md bg-matcha/15 text-matcha font-jp flex items-center justify-center text-[10px] font-bold border border-matcha/25">漢</span>
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200 group-hover:text-matcha transition-colors">
+            <span class="w-5 h-5 rounded-md bg-matcha/15 text-matcha font-jp flex items-center justify-center text-[10px] font-bold border border-matcha/25 group-hover:scale-105 transition-transform">漢</span>
             Kanji N5
           </span>
-          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-            {{ quizStore.kanjiMasteryStats.mastered }}/{{ quizStore.kanjiMasteryStats.total }}
-          </span>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+              {{ quizStore.kanjiMasteryStats.mastered }}/{{ quizStore.kanjiMasteryStats.total }}
+            </span>
+            <ChevronRight class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-matcha group-hover:translate-x-0.5 transition-all" />
+          </div>
         </div>
         <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
           <div 
@@ -102,15 +135,26 @@ const quizStore = useQuizStore();
       </div>
 
       <!-- Kotoba N5 -->
-      <div class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+      <div 
+        role="button"
+        tabindex="0"
+        @click="emit('openMasteryGrid', 'words')"
+        @keydown.enter.prevent="emit('openMasteryGrid', 'words')"
+        @keydown.space.prevent="emit('openMasteryGrid', 'words')"
+        class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-400 dark:hover:border-slate-600 cursor-pointer select-none transition-all group shadow-2xs active:scale-[0.985]"
+        title="Buka Peta Penguasaan Kotoba N5"
+      >
         <div class="flex items-center justify-between text-xs">
-          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200">
-            <span class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-jp flex items-center justify-center text-[10px] font-bold border border-slate-300 dark:border-slate-700">言</span>
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+            <span class="w-5 h-5 rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-jp flex items-center justify-center text-[10px] font-bold border border-slate-300 dark:border-slate-700 group-hover:scale-105 transition-transform">言</span>
             Kotoba N5
           </span>
-          <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400">
-            {{ quizStore.wordsMasteryStats.mastered }}/{{ quizStore.wordsMasteryStats.total }}
-          </span>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+              {{ quizStore.wordsMasteryStats.mastered }}/{{ quizStore.wordsMasteryStats.total }}
+            </span>
+            <ChevronRight class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-slate-700 dark:group-hover:text-slate-200 group-hover:translate-x-0.5 transition-all" />
+          </div>
         </div>
         <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
           <div 

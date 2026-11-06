@@ -470,7 +470,7 @@ watch(characterTypes, (newVal) => {
       <!-- Left Column: Peta Penguasaan Huruf (Desktop >= xl) -->
       <aside class="hidden xl:block w-[300px] 2xl:w-[340px] shrink-0">
         <DesktopMasterySidebar 
-          @open-mastery-grid="emit('openMasteryGrid')" 
+          @open-mastery-grid="(cat) => emit('openMasteryGrid', cat)" 
         />
       </aside>
 
