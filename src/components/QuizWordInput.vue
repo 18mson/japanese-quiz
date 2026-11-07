@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed, defineAsyncComponent } from 'vue';
 import { useQuizStore } from '../stores/quizStore';
-import { Check, X, AlertTriangle, HelpCircle, Volume2, CornerDownLeft } from '@lucide/vue';
+import { Check, X, AlertTriangle, HelpCircle, Volume2 } from '@lucide/vue';
 import VirtualKeyboard from './VirtualKeyboard.vue';
 import TierTransitionBadge from './common/TierTransitionBadge.vue';
 import { extractKanjiFromWord } from '../services/kanjiInfoService';
@@ -484,7 +484,7 @@ watch(() => quizStore.isInputShaking, (shaking) => {
         :placeholder="placeholderText"
         class="w-full pl-20 sm:pl-24 py-4 text-xl font-bold text-center bg-white dark:bg-slate-800 text-slate-800 dark:text-white border-2 rounded-xl transition-all duration-300 outline-none focus:ring-4 disabled:bg-gray-50 dark:disabled:bg-slate-900 disabled:text-gray-500 dark:disabled:text-slate-500 disabled:cursor-not-allowed"
         :class="[
-          quizStore.activeQuestionType === 'meaning_to_words' ? 'pr-28 sm:pr-32' : 'pr-16 sm:pr-20',
+          quizStore.activeQuestionType === 'meaning_to_words' ? 'pr-20 sm:pr-24' : 'pr-20 sm:pr-24',
           !isAnswered ? inputModeInfo.inputBorderClass : '',
           {
             'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
@@ -500,11 +500,10 @@ watch(() => quizStore.isInputShaking, (shaking) => {
         autocapitalize="off"
         spellcheck="false"
       />
-      <!-- Right Side Controls inside Input -->
-      <div v-if="!isAnswered" class="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-20">
+      <!-- Right Side Controls inside Input (Hanya Switch Hiragana/Katakana untuk mode Indo -> Jepang) -->
+      <div v-if="!isAnswered && quizStore.activeQuestionType === 'meaning_to_words'" class="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 flex items-center z-20">
         <!-- Switch Hiragana / Katakana khusus mode Kotoba Indonesia -> Jepang -->
         <div 
-          v-if="quizStore.activeQuestionType === 'meaning_to_words'"
           class="inline-flex items-center p-0.5 rounded-lg bg-gray-100 dark:bg-slate-700/80 border border-gray-200/90 dark:border-slate-600/80 shadow-2xs"
           role="group"
           aria-label="Pilih mode huruf Jepang"
@@ -532,14 +531,6 @@ watch(() => quizStore.isInputShaking, (shaking) => {
             ア
           </button>
         </div>
-
-        <!-- Enter Icon (Desktop) -->
-        <span 
-          class="hidden md:flex items-center justify-center p-1.5 text-gray-400 dark:text-slate-400 bg-gray-100/90 dark:bg-slate-800/90 rounded-lg border border-gray-200/90 dark:border-slate-700/80 shadow-2xs pointer-events-none select-none"
-          title="Tekan Enter untuk kirim"
-        >
-          <CornerDownLeft class="w-3.5 h-3.5 stroke-[2.25]" />
-        </span>
       </div>
     </div>
 
