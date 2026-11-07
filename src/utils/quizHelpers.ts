@@ -261,6 +261,111 @@ export const checkIsJapaneseTypo = (
   return false;
 };
 
+export interface WrongModeInterceptResult {
+  isWrongMode: boolean;
+  message?: string;
+}
+
+/**
+ * Smart Intercept: Mendeteksi apakah pengguna salah format jawaban (salah mode).
+ * Misalnya di mode Jepang ➔ Arti Indonesia, pengguna tidak sengaja mengetik Romaji atau tulisan Jepang karena refleks.
+ */
+export const checkIsWrongModeInput = (
+  userInput: string,
+  questionType: string,
+  question: {
+    character: string;
+    kana?: string;
+    romaji: string | string[];
+    meaning?: string;
+  }
+): WrongModeInterceptResult => {
+  if (!userInput || !userInput.trim() || !question) {
+    return { isWrongMode: false };
+  }
+
+  const rawInput = userInput.trim();
+  const cleanUser = rawInput.toLowerCase();
+
+  // 1. Mode words_meaning: Soal tulisan Jepang, target Arti Bahasa Indonesia
+  if (questionType === 'words_meaning') {
+    // Jika jawaban mendekati arti Indonesia (benar atau typo), biarkan diproses oleh evaluator skor biasa
+    if (question.meaning) {
+      if (checkIsMeaningCorrect(cleanUser, question.meaning)) {
+        return { isWrongMode: false };
+      }
+      if (checkIsMeaningTypo(cleanUser, question.meaning)) {
+        return { isWrongMode: false };
+      }
+    }
+
+    // Cek apakah user malah mengetik Romaji yang tepat atau typo dari Romaji kata tersebut
+    if (question.romaji) {
+      if (checkIsCorrect(cleanUser, question.romaji) || checkIsTypo(cleanUser, question.romaji)) {
+        return {
+          isWrongMode: true,
+          message: 'Kamu mengetik Romaji! Soal ini meminta Arti Bahasa Indonesia.'
+        };
+      }
+    }
+
+    // Cek apakah user mengetik pembacaan kana dalam romaji (misal kata berkanji tapi membaca kana)
+    if (question.kana) {
+      const kanaAsRomaji = normalizeRomajiForComparison(wanakana.toRomaji(question.kana));
+      const userRomaji = normalizeRomajiForComparison(cleanUser);
+      if (kanaAsRomaji && userRomaji && (userRomaji === kanaAsRomaji || getLevenshteinDistance(userRomaji, kanaAsRomaji) <= 1)) {
+        return {
+          isWrongMode: true,
+          message: 'Kamu mengetik Romaji! Soal ini meminta Arti Bahasa Indonesia.'
+        };
+      }
+    }
+
+    // Cek apakah user mengetik dalam tulisan Jepang (Kanji atau Kana)
+    if (checkIsJapaneseCorrect(rawInput, question) || checkIsJapaneseTypo(rawInput, question)) {
+      return {
+        isWrongMode: true,
+        message: 'Kamu mengetik Bahasa Jepang! Soal ini meminta Arti Bahasa Indonesia.'
+      };
+    }
+  }
+
+  // 2. Mode words: Soal tulisan Jepang, target Romaji (cara baca Latin)
+  if (questionType === 'words') {
+    // Jika jawaban sudah romaji yang benar atau typo romaji, jangan dicegat
+    if (question.romaji) {
+      if (checkIsCorrect(cleanUser, question.romaji) || checkIsTypo(cleanUser, question.romaji)) {
+        return { isWrongMode: false };
+      }
+    }
+
+    // Cek apakah user malah mengetik arti bahasa Indonesianya
+    if (question.meaning && checkIsMeaningCorrect(cleanUser, question.meaning)) {
+      return {
+        isWrongMode: true,
+        message: 'Kamu mengetik Arti! Soal ini meminta Romaji (cara baca latin).'
+      };
+    }
+  }
+
+  // 3. Mode meaning_to_words: Soal Arti Indonesia, target tulisan Jepang
+  if (questionType === 'meaning_to_words') {
+    if (checkIsJapaneseCorrect(rawInput, question) || checkIsJapaneseTypo(rawInput, question)) {
+      return { isWrongMode: false };
+    }
+
+    // Cek apakah user mengetik ulang arti bahasa Indonesianya
+    if (question.meaning && checkIsMeaningCorrect(cleanUser, question.meaning)) {
+      return {
+        isWrongMode: true,
+        message: 'Kamu mengetik Arti! Soal ini meminta Bahasa Jepang (Kanji/Kana).'
+      };
+    }
+  }
+
+  return { isWrongMode: false };
+};
+
 export const getFallbackLocalPool = (type: string, _level: string = 'basic'): any[] => {
   if (type === 'hiragana') {
     // Selalu return semua hiragana (basic + dakuten + combination)

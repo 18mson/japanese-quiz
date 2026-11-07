@@ -9,6 +9,7 @@ import {
   checkIsMeaningTypo, 
   checkIsJapaneseCorrect, 
   checkIsJapaneseTypo, 
+  checkIsWrongModeInput,
   getFallbackLocalPool, 
   buildRepeatedQuestion 
 } from '../utils/quizHelpers';
@@ -106,6 +107,24 @@ export const useQuizStore = defineStore('quiz', () => {
   const quizLesson = ref<string>('Pelajaran 1');
   const speedAchievement = ref<{ timeSavedSeconds: number; bonusPoints: number; isFaster: boolean; rankText: string; } | null>(null);
   const userAnswers = ref<any[]>([]);
+
+  // ── Smart Intercept State (Anti-Salah Mode) ────────────────
+  const interceptWarningMessage = ref<string>('');
+  const isInputShaking = ref<boolean>(false);
+
+  const triggerInputShake = (message?: string) => {
+    if (message) {
+      interceptWarningMessage.value = message;
+    }
+    isInputShaking.value = true;
+    setTimeout(() => {
+      isInputShaking.value = false;
+    }, 500);
+  };
+
+  const clearInterceptWarning = () => {
+    interceptWarningMessage.value = '';
+  };
 
   const masteredChars = ref<Record<string, boolean>>({});
   const attemptedChars = ref<Record<string, boolean>>({});
@@ -304,8 +323,19 @@ export const useQuizStore = defineStore('quiz', () => {
   // ── Answer Submission & Scoring ─────────────────────────────
   const submitAnswer = (romaji: string) => {
     if (quizCompleted.value || selectedAnswer.value !== null) return;
-    const userAnswerClean = romaji.trim().toLowerCase();
     const current = currentQuestion.value;
+
+    // Smart Intercept: Cegah salah mode (misal ketik Romaji di mode Arti Indonesia)
+    if (current && isTypingMode.value && romaji.trim() !== '') {
+      const wrongModeCheck = checkIsWrongModeInput(romaji, activeQuestionType.value, current);
+      if (wrongModeCheck.isWrongMode) {
+        triggerInputShake(wrongModeCheck.message);
+        return; // Jangan submit, jangan kurangi streak atau ubah skor!
+      }
+    }
+
+    clearInterceptWarning();
+    const userAnswerClean = romaji.trim().toLowerCase();
     let isCorrectVal = false, isTypo = false;
 
     if (current) {
@@ -476,6 +506,7 @@ export const useQuizStore = defineStore('quiz', () => {
   const masteredCount = computed(() => Object.keys(masteredChars.value).length);
 
   const nextQuestion = () => {
+    clearInterceptWarning();
     selectedAnswer.value = null;
     isAnswerCorrect.value = null;
     isAnswerTypo.value = false;
@@ -560,6 +591,12 @@ export const useQuizStore = defineStore('quiz', () => {
     isMeaningHintAutoOpened,
     openMeaningHint,
     initQuestionHints,
+
+    // Smart Intercept (Anti-Salah Mode)
+    interceptWarningMessage,
+    isInputShaking,
+    triggerInputShake,
+    clearInterceptWarning,
 
     // Active Quiz Session
     currentQuestionIndex,

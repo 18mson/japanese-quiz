@@ -5,7 +5,8 @@ import {
   checkIsMeaningCorrect,
   checkIsMeaningTypo,
   checkIsJapaneseCorrect,
-  checkIsJapaneseTypo
+  checkIsJapaneseTypo,
+  checkIsWrongModeInput
 } from '../src/utils/quizHelpers';
 
 test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
@@ -64,6 +65,80 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan R
 
     // Jawaban salah jauh
     assert.strictEqual(checkIsJapaneseTypo('たべます', item), false);
+  });
+});
+
+test('Smart Intercept: Pencegahan Salah Format Mode Soal (checkIsWrongModeInput)', async (t) => {
+  const wordItem = {
+    character: '浴びます',
+    kana: 'あびます',
+    romaji: 'abimasu',
+    meaning: 'mandi [シャワーを～]'
+  };
+
+  const wordWithArrayRomaji = {
+    character: '下ろします',
+    kana: 'おろします',
+    romaji: ['oroshimasu', 'orosimasu'],
+    meaning: 'menarik uang (dari bank)'
+  };
+
+  await t.test('words_meaning: mencegat ketika user mengetik Romaji kata', () => {
+    // Mengetik romaji persis
+    const res1 = checkIsWrongModeInput('abimasu', 'words_meaning', wordItem);
+    assert.strictEqual(res1.isWrongMode, true);
+    assert.match(res1.message || '', /Romaji/i);
+
+    // Mengetik salah satu romaji alternatif
+    const res2 = checkIsWrongModeInput('orosimasu', 'words_meaning', wordWithArrayRomaji);
+    assert.strictEqual(res2.isWrongMode, true);
+
+    // Mengetik typo romaji 1 huruf
+    const res3 = checkIsWrongModeInput('abimasy', 'words_meaning', wordItem);
+    assert.strictEqual(res3.isWrongMode, true);
+  });
+
+  await t.test('words_meaning: mencegat ketika user mengetik tulisan Jepang (Kana / Kanji)', () => {
+    const resKana = checkIsWrongModeInput('あびます', 'words_meaning', wordItem);
+    assert.strictEqual(resKana.isWrongMode, true);
+    assert.match(resKana.message || '', /Bahasa Jepang/i);
+
+    const resKanji = checkIsWrongModeInput('浴びます', 'words_meaning', wordItem);
+    assert.strictEqual(resKanji.isWrongMode, true);
+  });
+
+  await t.test('words_meaning: TIDAK mencegat ketika user menjawab Arti Bahasa Indonesia (benar atau typo)', () => {
+    // Arti benar
+    const resCorrect = checkIsWrongModeInput('mandi', 'words_meaning', wordItem);
+    assert.strictEqual(resCorrect.isWrongMode, false);
+
+    // Typo arti
+    const resTypo = checkIsWrongModeInput('mandii', 'words_meaning', wordItem);
+    assert.strictEqual(resTypo.isWrongMode, false);
+
+    // Arti salah total (bukan romaji/jepang kata tersebut)
+    const resWrongMeaning = checkIsWrongModeInput('makan', 'words_meaning', wordItem);
+    assert.strictEqual(resWrongMeaning.isWrongMode, false);
+  });
+
+  await t.test('words: mencegat ketika user mengetik Arti di mode Romaji', () => {
+    const res = checkIsWrongModeInput('mandi', 'words', wordItem);
+    assert.strictEqual(res.isWrongMode, true);
+    assert.match(res.message || '', /Arti/i);
+
+    // Jawaban romaji benar tidak dicegat
+    const resRomaji = checkIsWrongModeInput('abimasu', 'words', wordItem);
+    assert.strictEqual(resRomaji.isWrongMode, false);
+  });
+
+  await t.test('meaning_to_words: mencegat ketika user mengetik Arti di mode Jepang', () => {
+    const res = checkIsWrongModeInput('mandi', 'meaning_to_words', wordItem);
+    assert.strictEqual(res.isWrongMode, true);
+    assert.match(res.message || '', /Arti/i);
+
+    // Jawaban tulisan Jepang benar tidak dicegat
+    const resJp = checkIsWrongModeInput('あびます', 'meaning_to_words', wordItem);
+    assert.strictEqual(resJp.isWrongMode, false);
   });
 });
 

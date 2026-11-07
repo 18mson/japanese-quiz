@@ -53,6 +53,9 @@ const convertInputToKana = (val: string): string => {
 };
 
 const handleInput = (event: Event) => {
+  if (quizStore.interceptWarningMessage) {
+    quizStore.clearInterceptWarning();
+  }
   const target = event.target as HTMLInputElement;
   if (quizStore.activeQuestionType === 'meaning_to_words') {
     const converted = convertInputToKana(target.value);
@@ -389,10 +392,44 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
     }
   }
 });
+
+// Efek getar dan auto-select teks saat terjadi Smart Intercept salah mode
+watch(() => quizStore.isInputShaking, (shaking) => {
+  if (shaking) {
+    nextTick(() => {
+      inputRef.value?.focus();
+      inputRef.value?.select();
+    });
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate([40, 30, 40]);
+      } catch {}
+    }
+  }
+});
 </script>
 
 <template>
   <div class="w-full max-w-md md:max-w-xl lg:max-w-2xl mx-auto flex flex-col items-center pb-36 sm:pb-0">
+    <!-- Smart Intercept Warning Banner (Anti-Salah Mode) -->
+    <transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0 -translate-y-2 scale-95"
+      enter-to-class="opacity-100 translate-y-0 scale-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100 translate-y-0 scale-100"
+      leave-to-class="opacity-0 -translate-y-2 scale-95"
+    >
+      <div 
+        v-if="quizStore.interceptWarningMessage" 
+        class="w-full mb-3 px-4 py-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/80 border-2 border-amber-400 dark:border-amber-600 shadow-md flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-amber-950 dark:text-amber-100 text-center animate-shake z-30"
+        role="alert"
+      >
+        <AlertTriangle class="w-4 h-4 text-amber-500 shrink-0" />
+        <span>{{ quizStore.interceptWarningMessage }}</span>
+      </div>
+    </transition>
+
     <!-- Typing Area -->
     <div class="w-full mb-6 relative">
       <!-- Input Mode / Flag Badge on the Left -->
@@ -451,7 +488,8 @@ watch(() => quizStore.isAnswerCorrect, (isCorrect) => {
           !isAnswered ? inputModeInfo.inputBorderClass : '',
           {
             'border-emerald-500 bg-emerald-50/30 dark:bg-emerald-950/40 focus:ring-emerald-100/50': isAnswered && quizStore.isAnswerCorrect,
-            'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect
+            'border-rose-500 bg-rose-50/30 dark:bg-rose-950/40 focus:ring-rose-100/50 animate-shake': isAnswered && !quizStore.isAnswerCorrect,
+            '!border-amber-500 !bg-amber-50/40 dark:!bg-amber-950/40 !ring-4 !ring-amber-200/60 dark:!ring-amber-900/60 animate-shake': quizStore.isInputShaking
           }
         ]"
         :disabled="isAnswered"
