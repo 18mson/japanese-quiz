@@ -21,6 +21,7 @@ import TabParticles from './handbook/tabs/TabParticles.vue';
 import TabVocab from './handbook/tabs/TabVocab.vue';
 import TabPhrases from './handbook/tabs/TabPhrases.vue';
 import TabTables from './handbook/tabs/TabTables.vue';
+import DailyGrammarRewindCard from '../daily/DailyGrammarRewindCard.vue';
 
 const props = defineProps<{
   initialLesson?: number;
@@ -376,6 +377,10 @@ onUnmounted(() => {
 
       <!-- MAIN BODY CONTENT -->
       <main class="flex-1 min-w-0 w-full flex flex-col gap-6 pb-32 md:pb-16">
+        <!-- Daily Grammar Rewind Card (Highlight Harian Materi Terpelajari) -->
+        <DailyGrammarRewindCard 
+          @jump-to-chapter="selectLesson" 
+        />
         <TabBunkei 
           v-if="activeTab === 'bunkei'" 
           :items="filteredBunkei" 

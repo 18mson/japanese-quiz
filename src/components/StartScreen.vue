@@ -21,6 +21,7 @@ import KanjiLessonPanel from './start/panels/KanjiLessonPanel.vue';
 import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
 import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
 import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
+import DailyGrammarRewindCard from './daily/DailyGrammarRewindCard.vue';
 
 const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice', 'openHandbook']);
 
@@ -476,6 +477,11 @@ watch(characterTypes, (newVal) => {
 
       <!-- Center Column: Wheel Selector & Options -->
       <main class="w-full max-w-3xl flex flex-col items-center min-w-0">
+        <!-- Daily Grammar Rewind Card (Highlight Rewind Materi yang Sudah Dipelajari) -->
+        <DailyGrammarRewindCard 
+          @jump-to-chapter="(num) => emit('openHandbook', num)" 
+        />
+
         <StartWheelSelector
           :modes="modesList"
           :active-mode-index="activeModeIndex"
