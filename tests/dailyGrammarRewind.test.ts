@@ -64,3 +64,4 @@ test('4. Ketika banyak bab dicentang, materi selalu berada dalam subset bab terp
   assert.ok(dailyHighlight.value !== null);
   assert.ok([1, 3, 7].includes(dailyHighlight.value?.lessonNumber as number), 'Materi terpilih harus termasuk dalam Bab 1, 3, atau 7');
 });
+

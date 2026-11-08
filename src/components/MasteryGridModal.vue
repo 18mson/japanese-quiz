@@ -62,22 +62,24 @@ watch(
   }
 );
 const activeSubtype = ref<string>('all');
-const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown'>('all');
+const activeStatusFilter = ref<'all' | 'new' | 'learning' | 'mastered' | 'crown' | 'skip'>('all');
 const searchQuery = ref<string>('');
 const filterBarRef = ref<InstanceType<typeof MasteryFilterBar> | null>(null);
 
 // Bulk Edit Mode States
 const isEditMode = ref<boolean>(false);
 const selectedCharacters = ref<Set<string>>(new Set());
-const targetTier = ref<'new' | 'learning' | 'mastered' | 'crown'>('mastered');
+const targetTier = ref<'new' | 'learning' | 'mastered' | 'crown' | 'skip' | 'unskip'>('mastered');
 const showConfirmModal = ref<boolean>(false);
 const isApplying = ref<boolean>(false);
 
-const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown', string> = {
+const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown' | 'skip' | 'unskip', string> = {
   new: 'Belum Dipelajari',
   learning: 'Sedang Belajar (Streak 1)',
   mastered: 'Hafal / Mastered (Streak 3)',
-  crown: 'Mahkota / Crown (Streak 6)'
+  crown: 'Mahkota / Crown (Streak 6)',
+  skip: '⏭️ Dilewati (Skip dari Soal & Tracing)',
+  unskip: '🔄 Aktifkan Kembali (Batal Skip)'
 };
 
 const toggleEditMode = () => {
@@ -128,7 +130,13 @@ const handleApplyBulkUpdate = async () => {
   isApplying.value = true;
   try {
     const chars = Array.from(selectedCharacters.value);
-    await quizStore.bulkUpdateMasteryTier(chars, targetTier.value);
+    if (targetTier.value === 'skip') {
+      await quizStore.bulkSetSkipWords?.(chars, true);
+    } else if (targetTier.value === 'unskip') {
+      await quizStore.bulkSetSkipWords?.(chars, false);
+    } else {
+      await quizStore.bulkUpdateMasteryTier(chars, targetTier.value);
+    }
   } catch (e) {
     console.error('Error applying bulk mastery update:', e);
   } finally {
@@ -275,7 +283,14 @@ const filteredItems = computed(() => {
   let pool = currentGroupItems.value;
 
   if (activeStatusFilter.value !== 'all') {
-    pool = pool.filter(item => quizStore.getMasteryTier(item.character) === activeStatusFilter.value);
+    if (activeStatusFilter.value === 'skip') {
+      pool = pool.filter(item => quizStore.isWordSkipped?.(item.character));
+    } else {
+      pool = pool.filter(item => {
+        const isSkipped = activeCategory.value === 'words' && quizStore.isWordSkipped?.(item.character);
+        return !isSkipped && quizStore.getMasteryTier(item.character) === activeStatusFilter.value;
+      });
+    }
   }
 
   const query = searchQuery.value.trim().toLowerCase();
@@ -290,7 +305,10 @@ const filteredItems = computed(() => {
 });
 
 const unmasteredCount = computed(() => {
-  return currentGroupItems.value.filter(item => quizStore.getMasteryStreak(item.character) < 3).length;
+  return currentGroupItems.value.filter(item => {
+    if (activeCategory.value === 'words' && quizStore.isWordSkipped?.(item.character)) return false;
+    return quizStore.getMasteryStreak(item.character) < 3;
+  }).length;
 });
 
 const isAllAttempted = computed(() => {
@@ -547,7 +565,29 @@ const nextPreviewItem = () => {
                   <option value="learning" class="bg-slate-900 text-slate-200">🟡 Proses (Streak 1)</option>
                   <option value="mastered" class="bg-slate-900 text-slate-200">🟢 Mastered (Streak 3)</option>
                   <option value="crown" class="bg-slate-900 text-slate-200">👑 Crown (Streak 6)</option>
+                  <option v-if="activeCategory === 'words'" value="skip" class="bg-slate-900 text-slate-200">⏭️ Skip (Lewati Kata)</option>
+                  <option v-if="activeCategory === 'words'" value="unskip" class="bg-slate-900 text-slate-200">🔄 Batal Skip (Aktifkan)</option>
                 </select>
+              </div>
+
+              <!-- Quick Skip Action Buttons (Khusus Kotoba) -->
+              <div v-if="activeCategory === 'words'" class="flex items-center gap-1.5">
+                <button 
+                  type="button" 
+                  @click="targetTier = 'skip'; showConfirmModal = true;"
+                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition"
+                  title="Tandai kata yang dipilih agar di-skip"
+                >
+                  <span>⏭️ Tandai Skip</span>
+                </button>
+                <button 
+                  type="button" 
+                  @click="targetTier = 'unskip'; showConfirmModal = true;"
+                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition"
+                  title="Batal skip kata yang dipilih"
+                >
+                  <span>🔄 Batal Skip</span>
+                </button>
               </div>
 
               <!-- Right: Buttons -->
@@ -680,7 +720,19 @@ const nextPreviewItem = () => {
 
           <!-- Explanatory note based on target tier -->
           <div 
-            v-if="targetTier === 'mastered' || targetTier === 'crown'" 
+            v-if="targetTier === 'skip'" 
+            class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[11px] leading-relaxed border border-amber-200/60 dark:border-amber-800/40"
+          >
+            ⏭️ <strong>Fitur Skip:</strong> Kotoba ini <strong>tidak akan muncul di soal kuis</strong> dan <strong>tidak terhitung di tracing peta penguasaan</strong>. Selain itu, kotoba ini <strong>tidak akan menghambat checklist</strong> materi bab.
+          </div>
+          <div 
+            v-else-if="targetTier === 'unskip'" 
+            class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-[11px] leading-relaxed border border-emerald-200/60 dark:border-emerald-800/40"
+          >
+            🔄 <strong>Aktifkan Kembali:</strong> Kotoba ini akan kembali aktif muncul di kuis dan dihitung dalam parameter tracing peta penguasaan huruf.
+          </div>
+          <div 
+            v-else-if="targetTier === 'mastered' || targetTier === 'crown'" 
             class="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-[11px] leading-relaxed border border-emerald-200/60 dark:border-emerald-800/40"
           >
             💡 <strong>Pemberitahuan:</strong> Karakter ini akan dianggap sudah dikuasai. Preview/animasi stroke order pertama-kali <strong>tidak akan muncul lagi</strong> saat ditemui di mode game manapun (Kotoba, Menulis, Quiz).

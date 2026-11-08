@@ -18,6 +18,9 @@ const emit = defineEmits<{
 const quizStore = useQuizStore();
 
 const getWordStatus = (char: string) => {
+  if (quizStore.isWordSkipped?.(char)) {
+    return { label: '⏭️ Dilewati', class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-dashed border-slate-300 dark:border-slate-600' };
+  }
   const streak = quizStore.getMasteryStreak(char);
   if (streak >= 3) {
     return { label: 'Dikuasai', class: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' };
@@ -72,7 +75,12 @@ const getWordStatus = (char: string) => {
       <div
         v-for="(w, wIdx) in words"
         :key="wIdx"
-        class="bg-white dark:bg-slate-850/90 border border-gray-200/90 dark:border-slate-800 hover:border-matcha/40 rounded-2xl p-3.5 shadow-2xs flex flex-col justify-between gap-2 transition"
+        :class="[
+          'border rounded-2xl p-3.5 shadow-2xs flex flex-col justify-between gap-2 transition',
+          quizStore.isWordSkipped?.(w.character)
+            ? 'bg-slate-50/70 dark:bg-slate-850/60 border-dashed border-slate-300 dark:border-slate-700 opacity-75'
+            : 'bg-white dark:bg-slate-850/90 border-gray-200/90 dark:border-slate-800 hover:border-matcha/40'
+        ]"
       >
         <div class="flex items-start justify-between gap-2">
           <div class="flex flex-col">

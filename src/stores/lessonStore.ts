@@ -101,6 +101,7 @@ export const useLessonStore = defineStore('lesson', () => {
     if (words.length === 0) return true;
     const masteryStore = useMasteryStore();
     return words.every(w => {
+      if (masteryStore.isWordSkipped(w.character)) return true;
       const streak = masteryStore.getMasteryStreak(w.character);
       return streak > 0 || !!masteryStore.introducedChars[w.character];
     });

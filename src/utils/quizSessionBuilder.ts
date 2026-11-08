@@ -28,6 +28,7 @@ export async function prepareStandardQuestions(params: {
   userStreaks: Record<string, number>;
   introducedChars: Record<string, boolean>;
   currentLessonNumber?: number;
+  isWordSkipped?: (char: string) => boolean;
 }): Promise<PreparedQuestionsResult> {
   const {
     targetDuration,
@@ -40,7 +41,8 @@ export async function prepareStandardQuestions(params: {
     getMasteryStreak,
     userStreaks,
     introducedChars,
-    currentLessonNumber
+    currentLessonNumber,
+    isWordSkipped
   } = params;
 
   if (type === 'sentences') {
@@ -100,7 +102,7 @@ export async function prepareStandardQuestions(params: {
   if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type)) {
     const wordsMap = new Map(wordsData.map(w => [w.character, w]));
     finalPool = finalPool
-      .filter(w => !!w.character && w.character.trim().length > 0)
+      .filter(w => !!w.character && w.character.trim().length > 0 && (!isWordSkipped || !isWordSkipped(w.character)))
       .map(item => {
         const local = wordsMap.get(item.character);
         return {
@@ -223,10 +225,15 @@ export async function prepareWeakItemsQuestions(params: {
   getMasteryStreak: (char: string) => number;
   introducedChars: Record<string, boolean>;
   currentLessonNumber?: number;
+  isWordSkipped?: (char: string) => boolean;
 }): Promise<{ questions: any[]; initialQuestionCount: number }> {
-  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars, currentLessonNumber } = params;
+  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars, currentLessonNumber, isWordSkipped } = params;
   const questionCount = getQuestionCountFromDuration(targetDuration, type);
   let pool = getFallbackLocalPool(type, level);
+
+  if (['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(type) && isWordSkipped) {
+    pool = pool.filter(item => !isWordSkipped(item.character));
+  }
 
   if (['hiragana', 'katakana', 'mix'].includes(type) && selectedKanaCategory !== 'all') {
     const filtered = pool.filter(item => item.type === selectedKanaCategory);

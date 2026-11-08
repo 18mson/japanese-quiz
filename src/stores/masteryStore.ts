@@ -31,6 +31,21 @@ const getLocalIntroduced = (): Record<string, boolean> => {
 };
 
 const PENDING_STREAKS_KEY = 'japanese-quiz-pending-streaks';
+const SKIPPED_WORDS_KEY = 'japanese-quiz-skipped-words';
+
+const getLocalSkippedWords = (): Record<string, boolean> => {
+  try {
+    const stored = localStorage.getItem(SKIPPED_WORDS_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch (e) { }
+  return {};
+};
+
+const saveLocalSkippedWords = (data: Record<string, boolean>) => {
+  try {
+    localStorage.setItem(SKIPPED_WORDS_KEY, JSON.stringify(data));
+  } catch (e) { }
+};
 
 const getPendingStreaks = (): string[] => {
   try {
@@ -59,11 +74,60 @@ const clearPendingStreaks = () => {
 export const useMasteryStore = defineStore('mastery', () => {
   const userStreaks = ref<Record<string, number>>(getLocalStreaks());
   const introducedChars = ref<Record<string, boolean>>(getLocalIntroduced());
+  const skippedWords = ref<Record<string, boolean>>(getLocalSkippedWords());
   const latestTierTransition = ref<TierTransition | null>(null);
   const sessionTierChanges = ref<TierTransition[]>([]);
   const isSyncing = ref(false);
   const lastSyncTime = ref<Date | null>(null);
   const syncError = ref<string | null>(null);
+
+  const isWordSkipped = (character: string): boolean => {
+    return !!skippedWords.value[character];
+  };
+
+  const syncSkippedWordsToSupabase = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await supabase.auth.updateUser({
+          data: {
+            skipped_words: skippedWords.value
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('Failed to sync skipped_words to Supabase:', e);
+    }
+  };
+
+  const toggleSkipWord = (character: string): boolean => {
+    const next = !isWordSkipped(character);
+    const updated = { ...skippedWords.value };
+    if (next) {
+      updated[character] = true;
+    } else {
+      delete updated[character];
+    }
+    skippedWords.value = updated;
+    saveLocalSkippedWords(updated);
+    syncSkippedWordsToSupabase();
+    return next;
+  };
+
+  const bulkSetSkipWords = async (characters: string[], isSkippedVal: boolean) => {
+    if (!characters || characters.length === 0) return;
+    const updated = { ...skippedWords.value };
+    characters.forEach(char => {
+      if (isSkippedVal) {
+        updated[char] = true;
+      } else {
+        delete updated[char];
+      }
+    });
+    skippedWords.value = updated;
+    saveLocalSkippedWords(updated);
+    await syncSkippedWordsToSupabase();
+  };
 
   const fetchServerStreaks = async (userId: string): Promise<Record<string, number>> => {
     if (typeof navigator !== 'undefined' && !navigator.onLine) {
@@ -247,6 +311,10 @@ export const useMasteryStore = defineStore('mastery', () => {
     const { useAuthStore } = await import('./authStore');
     const authStore = useAuthStore();
     if (authStore.user) {
+      if (authStore.user.user_metadata?.skipped_words) {
+        skippedWords.value = { ...authStore.user.user_metadata.skipped_words, ...skippedWords.value };
+        saveLocalSkippedWords(skippedWords.value);
+      }
       try {
         await syncWithServer(authStore.user.id);
       } catch (e) {
@@ -370,7 +438,10 @@ export const useMasteryStore = defineStore('mastery', () => {
 
   const hiraganaMasteryStats = computed(() => computeCategoryMasteryStats(hiraganaData, userStreaks.value));
   const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
-  const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value, getMasteryStreak));
+  const wordsMasteryStats = computed(() => {
+    const activeWords = wordsData.filter(w => !isWordSkipped(w.character));
+    return computeCategoryMasteryStats(activeWords, userStreaks.value, getMasteryStreak);
+  });
   const kanjiMasteryStats = computed(() => computeCategoryMasteryStats(kanjiN5Data, userStreaks.value, getMasteryStreak));
   const kanjiN4MasteryStats = computed(() => computeCategoryMasteryStats(kanjiN4Data, userStreaks.value, getMasteryStreak));
 
@@ -391,7 +462,7 @@ export const useMasteryStore = defineStore('mastery', () => {
   const currentUserLevel = computed(() => {
     let level = 1;
     for (let i = 1; i <= 25; i++) {
-      const lessonWords = wordsData.filter(w => w.lesson === `Pelajaran ${i}` || (!w.lesson && i === 1));
+      const lessonWords = wordsData.filter(w => (w.lesson === `Pelajaran ${i}` || (!w.lesson && i === 1)) && !isWordSkipped(w.character));
       if (lessonWords.length > 0 && lessonWords.every(w => getMasteryStreak(w.character) >= 3)) {
         level = i + 1;
       } else {
@@ -547,6 +618,10 @@ export const useMasteryStore = defineStore('mastery', () => {
     kanjiN4Data,
     overallMasteryStats,
     currentUserLevel,
-    getLocalStreaks
+    getLocalStreaks,
+    skippedWords,
+    isWordSkipped,
+    toggleSkipWord,
+    bulkSetSkipWords
   };
 });

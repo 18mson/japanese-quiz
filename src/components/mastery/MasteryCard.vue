@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { Check, Crown } from '@lucide/vue';
 
@@ -22,6 +23,10 @@ const emit = defineEmits<{
 
 const quizStore = useQuizStore();
 
+const isSkipped = computed(() => {
+  return props.category === 'words' && !!quizStore.isWordSkipped?.(props.item.character);
+});
+
 const handleClick = () => {
   if (props.isSelectMode) {
     emit('toggleSelect', props.item);
@@ -41,7 +46,9 @@ const handleClick = () => {
         : isSelectMode
         ? 'hover:ring-1 hover:ring-indigo-300 dark:hover:ring-slate-600'
         : '',
-      !isSelectMode && quizStore.getMasteryTier(item.character) === 'crown' 
+      isSkipped && !isSelected
+        ? 'bg-slate-50/70 dark:bg-slate-850/60 border-dashed border-slate-300 dark:border-slate-700 opacity-60 hover:opacity-100'
+        : !isSelectMode && quizStore.getMasteryTier(item.character) === 'crown' 
         ? 'bg-gradient-to-b from-amber-50 to-orange-50 dark:from-slate-800 dark:to-slate-800 border-amber-300 dark:border-amber-500/50 shadow-sm ring-1 ring-amber-400/30' 
         : !isSelectMode && quizStore.getMasteryTier(item.character) === 'mastered'
         ? 'bg-gradient-to-b from-emerald-50 to-teal-50 dark:from-emerald-950/80 dark:to-teal-950/80 border-emerald-300 dark:border-emerald-700 shadow-sm'
@@ -72,7 +79,14 @@ const handleClick = () => {
     <!-- Compact Top Right Mastery Badge -->
     <div class="absolute top-1 right-1.5 flex items-center gap-0.5">
       <span 
-        v-if="quizStore.getMasteryTier(item.character) === 'crown'" 
+        v-if="isSkipped"
+        class="text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/90 px-1 py-0.2 rounded-md border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-0.5"
+        title="Dilewati (Skip dari Soal & Tracing)"
+      >
+        ⏭️ Skip
+      </span>
+      <span 
+        v-else-if="quizStore.getMasteryTier(item.character) === 'crown'" 
         class="flex items-center drop-shadow-xs" 
         title="Crown (Streak 5+)"
       >
@@ -95,10 +109,11 @@ const handleClick = () => {
       :class="[
         'font-bold tracking-tight text-center leading-tight my-0.5 font-jp',
         category === 'words' ? 'text-base sm:text-lg text-gray-800 dark:text-slate-100' : 'text-2xl sm:text-3xl text-gray-800 dark:text-slate-100',
-        quizStore.getMasteryTier(item.character) === 'crown' ? 'text-amber-900 dark:text-amber-200 drop-shadow-xs' : '',
-        quizStore.getMasteryTier(item.character) === 'mastered' ? 'text-emerald-950 dark:text-emerald-100' : '',
-        quizStore.getMasteryTier(item.character) === 'learning' ? 'text-amber-950 dark:text-amber-100' : '',
-        quizStore.getMasteryTier(item.character) === 'new' ? 'text-gray-400 dark:text-slate-400' : ''
+        isSkipped ? 'text-slate-400 dark:text-slate-500 line-through-none' : '',
+        !isSkipped && quizStore.getMasteryTier(item.character) === 'crown' ? 'text-amber-900 dark:text-amber-200 drop-shadow-xs' : '',
+        !isSkipped && quizStore.getMasteryTier(item.character) === 'mastered' ? 'text-emerald-950 dark:text-emerald-100' : '',
+        !isSkipped && quizStore.getMasteryTier(item.character) === 'learning' ? 'text-amber-950 dark:text-amber-100' : '',
+        !isSkipped && quizStore.getMasteryTier(item.character) === 'new' ? 'text-gray-400 dark:text-slate-400' : ''
       ]"
     >
       {{ item.character }}

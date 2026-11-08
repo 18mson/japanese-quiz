@@ -230,7 +230,8 @@ export const useQuizStore = defineStore('quiz', () => {
       getMasteryStreak: masteryStore.getMasteryStreak,
       userStreaks: masteryStore.userStreaks,
       introducedChars: masteryStore.introducedChars,
-      currentLessonNumber: lessonStore.currentLessonNumber
+      currentLessonNumber: lessonStore.currentLessonNumber,
+      isWordSkipped: masteryStore.isWordSkipped
     });
 
     questions.value = res.questions;
@@ -271,7 +272,8 @@ export const useQuizStore = defineStore('quiz', () => {
       selectedKanaCategory: selectedKanaCategory.value,
       getMasteryStreak: masteryStore.getMasteryStreak,
       introducedChars: masteryStore.introducedChars,
-      currentLessonNumber: lessonStore.currentLessonNumber
+      currentLessonNumber: lessonStore.currentLessonNumber,
+      isWordSkipped: masteryStore.isWordSkipped
     });
 
     questions.value = res.questions;
@@ -676,6 +678,10 @@ export const useQuizStore = defineStore('quiz', () => {
     getMasteryStreak: masteryStore.getMasteryStreak,
     getMasteryTier: masteryStore.getMasteryTier,
     bulkUpdateMasteryTier: masteryStore.bulkUpdateMasteryTier,
+    skippedWords: toRef(masteryStore, 'skippedWords'),
+    isWordSkipped: masteryStore.isWordSkipped,
+    toggleSkipWord: masteryStore.toggleSkipWord,
+    bulkSetSkipWords: masteryStore.bulkSetSkipWords,
     loadStreaksFromServer: masteryStore.loadStreaksFromServer,
     loadStreaksFromStorage: masteryStore.loadStreaksFromStorage,
     getLocalStreaks: masteryStore.getLocalStreaks,

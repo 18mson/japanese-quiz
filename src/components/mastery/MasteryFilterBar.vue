@@ -15,13 +15,14 @@ import {
   Award,
   Zap,
   Search,
-  X
+  X,
+  FastForward
 } from '@lucide/vue';
 
 const props = defineProps<{
   category: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4';
   subtype: string;
-  statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown';
+  statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown' | 'skip';
   availableLessons: string[];
   searchQuery: string;
   isOpen?: boolean;
@@ -30,7 +31,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'update:category', val: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4'): void;
   (e: 'update:subtype', val: string): void;
-  (e: 'update:statusFilter', val: 'all' | 'new' | 'learning' | 'mastered' | 'crown'): void;
+  (e: 'update:statusFilter', val: 'all' | 'new' | 'learning' | 'mastered' | 'crown' | 'skip'): void;
   (e: 'update:searchQuery', val: string): void;
 }>();
 
@@ -99,7 +100,7 @@ const activeSubtypeLabel = computed(() => {
   return props.subtype;
 });
 
-const statusPills = [
+const baseStatusPills = [
   { 
     key: 'all', 
     label: 'Semua Status', 
@@ -141,6 +142,29 @@ const statusPills = [
     activeIconClass: 'text-amber-600 dark:text-amber-400'
   }
 ] as const;
+
+const visibleStatusPills = computed(() => {
+  const pills: Array<{
+    key: 'all' | 'new' | 'learning' | 'mastered' | 'crown' | 'skip';
+    label: string;
+    shortLabel: string;
+    icon: any;
+    activeClass: string;
+    activeIconClass: string;
+  }> = [...baseStatusPills];
+
+  if (props.category === 'words') {
+    pills.push({
+      key: 'skip',
+      label: 'Dilewati / Skip (Tidak muncul di kuis)',
+      shortLabel: 'Skip',
+      icon: FastForward,
+      activeClass: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600',
+      activeIconClass: 'text-slate-400 dark:text-slate-500'
+    });
+  }
+  return pills;
+});
 </script>
 
 <template>
@@ -161,7 +185,7 @@ const statusPills = [
           :key="cat"
           :ref="setCategoryTabRef(cat)"
           type="button"
-          @click="emit('update:category', cat); emit('update:subtype', 'all'); closeDropdowns();"
+          @click="emit('update:category', cat); emit('update:subtype', 'all'); if (statusFilter === 'skip') emit('update:statusFilter', 'all'); closeDropdowns();"
           class="relative z-10 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 select-none"
           :class="category === cat 
             ? 'text-white font-black' 
@@ -356,7 +380,7 @@ const statusPills = [
           ></div>
 
           <button
-            v-for="st in statusPills"
+            v-for="st in visibleStatusPills"
             :key="st.key"
             :ref="setStatusTabRef(st.key)"
             type="button"
@@ -378,7 +402,8 @@ const statusPills = [
                 st.key === 'new' ? 'text-slate-500 dark:text-slate-400' :
                 st.key === 'learning' ? 'text-amber-500 dark:text-amber-400' :
                 st.key === 'mastered' ? 'text-emerald-500 dark:text-emerald-400' :
-                'text-amber-500 dark:text-amber-400'
+                st.key === 'crown' ? 'text-amber-500 dark:text-amber-400' :
+                'text-slate-400 dark:text-slate-500'
               ]" 
             />
             <span :class="statusFilter === st.key ? 'inline' : 'hidden sm:inline'">{{ st.shortLabel }}</span>

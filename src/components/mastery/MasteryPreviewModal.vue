@@ -221,6 +221,38 @@ onUnmounted(() => {
           <span v-if="item.category_word" class="text-xs px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold border border-amber-200 dark:border-amber-500/30">
             {{ item.category_word }}
           </span>
+
+          <span 
+            v-if="category === 'words' && quizStore.isWordSkipped?.(item.character)"
+            class="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-1"
+          >
+            <span>⏭️ Dilewati (Skip)</span>
+          </span>
+        </div>
+
+        <!-- Skip Toggle Button (Khusus Kosakata) -->
+        <div v-if="category === 'words'" class="mt-3 w-full pt-3 border-t border-slate-200/80 dark:border-slate-700/60 flex items-center justify-between gap-2">
+          <div class="text-left">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200 block">
+              {{ quizStore.isWordSkipped?.(item.character) ? 'Kata ini sedang di-skip' : 'Lewati kata ini di kuis?' }}
+            </span>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 block">
+              {{ quizStore.isWordSkipped?.(item.character) ? 'Tidak muncul di kuis & tidak dihitung di tracing' : 'Keluarkan dari soal kuis & parameter tracing' }}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            @click="quizStore.toggleSkipWord?.(item.character)"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shrink-0 shadow-xs"
+            :class="[
+              quizStore.isWordSkipped?.(item.character)
+                ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                : 'bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200'
+            ]"
+          >
+            <span>{{ quizStore.isWordSkipped?.(item.character) ? '🔄 Aktifkan' : '⏭️ Skip Kata' }}</span>
+          </button>
         </div>
 
       </div>
