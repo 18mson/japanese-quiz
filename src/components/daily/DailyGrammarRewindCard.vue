@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { 
-  BookOpen, 
   Volume2, 
   RotateCcw
 } from '@lucide/vue';
@@ -178,9 +177,14 @@ const formattedDate = computed(() => {
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
-                <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
+                <button
+                  type="button"
+                  @click.stop="handleJump"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  title="Buka Bab di Buku Materi"
+                >
                   Bab {{ dailyHighlight.lessonNumber }}
-                </span>
+                </button>
                 <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
                   {{ formattedDate }}
                 </span>
@@ -209,9 +213,14 @@ const formattedDate = computed(() => {
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
-                <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
+                <button
+                  type="button"
+                  @click.stop="handleJump"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  title="Buka Bab di Buku Materi"
+                >
                   Bab {{ dailyHighlight.lessonNumber }}
-                </span>
+                </button>
                 <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
                   {{ formattedDate }}
                 </span>
@@ -237,35 +246,26 @@ const formattedDate = computed(() => {
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
-                <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
-                  Bab {{ dailyHighlight.lessonNumber }}
-                </span>
-              </div>
-
-              <div class="flex items-center gap-1">
-                <!-- Audio Speaker Button -->
                 <button
-                  type="button"
-                  @click.stop="playSentenceAudio"
-                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
-                  title="Dengarkan Pelafalan"
-                >
-                  <Volume2 class="w-3 h-3" />
-                  <span>Dengar</span>
-                </button>
-
-                <!-- Jump Button -->
-                <button
-                  v-if="showJumpButton"
                   type="button"
                   @click.stop="handleJump"
-                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-slate-900 dark:bg-slate-100 hover:bg-amber-600 dark:hover:bg-amber-400 text-white dark:text-slate-900 text-[10px] font-bold shadow-2xs transition cursor-pointer"
-                  title="Buka Bab ini di Buku Materi"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  title="Buka Bab di Buku Materi"
                 >
-                  <BookOpen class="w-3 h-3" />
-                  <span>Bab {{ dailyHighlight.lessonNumber }}</span>
+                  Bab {{ dailyHighlight.lessonNumber }}
                 </button>
               </div>
+
+              <!-- Audio Speaker Button -->
+              <button
+                type="button"
+                @click.stop="playSentenceAudio"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
+                title="Dengarkan Pelafalan"
+              >
+                <Volume2 class="w-3 h-3" />
+                <span>Dengar</span>
+              </button>
             </div>
 
             <!-- Content: Contoh Kalimat -->
@@ -273,10 +273,7 @@ const formattedDate = computed(() => {
               <p class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug tracking-wide line-clamp-2">
                 {{ dailyHighlight.example.japanese }}
               </p>
-              <p class="text-[10px] sm:text-[11px] font-semibold text-amber-700 dark:text-amber-400 truncate mt-0.5">
-                {{ dailyHighlight.example.romaji }}
-              </p>
-              <p class="text-[10px] sm:text-[11px] font-medium text-slate-700 dark:text-slate-300 italic truncate">
+              <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 line-clamp-2 mt-1">
                 "{{ dailyHighlight.example.meaning }}"
               </p>
             </div>

@@ -196,10 +196,7 @@ const formattedDate = computed(() => {
                   <p class="font-jp font-black text-base sm:text-lg text-slate-900 dark:text-white leading-relaxed">
                     {{ dailyHighlight.example.japanese }}
                   </p>
-                  <p class="text-xs font-bold text-amber-700 dark:text-amber-300">
-                    {{ dailyHighlight.example.romaji }}
-                  </p>
-                  <p class="text-xs font-medium text-slate-700 dark:text-slate-300 italic mt-0.5">
+                  <p class="text-xs sm:text-sm font-bold text-amber-700 dark:text-amber-300 mt-1">
                     "{{ dailyHighlight.example.meaning }}"
                   </p>
                 </div>
