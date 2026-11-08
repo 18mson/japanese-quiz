@@ -477,10 +477,12 @@ watch(characterTypes, (newVal) => {
 
       <!-- Center Column: Wheel Selector & Options -->
       <main class="w-full max-w-3xl flex flex-col items-center min-w-0">
-        <!-- Daily Grammar Rewind Card (Highlight Rewind Materi yang Sudah Dipelajari) -->
-        <DailyGrammarRewindCard 
-          @jump-to-chapter="(num) => emit('openHandbook', num)" 
-        />
+        <!-- Mobile/Tablet Compact Daily Grammar Rewind Card -->
+        <div class="w-full xl:hidden mb-2">
+          <DailyGrammarRewindCard 
+            @jump-to-chapter="(num) => emit('openHandbook', num)" 
+          />
+        </div>
 
         <StartWheelSelector
           :modes="modesList"
@@ -625,8 +627,12 @@ watch(characterTypes, (newVal) => {
         </StartWheelSelector>
       </main>
 
-      <!-- Right Column: Papan Peringkat / Leaderboard (Desktop >= xl) -->
-      <aside class="hidden xl:block w-[300px] 2xl:w-[340px] shrink-0">
+      <!-- Right Column: Daily Rewind & Papan Peringkat / Leaderboard (Desktop >= xl) -->
+      <aside class="hidden xl:flex flex-col gap-3.5 w-[300px] 2xl:w-[340px] shrink-0">
+        <!-- Daily Grammar Rewind Card (Di atas Papan Peringkat) -->
+        <DailyGrammarRewindCard 
+          @jump-to-chapter="(num) => emit('openHandbook', num)" 
+        />
         <DesktopLeaderboardSidebar @open-leaderboard="emit('openLeaderboard')" />
       </aside>
     </div>

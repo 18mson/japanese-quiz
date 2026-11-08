@@ -44,7 +44,7 @@ const fetchCumulative = async () => {
   const { data, error } = await supabase
     .from('leaderboard_cumulative')
     .select('*')
-    .limit(5);
+    .limit(3);
 
   if (error) throw error;
   cumulativeList.value = data || [];
@@ -54,7 +54,7 @@ const fetchSpeed = async () => {
   const { data, error } = await supabase
     .from('leaderboard_speed')
     .select('*')
-    .limit(5);
+    .limit(3);
 
   if (error) throw error;
   speedList.value = data || [];
@@ -127,7 +127,7 @@ const fetchMastery = async () => {
     }
 
     result.sort((a, b) => b.percentage - a.percentage);
-    masteryList.value = result.slice(0, 5);
+    masteryList.value = result.slice(0, 3);
   } catch (err: any) {
     console.error('Error loading mastery leaderboard:', err);
     masteryList.value = [];
@@ -173,7 +173,7 @@ watch(activeTab, () => {
             Papan Peringkat
           </h3>
           <div class="text-sm font-black text-gray-900 dark:text-slate-100">
-            Top 5 Pemain
+            Top 3 Pemain
           </div>
         </div>
       </div>
