@@ -7,6 +7,7 @@ import {
   Volume2, 
   BookOpen, 
   ChevronLeft, 
+  ChevronRight,
   ArrowRight 
 } from '@lucide/vue';
 import { useDailyGrammarRewind } from '../../composables/useDailyGrammarRewind';
@@ -25,7 +26,7 @@ const { dailyHighlight } = useDailyGrammarRewind();
 const { speak } = useTextToSpeech();
 
 const currentPage = ref<number>(1);
-const totalPages = 2;
+const totalPages = 3;
 
 const setPage = (page: number) => {
   if (page >= 1 && page <= totalPages) {
@@ -60,9 +61,9 @@ const onTouchStart = (e: TouchEvent) => {
 const onTouchEnd = (e: TouchEvent) => {
   touchEndX.value = e.changedTouches[0].clientX;
   const diff = touchEndX.value - touchStartX.value;
-  if (diff < -40) {
+  if (diff < -35) {
     nextPage();
-  } else if (diff > 40) {
+  } else if (diff > 35) {
     prevPage();
   }
 };
@@ -75,8 +76,8 @@ const playSentenceAudio = () => {
 
 const handleJump = () => {
   if (dailyHighlight.value?.lessonNumber) {
-    emit('close');
     emit('jumpToChapter', dailyHighlight.value.lessonNumber);
+    emit('close');
   }
 };
 
@@ -85,7 +86,7 @@ const formattedDate = computed(() => {
     const today = new Date();
     return new Intl.DateTimeFormat('id-ID', {
       day: 'numeric',
-      month: 'long'
+      month: 'short'
     }).format(today);
   } catch (e) {
     return '';
@@ -95,7 +96,7 @@ const formattedDate = computed(() => {
 
 <template>
   <Teleport to="body">
-    <Transition name="fade">
+    <Transition name="modal-fade">
       <div 
         v-if="isOpen && dailyHighlight"
         class="fixed inset-0 z-[70] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4"
@@ -104,7 +105,7 @@ const formattedDate = computed(() => {
         <div 
           @touchstart="onTouchStart"
           @touchend="onTouchEnd"
-          class="w-full max-w-md bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-500/40 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[300px] animate-scaleUp"
+          class="w-full max-w-md bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-500/40 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[290px] animate-scaleUp"
         >
           <!-- Background Ambient Glow -->
           <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-400/20 dark:bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
@@ -131,13 +132,16 @@ const formattedDate = computed(() => {
             </button>
           </div>
 
-          <!-- Slide Content (Touch swipeable) -->
-          <div class="flex-1 py-4 flex flex-col justify-center">
-            <Transition name="fade-slide" mode="out-in">
-              <!-- Slide 1: Pola & Arti -->
-              <div v-if="currentPage === 1" key="modal-pattern" class="flex flex-col gap-2">
+          <!-- Slide Container (Whole-Slide Sliding Track) -->
+          <div class="w-full overflow-hidden my-3">
+            <div 
+              class="flex transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] w-full"
+              :style="{ transform: `translateX(-${(currentPage - 1) * 100}%)` }"
+            >
+              <!-- Slide 1: Pola & Rumus -->
+              <div class="w-full shrink-0 flex flex-col justify-center gap-2 px-1">
                 <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
-                  {{ formattedDate }} • Rumus Pola Kalimat
+                  {{ formattedDate }} • 1. Rumus Pola Kalimat
                 </span>
 
                 <h3 class="font-jp font-black text-lg sm:text-xl text-slate-900 dark:text-white tracking-wide leading-snug">
@@ -148,21 +152,34 @@ const formattedDate = computed(() => {
                   {{ dailyHighlight.meaning }}
                 </p>
 
-                <p v-if="dailyHighlight.explanation" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-1">
-                  {{ dailyHighlight.explanation }}
-                </p>
-
-                <div class="mt-3 flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500 italic">
-                  <span>👈 Geser layar ke kiri atau klik Contoh</span>
+                <div class="mt-2 flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500 italic">
+                  <span>👈 Geser ke kiri untuk lihat penjelasan</span>
                 </div>
               </div>
 
-              <!-- Slide 2: Contoh Kalimat & Audio -->
-              <div v-else key="modal-example" class="flex flex-col gap-2">
+              <!-- Slide 2: Penjelasan Singkat -->
+              <div class="w-full shrink-0 flex flex-col justify-center gap-2 px-1">
+                <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 dark:text-slate-500">
+                  2. Fungsi & Penjelasan
+                </span>
+
+                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-gray-100 dark:border-slate-800 rounded-2xl">
+                  <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                    {{ dailyHighlight.explanation || dailyHighlight.meaning }}
+                  </p>
+                </div>
+
+                <div class="mt-2 flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-500 italic">
+                  <span>👈 Geser untuk lihat contoh kalimat</span>
+                </div>
+              </div>
+
+              <!-- Slide 3: Contoh Kalimat & Audio -->
+              <div class="w-full shrink-0 flex flex-col justify-center gap-2 px-1">
                 <div class="flex items-center justify-between">
                   <span class="text-[10px] uppercase font-bold tracking-wider text-amber-700 dark:text-amber-400 flex items-center gap-1">
                     <Sparkles class="w-3 h-3 text-amber-500" />
-                    <span>Contoh Kalimat Hari Ini</span>
+                    <span>3. Contoh Kalimat Hari Ini</span>
                   </span>
 
                   <button
@@ -175,7 +192,7 @@ const formattedDate = computed(() => {
                   </button>
                 </div>
 
-                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-gray-100 dark:border-slate-800 rounded-2xl flex flex-col gap-1 mt-1">
+                <div class="p-3 bg-slate-50 dark:bg-slate-800/60 border border-gray-100 dark:border-slate-800 rounded-2xl flex flex-col gap-1">
                   <p class="font-jp font-black text-base sm:text-lg text-slate-900 dark:text-white leading-relaxed">
                     {{ dailyHighlight.example.japanese }}
                   </p>
@@ -191,14 +208,14 @@ const formattedDate = computed(() => {
                 <button
                   type="button"
                   @click="handleJump"
-                  class="mt-2 w-full py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+                  class="mt-1 w-full py-2 bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
                 >
                   <BookOpen class="w-3.5 h-3.5" />
                   <span>Buka Bab {{ dailyHighlight.lessonNumber }} di Buku Materi</span>
                   <ArrowRight class="w-3.5 h-3.5" />
                 </button>
               </div>
-            </Transition>
+            </div>
           </div>
 
           <!-- Footer Navigation & Pagination -->
@@ -210,51 +227,50 @@ const formattedDate = computed(() => {
                 @click="setPage(1)" 
                 class="h-2 rounded-full transition-all cursor-pointer" 
                 :class="currentPage === 1 ? 'bg-amber-500 w-5' : 'bg-slate-300 dark:bg-slate-700 w-2 hover:bg-slate-400'"
+                title="Slide 1: Pola"
               ></button>
               <button 
                 type="button" 
                 @click="setPage(2)" 
                 class="h-2 rounded-full transition-all cursor-pointer" 
                 :class="currentPage === 2 ? 'bg-amber-500 w-5' : 'bg-slate-300 dark:bg-slate-700 w-2 hover:bg-slate-400'"
+                title="Slide 2: Penjelasan"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(3)" 
+                class="h-2 rounded-full transition-all cursor-pointer" 
+                :class="currentPage === 3 ? 'bg-amber-500 w-5' : 'bg-slate-300 dark:bg-slate-700 w-2 hover:bg-slate-400'"
+                title="Slide 3: Contoh"
               ></button>
               <span class="text-xs text-slate-400 dark:text-slate-500 ml-1">
-                {{ currentPage }}/2
+                {{ currentPage }}/3
               </span>
             </div>
 
             <!-- Page Buttons -->
             <div class="flex items-center gap-2">
               <button
-                v-if="currentPage === 2"
+                v-if="currentPage > 1"
                 type="button"
-                @click="setPage(1)"
-                class="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer flex items-center gap-1"
+                @click="prevPage"
+                class="px-2.5 py-1.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer flex items-center gap-0.5"
               >
                 <ChevronLeft class="w-3.5 h-3.5" />
-                <span>Pola</span>
+                <span>{{ currentPage === 3 ? 'Penjelasan' : 'Pola' }}</span>
               </button>
 
               <button
-                v-if="currentPage === 1"
+                v-if="currentPage < 3"
                 type="button"
-                @click="setPage(2)"
-                class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-800 dark:text-amber-200 border border-amber-400/40 text-xs font-bold transition cursor-pointer flex items-center gap-1"
+                @click="nextPage"
+                class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-white transition cursor-pointer flex items-center gap-1 shadow-xs"
               >
-                <span>Lihat Contoh</span>
-                <ArrowRight class="w-3.5 h-3.5" />
-              </button>
-
-              <button
-                v-else
-                type="button"
-                @click="emit('close')"
-                class="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold transition cursor-pointer"
-              >
-                Tutup
+                <span>{{ currentPage === 1 ? 'Penjelasan' : 'Contoh' }}</span>
+                <ChevronRight class="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
-
         </div>
       </div>
     </Transition>
@@ -269,6 +285,9 @@ const formattedDate = computed(() => {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+.animate-scaleUp {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
 @keyframes scaleUp {
   from {
     opacity: 0;
@@ -279,25 +298,12 @@ const formattedDate = computed(() => {
     transform: scale(1);
   }
 }
-.animate-scaleUp {
-  animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.fade-enter-active,
-.fade-leave-active {
+.modal-fade-enter-active,
+.modal-fade-leave-active {
   transition: opacity 0.2s ease;
 }
-.fade-enter-from,
-.fade-leave-to {
+.modal-fade-enter-from,
+.modal-fade-leave-to {
   opacity: 0;
-}
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-  transition: all 0.2s ease-out;
-}
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-4px);
 }
 </style>
-

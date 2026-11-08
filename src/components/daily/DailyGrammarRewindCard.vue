@@ -5,6 +5,7 @@ import {
   BookOpen, 
   Volume2, 
   ChevronLeft,
+  ChevronRight,
   RotateCcw,
   ArrowRight
 } from '@lucide/vue';
@@ -28,9 +29,9 @@ const {
 
 const { speak } = useTextToSpeech();
 
-// Pagination State (1 = Pola & Rumus, 2 = Contoh Kalimat & Audio)
+// Pagination State (3 Slides: 1 = Pola & Arti, 2 = Penjelasan, 3 = Contoh & Audio)
 const currentPage = ref<number>(1);
-const totalPages = 2;
+const totalPages = 3;
 
 const setPage = (page: number) => {
   if (page >= 1 && page <= totalPages) {
@@ -54,7 +55,7 @@ const prevPage = () => {
   }
 };
 
-// Touch swipe support
+// Touch swipe support (Swipe kartu ke kiri/kanan)
 const touchStartX = ref<number>(0);
 const touchEndX = ref<number>(0);
 
@@ -65,9 +66,9 @@ const onTouchStart = (e: TouchEvent) => {
 const onTouchEnd = (e: TouchEvent) => {
   touchEndX.value = e.changedTouches[0].clientX;
   const diff = touchEndX.value - touchStartX.value;
-  if (diff < -40) {
+  if (diff < -35) {
     nextPage();
-  } else if (diff > 40) {
+  } else if (diff > 35) {
     prevPage();
   }
 };
@@ -101,141 +102,249 @@ const formattedDate = computed(() => {
   <Transition name="fade-slide">
     <div 
       v-if="hasLearnedLessons && dailyHighlight"
+      class="w-full relative overflow-hidden rounded-2xl select-text shadow-sm"
       @touchstart="onTouchStart"
       @touchend="onTouchEnd"
-      class="w-full bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3.5 sm:p-4 shadow-sm relative overflow-hidden transition-all duration-300 select-text flex flex-col justify-between min-h-[190px]"
     >
-      <!-- Background Ambient Glow -->
-      <div class="absolute -top-10 -right-10 w-28 h-28 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      <!-- Whole-Card Slider Track (Kartu utuh meluncur horizontal) -->
+      <div 
+        class="flex transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] w-full"
+        :style="{ transform: `translateX(-${(currentPage - 1) * 100}%)` }"
+      >
+        <!-- SLIDE CARD 1: Pola & Rumus -->
+        <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[142px] relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
-      <!-- Header: Badges Only (No duplicate pagination) -->
-      <div class="w-full flex items-center justify-between gap-1.5 mb-2">
-        <div class="flex items-center gap-1.5 min-w-0">
-          <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
-            <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
-            <span>Rewind</span>
+          <!-- Header -->
+          <div class="w-full flex items-center justify-between gap-1.5 mb-1.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
+                <span>Rewind</span>
+              </div>
+              <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
+                Bab {{ dailyHighlight.lessonNumber }}
+              </span>
+              <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                {{ formattedDate }}
+              </span>
+            </div>
+            <span class="text-[9px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-500/15 dark:bg-amber-500/20 px-1.5 py-0.5 rounded-md">
+              1. Pola
+            </span>
           </div>
 
-          <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
-            Bab {{ dailyHighlight.lessonNumber }}
-          </span>
-
-          <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
-            {{ formattedDate }}
-          </span>
-        </div>
-      </div>
-
-      <!-- Slide Container (Seamless single card surface) -->
-      <div class="flex-1 flex flex-col justify-center py-1">
-        <Transition name="fade-slide" mode="out-in">
-          <!-- Slide 1: Pola & Arti Tata Bahasa (Single Formula, No nested border box) -->
-          <div v-if="currentPage === 1" key="page-pattern" class="flex flex-col gap-1">
-            <h4 class="font-jp font-black text-sm sm:text-base text-slate-900 dark:text-slate-100 tracking-wide line-clamp-2">
+          <!-- Content: Pola & Arti -->
+          <div class="flex-1 flex flex-col justify-center py-0.5">
+            <h4 class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 tracking-wide line-clamp-2 leading-snug">
               {{ dailyHighlight.pattern }}
             </h4>
-            
-            <p class="text-xs font-bold text-amber-700 dark:text-amber-300">
+            <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 mt-0.5 line-clamp-1">
               {{ dailyHighlight.meaning }}
-            </p>
-
-            <p v-if="dailyHighlight.explanation" class="text-[11px] text-slate-600 dark:text-slate-300 mt-0.5 line-clamp-2 leading-snug">
-              {{ dailyHighlight.explanation }}
             </p>
           </div>
 
-          <!-- Slide 2: Contoh Kalimat & Audio (Single Surface, No nested border box) -->
-          <div v-else key="page-example" class="flex flex-col gap-1">
-            <div class="flex items-center justify-between gap-1 mb-0.5">
-              <span class="text-[9px] uppercase tracking-wider font-black text-amber-700 dark:text-amber-400 flex items-center gap-1">
-                <Sparkles class="w-2.5 h-2.5 text-amber-500" />
-                <span>Contoh Kalimat Hari Ini</span>
+          <!-- Footer -->
+          <div class="w-full flex items-center justify-between pt-1.5 mt-1 border-t border-amber-200/50 dark:border-slate-800/80">
+            <!-- 3 Dots Indicator -->
+            <div class="flex items-center gap-1.5">
+              <button 
+                type="button" 
+                @click="setPage(1)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-amber-500 w-4" 
+                title="Slide 1: Pola"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(2)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 2: Penjelasan"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(3)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 3: Contoh"
+              ></button>
+              <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 ml-1">
+                1/3
               </span>
-
-              <button
-                type="button"
-                @click.stop="playSentenceAudio"
-                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
-                title="Dengarkan Pelafalan"
-              >
-                <Volume2 class="w-3 h-3" />
-                <span>Dengar</span>
-              </button>
             </div>
 
-            <!-- Japanese Text -->
-            <p class="font-jp font-black text-sm sm:text-base text-slate-900 dark:text-slate-100 leading-snug tracking-wide line-clamp-2">
+            <button
+              type="button"
+              @click="nextPage"
+              class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200 transition cursor-pointer"
+            >
+              <span>Penjelasan</span>
+              <ArrowRight class="w-3 h-3" />
+            </button>
+          </div>
+        </div>
+
+        <!-- SLIDE CARD 2: Penjelasan Singkat -->
+        <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[142px] relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <!-- Header -->
+          <div class="w-full flex items-center justify-between gap-1.5 mb-1.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
+                <span>Rewind</span>
+              </div>
+              <span class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs">
+                Bab {{ dailyHighlight.lessonNumber }}
+              </span>
+            </div>
+            <span class="text-[9px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-500/15 dark:bg-amber-500/20 px-1.5 py-0.5 rounded-md">
+              2. Penjelasan
+            </span>
+          </div>
+
+          <!-- Content: Penjelasan / Catatan -->
+          <div class="flex-1 flex flex-col justify-center py-0.5">
+            <p class="text-[11px] sm:text-xs text-slate-700 dark:text-slate-200 leading-snug line-clamp-3">
+              {{ dailyHighlight.explanation || dailyHighlight.meaning }}
+            </p>
+          </div>
+
+          <!-- Footer -->
+          <div class="w-full flex items-center justify-between pt-1.5 mt-1 border-t border-amber-200/50 dark:border-slate-800/80">
+            <!-- 3 Dots Indicator -->
+            <div class="flex items-center gap-1.5">
+              <button 
+                type="button" 
+                @click="setPage(1)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 1: Pola"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(2)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-amber-500 w-4" 
+                title="Slide 2: Penjelasan"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(3)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 3: Contoh"
+              ></button>
+              <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 ml-1">
+                2/3
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                @click="prevPage"
+                class="inline-flex items-center gap-0.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer"
+              >
+                <ChevronLeft class="w-3 h-3" />
+                <span>Pola</span>
+              </button>
+              <button
+                type="button"
+                @click="nextPage"
+                class="inline-flex items-center gap-0.5 text-[11px] font-bold text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200 transition cursor-pointer"
+              >
+                <span>Contoh</span>
+                <ChevronRight class="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE CARD 3: Contoh Kalimat & Audio -->
+        <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[142px] relative overflow-hidden">
+          <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+          <!-- Header -->
+          <div class="w-full flex items-center justify-between gap-1.5 mb-1.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="text-[9px] font-black uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-500/15 dark:bg-amber-500/20 px-1.5 py-0.5 rounded-md flex items-center gap-1">
+                <Sparkles class="w-2.5 h-2.5 text-amber-500" />
+                <span>3. Contoh</span>
+              </span>
+            </div>
+
+            <!-- Audio Speaker Button -->
+            <button
+              type="button"
+              @click.stop="playSentenceAudio"
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
+              title="Dengarkan Pelafalan"
+            >
+              <Volume2 class="w-3 h-3" />
+              <span>Dengar</span>
+            </button>
+          </div>
+
+          <!-- Content: Contoh Kalimat -->
+          <div class="flex-1 flex flex-col justify-center py-0.5">
+            <p class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug tracking-wide line-clamp-2">
               {{ dailyHighlight.example.japanese }}
             </p>
-
-            <!-- Romaji -->
-            <p class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 truncate">
+            <p class="text-[10px] sm:text-[11px] font-semibold text-amber-700 dark:text-amber-400 truncate">
               {{ dailyHighlight.example.romaji }}
             </p>
-
-            <!-- Meaning -->
-            <p class="text-[11px] font-bold text-slate-700 dark:text-slate-200 italic line-clamp-2">
+            <p class="text-[10px] sm:text-[11px] font-medium text-slate-700 dark:text-slate-300 italic truncate">
               "{{ dailyHighlight.example.meaning }}"
             </p>
           </div>
-        </Transition>
-      </div>
 
-      <!-- Single Bottom Footer: Dots & Next/Jump Action Button -->
-      <div class="w-full flex items-center justify-between pt-2 mt-1 border-t border-amber-200/50 dark:border-slate-800">
-        <!-- Pagination Dots & Counter -->
-        <div class="flex items-center gap-1.5">
-          <button 
-            type="button" 
-            @click="setPage(1)" 
-            class="h-1.5 rounded-full transition-all cursor-pointer" 
-            :class="currentPage === 1 ? 'bg-amber-500 w-4' : 'bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400'"
-            title="Halaman 1: Pola Kalimat"
-          ></button>
-          <button 
-            type="button" 
-            @click="setPage(2)" 
-            class="h-1.5 rounded-full transition-all cursor-pointer" 
-            :class="currentPage === 2 ? 'bg-amber-500 w-4' : 'bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400'"
-            title="Halaman 2: Contoh Kalimat"
-          ></button>
-          <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 ml-1">
-            {{ currentPage }}/2
-          </span>
-        </div>
+          <!-- Footer -->
+          <div class="w-full flex items-center justify-between pt-1.5 mt-1 border-t border-amber-200/50 dark:border-slate-800/80">
+            <!-- 3 Dots Indicator -->
+            <div class="flex items-center gap-1.5">
+              <button 
+                type="button" 
+                @click="setPage(1)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 1: Pola"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(2)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400" 
+                title="Slide 2: Penjelasan"
+              ></button>
+              <button 
+                type="button" 
+                @click="setPage(3)" 
+                class="h-1.5 rounded-full transition-all cursor-pointer bg-amber-500 w-4" 
+                title="Slide 3: Contoh"
+              ></button>
+              <span class="text-[10px] font-bold text-slate-400 dark:text-slate-500 ml-1">
+                3/3
+              </span>
+            </div>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center gap-1.5">
-          <button
-            v-if="currentPage === 2"
-            type="button"
-            @click="setPage(1)"
-            class="inline-flex items-center gap-0.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer mr-1"
-          >
-            <ChevronLeft class="w-3.5 h-3.5" />
-            <span>Pola</span>
-          </button>
+            <!-- Action Buttons -->
+            <div class="flex items-center gap-1.5">
+              <button
+                type="button"
+                @click="prevPage"
+                class="inline-flex items-center gap-0.5 text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition cursor-pointer"
+              >
+                <ChevronLeft class="w-3 h-3" />
+                <span>Kembali</span>
+              </button>
 
-          <button
-            v-if="currentPage === 1"
-            type="button"
-            @click="setPage(2)"
-            class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 dark:text-amber-300 hover:text-amber-800 dark:hover:text-amber-200 transition cursor-pointer"
-          >
-            <span>Contoh</span>
-            <ArrowRight class="w-3 h-3" />
-          </button>
-
-          <button
-            v-else-if="showJumpButton"
-            type="button"
-            @click="handleJump"
-            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-900 dark:bg-slate-100 hover:bg-amber-600 dark:hover:bg-amber-400 text-white dark:text-slate-900 text-[11px] font-bold transition-all shadow-xs cursor-pointer"
-          >
-            <BookOpen class="w-3 h-3" />
-            <span>Buka Bab {{ dailyHighlight.lessonNumber }}</span>
-            <ArrowRight class="w-3 h-3" />
-          </button>
+              <button
+                v-if="showJumpButton"
+                type="button"
+                @click="handleJump"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-900 dark:bg-slate-100 hover:bg-amber-600 dark:hover:bg-amber-400 text-white dark:text-slate-900 text-[10px] sm:text-[11px] font-bold transition-all shadow-xs cursor-pointer"
+              >
+                <BookOpen class="w-3 h-3" />
+                <span>Bab {{ dailyHighlight.lessonNumber }}</span>
+                <ArrowRight class="w-2.5 h-2.5" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -252,7 +361,7 @@ const formattedDate = computed(() => {
 }
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: all 0.2s ease-out;
+  transition: all 0.25s ease-out;
 }
 .fade-slide-enter-from,
 .fade-slide-leave-to {
