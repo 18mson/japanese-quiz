@@ -20,6 +20,10 @@ export const DAILY_CHAPTER_META: Record<number, ChapterMeta> = {
   14: { title: 'Bentuk -Te & Permintaan', grammar: '〜てください, 〜ています (sedang), 〜ましょうか' },
   15: { title: 'Izin & Keadaan', grammar: '〜てもいいです, 〜てはいけません, 〜ています (keadaan)' },
   16: { title: 'Rangkaian Kegiatan & Sifat', grammar: '〜て、〜て, 〜てから, Adj-くて / で, N1 は N2 が' },
+  17: { title: 'Bentuk -Nai & Kewajiban', grammar: '〜ないでください, 〜なければなりません, 〜なくてもいいです, までに' },
+  18: { title: 'Bentuk Kamus & Kemampuan', grammar: '〜ことができます, 趣味は〜ことです, 〜前に' },
+  19: { title: 'Bentuk -Ta & Pengalaman', grammar: '〜たことがあります, 〜たり〜たりします, 〜くなります / になります' },
+  20: { title: 'Bentuk Biasa (Futsuukei)', grammar: 'Ragam santai / kasual kata kerja, kata sifat, dan kata benda' },
 };
 
 export function getChapterTitle(chapterId: number): string {

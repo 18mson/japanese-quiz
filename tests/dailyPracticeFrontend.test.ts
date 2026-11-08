@@ -191,10 +191,10 @@ test('Daily Practice Frontend Test Suite', async (t) => {
   });
 
   // ============================================================
-  // 7. Metadata Bab Latihan Harian (Bab 1 - 16)
+  // 7. Metadata Bab Latihan Harian (Bab 1 - 20)
   // ============================================================
-  await t.test('9. DAILY_CHAPTER_META mencakup Bab 1 sampai Bab 16 dengan lengkap', () => {
-    for (let i = 1; i <= 16; i++) {
+  await t.test('9. DAILY_CHAPTER_META mencakup Bab 1 sampai Bab 20 dengan lengkap', () => {
+    for (let i = 1; i <= 20; i++) {
       const meta = DAILY_CHAPTER_META[i];
       assert.ok(meta, `Metadata Bab ${i} harus tersedia`);
       assert.ok(meta.title && meta.title.length > 0, `Judul Bab ${i} tidak boleh kosong`);
@@ -206,6 +206,10 @@ test('Daily Practice Frontend Test Suite', async (t) => {
     assert.strictEqual(DAILY_CHAPTER_META[14].title, 'Bentuk -Te & Permintaan');
     assert.strictEqual(DAILY_CHAPTER_META[15].title, 'Izin & Keadaan');
     assert.strictEqual(DAILY_CHAPTER_META[16].title, 'Rangkaian Kegiatan & Sifat');
+    assert.strictEqual(DAILY_CHAPTER_META[17].title, 'Bentuk -Nai & Kewajiban');
+    assert.strictEqual(DAILY_CHAPTER_META[18].title, 'Bentuk Kamus & Kemampuan');
+    assert.strictEqual(DAILY_CHAPTER_META[19].title, 'Bentuk -Ta & Pengalaman');
+    assert.strictEqual(DAILY_CHAPTER_META[20].title, 'Bentuk Biasa (Futsuukei)');
   });
 });
 

@@ -6274,6 +6274,551 @@
           "id": "Santos badannya tinggi"
         }
       ]
+    },
+    "naide_act": {
+      "lesson": 17,
+      "items": [
+        {
+          "jp": "ここで写真を撮ら",
+          "kana": "ここでしゃしんをとら",
+          "id": "mengambil foto di sini"
+        },
+        {
+          "jp": "ここに車を止め",
+          "kana": "ここにくるまをとめ",
+          "id": "memarkir mobil di sini"
+        },
+        {
+          "jp": "たばこを吸わ",
+          "kana": "たばこをすわ",
+          "id": "merokok"
+        },
+        {
+          "jp": "心配し",
+          "kana": "しんぱいし",
+          "id": "khawatir"
+        },
+        {
+          "jp": "無理をし",
+          "kana": "むりをし",
+          "id": "memaksakan diri"
+        },
+        {
+          "jp": "パスポートを忘れ",
+          "kana": "パスポートをわすれ",
+          "id": "melupakan paspor"
+        },
+        {
+          "jp": "ここに入ら",
+          "kana": "ここにはいら",
+          "id": "masuk ke sini"
+        },
+        {
+          "jp": "お酒を飲ま",
+          "kana": "おさけをのま",
+          "id": "minum alkohol"
+        },
+        {
+          "jp": "傘を忘れ",
+          "kana": "かさをわすれ",
+          "id": "melupakan payung"
+        },
+        {
+          "jp": "ここに荷物を置か",
+          "kana": "ここににもつをおか",
+          "id": "menaruh barang di sini"
+        }
+      ]
+    },
+    "nakereba_act": {
+      "lesson": 17,
+      "items": [
+        {
+          "jp": "薬を飲ま",
+          "kana": "くすりをのま",
+          "id": "minum obat"
+        },
+        {
+          "jp": "病院へ行か",
+          "kana": "びょういんへいか",
+          "id": "pergi ke rumah sakit"
+        },
+        {
+          "jp": "パスポートを見せ",
+          "kana": "パスポートをみせ",
+          "id": "menunjukkan paspor"
+        },
+        {
+          "jp": "毎日日本語を勉強し",
+          "kana": "まいにちにほんごをべんきょうし",
+          "id": "setiap hari belajar bahasa Jepang"
+        },
+        {
+          "jp": "本を返さ",
+          "kana": "ほんをかえさ",
+          "id": "mengembalikan buku"
+        },
+        {
+          "jp": "お金を払わ",
+          "kana": "おかねをはらわ",
+          "id": "membayar uang"
+        },
+        {
+          "jp": "早く起き",
+          "kana": "はやくおき",
+          "id": "bangun cepat / pagi"
+        },
+        {
+          "jp": "レポートを出さ",
+          "kana": "レポートをださ",
+          "id": "mengumpulkan laporan"
+        },
+        {
+          "jp": "うちに帰ら",
+          "kana": "うちにかえら",
+          "id": "pulang ke rumah"
+        }
+      ]
+    },
+    "nakutemo_act": {
+      "lesson": 17,
+      "items": [
+        {
+          "jp": "明日来",
+          "kana": "あしたこ",
+          "id": "besok datang"
+        },
+        {
+          "jp": "急が",
+          "kana": "いそが",
+          "id": "terburu-buru"
+        },
+        {
+          "jp": "靴を脱が",
+          "kana": "くつをぬが",
+          "id": "melepas sepatu"
+        },
+        {
+          "jp": "傘を持って行か",
+          "kana": "かさをもっていか",
+          "id": "membawa payung pergi"
+        },
+        {
+          "jp": "残業し",
+          "kana": "ざんぎょうし",
+          "id": "lembur"
+        },
+        {
+          "jp": "日曜日働か",
+          "kana": "にちようびはたらか",
+          "id": "bekerja hari Minggu"
+        },
+        {
+          "jp": "名前を書か",
+          "kana": "なまえをかか",
+          "id": "menulis nama"
+        },
+        {
+          "jp": "お金を払わ",
+          "kana": "おかねをはらわ",
+          "id": "membayar uang"
+        }
+      ]
+    },
+    "deadline_time": {
+      "lesson": 17,
+      "items": [
+        {
+          "jp": "土曜日までに",
+          "kana": "どようびまでに",
+          "id": "sebelum hari Sabtu"
+        },
+        {
+          "jp": "5時までに",
+          "kana": "ごじまでに",
+          "id": "sebelum jam 5"
+        },
+        {
+          "jp": "明日までに",
+          "kana": "あしたまでに",
+          "id": "sebelum besok"
+        },
+        {
+          "jp": "来週の月曜日までに",
+          "kana": "らいしゅうのげつようびまでに",
+          "id": "sebelum hari Senin depan"
+        },
+        {
+          "jp": "今週の金曜日までに",
+          "kana": "こんしゅうのきんようびまでに",
+          "id": "sebelum hari Jumat minggu ini"
+        }
+      ]
+    },
+    "deadline_duty": {
+      "lesson": 17,
+      "items": [
+        {
+          "jp": "レポートを出さなければなりません",
+          "kana": "レポートをださなければなりません",
+          "id": "harus mengumpulkan laporan"
+        },
+        {
+          "jp": "本を返さなければなりません",
+          "kana": "ほんをかえさなければなりません",
+          "id": "harus mengembalikan buku"
+        },
+        {
+          "jp": "お金を払わなければなりません",
+          "kana": "おかねをはらわなければなりません",
+          "id": "harus membayar uang"
+        },
+        {
+          "jp": "荷物を送らなければなりません",
+          "kana": "にもつをおくらなければなりません",
+          "id": "harus mengirim barang"
+        }
+      ]
+    },
+    "can_act": {
+      "lesson": 18,
+      "items": [
+        {
+          "jp": "漢字を読む",
+          "kana": "かんじをよむ",
+          "id": "membaca kanji"
+        },
+        {
+          "jp": "日本語を話す",
+          "kana": "にほんごをはなす",
+          "id": "berbicara bahasa Jepang"
+        },
+        {
+          "jp": "ピアノを弾く",
+          "kana": "ピアノをひく",
+          "id": "memainkan piano"
+        },
+        {
+          "jp": "車を運転する",
+          "kana": "くるまをうんてんする",
+          "id": "mengemudikan mobil"
+        },
+        {
+          "jp": "泳ぐ",
+          "kana": "およぐ",
+          "id": "berenang"
+        },
+        {
+          "jp": "日本料理を作る",
+          "kana": "にほんりょうりをつくる",
+          "id": "membuat masakan Jepang"
+        },
+        {
+          "jp": "スキーをする",
+          "kana": "スキーをする",
+          "id": "bermain ski"
+        },
+        {
+          "jp": "カードで払う",
+          "kana": "カードではらう",
+          "id": "membayar dengan kartu"
+        },
+        {
+          "jp": "歌を歌う",
+          "kana": "うたをうたう",
+          "id": "menyanyikan lagu"
+        }
+      ]
+    },
+    "hobby_act": {
+      "lesson": 18,
+      "items": [
+        {
+          "jp": "音楽を聞く",
+          "kana": "おんがくをきく",
+          "id": "mendengarkan musik"
+        },
+        {
+          "jp": "映画を見る",
+          "kana": "えいがをみる",
+          "id": "menonton film"
+        },
+        {
+          "jp": "写真を撮る",
+          "kana": "しゃしんをとる",
+          "id": "mengambil foto"
+        },
+        {
+          "jp": "本を読む",
+          "kana": "ほんをよむ",
+          "id": "membaca buku"
+        },
+        {
+          "jp": "料理を作る",
+          "kana": "りょうりをつくる",
+          "id": "memasak"
+        },
+        {
+          "jp": "旅行をする",
+          "kana": "りょこうをする",
+          "id": "berwisata"
+        },
+        {
+          "jp": "絵を描く",
+          "kana": "えをかく",
+          "id": "menggambar"
+        },
+        {
+          "jp": "古い切手を集める",
+          "kana": "ふるいきってをあつめる",
+          "id": "mengumpulkan perangko kuno"
+        }
+      ]
+    },
+    "before_act": {
+      "lesson": 18,
+      "items": [
+        {
+          "jp": "寝る前に",
+          "kana": "ねるまえに",
+          "id": "sebelum tidur"
+        },
+        {
+          "jp": "ご飯を食べる前に",
+          "kana": "ごはんをたべるまえに",
+          "id": "sebelum makan"
+        },
+        {
+          "jp": "国へ帰る前に",
+          "kana": "くにへかえるまえに",
+          "id": "sebelum pulang ke negara asal"
+        },
+        {
+          "jp": "旅行に行く前に",
+          "kana": "りょこうにいくまえに",
+          "id": "sebelum pergi berwisata"
+        },
+        {
+          "jp": "泳ぐ前に",
+          "kana": "およぐまえに",
+          "id": "sebelum berenang"
+        }
+      ]
+    },
+    "before_main": {
+      "lesson": 18,
+      "items": [
+        {
+          "jp": "本を読みます",
+          "kana": "ほんをよみます",
+          "id": "membaca buku"
+        },
+        {
+          "jp": "手を洗います",
+          "kana": "てをあらいます",
+          "id": "mencuci tangan"
+        },
+        {
+          "jp": "お祈りをします",
+          "kana": "おいのりをします",
+          "id": "berdoa"
+        },
+        {
+          "jp": "お土産を買います",
+          "kana": "おみやげをかいます",
+          "id": "membeli oleh-oleh"
+        },
+        {
+          "jp": "準備体操をします",
+          "kana": "じゅんびたいそうをします",
+          "id": "senam pemanasan"
+        }
+      ]
+    },
+    "exp_act": {
+      "lesson": 19,
+      "items": [
+        {
+          "jp": "日本へ行った",
+          "kana": "にほんへいった",
+          "id": "pergi ke Jepang"
+        },
+        {
+          "jp": "富士山に登った",
+          "kana": "ふじさんにのぼった",
+          "id": "mendaki Gunung Fuji"
+        },
+        {
+          "jp": "すしを食べた",
+          "kana": "すしをたべた",
+          "id": "makan sushi"
+        },
+        {
+          "jp": "お酒を飲んだ",
+          "kana": "おさけをのんだ",
+          "id": "minum alkohol"
+        },
+        {
+          "jp": "歌舞伎を見た",
+          "kana": "かぶきをみた",
+          "id": "menonton kabuki"
+        },
+        {
+          "jp": "馬に乗った",
+          "kana": "うまにのった",
+          "id": "menunggang kuda"
+        },
+        {
+          "jp": "温泉に入った",
+          "kana": "おんせんにはいった",
+          "id": "berendam di onsen"
+        },
+        {
+          "jp": "着物を着た",
+          "kana": "きものをきた",
+          "id": "memakai kimono"
+        },
+        {
+          "jp": "パチンコをした",
+          "kana": "パチンコをした",
+          "id": "bermain pachinko"
+        }
+      ]
+    },
+    "tari_pair": {
+      "lesson": 19,
+      "items": [
+        {
+          "jp": "本を読んだり、音楽を聞いたり",
+          "kana": "ほんをよんだり、おんがくをきいたり",
+          "id": "membaca buku, mendengarkan musik"
+        },
+        {
+          "jp": "テニスをしたり、散歩したり",
+          "kana": "テニスをしたり、さんぽしたり",
+          "id": "bermain tenis, berjalan-jalan"
+        },
+        {
+          "jp": "買い物をしたり、映画を見たり",
+          "kana": "かいものをしたり、えいがをみたり",
+          "id": "berbelanja, menonton film"
+        },
+        {
+          "jp": "掃除したり、洗濯したり",
+          "kana": "そうじしたり、せんたくしたり",
+          "id": "bersih-bersih, mencuci pakaian"
+        },
+        {
+          "jp": "テレビを見たり、手紙を書いたり",
+          "kana": "テレビをみたり、てがみをかいたり",
+          "id": "menonton TV, menulis surat"
+        },
+        {
+          "jp": "泳いだり、釣りをしたり",
+          "kana": "およいだり、つりをしたり",
+          "id": "berenang, memancing"
+        }
+      ]
+    },
+    "become_adj": {
+      "lesson": 19,
+      "items": [
+        {
+          "jp": "寒く",
+          "kana": "さむく",
+          "id": "dingin"
+        },
+        {
+          "jp": "暖かく",
+          "kana": "あたたかく",
+          "id": "hangat"
+        },
+        {
+          "jp": "静かに",
+          "kana": "しずかに",
+          "id": "tenang"
+        },
+        {
+          "jp": "元気に",
+          "kana": "げんきに",
+          "id": "sehat"
+        },
+        {
+          "jp": "きれいに",
+          "kana": "きれいに",
+          "id": "cantik / bersih"
+        },
+        {
+          "jp": "上手に",
+          "kana": "じょうずに",
+          "id": "mahir / pintar"
+        }
+      ]
+    },
+    "plain_v_statement": {
+      "lesson": 20,
+      "items": [
+        {
+          "jp": "明日東京へ行く",
+          "kana": "あしたとうきょうへいく",
+          "id": "besok pergi ke Tokyo"
+        },
+        {
+          "jp": "毎日日本語を勉強する",
+          "kana": "まいにちにほんごをべんきょうする",
+          "id": "setiap hari belajar bahasa Jepang"
+        },
+        {
+          "jp": "昨日映画を見た",
+          "kana": "きのうえいがをみた",
+          "id": "kemarin menonton film"
+        },
+        {
+          "jp": "朝ご飯を食べなかった",
+          "kana": "あさごはんをたべなかった",
+          "id": "tadi pagi tidak makan sarapan"
+        },
+        {
+          "jp": "お酒を飲まない",
+          "kana": "おさけをのまない",
+          "id": "tidak minum alkohol"
+        },
+        {
+          "jp": "富士山に登った",
+          "kana": "ふじさんにのぼった",
+          "id": "mendaki Gunung Fuji"
+        }
+      ]
+    },
+    "plain_adj_statement": {
+      "lesson": 20,
+      "items": [
+        {
+          "jp": "日本料理はおいしい",
+          "kana": "にほんりょうりはおいしい",
+          "id": "masakan Jepang enak"
+        },
+        {
+          "jp": "昨日は忙しかった",
+          "kana": "きのうはいそがしかった",
+          "id": "kemarin sibuk"
+        },
+        {
+          "jp": "北海道は寒い",
+          "kana": "ほっかいどうはさむい",
+          "id": "Hokkaido dingin"
+        },
+        {
+          "jp": "この部屋は静かだ",
+          "kana": "このへやはしずかだ",
+          "id": "kamar ini tenang"
+        },
+        {
+          "jp": "今日は暇だ",
+          "kana": "きょうはひまだ",
+          "id": "hari ini senggang"
+        }
+      ]
     }
   }
 }

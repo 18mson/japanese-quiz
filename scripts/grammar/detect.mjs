@@ -131,7 +131,9 @@ export function detectTags(tokens) {
       if (prev && prev.surface_form === 'ん') {
         const prev2 = tokens[i - 2];
         if (prev2 && prev2.surface_form === 'ませ') {
-          continue; // VERB_MASENKA
+          if (!fullText.includes('なければ')) {
+            continue; // VERB_MASENKA (اجakan), kecuali pada なければなりませんか
+          }
         }
       }
       // Lindungi serpihan かたかな (か + た + か + な)
@@ -293,7 +295,9 @@ export function detectTags(tokens) {
         );
         if (!isCopulaOrAdjNeg) {
           if (tokens[i + 2]?.surface_form === 'か') {
-            tags.add('VERB_MASENKA');
+            if (!fullText.includes('なければ')) {
+              tags.add('VERB_MASENKA');
+            }
           } else if (tokens[i + 2]?.surface_form === 'でし' && tokens[i + 3]?.surface_form === 'た') {
             tags.add('VERB_MASENDESHITA');
           } else {
@@ -818,7 +822,7 @@ export function detectTags(tokens) {
   }
 
   // --- LESSON 17 ---
-  // NAI_FORM & NAIDE_KUDASAI & NAKEREBA_NARANAI & NAKUTE_MO_II
+  // NAI_FORM & NAIDE_KUDASAI & NAKEREBA_NARANAI & NAKUTE_MO_II & PARTICLE_MADE_NI
   if (fullText.includes('ないでください') || fullText.includes('ないで ください')) {
     tags.add('NAI_FORM');
     tags.add('NAIDE_KUDASAI');
@@ -830,6 +834,9 @@ export function detectTags(tokens) {
   if (fullText.includes('なくてもいい') || fullText.includes('なくても いい')) {
     tags.add('NAI_FORM');
     tags.add('NAKUTE_MO_II');
+  }
+  if (fullText.includes('までに') || fullText.includes('まで に')) {
+    tags.add('PARTICLE_MADE_NI');
   }
   for (const t of tokens) {
     if (t.basic_form === 'ない' && t.pos === '助動詞') {
@@ -844,7 +851,13 @@ export function detectTags(tokens) {
   // DICT_FORM & KOTO_GA_DEKIRU & SHUMI_KOTO & MAE_NI
   let hasKotoDekiru = false;
   let hasShumiKoto = false;
-  if (fullText.includes('ことが') && (fullText.includes('できます') || fullText.includes('できる'))) {
+  if (
+    fullText.includes('ことが') &&
+    (fullText.includes('できます') ||
+      fullText.includes('できる') ||
+      fullText.includes('できませ') ||
+      fullText.includes('できない'))
+  ) {
     tags.add('DICT_FORM');
     tags.add('KOTO_GA_DEKIRU');
     hasKotoDekiru = true;
@@ -860,14 +873,27 @@ export function detectTags(tokens) {
 
   // --- LESSON 19 ---
   // TA_FORM & TA_KOTO_GA_ARU & TARI_TARI & NARIMASU
-  if (fullText.includes('たことが') || fullText.includes('た ことが')) {
+  if (
+    fullText.includes('たことが') ||
+    fullText.includes('だことが') ||
+    fullText.includes('た ことが') ||
+    fullText.includes('だ ことが')
+  ) {
     tags.add('TA_FORM');
     tags.add('TA_KOTO_GA_ARU');
   }
-  if (fullText.includes('たり') && fullText.includes('します')) {
+  if (
+    (fullText.includes('たり') || fullText.includes('だり')) &&
+    (fullText.includes('します') || fullText.includes('しました') || fullText.includes('する') || fullText.includes('した'))
+  ) {
     tags.add('TARI_TARI');
   }
-  if (fullText.includes('なります') || fullText.includes('なった') || fullText.includes('なる')) {
+  if (
+    fullText.includes('なります') ||
+    fullText.includes('なりまし') ||
+    fullText.includes('なった') ||
+    fullText.includes('なる')
+  ) {
     tags.add('NARIMASU');
   }
 

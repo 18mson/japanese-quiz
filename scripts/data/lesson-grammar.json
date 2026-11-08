@@ -92,6 +92,7 @@
     "NAIDE_KUDASAI": "V ないで ください",
     "NAKEREBA_NARANAI": "V なければ なりません",
     "NAKUTE_MO_II": "V なくても いいです",
+    "PARTICLE_MADE_NI": "N (waktu) までに",
     "DICT_FORM": "bentuk kamus",
     "KOTO_GA_DEKIRU": "V(kamus) ことが できます",
     "SHUMI_KOTO": "趣味は V(kamus) ことです",
@@ -299,7 +300,7 @@
     {
       "lesson": 17,
       "title_id": "Bentuk ない: larangan dan kewajiban",
-      "introduces": ["NAI_FORM", "NAIDE_KUDASAI", "NAKEREBA_NARANAI", "NAKUTE_MO_II"],
+      "introduces": ["NAI_FORM", "NAIDE_KUDASAI", "NAKEREBA_NARANAI", "NAKUTE_MO_II", "PARTICLE_MADE_NI"],
       "introduces_extra": [],
       "book_examples": [
         "ここで写真を撮らないでください。",

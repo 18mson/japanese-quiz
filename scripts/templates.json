@@ -2783,6 +2783,528 @@
       "must_tags": [
         "ADJ_TE"
       ]
+    },
+    {
+      "tid": "L17-T1",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "ACT": "naide_act"
+      },
+      "jp": "どうぞ{ACT}ないでください。",
+      "id_text": "Silakan tolong jangan {ACT}.",
+      "must_tags": [
+        "NAIDE_KUDASAI"
+      ]
+    },
+    {
+      "tid": "L17-T2",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "ACT": "naide_act"
+      },
+      "jp": "ここで{ACT}ないでください。",
+      "id_text": "Tolong jangan {ACT} di sini.",
+      "must_tags": [
+        "NAIDE_KUDASAI"
+      ]
+    },
+    {
+      "tid": "L17-T3",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "naide_act"
+      },
+      "jp": "{P}、{ACT}ないでください。",
+      "id_text": "{P}, tolong jangan {ACT}.",
+      "must_tags": [
+        "NAIDE_KUDASAI"
+      ]
+    },
+    {
+      "tid": "L17-T4",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "nakereba_act"
+      },
+      "jp": "{P}は{ACT}なければなりません。",
+      "id_text": "{P} harus {ACT}.",
+      "must_tags": [
+        "NAKEREBA_NARANAI"
+      ]
+    },
+    {
+      "tid": "L17-T5",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_ask",
+        "ACT": "nakereba_act"
+      },
+      "jp": "{P}は{ACT}なければなりませんか。",
+      "id_text": "Apakah {P} harus {ACT}?",
+      "must_tags": [
+        "NAKEREBA_NARANAI",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L17-T6",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "nakutemo_act"
+      },
+      "jp": "{P}は{ACT}なくてもいいです。",
+      "id_text": "{P} tidak perlu {ACT}.",
+      "must_tags": [
+        "NAKUTE_MO_II"
+      ]
+    },
+    {
+      "tid": "L17-T7",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_ask",
+        "ACT": "nakutemo_act"
+      },
+      "jp": "{P}は{ACT}なくてもいいですか。",
+      "id_text": "Apakah {P} tidak perlu {ACT}?",
+      "must_tags": [
+        "NAKUTE_MO_II",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L17-T8",
+      "lesson": 17,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "TIME": "deadline_time",
+        "DUTY": "deadline_duty"
+      },
+      "jp": "{P}は{TIME}{DUTY}。",
+      "id_text": "{P} {TIME} {DUTY}.",
+      "must_tags": [
+        "PARTICLE_MADE_NI",
+        "NAKEREBA_NARANAI"
+      ]
+    },
+    {
+      "tid": "L17-T9",
+      "lesson": 17,
+      "extra": false,
+      "slots": {},
+      "jp": "心配しないでください。",
+      "jp_kana": "しんぱいしないでください。",
+      "id_text": "Jangan khawatir.",
+      "must_tags": [
+        "NAIDE_KUDASAI"
+      ]
+    },
+    {
+      "tid": "L17-T10",
+      "lesson": 17,
+      "extra": false,
+      "slots": {},
+      "jp": "無理をしないでください。",
+      "jp_kana": "むりをしないでください。",
+      "id_text": "Jangan memaksakan diri.",
+      "must_tags": [
+        "NAIDE_KUDASAI"
+      ]
+    },
+    {
+      "tid": "L18-T1",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "can_act"
+      },
+      "jp": "{P}は{ACT}ことができます。",
+      "id_text": "{P} bisa {ACT}.",
+      "must_tags": [
+        "KOTO_GA_DEKIRU"
+      ]
+    },
+    {
+      "tid": "L18-T2",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "can_act"
+      },
+      "jp": "{P}は{ACT}ことができません。",
+      "id_text": "{P} tidak bisa {ACT}.",
+      "must_tags": [
+        "KOTO_GA_DEKIRU",
+        "VERB_MASEN"
+      ]
+    },
+    {
+      "tid": "L18-T3",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_ask",
+        "ACT": "can_act"
+      },
+      "jp": "{P}は{ACT}ことができますか。",
+      "id_text": "Apakah {P} bisa {ACT}?",
+      "must_tags": [
+        "KOTO_GA_DEKIRU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L18-T4",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "HOBBY": "hobby_act"
+      },
+      "jp": "{P}の趣味は{HOBBY}ことです。",
+      "jp_kana": "{P}のしゅみは{HOBBY}ことです。",
+      "id_text": "Hobi {P} adalah {HOBBY}.",
+      "must_tags": [
+        "SHUMI_KOTO"
+      ]
+    },
+    {
+      "tid": "L18-T5",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_ask"
+      },
+      "jp": "{P}の趣味は何ですか。",
+      "jp_kana": "{P}のしゅみはなんですか。",
+      "id_text": "Apakah hobi {P}?",
+      "must_tags": [
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L18-T6",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "B_ACT": "before_act",
+        "MAIN": "before_main"
+      },
+      "jp": "{P}は{B_ACT}、{MAIN}。",
+      "id_text": "{P} {B_ACT}, {MAIN}.",
+      "must_tags": [
+        "MAE_NI"
+      ]
+    },
+    {
+      "tid": "L18-T7",
+      "lesson": 18,
+      "extra": false,
+      "slots": {
+        "ACT": "can_act"
+      },
+      "jp": "ここで{ACT}ことができますか。",
+      "id_text": "Apakah di sini bisa {ACT}?",
+      "must_tags": [
+        "KOTO_GA_DEKIRU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L18-T8",
+      "lesson": 18,
+      "extra": false,
+      "slots": {},
+      "jp": "カードで払うことができますか。",
+      "jp_kana": "カードではらうことができますか。",
+      "id_text": "Apakah bisa membayar dengan kartu?",
+      "must_tags": [
+        "KOTO_GA_DEKIRU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L19-T1",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "exp_act"
+      },
+      "jp": "{P}は{ACT}ことがあります。",
+      "id_text": "{P} pernah {ACT}.",
+      "must_tags": [
+        "TA_KOTO_GA_ARU"
+      ]
+    },
+    {
+      "tid": "L19-T2",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "exp_act"
+      },
+      "jp": "{P}は一度も{ACT}ことがありません。",
+      "jp_kana": "{P}はいちども{ACT}ことがありません。",
+      "id_text": "{P} belum pernah sekalipun {ACT}.",
+      "must_tags": [
+        "TA_KOTO_GA_ARU",
+        "VERB_MASEN"
+      ]
+    },
+    {
+      "tid": "L19-T3",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_ask",
+        "ACT": "exp_act"
+      },
+      "jp": "{P}は{ACT}ことがありますか。",
+      "id_text": "Apakah {P} pernah {ACT}?",
+      "must_tags": [
+        "TA_KOTO_GA_ARU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L19-T4",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "TARI": "tari_pair"
+      },
+      "jp": "{P}は休みの日に{TARI}します。",
+      "jp_kana": "{P}はやすみのひに{TARI}します。",
+      "id_text": "{P} pada hari libur {TARI}.",
+      "must_tags": [
+        "TARI_TARI"
+      ]
+    },
+    {
+      "tid": "L19-T5",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "TARI": "tari_pair"
+      },
+      "jp": "{P}は日曜日{TARI}しました。",
+      "jp_kana": "{P}はにちようび{TARI}しました。",
+      "id_text": "{P} hari Minggu {TARI}.",
+      "must_tags": [
+        "TARI_TARI"
+      ]
+    },
+    {
+      "tid": "L19-T6",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "ADJ": "become_adj"
+      },
+      "jp": "だんだん{ADJ}なりました。",
+      "id_text": "Sedikit demi sedikit menjadi {ADJ}.",
+      "must_tags": [
+        "NARIMASU"
+      ]
+    },
+    {
+      "tid": "L19-T7",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "ADJ": "become_adj"
+      },
+      "jp": "これから{ADJ}なります。",
+      "id_text": "Mulai sekarang akan menjadi {ADJ}.",
+      "must_tags": [
+        "NARIMASU"
+      ]
+    },
+    {
+      "tid": "L19-T8",
+      "lesson": 19,
+      "extra": false,
+      "slots": {
+        "P": "person_any"
+      },
+      "jp": "{P}は日本語が上手になりました。",
+      "jp_kana": "{P}はにほんごがじょうずになりました。",
+      "id_text": "{P} sudah menjadi pintar bahasa Jepang.",
+      "must_tags": [
+        "NARIMASU"
+      ]
+    },
+    {
+      "tid": "L20-T1",
+      "lesson": 20,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "plain_v_statement"
+      },
+      "jp": "{P}は{ACT}。",
+      "id_text": "{P} {ACT}.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T2",
+      "lesson": 20,
+      "extra": false,
+      "slots": {
+        "ADJ": "plain_adj_statement"
+      },
+      "jp": "{ADJ}。",
+      "id_text": "{ADJ}.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T3",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "明日東京へ行く？",
+      "jp_kana": "あしたとうきょうへいく？",
+      "id_text": "Besok kamu pergi ke Tokyo?",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T4",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "うん、行く。",
+      "jp_kana": "うん、いく。",
+      "id_text": "Ya, pergi.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T5",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "ううん、行かない。",
+      "jp_kana": "ううん、いかない。",
+      "id_text": "Tidak, tidak pergi.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T6",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "今何してる？",
+      "jp_kana": "いまなにしてる？",
+      "id_text": "Sekarang kamu lagi ngapain?",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T7",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "日本語を勉強してる。",
+      "jp_kana": "にほんごをべんきょうしてる。",
+      "id_text": "Sedang belajar bahasa Jepang.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T8",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "富士山に登ったことがある？",
+      "jp_kana": "ふじさんにのぼったことがある？",
+      "id_text": "Apakah pernah mendaki Gunung Fuji?",
+      "must_tags": [
+        "PLAIN_STYLE",
+        "TA_KOTO_GA_ARU"
+      ]
+    },
+    {
+      "tid": "L20-T9",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "うん、ある。",
+      "jp_kana": "うん、ある。",
+      "id_text": "Ya, pernah.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T10",
+      "lesson": 20,
+      "extra": false,
+      "slots": {},
+      "jp": "ううん、一度もない。",
+      "jp_kana": "ううん、いちどもない。",
+      "id_text": "Tidak, belum pernah sekalipun.",
+      "must_tags": [
+        "PLAIN_STYLE"
+      ]
+    },
+    {
+      "tid": "L20-T11",
+      "lesson": 20,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "can_act"
+      },
+      "jp": "{P}は{ACT}ことができる？",
+      "id_text": "Apakah {P} bisa {ACT}?",
+      "must_tags": [
+        "PLAIN_STYLE",
+        "KOTO_GA_DEKIRU"
+      ]
+    },
+    {
+      "tid": "L20-T12",
+      "lesson": 20,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ACT": "can_act"
+      },
+      "jp": "{P}は{ACT}ことができる。",
+      "id_text": "{P} bisa {ACT}.",
+      "must_tags": [
+        "PLAIN_STYLE",
+        "KOTO_GA_DEKIRU"
+      ]
     }
   ]
 }
