@@ -180,3 +180,4 @@ test('5. Skipped words do NOT hinder lesson checklist completion', async () => {
   // Vocab should now automatically be completed!
   assert.strictEqual(lessonStore.isCategoryCompleted(1, 'vocab'), true, 'Skipping remaining unlearned word must satisfy completion');
 });
+

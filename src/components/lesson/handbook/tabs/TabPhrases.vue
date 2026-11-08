@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search } from '@lucide/vue';
+import { Search, SkipForward } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { JapaneseWord } from '../../../../data/words';
 import { useQuizStore } from '../../../../stores/quizStore';
@@ -36,9 +36,10 @@ const quizStore = useQuizStore();
             </span>
             <span 
               v-if="quizStore.isWordSkipped?.(phrase.character)"
-              class="px-1.5 py-0.5 rounded-md text-[9px] font-black border border-dashed border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider"
+              class="px-1.5 py-0.5 rounded-md text-[9px] font-black border border-dashed border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1"
             >
-              ⏭️ Dilewati
+              <SkipForward class="w-2.5 h-2.5 stroke-[2.5]" />
+              <span>Dilewati</span>
             </span>
           </div>
           <div class="text-xs font-mono text-slate-500 dark:text-slate-400">

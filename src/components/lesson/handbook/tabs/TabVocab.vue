@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search } from '@lucide/vue';
+import { Search, SkipForward } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { JapaneseWord } from '../../../../data/words';
 import { useQuizStore } from '../../../../stores/quizStore';
@@ -19,16 +19,20 @@ const quizStore = useQuizStore();
 
 const getWordStatus = (char: string) => {
   if (quizStore.isWordSkipped?.(char)) {
-    return { label: '⏭️ Dilewati', class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-dashed border-slate-300 dark:border-slate-600' };
+    return { 
+      label: 'Dilewati', 
+      isSkipped: true,
+      class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-dashed border-slate-300 dark:border-slate-600' 
+    };
   }
   const streak = quizStore.getMasteryStreak(char);
   if (streak >= 3) {
-    return { label: 'Dikuasai', class: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' };
+    return { label: 'Dikuasai', isSkipped: false, class: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' };
   }
   if (streak >= 1 || quizStore.introducedChars[char]) {
-    return { label: 'Proses', class: 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30' };
+    return { label: 'Proses', isSkipped: false, class: 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30' };
   }
-  return { label: 'Belum', class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700' };
+  return { label: 'Belum', isSkipped: false, class: 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700' };
 };
 </script>
 
@@ -96,9 +100,10 @@ const getWordStatus = (char: string) => {
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <span 
-              :class="['px-1.5 py-0.5 rounded-md text-[9px] font-black border uppercase tracking-wider', getWordStatus(w.character).class]"
+              :class="['px-1.5 py-0.5 rounded-md text-[9px] font-black border uppercase tracking-wider flex items-center gap-1', getWordStatus(w.character).class]"
             >
-              {{ getWordStatus(w.character).label }}
+              <SkipForward v-if="getWordStatus(w.character).isSkipped" class="w-2.5 h-2.5 stroke-[2.5]" />
+              <span>{{ getWordStatus(w.character).label }}</span>
             </span>
             <SpeakerButton :text="w.kana || w.character" size="sm" />
           </div>

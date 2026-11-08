@@ -300,3 +300,4 @@ const formattedDate = computed(() => {
   transform: translateY(-4px);
 }
 </style>
+

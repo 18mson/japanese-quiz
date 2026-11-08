@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
-import { Check, Crown } from '@lucide/vue';
+import { Check, Crown, SkipForward } from '@lucide/vue';
 
 const props = withDefaults(
   defineProps<{
@@ -80,10 +80,11 @@ const handleClick = () => {
     <div class="absolute top-1 right-1.5 flex items-center gap-0.5">
       <span 
         v-if="isSkipped"
-        class="text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/90 px-1 py-0.2 rounded-md border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-0.5"
+        class="text-[9px] sm:text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100/90 dark:bg-slate-800/90 px-1 py-0.5 rounded-md border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-0.5 shadow-2xs"
         title="Dilewati (Skip dari Soal & Tracing)"
       >
-        ⏭️ Skip
+        <SkipForward class="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[2.5]" />
+        <span>Skip</span>
       </span>
       <span 
         v-else-if="quizStore.getMasteryTier(item.character) === 'crown'" 

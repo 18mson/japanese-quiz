@@ -14,7 +14,9 @@ import {
   Type,
   Crown,
   CheckCircle2,
-  Circle
+  Circle,
+  SkipForward,
+  RotateCcw
 } from '@lucide/vue';
 
 const props = defineProps<{
@@ -224,9 +226,10 @@ onUnmounted(() => {
 
           <span 
             v-if="category === 'words' && quizStore.isWordSkipped?.(item.character)"
-            class="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-1"
+            class="text-xs px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold border border-dashed border-slate-300 dark:border-slate-600 flex items-center gap-1 shadow-2xs"
           >
-            <span>⏭️ Dilewati (Skip)</span>
+            <SkipForward class="w-3 h-3 text-slate-500 dark:text-slate-400 shrink-0" />
+            <span>Dilewati (Skip)</span>
           </span>
         </div>
 
@@ -251,7 +254,9 @@ onUnmounted(() => {
                 : 'bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200'
             ]"
           >
-            <span>{{ quizStore.isWordSkipped?.(item.character) ? '🔄 Aktifkan' : '⏭️ Skip Kata' }}</span>
+            <RotateCcw v-if="quizStore.isWordSkipped?.(item.character)" class="w-3.5 h-3.5 shrink-0" />
+            <SkipForward v-else class="w-3.5 h-3.5 shrink-0" />
+            <span>{{ quizStore.isWordSkipped?.(item.character) ? 'Aktifkan' : 'Skip Kata' }}</span>
           </button>
         </div>
 

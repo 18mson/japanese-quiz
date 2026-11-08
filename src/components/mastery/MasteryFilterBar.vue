@@ -16,7 +16,7 @@ import {
   Zap,
   Search,
   X,
-  FastForward
+  SkipForward
 } from '@lucide/vue';
 
 const props = defineProps<{
@@ -158,7 +158,7 @@ const visibleStatusPills = computed(() => {
       key: 'skip',
       label: 'Dilewati / Skip (Tidak muncul di kuis)',
       shortLabel: 'Skip',
-      icon: FastForward,
+      icon: SkipForward,
       activeClass: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600',
       activeIconClass: 'text-slate-400 dark:text-slate-500'
     });
@@ -169,10 +169,10 @@ const visibleStatusPills = computed(() => {
 
 <template>
   <div class="p-3 sm:p-4 bg-white dark:bg-slate-900 border-b border-gray-200/80 dark:border-slate-800 flex flex-col gap-3 flex-shrink-0">
-    <!-- Category Switcher Tabs & Search Bar (Row 1) -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
+    <!-- Category Switcher Tabs & Search Bar (Row 1) - Fully Responsive -->
+    <div class="flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2.5 sm:gap-3 w-full">
       <!-- Category Switcher Tabs -->
-      <div class="relative grid grid-cols-2 sm:grid-cols-5 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
+      <div class="relative flex items-center overflow-x-auto no-scrollbar bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 max-w-full shrink-0 gap-1 sm:gap-0">
         <!-- Sliding Pill Indicator -->
         <div 
           class="absolute rounded-xl bg-indigo-600 dark:bg-torii shadow-md shadow-indigo-500/20 dark:shadow-torii/30 pointer-events-none"
@@ -186,7 +186,7 @@ const visibleStatusPills = computed(() => {
           :ref="setCategoryTabRef(cat)"
           type="button"
           @click="emit('update:category', cat); emit('update:subtype', 'all'); if (statusFilter === 'skip') emit('update:statusFilter', 'all'); closeDropdowns();"
-          class="relative z-10 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 select-none"
+          class="relative z-10 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 select-none shrink-0"
           :class="category === cat 
             ? 'text-white font-black' 
             : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white'"
@@ -230,8 +230,8 @@ const visibleStatusPills = computed(() => {
         </button>
       </div>
 
-      <!-- Search Input Bar -->
-      <div class="relative w-full sm:w-64 md:w-72 lg:w-80 shrink-0">
+      <!-- Search Input Bar (Responsive - Adapts & wraps without offside) -->
+      <div class="relative w-full xl:w-72 2xl:w-80 min-w-0 flex-1 xl:flex-initial">
         <Search class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-slate-400 pointer-events-none" />
         <input 
           :value="searchQuery"

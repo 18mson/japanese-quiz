@@ -11,6 +11,7 @@ import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
 import MasteryKanjiDetailModal from './mastery/MasteryKanjiDetailModal.vue';
 import { toRomaji, toHiragana, toKatakana } from 'wanakana';
+import { SkipForward } from '@lucide/vue';
 import { 
   X, 
   Award, 
@@ -78,8 +79,8 @@ const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown' | 'skip' |
   learning: 'Sedang Belajar (Streak 1)',
   mastered: 'Hafal / Mastered (Streak 3)',
   crown: 'Mahkota / Crown (Streak 6)',
-  skip: '⏭️ Dilewati (Skip dari Soal & Tracing)',
-  unskip: '🔄 Aktifkan Kembali (Batal Skip)'
+  skip: 'Dilewati / Skip (Eksklusi Kuis & Tracing)',
+  unskip: 'Aktifkan Kembali (Batal Skip)'
 };
 
 const toggleEditMode = () => {
@@ -565,7 +566,7 @@ const nextPreviewItem = () => {
                   <option value="learning" class="bg-slate-900 text-slate-200">🟡 Proses (Streak 1)</option>
                   <option value="mastered" class="bg-slate-900 text-slate-200">🟢 Mastered (Streak 3)</option>
                   <option value="crown" class="bg-slate-900 text-slate-200">👑 Crown (Streak 6)</option>
-                  <option v-if="activeCategory === 'words'" value="skip" class="bg-slate-900 text-slate-200">⏭️ Skip (Lewati Kata)</option>
+                  <option v-if="activeCategory === 'words'" value="skip" class="bg-slate-900 text-slate-200">Lewati Kata (Skip)</option>
                   <option v-if="activeCategory === 'words'" value="unskip" class="bg-slate-900 text-slate-200">🔄 Batal Skip (Aktifkan)</option>
                 </select>
               </div>
@@ -575,18 +576,20 @@ const nextPreviewItem = () => {
                 <button 
                   type="button" 
                   @click="targetTier = 'skip'; showConfirmModal = true;"
-                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition"
+                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition shadow-2xs"
                   title="Tandai kata yang dipilih agar di-skip"
                 >
-                  <span>⏭️ Tandai Skip</span>
+                  <SkipForward class="w-3.5 h-3.5 shrink-0" />
+                  <span>Tandai Skip</span>
                 </button>
                 <button 
                   type="button" 
                   @click="targetTier = 'unskip'; showConfirmModal = true;"
-                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition"
+                  class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 font-bold rounded-xl text-xs flex items-center gap-1 cursor-pointer border border-slate-700 transition shadow-2xs"
                   title="Batal skip kata yang dipilih"
                 >
-                  <span>🔄 Batal Skip</span>
+                  <RotateCcw class="w-3.5 h-3.5 shrink-0" />
+                  <span>Batal Skip</span>
                 </button>
               </div>
 
@@ -721,9 +724,10 @@ const nextPreviewItem = () => {
           <!-- Explanatory note based on target tier -->
           <div 
             v-if="targetTier === 'skip'" 
-            class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[11px] leading-relaxed border border-amber-200/60 dark:border-amber-800/40"
+            class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[11px] leading-relaxed border border-amber-200/60 dark:border-amber-800/40 flex items-start gap-1.5"
           >
-            ⏭️ <strong>Fitur Skip:</strong> Kotoba ini <strong>tidak akan muncul di soal kuis</strong> dan <strong>tidak terhitung di tracing peta penguasaan</strong>. Selain itu, kotoba ini <strong>tidak akan menghambat checklist</strong> materi bab.
+            <SkipForward class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <span><strong>Fitur Skip:</strong> Kotoba ini <strong>tidak akan muncul di soal kuis</strong> dan <strong>tidak terhitung di tracing peta penguasaan</strong>. Selain itu, kotoba ini <strong>tidak akan menghambat checklist</strong> materi bab.</span>
           </div>
           <div 
             v-else-if="targetTier === 'unskip'" 
