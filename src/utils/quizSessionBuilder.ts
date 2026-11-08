@@ -1,7 +1,7 @@
 import { sentencesData } from '../data/sentences';
 import { wordsData } from '../data/words';
 import { supabase } from '../lib/supabaseClient';
-import { getQuestionCountFromDuration, getFallbackLocalPool } from './quizHelpers';
+import { getQuestionCountFromDuration, getFallbackLocalPool, isAlphabetOnlyWord } from './quizHelpers';
 import { buildHurufSessionQuestions } from './hurufQuizComposition';
 import { buildKanjiSessionQuestions } from './kanjiQuizComposition';
 import { buildKanjiWritingSessionQuestions } from './kanjiWritingComposition';
@@ -142,7 +142,12 @@ export async function prepareStandardQuestions(params: {
         const streak = userStreaks[q.character] || 0;
         const isIntroduced = !!introducedChars[q.character];
         if (streak === 0 && !isIntroduced) {
-          uniqueUnlearnedInSession.push(q);
+          if (isAlphabetOnlyWord(q.character)) {
+            // Kotoba yang mengambil semua hurufnya dari abjad (misal: JR, CD, ATM) di-skip dari preview huruf baru
+            introducedChars[q.character] = true;
+          } else {
+            uniqueUnlearnedInSession.push(q);
+          }
         }
       }
     });

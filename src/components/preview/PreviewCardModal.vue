@@ -5,6 +5,7 @@ import { useQuizStore } from '../../stores/quizStore';
 import KanjiAnimator from '../KanjiAnimator.vue';
 import SpeakerButton from '../SpeakerButton.vue';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
+import { isAlphabetOnlyWord } from '../../utils/quizHelpers';
 
 const quizStore = useQuizStore();
 const { speak, stop } = useTextToSpeech();
@@ -12,10 +13,17 @@ const { speak, stop } = useTextToSpeech();
 const currentCardIndex = ref(0);
 
 const itemsToPreview = computed(() => {
+  let list: any[] = [];
   if (quizStore.showMicroPreviewModal && quizStore.microPreviewItem) {
-    return [quizStore.microPreviewItem];
+    list = [quizStore.microPreviewItem];
+  } else {
+    list = quizStore.currentWaveItems || [];
   }
-  return quizStore.currentWaveItems || [];
+  // Kotoba yang seluruh hurufnya dari alfabet abjad di-skip dari preview
+  return list.filter(item => {
+    const text = item?.character || item?.japanese || item?.kana || '';
+    return !isAlphabetOnlyWord(text);
+  });
 });
 
 const currentItem = computed(() => itemsToPreview.value[currentCardIndex.value] || null);
@@ -99,6 +107,14 @@ watch(
   [() => quizStore.isWavePreviewActive, () => quizStore.showMicroPreviewModal],
   ([wave, micro]) => {
     if (wave || micro) {
+      if (itemsToPreview.value.length === 0) {
+        if (micro) {
+          quizStore.completeMicroPreview();
+        } else {
+          quizStore.completeWavePreview();
+        }
+        return;
+      }
       modalOpenedAt = Date.now();
       // Blur any active input so focus doesn't capture/block keys
       if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {

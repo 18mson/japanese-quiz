@@ -467,3 +467,19 @@ export const buildRepeatedQuestion = (current: any): any => {
   return repeated;
 };
 
+/**
+ * Memeriksa apakah suatu teks mengandung setidaknya satu aksara Jepang (Hiragana, Katakana, atau Kanji).
+ */
+export const hasJapaneseCharacters = (text: string): boolean => {
+  if (!text) return false;
+  return /[\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/.test(text);
+};
+
+/**
+ * Memeriksa apakah suatu kosakata hanya tersusun dari huruf abjad Latin, angka, atau simbol non-Jepang (misal: 'JR', 'CD', 'ATM').
+ */
+export const isAlphabetOnlyWord = (text: string): boolean => {
+  return !hasJapaneseCharacters(text);
+};
+
+

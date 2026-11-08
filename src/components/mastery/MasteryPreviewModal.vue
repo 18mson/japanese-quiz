@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import KanjiAnimator from '../KanjiAnimator.vue';
 import SpeakerButton from '../SpeakerButton.vue';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
+import { isAlphabetOnlyWord } from '../../utils/quizHelpers';
 import { 
   X, 
   Sparkles, 
@@ -26,7 +27,20 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'prev', 'next']);
 const quizStore = useQuizStore();
 const { speak, stop } = useTextToSpeech();
-const viewMode = ref<'stroke' | 'text'>('stroke');
+const isAlphabetOnly = computed(() => {
+  return isAlphabetOnlyWord(props.item?.character || '');
+});
+
+const viewMode = ref<'stroke' | 'text'>(isAlphabetOnly.value ? 'text' : 'stroke');
+
+watch(
+  () => props.item?.character,
+  () => {
+    if (isAlphabetOnly.value) {
+      viewMode.value = 'text';
+    }
+  }
+);
 
 const textToSpeak = computed(() => {
   if (!props.item) return '';
@@ -77,8 +91,8 @@ onUnmounted(() => {
         </div>
 
         <div class="flex items-center gap-1.5">
-          <!-- Toggle View Mode Button -->
-          <div class="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700">
+          <!-- Toggle View Mode Button (Hanya jika bukan kata murni abjad) -->
+          <div v-if="!isAlphabetOnly" class="flex items-center bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700">
             <button
               type="button"
               @click="viewMode = 'stroke'"
