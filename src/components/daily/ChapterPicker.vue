@@ -21,8 +21,8 @@ const emit = defineEmits<{
 
 const maxAllowed = computed(() => Math.max(1, 2 - props.existingChapters.length));
 
-const ACTIVE_CHAPTERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-const UPCOMING_CHAPTERS = Array.from({ length: 13 }, (_, i) => i + 13); // Bab 13-25
+const ACTIVE_CHAPTERS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+const UPCOMING_CHAPTERS = Array.from({ length: 9 }, (_, i) => i + 17); // Bab 17-25
 
 // Cari bab aktif pertama yang belum dikerjakan
 function getInitialChapter(): number[] {
@@ -150,10 +150,10 @@ function handleStart() {
       </div>
     </div>
 
-    <!-- Upcoming Chapters preview (Bab 9-25) -->
+    <!-- Upcoming Chapters preview (Bab 17-25) -->
     <div class="mb-5">
       <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-        <span>Bab Lanjutan (Bab 13–25)</span>
+        <span>Bab Lanjutan (Bab 17–25)</span>
         <span class="text-[10px] lowercase font-normal bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full text-slate-500">
           Segera hadir
         </span>

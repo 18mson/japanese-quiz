@@ -1,0 +1,654 @@
+{
+  "起きます": {
+    "basic": "起きる",
+    "basic_kana": "おく"
+  },
+  "寝ます": {
+    "basic": "寝る",
+    "basic_kana": "ねる"
+  },
+  "働きます": {
+    "basic": "働く",
+    "basic_kana": "はたらく"
+  },
+  "休みます": {
+    "basic": "休む",
+    "basic_kana": "やすむ"
+  },
+  "勉強します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "終わります": {
+    "basic": "終わる",
+    "basic_kana": "おわる"
+  },
+  "行きます": {
+    "basic": "行く",
+    "basic_kana": "いく"
+  },
+  "来ます": {
+    "basic": "来る",
+    "basic_kana": "くる"
+  },
+  "帰ります": {
+    "basic": "帰る",
+    "basic_kana": "かえる"
+  },
+  "食べます": {
+    "basic": "食べる",
+    "basic_kana": "たべる"
+  },
+  "飲みます": {
+    "basic": "飲む",
+    "basic_kana": "のむ"
+  },
+  "吸います": {
+    "basic": "吸う",
+    "basic_kana": "すう"
+  },
+  "見ます": {
+    "basic": "見る",
+    "basic_kana": "みる"
+  },
+  "聞きます": {
+    "basic": "聞く",
+    "basic_kana": "きく"
+  },
+  "読みます": {
+    "basic": "読む",
+    "basic_kana": "よむ"
+  },
+  "書きます": {
+    "basic": "書く",
+    "basic_kana": "かく"
+  },
+  "買います": {
+    "basic": "買う",
+    "basic_kana": "かう"
+  },
+  "撮ります": {
+    "basic": "撮る",
+    "basic_kana": "とる"
+  },
+  "します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "会います": {
+    "basic": "会う",
+    "basic_kana": "あう"
+  },
+  "切ります": {
+    "basic": "切る",
+    "basic_kana": "きる"
+  },
+  "送ります": {
+    "basic": "送る",
+    "basic_kana": "おくる"
+  },
+  "あげます": {
+    "basic": "あげる",
+    "basic_kana": "あげる"
+  },
+  "もらいます": {
+    "basic": "もらう",
+    "basic_kana": "もらう"
+  },
+  "貸します": {
+    "basic": "貸す",
+    "basic_kana": "かす"
+  },
+  "借ります": {
+    "basic": "借りる",
+    "basic_kana": "かりる"
+  },
+  "教えます": {
+    "basic": "教える",
+    "basic_kana": "おしえる"
+  },
+  "習います": {
+    "basic": "習う",
+    "basic_kana": "ならう"
+  },
+  "かけます": {
+    "basic": "かける",
+    "basic_kana": "かける"
+  },
+  "わかります": {
+    "basic": "わかる",
+    "basic_kana": "わかる"
+  },
+  "あります": {
+    "basic": "ある",
+    "basic_kana": "ある"
+  },
+  "います": {
+    "basic": "いる",
+    "basic_kana": "いる"
+  },
+  "かかります": {
+    "basic": "かかる",
+    "basic_kana": "かかる"
+  },
+  "また 今度 お願いします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "違います": {
+    "basic": "違う",
+    "basic_kana": "ちがう"
+  },
+  "行ってきます": {
+    "basic": "行く",
+    "basic_kana": "いう"
+  },
+  "お願いします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "遊びます": {
+    "basic": "遊ぶ",
+    "basic_kana": "あそぶ"
+  },
+  "泳ぎます": {
+    "basic": "泳ぐ",
+    "basic_kana": "およぐ"
+  },
+  "迎えます": {
+    "basic": "迎える",
+    "basic_kana": "むかえる"
+  },
+  "疲れます": {
+    "basic": "疲れる",
+    "basic_kana": "つく"
+  },
+  "結婚します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "買い物します": {
+    "basic": "する",
+    "basic_kana": "のす"
+  },
+  "食事します": {
+    "basic": "する",
+    "basic_kana": "じす"
+  },
+  "散歩します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "のどが かわきます": {
+    "basic": "かわく",
+    "basic_kana": "かわく"
+  },
+  "おなかが すきます": {
+    "basic": "すく",
+    "basic_kana": "すく"
+  },
+  "で ございます": {
+    "basic": "ござる",
+    "basic_kana": "ござる"
+  },
+  "つけます": {
+    "basic": "つける",
+    "basic_kana": "つける"
+  },
+  "消します": {
+    "basic": "消す",
+    "basic_kana": "けす"
+  },
+  "開けます": {
+    "basic": "開ける",
+    "basic_kana": "あける"
+  },
+  "閉めます": {
+    "basic": "閉める",
+    "basic_kana": "しめる"
+  },
+  "急ぎます": {
+    "basic": "急ぐ",
+    "basic_kana": "いそぐ"
+  },
+  "待ちます": {
+    "basic": "待つ",
+    "basic_kana": "まつ"
+  },
+  "持ちます": {
+    "basic": "持つ",
+    "basic_kana": "もつ"
+  },
+  "取ります": {
+    "basic": "取る",
+    "basic_kana": "とる"
+  },
+  "手伝います": {
+    "basic": "手伝う",
+    "basic_kana": "てつだう"
+  },
+  "呼びます": {
+    "basic": "呼ぶ",
+    "basic_kana": "よぶ"
+  },
+  "話します": {
+    "basic": "話す",
+    "basic_kana": "はなす"
+  },
+  "使います": {
+    "basic": "使う",
+    "basic_kana": "つかう"
+  },
+  "止めます": {
+    "basic": "止める",
+    "basic_kana": "とめる"
+  },
+  "見せます": {
+    "basic": "見せる",
+    "basic_kana": "みせる"
+  },
+  "座ります": {
+    "basic": "座る",
+    "basic_kana": "すわる"
+  },
+  "立ちます": {
+    "basic": "立つ",
+    "basic_kana": "たつ"
+  },
+  "入ります": {
+    "basic": "入る",
+    "basic_kana": "はいる"
+  },
+  "出ます": {
+    "basic": "出る",
+    "basic_kana": "デ"
+  },
+  "降ります": {
+    "basic": "降りる",
+    "basic_kana": "ふる"
+  },
+  "コピーします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "これでおねがいします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "置きます": {
+    "basic": "置く",
+    "basic_kana": "おく"
+  },
+  "作ります": {
+    "basic": "作る",
+    "basic_kana": "つくる"
+  },
+  "売ります": {
+    "basic": "売る",
+    "basic_kana": "うる"
+  },
+  "知ります": {
+    "basic": "知る",
+    "basic_kana": "しる"
+  },
+  "住みます": {
+    "basic": "住む",
+    "basic_kana": "すむ"
+  },
+  "研究します": {
+    "basic": "する",
+    "basic_kana": "ける"
+  },
+  "知っています": {
+    "basic": "知る",
+    "basic_kana": "しる"
+  },
+  "住んでいます": {
+    "basic": "住む",
+    "basic_kana": "すむ"
+  },
+  "思い出します": {
+    "basic": "思い出す",
+    "basic_kana": "おもいだす"
+  },
+  "いらっしゃいます": {
+    "basic": "いらっしゃる",
+    "basic_kana": "いらっしゃる"
+  },
+  "乗ります": {
+    "basic": "乗る",
+    "basic_kana": "のる"
+  },
+  "乗り換えます": {
+    "basic": "乗り換える",
+    "basic_kana": "のりかえる"
+  },
+  "浴びます": {
+    "basic": "浴びる",
+    "basic_kana": "あびる"
+  },
+  "入れます": {
+    "basic": "入れる",
+    "basic_kana": "いれる"
+  },
+  "出します": {
+    "basic": "出す",
+    "basic_kana": "だす"
+  },
+  "下ろします": {
+    "basic": "下ろす",
+    "basic_kana": "おろす"
+  },
+  "押します": {
+    "basic": "押す",
+    "basic_kana": "おす"
+  },
+  "始めます": {
+    "basic": "始める",
+    "basic_kana": "ハジメ"
+  },
+  "見学します": {
+    "basic": "する",
+    "basic_kana": "ける"
+  },
+  "電話します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "覚えます": {
+    "basic": "覚える",
+    "basic_kana": "おぼえる"
+  },
+  "忘れます": {
+    "basic": "忘れる",
+    "basic_kana": "わすれる"
+  },
+  "払います": {
+    "basic": "払う",
+    "basic_kana": "はらう"
+  },
+  "返します": {
+    "basic": "返す",
+    "basic_kana": "かえす"
+  },
+  "出かけます": {
+    "basic": "出かける",
+    "basic_kana": "でかける"
+  },
+  "なくします": {
+    "basic": "なくす",
+    "basic_kana": "なくす"
+  },
+  "脱ぎます": {
+    "basic": "脱ぐ",
+    "basic_kana": "ぬぐ"
+  },
+  "持って行きます": {
+    "basic": "持つ",
+    "basic_kana": "もつ"
+  },
+  "持って来ます": {
+    "basic": "持つ",
+    "basic_kana": "もつ"
+  },
+  "心配します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "残業します": {
+    "basic": "する",
+    "basic_kana": "シ"
+  },
+  "出張します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "熱があります": {
+    "basic": "ある",
+    "basic_kana": "ある"
+  },
+  "せきが出ます": {
+    "basic": "出る",
+    "basic_kana": "でる"
+  },
+  "鼻水が出ます": {
+    "basic": "出る",
+    "basic_kana": "でる"
+  },
+  "血が出ます": {
+    "basic": "出る",
+    "basic_kana": "ちる"
+  },
+  "吐き気がします": {
+    "basic": "する",
+    "basic_kana": "きける"
+  },
+  "寒気がします": {
+    "basic": "する",
+    "basic_kana": "けがす"
+  },
+  "めまいがします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "下痢をします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "便秘をします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "けがをします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "やけどをします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "肩がこります": {
+    "basic": "こりる",
+    "basic_kana": "こりる"
+  },
+  "できます": {
+    "basic": "できる",
+    "basic_kana": "できる"
+  },
+  "洗います": {
+    "basic": "洗う",
+    "basic_kana": "あらう"
+  },
+  "弾きます": {
+    "basic": "弾く",
+    "basic_kana": "ひく"
+  },
+  "歌います": {
+    "basic": "歌う",
+    "basic_kana": "うたう"
+  },
+  "集めます": {
+    "basic": "集める",
+    "basic_kana": "あつめる"
+  },
+  "捨てます": {
+    "basic": "捨てる",
+    "basic_kana": "すてる"
+  },
+  "換えます": {
+    "basic": "換える",
+    "basic_kana": "かえる"
+  },
+  "運転します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "予約します": {
+    "basic": "する",
+    "basic_kana": "やくす"
+  },
+  "登ります": {
+    "basic": "登る",
+    "basic_kana": "のぼる"
+  },
+  "泊まります": {
+    "basic": "泊まる",
+    "basic_kana": "とまる"
+  },
+  "掃除します": {
+    "basic": "する",
+    "basic_kana": "じす"
+  },
+  "洗濯します": {
+    "basic": "する",
+    "basic_kana": "たくす"
+  },
+  "なります": {
+    "basic": "なる",
+    "basic_kana": "なる"
+  },
+  "要ります": {
+    "basic": "要る",
+    "basic_kana": "いる"
+  },
+  "調べます": {
+    "basic": "調べる",
+    "basic_kana": "しらべる"
+  },
+  "修理します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "思います": {
+    "basic": "思う",
+    "basic_kana": "おもう"
+  },
+  "言います": {
+    "basic": "言う",
+    "basic_kana": "いう"
+  },
+  "勝ちます": {
+    "basic": "勝つ",
+    "basic_kana": "かつ"
+  },
+  "負けます": {
+    "basic": "負ける",
+    "basic_kana": "まける"
+  },
+  "役に立ちます": {
+    "basic": "役に立つ",
+    "basic_kana": "やく"
+  },
+  "動きます": {
+    "basic": "動く",
+    "basic_kana": "うごく"
+  },
+  "やめます": {
+    "basic": "やめる",
+    "basic_kana": "やめる"
+  },
+  "気をつけます": {
+    "basic": "つける",
+    "basic_kana": "くる"
+  },
+  "留学します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "着ます": {
+    "basic": "着る",
+    "basic_kana": "くる"
+  },
+  "履きます": {
+    "basic": "履く",
+    "basic_kana": "はく"
+  },
+  "かぶります": {
+    "basic": "かぶる",
+    "basic_kana": "かぶる"
+  },
+  "生まれます": {
+    "basic": "生まれる",
+    "basic_kana": "うまれる"
+  },
+  "眼鏡をかけます": {
+    "basic": "かける",
+    "basic_kana": "かける"
+  },
+  "ネクタイをします": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "回します": {
+    "basic": "回す",
+    "basic_kana": "まわす"
+  },
+  "引きます": {
+    "basic": "引く",
+    "basic_kana": "ひく"
+  },
+  "変えます": {
+    "basic": "変える",
+    "basic_kana": "かえる"
+  },
+  "触ります": {
+    "basic": "触る",
+    "basic_kana": "さわる"
+  },
+  "歩きます": {
+    "basic": "歩く",
+    "basic_kana": "あるく"
+  },
+  "渡ります": {
+    "basic": "渡る",
+    "basic_kana": "わたる"
+  },
+  "曲がります": {
+    "basic": "曲がる",
+    "basic_kana": "まがる"
+  },
+  "くれます": {
+    "basic": "くれる",
+    "basic_kana": "くれる"
+  },
+  "直します": {
+    "basic": "直す",
+    "basic_kana": "なおす"
+  },
+  "連れて行きます": {
+    "basic": "連れる",
+    "basic_kana": "つれる"
+  },
+  "連れて来ます": {
+    "basic": "連れる",
+    "basic_kana": "つれる"
+  },
+  "紹介します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "案内します": {
+    "basic": "する",
+    "basic_kana": "いる"
+  },
+  "説明します": {
+    "basic": "する",
+    "basic_kana": "する"
+  },
+  "考えます": {
+    "basic": "考える",
+    "basic_kana": "かんがえる"
+  },
+  "着きます": {
+    "basic": "着く",
+    "basic_kana": "つく"
+  },
+  "足ります": {
+    "basic": "足りる",
+    "basic_kana": "たりる"
+  },
+  "頑張ります": {
+    "basic": "頑張る",
+    "basic_kana": "がんばる"
+  }
+}

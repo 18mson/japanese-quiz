@@ -726,7 +726,7 @@ export function detectTags(tokens) {
   if (hasSurface('どちら') || hasSurface('どっち')) tags.add('WH_DOCHIRA');
 
   // --- LESSON 13 ---
-  if (fullText.includes('欲しい') || fullText.includes('ほしい')) {
+  if (tokens.some(t => t.basic_form === '欲しい') || fullText.includes('欲し') || fullText.includes('ほしい')) {
     tags.add('WANT_HOSHII');
   }
 
@@ -763,7 +763,7 @@ export function detectTags(tokens) {
           tags.add('TE_KUDASAI');
         }
         if (next && (next.basic_form === 'いる' || next.surface_form === 'い')) {
-          const stateVerbs = ['持つ', '住む', '知る', '結婚する', '勤める'];
+          const stateVerbs = ['持つ', '住む', '知る', '結婚する', '勤める', '売る', '作る', '働く'];
           if (stateVerbs.includes(prev.basic_form)) {
             tags.add('TE_IMASU_STATE');
           } else {

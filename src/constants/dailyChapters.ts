@@ -16,6 +16,10 @@ export const DAILY_CHAPTER_META: Record<number, ChapterMeta> = {
   10: { title: 'Keberadaan & Posisi', grammar: 'あります / います, に あります / います, 上 / 下 / 前 / 後ろ' },
   11: { title: 'Bilangan & Durasi', grammar: 'Pencacah (〜つ, 〜人, 〜枚), durasi waktu, 〜ぐらい' },
   12: { title: 'Bentuk Lampau & Perbandingan', grammar: 'Lampau adj / noun, A は B より, どちら, いちばん' },
+  13: { title: 'Keinginan & Tujuan', grammar: '欲しい, 〜たい, 〜に行く' },
+  14: { title: 'Bentuk -Te & Permintaan', grammar: '〜てください, 〜ています (sedang), 〜ましょうか' },
+  15: { title: 'Izin & Keadaan', grammar: '〜てもいいです, 〜てはいけません, 〜ています (keadaan)' },
+  16: { title: 'Rangkaian Kegiatan & Sifat', grammar: '〜て、〜て, 〜てから, Adj-くて / で, N1 は N2 が' },
 };
 
 export function getChapterTitle(chapterId: number): string {

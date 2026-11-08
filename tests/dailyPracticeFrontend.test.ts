@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 import { getTodayWIB, getNextResetWIB, formatRemainingTime } from '../src/utils/dailyTime.ts';
+import { DAILY_CHAPTER_META, getChapterTitle } from '../src/constants/dailyChapters.ts';
 import { useSpeechAnswer } from '../src/composables/useSpeechAnswer.ts';
 import { tokenizeSentenceWithHints } from '../src/utils/sentenceHints.ts';
 import { toHiragana } from 'wanakana';
@@ -187,6 +188,24 @@ test('Daily Practice Frontend Test Suite', async (t) => {
     // Catatan kurung tidak boleh mengandung hint
     const inParen = segments.find(s => s.text.includes('jauh'));
     assert.strictEqual(inParen?.hint, undefined, 'Kata di dalam tanda kurung tidak boleh ber-hint');
+  });
+
+  // ============================================================
+  // 7. Metadata Bab Latihan Harian (Bab 1 - 16)
+  // ============================================================
+  await t.test('9. DAILY_CHAPTER_META mencakup Bab 1 sampai Bab 16 dengan lengkap', () => {
+    for (let i = 1; i <= 16; i++) {
+      const meta = DAILY_CHAPTER_META[i];
+      assert.ok(meta, `Metadata Bab ${i} harus tersedia`);
+      assert.ok(meta.title && meta.title.length > 0, `Judul Bab ${i} tidak boleh kosong`);
+      assert.ok(meta.grammar && meta.grammar.length > 0, `Grammar Bab ${i} tidak boleh kosong`);
+      assert.strictEqual(getChapterTitle(i), meta.title);
+    }
+
+    assert.strictEqual(DAILY_CHAPTER_META[13].title, 'Keinginan & Tujuan');
+    assert.strictEqual(DAILY_CHAPTER_META[14].title, 'Bentuk -Te & Permintaan');
+    assert.strictEqual(DAILY_CHAPTER_META[15].title, 'Izin & Keadaan');
+    assert.strictEqual(DAILY_CHAPTER_META[16].title, 'Rangkaian Kegiatan & Sifat');
   });
 });
 

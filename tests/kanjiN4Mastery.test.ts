@@ -66,3 +66,4 @@ test('4. StartScreen modesConfig menu title is unified as Kanji', () => {
   assert.ok(kanjiMode, 'Kanji mode must exist');
   assert.strictEqual(kanjiMode.title, 'Kanji', 'Title must be Kanji without N5 suffix');
 });
+

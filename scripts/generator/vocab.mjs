@@ -10,6 +10,8 @@ const __dirname = path.dirname(__filename);
 const vocabBookPath = path.resolve(__dirname, '../data/vocab-book.json');
 const vocabExtraPath = path.resolve(__dirname, '../data/vocab-extra.json');
 const vocabReportPath = path.resolve(__dirname, '../data/vocab-extra.report.md');
+const verbDictFormsPath = path.resolve(__dirname, '../data/verb-dict-forms.json');
+const verbDictForms = fs.existsSync(verbDictFormsPath) ? JSON.parse(fs.readFileSync(verbDictFormsPath, 'utf-8')) : {};
 
 /**
  * Membaca data words.ts langsung
@@ -67,7 +69,7 @@ export function buildVocabEntries(rawWords, extraWords = []) {
       entries.push({ char: cleanAlt, kana: cleanKana, lesson: l, raw: w, fromBook: true, isAlt: true });
     }
 
-    // Verb stems (e.g. 起きます -> 起き, kana: おき)
+    // Verb stems (e.g. 起きます -> 起き, kana: おき) and dictionary form (起きる)
     if (cleanChar.endsWith('ます')) {
       const stem = cleanChar.slice(0, -2);
       const kanaStem = cleanKana.endsWith('ます') ? cleanKana.slice(0, -2) : cleanKana;
@@ -76,6 +78,10 @@ export function buildVocabEntries(rawWords, extraWords = []) {
         if (a.endsWith('ます')) {
           entries.push({ char: a.slice(0, -2), kana: kanaStem, lesson: l, raw: w, fromBook: true, isAlt: true });
         }
+      }
+      const dictInfo = verbDictForms[cleanChar];
+      if (dictInfo && dictInfo.basic) {
+        entries.push({ char: dictInfo.basic, kana: dictInfo.basic_kana || '', lesson: l, raw: w, fromBook: true });
       }
     }
 
@@ -135,6 +141,10 @@ export function buildVocabEntries(rawWords, extraWords = []) {
         lesson: l,
         raw: w
       });
+      const dictInfo = verbDictForms[cleanChar];
+      if (dictInfo && dictInfo.basic) {
+        entries.push({ char: dictInfo.basic, kana: dictInfo.basic_kana || '', lesson: l, raw: w });
+      }
     }
 
     if (cleanChar.endsWith('な') && w.category_word?.includes('Sifat-na')) {
@@ -571,7 +581,8 @@ export function checkToken(surface, basic, pos, pos1, reading, vocabEntries, max
   if (resSurface.ok) return resSurface;
 
   if (basic && basic !== surface && basic !== '*') {
-    const resBasic = checkVocabMatch(basic, candKana, maxLesson, vocabEntries);
+    const basicKana = (pos === '動詞' || pos === '形容詞') ? '' : candKana;
+    const resBasic = checkVocabMatch(basic, basicKana, maxLesson, vocabEntries);
     if (resBasic.ok) return resBasic;
   }
 
