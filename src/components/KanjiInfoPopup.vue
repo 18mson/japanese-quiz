@@ -222,8 +222,9 @@ onUnmounted(() => {
                 <h3 id="kanji-popup-title" class="text-sm font-bold text-slate-800 dark:text-slate-100">
                   Bedah Kanji Kotoba
                 </h3>
-                <p v-if="targetWord" class="text-xs text-slate-600 dark:text-slate-300 font-jp">
-                  Kata: <span class="font-bold text-slate-800 dark:text-slate-200">{{ targetWord }}</span>
+                <p v-if="targetWord" class="text-sm text-slate-500 dark:text-slate-400 font-jp flex items-center gap-1.5 mt-0.5">
+                  <span class="font-sans text-xs">Kata:</span>
+                  <span class="font-bold text-base text-slate-900 dark:text-slate-100">{{ targetWord }}</span>
                 </p>
               </div>
             </div>
@@ -318,14 +319,14 @@ onUnmounted(() => {
                   </div>
 
                   <!-- On & Kun Readings -->
-                  <div class="pt-1 text-xs space-y-1 text-slate-600 dark:text-slate-300 font-jp">
-                    <p v-if="currentKanjiDetail.on?.length">
-                      <span class="font-bold text-slate-500 font-sans">Onyomi:</span> 
-                      <span class="font-semibold text-slate-800 dark:text-slate-200 ml-1">{{ currentKanjiDetail.on.join(', ') }}</span>
+                  <div class="pt-1.5 space-y-1.5 font-jp">
+                    <p v-if="currentKanjiDetail.on?.length" class="text-sm sm:text-base leading-relaxed">
+                      <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 font-sans">Onyomi:</span> 
+                      <span class="font-bold text-slate-900 dark:text-slate-100 ml-1.5">{{ currentKanjiDetail.on.join(', ') }}</span>
                     </p>
-                    <p v-if="currentKanjiDetail.kun?.length">
-                      <span class="font-bold text-slate-500 font-sans">Kunyomi:</span> 
-                      <span class="font-semibold text-slate-800 dark:text-slate-200 ml-1">{{ currentKanjiDetail.kun.join(', ') }}</span>
+                    <p v-if="currentKanjiDetail.kun?.length" class="text-sm sm:text-base leading-relaxed">
+                      <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 font-sans">Kunyomi:</span> 
+                      <span class="font-bold text-slate-900 dark:text-slate-100 ml-1.5">{{ currentKanjiDetail.kun.join(', ') }}</span>
                     </p>
                   </div>
                 </div>
@@ -336,12 +337,12 @@ onUnmounted(() => {
                 <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                   Komponen Pembentuk
                 </h5>
-                <div class="flex flex-wrap items-center gap-2">
+                <div class="flex flex-wrap items-center gap-2 pt-0.5">
                   <template v-for="(comp, cIdx) in currentKanjiDetail.components" :key="cIdx">
-                    <span v-if="cIdx > 0" class="text-xs font-black text-slate-400 dark:text-slate-500 select-none">+</span>
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200">
-                      <span class="font-jp font-black text-sm text-indigo-600 dark:text-torii-light">{{ comp.part }}</span>
-                      <span class="text-slate-600 dark:text-slate-300 font-medium">{{ comp.meaning_id }}</span>
+                    <span v-if="cIdx > 0" class="text-sm font-black text-slate-400 dark:text-slate-500 select-none">+</span>
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 shadow-2xs">
+                      <span class="font-jp font-black text-lg text-indigo-600 dark:text-torii-light leading-none">{{ comp.part }}</span>
+                      <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">{{ comp.meaning_id }}</span>
                     </span>
                   </template>
                 </div>
