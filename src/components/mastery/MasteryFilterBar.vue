@@ -2,6 +2,7 @@
 import { ref, computed, toRef } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { kanjiGroups } from '../../data/kanji';
+import { kanjiN4Groups } from '../../data/kanjiN4';
 import { useTabIndicator } from '../../composables/useTabIndicator';
 import { 
   Sparkles, 
@@ -86,7 +87,11 @@ const activeSubtypeLabel = computed(() => {
     const found = kanjiGroups.find(g => g.key === props.subtype);
     return found ? found.label : props.subtype;
   }
-  if (props.category !== 'words' && props.category !== 'kanji_n4') {
+  if (props.category === 'kanji_n4') {
+    const found = kanjiN4Groups.find(g => g.key === props.subtype);
+    return found ? found.label : props.subtype;
+  }
+  if (props.category !== 'words') {
     if (props.subtype === 'basic') return 'Dasar (Basic)';
     if (props.subtype === 'dakuten') return 'Dakuten / Handakuten';
     if (props.subtype === 'combination') return 'Kombinasi (Yōon)';
@@ -279,7 +284,19 @@ const statusPills = [
 
           <!-- Kanji N4 Groups -->
           <template v-else-if="category === 'kanji_n4'">
-            <!-- Semua 155 Kanji N4 langsung tampil tanpa sub-kelompok -->
+            <button
+              v-for="grp in kanjiN4Groups.filter(g => g.key !== 'all')"
+              :key="grp.key"
+              type="button"
+              @click="emit('update:subtype', grp.key); closeDropdowns();"
+              class="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-bold transition flex items-center justify-between cursor-pointer"
+              :class="subtype === grp.key 
+                ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
+                : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
+            >
+              <span class="truncate">{{ grp.label }}</span>
+              <Check v-if="subtype === grp.key" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
+            </button>
           </template>
 
           <!-- Hiragana / Katakana Groups -->

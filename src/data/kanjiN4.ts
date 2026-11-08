@@ -8,7 +8,20 @@ export interface JapaneseKanjiN4 extends JapaneseKanji {
   strokeCount?: number | null;
   grade?: number | null;
   jlpt: 4;
+  group: string;
 }
+
+export const kanjiN4Groups = [
+  { key: 'all', label: 'Semua Kanji N4 (155 Kanji)' },
+  { key: 'people', label: 'Orang & Keluarga (People)' },
+  { key: 'time', label: 'Waktu, Musim & Cuaca (Time & Weather)' },
+  { key: 'places', label: 'Tempat & Bangunan (Places)' },
+  { key: 'life', label: 'Kehidupan & Makanan (Daily Life & Food)' },
+  { key: 'movement', label: 'Perjalanan & Gerak (Movement & Travel)' },
+  { key: 'study', label: 'Pikiran, Belajar & Media (Study & Media)' },
+  { key: 'work', label: 'Pekerjaan & Aktivitas (Work & Action)' },
+  { key: 'adjective', label: 'Sifat, Keadaan & Warna (Adjectives & Colors)' },
+];
 
 export const kanjiN4Data: JapaneseKanjiN4[] = [
   {
@@ -37,7 +50,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "悪い (buruk, jelek)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 2,
@@ -59,7 +73,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "暗い (gelap)",
       "暗証番号 (nomor PIN)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 3,
@@ -77,7 +92,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "意見 (pendapat, opini)",
       "意味 (arti, makna)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 4,
@@ -99,7 +115,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "医者 (dokter)",
       "歯医者 (dokter gigi)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 5,
@@ -118,7 +135,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "会社員 (karyawan perusahaan)",
       "社員 (karyawan perusahaan (dengan nama kantor))",
       "銀行員 (pegawai bank)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 6,
@@ -140,7 +158,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "お引き出しですか (Mau menarik uang?)",
       "お引き出し (penarikan uang tunai)",
       "引く (menarik)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 7,
@@ -157,7 +176,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "病院 (rumah sakit)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 8,
@@ -178,7 +198,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "運転手 (sopir, pengemudi)",
       "運転します (menyetir, mengemudi)",
       "運動靴 (sepatu olahraga)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 9,
@@ -200,7 +221,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "映画 (film)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 10,
@@ -219,7 +241,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "英語 (bahasa Inggris)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 11,
@@ -239,7 +262,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "遠い (jauh)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 12,
@@ -260,7 +284,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "部屋 (kamar, ruangan)",
       "～屋 (toko ~)",
       "本屋 (toko buku)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 13,
@@ -284,7 +309,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "音楽 (musik)",
       "音楽家 (musisi)",
       "音 (bunyi, suara)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 14,
@@ -305,7 +331,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "夏 (musim panas)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 15,
@@ -327,7 +354,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "歌 (lagu)",
       "歌舞伎 (kabuki (seni teater Jepang))",
       "歌手 (penyanyi)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 16,
@@ -354,7 +382,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "映画 (film)",
       "画家 (pelukis)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 17,
@@ -383,7 +412,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "～回 (kali, frekuensi)",
       "回します (memutar)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 18,
@@ -403,7 +433,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "海 (laut, pantai)",
       "北海道 (Hokkaido)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 19,
@@ -420,7 +451,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "世界 (dunia)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 20,
@@ -444,7 +476,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "開けます (membuka [ドアを～])"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 21,
@@ -469,7 +502,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "楽しい (senang, menyenangkan)",
       "音楽 (musik)",
       "音楽家 (musisi)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 22,
@@ -489,7 +523,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "寒い (dingin (suhu udara))",
       "寒気がします (merinding kedinginan / menggigil)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 23,
@@ -506,7 +541,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "漢字 (huruf Kanji)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 24,
@@ -527,7 +563,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "図書館 (perpustakaan)",
       "美術館 (gedung kesenian, museum seni)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 25,
@@ -546,7 +583,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "顔 (wajah, muka)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 26,
@@ -570,7 +608,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "帰ります (pulang)",
       "お帰りなさい (Selamat datang (kembali ke rumah))",
       "もう帰らないと (saya harus pulang...)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 27,
@@ -593,7 +632,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "起きます (bangun tidur)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 28,
@@ -616,7 +656,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "急行 (ekspres (kereta ekspres))",
       "特急 (super ekspres (kereta super ekspres))",
       "急ぎます (buru-buru, bergegas)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 29,
@@ -637,7 +678,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "研究者 (peneliti)",
       "研究します (meneliti)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 30,
@@ -658,7 +700,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "牛乳 (susu)",
       "牛肉 (daging sapi)",
       "牛どん (Gyudon (mangkuk nasi daging sapi))"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 31,
@@ -679,7 +722,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "去年 (tahun lalu)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 32,
@@ -702,7 +746,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "東京 (Tokyo)",
       "東京ディズニーランド (Tokyo Disneyland)",
       "東京スカイツリー (Tokyo Sky Tree)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 33,
@@ -728,7 +773,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "勉強します (belajar)",
       "勉強 (pelajaran, belajar)",
       "強い (kuat)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 34,
@@ -750,7 +796,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "教師 (guru, dosen (sebagai profesi))",
       "教室 (ruang kelas)",
       "教えます (mengajar, memberitahukan)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 35,
@@ -770,7 +817,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "残業します (lembur, kerja lembur)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 36,
@@ -792,7 +840,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "近く (dekat)",
       "近い (dekat)",
       "最近 (akhir-akhir ini, belakangan ini)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 37,
@@ -812,7 +861,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "銀行員 (pegawai bank)",
       "銀行 (bank)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 38,
@@ -834,7 +884,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "兄弟 (saudara kandung)",
       "兄 (kakak laki-laki (sendiri))",
       "お兄さん (kakak laki-laki (orang lain))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 39,
@@ -854,7 +905,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "時計 (jam, arloji)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 40,
@@ -877,7 +929,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "軽い (ringan)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 41,
@@ -901,7 +954,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "建築家 (arsitek)",
       "建物 (gedung)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 42,
@@ -921,7 +975,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "研究者 (peneliti)",
       "研究します (meneliti)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 43,
@@ -940,7 +995,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "県 (prefektur)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 44,
@@ -963,7 +1019,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "試験 (ujian)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 45,
@@ -985,7 +1042,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "元気な (sehat walafiat, bersemangat)",
       "お元気ですか (apa kabar?)",
       "どうぞお元気で (Semoga sehat selalu (salam perpisahan))"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 46,
@@ -1007,7 +1065,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "好きな (suka, gemar)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 47,
@@ -1030,7 +1089,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "広い (luas, lebar)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 48,
@@ -1050,7 +1110,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "考えます (berpikir, memikirkan)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 49,
@@ -1080,7 +1141,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "試合 (pertandingan [～を します : bertanding])",
       "都合 (kondisi, keadaan waktu)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 50,
@@ -1101,7 +1163,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "黒い (hitam)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 51,
@@ -1120,7 +1183,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "野菜 (sayur)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 52,
@@ -1143,7 +1207,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "作ります (membuat, memproduksi)",
       "作家 (penulis, pengarang)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 53,
@@ -1165,7 +1230,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "お土産 (oleh-oleh)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 54,
@@ -1186,7 +1252,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "お仕事 (pekerjaan)",
       "仕事 (pekerjaan, kerja)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 55,
@@ -1208,7 +1275,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "使います (memakai, menggunakan)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 56,
@@ -1229,7 +1297,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "始めます (memulai)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 57,
@@ -1250,7 +1319,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "姉 (kakak perempuan (sendiri))",
       "お姉さん (kakak perempuan (orang lain))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 58,
@@ -1269,7 +1339,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "市役所 (kantor wali kota)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 59,
@@ -1291,7 +1362,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "思い出します (mengingat, teringat)",
       "思います (mengira, berpikir, berpendapat)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 60,
@@ -1323,7 +1395,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "止めます (menghentikan, memarkir [くるまを～])"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 61,
@@ -1342,7 +1415,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "手紙 (surat)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 62,
@@ -1363,7 +1437,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "試験 (ujian)",
       "試合 (pertandingan [～を します : bertanding])"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 63,
@@ -1387,7 +1462,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "事務所 (kantor)",
       "お仕事 (pekerjaan)",
       "仕事 (pekerjaan, kerja)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 64,
@@ -1410,7 +1486,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "字 (huruf, aksara)",
       "漢字 (huruf Kanji)",
       "ローマ字 (huruf latin)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 65,
@@ -1433,7 +1510,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "持ちます (membawa, memegang)",
       "持って行きます (membawa pergi (barang))",
       "持って来ます (membawa datang (barang))"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 66,
@@ -1457,7 +1535,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "自動販売機 (mesin jual otomatis)",
       "自転車 (sepeda)",
       "自動車 (mobil (jidousha))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 67,
@@ -1478,7 +1557,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "教室 (ruang kelas)",
       "会議室 (ruang rapat)",
       "寝室 (kamar tidur)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 68,
@@ -1501,7 +1581,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "写真 (foto)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 69,
@@ -1522,7 +1603,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "医者 (dokter)",
       "研究者 (peneliti)",
       "歯医者 (dokter gigi)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 70,
@@ -1541,7 +1623,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "借ります (meminjam, menyewa)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 71,
@@ -1563,7 +1646,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "弱い (lemah)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 72,
@@ -1587,7 +1671,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "ご主人 (suami (orang lain))",
       "主人 (suami (sendiri))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 73,
@@ -1608,7 +1693,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "秋 (musim gugur)",
       "秋葉原 (Akihabara (nama daerah di Tokyo))"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 74,
@@ -1633,7 +1719,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "終わります (selesai)",
       "終わり (akhir, selesai)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 75,
@@ -1655,7 +1742,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "習います (belajar (dari seseorang))",
       "練習 (latihan)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 76,
@@ -1676,7 +1764,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "集めます (mengumpulkan)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 77,
@@ -1701,7 +1790,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "住所 (alamat)",
       "住みます (tinggal, mendiami)",
       "住んでいます (tinggal (di suatu tempat))"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 78,
@@ -1727,7 +1817,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "重い (berat)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 79,
@@ -1746,7 +1837,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "春 (musim semi)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 80,
@@ -1770,7 +1862,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "事務所 (kantor)",
       "所 (tempat)",
       "洗面所 (tempat cuci tangan, wastafel)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 81,
@@ -1789,7 +1882,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "暑い (panas (suhu udara))"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 82,
@@ -1813,7 +1907,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "乗り場 (tempat naik kendaraan)",
       "乗ります (naik kendaraan [でんしゃに～])",
       "乗り換えます (ganti / pindah kendaraan)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 83,
@@ -1835,7 +1930,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "売り場 (tempat penjualan, konter)",
       "乗り場 (tempat naik kendaraan)",
       "風呂場 (kamar mandi)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 84,
@@ -1855,7 +1951,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "心配します (khawatir, cemas)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 85,
@@ -1876,7 +1973,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "写真 (foto)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 86,
@@ -1899,7 +1997,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "親切な (baik hati, ramah)",
       "両親 (orang tua)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 87,
@@ -1921,7 +2020,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "図書館 (perpustakaan)",
       "地図 (peta)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 88,
@@ -1943,7 +2043,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "世界 (dunia)",
       "いろいろお世話になりました (Terima kasih banyak atas segala bantuannya)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 89,
@@ -1966,7 +2067,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "お正月 (tahun baru)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 90,
@@ -1988,7 +2090,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "青い (biru)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 91,
@@ -2012,7 +2115,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "赤い (merah)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 92,
@@ -2043,7 +2147,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "切ります (memotong, menggunting)",
       "切符 (karcis, tiket)",
       "親切な (baik hati, ramah)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 93,
@@ -2063,7 +2168,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "説明します (menjelaskan, menerangkan)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 94,
@@ -2084,7 +2190,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "お手洗い (kamar kecil, toilet (sopan))",
       "洗面所 (tempat cuci tangan, wastafel)",
       "洗います (mencuci)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 95,
@@ -2110,7 +2217,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "早く (dengan cepat, pagi-pagi)",
       "早い (pagi, awal)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 96,
@@ -2129,7 +2237,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "走る (berlari)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 97,
@@ -2149,7 +2258,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "送ります (mengirim, mengantar)",
       "放送 (siaran, pengumuman)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 98,
@@ -2167,7 +2277,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "家族 (keluarga)",
       "ご家族 (keluarga (orang lain))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 99,
@@ -2190,7 +2301,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "体 (badan, tubuh)",
       "体がだるい (badan lemas / letih)",
       "体にいい (baik untuk tubuh, sehat)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 100,
@@ -2211,7 +2323,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "少々 お待ちください (Tunggu sebentar)",
       "待ちます (menunggu)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 101,
@@ -2233,7 +2346,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "貸します (meminjamkan, menyewakan)",
       "貸してください (tolong pinjamkan)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 102,
@@ -2256,7 +2370,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "台所 (dapur)",
       "～台 (unit, buah (mesin/mobil))"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 103,
@@ -2274,7 +2389,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "宿題 (pekerjaan rumah (PR))",
       "問題 (masalah, soal)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 104,
@@ -2293,7 +2409,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "短い (pendek)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 105,
@@ -2314,7 +2431,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "知ります (mengetahui, mengenal)",
       "知っています (tahu, kenal)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 106,
@@ -2334,7 +2452,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "地下 (bawah tanah, basement)",
       "地下鉄 (kereta bawah tanah)",
       "地図 (peta)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 107,
@@ -2353,7 +2472,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "電池 (baterai)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 108,
@@ -2373,7 +2493,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "お茶 (teh, teh hijau)",
       "紅茶 (teh hitam)",
       "喫茶店 (kedai kopi, cafe)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 109,
@@ -2398,7 +2519,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "上着 (jaket, pakaian luar)",
       "下着 (pakaian dalam)",
       "着物 (kimono (pakaian tradisional))"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 110,
@@ -2419,7 +2541,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "昼 (siang)",
       "昼休み (istirahat siang)",
       "昼ごはん (makan siang)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 111,
@@ -2440,7 +2563,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "ご注文は？ (Mau pesan apa?)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 112,
@@ -2461,7 +2585,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "朝 (pagi)",
       "毎朝 (setiap pagi)",
       "朝ごはん (sarapan, makan pagi)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 113,
@@ -2480,7 +2605,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "町 (kota)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 114,
@@ -2509,7 +2635,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "普通 (biasa (kereta biasa / lokal))",
       "通帳記入 (pencetakan buku tabungan)",
       "交通 (lalu lintas)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 115,
@@ -2530,7 +2657,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "低い (rendah)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 116,
@@ -2553,7 +2681,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "兄弟 (saudara kandung)",
       "弟 (adik laki-laki (sendiri))",
       "弟さん (adik laki-laki (orang lain))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 117,
@@ -2581,7 +2710,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "自転車 (sepeda)",
       "運転手 (sopir, pengemudi)",
       "運転します (menyetir, mengemudi)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 118,
@@ -2601,7 +2731,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "梅田 (Umeda (daerah di Osaka))",
       "田舎 (desa, kampung halaman)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 119,
@@ -2621,7 +2752,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "都合 (kondisi, keadaan waktu)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 120,
@@ -2645,7 +2777,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "また 今度 お願いします (maaf, lain kali saja)",
       "一度 (sekali, satu kali)",
       "一度も (sama sekali tidak, satu kali pun (diikuti negatif))"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 121,
@@ -2664,7 +2797,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "冬 (musim dingin)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 122,
@@ -2684,7 +2818,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "答え (jawaban)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 123,
@@ -2709,7 +2844,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "頭 (kepala)",
       "頭が痛い (sakit kepala)"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 124,
@@ -2728,7 +2864,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "働きます (bekerja)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 125,
@@ -2750,7 +2887,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "自動販売機 (mesin jual otomatis)",
       "動物 (hewan, binatang)",
       "動きます (bergerak, jalan (mesin))"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 126,
@@ -2767,7 +2905,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "食堂 (ruang makan, kantin)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 127,
@@ -2785,7 +2924,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "特急 (super ekspres (kereta super ekspres))",
       "特に (terutama, khususnya)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 128,
@@ -2806,7 +2946,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "肉 (daging)",
       "豚肉 (daging babi)",
       "鶏肉 (daging ayam)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 129,
@@ -2828,7 +2969,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "自動販売機 (mesin jual otomatis)",
       "売り場 (tempat penjualan, konter)",
       "売ります (menjual)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 130,
@@ -2851,7 +2993,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "病院 (rumah sakit)",
       "病気 (sakit, penyakit)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 131,
@@ -2871,7 +3014,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "製品 (produk, barang buatan)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 132,
@@ -2889,7 +3033,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "不便 (tidak praktis [不便な])"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 133,
@@ -2910,7 +3055,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "風呂場 (kamar mandi)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 134,
@@ -2927,7 +3073,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "服 (baju, pakaian)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 135,
@@ -2950,7 +3097,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "果物 (buah-buahan)",
       "荷物 (barang, paket, bagasi, koper)",
       "食べ物 (makanan)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 136,
@@ -2972,7 +3120,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "ご注文は？ (Mau pesan apa?)",
       "文楽 (Bunraku (teater boneka tradisional))"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 137,
@@ -2992,7 +3141,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "別々に (sendiri-sendiri, masing-masing (bayar terpisah))"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 138,
@@ -3014,7 +3164,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "郵便局 (kantor pos)",
       "便利な (praktis, nyaman)",
       "郵便ポスト (kotak pos)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 139,
@@ -3034,7 +3185,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "勉強します (belajar)",
       "勉強 (pelajaran, belajar)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 140,
@@ -3058,7 +3210,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "歩いて (dengan berjalan kaki)",
       "散歩します (berjalan-jalan [こうえんを～])",
       "歩きます (berjalan kaki)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 141,
@@ -3081,7 +3234,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "あの方 (beliau (sopan))",
       "読み方 (cara membaca)",
       "～方 (cara ~)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 142,
@@ -3101,7 +3255,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "妹 (adik perempuan (sendiri))",
       "妹さん (adik perempuan (orang lain))"
-    ]
+    ],
+    "group": "people"
   },
   {
     "id": 143,
@@ -3122,7 +3277,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "趣味 (hobi)",
       "意味 (arti, makna)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 144,
@@ -3153,7 +3309,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "明るい (terang, cerah)",
       "説明します (menjelaskan, menerangkan)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 145,
@@ -3174,7 +3331,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "問題 (masalah, soal)"
-    ]
+    ],
+    "group": "study"
   },
   {
     "id": 146,
@@ -3194,7 +3352,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "専門 (spesialisasi, bidang keahlian)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 147,
@@ -3214,7 +3373,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "夜 (malam)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 148,
@@ -3236,7 +3396,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "野菜 (sayur)",
       "野球 (baseball)"
-    ]
+    ],
+    "group": "places"
   },
   {
     "id": 149,
@@ -3255,7 +3416,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "薬 (obat)"
-    ]
+    ],
+    "group": "life"
   },
   {
     "id": 150,
@@ -3275,7 +3437,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "有名な (terkenal)"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 151,
@@ -3294,7 +3457,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "月曜日 (hari Senin)",
       "火曜日 (hari Selasa)",
       "水曜日 (hari Rabu)"
-    ]
+    ],
+    "group": "time"
   },
   {
     "id": 152,
@@ -3313,7 +3477,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "用事 (urusan)"
-    ]
+    ],
+    "group": "work"
   },
   {
     "id": 153,
@@ -3334,7 +3499,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
       "料理 (masakan, hidangan)",
       "調理師 (koki, juru masak)",
       "理容師 (tukang cukur rambut (pria))"
-    ]
+    ],
+    "group": "adjective"
   },
   {
     "id": 154,
@@ -3353,7 +3519,8 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "type": "kanji",
     "examples": [
       "旅行 (tamasya, perjalanan, traveling)"
-    ]
+    ],
+    "group": "movement"
   },
   {
     "id": 155,
@@ -3371,6 +3538,7 @@ export const kanjiN4Data: JapaneseKanjiN4[] = [
     "examples": [
       "料理 (masakan, hidangan)",
       "資料 (data, bahan materi)"
-    ]
+    ],
+    "group": "adjective"
   }
 ];

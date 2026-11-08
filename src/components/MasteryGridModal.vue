@@ -240,9 +240,9 @@ const currentGroupItems = computed(() => {
   if (activeSubtype.value !== 'all') {
     if (activeCategory.value === 'words') {
       pool = pool.filter(w => w.lesson === activeSubtype.value);
-    } else if (activeCategory.value === 'kanji') {
+    } else if (activeCategory.value === 'kanji' || activeCategory.value === 'kanji_n4') {
       pool = pool.filter(k => k.group === activeSubtype.value);
-    } else if (activeCategory.value !== 'kanji_n4') {
+    } else {
       pool = pool.filter(c => c.type === activeSubtype.value);
     }
   }
