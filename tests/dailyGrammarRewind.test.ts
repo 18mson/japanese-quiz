@@ -1,6 +1,22 @@
 // tests/dailyGrammarRewind.test.ts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value.toString(); },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; }
+  };
+})();
+
+Object.defineProperty(globalThis, 'localStorage', {
+  value: localStorageMock,
+  writable: true
+});
+
 import { setActivePinia, createPinia } from 'pinia';
 import { useLessonStore } from '../src/stores/lessonStore';
 import { useDailyGrammarRewind, hashDateKey } from '../src/composables/useDailyGrammarRewind';
@@ -63,5 +79,26 @@ test('4. Ketika banyak bab dicentang, materi selalu berada dalam subset bab terp
   assert.deepStrictEqual(learnedLessonNumbers.value, [1, 3, 7]);
   assert.ok(dailyHighlight.value !== null);
   assert.ok([1, 3, 7].includes(dailyHighlight.value?.lessonNumber as number), 'Materi terpilih harus termasuk dalam Bab 1, 3, atau 7');
+});
+
+test('5. shouldAutoTriggerMobilePopup bekerja deterministik per hari', () => {
+  setActivePinia(createPinia());
+  localStorage.clear();
+  const lessonStore = useLessonStore();
+
+  // Saat belum ada bab terpelajari -> false
+  const rewind1 = useDailyGrammarRewind();
+  assert.strictEqual(rewind1.shouldAutoTriggerMobilePopup(), false);
+
+  // Setelah ada bab terpelajari -> true pada buka pertama hari itu
+  lessonStore.completedCategories = { '1_bunkei': true };
+  const rewind2 = useDailyGrammarRewind();
+  assert.strictEqual(rewind2.shouldAutoTriggerMobilePopup(), true);
+
+  // Tandai sudah dilihat
+  rewind2.markMobilePopupAsSeen();
+
+  // Buka berikutnya di hari yang sama -> false
+  assert.strictEqual(rewind2.shouldAutoTriggerMobilePopup(), false);
 });
 

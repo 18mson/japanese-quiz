@@ -22,16 +22,21 @@ import DuelOnlinePanel from './start/panels/DuelOnlinePanel.vue';
 import DesktopMasterySidebar from './start/desktop/DesktopMasterySidebar.vue';
 import DesktopLeaderboardSidebar from './start/desktop/DesktopLeaderboardSidebar.vue';
 import DailyGrammarRewindCard from './daily/DailyGrammarRewindCard.vue';
+import DailyGrammarRewindMarquee from './daily/DailyGrammarRewindMarquee.vue';
+import DailyGrammarRewindModal from './daily/DailyGrammarRewindModal.vue';
+import { useDailyGrammarRewind } from '../composables/useDailyGrammarRewind';
 
 const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice', 'openHandbook']);
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
 const authStore = useAuthStore();
+const { shouldAutoTriggerMobilePopup, markMobilePopupAsSeen } = useDailyGrammarRewind();
 
 // Modals
 const isReferenceModalOpen = ref(false);
 const isHitunganTutorialOpen = ref(false);
+const isRewindModalOpen = ref(false);
 const hitunganWaveForTutorial = ref<HitunganWaveDef | null>(null);
 
 // User interaction flag (preserves manual user selection once touched)
@@ -416,6 +421,14 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeydown);
   window.addEventListener('pointerdown', deactivateKeyboardNav);
   window.addEventListener('touchstart', deactivateKeyboardNav);
+
+  // Auto-trigger mobile daily rewind popup on first open of the day
+  if (typeof window !== 'undefined' && window.innerWidth < 1280) {
+    if (shouldAutoTriggerMobilePopup()) {
+      isRewindModalOpen.value = true;
+      markMobilePopupAsSeen();
+    }
+  }
 });
 
 onUnmounted(() => {
@@ -451,7 +464,7 @@ watch(characterTypes, (newVal) => {
     />
     
     <!-- SECTION 1: HEADER BAR (Mobile & Tablet only, hidden on desktop >= xl) -->
-    <div class="w-full max-w-3xl xl:hidden mb-1 flex justify-center">
+    <div class="w-full max-w-3xl xl:hidden mb-1 flex flex-col items-center gap-1.5">
       <StartHeaderBar
         :is-keyboard-nav="isKeyboardNav"
         :focused-section="focusedSection"
@@ -463,6 +476,11 @@ watch(characterTypes, (newVal) => {
         @open-reference="isReferenceModalOpen = true"
         @open-daily-practice="emit('openDailyPractice')"
         @interact="deactivateKeyboardNav"
+      />
+
+      <!-- Running Text Ticker Khusus Mobile di Bawah Header -->
+      <DailyGrammarRewindMarquee 
+        @open-popup="isRewindModalOpen = true" 
       />
     </div>
 
@@ -477,13 +495,6 @@ watch(characterTypes, (newVal) => {
 
       <!-- Center Column: Wheel Selector & Options -->
       <main class="w-full max-w-3xl flex flex-col items-center min-w-0">
-        <!-- Mobile/Tablet Compact Daily Grammar Rewind Card -->
-        <div class="w-full xl:hidden mb-2">
-          <DailyGrammarRewindCard 
-            @jump-to-chapter="(num) => emit('openHandbook', num)" 
-          />
-        </div>
-
         <StartWheelSelector
           :modes="modesList"
           :active-mode-index="activeModeIndex"
@@ -658,6 +669,13 @@ watch(characterTypes, (newVal) => {
     <LessonReferenceModal 
       :is-open="isReferenceModalOpen" 
       @close="isReferenceModalOpen = false" 
+    />
+
+    <!-- Mobile Daily Grammar Rewind Modal Popup -->
+    <DailyGrammarRewindModal
+      :is-open="isRewindModalOpen"
+      @close="isRewindModalOpen = false"
+      @jump-to-chapter="(num) => emit('openHandbook', num)"
     />
   </div>
 </template>

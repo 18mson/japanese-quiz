@@ -18,10 +18,11 @@ export interface DailyGrammarHighlight {
 }
 
 const STORAGE_COLLAPSED_KEY = 'nihongo_daily_rewind_collapsed';
-const isBrowser = typeof window !== 'undefined' && typeof localStorage !== 'undefined';
+export const STORAGE_POPUP_SEEN_DATE_KEY = 'nihongo_daily_rewind_popup_seen_date';
+const hasStorage = () => typeof localStorage !== 'undefined';
 
 const getInitialCollapsed = (): boolean => {
-  if (isBrowser) {
+  if (hasStorage()) {
     try {
       return localStorage.getItem(STORAGE_COLLAPSED_KEY) === 'true';
     } catch (e) {}
@@ -47,7 +48,7 @@ export function useDailyGrammarRewind() {
 
   const toggleCollapsed = () => {
     isCollapsed.value = !isCollapsed.value;
-    if (isBrowser) {
+    if (hasStorage()) {
       try {
         localStorage.setItem(STORAGE_COLLAPSED_KEY, isCollapsed.value ? 'true' : 'false');
       } catch (e) {}
@@ -126,12 +127,33 @@ export function useDailyGrammarRewind() {
     };
   });
 
+  const shouldAutoTriggerMobilePopup = (): boolean => {
+    if (!hasStorage() || !hasLearnedLessons.value) return false;
+    try {
+      const todayStr = getTodayWIB();
+      const lastSeen = localStorage.getItem(STORAGE_POPUP_SEEN_DATE_KEY);
+      return lastSeen !== todayStr;
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const markMobilePopupAsSeen = () => {
+    if (!hasStorage()) return;
+    try {
+      const todayStr = getTodayWIB();
+      localStorage.setItem(STORAGE_POPUP_SEEN_DATE_KEY, todayStr);
+    } catch (e) {}
+  };
+
   return {
     isCollapsed,
     toggleCollapsed,
     learnedLessonNumbers,
     hasLearnedLessons,
     candidateBunkeiPool,
-    dailyHighlight
+    dailyHighlight,
+    shouldAutoTriggerMobilePopup,
+    markMobilePopupAsSeen
   };
 }
