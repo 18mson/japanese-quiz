@@ -107,6 +107,13 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     const c = cleanBase(s);
     if (!c || c.length < 2) return;
     results.add(c);
+
+    // Varian tanpa tanda koma / tanda baca koma jadi spasi
+    const noComma = c.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
+    if (noComma && noComma !== c && noComma.length >= 2) results.add(noComma);
+    const commaToSpace = c.replace(/[,，、]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (commaToSpace && commaToSpace !== c && commaToSpace.length >= 2) results.add(commaToSpace);
+
     if (c.includes('-')) {
       results.add(cleanBase(c.replace(/-/g, ' ')));
       results.add(cleanBase(c.replace(/-/g, '')));
@@ -145,18 +152,47 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     }
   }
 
-  // 4. Split by delimiters /, ;, comma, or ' atau '
-  const splitChunks = (str: string) => {
-    const parts = str.split(/[/;,\n]| atau /i);
-    for (const p of parts) {
-      addWithVariants(p);
-      const pNoParen = p.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '');
-      addWithVariants(pNoParen);
-    }
+  // 4. Split by primary delimiters: /, ;, \n, or ' atau '
+  const primaryChunks = (str: string) => {
+    return str.split(/[/;\n]| atau /i).map(s => s.trim()).filter(Boolean);
   };
 
-  splitChunks(raw);
-  if (noParens) splitChunks(noParens);
+  const chunks1 = primaryChunks(raw);
+  const chunks2 = noParens ? primaryChunks(noParens) : [];
+  const allPrimary = Array.from(new Set([...chunks1, ...chunks2]));
+
+  for (const chunk of allPrimary) {
+    addWithVariants(chunk);
+    const chunkNoParen = chunk.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '').trim();
+    if (chunkNoParen) addWithVariants(chunkNoParen);
+
+    // Bila chunk memuat koma (misal: "bujangan, belum menikah" atau "Tidak, belum seberapa"),
+    // selain frasa utuh, tambahkan juga sub-bagian yang dipisahkan koma
+    if (chunk.includes(',')) {
+      const subParts = chunk.split(',').map(s => s.trim()).filter(Boolean);
+      for (const sp of subParts) {
+        addWithVariants(sp);
+        const spNoParen = sp.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '').trim();
+        if (spNoParen) addWithVariants(spNoParen);
+      }
+    }
+  }
+
+  // 5. Prefix distribution for conversational expressions with multiple alternatives
+  // Misal: "Tidak, belum seberapa/masih belum memuaskan" -> "tidak, masih belum memuaskan", "tidak masih belum memuaskan"
+  // "O, begitu / Begitu ya" -> "o, begitu ya", "o begitu ya"
+  for (const chunk of allPrimary) {
+    const prefixMatch = chunk.match(/^(tidak|bukan|o|oh|ya)[, ]\s*(.+)$/i);
+    if (prefixMatch) {
+      const prefix = prefixMatch[1];
+      for (const other of allPrimary) {
+        if (other !== chunk && !other.toLowerCase().startsWith(prefix.toLowerCase())) {
+          addWithVariants(prefix + ', ' + other);
+          addWithVariants(prefix + ' ' + other);
+        }
+      }
+    }
+  }
 
   return Array.from(results).filter(Boolean);
 };
@@ -177,6 +213,12 @@ export const checkIsMeaningCorrect = (userInput: string, targetMeaning: string):
   const cleanUserNoHyphen = cleanUser.replace(/-/g, ' ');
   if (candidates.some(c => c === cleanUserNoHyphen)) return true;
 
+  const cleanUserNoComma = cleanUser.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
+  if (cleanUserNoComma && candidates.some(c => c === cleanUserNoComma)) return true;
+
+  const cleanUserCommaToSpace = cleanUser.replace(/[,，、]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (cleanUserCommaToSpace && candidates.some(c => c === cleanUserCommaToSpace)) return true;
+
   return false;
 };
 
@@ -192,11 +234,16 @@ export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): bo
 
   if (!cleanUser || cleanUser.length < 3) return false;
 
+  const cleanUserNoComma = cleanUser.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
   const candidates = extractMeaningCandidates(targetMeaning);
+
   return candidates.some(c => {
     if (c.length >= 4) {
-      const dist = getLevenshteinDistance(cleanUser, c);
-      return dist === 1;
+      if (getLevenshteinDistance(cleanUser, c) === 1) return true;
+      const cNoComma = c.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
+      if (cNoComma.length >= 4 && cleanUserNoComma.length >= 3) {
+        if (getLevenshteinDistance(cleanUserNoComma, cNoComma) === 1) return true;
+      }
     }
     return false;
   });

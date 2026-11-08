@@ -21,6 +21,27 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('bujangan', meaning), true);
     assert.strictEqual(checkIsMeaningCorrect('belum menikah', meaning), true);
     assert.strictEqual(checkIsMeaningCorrect('sudah menikah', meaning), false);
+
+    // Kasus koma dan garis miring (/): いいえ、まだまだです
+    const madamadaMeaning = 'Tidak, belum seberapa/masih belum memuaskan';
+    assert.strictEqual(checkIsMeaningCorrect('tidak, belum seberapa', madamadaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('tidak belum seberapa', madamadaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('belum seberapa', madamadaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('masih belum memuaskan', madamadaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('tidak, masih belum memuaskan', madamadaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('tidak masih belum memuaskan', madamadaMeaning), true);
+
+    // Kasus percakapan lain: そうですか (O, begitu / Begitu ya)
+    const soudesukaMeaning = 'O, begitu / Begitu ya';
+    assert.strictEqual(checkIsMeaningCorrect('o, begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('o begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('begitu ya', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('begitu', soudesukaMeaning), true);
+
+    // Kasus tempat/bagian penjualan: コーナー
+    const cornerMeaning = 'tempat/bagian penjualan, konter';
+    assert.strictEqual(checkIsMeaningCorrect('bagian penjualan', cornerMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('konter', cornerMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
