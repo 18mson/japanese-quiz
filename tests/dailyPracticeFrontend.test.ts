@@ -191,10 +191,10 @@ test('Daily Practice Frontend Test Suite', async (t) => {
   });
 
   // ============================================================
-  // 7. Metadata Bab Latihan Harian (Bab 1 - 20)
+  // 7. Metadata Bab Latihan Harian (Bab 1 - 25 Lengkap)
   // ============================================================
-  await t.test('9. DAILY_CHAPTER_META mencakup Bab 1 sampai Bab 20 dengan lengkap', () => {
-    for (let i = 1; i <= 20; i++) {
+  await t.test('9. DAILY_CHAPTER_META mencakup Bab 1 sampai Bab 25 dengan lengkap', () => {
+    for (let i = 1; i <= 25; i++) {
       const meta = DAILY_CHAPTER_META[i];
       assert.ok(meta, `Metadata Bab ${i} harus tersedia`);
       assert.ok(meta.title && meta.title.length > 0, `Judul Bab ${i} tidak boleh kosong`);
@@ -210,6 +210,11 @@ test('Daily Practice Frontend Test Suite', async (t) => {
     assert.strictEqual(DAILY_CHAPTER_META[18].title, 'Bentuk Kamus & Kemampuan');
     assert.strictEqual(DAILY_CHAPTER_META[19].title, 'Bentuk -Ta & Pengalaman');
     assert.strictEqual(DAILY_CHAPTER_META[20].title, 'Bentuk Biasa (Futsuukei)');
+    assert.strictEqual(DAILY_CHAPTER_META[21].title, 'Pendapat & Kutipan');
+    assert.strictEqual(DAILY_CHAPTER_META[22].title, 'Klausa Pewatas (Modifikasi Nomina)');
+    assert.strictEqual(DAILY_CHAPTER_META[23].title, 'Waktu & Kondisional Alami');
+    assert.strictEqual(DAILY_CHAPTER_META[24].title, 'Pemberian & Penerimaan Tindakan');
+    assert.strictEqual(DAILY_CHAPTER_META[25].title, 'Pengandaian & Syarat');
   });
 });
 

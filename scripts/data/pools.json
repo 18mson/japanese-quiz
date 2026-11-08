@@ -6819,6 +6819,541 @@
           "id": "hari ini senggang"
         }
       ]
+    },
+    "think_opinion": {
+      "lesson": 21,
+      "items": [
+        {
+          "jp": "あした雨が降る",
+          "kana": "あしたあめがふる",
+          "id": "besok hujan turun"
+        },
+        {
+          "jp": "日本は物価が高い",
+          "kana": "にほんはぶっかがたかい",
+          "id": "harga barang di Jepang mahal"
+        },
+        {
+          "jp": "山田さんは来ない",
+          "kana": "やまださんはこない",
+          "id": "Yamada-san tidak akan datang"
+        },
+        {
+          "jp": "この映画はおもしろい",
+          "kana": "このえいがおもしろい",
+          "id": "film ini menarik"
+        },
+        {
+          "jp": "会議はもう終わった",
+          "kana": "かいぎはもうおわった",
+          "id": "rapat sudah selesai"
+        },
+        {
+          "jp": "新しい車は便利だ",
+          "kana": "あたらしいくるまはべんりだ",
+          "id": "mobil baru praktis"
+        },
+        {
+          "jp": "日本が勝つ",
+          "kana": "にほんがかつ",
+          "id": "Jepang akan menang"
+        },
+        {
+          "jp": "日本語は難しい",
+          "kana": "にほんごはむずかしい",
+          "id": "bahasa Jepang sulit"
+        },
+        {
+          "jp": "サントスさんは親切だ",
+          "kana": "サントスさんはしんせつだ",
+          "id": "Santos-san ramah"
+        }
+      ]
+    },
+    "quote_statement": {
+      "lesson": 21,
+      "items": [
+        {
+          "jp": "来週アメリカへ出張する",
+          "kana": "らいしゅうアメリカへしゅっちょうする",
+          "id": "minggu depan dinas ke Amerika"
+        },
+        {
+          "jp": "明日は休みだ",
+          "kana": "あしたはやすみだ",
+          "id": "besok libur"
+        },
+        {
+          "jp": "もうすぐ結婚する",
+          "kana": "もうすぐけっこんする",
+          "id": "segera akan menikah"
+        },
+        {
+          "jp": "ちょっと疲れた",
+          "kana": "ちょっとつかれた",
+          "id": "agak lelah"
+        },
+        {
+          "jp": "パーティーに行かない",
+          "kana": "パーティーにいかない",
+          "id": "tidak pergi ke pesta"
+        },
+        {
+          "jp": "日本はおもしろい",
+          "kana": "にほんはおもしろい",
+          "id": "Jepang menyenangkan"
+        },
+        {
+          "jp": "車が故障した",
+          "kana": "くるまがこしょうした",
+          "id": "mobilnya rusak"
+        }
+      ]
+    },
+    "rel_item": {
+      "lesson": 22,
+      "items": [
+        {
+          "jp": "母が作ったケーキ",
+          "kana": "ははがつくったケーキ",
+          "id": "kue yang dibuat ibu"
+        },
+        {
+          "jp": "昨日買った本",
+          "kana": "きのうかったほん",
+          "id": "buku yang dibeli kemarin"
+        },
+        {
+          "jp": "先週撮った写真",
+          "kana": "せんしゅうとったしゃしん",
+          "id": "foto yang diambil minggu lalu"
+        },
+        {
+          "jp": "わたしが住んでいる部屋",
+          "kana": "わたしがすんでいるへや",
+          "id": "kamar tempat saya tinggal"
+        },
+        {
+          "jp": "あそこで新聞を読んでいる人",
+          "kana": "あそこでしんぶんをよんでいるひと",
+          "id": "orang yang sedang membaca koran di sana"
+        },
+        {
+          "jp": "眼鏡をかけている人",
+          "kana": "めがねをかけているひと",
+          "id": "orang yang memakai kacamata"
+        },
+        {
+          "jp": "カリナさんが描いた絵",
+          "kana": "カリナさんがかいたえ",
+          "id": "lukisan yang digambar Karina-san"
+        },
+        {
+          "jp": "毎日飲む薬",
+          "kana": "まいにちのむくすり",
+          "id": "obat yang diminum setiap hari"
+        },
+        {
+          "jp": "日本で買ったカメラ",
+          "kana": "にほんでかったカメラ",
+          "id": "kamera yang dibeli di Jepang"
+        },
+        {
+          "jp": "友達にもらったプレゼント",
+          "kana": "ともだちにもらったプレゼント",
+          "id": "hadiah yang didapat dari teman"
+        },
+        {
+          "jp": "あそこに止まっている車",
+          "kana": "あそこにとまっているくるま",
+          "id": "mobil yang sedang parkir di sana"
+        }
+      ]
+    },
+    "rel_predicate": {
+      "lesson": 22,
+      "items": [
+        {
+          "jp": "とてもおいしいです",
+          "kana": "とてもおいしいです",
+          "id": "sangat enak"
+        },
+        {
+          "jp": "どこにありますか",
+          "kana": "どこにありますか",
+          "id": "ada di mana"
+        },
+        {
+          "jp": "ミラーさんです",
+          "kana": "ミラーさんです",
+          "id": "adalah Miller-san"
+        },
+        {
+          "jp": "とてもきれいです",
+          "kana": "とてもきれいです",
+          "id": "sangat indah / bersih"
+        },
+        {
+          "jp": "狭いですが、便利です",
+          "kana": "せまいですが、べんりです",
+          "id": "sempit tetapi praktis"
+        },
+        {
+          "jp": "どこで買いましたか",
+          "kana": "どこでかいましたか",
+          "id": "beli di mana"
+        }
+      ]
+    },
+    "toki_situation": {
+      "lesson": 23,
+      "items": [
+        {
+          "jp": "図書館で本を借りる",
+          "kana": "としょかんでほんをかりる",
+          "id": "meminjam buku di perpustakaan"
+        },
+        {
+          "jp": "道を渡る",
+          "kana": "みちをわたる",
+          "id": "menyeberang jalan"
+        },
+        {
+          "jp": "お金がない",
+          "kana": "おかねがない",
+          "id": "tidak punya uang"
+        },
+        {
+          "jp": "朝起きた",
+          "kana": "あさおきた",
+          "id": "bangun pagi"
+        },
+        {
+          "jp": "頭が痛い",
+          "kana": "あたまがいたい",
+          "id": "sakit kepala"
+        },
+        {
+          "jp": "寂しい",
+          "kana": "さびしい",
+          "id": "kesepian"
+        },
+        {
+          "jp": "わからない",
+          "kana": "わからない",
+          "id": "tidak mengerti"
+        }
+      ]
+    },
+    "toki_main": {
+      "lesson": 23,
+      "items": [
+        {
+          "jp": "カードが要ります",
+          "kana": "カードがいります",
+          "id": "memerlukan kartu"
+        },
+        {
+          "jp": "車に気をつけてください",
+          "kana": "くるまにきをつけてください",
+          "id": "harap hati-hati terhadap mobil"
+        },
+        {
+          "jp": "友達に借ります",
+          "kana": "ともだちにかります",
+          "id": "meminjam kepada teman"
+        },
+        {
+          "jp": "窓を開けます",
+          "kana": "まどをあけます",
+          "id": "membuka jendela"
+        },
+        {
+          "jp": "薬を飲みます",
+          "kana": "くすりをのみます",
+          "id": "minum obat"
+        },
+        {
+          "jp": "家族に電話をかけます",
+          "kana": "かぞくにでんわをかけます",
+          "id": "menelepon keluarga"
+        },
+        {
+          "jp": "先生に聞きます",
+          "kana": "せんせいにききます",
+          "id": "bertanya kepada guru"
+        }
+      ]
+    },
+    "to_cond_button": {
+      "lesson": 23,
+      "items": [
+        {
+          "jp": "このボタンを押す",
+          "kana": "このボタンをおす",
+          "id": "menekan tombol ini"
+        },
+        {
+          "jp": "右へ曲がる",
+          "kana": "みぎへまがる",
+          "id": "belok ke kanan"
+        },
+        {
+          "jp": "左へ曲がる",
+          "kana": "ひだりへまがる",
+          "id": "belok ke kiri"
+        },
+        {
+          "jp": "これを回す",
+          "kana": "これをまわす",
+          "id": "memutar ini"
+        }
+      ]
+    },
+    "to_cond_result": {
+      "lesson": 23,
+      "items": [
+        {
+          "jp": "お釣りが出ます",
+          "kana": "おつりがでます",
+          "id": "uang kembalian keluar"
+        },
+        {
+          "jp": "郵便局があります",
+          "kana": "ゆうびんきょくがあります",
+          "id": "ada kantor pos"
+        },
+        {
+          "jp": "銀行があります",
+          "kana": "ぎんこうがあります",
+          "id": "ada bank"
+        },
+        {
+          "jp": "音が大きくなります",
+          "kana": "おとがおおきくなります",
+          "id": "suara menjadi keras"
+        }
+      ]
+    },
+    "help_kureru": {
+      "lesson": 24,
+      "items": [
+        {
+          "jp": "傘を貸して",
+          "kana": "かさをかして",
+          "id": "meminjamkan payung"
+        },
+        {
+          "jp": "駅まで送って",
+          "kana": "えきまでおくって",
+          "id": "mengantar sampai ke stasiun"
+        },
+        {
+          "jp": "日本語を教えて",
+          "kana": "にほんごをおしえて",
+          "id": "mengajarkan bahasa Jepang"
+        },
+        {
+          "jp": "荷物を持って",
+          "kana": "にもつをもって",
+          "id": "membawakan barang"
+        },
+        {
+          "jp": "地図を書いて",
+          "kana": "ちずをかいて",
+          "id": "menggambarkan peta"
+        },
+        {
+          "jp": "京都を案内して",
+          "kana": "きょうとをあんないして",
+          "id": "memandu di Kyoto"
+        },
+        {
+          "jp": "写真を撮って",
+          "kana": "しゃしんをとって",
+          "id": "mengambilkan foto"
+        },
+        {
+          "jp": "自転車を修理して",
+          "kana": "じてんしゃをしゅうりして",
+          "id": "memperbaiki sepeda"
+        }
+      ]
+    },
+    "help_ageru": {
+      "lesson": 24,
+      "items": [
+        {
+          "jp": "本を貸して",
+          "kana": "ほんをかして",
+          "id": "meminjamkan buku"
+        },
+        {
+          "jp": "手伝って",
+          "kana": "てつだって",
+          "id": "membantu"
+        },
+        {
+          "jp": "駅まで迎えに行って",
+          "kana": "えきまでむかえにいって",
+          "id": "menjemput ke stasiun"
+        },
+        {
+          "jp": "料理を作って",
+          "kana": "りょうりをつくって",
+          "id": "membuatkan makanan"
+        },
+        {
+          "jp": "写真を撮って",
+          "kana": "しゃしんをとって",
+          "id": "mengambilkan foto"
+        },
+        {
+          "jp": "荷物を持って",
+          "kana": "にもつをもって",
+          "id": "membawakan barang"
+        }
+      ]
+    },
+    "tara_cond_clause": {
+      "lesson": 25,
+      "items": [
+        {
+          "jp": "雨が降ったら",
+          "kana": "あめがふったら",
+          "id": "kalau hujan turun"
+        },
+        {
+          "jp": "お金があったら",
+          "kana": "おかねがあったら",
+          "id": "kalau punya uang"
+        },
+        {
+          "jp": "時間がなかったら",
+          "kana": "じかんがなかったら",
+          "id": "kalau tidak ada waktu"
+        },
+        {
+          "jp": "安かったら",
+          "kana": "やすかったら",
+          "id": "kalau murah"
+        },
+        {
+          "jp": "暇だったら",
+          "kana": "ひまだったら",
+          "id": "kalau senggang"
+        },
+        {
+          "jp": "駅に着いたら",
+          "kana": "えきについたら",
+          "id": "setelah sampai di stasiun"
+        },
+        {
+          "jp": "仕事が終わったら",
+          "kana": "しごとがおわったら",
+          "id": "setelah pekerjaan selesai"
+        }
+      ]
+    },
+    "tara_main_clause": {
+      "lesson": 25,
+      "items": [
+        {
+          "jp": "出かけません",
+          "kana": "でかけません",
+          "id": "tidak pergi keluar"
+        },
+        {
+          "jp": "世界旅行をしたいです",
+          "kana": "せかいりょこうをしたいです",
+          "id": "ingin berwisata keliling dunia"
+        },
+        {
+          "jp": "タクシーで行きます",
+          "kana": "タクシーでいきます",
+          "id": "pergi dengan taksi"
+        },
+        {
+          "jp": "買います",
+          "kana": "かいます",
+          "id": "membeli"
+        },
+        {
+          "jp": "遊びに行きます",
+          "kana": "あそびにいきます",
+          "id": "pergi bermain"
+        },
+        {
+          "jp": "電話をかけてください",
+          "kana": "でんわをかけてください",
+          "id": "tolong telepon"
+        },
+        {
+          "jp": "飲みに行きましょう",
+          "kana": "のみにいきましょう",
+          "id": "ayo pergi minum"
+        }
+      ]
+    },
+    "temo_cond_clause": {
+      "lesson": 25,
+      "items": [
+        {
+          "jp": "雨が降っても",
+          "kana": "あめがふっても",
+          "id": "meskipun hujan turun"
+        },
+        {
+          "jp": "高くても",
+          "kana": "たかくても",
+          "id": "meskipun mahal"
+        },
+        {
+          "jp": "日曜日でも",
+          "kana": "にちようびでも",
+          "id": "meskipun hari Minggu"
+        },
+        {
+          "jp": "難しくても",
+          "kana": "むずかしくても",
+          "id": "meskipun sulit"
+        },
+        {
+          "jp": "忙しくても",
+          "kana": "いそがしくても",
+          "id": "meskipun sibuk"
+        }
+      ]
+    },
+    "temo_main_clause": {
+      "lesson": 25,
+      "items": [
+        {
+          "jp": "出かけます",
+          "kana": "でかけます",
+          "id": "tetap pergi keluar"
+        },
+        {
+          "jp": "買いたいです",
+          "kana": "かいたいです",
+          "id": "ingin membeli"
+        },
+        {
+          "jp": "働きます",
+          "kana": "はたらきます",
+          "id": "tetap bekerja"
+        },
+        {
+          "jp": "頑張って勉強します",
+          "kana": "がんばってべんきょうします",
+          "id": "tetap semangat belajar"
+        },
+        {
+          "jp": "映画を見に行きます",
+          "kana": "えいがをみにいきます",
+          "id": "pergi menonton film"
+        }
+      ]
     }
   }
 }

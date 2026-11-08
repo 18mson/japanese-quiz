@@ -923,7 +923,12 @@ export function detectTags(tokens) {
 
   // --- LESSON 21 ---
   // TO_OMOIMASU & TO_IIMASU & DESHOU
-  if (fullText.includes('と思います') || fullText.includes('と思う')) {
+  if (
+    fullText.includes('と思います') ||
+    fullText.includes('と思う') ||
+    fullText.includes('どう思います') ||
+    fullText.includes('そう思います')
+  ) {
     tags.add('TO_OMOIMASU');
   }
   if (fullText.includes('と言いました') || fullText.includes('と言う') || fullText.includes('と言い')) {
@@ -973,27 +978,79 @@ export function detectTags(tokens) {
   }
 
   // --- LESSON 24 ---
-  // KUREMASU
+  // KUREMASU & TE_AGEMASU & TE_KUREMASU & TE_MORAIMASU
   for (const t of tokens) {
     if (t.basic_form === 'くれる' && t.pos === '動詞') {
       tags.add('KUREMASU');
     }
+  }
+  if (
+    fullText.includes('てあげます') ||
+    fullText.includes('てあげました') ||
+    fullText.includes('てあげる') ||
+    fullText.includes('てあげた') ||
+    fullText.includes('であげます')
+  ) {
+    tags.add('TE_AGEMASU');
+  }
+  if (
+    fullText.includes('てくれます') ||
+    fullText.includes('てくれました') ||
+    fullText.includes('てくれる') ||
+    fullText.includes('てくれた') ||
+    fullText.includes('でくれます')
+  ) {
+    tags.add('TE_KUREMASU');
+  }
+  if (
+    fullText.includes('てもらいます') ||
+    fullText.includes('てもらいました') ||
+    fullText.includes('てもらう') ||
+    fullText.includes('てもらった') ||
+    fullText.includes('でもらいます')
+  ) {
+    tags.add('TE_MORAIMASU');
   }
 
   // --- LESSON 25 ---
   // TARA_COND & TEMO_CONCESSIVE & MOSHI
   for (let i = 0; i < len; i++) {
     const t = tokens[i];
-    if (t.surface_form === 'たら' && t.pos === '助動詞') {
+    if ((t.surface_form === 'たら' || t.surface_form === 'だら') && (t.pos === '助動詞' || t.pos === '接続助詞')) {
       tags.add('TARA_COND');
     }
-    if (t.surface_form === 'て' && tokens[i + 1]?.surface_form === 'も') {
-      const prev = tokens[i - 1];
-      if (prev && prev.pos === '動詞') {
-        if (tokens[i + 2]?.surface_form !== 'いい') {
+  }
+  if (fullText.includes('たら、') || fullText.includes('だら、')) {
+    tags.add('TARA_COND');
+  }
+
+  const isTeMoIi =
+    tags.has('TE_MO_II') ||
+    tags.has('NAKUTE_MO_II') ||
+    fullText.includes('てもいい') ||
+    fullText.includes('ても いい') ||
+    fullText.includes('なくてもいい') ||
+    fullText.includes('なくても いい');
+
+  if (!isTeMoIi) {
+    for (let i = 0; i < len; i++) {
+      const t = tokens[i];
+      if ((t.surface_form === 'て' || t.surface_form === 'で') && tokens[i + 1]?.surface_form === 'も') {
+        const prev = tokens[i - 1];
+        if (prev && (prev.pos === '動詞' || prev.pos === '形容詞')) {
           tags.add('TEMO_CONCESSIVE');
         }
       }
+    }
+    if (
+      (fullText.includes('くても') && !fullText.includes('なくてもいい')) ||
+      (fullText.includes('でも') &&
+        (fullText.includes('雨でも') ||
+          fullText.includes('日曜日でも') ||
+          fullText.includes('静かでも') ||
+          fullText.includes('いくら')))
+    ) {
+      tags.add('TEMO_CONCESSIVE');
     }
   }
   if (hasSurface('もし')) tags.add('MOSHI');

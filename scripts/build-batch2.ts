@@ -566,3 +566,4 @@ fs.writeFileSync(poolsPath, JSON.stringify(poolsData, null, 2), 'utf-8');
 fs.writeFileSync(templatesPath, JSON.stringify(templatesData, null, 2), 'utf-8');
 
 console.log('Successfully merged Batch 2 pools and templates into pools.json and templates.json!');
+

@@ -24,6 +24,11 @@ export const DAILY_CHAPTER_META: Record<number, ChapterMeta> = {
   18: { title: 'Bentuk Kamus & Kemampuan', grammar: '〜ことができます, 趣味は〜ことです, 〜前に' },
   19: { title: 'Bentuk -Ta & Pengalaman', grammar: '〜たことがあります, 〜たり〜たりします, 〜くなります / になります' },
   20: { title: 'Bentuk Biasa (Futsuukei)', grammar: 'Ragam santai / kasual kata kerja, kata sifat, dan kata benda' },
+  21: { title: 'Pendapat & Kutipan', grammar: '〜と思います, 〜と言いました, 〜でしょう' },
+  22: { title: 'Klausa Pewatas (Modifikasi Nomina)', grammar: 'Kata kerja bentuk biasa + Kata benda (Anak kalimat)' },
+  23: { title: 'Waktu & Kondisional Alami', grammar: '〜とき, 〜と (bila / kalau)' },
+  24: { title: 'Pemberian & Penerimaan Tindakan', grammar: '〜てくれます, 〜てもらいます, 〜てあげます' },
+  25: { title: 'Pengandaian & Syarat', grammar: '〜たら (kalau / setelah), 〜ても (meskipun)' },
 };
 
 export function getChapterTitle(chapterId: number): string {

@@ -3305,6 +3305,488 @@
         "PLAIN_STYLE",
         "KOTO_GA_DEKIRU"
       ]
+    },
+    {
+      "tid": "L21-T1",
+      "lesson": 21,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "OPIN": "think_opinion"
+      },
+      "jp": "{P}は{OPIN}と思います。",
+      "jp_kana": "{P}は{OPIN}とおもいます。",
+      "id_text": "{P} berpikir {OPIN}.",
+      "must_tags": [
+        "TO_OMOIMASU"
+      ]
+    },
+    {
+      "tid": "L21-T2",
+      "lesson": 21,
+      "extra": false,
+      "slots": {
+        "P": "person_ask",
+        "OPIN": "think_opinion"
+      },
+      "jp": "{P}は{OPIN}と思いますか。",
+      "jp_kana": "{P}は{OPIN}とおもいますか。",
+      "id_text": "Apakah {P} berpikir {OPIN}?",
+      "must_tags": [
+        "TO_OMOIMASU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L21-T3",
+      "lesson": 21,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "QUOTE": "quote_statement"
+      },
+      "jp": "{P}は{QUOTE}と言いました。",
+      "jp_kana": "{P}は{QUOTE}といいました。",
+      "id_text": "{P} berkata {QUOTE}.",
+      "must_tags": [
+        "TO_IIMASU"
+      ]
+    },
+    {
+      "tid": "L21-T4",
+      "lesson": 21,
+      "extra": false,
+      "slots": {
+        "P": "person_ask"
+      },
+      "jp": "{P}は日本についてどう思いますか。",
+      "jp_kana": "{P}はにほんについてどうおもいますか。",
+      "id_text": "Bagaimana pendapat {P} tentang Jepang?",
+      "must_tags": [
+        "TO_OMOIMASU",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L21-T5",
+      "lesson": 21,
+      "extra": false,
+      "slots": {},
+      "jp": "あした雨が降るでしょう。",
+      "jp_kana": "あしたあめがふるでしょう。",
+      "id_text": "Besok mungkin hujan akan turun, kan?",
+      "must_tags": [
+        "DESHOU"
+      ]
+    },
+    {
+      "tid": "L21-T6",
+      "lesson": 21,
+      "extra": false,
+      "slots": {
+        "OPIN": "think_opinion"
+      },
+      "jp": "わたしもそう思います。",
+      "jp_kana": "わたしもそうおもいます。",
+      "id_text": "Saya juga berpikir begitu.",
+      "must_tags": [
+        "TO_OMOIMASU"
+      ]
+    },
+    {
+      "tid": "L21-T7",
+      "lesson": 21,
+      "extra": false,
+      "slots": {},
+      "jp": "わたしはそう思いません。",
+      "jp_kana": "わたしはそうおもいません。",
+      "id_text": "Saya tidak berpikir begitu.",
+      "must_tags": [
+        "VERB_MASEN"
+      ]
+    },
+    {
+      "tid": "L22-T1",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "ITEM": "rel_item",
+        "PRED": "rel_predicate"
+      },
+      "jp": "これは{ITEM}です。{PRED}。",
+      "id_text": "Ini adalah {ITEM}. {PRED}.",
+      "must_tags": [
+        "REL_CLAUSE"
+      ]
+    },
+    {
+      "tid": "L22-T2",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "ITEM": "rel_item"
+      },
+      "jp": "{ITEM}はどこですか。",
+      "id_text": "{ITEM} di mana?",
+      "must_tags": [
+        "REL_CLAUSE",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L22-T3",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "ITEM": "rel_item"
+      },
+      "jp": "これは{ITEM}です。",
+      "id_text": "Ini adalah {ITEM}.",
+      "must_tags": [
+        "REL_CLAUSE"
+      ]
+    },
+    {
+      "tid": "L22-T4",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "ITEM": "rel_item"
+      },
+      "jp": "{ITEM}を知っていますか。",
+      "jp_kana": "{ITEM}をしっていますか。",
+      "id_text": "Apakah kamu tahu {ITEM}?",
+      "must_tags": [
+        "REL_CLAUSE",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L22-T5",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "P": "person_any"
+      },
+      "jp": "{P}は買い物に行く時間がありません。",
+      "jp_kana": "{P}はかいものにいくじかんがありません。",
+      "id_text": "{P} tidak memiliki waktu untuk pergi berbelanja.",
+      "must_tags": [
+        "REL_CLAUSE",
+        "VERB_MASEN"
+      ]
+    },
+    {
+      "tid": "L22-T6",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "P": "person_any"
+      },
+      "jp": "{P}は友達と約束があります。",
+      "jp_kana": "{P}はともだちとやくそくがあります。",
+      "id_text": "{P} ada janji dengan teman.",
+      "must_tags": [
+        "ARIMASU_IMASU"
+      ]
+    },
+    {
+      "tid": "L22-T7",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ITEM": "rel_item"
+      },
+      "jp": "{P}は{ITEM}を持っています。",
+      "id_text": "{P} memiliki {ITEM}.",
+      "must_tags": [
+        "REL_CLAUSE",
+        "TE_IMASU_STATE"
+      ]
+    },
+    {
+      "tid": "L22-T8",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ITEM": "rel_item"
+      },
+      "jp": "{P}は{ITEM}が好きです。",
+      "id_text": "{P} suka {ITEM}.",
+      "must_tags": [
+        "REL_CLAUSE",
+        "PARTICLE_GA_OBJ"
+      ]
+    },
+    {
+      "tid": "L22-T9",
+      "lesson": 22,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "ITEM": "rel_item"
+      },
+      "jp": "{P}は{ITEM}を買いました。",
+      "id_text": "{P} telah membeli {ITEM}.",
+      "must_tags": [
+        "REL_CLAUSE",
+        "VERB_MASHITA"
+      ]
+    },
+    {
+      "tid": "L23-T1",
+      "lesson": 23,
+      "extra": false,
+      "slots": {
+        "SITU": "toki_situation",
+        "MAIN": "toki_main"
+      },
+      "jp": "{SITU}とき、{MAIN}。",
+      "id_text": "Saat {SITU}, {MAIN}.",
+      "must_tags": [
+        "TOKI"
+      ]
+    },
+    {
+      "tid": "L23-T2",
+      "lesson": 23,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "SITU": "toki_situation",
+        "MAIN": "toki_main"
+      },
+      "jp": "{P}は{SITU}とき、{MAIN}。",
+      "id_text": "{P} saat {SITU}, {MAIN}.",
+      "must_tags": [
+        "TOKI"
+      ]
+    },
+    {
+      "tid": "L23-T3",
+      "lesson": 23,
+      "extra": false,
+      "slots": {
+        "BTN": "to_cond_button",
+        "RES": "to_cond_result"
+      },
+      "jp": "{BTN}と、{RES}。",
+      "id_text": "Kalau {BTN}, {RES}.",
+      "must_tags": [
+        "TO_CONDITIONAL"
+      ]
+    },
+    {
+      "tid": "L23-T4",
+      "lesson": 23,
+      "extra": false,
+      "slots": {
+        "SITU": "toki_situation"
+      },
+      "jp": "{SITU}とき、どうしますか。",
+      "id_text": "Saat {SITU}, apa yang Anda lakukan?",
+      "must_tags": [
+        "TOKI",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L23-T5",
+      "lesson": 23,
+      "extra": false,
+      "slots": {},
+      "jp": "橋を渡ると、右に駅があります。",
+      "jp_kana": "はしをわたると、みぎにえきがあります。",
+      "id_text": "Kalau menyeberang jembatan, di sebelah kanan ada stasiun.",
+      "must_tags": [
+        "TO_CONDITIONAL"
+      ]
+    },
+    {
+      "tid": "L24-T1",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "help_kureru"
+      },
+      "jp": "{P}はわたしに{ACT}くれました。",
+      "id_text": "{P} telah {ACT} untuk saya.",
+      "must_tags": [
+        "TE_KUREMASU"
+      ]
+    },
+    {
+      "tid": "L24-T2",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "help_kureru"
+      },
+      "jp": "{P}はわたしに{ACT}くれます。",
+      "id_text": "{P} mau {ACT} untuk saya.",
+      "must_tags": [
+        "TE_KUREMASU"
+      ]
+    },
+    {
+      "tid": "L24-T3",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "help_kureru"
+      },
+      "jp": "わたしは{P}に{ACT}もらいました。",
+      "id_text": "Saya telah dibantu {ACT} oleh {P}.",
+      "must_tags": [
+        "TE_MORAIMASU"
+      ]
+    },
+    {
+      "tid": "L24-T4",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "help_ageru"
+      },
+      "jp": "わたしは{P}に{ACT}あげました。",
+      "id_text": "Saya telah {ACT} untuk {P}.",
+      "must_tags": [
+        "TE_AGEMASU"
+      ]
+    },
+    {
+      "tid": "L24-T5",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name",
+        "ACT": "help_kureru"
+      },
+      "jp": "{P}がわたしに{ACT}くれました。",
+      "id_text": "{P}-lah yang telah {ACT} untuk saya.",
+      "must_tags": [
+        "TE_KUREMASU"
+      ]
+    },
+    {
+      "tid": "L24-T6",
+      "lesson": 24,
+      "extra": false,
+      "slots": {
+        "P": "person_name"
+      },
+      "jp": "{P}はわたしにお土産をくれました。",
+      "jp_kana": "{P}はわたしにおみやげをくれました。",
+      "id_text": "{P} memberi saya oleh-oleh.",
+      "must_tags": [
+        "KUREMASU"
+      ]
+    },
+    {
+      "tid": "L25-T1",
+      "lesson": 25,
+      "extra": false,
+      "slots": {
+        "TARA": "tara_cond_clause",
+        "MAIN": "tara_main_clause"
+      },
+      "jp": "{TARA}、{MAIN}。",
+      "id_text": "{TARA}, {MAIN}.",
+      "must_tags": [
+        "TARA_COND"
+      ]
+    },
+    {
+      "tid": "L25-T2",
+      "lesson": 25,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "TARA": "tara_cond_clause",
+        "MAIN": "tara_main_clause"
+      },
+      "jp": "{P}は{TARA}、{MAIN}。",
+      "id_text": "{P} {TARA}, {MAIN}.",
+      "must_tags": [
+        "TARA_COND"
+      ]
+    },
+    {
+      "tid": "L25-T3",
+      "lesson": 25,
+      "extra": false,
+      "slots": {
+        "TEMO": "temo_cond_clause",
+        "MAIN": "temo_main_clause"
+      },
+      "jp": "{TEMO}、{MAIN}。",
+      "id_text": "{TEMO}, {MAIN}.",
+      "must_tags": [
+        "TEMO_CONCESSIVE"
+      ]
+    },
+    {
+      "tid": "L25-T4",
+      "lesson": 25,
+      "extra": false,
+      "slots": {
+        "P": "person_any",
+        "TEMO": "temo_cond_clause",
+        "MAIN": "temo_main_clause"
+      },
+      "jp": "{P}は{TEMO}、{MAIN}。",
+      "id_text": "{P} {TEMO}, {MAIN}.",
+      "must_tags": [
+        "TEMO_CONCESSIVE"
+      ]
+    },
+    {
+      "tid": "L25-T5",
+      "lesson": 25,
+      "extra": false,
+      "slots": {
+        "TARA": "tara_cond_clause"
+      },
+      "jp": "{TARA}、どうしますか。",
+      "id_text": "{TARA}, apa yang akan Anda lakukan?",
+      "must_tags": [
+        "TARA_COND",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L25-T6",
+      "lesson": 25,
+      "extra": false,
+      "slots": {},
+      "jp": "もし1億円あったら、何をしたいですか。",
+      "jp_kana": "もし1おくえんあったら、なにをしたいですか。",
+      "id_text": "Seandainya punya 100 juta yen, apa yang ingin Anda lakukan?",
+      "must_tags": [
+        "TARA_COND",
+        "MOSHI",
+        "WANT_TAI",
+        "QUESTION_KA"
+      ]
+    },
+    {
+      "tid": "L25-T7",
+      "lesson": 25,
+      "extra": false,
+      "slots": {},
+      "jp": "いくら考えても、わかりません。",
+      "jp_kana": "いくらかんがえても、わかりません。",
+      "id_text": "Berapa pun saya pikirkan, saya tetap tidak mengerti.",
+      "must_tags": [
+        "TEMO_CONCESSIVE",
+        "VERB_MASEN"
+      ]
     }
   ]
 }

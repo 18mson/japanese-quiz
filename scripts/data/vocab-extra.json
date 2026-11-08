@@ -2008,5 +2008,795 @@
     "source": "pool",
     "auto": true,
     "reason": "missing"
+  },
+  {
+    "jp": "あした雨が降る",
+    "kana": "あしたあめがふる",
+    "id": "besok hujan turun",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "サントスさんは親切だ",
+    "kana": "サントスさんはしんせつだ",
+    "id": "Santos-san ramah",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "ちょっと疲れた",
+    "kana": "ちょっとつかれた",
+    "id": "agak lelah",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "パーティーに行かない",
+    "kana": "パーティーにいかない",
+    "id": "tidak pergi ke pesta",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "もうすぐ結婚する",
+    "kana": "もうすぐけっこんする",
+    "id": "segera akan menikah",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "会議はもう終わった",
+    "kana": "かいぎはもうおわった",
+    "id": "rapat sudah selesai",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "山田さんは来ない",
+    "kana": "やまださんはこない",
+    "id": "Yamada-san tidak akan datang",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "新しい車は便利だ",
+    "kana": "あたらしいくるまはべんりだ",
+    "id": "mobil baru praktis",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本が勝つ",
+    "kana": "にほんがかつ",
+    "id": "Jepang akan menang",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本はおもしろい",
+    "kana": "にほんはおもしろい",
+    "id": "Jepang menyenangkan",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本は物価が高い",
+    "kana": "にほんはぶっかがたかい",
+    "id": "harga barang di Jepang mahal",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本語は難しい",
+    "kana": "にほんごはむずかしい",
+    "id": "bahasa Jepang sulit",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "明日は休みだ",
+    "kana": "あしたはやすみだ",
+    "id": "besok libur",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "来週アメリカへ出張する",
+    "kana": "らいしゅうアメリカへしゅっちょうする",
+    "id": "minggu depan dinas ke Amerika",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "車が故障した",
+    "kana": "くるまがこしょうした",
+    "id": "mobilnya rusak",
+    "lesson": 21,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "あそこで新聞を読んでいる人",
+    "kana": "あそこでしんぶんをよんでいるひと",
+    "id": "orang yang sedang membaca koran di sana",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "あそこに止まっている車",
+    "kana": "あそこにとまっているくるま",
+    "id": "mobil yang sedang parkir di sana",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "カリナさんが描いた絵",
+    "kana": "カリナさんがかいたえ",
+    "id": "lukisan yang digambar Karina-san",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "どこで買いましたか",
+    "kana": "どこでかいましたか",
+    "id": "beli di mana",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "どこにありますか",
+    "kana": "どこにありますか",
+    "id": "ada di mana",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "とてもおいしいです",
+    "kana": "とてもおいしいです",
+    "id": "sangat enak",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "とてもきれいです",
+    "kana": "とてもきれいです",
+    "id": "sangat indah / bersih",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "ミラーさんです",
+    "kana": "ミラーさんです",
+    "id": "adalah Miller-san",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "わたしが住んでいる部屋",
+    "kana": "わたしがすんでいるへや",
+    "id": "kamar tempat saya tinggal",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "先週撮った写真",
+    "kana": "せんしゅうとったしゃしん",
+    "id": "foto yang diambil minggu lalu",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "友達にもらったプレゼント",
+    "kana": "ともだちにもらったプレゼント",
+    "id": "hadiah yang didapat dari teman",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本で買ったカメラ",
+    "kana": "にほんでかったカメラ",
+    "id": "kamera yang dibeli di Jepang",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "昨日買った本",
+    "kana": "きのうかったほん",
+    "id": "buku yang dibeli kemarin",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "母が作ったケーキ",
+    "kana": "ははがつくったケーキ",
+    "id": "kue yang dibuat ibu",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "毎日飲む薬",
+    "kana": "まいにちのむくすり",
+    "id": "obat yang diminum setiap hari",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "狭いですが、便利です",
+    "kana": "せまいですが、べんりです",
+    "id": "sempit tetapi praktis",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "眼鏡をかけている人",
+    "kana": "めがねをかけているひと",
+    "id": "orang yang memakai kacamata",
+    "lesson": 22,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "お金がない",
+    "kana": "おかねがない",
+    "id": "tidak punya uang",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "お釣りが出ます",
+    "kana": "おつりがでます",
+    "id": "uang kembalian keluar",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "カードが要ります",
+    "kana": "カードがいります",
+    "id": "memerlukan kartu",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "これを回す",
+    "kana": "これをまわす",
+    "id": "memutar ini",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "わからない",
+    "kana": "わからない",
+    "id": "tidak mengerti",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "先生に聞きます",
+    "kana": "せんせいにききます",
+    "id": "bertanya kepada guru",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "友達に借ります",
+    "kana": "ともだちにかります",
+    "id": "meminjam kepada teman",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "右へ曲がる",
+    "kana": "みぎへまがる",
+    "id": "belok ke kanan",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "図書館で本を借りる",
+    "kana": "としょかんでほんをかりる",
+    "id": "meminjam buku di perpustakaan",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "家族に電話をかけます",
+    "kana": "かぞくにでんわをかけます",
+    "id": "menelepon keluarga",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "左へ曲がる",
+    "kana": "ひだりへまがる",
+    "id": "belok ke kiri",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "朝起きた",
+    "kana": "あさおきた",
+    "id": "bangun pagi",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "窓を開けます",
+    "kana": "まどをあけます",
+    "id": "membuka jendela",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "車に気をつけてください",
+    "kana": "くるまにきをつけてください",
+    "id": "harap hati-hati terhadap mobil",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "道を渡る",
+    "kana": "みちをわたる",
+    "id": "menyeberang jalan",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "郵便局があります",
+    "kana": "ゆうびんきょくがあります",
+    "id": "ada kantor pos",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "銀行があります",
+    "kana": "ぎんこうがあります",
+    "id": "ada bank",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "音が大きくなります",
+    "kana": "おとがおおきくなります",
+    "id": "suara menjadi keras",
+    "lesson": 23,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "京都を案内して",
+    "kana": "きょうとをあんないして",
+    "id": "memandu di Kyoto",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "地図を書いて",
+    "kana": "ちずをかいて",
+    "id": "menggambarkan peta",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日本語を教えて",
+    "kana": "にほんごをおしえて",
+    "id": "mengajarkan bahasa Jepang",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "本を貸して",
+    "kana": "ほんをかして",
+    "id": "meminjamkan buku",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "自転車を修理して",
+    "kana": "じてんしゃをしゅうりして",
+    "id": "memperbaiki sepeda",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "荷物を持って",
+    "kana": "にもつをもって",
+    "id": "membawakan barang",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "駅まで迎えに行って",
+    "kana": "えきまでむかえにいって",
+    "id": "menjemput ke stasiun",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "駅まで送って",
+    "kana": "えきまでおくって",
+    "id": "mengantar sampai ke stasiun",
+    "lesson": 24,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "お金があったら",
+    "kana": "おかねがあったら",
+    "id": "kalau punya uang",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "タクシーで行きます",
+    "kana": "タクシーでいきます",
+    "id": "pergi dengan taksi",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "世界旅行をしたいです",
+    "kana": "せかいりょこうをしたいです",
+    "id": "ingin berwisata keliling dunia",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "仕事が終わったら",
+    "kana": "しごとがおわったら",
+    "id": "setelah pekerjaan selesai",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "出かけません",
+    "kana": "でかけません",
+    "id": "tidak pergi keluar",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "安かったら",
+    "kana": "やすかったら",
+    "id": "kalau murah",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "忙しくても",
+    "kana": "いそがしくても",
+    "id": "meskipun sibuk",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "日曜日でも",
+    "kana": "にちようびでも",
+    "id": "meskipun hari Minggu",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "映画を見に行きます",
+    "kana": "えいがをみにいきます",
+    "id": "pergi menonton film",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "時間がなかったら",
+    "kana": "じかんがなかったら",
+    "id": "kalau tidak ada waktu",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "暇だったら",
+    "kana": "ひまだったら",
+    "id": "kalau senggang",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "買いたいです",
+    "kana": "かいたいです",
+    "id": "ingin membeli",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "遊びに行きます",
+    "kana": "あそびにいきます",
+    "id": "pergi bermain",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "難しくても",
+    "kana": "むずかしくても",
+    "id": "meskipun sulit",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "雨が降ったら",
+    "kana": "あめがふったら",
+    "id": "kalau hujan turun",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "雨が降っても",
+    "kana": "あめがふっても",
+    "id": "meskipun hujan turun",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "電話をかけてください",
+    "kana": "でんわをかけてください",
+    "id": "tolong telepon",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "頑張って勉強します",
+    "kana": "がんばってべんきょうします",
+    "id": "tetap semangat belajar",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "飲みに行きましょう",
+    "kana": "のみにいきましょう",
+    "id": "ayo pergi minum",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "駅に着いたら",
+    "kana": "えきについたら",
+    "id": "setelah sampai di stasiun",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
+  },
+  {
+    "jp": "高くても",
+    "kana": "たかくても",
+    "id": "meskipun mahal",
+    "lesson": 25,
+    "lesson_confidence": "curriculum",
+    "source": "pool",
+    "auto": true,
+    "reason": "missing"
   }
 ]
