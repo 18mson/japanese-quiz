@@ -5,6 +5,7 @@ import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
 import { kanjiN5Data } from '../data/kanji';
+import { kanjiN4Data } from '../data/kanjiN4';
 import MasteryCard from './mastery/MasteryCard.vue';
 import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
@@ -28,7 +29,7 @@ import { watch } from 'vue';
 const props = withDefaults(
   defineProps<{
     isOpen: boolean;
-    initialCategory?: 'hiragana' | 'katakana' | 'words' | 'kanji';
+    initialCategory?: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4';
   }>(),
   {
     initialCategory: 'hiragana'
@@ -39,7 +40,7 @@ const emit = defineEmits(['close', 'startWeakQuiz']);
 const quizStore = useQuizStore();
 
 // Filter States
-const activeCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>(props.initialCategory || 'hiragana');
+const activeCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4'>(props.initialCategory || 'hiragana');
 
 watch(
   () => props.initialCategory,
@@ -232,6 +233,8 @@ const currentGroupItems = computed(() => {
     ? katakanaData 
     : activeCategory.value === 'kanji'
     ? kanjiN5Data
+    : activeCategory.value === 'kanji_n4'
+    ? kanjiN4Data
     : wordsData;
 
   if (activeSubtype.value !== 'all') {
@@ -239,7 +242,7 @@ const currentGroupItems = computed(() => {
       pool = pool.filter(w => w.lesson === activeSubtype.value);
     } else if (activeCategory.value === 'kanji') {
       pool = pool.filter(k => k.group === activeSubtype.value);
-    } else {
+    } else if (activeCategory.value !== 'kanji_n4') {
       pool = pool.filter(c => c.type === activeSubtype.value);
     }
   }
@@ -254,6 +257,8 @@ const allCategoryItems = computed(() => {
     ? katakanaData 
     : activeCategory.value === 'kanji'
     ? kanjiN5Data
+    : activeCategory.value === 'kanji_n4'
+    ? kanjiN4Data
     : wordsData;
 });
 
@@ -458,7 +463,7 @@ const nextPreviewItem = () => {
                   'grid gap-2 sm:gap-3 pb-16',
                   activeCategory === 'words' 
                     ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5' 
-                    : activeCategory === 'kanji'
+                    : (activeCategory === 'kanji' || activeCategory === 'kanji_n4')
                     ? 'grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8'
                     : 'grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10'
                 ]"
@@ -570,7 +575,7 @@ const nextPreviewItem = () => {
         <!-- Notice Banner for 0% Belum but incomplete mastery -->
         <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 dark:bg-torii/10 border border-indigo-500/20 dark:border-torii/20 rounded-2xl text-xs text-indigo-700 dark:text-torii-light font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
           <Sparkles class="w-4 h-4 text-indigo-500 dark:text-torii shrink-0" />
-          <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : (activeCategory === 'kanji' ? 'Semua kanji di kelompok ini sudah dipelajari — terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
+          <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : ((activeCategory === 'kanji' || activeCategory === 'kanji_n4') ? 'Semua kanji di kelompok ini sudah dipelajari — terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
         </div>
 
         <!-- Footer -->
@@ -604,7 +609,7 @@ const nextPreviewItem = () => {
     <!-- Character / Word Interactive Preview Modal Component -->
     <Transition name="modal-backdrop">
       <MasteryKanjiDetailModal
-        v-if="selectedPreviewItem && activeCategory === 'kanji'"
+        v-if="selectedPreviewItem && (activeCategory === 'kanji' || activeCategory === 'kanji_n4')"
         :key="'kanji_' + selectedPreviewItem.character"
         :item="selectedPreviewItem"
         :current-index="selectedPreviewIndex"

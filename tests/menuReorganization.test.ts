@@ -161,17 +161,18 @@ test('5. Dynamic Kana Category Descriptions', () => {
   );
 
   const kanji = modesList.find(m => m.id === 'kanji')!;
+  assert.strictEqual(kanji.title, 'Kanji', 'Kanji title should be Kanji (covers N5 and N4)');
   assert.strictEqual(
     getModeDescription(kanji, 'writing', 'angka', undefined, 0),
-    'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.'
+    'Latihan menggambar langsung huruf Kanji dengan urutan goresan di layar per bab.'
   );
   assert.strictEqual(
     getModeDescription(kanji, 'writing', 'angka', undefined, 1),
-    'Latihan menggambar langsung huruf Kanji N5 Pelajaran 1 dengan urutan goresan di layar.'
+    'Latihan menggambar langsung huruf Kanji Pelajaran 1 dengan urutan goresan di layar.'
   );
   assert.strictEqual(
     getModeDescription(kanji, 'writing', 'angka', undefined, 5),
-    'Latihan menggambar langsung huruf Kanji N5 Pelajaran 5 dengan urutan goresan di layar.'
+    'Latihan menggambar langsung huruf Kanji Pelajaran 5 dengan urutan goresan di layar.'
   );
 });
 

@@ -6,6 +6,7 @@ import { hiraganaData } from '../../../data/hiragana';
 import { katakanaData } from '../../../data/katakana';
 import { wordsData } from '../../../data/words';
 import { kanjiN5Data } from '../../../data/kanji';
+import { kanjiN4Data } from '../../../data/kanjiN4';
 import { useQuizStore } from '../../../stores/quizStore';
 import { useAuthStore } from '../../../stores/authStore';
 
@@ -27,7 +28,7 @@ const speedList = ref<any[]>([]);
 const masteryList = ref<any[]>([]);
 const loading = ref(false);
 
-const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length + kanjiN5Data.length;
+const TOTAL_CHARACTERS = hiraganaData.length + katakanaData.length + wordsData.length + kanjiN5Data.length + kanjiN4Data.length;
 
 const formatUsername = (name: string | null | undefined): string => {
   if (!name) return 'Pemain';

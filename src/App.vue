@@ -84,9 +84,9 @@ const quizStarted = ref(false);
 const showAuthModal = ref(false);
 const showLeaderboardModal = ref(false);
 const showMasteryGridModal = ref(false);
-const initialMasteryCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji'>('hiragana');
+const initialMasteryCategory = ref<'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4'>('hiragana');
 
-const handleOpenMasteryGrid = (category?: 'hiragana' | 'katakana' | 'words' | 'kanji') => {
+const handleOpenMasteryGrid = (category?: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4') => {
   if (category) {
     initialMasteryCategory.value = category;
   }

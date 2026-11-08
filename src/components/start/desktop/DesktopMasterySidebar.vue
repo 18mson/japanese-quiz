@@ -3,7 +3,7 @@ import { Target, LayoutGrid, Crown, CheckCircle2, ChevronRight } from '@lucide/v
 import { useQuizStore } from '../../../stores/quizStore';
 
 const emit = defineEmits<{
-  (e: 'openMasteryGrid', category?: 'hiragana' | 'katakana' | 'words' | 'kanji'): void;
+  (e: 'openMasteryGrid', category?: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4'): void;
 }>();
 
 const quizStore = useQuizStore();
@@ -130,6 +130,36 @@ const quizStore = useQuizStore();
           <div 
             class="h-full bg-matcha rounded-full transition-all duration-500"
             :style="{ width: `${quizStore.kanjiMasteryStats.percentage}%` }"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Kanji N4 -->
+      <div 
+        role="button"
+        tabindex="0"
+        @click="emit('openMasteryGrid', 'kanji_n4')"
+        @keydown.enter.prevent="emit('openMasteryGrid', 'kanji_n4')"
+        @keydown.space.prevent="emit('openMasteryGrid', 'kanji_n4')"
+        class="flex flex-col gap-1 p-2.5 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-teal-500/40 cursor-pointer select-none transition-all group shadow-2xs active:scale-[0.985]"
+        title="Buka Peta Penguasaan Kanji N4"
+      >
+        <div class="flex items-center justify-between text-xs">
+          <span class="font-bold flex items-center gap-1.5 text-slate-800 dark:text-slate-200 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+            <span class="w-5 h-5 rounded-md bg-teal-500/15 text-teal-600 dark:text-teal-400 font-jp flex items-center justify-center text-[10px] font-bold border border-teal-500/25 group-hover:scale-105 transition-transform">漢</span>
+            Kanji N4
+          </span>
+          <div class="flex items-center gap-1">
+            <span class="font-mono text-[11px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-300 transition-colors">
+              {{ quizStore.kanjiN4MasteryStats.mastered }}/{{ quizStore.kanjiN4MasteryStats.total }}
+            </span>
+            <ChevronRight class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-teal-500 group-hover:translate-x-0.5 transition-all" />
+          </div>
+        </div>
+        <div class="w-full h-1.5 bg-slate-200 dark:bg-slate-900 rounded-full overflow-hidden">
+          <div 
+            class="h-full bg-teal-500 rounded-full transition-all duration-500"
+            :style="{ width: `${quizStore.kanjiN4MasteryStats.percentage}%` }"
           ></div>
         </div>
       </div>

@@ -20,7 +20,7 @@ const props = defineProps<{
   item: any;
   currentIndex: number;
   totalItems: number;
-  category: 'hiragana' | 'katakana' | 'words' | 'kanji';
+  category: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4';
 }>();
 
 const emit = defineEmits(['close', 'prev', 'next']);

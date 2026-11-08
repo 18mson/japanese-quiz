@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watch, toRef } from 'vue';
 import { kanjiN5Data } from '../data/kanji';
+import { kanjiN4Data } from '../data/kanjiN4';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
 import { 
   checkIsCorrect, 
@@ -634,6 +635,7 @@ export const useQuizStore = defineStore('quiz', () => {
     currentKanjiLessonLabel,
     currentKanjiLessonStats,
     kanjiN5Data,
+    kanjiN4Data,
 
     // Wave Preview
     previewMode,
@@ -668,6 +670,7 @@ export const useQuizStore = defineStore('quiz', () => {
     katakanaMasteryStats: toRef(masteryStore, 'katakanaMasteryStats'),
     wordsMasteryStats: toRef(masteryStore, 'wordsMasteryStats'),
     kanjiMasteryStats: toRef(masteryStore, 'kanjiMasteryStats'),
+    kanjiN4MasteryStats: toRef(masteryStore, 'kanjiN4MasteryStats'),
     overallMasteryStats: toRef(masteryStore, 'overallMasteryStats'),
     currentUserLevel: toRef(masteryStore, 'currentUserLevel'),
     getMasteryStreak: masteryStore.getMasteryStreak,

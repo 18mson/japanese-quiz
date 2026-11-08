@@ -18,7 +18,7 @@ import {
 } from '@lucide/vue';
 
 const props = defineProps<{
-  category: 'hiragana' | 'katakana' | 'words' | 'kanji';
+  category: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4';
   subtype: string;
   statusFilter: 'all' | 'new' | 'learning' | 'mastered' | 'crown';
   availableLessons: string[];
@@ -27,7 +27,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:category', val: 'hiragana' | 'katakana' | 'words' | 'kanji'): void;
+  (e: 'update:category', val: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4'): void;
   (e: 'update:subtype', val: string): void;
   (e: 'update:statusFilter', val: 'all' | 'new' | 'learning' | 'mastered' | 'crown'): void;
   (e: 'update:searchQuery', val: string): void;
@@ -66,7 +66,7 @@ const searchPlaceholder = computed(() => {
   if (props.category === 'words') {
     return 'Cari kanji, arti, romaji...';
   }
-  if (props.category === 'kanji') {
+  if (props.category === 'kanji' || props.category === 'kanji_n4') {
     return 'Cari kanji, arti, onyomi, kunyomi...';
   }
   return 'Cari karakter atau romaji...';
@@ -78,13 +78,15 @@ const activeSubtypeLabel = computed(() => {
       ? 'Semua Pelajaran (Semua Bab)' 
       : props.category === 'kanji'
       ? 'Semua Kelompok (105 Kanji)'
+      : props.category === 'kanji_n4'
+      ? 'Semua Kanji N4 (155 Kanji)'
       : 'Semua Kelompok';
   }
   if (props.category === 'kanji') {
     const found = kanjiGroups.find(g => g.key === props.subtype);
     return found ? found.label : props.subtype;
   }
-  if (props.category !== 'words') {
+  if (props.category !== 'words' && props.category !== 'kanji_n4') {
     if (props.subtype === 'basic') return 'Dasar (Basic)';
     if (props.subtype === 'dakuten') return 'Dakuten / Handakuten';
     if (props.subtype === 'combination') return 'Kombinasi (Yōon)';
@@ -141,7 +143,7 @@ const statusPills = [
     <!-- Category Switcher Tabs & Search Bar (Row 1) -->
     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 sm:gap-4">
       <!-- Category Switcher Tabs -->
-      <div class="relative grid grid-cols-2 sm:grid-cols-4 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
+      <div class="relative grid grid-cols-2 sm:grid-cols-5 bg-gray-100 dark:bg-slate-800 p-1 rounded-2xl border border-gray-200 dark:border-slate-700 w-full sm:w-fit sm:flex sm:items-center shrink-0 gap-1 sm:gap-0">
         <!-- Sliding Pill Indicator -->
         <div 
           class="absolute rounded-xl bg-indigo-600 dark:bg-torii shadow-md shadow-indigo-500/20 dark:shadow-torii/30 pointer-events-none"
@@ -150,17 +152,17 @@ const statusPills = [
         ></div>
 
         <button 
-          v-for="cat in (['hiragana', 'katakana', 'kanji', 'words'] as const)" 
+          v-for="cat in (['hiragana', 'katakana', 'kanji', 'kanji_n4', 'words'] as const)" 
           :key="cat"
           :ref="setCategoryTabRef(cat)"
           type="button"
           @click="emit('update:category', cat); emit('update:subtype', 'all'); closeDropdowns();"
-          class="relative z-10 px-2.5 sm:px-4 py-2 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1.5 select-none"
+          class="relative z-10 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-black capitalize transition-colors duration-200 cursor-pointer flex items-center justify-center gap-1 sm:gap-1.5 select-none"
           :class="category === cat 
             ? 'text-white font-black' 
             : 'text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white'"
         >
-          <span>{{ cat === 'words' ? 'Kosakata' : (cat === 'kanji' ? 'Kanji N5' : cat) }}</span>
+          <span>{{ cat === 'words' ? 'Kosakata' : (cat === 'kanji' ? 'Kanji N5' : (cat === 'kanji_n4' ? 'Kanji N4' : cat)) }}</span>
           <span 
             v-if="cat === 'hiragana'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
@@ -176,18 +178,25 @@ const statusPills = [
             {{ quizStore.katakanaMasteryStats.percentage }}%
           </span>
           <span 
-            v-else-if="cat === 'words'" 
-            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
-            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
-          >
-            {{ quizStore.wordsMasteryStats.percentage }}%
-          </span>
-          <span 
             v-else-if="cat === 'kanji'" 
             class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
             :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
           >
             {{ quizStore.kanjiMasteryStats.percentage }}%
+          </span>
+          <span 
+            v-else-if="cat === 'kanji_n4'" 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.kanjiN4MasteryStats.percentage }}%
+          </span>
+          <span 
+            v-else-if="cat === 'words'" 
+            class="text-[10px] sm:text-xs px-1.5 py-0.5 rounded-full font-bold transition-colors duration-200"
+            :class="category === cat ? 'bg-indigo-700 dark:bg-black/25 text-white' : 'bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-slate-300'"
+          >
+            {{ quizStore.wordsMasteryStats.percentage }}%
           </span>
         </button>
       </div>
@@ -247,7 +256,7 @@ const statusPills = [
               ? 'bg-indigo-50 dark:bg-torii/15 text-indigo-600 dark:text-torii-light font-extrabold' 
               : 'text-gray-700 dark:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800'"
           >
-            <span class="truncate">{{ category === 'words' ? 'Semua Pelajaran (Semua Bab)' : (category === 'kanji' ? 'Semua Kelompok (105 Kanji)' : 'Semua Kelompok') }}</span>
+            <span class="truncate">{{ category === 'words' ? 'Semua Pelajaran (Semua Bab)' : (category === 'kanji' ? 'Semua Kelompok (105 Kanji)' : (category === 'kanji_n4' ? 'Semua Kanji N4 (155 Kanji)' : 'Semua Kelompok')) }}</span>
             <Check v-if="subtype === 'all'" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
           </button>
 
@@ -266,6 +275,11 @@ const statusPills = [
               <span class="truncate">{{ grp.label }}</span>
               <Check v-if="subtype === grp.key" class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0 ml-2" />
             </button>
+          </template>
+
+          <!-- Kanji N4 Groups -->
+          <template v-else-if="category === 'kanji_n4'">
+            <!-- Semua 155 Kanji N4 langsung tampil tanpa sub-kelompok -->
           </template>
 
           <!-- Hiragana / Katakana Groups -->

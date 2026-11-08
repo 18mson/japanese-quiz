@@ -4,6 +4,7 @@ import { hiraganaData } from '../data/hiragana';
 import { katakanaData } from '../data/katakana';
 import { wordsData } from '../data/words';
 import { kanjiN5Data } from '../data/kanji';
+import { kanjiN4Data } from '../data/kanjiN4';
 import { supabase } from '../lib/supabaseClient';
 import {
   computeCategoryMasteryStats,
@@ -256,7 +257,7 @@ export const useMasteryStore = defineStore('mastery', () => {
 
   const loadStreaksFromServer = loadStreaksFromStorage;
 
-  const kanjiCharSet = new Set(kanjiN5Data.map(k => k.character));
+  const kanjiCharSet = new Set([...kanjiN5Data.map(k => k.character), ...kanjiN4Data.map(k => k.character)]);
 
   const getMasteryStreak = (character: string): number => {
     const direct = userStreaks.value[character] || 0;
@@ -371,11 +372,19 @@ export const useMasteryStore = defineStore('mastery', () => {
   const katakanaMasteryStats = computed(() => computeCategoryMasteryStats(katakanaData, userStreaks.value));
   const wordsMasteryStats = computed(() => computeCategoryMasteryStats(wordsData, userStreaks.value, getMasteryStreak));
   const kanjiMasteryStats = computed(() => computeCategoryMasteryStats(kanjiN5Data, userStreaks.value, getMasteryStreak));
+  const kanjiN4MasteryStats = computed(() => computeCategoryMasteryStats(kanjiN4Data, userStreaks.value, getMasteryStreak));
 
   const overallMasteryStats = computed(() => {
-    const h = hiraganaMasteryStats.value, k = katakanaMasteryStats.value, w = wordsMasteryStats.value, kj = kanjiMasteryStats.value;
-    const total = h.total + k.total + w.total + kj.total, mastered = h.mastered + k.mastered + w.mastered + kj.mastered;
-    const crown = h.crown + k.crown + w.crown + kj.crown, learning = h.learning + k.learning + w.learning + kj.learning, newItems = h.newItems + k.newItems + w.newItems + kj.newItems;
+    const h = hiraganaMasteryStats.value,
+          k = katakanaMasteryStats.value,
+          w = wordsMasteryStats.value,
+          kj = kanjiMasteryStats.value,
+          kj4 = kanjiN4MasteryStats.value;
+    const total = h.total + k.total + w.total + kj.total + kj4.total,
+          mastered = h.mastered + k.mastered + w.mastered + kj.mastered + kj4.mastered;
+    const crown = h.crown + k.crown + w.crown + kj.crown + kj4.crown,
+          learning = h.learning + k.learning + w.learning + kj.learning + kj4.learning,
+          newItems = h.newItems + k.newItems + w.newItems + kj.newItems + kj4.newItems;
     return { total, mastered, crown, learning, newItems, percentage: total > 0 ? Math.round((mastered / total) * 100) : 0 };
   });
 
@@ -534,6 +543,8 @@ export const useMasteryStore = defineStore('mastery', () => {
     katakanaMasteryStats,
     wordsMasteryStats,
     kanjiMasteryStats,
+    kanjiN4MasteryStats,
+    kanjiN4Data,
     overallMasteryStats,
     currentUserLevel,
     getLocalStreaks

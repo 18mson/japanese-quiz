@@ -76,11 +76,11 @@ export const modesList: QuizModeDef[] = [
   },
   {
     id: 'kanji',
-    title: 'Kanji N5',
+    title: 'Kanji',
     levelTag: 'Huruf Kanji (漢字)',
     level: 'basic',
     defaultType: 'writing',
-    desc: 'Latihan menulis goresan stroke order Kanji JLPT N5 per bab pelajaran.',
+    desc: 'Latihan menulis goresan stroke order Kanji per bab pelajaran.',
     subTypes: [
       { key: 'writing', label: 'Tulis Huruf (Goresan)' },
     ],
@@ -166,9 +166,9 @@ export function getModeDescription(
   }
   if (mode.id === 'kanji') {
     if (kanjiLessonNumber && kanjiLessonNumber > 0) {
-      return `Latihan menggambar langsung huruf Kanji N5 Pelajaran ${kanjiLessonNumber} dengan urutan goresan di layar.`;
+      return `Latihan menggambar langsung huruf Kanji Pelajaran ${kanjiLessonNumber} dengan urutan goresan di layar.`;
     }
-    return 'Latihan menggambar langsung huruf Kanji N5 dengan urutan goresan di layar per bab.';
+    return 'Latihan menggambar langsung huruf Kanji dengan urutan goresan di layar per bab.';
   }
   if (mode.id === 'kotoba') {
     if (characterType === 'words' || characterType === 'words_mixed') {

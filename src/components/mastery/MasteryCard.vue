@@ -5,7 +5,7 @@ import { Check, Crown } from '@lucide/vue';
 const props = withDefaults(
   defineProps<{
     item: any;
-    category: 'hiragana' | 'katakana' | 'words' | 'kanji';
+    category: 'hiragana' | 'katakana' | 'words' | 'kanji' | 'kanji_n4';
     isSelectMode?: boolean;
     isSelected?: boolean;
   }>(),
@@ -106,7 +106,7 @@ const handleClick = () => {
 
     <!-- Reading Subtitle -->
     <span class="text-xs font-semibold text-gray-500 dark:text-slate-300 truncate max-w-full">
-      <template v-if="category === 'kanji'">
+      <template v-if="category === 'kanji' || category === 'kanji_n4'">
         {{ item.kunyomi?.[0] || item.onyomi?.[0] || '' }}
       </template>
       <template v-else>
@@ -116,7 +116,7 @@ const handleClick = () => {
 
     <!-- Meaning (For words and kanji category) -->
     <span 
-      v-if="(category === 'words' || category === 'kanji') && item.meaning"
+      v-if="(category === 'words' || category === 'kanji' || category === 'kanji_n4') && item.meaning"
       class="text-[11px] text-gray-400 dark:text-slate-400 truncate max-w-full font-medium"
     >
       {{ item.meaning }}
