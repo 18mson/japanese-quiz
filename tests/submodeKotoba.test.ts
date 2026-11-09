@@ -58,6 +58,13 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('transfer', ofurikaeMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('pemindahbukuan', ofurikaeMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('pemindahbukuan rekening', ofurikaeMeaning), true);
+
+    // Kasus kata perbankan ATM: お引き出し (tarik tunai / penarikan uang tunai)
+    const ohikidashiMeaning = 'tarik tunai / penarikan tunai / penarikan uang tunai / tarik uang / penarikan uang';
+    assert.strictEqual(checkIsMeaningCorrect('tarik tunai', ohikidashiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('Tarik tunai', ohikidashiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('penarikan uang tunai', ohikidashiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('tarik uang', ohikidashiMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
