@@ -50,6 +50,14 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('pm', gogoMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('p.m.', gogoMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('pagi', gogoMeaning), false);
+
+    // Kasus kata perbankan ATM: お振り替え (pemindahbukuan / transfer internal)
+    const ofurikaeMeaning = 'pemindahbukuan rekening / pemindahbukuan / transfer internal / transfer rekening / transfer';
+    assert.strictEqual(checkIsMeaningCorrect('transfer internal', ofurikaeMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('Transfer internal', ofurikaeMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('transfer', ofurikaeMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('pemindahbukuan', ofurikaeMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('pemindahbukuan rekening', ofurikaeMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
