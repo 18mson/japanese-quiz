@@ -145,9 +145,16 @@ export const extractMeaningCandidates = (raw: string): string[] => {
         !inner.includes('sebagai') && 
         !inner.includes('sopan') && 
         !inner.includes('profesi') && 
-        inner.length < 30
+        inner.length < 40
       ) {
         addWithVariants(inner);
+        // Bila di dalam kurung terdapat pemisah /, ;, koma, atau 'atau' (misal: "sore/malam", "bunga/pohon")
+        if (/[/,;\n]| atau /i.test(inner)) {
+          const innerSubParts = inner.split(/[/,;\n]| atau /i).map(s => s.trim()).filter(Boolean);
+          for (const isp of innerSubParts) {
+            addWithVariants(isp);
+          }
+        }
       }
     }
   }

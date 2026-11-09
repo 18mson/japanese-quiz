@@ -42,6 +42,14 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     const cornerMeaning = 'tempat/bagian penjualan, konter';
     assert.strictEqual(checkIsMeaningCorrect('bagian penjualan', cornerMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('konter', cornerMeaning), true);
+
+    // Kasus kata dengan garis miring di dalam kurung: 午後 (p.m. (sore/malam))
+    const gogoMeaning = 'p.m. (sore/malam)';
+    assert.strictEqual(checkIsMeaningCorrect('sore', gogoMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('malam', gogoMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('pm', gogoMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('p.m.', gogoMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('pagi', gogoMeaning), false);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
