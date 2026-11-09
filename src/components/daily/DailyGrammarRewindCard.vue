@@ -183,19 +183,19 @@ const formattedDate = computed(() => {
           @transitionend="onTransitionEnd"
         >
           <!-- INDEX 0: Clone of Slide 3 (Contoh Kalimat) -->
-          <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="w-full shrink-0 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden shadow-xs">
+            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/10 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div class="w-full flex items-center justify-between gap-1.5 mb-1">
               <div class="flex items-center gap-1.5 min-w-0">
-                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
                 <button
                   type="button"
                   @click.stop="handleJump"
-                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
                   title="Buka Bab di Buku Materi"
                 >
                   Bab {{ dailyHighlight.lessonNumber }}
@@ -205,10 +205,10 @@ const formattedDate = computed(() => {
               <button
                 type="button"
                 @click.stop="playSentenceAudio"
-                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 hover:bg-amber-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400 border border-gray-200 hover:border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
                 title="Dengarkan Pelafalan"
               >
-                <Volume2 class="w-3 h-3" />
+                <Volume2 class="w-3 h-3 text-amber-600 dark:text-amber-400" />
                 <span>Dengar</span>
               </button>
             </div>
@@ -217,31 +217,31 @@ const formattedDate = computed(() => {
               <p class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug tracking-wide line-clamp-2">
                 {{ dailyHighlight.example.japanese }}
               </p>
-              <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 line-clamp-2 mt-1">
+              <p class="text-[11px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 line-clamp-2 mt-1">
                 "{{ dailyHighlight.example.meaning }}"
               </p>
             </div>
           </div>
 
           <!-- INDEX 1: SLIDE 1 (Pola & Rumus) -->
-          <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="w-full shrink-0 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden shadow-xs">
+            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/10 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div class="w-full flex items-center justify-between gap-1.5 mb-1">
               <div class="flex items-center gap-1.5 min-w-0">
-                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
                 <button
                   type="button"
                   @click.stop="handleJump"
-                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
                   title="Buka Bab di Buku Materi"
                 >
                   Bab {{ dailyHighlight.lessonNumber }}
                 </button>
-                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                <span class="text-[10px] font-semibold text-slate-400 dark:text-slate-500">
                   {{ formattedDate }}
                 </span>
               </div>
@@ -251,57 +251,57 @@ const formattedDate = computed(() => {
               <h4 class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 tracking-wide line-clamp-2 leading-snug">
                 {{ dailyHighlight.pattern }}
               </h4>
-              <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 mt-1 line-clamp-1">
+              <p class="text-[11px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 mt-1 line-clamp-1">
                 {{ dailyHighlight.meaning }}
               </p>
             </div>
           </div>
 
           <!-- INDEX 2: SLIDE 2 (Penjelasan Singkat) -->
-          <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="w-full shrink-0 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden shadow-xs">
+            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/10 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div class="w-full flex items-center justify-between gap-1.5 mb-1">
               <div class="flex items-center gap-1.5 min-w-0">
-                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
                 <button
                   type="button"
                   @click.stop="handleJump"
-                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
                   title="Buka Bab di Buku Materi"
                 >
                   Bab {{ dailyHighlight.lessonNumber }}
                 </button>
-                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                <span class="text-[10px] font-semibold text-slate-400 dark:text-slate-500">
                   {{ formattedDate }}
                 </span>
               </div>
             </div>
 
             <div class="flex-1 flex flex-col justify-center py-0.5">
-              <p class="text-[11px] sm:text-xs text-slate-700 dark:text-slate-200 leading-snug line-clamp-3">
+              <p class="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 leading-snug line-clamp-3">
                 {{ dailyHighlight.explanation || dailyHighlight.meaning }}
               </p>
             </div>
           </div>
 
           <!-- INDEX 3: SLIDE 3 (Contoh Kalimat) -->
-          <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="w-full shrink-0 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden shadow-xs">
+            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/10 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div class="w-full flex items-center justify-between gap-1.5 mb-1">
               <div class="flex items-center gap-1.5 min-w-0">
-                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
                 <button
                   type="button"
                   @click.stop="handleJump"
-                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
                   title="Buka Bab di Buku Materi"
                 >
                   Bab {{ dailyHighlight.lessonNumber }}
@@ -311,10 +311,10 @@ const formattedDate = computed(() => {
               <button
                 type="button"
                 @click.stop="playSentenceAudio"
-                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white dark:bg-slate-800 hover:bg-amber-50 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
+                class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gray-100 hover:bg-amber-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400 border border-gray-200 hover:border-amber-300 dark:border-slate-700 text-[10px] font-bold shadow-2xs transition cursor-pointer"
                 title="Dengarkan Pelafalan"
               >
-                <Volume2 class="w-3 h-3" />
+                <Volume2 class="w-3 h-3 text-amber-600 dark:text-amber-400" />
                 <span>Dengar</span>
               </button>
             </div>
@@ -323,31 +323,31 @@ const formattedDate = computed(() => {
               <p class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug tracking-wide line-clamp-2">
                 {{ dailyHighlight.example.japanese }}
               </p>
-              <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 line-clamp-2 mt-1">
+              <p class="text-[11px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 line-clamp-2 mt-1">
                 "{{ dailyHighlight.example.meaning }}"
               </p>
             </div>
           </div>
 
           <!-- INDEX 4: Clone of Slide 1 (Pola & Rumus) -->
-          <div class="w-full shrink-0 bg-gradient-to-br from-amber-500/10 via-torii/10 to-orange-500/5 dark:from-amber-950/40 dark:via-slate-900/90 dark:to-orange-950/20 border border-amber-300/60 dark:border-amber-600/30 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden">
-            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/15 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="w-full shrink-0 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-h-[110px] relative overflow-hidden shadow-xs">
+            <div class="absolute -top-8 -right-8 w-24 h-24 bg-amber-400/10 dark:bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
             <div class="w-full flex items-center justify-between gap-1.5 mb-1">
               <div class="flex items-center gap-1.5 min-w-0">
-                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/20 dark:bg-amber-500/25 border border-amber-400/40 text-amber-800 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
+                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-[10px] font-black uppercase tracking-wider shadow-2xs">
                   <RotateCcw class="w-2.5 h-2.5 text-amber-600 dark:text-amber-400 animate-spin-slow" />
                   <span>Rewind</span>
                 </div>
                 <button
                   type="button"
                   @click.stop="handleJump"
-                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-white/80 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/90 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
+                  class="text-[10px] font-black px-1.5 py-0.5 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700/80 shadow-2xs transition cursor-pointer"
                   title="Buka Bab di Buku Materi"
                 >
                   Bab {{ dailyHighlight.lessonNumber }}
                 </button>
-                <span class="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                <span class="text-[10px] font-semibold text-slate-400 dark:text-slate-500">
                   {{ formattedDate }}
                 </span>
               </div>
@@ -357,7 +357,7 @@ const formattedDate = computed(() => {
               <h4 class="font-jp font-black text-xs sm:text-sm text-slate-900 dark:text-slate-100 tracking-wide line-clamp-2 leading-snug">
                 {{ dailyHighlight.pattern }}
               </h4>
-              <p class="text-[11px] sm:text-xs font-bold text-amber-700 dark:text-amber-300 mt-1 line-clamp-1">
+              <p class="text-[11px] sm:text-xs font-bold text-amber-600 dark:text-amber-400 mt-1 line-clamp-1">
                 {{ dailyHighlight.meaning }}
               </p>
             </div>
@@ -368,7 +368,7 @@ const formattedDate = computed(() => {
         <button
           type="button"
           @click.stop="prevSlide"
-          class="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-slate-900/60 hover:bg-slate-900/90 dark:bg-slate-800/70 dark:hover:bg-slate-700/90 text-white backdrop-blur-xs flex items-center justify-center transition-all duration-200 shadow-md cursor-pointer opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto active:scale-90"
+          class="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/95 hover:bg-amber-50 dark:bg-slate-800/95 dark:hover:bg-slate-700 text-slate-600 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400 border border-gray-200 hover:border-amber-300 dark:border-slate-700 dark:hover:border-slate-600 shadow-md backdrop-blur-xs flex items-center justify-center transition-all duration-200 cursor-pointer opacity-0 -translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto active:scale-90"
           title="Slide Sebelumnya"
           aria-label="Slide Sebelumnya"
         >
@@ -379,7 +379,7 @@ const formattedDate = computed(() => {
         <button
           type="button"
           @click.stop="nextSlide"
-          class="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-slate-900/60 hover:bg-slate-900/90 dark:bg-slate-800/70 dark:hover:bg-slate-700/90 text-white backdrop-blur-xs flex items-center justify-center transition-all duration-200 shadow-md cursor-pointer opacity-0 translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto active:scale-90"
+          class="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/95 hover:bg-amber-50 dark:bg-slate-800/95 dark:hover:bg-slate-700 text-slate-600 hover:text-amber-600 dark:text-slate-300 dark:hover:text-amber-400 border border-gray-200 hover:border-amber-300 dark:border-slate-700 dark:hover:border-slate-600 shadow-md backdrop-blur-xs flex items-center justify-center transition-all duration-200 cursor-pointer opacity-0 translate-x-2 pointer-events-none group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto active:scale-90"
           title="Slide Berikutnya"
           aria-label="Slide Berikutnya"
         >
@@ -395,7 +395,7 @@ const formattedDate = computed(() => {
           type="button" 
           @click="setPage(p)" 
           class="h-1.5 rounded-full transition-all duration-300 cursor-pointer" 
-          :class="currentPage === p ? 'bg-amber-500 w-5 shadow-xs' : 'bg-slate-300 dark:bg-slate-700 w-1.5 hover:bg-slate-400 dark:hover:bg-slate-600'" 
+          :class="currentPage === p ? 'bg-amber-500 w-5 shadow-xs' : 'bg-gray-200 dark:bg-slate-800 w-1.5 hover:bg-gray-300 dark:hover:bg-slate-700'" 
           :title="`Slide ${p}`"
         ></button>
       </div>

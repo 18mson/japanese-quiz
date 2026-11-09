@@ -105,7 +105,7 @@ const formattedDate = computed(() => {
         <div 
           @touchstart="onTouchStart"
           @touchend="onTouchEnd"
-          class="w-full max-w-md bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-500/40 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[290px] animate-scaleUp"
+          class="w-full max-w-md bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-5 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[290px] animate-scaleUp"
         >
           <!-- Background Ambient Glow -->
           <div class="absolute -top-12 -right-12 w-32 h-32 bg-amber-400/20 dark:bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
