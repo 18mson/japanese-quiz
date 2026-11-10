@@ -162,31 +162,36 @@ watch(activeTab, () => {
 
 <template>
   <div class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-3.5 sm:p-5 shadow-sm flex flex-col gap-4 text-slate-800 dark:text-slate-100 transition-all">
-    <!-- Header: Title & Icon -->
-    <div class="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800">
+    <!-- Header: Title & Icon (Clickable untuk membuka leaderboard penuh) -->
+    <div 
+      role="button"
+      tabindex="0"
+      @click="emit('openLeaderboard')"
+      @keydown.enter.prevent="emit('openLeaderboard')"
+      @keydown.space.prevent="emit('openLeaderboard')"
+      class="group/header flex items-center justify-between pb-3 border-b border-gray-100 dark:border-slate-800 cursor-pointer select-none transition-colors -mx-1 px-1 rounded-xl hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
+      title="Buka Papan Peringkat Penuh"
+    >
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-2xs">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base shadow-2xs group-hover/header:scale-105 transition-transform">
           <Trophy class="w-4 h-4" />
         </div>
         <div>
           <h3 class="text-xs font-black uppercase tracking-wider text-amber-600 dark:text-amber-400">
             Papan Peringkat
           </h3>
-          <div class="text-sm font-black text-gray-900 dark:text-slate-100">
+          <div class="text-sm font-black text-gray-900 dark:text-slate-100 group-hover/header:text-torii dark:group-hover/header:text-torii-light transition-colors">
             Top 3 Pemain
           </div>
         </div>
       </div>
 
-      <button
-        type="button"
-        @click="emit('openLeaderboard')"
-        class="text-xs font-bold text-torii hover:text-torii-hover flex items-center gap-0.5 cursor-pointer"
-        title="Buka Peringkat Penuh"
+      <div
+        class="text-xs font-bold text-torii group-hover/header:text-torii-hover flex items-center gap-0.5 transition-colors"
       >
         <span>Detail</span>
-        <ArrowUpRight class="w-3.5 h-3.5" />
-      </button>
+        <ArrowUpRight class="w-3.5 h-3.5 group-hover/header:translate-x-0.5 group-hover/header:-translate-y-0.5 transition-transform" />
+      </div>
     </div>
 
     <!-- Category Tabs -->
@@ -374,16 +379,6 @@ watch(activeTab, () => {
         </div>
       </Transition>
     </div>
-
-    <!-- CTA Button to Open Full Leaderboard Modal -->
-    <button
-      type="button"
-      @click="emit('openLeaderboard')"
-      class="w-full py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white font-bold text-xs border border-gray-200/80 dark:border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
-    >
-      <Trophy class="w-4 h-4 text-amber-500" />
-      <span>Buka Leaderboard Penuh</span>
-    </button>
   </div>
 </template>
 

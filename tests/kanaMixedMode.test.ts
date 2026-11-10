@@ -117,3 +117,4 @@ test('Mode Hiragana & Katakana Gabungan (kana_mixed) Khusus Mobile App', async (
     assert.strictEqual(store.isTypingMode, false);
   });
 });
+
