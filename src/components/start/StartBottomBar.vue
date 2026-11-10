@@ -335,7 +335,7 @@ const handleSubClick = (subKey: string) => {
               'grid gap-1.5 sm:gap-2.5 flex-1 min-w-0',
               visibleHitunganWaves.length === 1 
                 ? 'grid-cols-1' 
-                : (visibleHitunganWaves.length === 2 ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-3')
+                : (visibleHitunganWaves.length === 2 ? 'grid-cols-2' : 'grid-cols-3')
             ]"
           >
             <button
@@ -345,11 +345,11 @@ const handleSubClick = (subKey: string) => {
               :disabled="isLoading"
               @click.stop="emit('interact'); emit('start-hitungan-wave', wave)"
               :class="[
-                'min-h-[44px] py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
+                'min-h-[44px] py-2.5 sm:py-3.5 px-1.5 sm:px-3 text-white rounded-xl sm:rounded-2xl text-[11px] xs:text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1 sm:gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
                 getButtonThemeClass(activeModeId)
               ]"
             >
-              <Calculator class="w-4 h-4 text-emerald-200 shrink-0" />
+              <Calculator class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-200 shrink-0" />
               <span class="truncate">{{ wave.shortTitle }}</span>
               <CheckCircle2 
                 v-if="quizStore.hitunganProgressMap[wave.wave_key]?.tutorial_seen"

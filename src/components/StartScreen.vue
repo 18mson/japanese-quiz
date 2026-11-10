@@ -517,6 +517,20 @@ watch(characterTypes, (newVal) => {
           @select-sub-type="selectSubType"
           @interact="deactivateKeyboardNav"
         >
+          <!-- Header Action: Tombol Lihat Pola Ringkas di Header Kartu Mode Lainnya -->
+          <template #header-action>
+            <button
+              v-if="activeMode.id === 'lainnya' && ['angka', 'counter', 'campuran'].includes(characterTypes)"
+              type="button"
+              @click.stop="openHitunganTutorial(currentHitunganWave)"
+              class="py-1 px-2.5 rounded-lg bg-emerald-50/90 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-emerald-300/80 dark:border-slate-700 text-xs font-bold transition hover:bg-emerald-100 dark:hover:bg-slate-700 flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 shrink-0"
+              title="Buka Penjelasan Pola & Pengecualian"
+            >
+              <BookOpen class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span>Lihat Pola</span>
+            </button>
+          </template>
+
           <!-- Mode Bottom Configuration Panels -->
           <Transition name="fade-slide-up" mode="out-in">
             <!-- Duel Online Info Banner -->
@@ -568,21 +582,21 @@ watch(characterTypes, (newVal) => {
               v-else-if="activeMode.id === 'lainnya'"
               class="flex flex-col gap-2 w-full animate-fadeIn pt-1"
             >
-              <!-- Sub-Menu Selector Pills (Angka, Counter, Campuran, Mix Kana) -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 w-full">
+              <!-- Sub-Menu Selector Pills (Angka, Counter, Campuran, Mix Kana) - 1 Baris Ramping -->
+              <div class="grid grid-cols-4 gap-1 sm:gap-1.5 w-full">
                 <button
                   v-for="sub in activeMode.subTypes"
                   :key="sub.key"
                   type="button"
                   @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
                   :class="[
-                    'min-h-[44px] py-2 px-1 sm:px-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs active:scale-95',
+                    'py-2 px-1 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center justify-center shadow-2xs active:scale-95',
                     characterTypes === sub.key
                       ? 'bg-matcha dark:bg-emerald-600 text-white border-matcha dark:border-emerald-500 font-black shadow-xs scale-[1.02]'
                       : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
                   ]"
                 >
-                  <span class="text-[11px] sm:text-xs truncate">{{ sub.label }}</span>
+                  <span class="truncate">{{ sub.label }}</span>
                 </button>
               </div>
 
@@ -593,29 +607,6 @@ watch(characterTypes, (newVal) => {
                 character-type="mix"
                 @interact="deactivateKeyboardNav"
               />
-
-              <!-- Jika Angka / Counter / Campuran: Tampilkan Preview Pattern Modal Button -->
-              <div 
-                v-else
-                class="flex items-center justify-between pt-1.5 border-t border-slate-100 dark:border-slate-800 flex-wrap gap-2 w-full"
-              >
-                <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
-                    Soal Acak: Angka ➔ Kana & Kana ➔ Angka
-                  </span>
-                </div>
-
-                <!-- Preview Pattern Modal Button -->
-                <button
-                  type="button"
-                  @click.stop="openHitunganTutorial(currentHitunganWave)"
-                  class="min-h-[38px] sm:min-h-[44px] py-1.5 px-3 rounded-xl bg-white/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-slate-700 text-xs font-bold transition hover:bg-emerald-50 dark:hover:bg-slate-700 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs shrink-0 active:scale-95"
-                  title="Buka Penjelasan Pola & Pengecualian"
-                >
-                  <BookOpen class="w-4 h-4 text-emerald-600" />
-                  <span class="text-xs">Lihat Pola</span>
-                </button>
-              </div>
             </div>
           </Transition>
         </StartWheelSelector>

@@ -222,8 +222,11 @@ function getCardStyle(index: number) {
               >
                 <span>{{ mode.title }}</span>
               </h3>
+              <div v-if="index === activeModeIndex" class="flex items-center gap-2">
+                <slot name="header-action" />
+              </div>
               <span 
-                v-if="mode.badge" 
+                v-else-if="mode.badge" 
                 :class="[
                   'text-[8px] sm:text-[10px] font-black px-1.5 sm:px-2 py-0.5 rounded-md tracking-wider flex-shrink-0 uppercase',
                   mode.badge.toLowerCase() === 'beta'
