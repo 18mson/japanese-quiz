@@ -39,9 +39,17 @@ export const useQuizStore = defineStore('quiz', () => {
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const selectedWordLessonNumber = ref<number | null>(null);
-  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>('multiple_choice');
+  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan' | 'kana_mixed'>('multiple_choice');
+  
+  const activeQuestionMode = computed<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>(() => {
+    if (selectedMode.value === 'kana_mixed') {
+      return (currentQuestion.value?.questionMode as any) || 'multiple_choice';
+    }
+    return selectedMode.value;
+  });
+
   const isTypingMode = computed(() => 
-    selectedMode.value === 'keyboard_typing' || 
+    activeQuestionMode.value === 'keyboard_typing' || 
     quizLevel.value === 'n5' || 
     ['words', 'words_meaning', 'meaning_to_words', 'words_mixed'].includes(questionType.value) || 
     questionType.value === 'sentences' || 
@@ -231,7 +239,8 @@ export const useQuizStore = defineStore('quiz', () => {
       userStreaks: masteryStore.userStreaks,
       introducedChars: masteryStore.introducedChars,
       currentLessonNumber: lessonStore.currentLessonNumber,
-      isWordSkipped: masteryStore.isWordSkipped
+      isWordSkipped: masteryStore.isWordSkipped,
+      sessionMode: selectedMode.value
     });
 
     questions.value = res.questions;
@@ -273,7 +282,8 @@ export const useQuizStore = defineStore('quiz', () => {
       getMasteryStreak: masteryStore.getMasteryStreak,
       introducedChars: masteryStore.introducedChars,
       currentLessonNumber: lessonStore.currentLessonNumber,
-      isWordSkipped: masteryStore.isWordSkipped
+      isWordSkipped: masteryStore.isWordSkipped,
+      sessionMode: selectedMode.value
     });
 
     questions.value = res.questions;
@@ -587,6 +597,7 @@ export const useQuizStore = defineStore('quiz', () => {
     questionType,
     selectedKanaCategory,
     selectedMode,
+    activeQuestionMode,
     isTypingMode,
     userInput,
     showReadingHint,

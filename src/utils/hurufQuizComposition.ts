@@ -17,6 +17,7 @@ export interface HurufQuestion extends HurufItem {
   reasonLabel: string;
   isFirstAppearance: boolean;
   tier: MasteryTierKey;
+  questionMode?: 'multiple_choice' | 'keyboard_typing' | 'writing';
 }
 
 /**
@@ -322,7 +323,8 @@ export const buildHurufSessionQuestions = (
   pool: HurufItem[],
   count: number,
   getMasteryStreak: (character: string) => number,
-  introducedCharsMap: Record<string, boolean> = {}
+  introducedCharsMap: Record<string, boolean> = {},
+  sessionMode?: string
 ): HurufQuestion[] => {
   if (!pool || pool.length === 0) return [];
 
@@ -331,6 +333,12 @@ export const buildHurufSessionQuestions = (
   const finalOrderedSlots = shuffleWithSpacingConstraint(distributedSlots);
 
   const seenCharacters = new Set<string>();
+  const charModesMap = new Map<string, ('multiple_choice' | 'keyboard_typing' | 'writing')[]>();
+  const availableModes: ('multiple_choice' | 'keyboard_typing' | 'writing')[] = [
+    'multiple_choice',
+    'keyboard_typing',
+    'writing'
+  ];
 
   return finalOrderedSlots.map(slot => {
     const isFirstAppearance = !seenCharacters.has(slot.item.character);
@@ -341,12 +349,24 @@ export const buildHurufSessionQuestions = (
       reasonLabel: 'Latihan Huruf'
     };
 
+    let assignedMode: 'multiple_choice' | 'keyboard_typing' | 'writing' | undefined = undefined;
+    if (sessionMode === 'kana_mixed') {
+      const usedModes = charModesMap.get(slot.item.character) || [];
+      const unusedModes = availableModes.filter(m => !usedModes.includes(m));
+      const poolToPick = unusedModes.length > 0 ? unusedModes : availableModes;
+      assignedMode = poolToPick[Math.floor(Math.random() * poolToPick.length)];
+      charModesMap.set(slot.item.character, [...usedModes, assignedMode]);
+    } else if (sessionMode && availableModes.includes(sessionMode as any)) {
+      assignedMode = sessionMode as 'multiple_choice' | 'keyboard_typing' | 'writing';
+    }
+
     return {
       ...slot.item,
       tier: slot.tier,
       questionReason: meta.questionReason,
       reasonLabel: meta.reasonLabel,
-      isFirstAppearance
+      isFirstAppearance,
+      ...(assignedMode ? { questionMode: assignedMode } : {})
     };
   });
 };

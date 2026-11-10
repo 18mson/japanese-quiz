@@ -807,14 +807,14 @@ const goToHome = () => {
 
       <div 
         class="w-full mx-auto p-2 sm:p-4 flex flex-col items-center relative z-10 transition-all duration-300"
-        :class="quizStore.selectedMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl md:max-w-4xl lg:max-w-5xl pb-48 md:pb-20'))"
+        :class="quizStore.activeQuestionMode === 'writing' ? 'max-w-5xl pb-44 md:pb-24' : (quizStore.selectedMode === 'hitungan' ? 'max-w-4xl lg:max-w-5xl pb-32 md:pb-20' : (quizStore.quizCompleted ? 'max-w-7xl pb-24 md:pb-24' : 'max-w-2xl md:max-w-4xl lg:max-w-5xl pb-48 md:pb-20'))"
       >
         <QuizHeader v-if="!quizStore.quizCompleted && !quizStore.isHitunganFinished" class="flex-shrink-0" />
         
         <main 
           class="w-full flex flex-col items-center flex-shrink-0 transition-all duration-300"
           :class="[
-            quizStore.selectedMode === 'writing' || quizStore.selectedMode === 'hitungan'
+            quizStore.activeQuestionMode === 'writing' || quizStore.selectedMode === 'hitungan'
               ? 'justify-center md:my-auto bg-transparent border-0 shadow-none p-0 sm:p-0 min-h-0 mb-0'
               : 'justify-start pt-2 sm:pt-4 md:pt-6 mb-2 sm:mb-4 bg-transparent border-0 shadow-none p-1 sm:p-2'
           ]"
@@ -825,7 +825,7 @@ const goToHome = () => {
             <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>
           </div>
           <template v-else>
-            <QuizWritingPlayer v-if="quizStore.selectedMode === 'writing'" @exit="goToHome" />
+            <QuizWritingPlayer v-if="quizStore.activeQuestionMode === 'writing'" :key="quizStore.currentQuestionIndex" @exit="goToHome" />
             <QuizHitunganPlayer 
               v-else-if="quizStore.selectedMode === 'hitungan'"
               :initial-wave="quizStore.selectedHitunganWave"
@@ -849,7 +849,7 @@ const goToHome = () => {
         <QuizResults v-else class="w-full flex-shrink-0" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       </div>
 
-      <QuizBottomNav v-if="quizStore.selectedMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" :quiz-started="quizStarted" />
+      <QuizBottomNav v-if="quizStore.activeQuestionMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" :quiz-started="quizStarted" />
     </div>
   </div>
 </template>

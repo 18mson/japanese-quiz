@@ -46,7 +46,7 @@ export const modesList: QuizModeDef[] = [
     levelTag: 'Dasar (ひらがな)',
     level: 'basic',
     defaultType: 'multiple_choice',
-    desc: 'Kuasai 46 huruf dasar Hiragana, variasi Dakuten, dan Kombinasi (Youon).',
+    desc: 'Latihan pengenalan huruf Hiragana dengan variasi pilihan ganda, ketik romaji, dan gambar goresan.',
     subTypes: [
       { key: 'multiple_choice', label: 'Pilihan Ganda' },
       { key: 'keyboard_typing', label: 'Ketik Kana' },
@@ -63,7 +63,7 @@ export const modesList: QuizModeDef[] = [
     levelTag: 'Dasar (カタカナ)',
     level: 'basic',
     defaultType: 'multiple_choice',
-    desc: 'Kuasai huruf Katakana untuk kata serapan asing, nama, dan istilah modern.',
+    desc: 'Latihan huruf Katakana untuk kata serapan dengan variasi pilihan ganda, ketik romaji, dan gambar goresan.',
     subTypes: [
       { key: 'multiple_choice', label: 'Pilihan Ganda' },
       { key: 'keyboard_typing', label: 'Ketik Kana' },
@@ -156,13 +156,13 @@ export function getModeDescription(
     if (kanaCategory === 'basic') return 'Kuasai 46 huruf dasar Hiragana (seion) dari baris A (あ) hingga N (ん).';
     if (kanaCategory === 'dakuten') return 'Kuasai variasi bunyi tebal Dakuten ( が, ざ, だ, ば ) dan Handakuten ( ぱ ).';
     if (kanaCategory === 'combination') return 'Kuasai variasi gabungan huruf Kombinasi / Youon ( きゃ, しゃ, ちゃ, dll ).';
-    return 'Kuasai 46 huruf dasar Hiragana, variasi Dakuten, dan Kombinasi (Youon).';
+    return 'Latihan huruf Hiragana melalui variasi pilihan ganda, ketik romaji, dan gambar goresan.';
   }
   if (mode.id === 'katakana') {
     if (kanaCategory === 'basic') return 'Kuasai 46 huruf dasar Katakana (seion) dari baris A (ア) hingga N (ン).';
     if (kanaCategory === 'dakuten') return 'Kuasai variasi bunyi tebal Dakuten Katakana ( ガ, ザ, ダ, バ ) dan Handakuten ( パ ).';
     if (kanaCategory === 'combination') return 'Kuasai variasi gabungan huruf Kombinasi / Youon Katakana ( キャ, シャ, チャ, dll ).';
-    return 'Kuasai huruf Katakana untuk kata serapan asing, nama, dan istilah modern.';
+    return 'Latihan huruf Katakana melalui variasi pilihan ganda, ketik romaji, dan gambar goresan.';
   }
   if (mode.id === 'kanji') {
     if (kanjiLessonNumber && kanjiLessonNumber > 0) {

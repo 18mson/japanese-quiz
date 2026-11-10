@@ -143,7 +143,7 @@ test('5. Dynamic Kana Category Descriptions', () => {
   );
   assert.strictEqual(
     getModeDescription(hiragana, 'multiple_choice', 'angka', 'all'),
-    'Kuasai 46 huruf dasar Hiragana, variasi Dakuten, dan Kombinasi (Youon).'
+    'Latihan huruf Hiragana melalui variasi pilihan ganda, ketik romaji, dan gambar goresan.'
   );
 
   const katakana = modesList.find(m => m.id === 'katakana')!;

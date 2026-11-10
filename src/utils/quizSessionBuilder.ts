@@ -29,6 +29,7 @@ export async function prepareStandardQuestions(params: {
   introducedChars: Record<string, boolean>;
   currentLessonNumber?: number;
   isWordSkipped?: (char: string) => boolean;
+  sessionMode?: string;
 }): Promise<PreparedQuestionsResult> {
   const {
     targetDuration,
@@ -42,7 +43,8 @@ export async function prepareStandardQuestions(params: {
     userStreaks,
     introducedChars,
     currentLessonNumber,
-    isWordSkipped
+    isWordSkipped,
+    sessionMode
   } = params;
 
   if (type === 'sentences') {
@@ -192,7 +194,7 @@ export async function prepareStandardQuestions(params: {
   }
 
   // Mode Huruf (Hiragana / Katakana / Mix)
-  const hurufQuestions = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak, introducedChars);
+  const hurufQuestions = buildHurufSessionQuestions(finalPool, questionCount, getMasteryStreak, introducedChars, sessionMode);
 
   const uniqueUnlearnedInSession: any[] = [];
   const seenChars = new Set<string>();
@@ -226,8 +228,9 @@ export async function prepareWeakItemsQuestions(params: {
   introducedChars: Record<string, boolean>;
   currentLessonNumber?: number;
   isWordSkipped?: (char: string) => boolean;
+  sessionMode?: string;
 }): Promise<{ questions: any[]; initialQuestionCount: number }> {
-  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars, currentLessonNumber, isWordSkipped } = params;
+  const { targetDuration, type, level, selectedKanaCategory, getMasteryStreak, introducedChars, currentLessonNumber, isWordSkipped, sessionMode } = params;
   const questionCount = getQuestionCountFromDuration(targetDuration, type);
   let pool = getFallbackLocalPool(type, level);
 
@@ -258,7 +261,7 @@ export async function prepareWeakItemsQuestions(params: {
     );
     questions = sessionResult.questions;
   } else {
-    questions = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak, introducedChars);
+    questions = buildHurufSessionQuestions(weakPool, questionCount, getMasteryStreak, introducedChars, sessionMode);
   }
 
   return {

@@ -42,6 +42,14 @@ const hitunganWaveForTutorial = ref<HitunganWaveDef | null>(null);
 // User interaction flag (preserves manual user selection once touched)
 const hasUserInteracted = ref(false);
 
+// Responsive screen detection for mobile-specific layouts
+const isMobile = ref(false);
+const updateResponsive = () => {
+  if (typeof window !== 'undefined') {
+    isMobile.value = window.innerWidth < 640;
+  }
+};
+
 // Dynamic Default Selection based on mastery progression:
 // Hiragana < 100% -> Hiragana, Hiragana 100% -> Katakana, Katakana 100% -> Kanji, etc.
 const targetDefaultModeId = getDynamicDefaultModeId({
@@ -195,14 +203,14 @@ const handleStart = async () => {
   }
 
   if (modeId === 'hiragana') {
-    quizStore.selectedMode = subType as any; // 'multiple_choice' | 'keyboard_typing' | 'writing'
+    quizStore.selectedMode = isMobile.value ? 'kana_mixed' : ((subType as any) || 'kana_mixed');
     await quizStore.startQuiz(1, 'hiragana', 'basic', selectedKanaCategory.value);
     emit('start');
     return;
   }
 
   if (modeId === 'katakana') {
-    quizStore.selectedMode = subType as any; // 'multiple_choice' | 'keyboard_typing' | 'writing'
+    quizStore.selectedMode = isMobile.value ? 'kana_mixed' : ((subType as any) || 'kana_mixed');
     await quizStore.startQuiz(1, 'katakana', 'basic', selectedKanaCategory.value);
     emit('start');
     return;
@@ -397,6 +405,8 @@ const handleKeydown = (event: KeyboardEvent) => {
 };
 
 onMounted(() => {
+  updateResponsive();
+  window.addEventListener('resize', updateResponsive);
   quizStore.loadRenshuuProgress();
   quizStore.loadHitunganProgress();
 
@@ -432,6 +442,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  window.removeEventListener('resize', updateResponsive);
   window.removeEventListener('keydown', handleKeydown);
   window.removeEventListener('pointerdown', deactivateKeyboardNav);
   window.removeEventListener('touchstart', deactivateKeyboardNav);

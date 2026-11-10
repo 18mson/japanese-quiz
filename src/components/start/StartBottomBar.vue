@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { 
   Zap, Swords, Sparkles, Layers, Keyboard, PenTool, Calculator, BookOpen, Shuffle, Dices,
   ChevronLeft, ChevronRight, CheckCircle2
@@ -29,6 +29,23 @@ const emit = defineEmits<{
 
 const quizStore = useQuizStore();
 
+// Responsive screen detection for mobile-specific layouts
+const isMobile = ref(false);
+const updateResponsive = () => {
+  if (typeof window !== 'undefined') {
+    isMobile.value = window.innerWidth < 640;
+  }
+};
+
+onMounted(() => {
+  updateResponsive();
+  window.addEventListener('resize', updateResponsive);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateResponsive);
+});
+
 const activeMode = computed<QuizModeDef | undefined>(() => {
   return modesList.find(m => m.id === props.activeModeId);
 });
@@ -38,6 +55,8 @@ const hasMultipleSubTypes = computed(() => {
   if (!activeMode.value?.subTypes) return false;
   // Kanji, Kotoba, dan Lainnya memiliki custom start layout
   if (props.activeModeId === 'kanji' || props.activeModeId === 'kotoba' || props.activeModeId === 'lainnya') return false;
+  // Khusus mobile app: mode hiragana dan katakana digabung menjadi 1 tombol mulai saja
+  if (isMobile.value && ['hiragana', 'katakana'].includes(props.activeModeId)) return false;
   return activeMode.value.subTypes.length > 1;
 });
 
@@ -101,6 +120,10 @@ const visibleHitunganWaves = computed(() => {
 const detailedKanaCategoryLabel = computed(() => {
   const isKatakana = props.activeModeId === 'katakana';
   const isMix = props.activeModeId === 'lainnya';
+
+  if (isMobile.value && ['hiragana', 'katakana'].includes(props.activeModeId)) {
+    return 'Kuis Campuran: Pilihan Ganda • Ketik Kana • Tulis Huruf';
+  }
 
   if (isMix) {
     if (props.selectedKanaCategory === 'basic') return 'Kategori: 46 Huruf Dasar (Hiragana & Katakana)';
@@ -417,6 +440,10 @@ const handleSubClick = (subKey: string) => {
           </div>
           <div v-else-if="activeModeId === 'daily'" key="daily" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Latihan Harian</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="['hiragana', 'katakana'].includes(activeModeId)" key="kana-single" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai Kuis {{ activeMode?.title }}</span>
             <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </div>
           <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">
