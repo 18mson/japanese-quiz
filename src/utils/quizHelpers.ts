@@ -132,6 +132,10 @@ export const extractMeaningCandidates = (raw: string): string[] => {
   const noParens = cleanBase(raw.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, ''));
   if (noParens) addWithVariants(noParens);
 
+  // 2b. Convert parenthesized marks to spaces (so "keluarga (orang lain)" -> "keluarga orang lain")
+  const parensToSpace = cleanBase(raw.replace(/[()（）[\]【】]/g, ' '));
+  if (parensToSpace) addWithVariants(parensToSpace);
+
   // 3. Extract text inside parentheses as possible synonym or colon phrase
   const parenMatches = raw.match(/\((.*?)\)|（(.*?)）|\[(.*?)\]|【.*?】/g);
   if (parenMatches) {
@@ -166,12 +170,15 @@ export const extractMeaningCandidates = (raw: string): string[] => {
 
   const chunks1 = primaryChunks(raw);
   const chunks2 = noParens ? primaryChunks(noParens) : [];
-  const allPrimary = Array.from(new Set([...chunks1, ...chunks2]));
+  const chunks3 = parensToSpace ? primaryChunks(parensToSpace) : [];
+  const allPrimary = Array.from(new Set([...chunks1, ...chunks2, ...chunks3]));
 
   for (const chunk of allPrimary) {
     addWithVariants(chunk);
     const chunkNoParen = chunk.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '').trim();
     if (chunkNoParen) addWithVariants(chunkNoParen);
+    const chunkParenToSpace = cleanBase(chunk.replace(/[()（）[\]【】]/g, ' '));
+    if (chunkParenToSpace) addWithVariants(chunkParenToSpace);
 
     // Bila chunk memuat koma (misal: "bujangan, belum menikah" atau "Tidak, belum seberapa"),
     // selain frasa utuh, tambahkan juga sub-bagian yang dipisahkan koma
@@ -181,6 +188,25 @@ export const extractMeaningCandidates = (raw: string): string[] => {
         addWithVariants(sp);
         const spNoParen = sp.replace(/\(.*?\)|（.*?）|\[.*?\]|【.*?】/g, '').trim();
         if (spNoParen) addWithVariants(spNoParen);
+        const spParenToSpace = cleanBase(sp.replace(/[()（）[\]【】]/g, ' '));
+        if (spParenToSpace) addWithVariants(spParenToSpace);
+      }
+    }
+
+    // Jika chunk berakhiran keterangan tanda kurung (misal: "bapak, ayah (sendiri)"),
+    // distribusikan keterangan kurung ke item sebelum koma: "bapak sendiri"
+    const trailingParenMatch = chunk.match(/^(.*?)\s*[\(\（\[\【](.*?)[\)\）\]\】]\s*$/);
+    if (trailingParenMatch) {
+      const beforeParen = trailingParenMatch[1];
+      const parenText = cleanBase(trailingParenMatch[2]);
+      if (beforeParen.includes(',') && parenText && !parenText.includes(':')) {
+        const items = beforeParen.split(',').map(s => s.trim()).filter(Boolean);
+        for (const item of items) {
+          const itemClean = cleanBase(item);
+          if (itemClean && itemClean.length >= 2) {
+            addWithVariants(`${itemClean} ${parenText}`);
+          }
+        }
       }
     }
   }
@@ -296,6 +322,9 @@ export const checkIsMeaningCorrect = (userInput: string, targetMeaning: string):
   const candidates = extractMeaningCandidates(targetMeaning);
   if (candidates.some(c => c === cleanUser)) return true;
 
+  const cleanUserNoParens = cleanUser.replace(/[()（）[\]【】]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (cleanUserNoParens && candidates.some(c => c === cleanUserNoParens)) return true;
+
   const cleanUserNoHyphen = cleanUser.replace(/-/g, ' ');
   if (candidates.some(c => c === cleanUserNoHyphen)) return true;
 
@@ -320,13 +349,16 @@ export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): bo
 
   if (!cleanUser || cleanUser.length < 3) return false;
 
+  const cleanUserNoParens = cleanUser.replace(/[()（）[\]【】]/g, ' ').replace(/\s+/g, ' ').trim();
   const cleanUserNoComma = cleanUser.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
   const candidates = extractMeaningCandidates(targetMeaning);
 
   return candidates.some(c => {
-    if (c.length >= 4) {
+    const cClean = c.replace(/[()（）[\]【】]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (c.length >= 4 || cClean.length >= 4) {
       if (getLevenshteinDistance(cleanUser, c) === 1) return true;
-      const cNoComma = c.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
+      if (cleanUserNoParens && cClean && getLevenshteinDistance(cleanUserNoParens, cClean) === 1) return true;
+      const cNoComma = cClean.replace(/[,，、]/g, '').replace(/\s+/g, ' ').trim();
       if (cNoComma.length >= 4 && cleanUserNoComma.length >= 3) {
         if (getLevenshteinDistance(cleanUserNoComma, cNoComma) === 1) return true;
       }

@@ -66,6 +66,22 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('Tarik tunai', ohikidashiMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('penarikan uang tunai', ohikidashiMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('tarik uang', ohikidashiMeaning), true);
+
+    // Kasus kata keluarga dengan catatan kurung: ご家族, ご主人, 父
+    const gokazokuMeaning = 'keluarga (orang lain)';
+    assert.strictEqual(checkIsMeaningCorrect('keluarga orang lain', gokazokuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('keluarga (orang lain)', gokazokuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('keluarga', gokazokuMeaning), true);
+
+    const goshujinMeaning = 'suami (orang lain)';
+    assert.strictEqual(checkIsMeaningCorrect('suami orang lain', goshujinMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('suami', goshujinMeaning), true);
+
+    const chichiMeaning = 'bapak, ayah (sendiri)';
+    assert.strictEqual(checkIsMeaningCorrect('ayah sendiri', chichiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('bapak sendiri', chichiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('ayah', chichiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('bapak', chichiMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
