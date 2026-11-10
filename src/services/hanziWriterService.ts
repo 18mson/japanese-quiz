@@ -21,6 +21,19 @@ export function getCharCategory(char: string): 'hiragana' | 'katakana' | 'kanji'
   return 'other';
 }
 
+const fetchWithTimeout = async (url: string, timeoutMs = 4000): Promise<Response> => {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    return res;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err;
+  }
+};
+
 /**
  * Fetch character JSON data with memory and localStorage caching
  */
@@ -61,15 +74,18 @@ export async function fetchCharacterData(char: string): Promise<CharacterJson> {
       `https://raw.githubusercontent.com/ailectra/kana-json/master/data/${encodeURIComponent(char)}.json`
     );
   } else {
+    // Kanji stroke order data - multiple reliable CDN mirrors
     urls.push(
-      `https://cdn.jsdelivr.net/npm/hanzi-writer-data-jp@latest/${encodeURIComponent(char)}.json`,
+      `https://cdn.jsdelivr.net/npm/@k1low/hanzi-writer-data-jp@latest/${encodeURIComponent(char)}.json`,
+      `https://unpkg.com/@k1low/hanzi-writer-data-jp@latest/${encodeURIComponent(char)}.json`,
+      `https://raw.githubusercontent.com/chanind/hanzi-writer-data/master/data/${encodeURIComponent(char)}.json`,
       `https://cdn.jsdelivr.net/npm/hanzi-writer-data@latest/${encodeURIComponent(char)}.json`
     );
   }
 
   for (const url of urls) {
     try {
-      const res = await fetch(url);
+      const res = await fetchWithTimeout(url, 3500);
       if (!res.ok) continue;
       const json: CharacterJson = await res.json();
       if (json && Array.isArray(json.strokes) && Array.isArray(json.medians)) {
@@ -82,7 +98,7 @@ export async function fetchCharacterData(char: string): Promise<CharacterJson> {
         return json;
       }
     } catch (e) {
-      // try next
+      // try next candidate CDN URL
     }
   }
 

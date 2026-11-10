@@ -50,6 +50,15 @@ const tierLabels: Record<string, { label: string; badgeBg: string }> = {
   crown: { label: '👑 Mahkota', badgeBg: 'bg-amber-500/15 border-amber-500/30 text-amber-800 dark:text-amber-300' }
 };
 
+const canvasSize = computed(() => {
+  if (typeof window !== 'undefined') {
+    const w = window.innerWidth;
+    if (w < 380) return 240;
+    if (w < 440) return 260;
+  }
+  return 290;
+});
+
 const handleKeyDown = (e: KeyboardEvent) => {
   if (isQuestionFinished.value && (e.key === 'Enter' || e.key === ' ')) {
     e.preventDefault();
@@ -183,11 +192,11 @@ onUnmounted(() => {
     </div>
 
     <!-- RIGHT CARD: Interactive HanziWriter Drawing Stage -->
-    <div class="w-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm dark:shadow-md flex flex-col items-center justify-center relative min-h-[380px] md:min-h-[420px]">
+    <div class="w-full bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-sm dark:shadow-md flex flex-col items-center justify-center relative min-h-[360px] md:min-h-[420px]">
       <KanaQuizTarget
         :target-char="currentChar.character"
         :romaji="currentChar.romaji"
-        :size="290"
+        :size="canvasSize"
         :is-finished="isQuestionFinished"
         @complete="handleCharacterComplete"
         @fail-max-mistakes="handleFailMaxMistakes"

@@ -76,6 +76,7 @@ const emit = defineEmits<{
 }>();
 
 const isLoading = ref(true);
+const hasLoadError = ref(false);
 const consecutiveMistakes = ref(0);
 const charMistakes = ref(0);
 const totalQuestionMistakes = ref(0);
@@ -150,6 +151,39 @@ const currentCombinedStrokes = computed(() => {
 
 let writerInstances: any[] = [];
 let pathObservers: MutationObserver[] = [];
+
+const preventTouchScroll = (e: TouchEvent) => {
+  if (e.cancelable) {
+    e.preventDefault();
+  }
+};
+
+const cleanupTouchListeners = () => {
+  boxContainerRefs.value.forEach(container => {
+    if (!container) return;
+    container.removeEventListener('touchstart', preventTouchScroll);
+    container.removeEventListener('touchmove', preventTouchScroll);
+    const svg = container.querySelector('svg');
+    if (svg) {
+      svg.removeEventListener('touchstart', preventTouchScroll);
+      svg.removeEventListener('touchmove', preventTouchScroll);
+    }
+  });
+};
+
+const attachTouchPrevention = (container: HTMLElement) => {
+  container.addEventListener('touchstart', preventTouchScroll, { passive: false });
+  container.addEventListener('touchmove', preventTouchScroll, { passive: false });
+  const svg = container.querySelector('svg');
+  if (svg) {
+    svg.style.touchAction = 'none';
+    (svg.style as any).webkitTouchCallout = 'none';
+    (svg.style as any).webkitUserSelect = 'none';
+    svg.style.userSelect = 'none';
+    svg.addEventListener('touchstart', preventTouchScroll, { passive: false });
+    svg.addEventListener('touchmove', preventTouchScroll, { passive: false });
+  }
+};
 
 const applyLeniencyToWriters = () => {
   const currentLeniency = effectiveLeniency.value;
@@ -480,6 +514,7 @@ const startCharQuiz = (idx: number) => {
  */
 const initWriterQuiz = async () => {
   isLoading.value = true;
+  hasLoadError.value = false;
   activeCharIndex.value = 0;
   charMistakes.value = 0;
   totalQuestionMistakes.value = 0;
@@ -489,6 +524,8 @@ const initWriterQuiz = async () => {
   isOutlineVisibleList.value = [false, false];
   completedCharStrokes.value = [0, 0];
   currentStrokeInActiveChar.value = 0;
+
+  cleanupTouchListeners();
 
   // Cleanup old writer instances and observers
   writerInstances.forEach(w => {
@@ -516,9 +553,12 @@ const initWriterQuiz = async () => {
     container.innerHTML = '';
 
     const charData = await fetchCharacterData(ch).catch(() => null);
-    if (charData) {
-      charDataList.value[i] = charData;
+    if (!charData) {
+      hasLoadError.value = true;
+      isLoading.value = false;
+      return;
     }
+    charDataList.value[i] = charData;
     const strokeCount = charData?.strokes?.length || 1;
     strokeCountPerChar.value[i] = strokeCount;
 
@@ -560,6 +600,7 @@ const initWriterQuiz = async () => {
 
     writerInstances[i] = writer;
     setupPathSmootherForContainer(container);
+    attachTouchPrevention(container);
   }
 
   emit('ready', { totalStrokes: combinedTotalStrokes.value });
@@ -582,6 +623,13 @@ watch(
 );
 
 watch(
+  () => props.size,
+  () => {
+    initWriterQuiz();
+  }
+);
+
+watch(
   () => settingsStore.isDarkMode,
   () => {
     initWriterQuiz();
@@ -595,6 +643,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('pointerdown', handlePointerDown, { capture: true });
+  cleanupTouchListeners();
   pathObservers.forEach(obs => obs.disconnect());
   pathObservers = [];
   activeMorphElements.forEach(el => el.remove());
@@ -798,6 +847,27 @@ defineExpose({
         <Loader2 class="w-6 h-6 text-indigo-600 dark:text-torii animate-spin" />
         <span class="text-xs font-bold text-slate-600 dark:text-slate-400">Menyiapkan huruf...</span>
       </div>
+
+      <!-- Network / Load Error Overlay -->
+      <div 
+        v-if="hasLoadError" 
+        class="absolute inset-0 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center gap-3 z-40 rounded-3xl"
+      >
+        <div class="text-rose-600 dark:text-rose-400 font-bold text-sm">
+          Gagal Memuat Goresan Huruf
+        </div>
+        <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
+          Data goresan huruf memerlukan koneksi internet. Pastikan jaringan aktif lalu coba lagi.
+        </p>
+        <button
+          type="button"
+          @click="restartQuiz"
+          class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm transition active:scale-95 cursor-pointer"
+        >
+          <RotateCcw class="w-3.5 h-3.5" />
+          <span>Coba Lagi</span>
+        </button>
+      </div>
     </div>
 
     <!-- Failed Max Mistakes Banner -->
@@ -812,11 +882,14 @@ defineExpose({
 </template>
 
 <style scoped>
+.hw-surface,
 .hw-surface :deep(svg),
 .hw-surface :deep(canvas) {
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
+  touch-action: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  overscroll-behavior: none !important;
   shape-rendering: geometricPrecision;
   background: transparent !important;
   background-color: transparent !important;
