@@ -4,6 +4,7 @@ import { useQuizStore } from '../stores/quizStore';
 import { Lightbulb, BookOpen, RotateCcw, Volume2 } from '@lucide/vue';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
 import { decomposeWordToKanjiUnits, type KanjiFuriganaUnit } from '../utils/furiganaParser';
+import { parseMeaningParts } from '../utils/quizHelpers';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
@@ -57,6 +58,10 @@ const hasValidReadingHint = computed(() => {
 
 const currentMeaning = computed(() => {
   return (quizStore.currentQuestion as any)?.meaning || '';
+});
+
+const meaningDisplay = computed(() => {
+  return parseMeaningParts(currentMeaning.value);
 });
 
 const firstCharKana = computed(() => {
@@ -194,14 +199,22 @@ const questionStyle = computed(() => {
         <div :key="quizStore.currentQuestionIndex" class="flex flex-col items-center text-center w-full">
           <!-- Mode 1: Meaning to Words (Prompt is the Indonesian Meaning) -->
           <template v-if="quizStore.activeQuestionType === 'meaning_to_words'">
-            <span 
-              :class="[
-                'text-2xl sm:text-3xl md:text-4xl font-extrabold font-sans tracking-tight leading-snug select-none px-2 max-w-2xl lg:max-w-3xl transition-colors duration-200',
-                questionStyle.fontColor
-              ]"
-            >
-              {{ currentMeaning }}
-            </span>
+            <div class="flex flex-col items-center text-center px-2 max-w-2xl lg:max-w-3xl">
+              <span 
+                :class="[
+                  'text-2xl sm:text-3xl md:text-4xl font-extrabold font-sans tracking-tight leading-snug select-none transition-colors duration-200',
+                  questionStyle.fontColor
+                ]"
+              >
+                {{ meaningDisplay.primary }}
+              </span>
+              <span 
+                v-if="meaningDisplay.secondary" 
+                class="mt-1 text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 select-none tracking-normal"
+              >
+                {{ meaningDisplay.secondary }}
+              </span>
+            </div>
 
             <!-- Hints for Meaning to Words Mode -->
             <div v-if="quizStore.selectedAnswer === null" class="mt-3 sm:mt-4 flex gap-2.5 sm:gap-3 flex-wrap justify-center items-center min-h-[36px]">
@@ -303,7 +316,7 @@ const questionStyle = computed(() => {
                   <span>Petunjuk Arti</span>
                 </button>
                 <span v-else class="text-xs sm:text-sm font-bold text-teal-800 dark:text-matcha bg-teal-50 dark:bg-slate-800 border border-teal-200 dark:border-slate-700 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full animate-hintPop">
-                  Arti: {{ currentMeaning }}
+                  Arti: {{ meaningDisplay.primary }}
                 </span>
               </template>
             </div>
@@ -337,9 +350,14 @@ const questionStyle = computed(() => {
         <!-- Jawaban arti yang benar (hanya jika salah atau typo) -->
         <template v-if="!quizStore.isAnswerCorrect || isTypo">
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mt-1">Artinya yang benar:</span>
-          <span class="text-base sm:text-xl md:text-2xl font-bold bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2 sm:py-2.5 rounded-2xl text-indigo-700 dark:text-torii-light w-auto max-w-full md:max-w-3xl lg:max-w-4xl break-words">
-            {{ currentMeaning }}
-          </span>
+          <div class="flex flex-col items-center justify-center bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2 sm:py-2.5 rounded-2xl w-auto max-w-full md:max-w-3xl lg:max-w-4xl text-center">
+            <span class="text-base sm:text-xl md:text-2xl font-bold text-indigo-700 dark:text-torii-light break-words">
+              {{ meaningDisplay.primary }}
+            </span>
+            <span v-if="meaningDisplay.secondary" class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+              {{ meaningDisplay.secondary }}
+            </span>
+          </div>
         </template>
       </template>
 
@@ -406,14 +424,19 @@ const questionStyle = computed(() => {
         <!-- Artinya: dipindah ke bawah romaji di atas input -->
         <div v-if="currentMeaning" class="mt-1.5 flex items-center justify-center gap-2 flex-wrap w-full max-w-2xl md:max-w-3xl lg:max-w-4xl">
           <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Artinya:</span>
-          <span class="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100">{{ currentMeaning }}</span>
+          <span class="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-slate-100">
+            {{ meaningDisplay.primary }}
+            <span v-if="meaningDisplay.secondary" class="ml-1 text-xs sm:text-sm font-normal text-slate-500 dark:text-slate-400 font-sans">
+              {{ meaningDisplay.secondary }}
+            </span>
+          </span>
         </div>
       </template>
     </div>
 
-    <!-- Instruction Text (Only visible before answering / submitting) -->
+    <!-- Instruction Text (Hanya muncul untuk mode pilihan ganda/non-typing agar tidak redundan di atas input box) -->
     <div 
-      v-else-if="quizStore.selectedAnswer === null" 
+      v-else-if="quizStore.selectedAnswer === null && !quizStore.isTypingMode" 
       class="mt-1 flex items-center justify-center animate-fadeIn"
     >
       <span 

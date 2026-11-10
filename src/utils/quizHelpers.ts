@@ -204,6 +204,85 @@ export const extractMeaningCandidates = (raw: string): string[] => {
   return Array.from(results).filter(Boolean);
 };
 
+/**
+ * Parses raw Indonesian vocabulary meaning into an elegant primary text and optional secondary alternatives.
+ * Cleans up long chains of redundant synonyms (e.g. "pemindahbukuan rekening / pemindahbukuan / transfer internal...")
+ * into a single prominent headline: "Pemindahbukuan rekening" with a subtle subtitle "(atau: transfer internal)".
+ */
+export function parseMeaningParts(raw: string): { primary: string; secondary: string } {
+  if (!raw) return { primary: '', secondary: '' };
+
+  // Split by ' / ' or ' ; ' outside parentheses and brackets
+  const chunks: string[] = [];
+  let current = '';
+  let parenDepth = 0;
+
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (ch === '(' || ch === '（' || ch === '[' || ch === '【') parenDepth++;
+    else if (ch === ')' || ch === '）' || ch === ']' || ch === '】') parenDepth = Math.max(0, parenDepth - 1);
+
+    if (parenDepth === 0 && (ch === '/' || ch === ';') && i > 0 && i < raw.length - 1 && raw[i - 1] === ' ' && raw[i + 1] === ' ') {
+      chunks.push(current.trim());
+      current = '';
+      i++; // skip trailing space
+    } else {
+      current += ch;
+    }
+  }
+  if (current.trim()) {
+    chunks.push(current.trim());
+  }
+
+  const cleanedChunks = chunks.map(c => c.trim()).filter(Boolean);
+  if (cleanedChunks.length === 0) return { primary: raw.trim(), secondary: '' };
+
+  const first = cleanedChunks[0];
+  const primary = first.charAt(0).toUpperCase() + first.slice(1);
+
+  if (cleanedChunks.length === 1) {
+    return { primary, secondary: '' };
+  }
+
+  const cleanFirst = first.toLowerCase().replace(/[()（）[\]【】~～]/g, '').trim();
+  const firstWords = cleanFirst.split(/\s+/).filter(Boolean);
+  const uniqueAlts: string[] = [];
+
+  for (let i = 1; i < cleanedChunks.length; i++) {
+    const chunk = cleanedChunks[i];
+    const cleanChunk = chunk.toLowerCase().replace(/[()（）[\]【】~～]/g, '').trim();
+    if (!cleanChunk) continue;
+
+    // Skip if identical
+    if (cleanFirst === cleanChunk) continue;
+
+    // Skip if cleanChunk is a simple substring of cleanFirst (e.g. 'pemindahbukuan' inside 'pemindahbukuan rekening')
+    if (cleanFirst.includes(cleanChunk) && cleanChunk.length < cleanFirst.length * 0.8) continue;
+    if (cleanChunk.includes(cleanFirst) && cleanFirst.length < cleanChunk.length * 0.8) continue;
+
+    // Skip if shares dominant first word with primary (e.g. 'transfer rekening' when primary is 'transfer internal')
+    const chunkWords = cleanChunk.split(/\s+/).filter(Boolean);
+    if (firstWords.length > 0 && chunkWords.length > 0 && firstWords[0] === chunkWords[0] && firstWords.length > 1 && chunkWords.length > 1) {
+      continue;
+    }
+
+    // Skip if already represented in uniqueAlts
+    if (uniqueAlts.some(alt => {
+      const ca = alt.toLowerCase().replace(/[()（）[\]【】~～]/g, '').trim();
+      const altWords = ca.split(/\s+/).filter(Boolean);
+      if (ca === cleanChunk) return true;
+      if (altWords.length > 0 && chunkWords.length > 0 && altWords[0] === chunkWords[0]) return true;
+      return false;
+    })) continue;
+
+    uniqueAlts.push(chunk);
+    if (uniqueAlts.length >= 2) break; // Limit to max 2 secondary alternatives
+  }
+
+  const secondary = uniqueAlts.length > 0 ? `(atau: ${uniqueAlts.join(', ')})` : '';
+  return { primary, secondary };
+}
+
 export const checkIsMeaningCorrect = (userInput: string, targetMeaning: string): boolean => {
   if (!userInput || !targetMeaning) return false;
   const cleanUser = userInput

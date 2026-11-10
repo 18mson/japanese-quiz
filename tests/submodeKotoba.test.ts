@@ -6,7 +6,8 @@ import {
   checkIsMeaningTypo,
   checkIsJapaneseCorrect,
   checkIsJapaneseTypo,
-  checkIsWrongModeInput
+  checkIsWrongModeInput,
+  parseMeaningParts
 } from '../src/utils/quizHelpers';
 
 test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
@@ -183,6 +184,28 @@ test('Smart Intercept: Pencegahan Salah Format Mode Soal (checkIsWrongModeInput)
     // Jawaban tulisan Jepang benar tidak dicegat
     const resJp = checkIsWrongModeInput('あびます', 'meaning_to_words', wordItem);
     assert.strictEqual(resJp.isWrongMode, false);
+  });
+
+  await t.test('parseMeaningParts: membersihkan arti panjang berulang menjadi judul utama & alternatif elegan', () => {
+    // 1. Kasus pemindahbukuan rekening (5 variasi berulang)
+    const ofurikae = parseMeaningParts('pemindahbukuan rekening / pemindahbukuan / transfer internal / transfer rekening / transfer');
+    assert.strictEqual(ofurikae.primary, 'Pemindahbukuan rekening');
+    assert.strictEqual(ofurikae.secondary, '(atau: transfer internal)');
+
+    // 2. Kasus salam / sapaan
+    const konnichiwa = parseMeaningParts('Halo / Selamat siang');
+    assert.strictEqual(konnichiwa.primary, 'Halo');
+    assert.strictEqual(konnichiwa.secondary, '(atau: Selamat siang)');
+
+    // 3. Kasus kurung penjelasan dengan garis miring internal (tidak boleh terpotong salah)
+    const futsuu = parseMeaningParts('biasa (kereta biasa / lokal)');
+    assert.strictEqual(futsuu.primary, 'Biasa (kereta biasa / lokal)');
+    assert.strictEqual(futsuu.secondary, '');
+
+    // 4. Kasus tunggal tanpa variasi
+    const tanbou = parseMeaningParts('sawah');
+    assert.strictEqual(tanbou.primary, 'Sawah');
+    assert.strictEqual(tanbou.secondary, '');
   });
 });
 
