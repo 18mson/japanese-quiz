@@ -40,7 +40,7 @@ const getRandomInt = (min: number, max: number) => {
 
 export function useHitunganQuiz(
   initialWave: HitunganWaveDef,
-  initialDirection: 'number_to_kana' | 'kana_to_number' = 'number_to_kana',
+  initialDirection: 'number_to_kana' | 'kana_to_number' | 'random' = 'random',
   unlockedWaveKeys: string[] = []
 ) {
   const authStore = useAuthStore();
@@ -48,13 +48,16 @@ export function useHitunganQuiz(
   const { speak } = useTextToSpeech();
 
   const currentWave = ref<HitunganWaveDef>(initialWave);
-  const direction = ref<'number_to_kana' | 'kana_to_number'>(initialDirection);
+  const sessionDirectionMode = ref<'number_to_kana' | 'kana_to_number' | 'random'>(initialDirection);
 
   const questions = ref<HitunganQuestion[]>([]);
   const currentIndex = ref(0);
   const initialQuestionCount = ref(10);
 
   const currentQuestion = computed(() => questions.value[currentIndex.value] || null);
+  const direction = computed<'number_to_kana' | 'kana_to_number'>(() => {
+    return currentQuestion.value?.direction || 'number_to_kana';
+  });
   const questionNumber = computed(() => currentIndex.value + 1);
   const totalQuestions = computed(() => initialQuestionCount.value);
   const isMistakeRound = computed(() => currentIndex.value >= initialQuestionCount.value);
@@ -68,20 +71,30 @@ export function useHitunganQuiz(
   const isCorrect = ref(false);
   const isQuizFinished = ref(false);
 
+  const getQuestionDirection = (
+    overrideDir?: 'number_to_kana' | 'kana_to_number' | 'random'
+  ): 'number_to_kana' | 'kana_to_number' => {
+    if (overrideDir === 'number_to_kana' || overrideDir === 'kana_to_number') {
+      return overrideDir;
+    }
+    return Math.random() < 0.5 ? 'number_to_kana' : 'kana_to_number';
+  };
+
   /**
    * Helper to build a question object from a number value
    */
   const buildNumberQuestion = (
     num: number,
     wave: HitunganWaveDef,
-    targetDirection: 'number_to_kana' | 'kana_to_number',
+    targetDirection: 'number_to_kana' | 'kana_to_number' | 'random',
     idx: number
   ): HitunganQuestion => {
+    const qDirection = getQuestionDirection(targetDirection);
     const qId = `q_${wave.wave_key}_${num}_${idx}_${Math.random().toString(36).slice(2, 6)}`;
     const primaryKana = numberToKana(num);
     const acceptedList = getAcceptedKanaReadings(num);
 
-    if (targetDirection === 'number_to_kana') {
+    if (qDirection === 'number_to_kana') {
       return {
         id: qId,
         waveKey: wave.wave_key,
@@ -91,7 +104,7 @@ export function useHitunganQuiz(
         acceptedKanaList: acceptedList,
         expectedNumber: String(num),
         originalValue: num,
-        direction: targetDirection,
+        direction: qDirection,
       };
     } else {
       return {
@@ -103,7 +116,7 @@ export function useHitunganQuiz(
         acceptedKanaList: acceptedList,
         expectedNumber: String(num),
         originalValue: num,
-        direction: targetDirection,
+        direction: qDirection,
       };
     }
   };
@@ -113,7 +126,7 @@ export function useHitunganQuiz(
    */
   const generateWaveQuestions = (
     targetWave: HitunganWaveDef,
-    targetDirection: 'number_to_kana' | 'kana_to_number',
+    targetDirection: 'number_to_kana' | 'kana_to_number' | 'random',
     count: number = 10
   ): HitunganQuestion[] => {
     // 1. Counter Waves: Select unique values from reference data (1 to 10)
@@ -126,13 +139,14 @@ export function useHitunganQuiz(
         const selected = shuffled.slice(0, count);
 
         return selected.map((picked, idx) => {
+          const qDirection = getQuestionDirection(targetDirection);
           const qId = `q_${targetWave.wave_key}_${picked.value}_${idx}`;
           const parts = picked.japanese.split('、').map(s => s.trim());
           const primaryKana = parts[0];
           const acceptedList = parts;
           const valDisplay = `${picked.value}${categoryData.counter}`;
 
-          if (targetDirection === 'number_to_kana') {
+          if (qDirection === 'number_to_kana') {
             return {
               id: qId,
               waveKey: targetWave.wave_key,
@@ -144,7 +158,7 @@ export function useHitunganQuiz(
               originalValue: picked.value,
               counterKanji: categoryData.counter,
               counterMeaning: categoryData.usage_example,
-              direction: targetDirection,
+              direction: qDirection,
             };
           } else {
             return {
@@ -158,7 +172,7 @@ export function useHitunganQuiz(
               originalValue: picked.value,
               counterKanji: categoryData.counter,
               counterMeaning: categoryData.usage_example,
-              direction: targetDirection,
+              direction: qDirection,
             };
           }
         });
@@ -261,13 +275,13 @@ export function useHitunganQuiz(
    */
   const startSession = (
     newWave?: HitunganWaveDef,
-    newDirection?: 'number_to_kana' | 'kana_to_number'
+    newDirection?: 'number_to_kana' | 'kana_to_number' | 'random'
   ) => {
     if (newWave) currentWave.value = newWave;
-    if (newDirection) direction.value = newDirection;
+    if (newDirection) sessionDirectionMode.value = newDirection;
 
     // Generate unique questions pool for this wave session
-    questions.value = generateWaveQuestions(currentWave.value, direction.value, 10);
+    questions.value = generateWaveQuestions(currentWave.value, sessionDirectionMode.value, 10);
     initialQuestionCount.value = questions.value.length;
     currentIndex.value = 0;
 

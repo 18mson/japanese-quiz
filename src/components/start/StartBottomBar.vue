@@ -16,7 +16,7 @@ const props = defineProps<{
   characterType: string;
   selectedKanaCategory: string;
   currentHitunganWave: HitunganWaveDef;
-  selectedHitunganDirection: string;
+  selectedHitunganDirection?: string;
   isLoading: boolean;
 }>();
 
@@ -245,13 +245,13 @@ const handleSubClick = (subKey: string) => {
           Tantangan Harian (Audio & Suara)
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'angka'" class="text-emerald-600 dark:text-emerald-400 font-bold">
-          Level Angka N5 (1–10.000) • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Angka ➔ かな' : 'かな ➔ Angka' }}
+          Level Angka N5 (1–10.000) • Arah Acak (Angka ⇄ かな)
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'counter'" class="text-emerald-600 dark:text-emerald-400 font-bold">
-          9 Variasi Kata Bantu Hitung (助数詞) • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Counter ➔ かな' : 'かな ➔ Counter' }}
+          9 Variasi Kata Bantu Hitung (助数詞) • Arah Acak (Counter ⇄ かな)
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'campuran'" class="text-emerald-600 dark:text-emerald-400 font-bold">
-          Review Campuran Angka & Counter • Arah: {{ selectedHitunganDirection === 'number_to_kana' ? 'Campuran ➔ かな' : 'かな ➔ Angka' }}
+          Review Campuran Angka & Counter • Arah Acak (Campuran ⇄ かな)
         </span>
         <span v-else class="text-slate-400 font-bold">
           Pilih sub-menu untuk langsung mulai kuis

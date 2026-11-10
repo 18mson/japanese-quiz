@@ -76,7 +76,6 @@ const selectedKanaCategory = ref<KanaCategoryType>('all');
 // Hitungan State
 const selectedHitunganTab = ref<'angka' | 'counter' | 'campuran'>('angka');
 const selectedHitunganWaveKey = ref<string>('basic_1_10');
-const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
 
 const currentHitunganWave = computed(() => {
   return HITUNGAN_WAVES.find(w => w.wave_key === selectedHitunganWaveKey.value) || HITUNGAN_WAVES[0];
@@ -136,20 +135,8 @@ const startHitunganPracticeFromTutorial = () => {
 const launchHitunganQuiz = (wave?: HitunganWaveDef) => {
   quizStore.initHitunganSession(10);
   quizStore.selectedHitunganWave = wave || currentHitunganWave.value;
-  quizStore.selectedHitunganDirection = selectedHitunganDirection.value;
+  quizStore.selectedHitunganDirection = 'random';
   emit('start');
-};
-
-const getHitunganDirectionLabelForward = (subKey: string) => {
-  if (subKey === 'counter') return 'Counter ➔ かな';
-  if (subKey === 'campuran') return 'Campuran ➔ かな';
-  return 'Angka ➔ かな';
-};
-
-const getHitunganDirectionLabelBackward = (subKey: string) => {
-  if (subKey === 'counter') return 'かな ➔ Counter';
-  if (subKey === 'campuran') return 'かな ➔ Angka';
-  return 'かな ➔ Angka';
 };
 
 const handleStartHitunganWave = (wave: HitunganWaveDef) => {
@@ -599,41 +586,15 @@ watch(characterTypes, (newVal) => {
                 @interact="deactivateKeyboardNav"
               />
 
-              <!-- Jika Angka / Counter / Campuran: Tampilkan Arah Latihan + Lihat Pola -->
+              <!-- Jika Angka / Counter / Campuran: Tampilkan Preview Pattern Modal Button -->
               <div 
                 v-else
-                class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800 flex-wrap gap-2 w-full"
+                class="flex items-center justify-between pt-1.5 border-t border-slate-100 dark:border-slate-800 flex-wrap gap-2 w-full"
               >
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-900 dark:text-slate-400">
-                    Arah Latihan:
+                <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-medium">
+                  <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
+                    Soal Acak: Angka ➔ Kana & Kana ➔ Angka
                   </span>
-                  <div class="flex items-center gap-1 bg-white/80 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-                    <button
-                      type="button"
-                      @click.stop="deactivateKeyboardNav(); selectedHitunganDirection = 'number_to_kana'"
-                      :class="[
-                        'min-h-[38px] px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer flex items-center justify-center active:scale-95',
-                        selectedHitunganDirection === 'number_to_kana'
-                          ? 'bg-emerald-600 text-white font-black shadow-2xs'
-                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                      ]"
-                    >
-                      {{ getHitunganDirectionLabelForward(characterTypes) }}
-                    </button>
-                    <button
-                      type="button"
-                      @click.stop="deactivateKeyboardNav(); selectedHitunganDirection = 'kana_to_number'"
-                      :class="[
-                        'min-h-[38px] px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer flex items-center justify-center active:scale-95',
-                        selectedHitunganDirection === 'kana_to_number'
-                          ? 'bg-emerald-600 text-white font-black shadow-2xs'
-                          : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                      ]"
-                    >
-                      {{ getHitunganDirectionLabelBackward(characterTypes) }}
-                    </button>
-                  </div>
                 </div>
 
                 <!-- Preview Pattern Modal Button -->
@@ -671,7 +632,6 @@ watch(characterTypes, (newVal) => {
       :character-type="characterTypes"
       :selected-kana-category="selectedKanaCategory"
       :current-hitungan-wave="currentHitunganWave"
-      :selected-hitungan-direction="selectedHitunganDirection"
       :is-loading="quizStore.isLoading"
       @start="handleStart"
       @start-subtype="handleStartSubtype"

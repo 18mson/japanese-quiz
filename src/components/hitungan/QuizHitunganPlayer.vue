@@ -23,7 +23,7 @@ import { useTextToSpeech } from '../../composables/useTextToSpeech';
 
 const props = defineProps<{
   initialWave: HitunganWaveDef;
-  initialDirection: 'number_to_kana' | 'kana_to_number';
+  initialDirection?: 'number_to_kana' | 'kana_to_number' | 'random';
   unlockedWaveKeys?: string[];
 }>();
 
@@ -147,13 +147,13 @@ const nextWaveDef = computed(() => {
 
 const handlePlayNextWave = () => {
   if (nextWaveDef.value) {
-    startSession(nextWaveDef.value, direction.value);
+    startSession(nextWaveDef.value, props.initialDirection || 'random');
     focusTextInput();
   }
 };
 
 const handleRestart = () => {
-  startSession(currentWave.value, direction.value);
+  startSession(currentWave.value, props.initialDirection || 'random');
   focusTextInput();
 };
 
@@ -397,7 +397,7 @@ onUnmounted(() => {
           Sesi Wave Selesai!
         </h3>
         <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-          {{ currentWave.title }} ({{ direction === 'number_to_kana' ? 'Angka ➔ Kana' : 'Kana ➔ Angka' }})
+          {{ currentWave.title }} • Kuis Acak (Angka ⇄ Kana)
         </p>
       </div>
 

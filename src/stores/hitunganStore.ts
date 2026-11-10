@@ -6,7 +6,7 @@ import { supabase } from '../lib/supabaseClient';
 
 export const useHitunganStore = defineStore('hitungan', () => {
   const selectedHitunganWave = ref<HitunganWaveDef>(HITUNGAN_WAVES[0]);
-  const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number'>('number_to_kana');
+  const selectedHitunganDirection = ref<'number_to_kana' | 'kana_to_number' | 'random'>('random');
   const hitunganProgressMap = ref<Record<string, HitunganProgressRecord>>({});
   const isHitunganFinished = ref(false);
 
