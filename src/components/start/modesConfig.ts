@@ -143,8 +143,8 @@ export const modesList: QuizModeDef[] = [
 ];
 
 export function getModeDescription(
-  mode: QuizModeDef, 
-  characterType: string, 
+  mode: QuizModeDef,
+  characterType: string,
   hitunganTab: string,
   kanaCategory?: string,
   kanjiLessonNumber?: number
@@ -172,7 +172,7 @@ export function getModeDescription(
   }
   if (mode.id === 'kotoba') {
     if (characterType === 'words' || characterType === 'words_mixed') {
-      return 'Kuis kosakata adaptif dengan variasi soal acak: tebak arti bahasa Indonesia, baca kanji/kana ke romaji, dan ketik bahasa Jepang dari artinya.';
+      return 'Kuis kosakata adaptif dengan variasi soal acak.';
     }
     if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
     if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji atau Kana.';
