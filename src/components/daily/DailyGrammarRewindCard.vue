@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { 
   ChevronLeft,
   ChevronRight,
@@ -39,19 +39,56 @@ const currentPage = computed(() => {
   return trackIndex.value;
 });
 
-const nextSlide = () => {
+// Auto-advance interval: 4.5s
+const AUTO_SCROLL_DELAY = 4500;
+let autoScrollTimer: ReturnType<typeof setInterval> | null = null;
+const isHovered = ref<boolean>(false);
+
+const startAutoScroll = () => {
+  stopAutoScroll();
+  autoScrollTimer = setInterval(() => {
+    if (!isDragging.value && !isHovered.value) {
+      autoAdvance();
+    }
+  }, AUTO_SCROLL_DELAY);
+};
+
+const stopAutoScroll = () => {
+  if (autoScrollTimer) {
+    clearInterval(autoScrollTimer);
+    autoScrollTimer = null;
+  }
+};
+
+const resetAutoScroll = () => {
+  stopAutoScroll();
+  startAutoScroll();
+};
+
+const autoAdvance = () => {
+  if (trackIndex.value >= 4) return;
   if (!isTransitioning.value) isTransitioning.value = true;
   trackIndex.value++;
 };
 
+const nextSlide = () => {
+  if (trackIndex.value >= 4) return;
+  if (!isTransitioning.value) isTransitioning.value = true;
+  trackIndex.value++;
+  resetAutoScroll();
+};
+
 const prevSlide = () => {
+  if (trackIndex.value <= 0) return;
   if (!isTransitioning.value) isTransitioning.value = true;
   trackIndex.value--;
+  resetAutoScroll();
 };
 
 const setPage = (page: number) => {
   isTransitioning.value = true;
   trackIndex.value = page;
+  resetAutoScroll();
 };
 
 const onTransitionEnd = () => {
@@ -77,6 +114,7 @@ const onPointerDown = (e: PointerEvent) => {
   const target = e.target as HTMLElement;
   if (target.closest('button') || target.closest('a')) return;
 
+  stopAutoScroll();
   isDragging.value = true;
   isTransitioning.value = false;
   dragStartX.value = e.clientX;
@@ -123,12 +161,14 @@ const onPointerUp = (e: PointerEvent) => {
   }
 
   dragOffset.value = 0;
+  startAutoScroll();
 };
 
 const onPointerCancel = () => {
   isDragging.value = false;
   isTransitioning.value = true;
   dragOffset.value = 0;
+  startAutoScroll();
 };
 
 const playSentenceAudio = () => {
@@ -156,6 +196,24 @@ const formattedDate = computed(() => {
     return '';
   }
 });
+
+const handleVisibilityChange = () => {
+  if (document.hidden) {
+    stopAutoScroll();
+  } else {
+    startAutoScroll();
+  }
+};
+
+onMounted(() => {
+  startAutoScroll();
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+});
+
+onUnmounted(() => {
+  stopAutoScroll();
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
+});
 </script>
 
 <template>
@@ -168,6 +226,8 @@ const formattedDate = computed(() => {
       <div
         class="group w-full relative overflow-hidden rounded-2xl shadow-sm touch-pan-y"
         :class="isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'"
+        @mouseenter="isHovered = true; stopAutoScroll()"
+        @mouseleave="isHovered = false; startAutoScroll()"
         @pointerdown="onPointerDown"
         @pointermove="onPointerMove"
         @pointerup="onPointerUp"
