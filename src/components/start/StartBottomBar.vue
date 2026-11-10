@@ -53,8 +53,8 @@ const activeMode = computed<QuizModeDef | undefined>(() => {
 // Menentukan apakah mode ini memiliki multi sub-menu di tombol mulai
 const hasMultipleSubTypes = computed(() => {
   if (!activeMode.value?.subTypes) return false;
-  // Kanji, Kotoba, dan Lainnya memiliki custom start layout
-  if (props.activeModeId === 'kanji' || props.activeModeId === 'kotoba' || props.activeModeId === 'lainnya') return false;
+  // Kanji, Kotoba, Lainnya, dan Online Game memiliki custom start layout (atau 1 tombol mulai)
+  if (props.activeModeId === 'kanji' || props.activeModeId === 'kotoba' || props.activeModeId === 'lainnya' || props.activeModeId === 'online_game') return false;
   // Khusus mobile app: mode hiragana dan katakana digabung menjadi 1 tombol mulai saja
   if (isMobile.value && ['hiragana', 'katakana'].includes(props.activeModeId)) return false;
   return activeMode.value.subTypes.length > 1;
@@ -219,11 +219,13 @@ const handleSubClick = (subKey: string) => {
     <div class="w-full max-w-3xl flex flex-col items-center gap-1.5 sm:gap-2">
       <!-- Session Info Pill -->
       <div 
-        v-if="activeModeId !== 'online_game'" 
         class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium"
       >
         <span v-if="['hiragana', 'katakana'].includes(activeModeId)" class="text-aizome dark:text-torii-light font-bold">
           {{ detailedKanaCategoryLabel }}
+        </span>
+        <span v-else-if="activeModeId === 'online_game'" class="text-rose-600 dark:text-rose-400 font-bold">
+          {{ characterType === 'quiz_blitz' ? 'Multiplayer: Quiz Blitz (Kuis Cepat 10s • Skor Kecepatan)' : 'Multiplayer: Adu Ketik (2-8 Pemain • Eliminasi Bertahap)' }}
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'mix'" class="text-emerald-700 dark:text-emerald-400 font-bold">
           {{ detailedKanaCategoryLabel }}
@@ -475,6 +477,10 @@ const handleSubClick = (subKey: string) => {
           </div>
           <div v-else-if="['hiragana', 'katakana'].includes(activeModeId)" key="kana-single" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Kuis {{ activeMode?.title }}</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="activeModeId === 'online_game'" key="online-game-single" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai {{ characterType === 'quiz_blitz' ? 'Quiz Blitz' : 'Adu Ketik' }}</span>
             <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </div>
           <div v-else key="normal" class="flex items-center justify-center gap-2 w-full">

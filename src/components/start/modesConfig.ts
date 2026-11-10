@@ -112,7 +112,7 @@ export const modesList: QuizModeDef[] = [
     levelTag: 'Multiplayer (対戦)',
     level: 'battleground',
     defaultType: 'battleground',
-    desc: 'Bermain online multiplayer realtime (2–8 Pemain). Pilih mode Adu Ketik atau Quiz Blitz.',
+    desc: 'Bermain online multiplayer realtime (2-8 Pemain). Pilih mode Adu Ketik atau Quiz Blitz.',
     subTypes: [
       { key: 'battleground', label: 'Adu Ketik' },
       { key: 'quiz_blitz', label: 'Quiz Blitz' },
@@ -181,7 +181,7 @@ export function getModeDescription(
   }
   if (mode.id === 'online_game') {
     if (characterType === 'quiz_blitz') return 'Adu refleks kuis cepat 10 detik per soal bersama pemain lain.';
-    return 'Adu kecepatan mengetik romaji eliminasi bertahap (2–8 pemain).';
+    return 'Adu kecepatan mengetik romaji eliminasi bertahap (2-8 pemain).';
   }
   if (mode.id === 'lainnya') {
     if (characterType === 'mix') {

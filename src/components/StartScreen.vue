@@ -523,6 +523,8 @@ watch(characterTypes, (newVal) => {
             <DuelOnlinePanel 
               v-if="activeMode.id === 'online_game'" 
               :sub-type="characterTypes" 
+              @select-sub-type="selectSubType"
+              @interact="deactivateKeyboardNav"
             />
 
             <!-- Kana Category Selector Panel (Basic / Dakuten / Kombinasi / All) -->
