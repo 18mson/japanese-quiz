@@ -40,22 +40,22 @@ const selectCategory = (key: KanaCategoryType) => {
 
 <template>
   <!-- 4 Category Filter Pills (Tanpa Border/Header Atas, Bersih & Langsung) -->
-  <div class="grid grid-cols-4 gap-1.5 pt-1 w-full animate-fadeIn">
+  <div class="grid grid-cols-4 gap-1 sm:gap-1.5 pt-1 w-full animate-fadeIn">
     <button
       v-for="cat in kanaCategoryOptions"
       :key="cat.key"
       type="button"
       @click.stop="selectCategory(cat.key)"
       :class="[
-        'min-h-[44px] py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs active:scale-95',
+        'py-2 px-1 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center justify-center gap-1 shadow-2xs active:scale-95',
         modelValue === cat.key
           ? 'bg-aizome dark:bg-torii text-white border-aizome dark:border-torii font-black shadow-xs scale-[1.02]'
           : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
       ]"
     >
-      <Sparkles v-if="cat.key === 'all'" class="w-3.5 h-3.5 shrink-0 opacity-90" />
-      <span v-else class="font-jp text-xs opacity-90 font-bold">{{ getCategoryBadge(cat.key) }}</span>
-      <span class="text-[11px] sm:text-xs truncate">{{ cat.label }}</span>
+      <Sparkles v-if="cat.key === 'all'" class="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 opacity-90" />
+      <span v-else class="font-jp text-[10px] sm:text-xs opacity-90 font-bold shrink-0">{{ getCategoryBadge(cat.key) }}</span>
+      <span class="truncate">{{ cat.label }}</span>
     </button>
   </div>
 </template>
