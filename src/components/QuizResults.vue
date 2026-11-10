@@ -128,6 +128,10 @@ const demotions = computed(() => {
 const hasTierChanges = computed(() => {
   return quizStore.sessionTierChanges.length > 0;
 });
+
+const summaryBadgeText = computed(() => {
+  return `${quizStore.reportAnswers.length} Percobaan Selesai`;
+});
 </script>
 
 <template>
@@ -137,7 +141,7 @@ const hasTierChanges = computed(() => {
       <div class="flex items-center justify-between">
         <h2 class="text-2xl sm:text-3xl text-slate-900 dark:text-slate-100 font-black tracking-tight">Quiz Results</h2>
         <span class="lg:hidden text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-          {{ quizStore.reportAnswers.length }} Soal Selesai
+          {{ summaryBadgeText }}
         </span>
       </div>
 
@@ -260,7 +264,7 @@ const hasTierChanges = computed(() => {
       <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800">
         <h3 class="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-wider">Ringkasan Jawaban Soal</h3>
         <span class="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-          {{ quizStore.reportAnswers.length }} Soal Selesai
+          {{ summaryBadgeText }}
         </span>
       </div>
 
@@ -348,6 +352,12 @@ const hasTierChanges = computed(() => {
             <span v-if="answer.hintsUsed > 0" class="text-xs font-bold bg-violet-50 text-violet-800 border border-violet-200/80 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800/50 px-1.5 py-0.5 rounded flex items-center gap-1">
               <Lightbulb class="w-3 h-3 text-violet-700 dark:text-amber-300" />
               <span>{{ answer.hintsUsed }}</span>
+            </span>
+
+            <!-- Retry badge for repeated question attempts -->
+            <span v-if="answer.isInitialRound === false" class="text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200/80 dark:bg-indigo-950/80 dark:text-indigo-300 dark:border-indigo-800/60 px-1.5 py-0.5 rounded flex items-center gap-1">
+              <RotateCcw class="w-2.5 h-2.5" />
+              <span>Ulang</span>
             </span>
           </div>
 

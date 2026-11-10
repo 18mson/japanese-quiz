@@ -145,9 +145,12 @@ console.log('\n--- 2. SCORING TYPO (3 POIN & DETAIL LIST) ---');
   quizStore.submitAnswer('chikatetsu');
 
   assert(quizStore.userAnswers.length === 4, 'userAnswers mencatat total 4 percobaan termasuk tes ulang');
-  assert(quizStore.reportAnswers.length === 3, 'reportAnswers HANYA mencakup 3 soal awal (tidak termasuk soal tes ulang)');
-  assert(quizStore.reportAnswers[2].character === '地下鉄', 'Soal 3 di report tetap 地下鉄');
-  assert(quizStore.reportAnswers[2].isCorrect === false, 'Hasil soal 3 di report tetap merefleksikan hasil ronde awal (salah)');
+  assert(quizStore.reportAnswers.length === 4, 'reportAnswers mencakup semua percobaan termasuk tes ulang');
+  assert(quizStore.reportAnswers[2].character === '地下鉄', 'Soal 3 di report adalah percobaan awal 地下鉄');
+  assert(quizStore.reportAnswers[2].isCorrect === false, 'Hasil soal 3 merefleksikan hasil ronde awal (salah)');
+  assert(quizStore.reportAnswers[3].character === '地下鉄', 'Soal 4 di report adalah percobaan ulang 地下鉄');
+  assert(quizStore.reportAnswers[3].isCorrect === true, 'Hasil soal 4 merefleksikan hasil perbaikan (benar)');
+  assert(quizStore.reportAnswers[3].isInitialRound === false, 'Soal 4 tercatat sebagai babak perbaikan (isInitialRound = false)');
 }
 
 console.log(`\n========================================`);
