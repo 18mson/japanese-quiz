@@ -182,7 +182,7 @@ const handleStart = async () => {
       launchHitunganQuiz();
       return;
     } else if (subType === 'mix') {
-      quizStore.selectedMode = 'multiple_choice';
+      quizStore.selectedMode = isMobile.value ? 'kana_mixed' : 'multiple_choice';
       await quizStore.startQuiz(1, 'mix', 'basic', selectedKanaCategory.value);
       emit('start');
       return;
@@ -238,6 +238,12 @@ const handleStartSubtype = async (subKey: string) => {
     quizStore.selectedMode = 'sentence_typing';
     const targetType = subKey === 'words' ? 'words_mixed' : subKey;
     await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
+    emit('start');
+    return;
+  }
+  if (activeMode.value.id === 'lainnya' && characterTypes.value === 'mix') {
+    quizStore.selectedMode = isMobile.value ? 'kana_mixed' : (subKey as any);
+    await quizStore.startQuiz(1, 'mix', 'basic', selectedKanaCategory.value);
     emit('start');
     return;
   }

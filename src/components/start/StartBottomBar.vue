@@ -119,9 +119,9 @@ const visibleHitunganWaves = computed(() => {
 // Detail deskripsi kategori huruf untuk Session Info Pill bawah
 const detailedKanaCategoryLabel = computed(() => {
   const isKatakana = props.activeModeId === 'katakana';
-  const isMix = props.activeModeId === 'lainnya';
+  const isMix = props.activeModeId === 'lainnya' && props.characterType === 'mix';
 
-  if (isMobile.value && ['hiragana', 'katakana'].includes(props.activeModeId)) {
+  if (isMobile.value && (['hiragana', 'katakana'].includes(props.activeModeId) || isMix)) {
     return 'Kuis Campuran: Pilihan Ganda • Ketik Kana • Tulis Huruf';
   }
 
@@ -222,7 +222,10 @@ const handleSubClick = (subKey: string) => {
         v-if="activeModeId !== 'online_game'" 
         class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium"
       >
-        <span v-if="['hiragana', 'katakana'].includes(activeModeId) || (activeModeId === 'lainnya' && characterType === 'mix')" class="text-aizome dark:text-torii-light font-bold">
+        <span v-if="['hiragana', 'katakana'].includes(activeModeId)" class="text-aizome dark:text-torii-light font-bold">
+          {{ detailedKanaCategoryLabel }}
+        </span>
+        <span v-else-if="activeModeId === 'lainnya' && characterType === 'mix'" class="text-emerald-700 dark:text-emerald-400 font-bold">
           {{ detailedKanaCategoryLabel }}
         </span>
         <span v-else-if="activeModeId === 'kanji'" class="text-matcha dark:text-matcha font-bold">
@@ -367,8 +370,8 @@ const handleSubClick = (subKey: string) => {
           </button>
         </div>
 
-        <!-- Jika Sub-menu Mix Kana: 3 Tombol Kuis (Pilihan Ganda, Ketik Kana, Tulis Huruf) -->
-        <div v-else-if="characterType === 'mix'" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
+        <!-- Jika Sub-menu Mix Kana: 3 Tombol Kuis di Desktop (Pilihan Ganda, Ketik Kana, Tulis Huruf) -->
+        <div v-else-if="characterType === 'mix' && !isMobile" class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 sm:gap-2.5 w-full">
           <button
             v-for="sub in mixKanaSubTypes"
             :key="sub.key"
@@ -376,7 +379,7 @@ const handleSubClick = (subKey: string) => {
             :disabled="isLoading"
             @click.stop="handleSubClick(sub.key)"
             :class="[
-              'py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
+              'min-h-[44px] py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-95 border border-white/10 overflow-hidden',
               getButtonThemeClass(activeModeId, sub.key)
             ]"
           >
@@ -385,6 +388,33 @@ const handleSubClick = (subKey: string) => {
             <Zap class="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
           </button>
         </div>
+
+        <!-- Khusus mobile app: sub-menu Mix Kana digabung menjadi 1 tombol mulai saja -->
+        <button
+          v-else-if="characterType === 'mix'"
+          type="button"
+          :class="[
+            'w-full min-h-[44px] py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-95',
+            getButtonThemeClass(activeModeId),
+            isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-aizome/60 dark:ring-torii-light/60 shadow-lg' : ''
+          ]"
+          @click.stop="emit('interact'); emit('start');"
+          :disabled="isLoading"
+        >
+          <Transition name="btn-content-fade" mode="out-in">
+            <div v-if="isLoading" key="loading" class="flex items-center justify-center gap-2 w-full">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Loading...
+            </div>
+            <div v-else key="mix-kana-single" class="flex items-center justify-center gap-2 w-full">
+              <span>Mulai Kuis Mix Kana</span>
+              <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+            </div>
+          </Transition>
+        </button>
       </div>
 
       <!-- KONDISI B: MODE LAIN YANG MEMILIKI MULTI SUB-MENU (Hiragana, Katakana, Online Game, Lainnya) -->
@@ -420,7 +450,7 @@ const handleSubClick = (subKey: string) => {
         v-else
         type="button"
         :class="[
-          'w-full py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-[0.99]',
+          'w-full min-h-[44px] py-3.5 sm:py-4 text-white rounded-2xl text-base sm:text-lg font-extrabold cursor-pointer transition-all duration-300 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed overflow-hidden active:scale-95',
           getButtonThemeClass(activeModeId),
           isKeyboardNav && focusedSection === 'duration' ? 'ring-2 ring-aizome/60 dark:ring-torii-light/60 shadow-lg' : ''
         ]"
