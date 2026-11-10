@@ -92,6 +92,18 @@ const displayAccuracy = computed(() => {
 
 const getScoreMessage = () => {
   const score = displayAccuracy.value;
+  if (quizStore.selectedMode === 'particle') {
+    if (score >= 90) return 'Luar biasa! Pemahaman partikel kalimat Anda sangat presisi!';
+    if (score >= 70) return 'Bagus sekali! Penggunaan partikel bahasa Jepang makin mantap!';
+    if (score >= 50) return 'Cukup baik! Tingkatkan lagi pemahaman nuansa partikel.';
+    return 'Tetap semangat! Teruskan latihan pengisian partikel kalimat.';
+  }
+  if (quizStore.selectedMode === 'conjugation') {
+    if (score >= 90) return 'Luar biasa! Penguasaan konjugasi kata kerja & sifat sangat cepat!';
+    if (score >= 70) return 'Bagus sekali! Perubahan bentuk kata makin lancar!';
+    if (score >= 50) return 'Cukup baik! Ingat kembali pola rumus perubahannya.';
+    return 'Tetap semangat! Biasakan mengubah bentuk kata secara rutin.';
+  }
   if (quizStore.questionType === 'sentences' || quizStore.sentenceStats) {
     if (score >= 90) return 'Luar biasa! Pengetikan kalimat Bahasa Jepang sangat akurat!';
     if (score >= 70) return 'Bagus sekali! Pengetikan kalimat makin lancar!';

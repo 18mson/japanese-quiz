@@ -1,7 +1,7 @@
 // src/components/start/modesConfig.ts
 import type { Component } from 'vue';
 import {
-  Layers, Keyboard, PenTool, BookOpen, Calculator, Swords, CalendarDays
+  Layers, Keyboard, PenTool, BookOpen, Calculator, Swords, CalendarDays, Puzzle, RefreshCw
 } from '@lucide/vue';
 
 export interface QuizModeSubType {
@@ -107,6 +107,40 @@ export const modesList: QuizModeDef[] = [
     discPulse: 'bg-aizome-light dark:bg-amber-400',
   },
   {
+    id: 'particle',
+    title: 'Partikel',
+    levelTag: 'Tata Bahasa (助詞)',
+    level: 'n5',
+    defaultType: 'all',
+    desc: 'Latih insting pengisian partikel kalimat bahasa Jepang (は, が, を, に, で, へ, dll).',
+    subTypes: [
+      { key: 'all', label: 'Semua Bab' },
+      { key: 'batch1', label: 'Bab 1–10' },
+      { key: 'batch2', label: 'Bab 11–25' },
+    ],
+    icon: Puzzle,
+    discGradient: 'from-cyan-600 via-blue-700 to-indigo-900',
+    discShadow: 'shadow-cyan-500/25',
+    discPulse: 'bg-cyan-400',
+  },
+  {
+    id: 'conjugation',
+    title: 'Konjugasi',
+    levelTag: 'Perubahan Bentuk (活用)',
+    level: 'n5',
+    defaultType: 'verb',
+    desc: 'Kuasai perubahan bentuk kata kerja (Te, Kamus, Nai, Ta) dan kata sifat (i & na).',
+    subTypes: [
+      { key: 'verb', label: 'Kata Kerja' },
+      { key: 'adjective', label: 'Kata Sifat' },
+      { key: 'mixed', label: 'Campuran' },
+    ],
+    icon: RefreshCw,
+    discGradient: 'from-amber-600 via-orange-600 to-rose-700',
+    discShadow: 'shadow-amber-500/25',
+    discPulse: 'bg-amber-400',
+  },
+  {
     id: 'online_game',
     title: 'Online Game',
     levelTag: 'Multiplayer (対戦)',
@@ -178,6 +212,16 @@ export function getModeDescription(
     if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia, ketik jawaban dalam Kanji atau Kana.';
     if (characterType === 'renshuu') return 'Latihan pola kalimat: substitusi, drill gambar, dan role-play.';
     if (characterType === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5.';
+  }
+  if (mode.id === 'particle') {
+    if (characterType === 'batch1') return 'Latihan partikel kalimat dasar (Bab 1–10 Minna no Nihongo).';
+    if (characterType === 'batch2') return 'Latihan partikel kalimat menengah (Bab 11–25 Minna no Nihongo).';
+    return 'Latihan insting partikel kalimat bahasa Jepang dengan variasi jawaban sah.';
+  }
+  if (mode.id === 'conjugation') {
+    if (characterType === 'adjective') return 'Latihan konjugasi kata sifat-i dan kata sifat-na (negatif, lampau, te).';
+    if (characterType === 'mixed') return 'Latihan campuran perubahan kata kerja dan kata sifat.';
+    return 'Latihan konjugasi kata kerja kelompok 1, 2, dan 3 (Te, Kamus, Nai, Ta).';
   }
   if (mode.id === 'online_game') {
     if (characterType === 'quiz_blitz') return 'Adu refleks kuis cepat 10 detik per soal bersama pemain lain.';

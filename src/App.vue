@@ -20,6 +20,8 @@ const LessonMaterialModal = defineAsyncComponent(() => import('./components/less
 const ReferenceModal = defineAsyncComponent(() => import('./components/reference/ReferenceModal.vue'));
 const QuizWritingPlayer = defineAsyncComponent(() => import('./components/writing/QuizWritingPlayer.vue'));
 const QuizHitunganPlayer = defineAsyncComponent(() => import('./components/hitungan/QuizHitunganPlayer.vue'));
+const QuizParticlePlayer = defineAsyncComponent(() => import('./components/particle/QuizParticlePlayer.vue'));
+const QuizConjugationPlayer = defineAsyncComponent(() => import('./components/conjugation/QuizConjugationPlayer.vue'));
 const KaiwaPlayer = defineAsyncComponent(() => import('./components/KaiwaPlayer.vue'));
 const RenshuuPlayer = defineAsyncComponent(() => import('./components/RenshuuPlayer.vue'));
 const MasteryGridModal = defineAsyncComponent(() => import('./components/MasteryGridModal.vue'));
@@ -825,7 +827,9 @@ const goToHome = () => {
             <span class="text-sm font-bold text-gray-600 dark:text-slate-300">Memuat Soal Kuis...</span>
           </div>
           <template v-else>
-            <QuizWritingPlayer v-if="quizStore.activeQuestionMode === 'writing'" :key="quizStore.currentQuestionIndex" @exit="goToHome" />
+            <QuizParticlePlayer v-if="quizStore.selectedMode === 'particle'" @exit="goToHome" />
+            <QuizConjugationPlayer v-else-if="quizStore.selectedMode === 'conjugation'" @exit="goToHome" />
+            <QuizWritingPlayer v-else-if="quizStore.activeQuestionMode === 'writing'" :key="quizStore.currentQuestionIndex" @exit="goToHome" />
             <QuizHitunganPlayer 
               v-else-if="quizStore.selectedMode === 'hitungan'"
               :initial-wave="quizStore.selectedHitunganWave"
@@ -849,7 +853,7 @@ const goToHome = () => {
         <QuizResults v-else class="w-full flex-shrink-0" @home="goToHome" @leaderboard="showLeaderboardModal = true" />
       </div>
 
-      <QuizBottomNav v-if="quizStore.activeQuestionMode !== 'writing' && quizStore.selectedMode !== 'hitungan'" :quiz-started="quizStarted" />
+      <QuizBottomNav v-if="quizStore.activeQuestionMode !== 'writing' && quizStore.selectedMode !== 'hitungan' && quizStore.selectedMode !== 'particle' && quizStore.selectedMode !== 'conjugation'" :quiz-started="quizStarted" />
     </div>
   </div>
 </template>

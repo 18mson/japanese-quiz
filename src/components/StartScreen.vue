@@ -25,12 +25,16 @@ import DailyGrammarRewindCard from './daily/DailyGrammarRewindCard.vue';
 import DailyGrammarRewindMarquee from './daily/DailyGrammarRewindMarquee.vue';
 import DailyGrammarRewindModal from './daily/DailyGrammarRewindModal.vue';
 import { useDailyGrammarRewind } from '../composables/useDailyGrammarRewind';
+import { useParticleQuizStore } from '../stores/particleQuizStore';
+import { useConjugationQuizStore } from '../stores/conjugationQuizStore';
 
 const emit = defineEmits(['start', 'openMasteryGrid', 'openBattleground', 'openLeaderboard', 'openAbout', 'openFuroku', 'openDailyPractice', 'openHandbook']);
 
 const quizStore = useQuizStore();
 const battlegroundStore = useBattlegroundStore();
 const authStore = useAuthStore();
+const particleStore = useParticleQuizStore();
+const conjugationStore = useConjugationQuizStore();
 const { shouldAutoTriggerMobilePopup, markMobilePopupAsSeen } = useDailyGrammarRewind();
 
 // Modals
@@ -228,6 +232,20 @@ const handleStart = async () => {
     emit('start');
     return;
   }
+
+  if (modeId === 'particle') {
+    quizStore.selectedMode = 'particle';
+    particleStore.initSession((subType as any) || 'all', 10);
+    emit('start');
+    return;
+  }
+
+  if (modeId === 'conjugation') {
+    quizStore.selectedMode = 'conjugation';
+    conjugationStore.initSession((subType as any) || 'verb', 'random', 10);
+    emit('start');
+    return;
+  }
 };
 
 const handleStartSubtype = async (subKey: string) => {
@@ -238,6 +256,20 @@ const handleStartSubtype = async (subKey: string) => {
     quizStore.selectedMode = 'sentence_typing';
     const targetType = subKey === 'words' ? 'words_mixed' : subKey;
     await quizStore.startQuiz(1, targetType, 'n5', selectedKanaCategory.value);
+    emit('start');
+    return;
+  }
+  if (activeMode.value.id === 'particle') {
+    characterTypes.value = subKey;
+    quizStore.selectedMode = 'particle';
+    particleStore.initSession((subKey as any) || 'all', 10);
+    emit('start');
+    return;
+  }
+  if (activeMode.value.id === 'conjugation') {
+    characterTypes.value = subKey;
+    quizStore.selectedMode = 'conjugation';
+    conjugationStore.initSession((subKey as any) || 'verb', 'random', 10);
     emit('start');
     return;
   }

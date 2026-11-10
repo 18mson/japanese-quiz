@@ -39,9 +39,9 @@ export const useQuizStore = defineStore('quiz', () => {
   const targetDurationMinutes = ref<number>(1);
   const selectedKanaCategory = ref<'all' | 'basic' | 'dakuten' | 'combination'>('all');
   const selectedWordLessonNumber = ref<number | null>(null);
-  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan' | 'kana_mixed'>('multiple_choice');
+  const selectedMode = ref<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan' | 'kana_mixed' | 'particle' | 'conjugation'>('multiple_choice');
   
-  const activeQuestionMode = computed<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan'>(() => {
+  const activeQuestionMode = computed<'multiple_choice' | 'keyboard_typing' | 'writing' | 'sentence_typing' | 'hitungan' | 'particle' | 'conjugation'>(() => {
     if (selectedMode.value === 'kana_mixed') {
       return (currentQuestion.value?.questionMode as any) || 'multiple_choice';
     }
@@ -559,6 +559,20 @@ export const useQuizStore = defineStore('quiz', () => {
   );
 
   const restartQuiz = async () => {
+    if (selectedMode.value === 'particle') {
+      const { useParticleQuizStore } = await import('./particleQuizStore');
+      const particleStore = useParticleQuizStore();
+      particleStore.restartQuiz();
+      quizCompleted.value = false;
+      return;
+    }
+    if (selectedMode.value === 'conjugation') {
+      const { useConjugationQuizStore } = await import('./conjugationQuizStore');
+      const conjugationStore = useConjugationQuizStore();
+      conjugationStore.restartQuiz();
+      quizCompleted.value = false;
+      return;
+    }
     await startQuiz(targetDurationMinutes.value, questionType.value, quizLevel.value, selectedKanaCategory.value);
   };
 
@@ -582,6 +596,56 @@ export const useQuizStore = defineStore('quiz', () => {
     sentenceStats.value = stats;
     firstTryCorrectCount.value = Math.round((stats.accuracy / 100) * (initialQuestionCount.value || 1));
     score.value = Math.round(stats.accuracy);
+    finishQuiz();
+  };
+
+  const finishParticleQuiz = (particleResults: {
+    score: number;
+    accuracy: number;
+    answers: Array<{
+      character: string;
+      meaning: string;
+      userRomaji: string;
+      correctRomaji: string;
+      isCorrect: boolean;
+      pointsEarned: number;
+    }>;
+  }) => {
+    score.value = particleResults.score;
+    initialQuestionCount.value = particleResults.answers.length;
+    firstTryCorrectCount.value = particleResults.answers.filter(a => a.isCorrect).length;
+    userAnswers.value = particleResults.answers.map(a => ({
+      ...a,
+      timeTaken: 2,
+      hintsUsed: 0,
+      isTypo: false,
+      isInitialRound: true
+    }));
+    finishQuiz();
+  };
+
+  const finishConjugationQuiz = (conjugationResults: {
+    score: number;
+    accuracy: number;
+    answers: Array<{
+      character: string;
+      meaning: string;
+      userRomaji: string;
+      correctRomaji: string;
+      isCorrect: boolean;
+      pointsEarned: number;
+    }>;
+  }) => {
+    score.value = conjugationResults.score;
+    initialQuestionCount.value = conjugationResults.answers.length;
+    firstTryCorrectCount.value = conjugationResults.answers.filter(a => a.isCorrect).length;
+    userAnswers.value = conjugationResults.answers.map(a => ({
+      ...a,
+      timeTaken: 2,
+      hintsUsed: 0,
+      isTypo: false,
+      isInitialRound: true
+    }));
     finishQuiz();
   };
 
@@ -716,6 +780,8 @@ export const useQuizStore = defineStore('quiz', () => {
     unlockedHitunganWaveKeys: toRef(hitunganStore, 'unlockedHitunganWaveKeys'),
     loadHitunganProgress: hitunganStore.loadHitunganProgress,
     isHitunganFinished: toRef(hitunganStore, 'isHitunganFinished'),
-    initHitunganSession
+    initHitunganSession,
+    finishParticleQuiz,
+    finishConjugationQuiz
   };
 });

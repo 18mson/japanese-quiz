@@ -3,18 +3,20 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { modesList, getDynamicDefaultModeId, getModeDescription } from '../src/components/start/modesConfig';
 
-test('1. modesList has exactly 7 categories in correct learning progression order', () => {
+test('1. modesList has 9 categories in correct learning progression order', () => {
   const expectedOrder = [
     'daily',
     'hiragana',
     'katakana',
     'kanji',
     'kotoba',
+    'particle',
+    'conjugation',
     'online_game',
     'lainnya'
   ];
 
-  assert.strictEqual(modesList.length, 7, 'modesList must have exactly 7 modes');
+  assert.strictEqual(modesList.length, 9, 'modesList must have exactly 9 modes');
   const actualOrder = modesList.map(m => m.id);
   assert.deepStrictEqual(actualOrder, expectedOrder, 'Order of modes must match requested sequence');
 });
@@ -50,6 +52,22 @@ test('2. Sub-types availability per category', () => {
     kotoba.subTypes?.map(s => s.key),
     ['words', 'renshuu', 'kaiwa'],
     'Kotoba must have words, renshuu, kaiwa'
+  );
+
+  const particle = modesList.find(m => m.id === 'particle')!;
+  assert.ok(particle, 'Particle must exist');
+  assert.deepStrictEqual(
+    particle.subTypes?.map(s => s.key),
+    ['all', 'batch1', 'batch2'],
+    'Particle must have all, batch1, batch2'
+  );
+
+  const conjugation = modesList.find(m => m.id === 'conjugation')!;
+  assert.ok(conjugation, 'Conjugation must exist');
+  assert.deepStrictEqual(
+    conjugation.subTypes?.map(s => s.key),
+    ['verb', 'adjective', 'mixed'],
+    'Conjugation must have verb, adjective, mixed'
   );
 
   const onlineGame = modesList.find(m => m.id === 'online_game')!;
