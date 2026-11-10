@@ -53,8 +53,8 @@ const activeMode = computed<QuizModeDef | undefined>(() => {
 // Menentukan apakah mode ini memiliki multi sub-menu di tombol mulai
 const hasMultipleSubTypes = computed(() => {
   if (!activeMode.value?.subTypes) return false;
-  // Kanji, Kotoba, Lainnya, dan Online Game memiliki custom start layout (atau 1 tombol mulai)
-  if (props.activeModeId === 'kanji' || props.activeModeId === 'kotoba' || props.activeModeId === 'lainnya' || props.activeModeId === 'online_game') return false;
+  // Kanji, Kotoba, Particle, Conjugation, Lainnya, dan Online Game memiliki custom start layout (atau 1 tombol mulai)
+  if (['kanji', 'kotoba', 'particle', 'conjugation', 'lainnya', 'online_game'].includes(props.activeModeId)) return false;
   // Khusus mobile app: mode hiragana dan katakana digabung menjadi 1 tombol mulai saja
   if (isMobile.value && ['hiragana', 'katakana'].includes(props.activeModeId)) return false;
   return activeMode.value.subTypes.length > 1;
@@ -147,11 +147,17 @@ const detailedKanaCategoryLabel = computed(() => {
 });
 
 const standardSubTypes = computed<QuizModeSubType[]>(() => {
-  if (props.activeModeId === 'kotoba') return [];
+  if (['kotoba', 'particle', 'conjugation'].includes(props.activeModeId)) return [];
   return activeMode.value?.subTypes || [];
 });
 
 const getButtonThemeClass = (modeId: string, subKey?: string) => {
+  if (modeId === 'particle') {
+    return 'bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-700 hover:from-cyan-500 hover:to-indigo-600 shadow-cyan-600/25';
+  }
+  if (modeId === 'conjugation') {
+    return 'bg-gradient-to-r from-amber-600 via-orange-600 to-rose-700 hover:from-amber-500 hover:to-rose-600 shadow-amber-500/25';
+  }
   if (modeId === 'online_game') {
     return 'bg-gradient-to-r from-rose-600 via-pink-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 shadow-rose-500/25';
   }
@@ -248,6 +254,12 @@ const handleSubClick = (subKey: string) => {
         </span>
         <span v-else-if="activeModeId === 'daily'" class="text-amber-600 dark:text-amber-400 font-bold">
           Tantangan Harian (Audio & Suara)
+        </span>
+        <span v-else-if="activeModeId === 'particle'" class="text-cyan-600 dark:text-cyan-400 font-bold">
+          Partikel N5 • {{ characterType === 'batch1' ? 'Bab 1–10' : (characterType === 'batch2' ? 'Bab 11–25' : 'Semua Bab (Bab 1–25)') }}
+        </span>
+        <span v-else-if="activeModeId === 'conjugation'" class="text-amber-600 dark:text-amber-400 font-bold">
+          Konjugasi N5 • {{ characterType === 'adjective' ? 'Kata Sifat (i & na)' : (characterType === 'mixed' ? 'Campuran (Kata Kerja & Sifat)' : 'Kata Kerja (Golongan 1, 2, 3)') }}
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'angka'" class="text-emerald-600 dark:text-emerald-400 font-bold">
           Level Angka N5 (1–10.000) • Arah Acak (Angka ⇄ かな)
@@ -473,6 +485,14 @@ const handleSubClick = (subKey: string) => {
           </div>
           <div v-else-if="activeModeId === 'daily'" key="daily" class="flex items-center justify-center gap-2 w-full">
             <span>Mulai Latihan Harian</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="activeModeId === 'particle'" key="particle" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai Kuis Partikel</span>
+            <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
+          </div>
+          <div v-else-if="activeModeId === 'conjugation'" key="conjugation" class="flex items-center justify-center gap-2 w-full">
+            <span>Mulai Kuis Konjugasi</span>
             <Zap class="w-5 h-5 sm:w-6 sm:h-6 text-amber-300 fill-amber-300" />
           </div>
           <div v-else-if="['hiragana', 'katakana'].includes(activeModeId)" key="kana-single" class="flex items-center justify-center gap-2 w-full">

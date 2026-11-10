@@ -609,6 +609,48 @@ watch(characterTypes, (newVal) => {
               </button>
             </div>
 
+            <!-- Partikel Sub-Menu Selector inside Card (Semua Bab, Bab 1-10, Bab 11-25) -->
+            <div 
+              v-else-if="activeMode.id === 'particle'"
+              class="grid grid-cols-3 gap-1 sm:gap-1.5 w-full animate-fadeIn pt-1"
+            >
+              <button
+                v-for="sub in activeMode.subTypes"
+                :key="sub.key"
+                type="button"
+                @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
+                :class="[
+                  'py-2 px-1 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center justify-center shadow-2xs active:scale-95',
+                  characterTypes === sub.key
+                    ? 'bg-cyan-600 dark:bg-cyan-600 text-white border-cyan-600 dark:border-cyan-500 font-black shadow-xs scale-[1.02]'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
+                ]"
+              >
+                <span class="truncate">{{ sub.label }}</span>
+              </button>
+            </div>
+
+            <!-- Konjugasi Sub-Menu Selector inside Card (Kata Kerja, Kata Sifat, Campuran) -->
+            <div 
+              v-else-if="activeMode.id === 'conjugation'"
+              class="grid grid-cols-3 gap-1 sm:gap-1.5 w-full animate-fadeIn pt-1"
+            >
+              <button
+                v-for="sub in activeMode.subTypes"
+                :key="sub.key"
+                type="button"
+                @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
+                :class="[
+                  'py-2 px-1 rounded-xl text-[10px] xs:text-[11px] sm:text-xs font-bold transition-all cursor-pointer border flex items-center justify-center shadow-2xs active:scale-95',
+                  characterTypes === sub.key
+                    ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white border-amber-600 dark:border-orange-500 font-black shadow-xs scale-[1.02]'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
+                ]"
+              >
+                <span class="truncate">{{ sub.label }}</span>
+              </button>
+            </div>
+
             <!-- Lainnya Panel: Sub-Menu (Angka / Counter / Campuran / Mix Kana) + Arah Latihan / Kana Category -->
             <div 
               v-else-if="activeMode.id === 'lainnya'"
