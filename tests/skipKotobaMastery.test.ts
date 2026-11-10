@@ -181,3 +181,50 @@ test('5. Skipped words do NOT hinder lesson checklist completion', async () => {
   assert.strictEqual(lessonStore.isCategoryCompleted(1, 'vocab'), true, 'Skipping remaining unlearned word must satisfy completion');
 });
 
+test('6. syncFromUserMetadata adopts server skipped_words authoritatively and updates local storage', async () => {
+  setActivePinia(createPinia());
+  localStorage.clear();
+  const masteryStore = useMasteryStore();
+
+  // Local device has 'わたし' skipped
+  await masteryStore.bulkSetSkipWords(['わたし'], true);
+  assert.strictEqual(masteryStore.isWordSkipped('わたし'), true);
+  assert.strictEqual(masteryStore.isWordSkipped('あなた'), false);
+
+  // Another device changed skipped words in cloud to: only 'あなた' is skipped ('わたし' was un-skipped)
+  const cloudMetadata = {
+    skipped_words: {
+      'あなた': true
+    }
+  };
+
+  await masteryStore.syncFromUserMetadata(cloudMetadata);
+
+  // Current device should strictly reflect server state: 'わたし' is now false, 'あなた' is true
+  assert.strictEqual(masteryStore.isWordSkipped('わたし'), false, 'Un-skipped word from cloud must be removed');
+  assert.strictEqual(masteryStore.isWordSkipped('あなた'), true, 'Newly skipped word from cloud must be present');
+
+  // Verify persistence in local storage
+  const persisted = JSON.parse(localStorage.getItem('japanese-quiz-skipped-words') || '{}');
+  assert.deepStrictEqual(persisted, { 'あなた': true });
+});
+
+test('7. resetSkippedWords clears skipped words state and local storage', async () => {
+  setActivePinia(createPinia());
+  localStorage.clear();
+  const masteryStore = useMasteryStore();
+
+  await masteryStore.bulkSetSkipWords(['わたし', 'あなた'], true);
+  assert.strictEqual(masteryStore.isWordSkipped('わたし'), true);
+
+  masteryStore.resetSkippedWords();
+
+  assert.strictEqual(masteryStore.isWordSkipped('わたし'), false);
+  assert.strictEqual(masteryStore.isWordSkipped('あなた'), false);
+  assert.deepStrictEqual(masteryStore.skippedWords, {});
+
+  const persisted = JSON.parse(localStorage.getItem('japanese-quiz-skipped-words') || '{}');
+  assert.deepStrictEqual(persisted, {});
+});
+
+

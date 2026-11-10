@@ -46,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
       const lessonStore = useLessonStore();
       badgeStore.syncFromUser(user.value, masteryStore.currentUserLevel);
       lessonStore.syncFromUserMetadata(user.value.user_metadata);
+      await masteryStore.syncFromUserMetadata(user.value.user_metadata);
     } catch (e) {
       console.warn('Failed to sync badges/lesson materi for user:', e);
     }
@@ -56,6 +57,14 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       user.value = session?.user ?? null;
+      if (session?.user) {
+        try {
+          const { data: freshData } = await supabase.auth.getUser();
+          if (freshData?.user) {
+            user.value = freshData.user;
+          }
+        } catch (e) { }
+      }
       const quizStore = useQuizStore();
       await quizStore.loadStreaksFromStorage();
       await syncBadgesForCurrentUser();
@@ -175,6 +184,9 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null;
       const quizStore = useQuizStore();
       quizStore.userStreaks = quizStore.getLocalStreaks();
+      const { useMasteryStore } = await import('./masteryStore');
+      const masteryStore = useMasteryStore();
+      masteryStore.resetSkippedWords();
     } catch (err: any) {
       console.error('Error signing out:', err);
     } finally {
@@ -194,8 +206,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   };
 
-  supabase.auth.onAuthStateChange((_event, session) => {
+  supabase.auth.onAuthStateChange(async (event, session) => {
     setUser(session?.user ?? null);
+    if (event === 'SIGNED_IN' || event === 'USER_UPDATED') {
+      await syncBadgesForCurrentUser();
+    } else if (event === 'SIGNED_OUT') {
+      try {
+        const { useMasteryStore } = await import('./masteryStore');
+        useMasteryStore().resetSkippedWords();
+      } catch (e) { }
+    }
   });
 
   return {
@@ -211,6 +231,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     register,
     logout,
+    setUser,
     resolveSyncConflict
   };
 });

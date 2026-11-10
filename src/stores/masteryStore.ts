@@ -89,16 +89,46 @@ export const useMasteryStore = defineStore('mastery', () => {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
-        await supabase.auth.updateUser({
+        const { data, error } = await supabase.auth.updateUser({
           data: {
             skipped_words: skippedWords.value
           }
         });
+        if (!error && data?.user) {
+          const { useAuthStore } = await import('./authStore');
+          const authStore = useAuthStore();
+          authStore.setUser(data.user);
+        }
       }
     } catch (e) {
       console.warn('Failed to sync skipped_words to Supabase:', e);
     }
   };
+
+  const syncFromUserMetadata = async (userMetadata: any) => {
+    if (!userMetadata) return;
+    if (userMetadata.skipped_words !== undefined) {
+      const serverData = userMetadata.skipped_words || {};
+      skippedWords.value = { ...serverData };
+      saveLocalSkippedWords(skippedWords.value);
+    } else if (Object.keys(skippedWords.value).length > 0) {
+      // First-time sync: account has no cloud metadata yet, upload existing local skips
+      await syncSkippedWordsToSupabase();
+    }
+  };
+
+  const resetSkippedWords = () => {
+    skippedWords.value = {};
+    saveLocalSkippedWords({});
+  };
+
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('storage', (event) => {
+      if (event.key === SKIPPED_WORDS_KEY) {
+        skippedWords.value = getLocalSkippedWords();
+      }
+    });
+  }
 
   const toggleSkipWord = (character: string): boolean => {
     const next = !isWordSkipped(character);
@@ -241,6 +271,14 @@ export const useMasteryStore = defineStore('mastery', () => {
       loadIntroducedFromStorage();
       lastSyncTime.value = new Date();
 
+      // Refresh fresh user metadata from Supabase Auth to ensure cross-device settings (like skipped_words) are up to date
+      try {
+        const { data: freshUserData } = await supabase.auth.getUser();
+        if (freshUserData?.user?.user_metadata) {
+          await syncFromUserMetadata(freshUserData.user.user_metadata);
+        }
+      } catch (e) { }
+
       return { pushed, pulled };
     } catch (e: any) {
       console.error('Error during syncWithServer:', e);
@@ -311,9 +349,8 @@ export const useMasteryStore = defineStore('mastery', () => {
     const { useAuthStore } = await import('./authStore');
     const authStore = useAuthStore();
     if (authStore.user) {
-      if (authStore.user.user_metadata?.skipped_words) {
-        skippedWords.value = { ...authStore.user.user_metadata.skipped_words, ...skippedWords.value };
-        saveLocalSkippedWords(skippedWords.value);
+      if (authStore.user.user_metadata) {
+        await syncFromUserMetadata(authStore.user.user_metadata);
       }
       try {
         await syncWithServer(authStore.user.id);
@@ -622,6 +659,8 @@ export const useMasteryStore = defineStore('mastery', () => {
     skippedWords,
     isWordSkipped,
     toggleSkipWord,
-    bulkSetSkipWords
+    bulkSetSkipWords,
+    syncFromUserMetadata,
+    resetSkippedWords
   };
 });
