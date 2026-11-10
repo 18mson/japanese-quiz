@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Target, LayoutGrid, Crown, CheckCircle2, ChevronRight } from '@lucide/vue';
+import { Target, Crown, CheckCircle2, ChevronRight } from '@lucide/vue';
 import { useQuizStore } from '../../../stores/quizStore';
 
 const emit = defineEmits<{
@@ -11,23 +11,31 @@ const quizStore = useQuizStore();
 
 <template>
   <div class="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl p-3.5 sm:p-5 shadow-sm flex flex-col gap-4 text-slate-800 dark:text-slate-100 transition-all">
-    <!-- Header: Title & Total Progress -->
-    <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+    <!-- Header: Title & Total Progress (Clickable untuk membuka peta penguasaan lengkap) -->
+    <div 
+      role="button"
+      tabindex="0"
+      @click="emit('openMasteryGrid')"
+      @keydown.enter.prevent="emit('openMasteryGrid')"
+      @keydown.space.prevent="emit('openMasteryGrid')"
+      class="group/header flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 cursor-pointer select-none transition-colors -mx-1 px-1 rounded-xl hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
+      title="Buka Peta Penguasaan Lengkap"
+    >
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-aizome/10 dark:bg-torii/15 border border-aizome/25 dark:border-torii/30 text-aizome dark:text-torii flex items-center justify-center font-bold text-base shadow-2xs">
+        <div class="w-9 h-9 rounded-xl bg-aizome/10 dark:bg-torii/15 border border-aizome/25 dark:border-torii/30 text-aizome dark:text-torii flex items-center justify-center font-bold text-base shadow-2xs group-hover/header:scale-105 transition-transform">
           <Target class="w-4 h-4" />
         </div>
         <div>
           <h3 class="text-xs font-black uppercase tracking-wider text-aizome dark:text-torii">
             Penguasaan
           </h3>
-          <div class="text-sm font-black text-slate-900 dark:text-slate-100">
+          <div class="text-sm font-black text-slate-900 dark:text-slate-100 group-hover/header:text-aizome dark:group-hover/header:text-torii transition-colors">
             {{ quizStore.overallMasteryStats.mastered }} <span class="text-xs font-semibold text-slate-400">/ {{ quizStore.overallMasteryStats.total }}</span>
           </div>
         </div>
       </div>
 
-      <span class="px-2.5 py-1 rounded-xl text-xs font-black bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60">
+      <span class="px-2.5 py-1 rounded-xl text-xs font-black bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60 group-hover/header:border-aizome/40 dark:group-hover/header:border-torii/40 transition-colors">
         {{ quizStore.overallMasteryStats.percentage }}%
       </span>
     </div>
@@ -212,15 +220,5 @@ const quizStore = useQuizStore();
         <span class="font-black text-aizome dark:text-emerald-200 font-mono">{{ quizStore.overallMasteryStats.mastered }}</span>
       </div>
     </div>
-
-    <!-- CTA Button to Open Full Grid Modal -->
-    <button
-      type="button"
-      @click="emit('openMasteryGrid')"
-      class="w-full py-2 px-3 rounded-xl bg-slate-100 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 hover:text-aizome dark:text-slate-200 dark:hover:text-white font-bold text-xs border border-slate-200/80 dark:border-slate-700 flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs active:scale-[0.98]"
-    >
-      <LayoutGrid class="w-4 h-4" />
-      <span>Buka Grid Lengkap</span>
-    </button>
   </div>
 </template>
