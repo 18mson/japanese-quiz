@@ -574,7 +574,7 @@ watch(characterTypes, (newVal) => {
               class="flex flex-col gap-2 w-full animate-fadeIn pt-1"
             >
               <!-- Sub-Menu Selector Pills (Angka, Counter, Campuran, Mix Kana) -->
-              <div class="grid grid-cols-4 gap-1.5 w-full">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 w-full">
                 <button
                   v-for="sub in activeMode.subTypes"
                   :key="sub.key"

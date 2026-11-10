@@ -26,9 +26,11 @@ const activeMode = computed(() => props.modes[props.activeModeIndex]);
 
 // Responsive screen detection
 const isMobile = ref(false);
+const isSmallMobile = ref(false);
 const updateResponsive = () => {
   if (typeof window !== 'undefined') {
     isMobile.value = window.innerWidth < 640;
+    isSmallMobile.value = window.innerWidth < 380;
   }
 };
 
@@ -58,24 +60,36 @@ function handleWheel(event: WheelEvent) {
 }
 
 // Touch swipe gesture handling
+let touchStartX = 0;
 let touchStartY = 0;
 function handleTouchStart(e: TouchEvent) {
   if (e.touches.length > 0) {
+    touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   }
 }
 
 function handleTouchMove(e: TouchEvent) {
   if (e.touches.length > 0) {
+    const target = e.target as HTMLElement | null;
+    // Jika menyentuh tombol atau input di dalam kartu, biarkan interaksi tombol berjalan
+    if (target && (target.tagName === 'BUTTON' || target.closest('button') || target.tagName === 'INPUT')) {
+      return;
+    }
     const touchEndY = e.touches[0].clientY;
-    const diff = touchStartY - touchEndY;
-    if (Math.abs(diff) > 30) {
-      if (diff > 0) {
+    const touchEndX = e.touches[0].clientX;
+    const diffY = touchStartY - touchEndY;
+    const diffX = Math.abs(touchStartX - touchEndX);
+
+    // Hanya picu perpindahan mode jika geseran vertikal jelas (> 50px) dan lebih dominan dibanding horizontal
+    if (Math.abs(diffY) > 50 && Math.abs(diffY) > diffX * 1.2) {
+      if (diffY > 0) {
         emit('selectMode', props.activeModeIndex + 1);
       } else {
         emit('selectMode', props.activeModeIndex - 1);
       }
       touchStartY = touchEndY;
+      touchStartX = touchEndX;
     }
   }
 }
@@ -102,15 +116,15 @@ function getCardStyle(index: number) {
   // Active card shifted right; cards below active (+1 & +2) shifted progressively further left
   let translateX = 0;
   if (isActive) {
-    translateX = isMobile.value ? 35 : 75;
+    translateX = isSmallMobile.value ? 14 : (isMobile.value ? 28 : 75);
   } else if (diff === -1) {
-    translateX = isMobile.value ? -25 : -10;
+    translateX = isSmallMobile.value ? -16 : (isMobile.value ? -22 : -10);
   } else if (diff <= -2) {
-    translateX = isMobile.value ? -65 : -85;
+    translateX = isSmallMobile.value ? -45 : (isMobile.value ? -60 : -85);
   } else if (diff === 1) {
-    translateX = isMobile.value ? -25 : -10;
+    translateX = isSmallMobile.value ? -16 : (isMobile.value ? -22 : -10);
   } else {
-    translateX = isMobile.value ? -75 : -85;
+    translateX = isSmallMobile.value ? -50 : (isMobile.value ? -65 : -85);
   }
 
   const scale = isActive ? 1.0 : Math.max(0.68, 0.88 - (absDiff - 1) * 0.1);
@@ -135,10 +149,10 @@ function getCardStyle(index: number) {
     <div 
       @wheel.prevent="handleWheel"
       @touchstart="handleTouchStart"
-      @touchmove.prevent="handleTouchMove"
+      @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
       :class="[
-        'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[420px] sm:min-h-[460px] flex flex-col justify-center select-none touch-none overscroll-contain cursor-pointer',
+        'relative w-full rounded-3xl bg-white dark:bg-slate-900 border transition-all duration-200 p-3.5 sm:p-5 overflow-hidden min-h-[420px] sm:min-h-[460px] flex flex-col justify-center select-none touch-pan-y overscroll-contain cursor-pointer',
         isKeyboardNav && focusedSection === 'mode'
           ? 'border-aizome dark:border-torii shadow-md ring-2 ring-aizome/40 dark:ring-torii/40'
           : 'border-slate-200/90 dark:border-slate-800 shadow-sm'
@@ -183,14 +197,14 @@ function getCardStyle(index: number) {
         </div>
 
         <!-- Mode Cards Orbiting Arc Track -->
-        <div class="w-full pl-8 xs:pl-12 sm:pl-20 md:pl-24 pr-1 sm:pr-3 relative h-full flex items-center justify-center">
+        <div class="w-full pl-5 xs:pl-10 sm:pl-20 md:pl-24 pr-1 sm:pr-3 relative h-full flex items-center justify-center">
           <div 
             v-for="(mode, index) in modes"
             :key="mode.id"
             @click="emit('interact'); emit('selectMode', index);"
             :style="getCardStyle(index)"
             :class="[
-              'absolute left-0 right-0 w-full max-w-[300px] xs:max-w-[350px] sm:max-w-lg mx-auto transition-all duration-500 ease-out cursor-pointer text-left overflow-hidden',
+              'absolute left-0 right-0 w-full max-w-[285px] xs:max-w-[340px] sm:max-w-lg mx-auto transition-all duration-500 ease-out cursor-pointer text-left overflow-hidden',
               index === activeModeIndex
                 ? 'bg-white dark:bg-slate-900 border-2 border-aizome dark:border-torii text-slate-900 dark:text-slate-100 shadow-xl shadow-aizome/10 dark:shadow-torii/15 p-3.5 sm:p-5 rounded-3xl ring-4 ring-aizome/10 dark:ring-torii/20'
                 : 'bg-slate-50/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 p-2.5 sm:p-3 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-850 rounded-2xl'
