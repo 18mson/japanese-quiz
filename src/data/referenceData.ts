@@ -772,7 +772,7 @@ export const ungkapanWaktuData: UngkapanWaktuData = {
       }
     ]
   },
-  "note_irregular": "Pola tidak beraturan penting: 4 jam=よじかん (bukan よんじかん), 1 hari=いちにち tapi 2 hari=ふつか (bukan にじつ — pola khusus 1-10 hari beda dari pola angka biasa), 6 bulan=ろっかげつ atau はんとし (setengah tahun), 4 tahun=よねん (bukan よんねん)."
+  "note_irregular": "Pola tidak beraturan penting: 4 jam=よじかん (bukan よんじかん), 1 hari=いちにち tapi 2 hari=ふつか (bukan にじつ: pola khusus 1-10 hari beda dari pola angka biasa), 6 bulan=ろっかげつ atau はんとし (setengah tahun), 4 tahun=よねん (bukan よんねん)."
 }
 };
 

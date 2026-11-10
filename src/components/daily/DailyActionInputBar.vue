@@ -166,7 +166,7 @@ const mainActionButtonTitle = computed(() => {
     return 'Kirim Jawaban';
   }
   if (props.isListening) {
-    return props.hasSpoken ? 'Selesai berbicara — Tekan untuk kirim jawaban' : 'Mendengarkan... Silakan bicara bahasa Jepang';
+    return props.hasSpoken ? 'Selesai berbicara. Tekan untuk kirim jawaban' : 'Mendengarkan... Silakan bicara bahasa Jepang';
   }
   return 'Tekan untuk berbicara bahasa Jepang';
 });

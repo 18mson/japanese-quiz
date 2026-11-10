@@ -61,19 +61,18 @@ const onAction = (action: () => void) => {
       <button 
         type="button"
         @click.stop="onAction(() => emit('openDailyPractice'))"
-        class="px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer bg-amber-50/90 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-700/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 shadow-2xs"
+        class="min-h-[44px] px-2.5 sm:px-3 py-2 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer bg-amber-50/90 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-700/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 shadow-2xs active:scale-95"
         title="Latihan Kalimat Harian (日課) • Input Suara & Ketik"
       >
         <CalendarDays class="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0" />
         <span class="hidden md:inline">Latihan Harian</span>
       </button>
 
-
       <button 
         type="button"
         @click.stop="onAction(() => emit('openLeaderboard'))"
         :class="[
-          'px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-2xs',
+          'min-h-[44px] min-w-[44px] px-2.5 sm:px-3 py-2 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs active:scale-95',
           isKeyboardNav && focusedSection === 'header' && focusedHeaderTarget === 'leaderboard'
             ? 'ring-2 ring-amber-400/80 dark:ring-amber-500/80 bg-amber-100/80 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 border border-amber-400 scale-[1.02]'
             : 'bg-amber-50 dark:bg-slate-800 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-slate-700 hover:bg-amber-100'
@@ -88,7 +87,7 @@ const onAction = (action: () => void) => {
         type="button"
         @click.stop="onAction(() => emit('openMasteryGrid'))"
         :class="[
-          'px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-bold text-xs transition flex items-center gap-1.5 cursor-pointer border',
+          'min-h-[44px] min-w-[44px] px-3 sm:px-3.5 py-2 rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer border active:scale-95',
           isKeyboardNav && focusedSection === 'header' && focusedHeaderTarget === 'grid'
             ? 'ring-2 ring-torii/80 bg-torii/20 text-torii border-torii scale-[1.02]'
             : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-300 border-gray-200/80 dark:border-slate-700'

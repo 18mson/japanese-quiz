@@ -213,6 +213,7 @@ const handleSubClick = (subKey: string) => {
         ? 'border-t-2 border-t-torii dark:border-t-torii shadow-md'
         : 'border-t border-gray-200/80 dark:border-slate-800 shadow-lg'
     ]"
+    style="padding-bottom: max(0.625rem, env(safe-area-inset-bottom));"
   >
     <!-- Start Button Container (Max Width 3xl) -->
     <div class="w-full max-w-3xl flex flex-col items-center gap-1.5 sm:gap-2">
@@ -317,7 +318,7 @@ const handleSubClick = (subKey: string) => {
             type="button"
             @click.stop="prevHitunganWaves"
             :disabled="!canPrevHitunganWaves || isLoading"
-            class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm"
+            class="min-h-[44px] min-w-[44px] p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm flex items-center justify-center active:scale-95"
             title="Sebelumnya"
           >
             <ChevronLeft class="w-4 h-4 sm:w-5 sm:h-5" />
@@ -339,7 +340,7 @@ const handleSubClick = (subKey: string) => {
               :disabled="isLoading"
               @click.stop="emit('interact'); emit('start-hitungan-wave', wave)"
               :class="[
-                'py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
+                'min-h-[44px] py-3 sm:py-3.5 px-3 text-white rounded-xl sm:rounded-2xl text-xs sm:text-sm font-extrabold cursor-pointer transition-all duration-200 ease-out shadow-md hover:shadow-lg flex items-center justify-center gap-1.5 active:scale-[0.98] border border-white/10 overflow-hidden',
                 getButtonThemeClass(activeModeId)
               ]"
             >
@@ -359,7 +360,7 @@ const handleSubClick = (subKey: string) => {
             type="button"
             @click.stop="nextHitunganWaves"
             :disabled="!canNextHitunganWaves || isLoading"
-            class="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm"
+            class="min-h-[44px] min-w-[44px] p-2.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 disabled:opacity-25 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer shrink-0 shadow-sm flex items-center justify-center active:scale-95"
             title="Berikutnya"
           >
             <ChevronRight class="w-4 h-4 sm:w-5 sm:h-5" />

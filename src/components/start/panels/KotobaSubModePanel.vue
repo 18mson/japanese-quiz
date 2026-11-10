@@ -22,17 +22,17 @@ const options = [
   {
     key: 'words' as const,
     label: 'Jepang → Romaji',
-    desc: 'Soal tulisan Jepang — ketik romaji'
+    desc: 'Soal tulisan Jepang, ketik romaji'
   },
   {
     key: 'words_meaning' as const,
     label: 'Jepang → Indonesia',
-    desc: 'Soal tulisan Jepang — ketik arti bahasa Indonesia'
+    desc: 'Soal tulisan Jepang, ketik arti bahasa Indonesia'
   },
   {
     key: 'meaning_to_words' as const,
     label: 'Indonesia → Jepang',
-    desc: 'Soal arti Indonesia — ketik Kanji, Kana, atau Romaji'
+    desc: 'Soal arti Indonesia, ketik Kanji, Kana, atau Romaji'
   }
 ] as const;
 

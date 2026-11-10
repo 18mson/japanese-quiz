@@ -61,7 +61,7 @@ function getSnowStyle(n: number) {
       <div class="relative z-10 flex flex-col items-center">
         <div class="text-center px-4">
           <div class="text-[10px] sm:text-xs text-cyan-300 font-extrabold tracking-widest uppercase mb-1">SERANGAN LAWAN • FREEZE!</div>
-          <h2 class="text-2xl sm:text-3xl font-black text-white drop-shadow-md">LAYAR BEKU — INPUT TERKUNCI!</h2>
+          <h2 class="text-2xl sm:text-3xl font-black text-white drop-shadow-md">LAYAR BEKU: INPUT TERKUNCI!</h2>
           <div class="mt-3 sm:mt-4 inline-flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-cyan-950/90 border border-cyan-400/50 font-mono text-cyan-300 font-black text-lg sm:text-xl shadow-xl">
             <Clock class="w-4 sm:w-5 h-4 sm:h-5 animate-spin text-cyan-300" />
             <span>{{ freezeCountdown.toFixed(1) }}s</span>

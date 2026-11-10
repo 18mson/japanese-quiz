@@ -465,7 +465,10 @@ watch(characterTypes, (newVal) => {
 </script>
 
 <template>
-  <div class="max-w-4xl xl:max-w-[1460px] 2xl:max-w-[1620px] mx-auto p-3.5 sm:p-6 pb-36 sm:pb-28 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none">
+  <div 
+    class="max-w-4xl xl:max-w-[1460px] 2xl:max-w-[1620px] mx-auto p-3.5 sm:p-6 pb-44 sm:pb-32 flex flex-col items-center animate-fadeIn h-full overflow-y-auto w-full select-none"
+    style="padding-bottom: max(10rem, calc(8.5rem + env(safe-area-inset-bottom)));"
+  >
     <!-- Hitungan Tutorial Modal -->
     <HitunganTutorialModal 
       :is-open="isHitunganTutorialOpen" 
@@ -554,7 +557,7 @@ watch(characterTypes, (newVal) => {
                 type="button"
                 @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
                 :class="[
-                  'px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center gap-1.5 border shadow-2xs',
+                  'min-h-[44px] px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 border shadow-2xs active:scale-95',
                   (characterTypes === sub.key || (sub.key === 'words' && ['words_meaning', 'meaning_to_words', 'words_mixed'].includes(characterTypes)))
                     ? 'bg-aizome dark:bg-amber-500 text-white border-aizome dark:border-amber-500 font-black shadow-xs scale-[1.02]'
                     : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
@@ -578,7 +581,7 @@ watch(characterTypes, (newVal) => {
                   type="button"
                   @click.stop="deactivateKeyboardNav(); selectSubType(sub.key);"
                   :class="[
-                    'py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
+                    'min-h-[44px] py-2 px-1 sm:px-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs active:scale-95',
                     characterTypes === sub.key
                       ? 'bg-matcha dark:bg-emerald-600 text-white border-matcha dark:border-emerald-500 font-black shadow-xs scale-[1.02]'
                       : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'
@@ -599,18 +602,18 @@ watch(characterTypes, (newVal) => {
               <!-- Jika Angka / Counter / Campuran: Tampilkan Arah Latihan + Lihat Pola -->
               <div 
                 v-else
-                class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800 flex-wrap gap-1.5 w-full"
+                class="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800 flex-wrap gap-2 w-full"
               >
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-900 dark:text-slate-400">
                     Arah Latihan:
                   </span>
-                  <div class="flex items-center gap-1 bg-white/80 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700">
+                  <div class="flex items-center gap-1 bg-white/80 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
                     <button
                       type="button"
                       @click.stop="deactivateKeyboardNav(); selectedHitunganDirection = 'number_to_kana'"
                       :class="[
-                        'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
+                        'min-h-[38px] px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer flex items-center justify-center active:scale-95',
                         selectedHitunganDirection === 'number_to_kana'
                           ? 'bg-emerald-600 text-white font-black shadow-2xs'
                           : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -622,7 +625,7 @@ watch(characterTypes, (newVal) => {
                       type="button"
                       @click.stop="deactivateKeyboardNav(); selectedHitunganDirection = 'kana_to_number'"
                       :class="[
-                        'px-2.5 py-1 rounded-lg text-[11px] font-bold transition cursor-pointer',
+                        'min-h-[38px] px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold transition cursor-pointer flex items-center justify-center active:scale-95',
                         selectedHitunganDirection === 'kana_to_number'
                           ? 'bg-emerald-600 text-white font-black shadow-2xs'
                           : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -637,11 +640,11 @@ watch(characterTypes, (newVal) => {
                 <button
                   type="button"
                   @click.stop="openHitunganTutorial(currentHitunganWave)"
-                  class="py-1 px-2 rounded-xl bg-white/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-slate-700 text-xs font-bold transition hover:bg-emerald-50 dark:hover:bg-slate-700 flex items-center gap-1 cursor-pointer shadow-2xs shrink-0"
+                  class="min-h-[38px] sm:min-h-[44px] py-1.5 px-3 rounded-xl bg-white/80 dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-slate-700 text-xs font-bold transition hover:bg-emerald-50 dark:hover:bg-slate-700 flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs shrink-0 active:scale-95"
                   title="Buka Penjelasan Pola & Pengecualian"
                 >
-                  <BookOpen class="w-3.5 h-3.5 text-emerald-600" />
-                  <span class="text-[11px]">Lihat Pola</span>
+                  <BookOpen class="w-4 h-4 text-emerald-600" />
+                  <span class="text-xs">Lihat Pola</span>
                 </button>
               </div>
             </div>

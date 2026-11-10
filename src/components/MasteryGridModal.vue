@@ -618,7 +618,7 @@ const nextPreviewItem = () => {
         <!-- Notice Banner for 0% Belum but incomplete mastery -->
         <div v-if="isAllAttempted" class="mx-4 sm:mx-6 mt-3 p-3 bg-indigo-500/10 dark:bg-torii/10 border border-indigo-500/20 dark:border-torii/20 rounded-2xl text-xs text-indigo-700 dark:text-torii-light font-semibold flex items-center gap-2 flex-shrink-0 animate-fadeIn">
           <Sparkles class="w-4 h-4 text-indigo-500 dark:text-torii shrink-0" />
-          <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari — lanjut asah yang masih Proses, atau coba bab lain.' : ((activeCategory === 'kanji' || activeCategory === 'kanji_n4') ? 'Semua kanji di kelompok ini sudah dipelajari — terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari — lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
+          <span>{{ activeCategory === 'words' ? 'Semua kosakata di materi ini sudah dipelajari, lanjut asah yang masih Proses, atau coba bab lain.' : ((activeCategory === 'kanji' || activeCategory === 'kanji_n4') ? 'Semua kanji di kelompok ini sudah dipelajari: terus tingkatkan hingga Crown!' : 'Semua huruf di kelompok ini sudah dipelajari, lanjut asah yang masih Proses, atau coba kelompok lain.') }}</span>
         </div>
 
         <!-- Footer -->

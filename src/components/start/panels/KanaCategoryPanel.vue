@@ -47,7 +47,7 @@ const selectCategory = (key: KanaCategoryType) => {
       type="button"
       @click.stop="selectCategory(cat.key)"
       :class="[
-        'py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs',
+        'min-h-[44px] py-2 px-1 rounded-xl text-xs font-bold transition-all cursor-pointer border flex flex-col sm:flex-row items-center justify-center gap-1 shadow-2xs active:scale-95',
         modelValue === cat.key
           ? 'bg-aizome dark:bg-torii text-white border-aizome dark:border-torii font-black shadow-xs scale-[1.02]'
           : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200/90 dark:border-slate-700/80'

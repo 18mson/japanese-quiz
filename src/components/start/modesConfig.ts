@@ -174,9 +174,9 @@ export function getModeDescription(
     if (characterType === 'words' || characterType === 'words_mixed') {
       return 'Kuis kosakata adaptif dengan variasi soal acak.';
     }
-    if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana) — ketik arti dalam bahasa Indonesia.';
-    if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia — ketik jawaban dalam Kanji atau Kana.';
-    if (characterType === 'renshuu') return 'Latihan pola kalimat — substitusi, drill gambar, dan role-play.';
+    if (characterType === 'words_meaning') return 'Soal tulisan Jepang (Kanji/Kana), ketik arti dalam bahasa Indonesia.';
+    if (characterType === 'meaning_to_words') return 'Soal arti bahasa Indonesia, ketik jawaban dalam Kanji atau Kana.';
+    if (characterType === 'renshuu') return 'Latihan pola kalimat: substitusi, drill gambar, dan role-play.';
     if (characterType === 'kaiwa') return 'Latihan mengetik dialog percakapan situasional N5.';
   }
   if (mode.id === 'online_game') {
