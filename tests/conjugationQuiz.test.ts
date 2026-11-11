@@ -1,6 +1,7 @@
 // tests/conjugationQuiz.test.ts
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import * as wanakana from 'wanakana';
 import { konjugasiKataKerjaData } from '../src/data/referenceData';
 import { ADJECTIVE_ITEMS } from '../src/services/adjectiveConjugationService';
 
@@ -57,4 +58,12 @@ describe('Conjugation Quiz Logic & Dataset Test Suite', () => {
     const cleanNai = auVerb.nai.replace(/[\s－-]/g, '');
     assert.strictEqual(cleanNai, 'あわない');
   });
+
+  it('6. Transliterasi typing input via wanakana mengubah romaji ke hiragana', () => {
+    assert.strictEqual(wanakana.toHiragana('tabete'), 'たべて');
+    assert.strictEqual(wanakana.toHiragana('nomimasu'), 'のみます');
+    assert.strictEqual(wanakana.toHiragana('shizukade'), 'しずかで');
+    assert.strictEqual(wanakana.toHiragana('omoshirokatta'), 'おもしろかった');
+  });
 });
+

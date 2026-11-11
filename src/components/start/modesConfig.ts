@@ -219,9 +219,9 @@ export function getModeDescription(
     return 'Latihan insting partikel kalimat bahasa Jepang dengan variasi jawaban sah.';
   }
   if (mode.id === 'conjugation') {
-    if (characterType === 'adjective') return 'Latihan konjugasi kata sifat-i dan kata sifat-na (negatif, lampau, te).';
-    if (characterType === 'mixed') return 'Latihan campuran perubahan kata kerja dan kata sifat.';
-    return 'Latihan konjugasi kata kerja kelompok 1, 2, dan 3 (Te, Kamus, Nai, Ta).';
+    if (characterType === 'adjective') return 'Latihan mengetik perubahan kata sifat-i dan kata sifat-na (negatif, lampau, te).';
+    if (characterType === 'mixed') return 'Latihan mengetik campuran perubahan kata kerja dan kata sifat.';
+    return 'Latihan mengetik konjugasi kata kerja kelompok 1, 2, dan 3 (Te, Kamus, Nai, Ta).';
   }
   if (mode.id === 'online_game') {
     if (characterType === 'quiz_blitz') return 'Adu refleks kuis cepat 10 detik per soal bersama pemain lain.';

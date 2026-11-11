@@ -1,6 +1,7 @@
 // src/stores/conjugationQuizStore.ts
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import { toRomaji, toHiragana } from 'wanakana';
 import { konjugasiKataKerjaData, type VerbItem } from '../data/referenceData';
 import { ADJECTIVE_ITEMS, type AdjectiveItem, type AdjectiveForms } from '../services/adjectiveConjugationService';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
@@ -105,9 +106,20 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
 
     const options = shuffle([cleanCorrect, ...distractorCandidates.slice(0, 3)]);
 
-    const accepted = [cleanCorrect];
-    // Tambahkan variasi tanpa spasi
-    accepted.push(rawCorrect);
+    const accepted = [cleanCorrect, rawCorrect];
+    // Variasi Romaji
+    accepted.push(toRomaji(cleanCorrect));
+
+    // Variasi Kanji jika kata berkanji (misal: "会います" -> "会って")
+    if (verb.masu_reading) {
+      const cleanReading = verb.masu_reading.replace(/\s+/g, '');
+      const stemReading = cleanReading.replace(/ます$/, '');
+      const stemKanji = verb.masu.replace(/ます$/, '');
+      if (stemKanji !== stemReading && cleanCorrect.startsWith(stemReading)) {
+        const kanjiForm = cleanCorrect.replace(stemReading, stemKanji);
+        accepted.push(kanjiForm);
+      }
+    }
 
     return {
       id: `vq_${verb.masu}_${chosen.key}_${Math.random().toString(36).substring(2, 7)}`,
@@ -148,6 +160,24 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
     if (adj.alts && adj.alts[chosen.key]) {
       accepted.push(...(adj.alts[chosen.key] as string[]));
     }
+
+    // Variasi Kana & Romaji
+    if (adj.type === 'i') {
+      const kanaStem = adj.kana.endsWith('い') ? adj.kana.slice(0, -1) : adj.kana;
+      const kanjiStem = adj.kanji.endsWith('い') ? adj.kanji.slice(0, -1) : adj.kanji;
+      if (correct.startsWith(kanjiStem)) {
+        const kanaForm = correct.replace(kanjiStem, kanaStem);
+        accepted.push(kanaForm);
+        accepted.push(toRomaji(kanaForm));
+      }
+    } else {
+      if (correct.startsWith(adj.kanji)) {
+        const kanaForm = correct.replace(adj.kanji, adj.kana);
+        accepted.push(kanaForm);
+        accepted.push(toRomaji(kanaForm));
+      }
+    }
+    accepted.push(toRomaji(correct));
 
     // Distraktor dari bentuk lain kata sifat yang sama
     const distractorCandidates = forms
@@ -224,10 +254,19 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
 
     const q = currentQuestion.value;
     const cleanInput = (rawInput || '').trim().replace(/\s+/g, '');
+    const inputHiragana = toHiragana(cleanInput).toLowerCase();
+    const inputRomaji = toRomaji(cleanInput).toLowerCase();
 
     const isCorrect = q.acceptedAnswers.some(ans => {
       const cleanAns = ans.trim().replace(/\s+/g, '');
-      return cleanInput.toLowerCase() === cleanAns.toLowerCase();
+      const ansHiragana = toHiragana(cleanAns).toLowerCase();
+      const ansRomaji = toRomaji(cleanAns).toLowerCase();
+
+      return (
+        cleanInput.toLowerCase() === cleanAns.toLowerCase() ||
+        inputHiragana === ansHiragana ||
+        inputRomaji === ansRomaji
+      );
     });
 
     if (isCorrect) {
@@ -286,3 +325,4 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
     restartQuiz
   };
 });
+

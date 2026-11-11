@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
+import * as wanakana from 'wanakana';
 import { useConjugationQuizStore } from '../../stores/conjugationQuizStore';
 import { useQuizStore } from '../../stores/quizStore';
 import SpeakerButton from '../SpeakerButton.vue';
 import QuizActionNavbar from '../common/QuizActionNavbar.vue';
-import { Check, X, Sparkles, RefreshCw, Keyboard as KeyboardIcon, Grid } from '@lucide/vue';
+import { Check, X, Sparkles, RefreshCw, Send, Keyboard } from '@lucide/vue';
 
 const emit = defineEmits<{
   (e: 'exit'): void;
@@ -14,9 +15,7 @@ const conjugationStore = useConjugationQuizStore();
 const quizStore = useQuizStore();
 
 const isAnswered = ref(false);
-const selectedAnswer = ref<string | null>(null);
 const isCurrentCorrect = ref(false);
-const isTypingMode = ref(false);
 const typedInput = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
 
@@ -25,25 +24,26 @@ const isLastQuestion = computed(() => conjugationStore.currentIndex >= conjugati
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
+  nextTick(() => {
+    inputRef.value?.focus();
+  });
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
 });
 
-function handleSelectOption(option: string) {
-  if (isAnswered.value || !currentQ.value) return;
-  selectedAnswer.value = option;
-  isAnswered.value = true;
-
-  const result = conjugationStore.checkAnswer(option);
-  isCurrentCorrect.value = result.isCorrect;
+function handleInput(e: Event) {
+  const target = e.target as HTMLInputElement;
+  // Transliterasi romaji ke hiragana secara langsung saat mengetik
+  const converted = wanakana.toHiragana(target.value, { IMEMode: true });
+  typedInput.value = converted;
+  target.value = converted;
 }
 
 function handleTypedSubmit() {
   if (isAnswered.value || !typedInput.value.trim() || !currentQ.value) return;
   const val = typedInput.value.trim();
-  selectedAnswer.value = val;
   isAnswered.value = true;
 
   const result = conjugationStore.checkAnswer(val);
@@ -76,15 +76,12 @@ function proceedToNext() {
 
   conjugationStore.nextQuestion();
   isAnswered.value = false;
-  selectedAnswer.value = null;
   isCurrentCorrect.value = false;
   typedInput.value = '';
 
-  if (isTypingMode.value) {
-    nextTick(() => {
-      inputRef.value?.focus();
-    });
-  }
+  nextTick(() => {
+    inputRef.value?.focus();
+  });
 }
 
 function handleKeyDown(e: KeyboardEvent) {
@@ -92,16 +89,6 @@ function handleKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       proceedToNext();
-    }
-    return;
-  }
-
-  // Keyboard shortcut 1-4 untuk memilih opsi
-  if (!isTypingMode.value && currentQ.value && ['1', '2', '3', '4'].includes(e.key)) {
-    const idx = parseInt(e.key, 10) - 1;
-    if (currentQ.value.options[idx] !== undefined) {
-      e.preventDefault();
-      handleSelectOption(currentQ.value.options[idx]);
     }
   }
 }
@@ -208,70 +195,46 @@ function handleKeyDown(e: KeyboardEvent) {
       </div>
     </div>
 
-    <!-- Opsi Jawaban (Pilihan Ganda Cepat) -->
-    <div v-if="!isTypingMode && currentQ" class="flex flex-col gap-3">
-      <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
-        <button
-          v-for="(opt, idx) in currentQ.options"
-          :key="idx"
-          type="button"
-          @click="handleSelectOption(opt)"
-          :disabled="isAnswered"
-          class="relative h-14 sm:h-16 px-3 rounded-2xl border-2 font-jp font-bold text-base sm:text-lg transition flex items-center justify-center shadow-xs cursor-pointer active:scale-98 disabled:cursor-default"
-          :class="[
-            !isAnswered ? 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-100 hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-slate-800/80' :
-            opt === currentQ.correctAnswer || currentQ.acceptedAnswers.includes(opt) ? 'bg-emerald-500 border-emerald-500 text-white shadow-emerald-500/20' :
-            selectedAnswer === opt ? 'bg-rose-500 border-rose-500 text-white shadow-rose-500/20' :
-            'bg-slate-100 dark:bg-slate-800/50 border-transparent text-slate-400 dark:text-slate-600 opacity-60'
-          ]"
-        >
-          <span class="absolute top-1.5 left-2.5 text-[10px] font-sans font-bold text-slate-400 opacity-60">
-            {{ idx + 1 }}
-          </span>
-          <span class="truncate">{{ opt }}</span>
-        </button>
-      </div>
-
-      <!-- Tombol Switch ke Mode Ketik -->
-      <button 
-        type="button"
-        @click="isTypingMode = true"
-        class="self-center text-xs text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-      >
-        <KeyboardIcon class="w-3.5 h-3.5" />
-        <span>Atau ketik sendiri</span>
-      </button>
-    </div>
-
-    <!-- Opsi Jawaban (Input Ketik Langsung) -->
-    <div v-else class="flex flex-col gap-3">
+    <!-- Mode Mengetik Jawaban -->
+    <div class="flex flex-col gap-3">
       <form @submit.prevent="handleTypedSubmit" class="flex items-center gap-2">
-        <input
-          ref="inputRef"
-          v-model="typedInput"
-          type="text"
-          :disabled="isAnswered"
-          placeholder="Ketik bentuk perubahan kata..."
-          class="flex-1 h-13 px-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-jp text-lg focus:outline-none focus:border-amber-500 shadow-2xs transition"
-          autofocus
-        />
+        <div class="relative flex-1">
+          <input
+            ref="inputRef"
+            :value="typedInput"
+            @input="handleInput"
+            type="text"
+            :disabled="isAnswered"
+            placeholder="Ketik perubahan kata (otomatis kana)..."
+            class="w-full h-14 px-4.5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-jp font-bold text-lg sm:text-xl focus:outline-none focus:border-amber-500 shadow-2xs transition disabled:opacity-75 disabled:cursor-not-allowed"
+            autofocus
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <span 
+            v-if="!isAnswered && !typedInput"
+            class="hidden sm:inline absolute right-4 top-1/2 -translate-y-1/2 text-[11px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md pointer-events-none"
+          >
+            Enter ↵
+          </span>
+        </div>
         <button
           type="submit"
           :disabled="isAnswered || !typedInput.trim()"
-          class="h-13 px-5 rounded-2xl bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold text-sm shadow-sm transition active:scale-95 cursor-pointer"
+          class="h-14 px-5 sm:px-6 rounded-2xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm sm:text-base shadow-sm transition active:scale-95 cursor-pointer flex items-center gap-1.5 shrink-0"
         >
-          Kirim
+          <span>Kirim</span>
+          <Send class="w-4 h-4" />
         </button>
       </form>
 
-      <button 
-        type="button"
-        @click="isTypingMode = false"
-        class="self-center text-xs text-slate-500 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-      >
-        <Grid class="w-3.5 h-3.5" />
-        <span>Gunakan tombol pilihan ganda</span>
-      </button>
+      <!-- Tip Bantuan Input -->
+      <div v-if="!isAnswered" class="flex items-center justify-center gap-1.5 text-slate-400 dark:text-slate-500 text-[11px]">
+        <Keyboard class="w-3.5 h-3.5" />
+        <span>Ketik dalam Romaji (misal: <em>tabete</em>) atau Kana / Kanji langsung</span>
+      </div>
     </div>
 
     <!-- Reusable Bottom Action Navbar -->
