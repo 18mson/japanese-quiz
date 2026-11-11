@@ -457,3 +457,4 @@ export const ADJECTIVE_ITEMS: AdjectiveItem[] = [
     ...conjugateNaAdjective('ハンサム')
   }
 ];
+
