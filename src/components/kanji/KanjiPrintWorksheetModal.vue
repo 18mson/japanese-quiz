@@ -88,16 +88,46 @@ const worksheetItems = computed<WorksheetKanjiItem[]>(() => {
 
 // Paginate 10 kanji per page (mengisi halaman A4 secara proporsional dari atas ke bawah)
 const ITEMS_PER_PAGE = 10;
-const paginatedPages = computed(() => {
-  const pages: WorksheetKanjiItem[][] = [];
+
+interface WorksheetPageData {
+  pageNumber: number;
+  items: WorksheetKanjiItem[];
+}
+
+const paginatedPages = computed<WorksheetPageData[]>(() => {
+  const pages: WorksheetPageData[] = [];
   const items = worksheetItems.value;
   for (let i = 0; i < items.length; i += ITEMS_PER_PAGE) {
-    pages.push(items.slice(i, i + ITEMS_PER_PAGE));
+    pages.push({
+      pageNumber: Math.floor(i / ITEMS_PER_PAGE) + 1,
+      items: items.slice(i, i + ITEMS_PER_PAGE)
+    });
   }
   return pages;
 });
 
 const totalPages = computed(() => Math.max(1, paginatedPages.value.length));
+
+// Opsi pilihan halaman cetak: 'all' | nomor halaman tertentu (1, 2, 3...)
+const selectedPageToPrint = ref<number | 'all'>('all');
+
+// Reset pilihan halaman cetak jika filter kategori/kelompok/status berubah
+watch(
+  () => [currentCategory.value, currentGroup.value, currentStatusFilter.value],
+  () => {
+    selectedPageToPrint.value = 'all';
+  }
+);
+
+// Halaman yang dirender ke preview & cetak
+const visiblePages = computed<WorksheetPageData[]>(() => {
+  if (selectedPageToPrint.value === 'all') {
+    return paginatedPages.value;
+  }
+  const targetNum = Number(selectedPageToPrint.value);
+  const found = paginatedPages.value.find(p => p.pageNumber === targetNum);
+  return found ? [found] : paginatedPages.value;
+});
 
 // Active group label
 const activeGroupLabel = computed(() => {
@@ -130,18 +160,19 @@ const handleResetFilter = () => {
 </script>
 
 <template>
-  <Transition
-    enter-active-class="transition duration-200 ease-out"
-    enter-from-class="opacity-0"
-    enter-to-class="opacity-100"
-    leave-active-class="transition duration-150 ease-in"
-    leave-from-class="opacity-100"
-    leave-to-class="opacity-0"
-  >
-    <div
-      v-if="isOpen"
-      class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:p-0 print:bg-white print:overflow-visible"
+  <Teleport to="body">
+    <Transition
+      enter-active-class="transition duration-200 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition duration-150 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
     >
+      <div
+        v-if="isOpen"
+        class="kanji-print-modal-root fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:p-0 print:bg-white print:overflow-visible"
+      >
       <!-- SCREEN ONLY: Header & Controls Toolbar -->
       <div class="print:hidden w-full max-w-5xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 sm:p-5 mb-4 sticky top-2 z-20">
         <div class="flex items-center justify-between gap-3 border-b border-gray-100 dark:border-slate-800 pb-3 mb-3">
@@ -247,9 +278,9 @@ const handleResetFilter = () => {
           </div>
         </div>
 
-        <!-- Summary, Stroke Order Toggle & Reset -->
+        <!-- Summary, Stroke Order Toggle, Page Scope & Reset -->
         <div class="flex flex-wrap items-center justify-between gap-3 text-xs text-gray-500 dark:text-slate-400 mt-3 pt-2.5 border-t border-gray-100 dark:border-slate-800">
-          <div class="flex items-center gap-3">
+          <div class="flex flex-wrap items-center gap-3">
             <span>
               Menampilkan <strong class="text-indigo-600 dark:text-amber-400">{{ worksheetItems.length }} kanji</strong>
               ({{ totalPages }} lembar A4)
@@ -257,6 +288,20 @@ const handleResetFilter = () => {
             <span v-if="isLoadingStrokes" class="text-[11px] text-amber-500 animate-pulse">
               • Menyiapkan goresan...
             </span>
+
+            <!-- Pilihan Halaman yang Akan Dicetak -->
+            <div class="flex items-center gap-1.5 border-l border-gray-200 dark:border-slate-700 pl-3">
+              <span class="font-bold text-gray-700 dark:text-slate-300">Cetak:</span>
+              <select
+                v-model="selectedPageToPrint"
+                class="px-2 py-1 text-xs font-semibold bg-gray-50 dark:bg-slate-800 border border-gray-300 dark:border-slate-600 rounded-lg text-slate-800 dark:text-slate-200 cursor-pointer outline-none focus:ring-1 focus:ring-indigo-500"
+              >
+                <option value="all">Semua Halaman ({{ totalPages }} lembar)</option>
+                <option v-for="p in totalPages" :key="p" :value="p">
+                  Hanya Halaman {{ p }}
+                </option>
+              </select>
+            </div>
           </div>
 
           <div class="flex items-center gap-4">
@@ -271,9 +316,9 @@ const handleResetFilter = () => {
             </label>
 
             <button
-              v-if="currentGroup !== 'all' || currentStatusFilter !== 'all' || specificKanjiList"
+              v-if="currentGroup !== 'all' || currentStatusFilter !== 'all' || specificKanjiList || selectedPageToPrint !== 'all'"
               type="button"
-              @click="handleResetFilter"
+              @click="handleResetFilter(); selectedPageToPrint = 'all';"
               class="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-amber-400 hover:underline cursor-pointer"
             >
               <RotateCcw class="w-3 h-3" />
@@ -295,7 +340,7 @@ const handleResetFilter = () => {
           <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Coba ubah filter status penguasaan atau kelompok di atas.</p>
           <button
             type="button"
-            @click="handleResetFilter"
+            @click="handleResetFilter(); selectedPageToPrint = 'all';"
             class="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold"
           >
             Tampilkan Semua Kanji
@@ -304,10 +349,10 @@ const handleResetFilter = () => {
 
         <!-- Page Loop (10 Kanji per Page) -->
         <div
-          v-for="(pageItems, pageIdx) in paginatedPages"
-          :key="pageIdx"
+          v-for="page in visiblePages"
+          :key="page.pageNumber"
           class="worksheet-page w-[210mm] min-h-[297mm] bg-white text-slate-900 p-[6mm_10mm] shadow-2xl print:shadow-none mb-6 print:mb-0 relative flex flex-col justify-between"
-          :class="{ 'page-break': pageIdx < paginatedPages.length - 1 }"
+          :class="{ 'page-break': page.pageNumber < totalPages }"
         >
           <!-- Page Header -->
           <div class="border-b-2 border-slate-900 pb-1 mb-1.5 flex items-end justify-between">
@@ -321,17 +366,17 @@ const handleResetFilter = () => {
             </div>
             <div class="flex items-baseline gap-3 text-[10px] font-semibold text-slate-600">
               <span>{{ activeGroupLabel }}</span>
-              <span>Hal. {{ pageIdx + 1 }} / {{ totalPages }}</span>
+              <span>Hal. {{ page.pageNumber }} / {{ totalPages }}</span>
             </div>
           </div>
 
           <!-- Kanji Rows List (10 Kanji per Page, mengisi lembar A4 secara rapi) -->
           <div
             class="flex-1 flex flex-col my-1"
-            :class="pageItems.length === ITEMS_PER_PAGE ? 'justify-between' : 'justify-start gap-2'"
+            :class="page.items.length === ITEMS_PER_PAGE ? 'justify-between' : 'justify-start gap-2'"
           >
             <div
-              v-for="(item, rIdx) in pageItems"
+              v-for="(item, rIdx) in page.items"
               :key="item.character"
               class="kanji-entry-row border border-slate-400 rounded-sm p-1.5 flex items-stretch bg-white min-w-0 overflow-hidden"
             >
@@ -339,7 +384,7 @@ const handleResetFilter = () => {
               <div class="flex items-center gap-1.5 pr-1.5 border-r border-slate-300 shrink-0">
                 <!-- Index -->
                 <span class="text-[10px] font-bold text-slate-500 w-4 text-right">
-                  {{ (pageIdx * ITEMS_PER_PAGE) + rIdx + 1 }}
+                  {{ ((page.pageNumber - 1) * ITEMS_PER_PAGE) + rIdx + 1 }}
                 </span>
 
                 <!-- Master Kanji Square with Stroke Order Markers -->
@@ -503,24 +548,33 @@ const handleResetFilter = () => {
       </div>
     </div>
   </Transition>
+</Teleport>
 </template>
 
 <style scoped>
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm 10mm;
+    margin: 6mm 8mm;
   }
 
-  body {
-    background: white !important;
-    color: black !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
+  :global(html),
+  :global(body) {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
   }
 
-  /* Sembunyikan elemen non-printable */
-  :global(#app > *:not(.kanji-worksheet-printable)),
+  /* Sembunyikan kontainer SPA utama dan modal overlay lain di body */
+  :global(#app),
+  :global(.modal-panel),
   :global(header),
   :global(nav),
   :global(footer),
@@ -528,25 +582,55 @@ const handleResetFilter = () => {
     display: none !important;
   }
 
-  .kanji-worksheet-printable {
+  /* Root modal cetak menjadi flow dokumen normal (static block) tanpa batas overflow */
+  .kanji-print-modal-root {
+    position: static !important;
     display: block !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    z-index: auto !important;
+  }
+
+  .kanji-worksheet-printable {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
     max-width: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
   .worksheet-page {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 6mm 8mm !important;
+    padding: 4mm 6mm !important;
     width: 100% !important;
-    min-height: 275mm !important;
-  }
-
-  .page-break {
+    height: 284mm !important;
+    max-height: 284mm !important;
+    overflow: hidden !important;
     page-break-after: always !important;
     break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .worksheet-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 }
 </style>
