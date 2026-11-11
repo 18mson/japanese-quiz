@@ -14,9 +14,29 @@ export interface WorksheetKanjiItem {
   formattedOn: string;
   examples: string[];
   strokes?: string[];
+  strokePoints?: { index: number; x: number; y: number }[];
   group?: string;
   groupLabel?: string;
   jlpt: number;
+}
+
+/**
+ * Ekstrak koordinat titik awal (M x,y) dari setiap path SVG goresan
+ */
+export function getStrokeStartPoints(strokes?: string[]): { index: number; x: number; y: number }[] {
+  if (!strokes || strokes.length === 0) return [];
+  const points: { index: number; x: number; y: number }[] = [];
+  strokes.forEach((s, idx) => {
+    const match = s.match(/^[Mm]\s*([\d.]+)[,\s]+([\d.]+)/);
+    if (match) {
+      points.push({
+        index: idx + 1,
+        x: parseFloat(match[1]),
+        y: parseFloat(match[2])
+      });
+    }
+  });
+  return points;
 }
 
 /**
@@ -188,11 +208,17 @@ export function filterKanjiForWorksheet(options: {
  */
 export async function loadWorksheetStrokeData(items: WorksheetKanjiItem[]): Promise<void> {
   const promises = items.map(async (item) => {
-    if (item.strokes && item.strokes.length > 0) return;
+    if (item.strokes && item.strokes.length > 0) {
+      if (!item.strokePoints || item.strokePoints.length === 0) {
+        item.strokePoints = getStrokeStartPoints(item.strokes);
+      }
+      return;
+    }
     try {
       const data = await resolveCharacter(item.character);
       if (data && data.strokes && data.strokes.length > 0) {
         item.strokes = data.strokes;
+        item.strokePoints = getStrokeStartPoints(data.strokes);
       }
     } catch (e) {
       // Abaikan error jaringan jika offline, fallback font reguler

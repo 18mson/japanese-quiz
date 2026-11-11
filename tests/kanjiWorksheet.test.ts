@@ -5,7 +5,8 @@ import {
   formatOnyomi,
   formatKanjiExamples,
   filterKanjiForWorksheet,
-  getGroupLabel
+  getGroupLabel,
+  getStrokeStartPoints
 } from '../src/services/kanjiWorksheetService';
 
 describe('kanjiWorksheetService Test Suite', () => {
@@ -64,5 +65,20 @@ describe('kanjiWorksheetService Test Suite', () => {
 
     const labelN4 = getGroupLabel('kanji_n4', 'people');
     assert.ok(labelN4.includes('Orang'));
+  });
+
+  it('extracts stroke start points for stroke order indicators', () => {
+    const mockPaths = [
+      'M32.25,18.75c1.09,0.5,1.74,2.25,1.96,3.25',
+      'M55.5,35.0c0.8,0.4,1.5,1.8,1.5,3.0'
+    ];
+    const points = getStrokeStartPoints(mockPaths);
+    assert.strictEqual(points.length, 2);
+    assert.strictEqual(points[0].index, 1);
+    assert.strictEqual(points[0].x, 32.25);
+    assert.strictEqual(points[0].y, 18.75);
+    assert.strictEqual(points[1].index, 2);
+    assert.strictEqual(points[1].x, 55.5);
+    assert.strictEqual(points[1].y, 35.0);
   });
 });
