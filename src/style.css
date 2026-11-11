@@ -41,18 +41,6 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  @media print {
-    html,
-    html.dark,
-    body,
-    body.dark {
-      color-scheme: light !important;
-      background: #ffffff !important;
-      background-color: #ffffff !important;
-      color: #000000 !important;
-    }
-  }
-
   html.dark ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -200,4 +188,45 @@
 .dropdown-leave-from {
   opacity: 1;
   transform: translateY(0) scale(1);
+}
+
+/* ============================================================ */
+/* GLOBAL PRINT RULES (PURE WHITE CANVAS, NO DARK BACKDROP)     */
+/* ============================================================ */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 5mm 8mm;
+  }
+
+  html,
+  html.dark,
+  body,
+  body.dark {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    color-scheme: light !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Sembunyikan elemen utama di body kecuali modal cetak */
+  body > *:not(.kanji-print-modal-root) {
+    display: none !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
 }

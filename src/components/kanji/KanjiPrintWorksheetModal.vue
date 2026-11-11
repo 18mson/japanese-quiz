@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useQuizStore } from '../../stores/quizStore';
 import { kanjiGroups } from '../../data/kanji';
 import { kanjiN4Groups } from '../../data/kanjiN4';
@@ -148,24 +148,57 @@ const loadStrokes = async () => {
   }
 };
 
-const handlePrint = () => {
-  const isDarkModeActive = document.documentElement.classList.contains('dark');
-  if (isDarkModeActive) {
+const isPrinting = ref(false);
+let wasDarkBeforePrint = false;
+
+const prepareForPrint = () => {
+  isPrinting.value = true;
+  if (document.documentElement.classList.contains('dark')) {
+    wasDarkBeforePrint = true;
     document.documentElement.classList.remove('dark');
   }
+};
 
-  const cleanup = () => {
-    if (isDarkModeActive) {
-      document.documentElement.classList.add('dark');
-    }
-    window.removeEventListener('afterprint', cleanup);
-  };
-  window.addEventListener('afterprint', cleanup);
+const cleanupAfterPrint = () => {
+  isPrinting.value = false;
+  if (wasDarkBeforePrint) {
+    document.documentElement.classList.add('dark');
+    wasDarkBeforePrint = false;
+  }
+};
 
-  // Tunggu DOM settle setelah dark mode class dilepas agar canvas browser putih bersih
+const handleBeforePrint = () => {
+  if (props.isOpen) {
+    prepareForPrint();
+  }
+};
+
+const handleAfterPrint = () => {
+  if (props.isOpen) {
+    cleanupAfterPrint();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('beforeprint', handleBeforePrint);
+  window.addEventListener('afterprint', handleAfterPrint);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('beforeprint', handleBeforePrint);
+  window.removeEventListener('afterprint', handleAfterPrint);
+  if (wasDarkBeforePrint) {
+    document.documentElement.classList.add('dark');
+  }
+});
+
+const handlePrint = () => {
+  prepareForPrint();
+
+  // Tunggu reaktif Vue & style update settle agar canvas browser murni putih bersih
   setTimeout(() => {
     window.print();
-  }, 50);
+  }, 100);
 };
 
 const handleResetFilter = () => {
@@ -187,7 +220,8 @@ const handleResetFilter = () => {
     >
       <div
         v-if="isOpen"
-        class="kanji-print-modal-root fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:static print:inset-auto print:w-full print:h-auto print:p-0 print:m-0 print:bg-white print:overflow-visible print:backdrop-blur-none"
+        class="kanji-print-modal-root fixed inset-0 z-50 flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:static print:inset-auto print:w-full print:h-auto print:p-0 print:m-0 print:bg-white print:overflow-visible print:backdrop-blur-none"
+        :class="isPrinting ? 'bg-white' : 'bg-slate-950/80 backdrop-blur-md'"
       >
       <!-- SCREEN ONLY: Header & Controls Toolbar -->
       <div class="print:hidden w-full max-w-5xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 sm:p-5 mb-4 sticky top-2 z-20">
@@ -567,17 +601,17 @@ const handleResetFilter = () => {
 </Teleport>
 </template>
 
-<style scoped>
+<style>
 @media print {
   @page {
     size: A4 portrait;
-    margin: 6mm 8mm;
+    margin: 5mm 8mm;
   }
 
-  :global(html),
-  :global(html.dark),
-  :global(body),
-  :global(body.dark) {
+  html,
+  html.dark,
+  body,
+  body.dark {
     width: 100% !important;
     height: auto !important;
     min-height: 100% !important;
@@ -596,12 +630,13 @@ const handleResetFilter = () => {
     -webkit-print-color-adjust: exact !important;
   }
 
-  /* Sembunyikan kontainer SPA utama dan modal overlay lain di body */
-  :global(#app),
-  :global(.modal-panel),
-  :global(header),
-  :global(nav),
-  :global(footer),
+  /* Sembunyikan semua elemen lain di body kecuali kanji-print-modal-root */
+  body > *:not(.kanji-print-modal-root),
+  #app,
+  .modal-panel,
+  header,
+  nav,
+  footer,
   .print\:hidden {
     display: none !important;
   }
@@ -648,10 +683,11 @@ const handleResetFilter = () => {
     box-sizing: border-box !important;
     box-shadow: none !important;
     margin: 0 !important;
-    padding: 4mm 6mm !important;
+    padding: 3mm 6mm !important;
     width: 100% !important;
-    height: 284mm !important;
-    max-height: 284mm !important;
+    min-height: 0 !important;
+    height: 277mm !important;
+    max-height: 277mm !important;
     overflow: hidden !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
