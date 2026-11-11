@@ -347,7 +347,7 @@ const goToHome = () => {
 
       <!-- Desktop Quiz Progress Bar (Centering perfectly via absolute positioning) -->
       <div 
-        v-if="quizStarted && !quizStore.quizCompleted && !quizStore.isHitunganFinished" 
+        v-if="quizStarted && !quizStore.quizCompleted && !quizStore.isHitunganFinished && quizStore.selectedMode !== 'particle' && quizStore.selectedMode !== 'conjugation'" 
         class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-2.5 lg:gap-4 px-3.5 py-1 bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-gray-200/80 dark:border-slate-800 shadow-2xs animate-fadeIn z-10"
       >
         <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
@@ -378,7 +378,7 @@ const goToHome = () => {
 
       <!-- Subtle Bottom Progress Indicator Line on Desktop -->
       <div 
-        v-if="quizStarted && !quizStore.quizCompleted && !quizStore.isHitunganFinished" 
+        v-if="quizStarted && !quizStore.quizCompleted && !quizStore.isHitunganFinished && quizStore.selectedMode !== 'particle' && quizStore.selectedMode !== 'conjugation'" 
         class="hidden md:block absolute bottom-0 left-0 right-0 h-0.5 bg-transparent overflow-hidden pointer-events-none"
       >
         <div 

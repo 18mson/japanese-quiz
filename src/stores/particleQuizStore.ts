@@ -11,6 +11,37 @@ export interface ParticleAnswerRecord {
   question: ParticleQuestionItem;
 }
 
+/**
+ * Normalisasi input romaji/kana partikel
+ */
+export function normalizeParticleInput(raw: string): string {
+  const trimmed = (raw || '').trim().toLowerCase();
+  const romajiMap: Record<string, string> = {
+    wa: 'は',
+    ha: 'は',
+    ga: 'が',
+    o: 'を',
+    wo: 'を',
+    ni: 'に',
+    e: 'へ',
+    he: 'へ',
+    de: 'で',
+    to: 'と',
+    no: 'の',
+    mo: 'も',
+    ka: 'か',
+    kara: 'から',
+    made: 'まで',
+    yori: 'より',
+    te: 'て',
+    ta: 'た',
+    nai: 'ない',
+    kute: 'くて',
+    tara: 'たら'
+  };
+  return romajiMap[trimmed] || trimmed;
+}
+
 export const useParticleQuizStore = defineStore('particleQuiz', () => {
   const questions = ref<ParticleQuestionItem[]>([]);
   const currentIndex = ref(0);
@@ -41,37 +72,6 @@ export const useParticleQuizStore = defineStore('particleQuiz', () => {
       return validParticles[0] ? `[ ${validParticles[0]} ]` : '[ Tanpa Partikel ]';
     }
     return `[ ${validParticles.join(' / ')} ]`;
-  }
-
-  /**
-   * Normalisasi input romaji/kana partikel
-   */
-  function normalizeParticleInput(raw: string): string {
-    const trimmed = (raw || '').trim().toLowerCase();
-    const romajiMap: Record<string, string> = {
-      wa: 'は',
-      ha: 'は',
-      ga: 'が',
-      o: 'を',
-      wo: 'を',
-      ni: 'に',
-      e: 'へ',
-      he: 'へ',
-      de: 'で',
-      to: 'と',
-      no: 'の',
-      mo: 'も',
-      ka: 'か',
-      kara: 'から',
-      made: 'まで',
-      yori: 'より',
-      te: 'て',
-      ta: 'た',
-      nai: 'ない',
-      kute: 'くて',
-      tara: 'たら'
-    };
-    return romajiMap[trimmed] || trimmed;
   }
 
   /**
@@ -178,6 +178,7 @@ export const useParticleQuizStore = defineStore('particleQuiz', () => {
     correctCount,
     accuracy,
     formatVariationDisplay,
+    normalizeParticleInput,
     initSession,
     checkAnswer,
     nextQuestion,

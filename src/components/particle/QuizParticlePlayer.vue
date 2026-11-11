@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
-import { useParticleQuizStore } from '../../stores/particleQuizStore';
+import { useParticleQuizStore, normalizeParticleInput } from '../../stores/particleQuizStore';
 import { useQuizStore } from '../../stores/quizStore';
 import SpeakerButton from '../SpeakerButton.vue';
 import QuizActionNavbar from '../common/QuizActionNavbar.vue';
-import { Check, X, Sparkles, BookOpen, Keyboard as KeyboardIcon, Grid } from '@lucide/vue';
+import { Check, X, Sparkles, BookOpen, Keyboard as KeyboardIcon, Grid, Send } from '@lucide/vue';
 
 const emit = defineEmits<{
   (e: 'exit'): void;
@@ -23,18 +23,19 @@ const inputRef = ref<HTMLInputElement | null>(null);
 const currentQ = computed(() => particleStore.currentQuestion);
 const isLastQuestion = computed(() => particleStore.currentIndex >= particleStore.totalQuestions - 1);
 
+// Partikel umum untuk bar bantuan cepat (quick chips)
+const commonParticles = ['は', 'が', 'を', 'に', 'で', 'へ', 'と', 'から', 'まで', 'も', 'の'];
+
 // Opsi 4 tombol (1 jawaban benar + 3 distraktor)
 const shuffledOptions = ref<string[]>([]);
 
 function generateOptions() {
   if (!currentQ.value) return;
   const q = currentQ.value;
-  // Pilih partikel utama sebagai opsi benar
   const correctChoice = q.primaryParticle || q.correctParticles[0] || 'は';
   const distractors = q.distractors.slice(0, 3);
   
   const pool = [correctChoice, ...distractors];
-  // Acak posisi
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
@@ -45,11 +46,27 @@ function generateOptions() {
 onMounted(() => {
   generateOptions();
   window.addEventListener('keydown', handleKeyDown);
+  if (isTypingMode.value) {
+    nextTick(() => inputRef.value?.focus());
+  }
 });
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeyDown);
 });
+
+// Partikel yang sedang diketik untuk ditampilkan langsung di lubang kalimat
+const livePreviewParticle = computed(() => {
+  if (!typedInput.value) return '';
+  return normalizeParticleInput(typedInput.value);
+});
+
+function handleInput(e: Event) {
+  const target = e.target as HTMLInputElement;
+  const converted = normalizeParticleInput(target.value);
+  typedInput.value = converted;
+  target.value = converted;
+}
 
 function handleSelectOption(particle: string) {
   if (isAnswered.value || !currentQ.value) return;
@@ -68,6 +85,19 @@ function handleTypedSubmit() {
 
   const result = particleStore.checkAnswer(val);
   isCurrentCorrect.value = result.isCorrect;
+}
+
+function selectParticleChip(p: string) {
+  if (isAnswered.value) return;
+  typedInput.value = p;
+  handleTypedSubmit();
+}
+
+function switchToTyping() {
+  isTypingMode.value = true;
+  nextTick(() => {
+    inputRef.value?.focus();
+  });
 }
 
 function proceedToNext() {
@@ -118,7 +148,7 @@ function handleKeyDown(e: KeyboardEvent) {
     return;
   }
 
-  // Keyboard shortcut 1-4 untuk memilih opsi
+  // Keyboard shortcut 1-4 untuk memilih opsi pada mode pilihan ganda
   if (!isTypingMode.value && ['1', '2', '3', '4'].includes(e.key)) {
     const idx = parseInt(e.key, 10) - 1;
     if (shuffledOptions.value[idx] !== undefined) {
@@ -186,7 +216,7 @@ const fullSentenceForAudio = computed(() => {
       ]"
     >
       <!-- Sentence Prompt Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800/80">
         <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5">
           <BookOpen class="w-3.5 h-3.5" />
           Isi Partikel yang Tepat
@@ -194,23 +224,24 @@ const fullSentenceForAudio = computed(() => {
         <SpeakerButton v-if="fullSentenceForAudio" :text="fullSentenceForAudio" size="sm" />
       </div>
 
-      <!-- Kalimat dengan Slot Partikel Menonjol -->
-      <div class="py-3 sm:py-5 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-center select-none font-jp">
+      <!-- Kalimat dengan Slot Partikel Terintegrasi Langsung -->
+      <div class="py-4 sm:py-6 flex flex-wrap items-center justify-center gap-2 text-center select-none font-jp">
         <span class="text-xl sm:text-2xl md:text-3xl font-black text-slate-800 dark:text-slate-100 leading-relaxed">
           {{ currentQ?.sentenceBefore }}
         </span>
 
-        <!-- SLOT PARTIKEL -->
+        <!-- SLOT PARTIKEL YANG BERINTERAKSI DENGAN KETIKAN PEMAIN SECARA REAL-TIME -->
         <span 
-          class="inline-flex items-center justify-center px-3 sm:px-4 py-1 sm:py-1.5 min-w-[56px] sm:min-w-[70px] rounded-2xl font-black transition-all shadow-xs"
+          class="inline-flex items-center justify-center px-3.5 sm:px-4 py-1 sm:py-1.5 min-w-[60px] sm:min-w-[74px] rounded-2xl font-black transition-all shadow-xs"
           :class="[
-            !isAnswered ? 'bg-cyan-500/10 dark:bg-cyan-500/20 border-2 border-dashed border-cyan-500 text-cyan-600 dark:text-cyan-300 animate-pulse text-xl sm:text-2xl' :
+            !isAnswered && !livePreviewParticle ? 'bg-cyan-500/10 dark:bg-cyan-500/20 border-2 border-dashed border-cyan-500 text-cyan-600 dark:text-cyan-300 animate-pulse text-xl sm:text-2xl' :
+            !isAnswered && livePreviewParticle ? 'bg-cyan-50 dark:bg-cyan-950/50 border-2 border-cyan-600 dark:border-cyan-400 text-cyan-800 dark:text-cyan-200 ring-4 ring-cyan-500/20 text-xl sm:text-2xl scale-105 shadow-md' :
             isCurrentCorrect ? 'bg-emerald-500 text-white shadow-emerald-500/30 text-lg sm:text-2xl ring-2 ring-emerald-400' :
             'bg-rose-500 text-white shadow-rose-500/30 text-lg sm:text-2xl ring-2 ring-rose-400'
           ]"
         >
           <template v-if="!isAnswered">
-            ?
+            {{ livePreviewParticle || '?' }}
           </template>
           <template v-else>
             {{ particleStore.formatVariationDisplay(currentQ!) }}
@@ -249,7 +280,7 @@ const fullSentenceForAudio = computed(() => {
       </div>
     </div>
 
-    <!-- Opsi Jawaban (Pilihan Ganda Cepat) -->
+    <!-- Opsi Jawaban: Mode Pilihan Ganda -->
     <div v-if="!isTypingMode" class="flex flex-col gap-3">
       <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
         <button
@@ -273,46 +304,100 @@ const fullSentenceForAudio = computed(() => {
         </button>
       </div>
 
-      <!-- Tombol Switch ke Mode Ketik -->
-      <button 
-        type="button"
-        @click="isTypingMode = true"
-        class="self-center text-xs text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-      >
-        <KeyboardIcon class="w-3.5 h-3.5" />
-        <span>Atau ketik sendiri</span>
-      </button>
+      <!-- Segmented Mode Switcher (Pilihan Ganda vs Mode Ketik) -->
+      <div class="mt-1 inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-xs self-center">
+        <button
+          type="button"
+          class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-300 font-bold shadow-2xs flex items-center gap-1.5 cursor-default"
+        >
+          <Grid class="w-3.5 h-3.5" />
+          <span>Pilihan Ganda</span>
+        </button>
+        <button
+          type="button"
+          @click="switchToTyping"
+          class="px-3.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <KeyboardIcon class="w-3.5 h-3.5" />
+          <span>Mode Ketik</span>
+        </button>
+      </div>
     </div>
 
-    <!-- Opsi Jawaban (Input Ketik Langsung) -->
-    <div v-else class="flex flex-col gap-3">
-      <form @submit.prevent="handleTypedSubmit" class="flex items-center gap-2">
+    <!-- Opsi Jawaban: Mode Ketik Langsung yang Proper & Proporsional -->
+    <div v-else class="flex flex-col items-center gap-3 w-full">
+      <form @submit.prevent="handleTypedSubmit" class="w-full max-w-md relative flex items-center">
+        <!-- Left Indicator: Partikel / 助詞 -->
+        <div class="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center gap-1.5 select-none pointer-events-none z-10">
+          <span class="px-2 py-0.5 rounded-md bg-cyan-100/80 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border border-cyan-300/80 dark:border-cyan-800 text-[10px] font-black font-mono tracking-wider">
+            助詞
+          </span>
+        </div>
+
+        <!-- Input Field Proposional, Rapi, & Berpusat -->
         <input
           ref="inputRef"
-          v-model="typedInput"
+          :value="typedInput"
+          @input="handleInput"
           type="text"
           :disabled="isAnswered"
-          placeholder="Ketik partikel (misal: wa, e, o, ni)..."
-          class="flex-1 h-13 px-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-jp text-lg focus:outline-none focus:border-cyan-500 shadow-2xs transition"
+          placeholder="wa, ni, de, to..."
+          class="w-full h-14 pl-16 pr-24 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-jp font-black text-2xl text-center focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/10 shadow-xs transition disabled:opacity-75 disabled:cursor-not-allowed"
           autofocus
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
         />
+
+        <!-- Right Submit Button -->
         <button
           type="submit"
           :disabled="isAnswered || !typedInput.trim()"
-          class="h-13 px-5 rounded-2xl bg-cyan-600 hover:bg-cyan-700 disabled:opacity-50 text-white font-bold text-sm shadow-sm transition active:scale-95 cursor-pointer"
+          class="absolute right-2 top-1/2 -translate-y-1/2 h-10 px-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold text-xs sm:text-sm shadow-xs transition active:scale-95 cursor-pointer flex items-center gap-1.5 z-10"
         >
-          Kirim
+          <span>Kirim</span>
+          <Send class="w-3.5 h-3.5" />
         </button>
       </form>
 
-      <button 
-        type="button"
-        @click="isTypingMode = false"
-        class="self-center text-xs text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 flex items-center gap-1.5 py-1 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
-      >
-        <Grid class="w-3.5 h-3.5" />
-        <span>Gunakan tombol pilihan ganda</span>
-      </button>
+      <!-- Quick Particle Chips for Convenience -->
+      <div v-if="!isAnswered" class="w-full max-w-md flex flex-col items-center gap-1.5">
+        <div class="flex items-center gap-1 text-[11px] text-slate-400 font-semibold">
+          <Sparkles class="w-3 h-3 text-cyan-500" />
+          <span>Pilihan Cepat Partikel:</span>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-1.5">
+          <button
+            v-for="p in commonParticles"
+            :key="p"
+            type="button"
+            @click="selectParticleChip(p)"
+            class="min-w-[34px] h-8 px-2.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-cyan-500 hover:text-cyan-600 dark:hover:text-cyan-400 font-jp font-black text-sm transition active:scale-95 cursor-pointer shadow-2xs"
+          >
+            {{ p }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Segmented Mode Switcher (Pilihan Ganda vs Mode Ketik) -->
+      <div class="mt-1 inline-flex p-1 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-xs self-center">
+        <button
+          type="button"
+          @click="isTypingMode = false"
+          class="px-3.5 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <Grid class="w-3.5 h-3.5" />
+          <span>Pilihan Ganda</span>
+        </button>
+        <button
+          type="button"
+          class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-cyan-700 dark:text-cyan-300 font-bold shadow-2xs flex items-center gap-1.5 cursor-default"
+        >
+          <KeyboardIcon class="w-3.5 h-3.5" />
+          <span>Mode Ketik</span>
+        </button>
+      </div>
     </div>
 
     <!-- Reusable Bottom Action Navbar -->
