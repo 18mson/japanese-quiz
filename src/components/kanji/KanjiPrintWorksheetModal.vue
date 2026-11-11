@@ -86,8 +86,8 @@ const worksheetItems = computed<WorksheetKanjiItem[]>(() => {
   });
 });
 
-// Paginate 8 kanji per page (optimal for larger practice boxes on A4)
-const ITEMS_PER_PAGE = 8;
+// Paginate 10 kanji per page (mengisi halaman A4 secara proporsional dari atas ke bawah)
+const ITEMS_PER_PAGE = 10;
 const paginatedPages = computed(() => {
   const pages: WorksheetKanjiItem[][] = [];
   const items = worksheetItems.value;
@@ -302,7 +302,7 @@ const handleResetFilter = () => {
           </button>
         </div>
 
-        <!-- Page Loop (8 Kanji per Page with Enlarged Boxes) -->
+        <!-- Page Loop (10 Kanji per Page) -->
         <div
           v-for="(pageItems, pageIdx) in paginatedPages"
           :key="pageIdx"
@@ -325,22 +325,22 @@ const handleResetFilter = () => {
             </div>
           </div>
 
-          <!-- Kanji Rows List (8 Kanji Compact per Page) -->
-          <div class="flex-1 flex flex-col justify-start gap-1.5">
+          <!-- Kanji Rows List (10 Kanji per Page, mengisi lembar A4 secara rapi) -->
+          <div class="flex-1 flex flex-col justify-start gap-1">
             <div
               v-for="(item, rIdx) in pageItems"
               :key="item.character"
-              class="kanji-entry-row border border-slate-400 rounded-sm p-1.5 flex items-stretch bg-white"
+              class="kanji-entry-row border border-slate-400 rounded-sm p-1 flex items-stretch bg-white"
             >
-              <!-- Left Column: Index & Master Kanji Box (74px x 74px) -->
-              <div class="flex items-center gap-1.5 pr-2 border-r border-slate-300 shrink-0">
+              <!-- Left Column: Index & Master Kanji Box (70px x 70px) -->
+              <div class="flex items-center gap-1.5 pr-1.5 border-r border-slate-300 shrink-0">
                 <!-- Index -->
-                <span class="text-[10px] font-bold text-slate-500 w-4 text-right">
+                <span class="text-[9.5px] font-bold text-slate-500 w-4 text-right">
                   {{ (pageIdx * ITEMS_PER_PAGE) + rIdx + 1 }}
                 </span>
 
                 <!-- Master Kanji Square with Stroke Order Markers -->
-                <div class="w-[74px] h-[74px] border-2 border-slate-900 bg-white relative shrink-0 flex items-center justify-center">
+                <div class="w-[70px] h-[70px] border-2 border-slate-900 bg-white relative shrink-0 flex items-center justify-center">
                   <!-- Crosshairs Guidelines (+) -->
                   <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 109 109">
                     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2,2" stroke-width="0.8" />
@@ -405,31 +405,31 @@ const handleResetFilter = () => {
                 </div>
               </div>
 
-              <!-- Middle Column: Kunyomi, Onyomi, Meaning -->
-              <div class="w-[135px] px-2 flex flex-col justify-center border-r border-slate-300 text-[9.5px] leading-tight shrink-0 overflow-hidden">
-                <div class="mb-1 truncate">
+              <!-- Middle Column: Kunyomi, Onyomi, Meaning (Dipersempit w-[105px] agar kotak kanan lapang) -->
+              <div class="w-[105px] px-1.5 flex flex-col justify-center border-r border-slate-300 text-[9px] leading-tight shrink-0 overflow-hidden">
+                <div class="mb-0.5 truncate" :title="item.formattedKun">
                   <span class="font-bold text-slate-800">訓:</span>
                   <span class="ml-1 text-slate-700 font-medium font-japanese">{{ item.formattedKun }}</span>
                 </div>
-                <div class="mb-1 truncate">
+                <div class="mb-0.5 truncate" :title="item.formattedOn">
                   <span class="font-bold text-slate-800">音:</span>
                   <span class="ml-1 text-slate-700 font-medium font-japanese">{{ item.formattedOn }}</span>
                 </div>
-                <div class="truncate text-slate-600">
+                <div class="truncate text-slate-600" :title="item.meaning">
                   <span class="font-bold text-slate-800">Arti:</span>
                   <span class="ml-1">{{ item.meaning }}</span>
                 </div>
               </div>
 
-              <!-- Right Column: Enlarged Practice Boxes & Examples Underneath -->
-              <div class="flex-1 pl-2 flex flex-col justify-between overflow-hidden">
-                <!-- Top Row: 8 Enlarged Practice Boxes (3 Tracing + 5 Blank) -->
-                <div class="flex items-center gap-1.5 justify-start">
-                  <!-- 3 Dashed Tracing Boxes (52px x 52px) -->
+              <!-- Right Column: 8 Practice Boxes & Examples Underneath (Garis kotak terakhir tidak terpotong) -->
+              <div class="flex-1 pl-2 pr-1 flex flex-col justify-between">
+                <!-- Top Row: 8 Practice Boxes (3 Tracing + 5 Blank) -->
+                <div class="flex items-center gap-1 justify-start">
+                  <!-- 3 Dashed Tracing Boxes (50px x 50px) -->
                   <div
                     v-for="bIdx in 3"
                     :key="'trace-' + bIdx"
-                    class="w-[52px] h-[52px] border border-slate-400 bg-white relative shrink-0"
+                    class="w-[50px] h-[50px] border border-slate-400 bg-white relative shrink-0"
                   >
                     <svg class="w-full h-full" viewBox="0 0 109 109">
                       <!-- Crosshairs Guidelines (+) -->
@@ -465,11 +465,11 @@ const handleResetFilter = () => {
                     </svg>
                   </div>
 
-                  <!-- 5 Blank Practice Boxes with Crosshairs (52px x 52px) -->
+                  <!-- 5 Blank Practice Boxes with Crosshairs (50px x 50px) -->
                   <div
                     v-for="bIdx in 5"
                     :key="'blank-' + bIdx"
-                    class="w-[52px] h-[52px] border border-slate-400 bg-white relative shrink-0"
+                    class="w-[50px] h-[50px] border border-slate-400 bg-white relative shrink-0"
                   >
                     <svg class="w-full h-full" viewBox="0 0 109 109">
                       <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2,2" stroke-width="0.8" />
@@ -479,7 +479,7 @@ const handleResetFilter = () => {
                 </div>
 
                 <!-- Bottom Row: Context Examples with filled parentheses -->
-                <div class="pt-1 mt-1 border-t border-slate-200 text-[10px] text-slate-700 leading-none truncate font-japanese">
+                <div class="pt-0.5 mt-0.5 border-t border-slate-200 text-[9.5px] text-slate-700 leading-none truncate font-japanese">
                   <span class="font-bold text-slate-800 font-sans mr-1">Contoh:</span>
                   <span v-for="(ex, eIdx) in item.examples" :key="eIdx" class="mr-3">
                     {{ ex }}
@@ -490,7 +490,7 @@ const handleResetFilter = () => {
           </div>
 
           <!-- Page Footer -->
-          <div class="border-t border-slate-300 pt-1 mt-1 flex items-center justify-between text-[8.5px] text-slate-500">
+          <div class="border-t border-slate-300 pt-0.5 mt-0.5 flex items-center justify-between text-[8.5px] text-slate-500">
             <span>Nihongo Master Practice Worksheet</span>
             <span>Gunakan pensil / pulpen untuk menelusuri garis putus-putus dan berlatih di kotak kosong</span>
           </div>
