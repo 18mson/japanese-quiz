@@ -500,6 +500,18 @@ watch(() => quizStore.isInputShaking, (shaking) => {
         autocapitalize="off"
         spellcheck="false"
       />
+      <!-- Tombol Clear Kata di dalam Input Field jika ada teks -->
+      <button
+        v-if="!isAnswered && userInput.length > 0"
+        type="button"
+        class="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-slate-200/80 dark:bg-slate-700 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 flex items-center justify-center text-xs font-bold transition cursor-pointer select-none active:scale-90 z-20"
+        :class="quizStore.activeQuestionType === 'meaning_to_words' ? 'right-20 sm:right-22' : 'right-3 sm:right-4'"
+        @click.stop="handleClearInput"
+        title="Bersihkan teks"
+      >
+        ✕
+      </button>
+
       <!-- Right Side Controls inside Input (Hanya Switch Hiragana/Katakana untuk mode Indo -> Jepang) -->
       <div v-if="!isAnswered && quizStore.activeQuestionType === 'meaning_to_words'" class="absolute right-3 sm:right-3.5 top-1/2 -translate-y-1/2 flex items-center z-20">
         <!-- Switch Hiragana / Katakana khusus mode Kotoba Indonesia -> Jepang -->
@@ -643,6 +655,18 @@ watch(() => quizStore.isInputShaking, (shaking) => {
         >
           <span>Skip</span>
           <span class="text-[10px]">⏭</span>
+        </button>
+
+        <!-- Tombol Hapus / Bersihkan Kata (Tengah, hanya muncul jika ada input teks) -->
+        <button
+          v-if="userInput.length > 0"
+          type="button"
+          class="px-3 py-1.5 bg-rose-50 dark:bg-rose-950/70 hover:bg-rose-100 dark:hover:bg-rose-900/70 text-rose-600 dark:text-rose-300 font-bold rounded-lg text-xs transition border border-rose-200 dark:border-rose-800 flex items-center gap-1 cursor-pointer select-none active:scale-95 touch-manipulation animate-fadeIn"
+          @touchstart.prevent="handleClearInput"
+          @mousedown.prevent="handleClearInput"
+          title="Bersihkan semua kata yang diketik"
+        >
+          <span>✕ Hapus Kata</span>
         </button>
 
         <!-- Tombol Switch Mode Input (Di seberang tombol Skip / Kanan) -->

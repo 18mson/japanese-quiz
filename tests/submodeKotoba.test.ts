@@ -127,6 +127,33 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan R
     // Jawaban salah jauh
     assert.strictEqual(checkIsJapaneseTypo('たべます', item), false);
   });
+
+  await t.test('menangani kata sifat-na (大丈夫な) dengan dan tanpa な sebagai 100% Benar', () => {
+    const naItem = {
+      character: '大丈夫な',
+      kana: 'だいじょうぶ',
+      romaji: ['daijoubu', 'daijobu', 'daijoubuna'],
+      category_word: 'Kata Sifat-na'
+    };
+
+    // Input dengan な di akhir
+    assert.strictEqual(checkIsJapaneseCorrect('だいじょうぶな', naItem), true);
+    assert.strictEqual(checkIsJapaneseTypo('だいじょうぶな', naItem), false);
+
+    // Input tanpa な di akhir
+    assert.strictEqual(checkIsJapaneseCorrect('だいじょうぶ', naItem), true);
+    assert.strictEqual(checkIsJapaneseTypo('だいじょうぶ', naItem), false);
+
+    // Input kanji dengan な
+    assert.strictEqual(checkIsJapaneseCorrect('大丈夫な', naItem), true);
+
+    // Input kanji tanpa な
+    assert.strictEqual(checkIsJapaneseCorrect('大丈夫', naItem), true);
+
+    // Typo nyata pada kata sifat-na (misal kurang 'う')
+    assert.strictEqual(checkIsJapaneseCorrect('だいじょぶな', naItem), false);
+    assert.strictEqual(checkIsJapaneseTypo('だいじょぶな', naItem), true);
+  });
 });
 
 test('Smart Intercept: Pencegahan Salah Format Mode Soal (checkIsWrongModeInput)', async (t) => {

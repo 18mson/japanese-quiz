@@ -369,7 +369,7 @@ export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): bo
 
 export const checkIsJapaneseCorrect = (
   userInput: string,
-  word: { character: string; kana?: string; romaji: string | string[] }
+  word: { character: string; kana?: string; romaji: string | string[]; category_word?: string }
 ): boolean => {
   if (!userInput || !word) return false;
   const rawClean = userInput.trim().replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
@@ -380,28 +380,65 @@ export const checkIsJapaneseCorrect = (
     return false;
   }
 
-  // 1. Direct character match (Kanji or Kana)
   const targetCharClean = word.character.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
-  if (rawClean === targetCharClean) return true;
+  const targetKanaClean = word.kana ? word.kana.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '') : '';
+  const inputAsHiragana = wanakana.toHiragana(rawClean);
 
-  // 2. Direct Kana match (Hiragana or Katakana)
-  if (word.kana) {
-    const targetKanaClean = word.kana.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
-    if (rawClean === targetKanaClean) return true;
-    if (wanakana.toHiragana(rawClean) === wanakana.toHiragana(targetKanaClean)) return true;
+  // Kumpulan semua kemungkinan varian penulisan yang valid
+  const validTargets = new Set<string>();
+
+  const isNaAdjective = targetCharClean.endsWith('な') || (word as any).category_word === 'Kata Sifat-na';
+
+  // 1. Variasi dari word.character (Kanji atau Kana)
+  if (targetCharClean) {
+    validTargets.add(targetCharClean);
+    validTargets.add(wanakana.toHiragana(targetCharClean));
+
+    // Jika kata sifat-na (misal: 大丈夫な, 元気な)
+    if (isNaAdjective) {
+      if (targetCharClean.endsWith('な')) {
+        const charNoNa = targetCharClean.slice(0, -1);
+        validTargets.add(charNoNa);
+        validTargets.add(wanakana.toHiragana(charNoNa));
+      } else {
+        validTargets.add(targetCharClean + 'な');
+        validTargets.add(wanakana.toHiragana(targetCharClean + 'な'));
+      }
+    }
   }
 
-  // 3. User input converted to Hiragana and compared with target Kana or Character
-  const inputAsHiragana = wanakana.toHiragana(rawClean);
-  if (word.kana && inputAsHiragana === word.kana) return true;
-  if (inputAsHiragana === targetCharClean) return true;
+  // 2. Variasi dari word.kana
+  if (targetKanaClean) {
+    validTargets.add(targetKanaClean);
+    const kanaHiragana = wanakana.toHiragana(targetKanaClean);
+    validTargets.add(kanaHiragana);
+
+    // Variasi dengan dan tanpa 'な' untuk kata sifat-na
+    if (isNaAdjective) {
+      if (kanaHiragana.endsWith('な')) {
+        const kanaNoNa = kanaHiragana.slice(0, -1);
+        validTargets.add(kanaNoNa);
+        if (targetKanaClean.endsWith('な')) {
+          validTargets.add(targetKanaClean.slice(0, -1));
+        }
+      } else {
+        validTargets.add(kanaHiragana + 'な');
+        validTargets.add(targetKanaClean + 'な');
+      }
+    }
+  }
+
+  // Cek apakah input (asli atau versi hiragana) cocok dengan salah satu target valid
+  if (validTargets.has(rawClean) || validTargets.has(inputAsHiragana)) {
+    return true;
+  }
 
   return false;
 };
 
 export const checkIsJapaneseTypo = (
   userInput: string,
-  word: { character: string; kana?: string; romaji: string | string[] }
+  word: { character: string; kana?: string; romaji: string | string[]; category_word?: string }
 ): boolean => {
   if (!userInput || userInput.trim() === '') return false;
   if (checkIsJapaneseCorrect(userInput, word)) return false;
@@ -414,12 +451,29 @@ export const checkIsJapaneseTypo = (
     return false;
   }
 
+  const isNaAdjective = word.character.endsWith('な') || (word as any).category_word === 'Kata Sifat-na';
+
   // Check kana typo (jarak Levenshtein 1 pada hiragana)
   if (word.kana) {
     const inputHiragana = wanakana.toHiragana(rawClean);
     const targetHiragana = wanakana.toHiragana(word.kana);
+    const targetHiraganaWithNa = targetHiragana.endsWith('な') ? targetHiragana : targetHiragana + 'な';
+    const targetHiraganaNoNa = targetHiragana.endsWith('な') ? targetHiragana.slice(0, -1) : targetHiragana;
+
+    // Cek Levenshtein jarak 1 ke target dasar
     if (targetHiragana.length >= 3 && getLevenshteinDistance(inputHiragana, targetHiragana) === 1) {
+      // Pastikan bukan sekadar perbedaan 'な' untuk kata sifat-na (karena itu varian benar)
+      if (isNaAdjective && (inputHiragana === targetHiraganaWithNa || inputHiragana === targetHiraganaNoNa)) {
+        return false;
+      }
       return true;
+    }
+
+    // Cek Levenshtein jarak 1 ke varian berakhiran な untuk kata sifat-na
+    if (isNaAdjective && targetHiraganaWithNa.length >= 4) {
+      if (getLevenshteinDistance(inputHiragana, targetHiraganaWithNa) === 1) {
+        return true;
+      }
     }
   }
 

@@ -49,7 +49,8 @@ const resolvedLabel = computed(() => {
 <template>
   <div 
     v-if="show" 
-    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 flex justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+    class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-gray-200 dark:border-slate-800 py-3.5 px-6 justify-center items-center shadow-lg z-30 w-full animate-fadeIn"
+    :class="mode === 'typing' ? 'hidden sm:flex' : 'flex'"
   >
     <div class="max-w-md w-full flex justify-center gap-4">
       <!-- Mode Typing (Pre-Answer Actions on Desktop: Skip & Submit) -->

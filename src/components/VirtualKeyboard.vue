@@ -169,6 +169,9 @@ function handleKeyPress(char: string) {
   emit('key', char);
 }
 
+let backspaceTimer: ReturnType<typeof setTimeout> | null = null;
+let isLongPressClear = false;
+
 function handleBackspace() {
   if (props.disabled) return;
   triggerVisualEffect('backspace');
@@ -177,6 +180,40 @@ function handleBackspace() {
     try { navigator.vibrate(15); } catch {}
   }
   emit('backspace');
+}
+
+function handleClearAll() {
+  if (props.disabled) return;
+  triggerVisualEffect('backspace');
+  playClickSound();
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try { navigator.vibrate([25, 40, 25]); } catch {}
+  }
+  emit('clear');
+}
+
+function startBackspacePress() {
+  if (props.disabled) return;
+  isLongPressClear = false;
+  triggerVisualEffect('backspace');
+
+  // Tekan tahan > 350ms: otomatis clean / bersihkan seluruh kata
+  backspaceTimer = setTimeout(() => {
+    isLongPressClear = true;
+    handleClearAll();
+  }, 350);
+}
+
+function stopBackspacePress(triggerTapIfShort: boolean = true) {
+  if (backspaceTimer) {
+    clearTimeout(backspaceTimer);
+    backspaceTimer = null;
+  }
+  if (!isLongPressClear && triggerTapIfShort) {
+    // Normal tap: hapus 1 karakter
+    handleBackspace();
+  }
+  isLongPressClear = false;
 }
 
 function handleEnter() {
@@ -219,7 +256,7 @@ const activeKeyClass = computed(() => isDark.value
 
 <template>
   <div
-    class="w-full p-1.5 pb-4 sm:p-2.5 flex flex-col gap-1.5 select-none z-40 touch-none transition-colors duration-200"
+    class="w-full p-1.5 pb-2.5 sm:p-2.5 flex flex-col gap-1.5 select-none z-40 touch-none transition-colors duration-200"
     :class="[containerClass, { 'opacity-60 pointer-events-none': disabled }]"
   >
     <!-- Custom Top Content / Action Bar Slot -->
@@ -396,15 +433,19 @@ const activeKeyClass = computed(() => isDark.value
         <button
           type="button"
           :disabled="disabled"
-          @touchstart.prevent="handleBackspace"
-          @mousedown.prevent="handleBackspace"
-          class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform"
+          @touchstart.prevent="startBackspacePress"
+          @touchend.prevent="stopBackspacePress(true)"
+          @touchcancel.prevent="stopBackspacePress(false)"
+          @mousedown.prevent="startBackspacePress"
+          @mouseup.prevent="stopBackspacePress(true)"
+          @mouseleave.prevent="stopBackspacePress(false)"
+          class="flex-1.5 min-w-[50px] sm:min-w-[62px] rounded-lg font-bold text-base sm:text-lg border transition-all duration-75 flex items-center justify-center cursor-pointer transform touch-manipulation select-none"
           :class="[
             backspaceClass,
             keyHeightClass,
-            activeKey === 'backspace' ? '!scale-90 !bg-torii !text-white !ring-2 !ring-torii-light shadow-md' : ''
+            activeKey === 'backspace' ? '!scale-90 !bg-rose-600 !text-white !ring-2 !ring-rose-400 shadow-md' : ''
           ]"
-          title="Backspace"
+          title="Hapus (Tahan untuk hapus seluruh kata)"
         >
           ⌫
         </button>
