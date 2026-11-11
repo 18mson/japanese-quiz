@@ -10,6 +10,7 @@ import MasteryCard from './mastery/MasteryCard.vue';
 import MasteryFilterBar from './mastery/MasteryFilterBar.vue';
 import MasteryPreviewModal from './mastery/MasteryPreviewModal.vue';
 import MasteryKanjiDetailModal from './mastery/MasteryKanjiDetailModal.vue';
+import KanjiPrintWorksheetModal from './kanji/KanjiPrintWorksheetModal.vue';
 import { toRomaji, toHiragana, toKatakana } from 'wanakana';
 import { SkipForward } from '@lucide/vue';
 import { 
@@ -23,7 +24,8 @@ import {
   Check,
   CheckSquare,
   AlertTriangle,
-  Loader2
+  Loader2,
+  Printer
 } from '@lucide/vue';
 import { watch } from 'vue';
 
@@ -73,6 +75,8 @@ const selectedCharacters = ref<Set<string>>(new Set());
 const targetTier = ref<'new' | 'learning' | 'mastered' | 'crown' | 'skip' | 'unskip'>('mastered');
 const showConfirmModal = ref<boolean>(false);
 const isApplying = ref<boolean>(false);
+const showPrintModal = ref<boolean>(false);
+const printSingleKanji = ref<string[] | undefined>(undefined);
 
 const tierLabelsMap: Record<'new' | 'learning' | 'mastered' | 'crown' | 'skip' | 'unskip', string> = {
   new: 'Belum Dipelajari',
@@ -385,6 +389,18 @@ const nextPreviewItem = () => {
           </div>
 
           <div class="flex items-center gap-2 relative z-10">
+            <!-- Print Worksheet Button (Kanji N5 / N4) -->
+            <button 
+              v-if="(activeCategory === 'kanji' || activeCategory === 'kanji_n4') && !isEditMode"
+              type="button"
+              @click="printSingleKanji = undefined; showPrintModal = true;"
+              class="px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-xs bg-white/10 hover:bg-white/20 dark:bg-slate-850 dark:hover:bg-slate-800 dark:border dark:border-slate-700/80 text-white dark:text-slate-200"
+              title="Cetak Lembar Latihan Menulis Kanji (A4)"
+            >
+              <Printer class="w-3.5 h-3.5 text-indigo-300 dark:text-amber-400" />
+              <span class="hidden xs:inline">Cetak Lembar</span>
+            </button>
+
             <!-- Toggle Edit Mode Button -->
             <button 
               type="button"
@@ -596,6 +612,16 @@ const nextPreviewItem = () => {
               <!-- Right: Buttons -->
               <div class="flex items-center gap-1.5 sm:gap-2 ml-auto">
                 <button 
+                  v-if="(activeCategory === 'kanji' || activeCategory === 'kanji_n4') && selectedCharacters.size > 0"
+                  type="button" 
+                  @click="printSingleKanji = Array.from(selectedCharacters); showPrintModal = true;"
+                  class="px-2.5 sm:px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 transition cursor-pointer shadow-xs"
+                  title="Cetak kanji yang dipilih"
+                >
+                  <Printer class="w-3.5 h-3.5" />
+                  <span>Cetak ({{ selectedCharacters.size }})</span>
+                </button>
+                <button 
                   type="button" 
                   @click="clearSelection" 
                   class="px-2.5 py-1.5 text-xs text-slate-400 hover:text-white font-medium transition cursor-pointer"
@@ -660,6 +686,7 @@ const nextPreviewItem = () => {
         @close="closePreview"
         @prev="prevPreviewItem"
         @next="nextPreviewItem"
+        @print="(char) => { printSingleKanji = [char]; showPrintModal = true; }"
       />
       <MasteryPreviewModal
         v-else-if="selectedPreviewItem"
@@ -673,6 +700,16 @@ const nextPreviewItem = () => {
         @next="nextPreviewItem"
       />
     </Transition>
+
+    <!-- Kanji Printable Practice Worksheet Modal -->
+    <KanjiPrintWorksheetModal
+      :is-open="showPrintModal"
+      :initial-category="activeCategory === 'kanji_n4' ? 'kanji_n4' : 'kanji'"
+      :initial-group="activeSubtype"
+      :initial-status-filter="activeStatusFilter"
+      :initial-kanji-list="printSingleKanji || (selectedCharacters.size > 0 ? Array.from(selectedCharacters) : undefined)"
+      @close="showPrintModal = false; printSingleKanji = undefined;"
+    />
 
     <!-- Confirmation Modal Dialog for Bulk Update -->
     <Transition name="modal-backdrop">

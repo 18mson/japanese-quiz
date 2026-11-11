@@ -20,7 +20,8 @@ import {
   Circle,
   Lightbulb,
   Layers,
-  BookOpen
+  BookOpen,
+  Printer
 } from '@lucide/vue';
 
 const props = withDefaults(
@@ -39,6 +40,7 @@ const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'prev'): void;
   (e: 'next'): void;
+  (e: 'print', char: string): void;
 }>();
 
 const quizStore = useQuizStore();
@@ -485,7 +487,7 @@ onUnmounted(() => {
           </span>
         </div>
 
-        <!-- Tombol Berikutnya & Tutup -->
+        <!-- Tombol Berikutnya, Cetak & Tutup -->
         <div class="flex items-center gap-2">
           <button
             type="button"
@@ -496,6 +498,16 @@ onUnmounted(() => {
           >
             <span class="hidden sm:inline">Berikutnya</span>
             <ChevronRight class="w-4 h-4" />
+          </button>
+
+          <button
+            type="button"
+            @click="props.item?.character && emit('print', props.item.character)"
+            class="px-3 sm:px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 border transition cursor-pointer text-indigo-600 dark:text-amber-400 hover:bg-indigo-50 dark:hover:bg-slate-800 border-indigo-200 dark:border-slate-700 shadow-2xs active:scale-95"
+            title="Cetak lembar latihan untuk kanji ini"
+          >
+            <Printer class="w-4 h-4" />
+            <span class="hidden sm:inline">Cetak</span>
           </button>
 
           <button
