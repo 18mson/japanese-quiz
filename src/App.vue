@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, defineAsyncComponent } from 'vue';
+import { ref, watch, onMounted, onUnmounted, defineAsyncComponent } from 'vue';
+import { useRegisterSW } from 'virtual:pwa-register/vue';
 import QuizHeader from './components/QuizHeader.vue';
 import QuizQuestion from './components/QuizQuestion.vue';
 import QuizOptions from './components/QuizOptions.vue';
@@ -40,7 +41,7 @@ import { useBadgeStore } from './stores/badgeStore';
 import { useMasteryStore } from './stores/masteryStore';
 import { useLessonStore } from './stores/lessonStore';
 import { syncAllKanjiToLocal } from './services/kanjiInfoService';
-import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, BookOpen, Award, Sliders, RotateCcw, Cloud, RefreshCw, LogIn } from '@lucide/vue';
+import { LogOut, ChevronDown, ChevronRight, Info, Sun, Moon, Monitor, BookMarked, BookOpen, Award, Sliders, RotateCcw, Cloud, RefreshCw, LogIn, Sparkles } from '@lucide/vue';
 
 const quizStore = useQuizStore();
 const authStore = useAuthStore();
@@ -48,6 +49,26 @@ const settingsStore = useSettingsStore();
 const badgeStore = useBadgeStore();
 const masteryStore = useMasteryStore();
 const lessonStore = useLessonStore();
+
+// Auto Update Service Worker: deteksi rilis baru otomatis tanpa perlu refresh berulang kali
+const { needRefresh, updateServiceWorker } = useRegisterSW({
+  immediate: true,
+  onRegisteredSW(_swUrl: string, r: ServiceWorkerRegistration | undefined) {
+    if (r) {
+      // Periksa pembaruan di server secara berkala (setiap 60 detik)
+      setInterval(() => {
+        r.update().catch(() => {});
+      }, 60 * 1000);
+    }
+  }
+});
+
+// Jika sedang di home/idle saat update baru terdeteksi, reload otomatis secara mulus
+watch(needRefresh, (isNeeded) => {
+  if (isNeeded && !quizStarted.value && !showBattleground.value && !showDailyPractice.value) {
+    updateServiceWorker(true);
+  }
+});
 
 const syncToastMessage = ref<string | null>(null);
 let syncToastTimeout: any = null;
@@ -75,10 +96,16 @@ const handleManualSync = async () => {
 };
 
 const handleVisibilityChange = async () => {
-  if (document.visibilityState === 'visible' && authStore.user) {
-    try {
-      await masteryStore.syncWithServer(authStore.user.id);
-    } catch (e) { }
+  if (document.visibilityState === 'visible') {
+    // Segera cek apakah ada versi web baru saat tab dibuka/difokuskan kembali
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistration().then(reg => reg?.update()).catch(() => {});
+    }
+    if (authStore.user) {
+      try {
+        await masteryStore.syncWithServer(authStore.user.id);
+      } catch (e) { }
+    }
   }
 };
 
@@ -274,6 +301,16 @@ onMounted(async () => {
   window.addEventListener('popstate', checkRouteState);
   document.addEventListener('click', handleDocumentClick);
   document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  // Reload halaman secara mulus ketika service worker baru aktif dan mengambil alih kendali
+  let refreshing = false;
+  navigator.serviceWorker?.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
+
   checkRouteState();
   settingsStore.applyTheme();
   await authStore.checkSession();
@@ -313,6 +350,11 @@ const goToHome = () => {
   closeHandbook();
   closeAboutModal();
   closeReferenceModal();
+
+  // Jika ada pembaruan versi baru yang sedang menunggu, terapkan saat user kembali ke home
+  if (needRefresh.value) {
+    updateServiceWorker(true);
+  }
 };
 </script>
 
@@ -751,6 +793,32 @@ const goToHome = () => {
     <PreviewCardModal v-if="quizStarted && !showBattleground" />
     <LessonMaterialModal v-if="quizStarted && !showBattleground" />
     <GoalCelebrationToast />
+
+    <!-- App Auto Update Notification Banner/Toast -->
+    <transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="transform -translate-y-4 opacity-0"
+      enter-to-class="transform translate-y-0 opacity-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="transform translate-y-0 opacity-100"
+      leave-to-class="transform -translate-y-4 opacity-0"
+    >
+      <div 
+        v-if="needRefresh" 
+        class="fixed top-3 left-1/2 -translate-x-1/2 z-[60] px-4 py-2 rounded-2xl bg-indigo-600 dark:bg-indigo-750 text-white shadow-2xl border border-indigo-400/50 flex items-center gap-2.5 text-xs font-bold max-w-sm sm:max-w-md"
+      >
+        <Sparkles class="w-4 h-4 text-amber-300 flex-shrink-0 animate-bounce" />
+        <span class="flex-1 text-left">Pembaruan baru tersedia!</span>
+        <button
+          type="button"
+          @click="updateServiceWorker(true)"
+          class="px-2.5 py-1 bg-white text-indigo-700 hover:bg-indigo-50 rounded-xl text-xs font-black shadow-xs cursor-pointer transition flex items-center gap-1 active:scale-95"
+        >
+          <RefreshCw class="w-3 h-3" />
+          <span>Perbarui</span>
+        </button>
+      </div>
+    </transition>
 
     <!-- Cloud Sync Toast Notification -->
     <transition

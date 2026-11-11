@@ -5018,7 +5018,7 @@ export const KANJI_DECOMPOSITION_MAP: Record<string, KanjiFuriganaUnit[]> = {
   "少々 お待ちください": [
     {
       "text": "少",
-      "reading": "しょうしょう おまちください",
+      "reading": "しょうしょう",
       "isKanji": true
     },
     {
@@ -5027,7 +5027,7 @@ export const KANJI_DECOMPOSITION_MAP: Record<string, KanjiFuriganaUnit[]> = {
     },
     {
       "text": "待",
-      "reading": "",
+      "reading": "ま",
       "isKanji": true
     },
     {
@@ -7029,7 +7029,7 @@ export const KANJI_DECOMPOSITION_MAP: Record<string, KanjiFuriganaUnit[]> = {
     },
     {
       "text": "痛",
-      "reading": "",
+      "reading": "いた",
       "isKanji": true
     },
     {
@@ -7044,7 +7044,7 @@ export const KANJI_DECOMPOSITION_MAP: Record<string, KanjiFuriganaUnit[]> = {
     },
     {
       "text": "痛",
-      "reading": "",
+      "reading": "いた",
       "isKanji": true
     },
     {
@@ -7064,7 +7064,7 @@ export const KANJI_DECOMPOSITION_MAP: Record<string, KanjiFuriganaUnit[]> = {
     },
     {
       "text": "痛",
-      "reading": "",
+      "reading": "いた",
       "isKanji": true
     },
     {
