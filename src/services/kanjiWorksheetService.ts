@@ -90,10 +90,19 @@ export function formatKanjiExamples(
   for (const w of matchedWords) {
     if (result.length >= 2) break;
     // Format: "漢字(かんじ) [Arti]"
+    // Jika arti memiliki penjelasan kurung yang sangat panjang (misal "(dengan nama...)"), sederhanakan
+    let meaningText = w.meaning;
+    if (meaningText.length > 28) {
+      const parenMatch = meaningText.match(/^([^\(（\[]+)\s*[\(（\[]/);
+      if (parenMatch && parenMatch[1].trim().length >= 3) {
+        meaningText = parenMatch[1].trim();
+      }
+    }
+
     if (w.character === w.kana) {
-      result.push(`${w.character} [${w.meaning}]`);
+      result.push(`${w.character} [${meaningText}]`);
     } else {
-      result.push(`${w.character}(${w.kana}) [${w.meaning}]`);
+      result.push(`${w.character}(${w.kana}) [${meaningText}]`);
     }
   }
 

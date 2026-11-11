@@ -333,7 +333,7 @@ const handleResetFilter = () => {
             <div
               v-for="(item, rIdx) in pageItems"
               :key="item.character"
-              class="kanji-entry-row border border-slate-400 rounded-sm p-1.5 flex items-stretch bg-white"
+              class="kanji-entry-row border border-slate-400 rounded-sm p-1.5 flex items-stretch bg-white min-w-0 overflow-hidden"
             >
               <!-- Left Column: Index & Master Kanji Box (76px x 76px) -->
               <div class="flex items-center gap-1.5 pr-1.5 border-r border-slate-300 shrink-0">
@@ -409,7 +409,7 @@ const handleResetFilter = () => {
               </div>
 
               <!-- Middle Column: Kunyomi, Onyomi, Meaning (Diatur w-[108px] agar kotak kanan lapang) -->
-              <div class="w-[108px] px-2 flex flex-col justify-center border-r border-slate-300 text-[9.5px] leading-tight shrink-0 overflow-hidden">
+              <div class="w-[108px] min-w-[108px] max-w-[108px] px-2 flex flex-col justify-center border-r border-slate-300 text-[9.5px] leading-tight shrink-0 overflow-hidden">
                 <div class="mb-1 truncate" :title="item.formattedKun">
                   <span class="font-bold text-slate-800">訓:</span>
                   <span class="ml-1 text-slate-700 font-medium font-japanese">{{ item.formattedKun }}</span>
@@ -425,7 +425,7 @@ const handleResetFilter = () => {
               </div>
 
               <!-- Right Column: 8 Practice Boxes & Examples Underneath (Garis kotak terakhir tetap utuh) -->
-              <div class="flex-1 pl-2 pr-1 flex flex-col justify-between">
+              <div class="flex-1 min-w-0 pl-2 pr-1 flex flex-col justify-between overflow-hidden">
                 <!-- Top Row: 8 Practice Boxes (3 Tracing + 5 Blank) - Diperbesar ke 54px x 54px -->
                 <div class="flex items-center gap-1.5 justify-start">
                   <!-- 3 Dashed Tracing Boxes (54px x 54px) -->
@@ -481,12 +481,14 @@ const handleResetFilter = () => {
                   </div>
                 </div>
 
-                <!-- Bottom Row: Context Examples with filled parentheses -->
-                <div class="pt-1 mt-1 border-t border-slate-200 text-[10px] text-slate-700 leading-none truncate font-japanese">
-                  <span class="font-bold text-slate-800 font-sans mr-1.5">Contoh:</span>
-                  <span v-for="(ex, eIdx) in item.examples" :key="eIdx" class="mr-3">
-                    {{ ex }}
-                  </span>
+                <!-- Bottom Row: Context Examples with filled parentheses (Maks 2 baris jika teks panjang) -->
+                <div class="pt-1 mt-0.5 border-t border-slate-200 text-[9px] leading-[12.5px] text-slate-700 font-japanese min-w-0 overflow-hidden">
+                  <div class="line-clamp-2 break-words">
+                    <span class="font-bold text-slate-800 font-sans mr-1">Contoh:</span>
+                    <span v-for="(ex, eIdx) in item.examples" :key="eIdx" class="inline mr-2.5">
+                      {{ ex }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
