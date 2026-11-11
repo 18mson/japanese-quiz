@@ -41,6 +41,18 @@
     -webkit-tap-highlight-color: transparent;
   }
 
+  @media print {
+    html,
+    html.dark,
+    body,
+    body.dark {
+      color-scheme: light !important;
+      background: #ffffff !important;
+      background-color: #ffffff !important;
+      color: #000000 !important;
+    }
+  }
+
   html.dark ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

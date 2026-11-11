@@ -149,7 +149,23 @@ const loadStrokes = async () => {
 };
 
 const handlePrint = () => {
-  window.print();
+  const isDarkModeActive = document.documentElement.classList.contains('dark');
+  if (isDarkModeActive) {
+    document.documentElement.classList.remove('dark');
+  }
+
+  const cleanup = () => {
+    if (isDarkModeActive) {
+      document.documentElement.classList.add('dark');
+    }
+    window.removeEventListener('afterprint', cleanup);
+  };
+  window.addEventListener('afterprint', cleanup);
+
+  // Tunggu DOM settle setelah dark mode class dilepas agar canvas browser putih bersih
+  setTimeout(() => {
+    window.print();
+  }, 50);
 };
 
 const handleResetFilter = () => {
@@ -171,7 +187,7 @@ const handleResetFilter = () => {
     >
       <div
         v-if="isOpen"
-        class="kanji-print-modal-root fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:p-0 print:bg-white print:overflow-visible"
+        class="kanji-print-modal-root fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-start p-2 sm:p-4 overflow-y-auto print:static print:inset-auto print:w-full print:h-auto print:p-0 print:m-0 print:bg-white print:overflow-visible print:backdrop-blur-none"
       >
       <!-- SCREEN ONLY: Header & Controls Toolbar -->
       <div class="print:hidden w-full max-w-5xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-xl p-4 sm:p-5 mb-4 sticky top-2 z-20">
@@ -559,15 +575,23 @@ const handleResetFilter = () => {
   }
 
   :global(html),
-  :global(body) {
+  :global(html.dark),
+  :global(body),
+  :global(body.dark) {
     width: 100% !important;
     height: auto !important;
     min-height: 100% !important;
     overflow: visible !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
     margin: 0 !important;
     padding: 0 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    color-scheme: light !important;
     print-color-adjust: exact !important;
     -webkit-print-color-adjust: exact !important;
   }
@@ -582,7 +606,7 @@ const handleResetFilter = () => {
     display: none !important;
   }
 
-  /* Root modal cetak menjadi flow dokumen normal (static block) tanpa batas overflow */
+  /* Root modal cetak menjadi flow dokumen normal (static block) berlatar putih bersih */
   .kanji-print-modal-root {
     position: static !important;
     display: block !important;
@@ -591,7 +615,12 @@ const handleResetFilter = () => {
     min-height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    background: transparent !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     padding: 0 !important;
     margin: 0 !important;
     z-index: auto !important;
@@ -606,6 +635,8 @@ const handleResetFilter = () => {
     min-height: auto !important;
     max-height: none !important;
     overflow: visible !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -622,6 +653,9 @@ const handleResetFilter = () => {
     height: 284mm !important;
     max-height: 284mm !important;
     overflow: hidden !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
     page-break-after: always !important;
     break-after: page !important;
     page-break-inside: avoid !important;
@@ -631,6 +665,20 @@ const handleResetFilter = () => {
   .worksheet-page:last-child {
     page-break-after: auto !important;
     break-after: auto !important;
+  }
+
+  .kanji-entry-row {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-color: #94a3b8 !important;
+  }
+
+  .worksheet-page * {
+    color: #0f172a !important;
+  }
+
+  .worksheet-page .border-slate-900 {
+    border-color: #0f172a !important;
   }
 }
 </style>
