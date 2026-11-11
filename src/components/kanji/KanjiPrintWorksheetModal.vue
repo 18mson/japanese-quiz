@@ -154,7 +154,7 @@ const handleResetFilter = () => {
                 Cetak Lembar Latihan Kanji
               </h2>
               <p class="text-xs text-gray-500 dark:text-slate-400">
-                Format buku latihan standar Genkouyoushi A4 (8 kanji per halaman)
+                Format buku latihan standar Genkouyoushi A4 (10 kanji per halaman)
               </p>
             </div>
           </div>
@@ -326,21 +326,24 @@ const handleResetFilter = () => {
           </div>
 
           <!-- Kanji Rows List (10 Kanji per Page, mengisi lembar A4 secara rapi) -->
-          <div class="flex-1 flex flex-col justify-start gap-1">
+          <div
+            class="flex-1 flex flex-col my-1"
+            :class="pageItems.length === ITEMS_PER_PAGE ? 'justify-between' : 'justify-start gap-2'"
+          >
             <div
               v-for="(item, rIdx) in pageItems"
               :key="item.character"
-              class="kanji-entry-row border border-slate-400 rounded-sm p-1 flex items-stretch bg-white"
+              class="kanji-entry-row border border-slate-400 rounded-sm p-1.5 flex items-stretch bg-white"
             >
-              <!-- Left Column: Index & Master Kanji Box (70px x 70px) -->
+              <!-- Left Column: Index & Master Kanji Box (76px x 76px) -->
               <div class="flex items-center gap-1.5 pr-1.5 border-r border-slate-300 shrink-0">
                 <!-- Index -->
-                <span class="text-[9.5px] font-bold text-slate-500 w-4 text-right">
+                <span class="text-[10px] font-bold text-slate-500 w-4 text-right">
                   {{ (pageIdx * ITEMS_PER_PAGE) + rIdx + 1 }}
                 </span>
 
                 <!-- Master Kanji Square with Stroke Order Markers -->
-                <div class="w-[70px] h-[70px] border-2 border-slate-900 bg-white relative shrink-0 flex items-center justify-center">
+                <div class="w-[76px] h-[76px] border-2 border-slate-900 bg-white relative shrink-0 flex items-center justify-center">
                   <!-- Crosshairs Guidelines (+) -->
                   <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 109 109">
                     <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2,2" stroke-width="0.8" />
@@ -369,7 +372,7 @@ const handleResetFilter = () => {
                           <circle
                             :cx="pt.x"
                             :cy="pt.y"
-                            :r="pt.index === 1 ? 5.2 : 4.4"
+                            :r="pt.index === 1 ? 5.6 : 4.6"
                             :fill="pt.index === 1 ? '#0f172a' : '#475569'"
                             stroke="#ffffff"
                             stroke-width="1.2"
@@ -377,8 +380,8 @@ const handleResetFilter = () => {
                           <!-- Number text inside badge -->
                           <text
                             :x="pt.x"
-                            :y="pt.y + (pt.index === 1 ? 2.1 : 1.8)"
-                            :font-size="pt.index === 1 ? '6.5' : '5.5'"
+                            :y="pt.y + (pt.index === 1 ? 2.3 : 2.0)"
+                            :font-size="pt.index === 1 ? '7' : '6'"
                             font-weight="900"
                             fill="#ffffff"
                             text-anchor="middle"
@@ -393,7 +396,7 @@ const handleResetFilter = () => {
                       v-else
                       x="54.5"
                       y="78"
-                      font-size="64"
+                      font-size="68"
                       text-anchor="middle"
                       fill="#0f172a"
                       font-family="'Hiragino Kaku Gothic Pro', 'Noto Sans JP', sans-serif"
@@ -405,13 +408,13 @@ const handleResetFilter = () => {
                 </div>
               </div>
 
-              <!-- Middle Column: Kunyomi, Onyomi, Meaning (Dipersempit w-[105px] agar kotak kanan lapang) -->
-              <div class="w-[105px] px-1.5 flex flex-col justify-center border-r border-slate-300 text-[9px] leading-tight shrink-0 overflow-hidden">
-                <div class="mb-0.5 truncate" :title="item.formattedKun">
+              <!-- Middle Column: Kunyomi, Onyomi, Meaning (Diatur w-[108px] agar kotak kanan lapang) -->
+              <div class="w-[108px] px-2 flex flex-col justify-center border-r border-slate-300 text-[9.5px] leading-tight shrink-0 overflow-hidden">
+                <div class="mb-1 truncate" :title="item.formattedKun">
                   <span class="font-bold text-slate-800">訓:</span>
                   <span class="ml-1 text-slate-700 font-medium font-japanese">{{ item.formattedKun }}</span>
                 </div>
-                <div class="mb-0.5 truncate" :title="item.formattedOn">
+                <div class="mb-1 truncate" :title="item.formattedOn">
                   <span class="font-bold text-slate-800">音:</span>
                   <span class="ml-1 text-slate-700 font-medium font-japanese">{{ item.formattedOn }}</span>
                 </div>
@@ -421,15 +424,15 @@ const handleResetFilter = () => {
                 </div>
               </div>
 
-              <!-- Right Column: 8 Practice Boxes & Examples Underneath (Garis kotak terakhir tidak terpotong) -->
+              <!-- Right Column: 8 Practice Boxes & Examples Underneath (Garis kotak terakhir tetap utuh) -->
               <div class="flex-1 pl-2 pr-1 flex flex-col justify-between">
-                <!-- Top Row: 8 Practice Boxes (3 Tracing + 5 Blank) -->
-                <div class="flex items-center gap-1 justify-start">
-                  <!-- 3 Dashed Tracing Boxes (50px x 50px) -->
+                <!-- Top Row: 8 Practice Boxes (3 Tracing + 5 Blank) - Diperbesar ke 54px x 54px -->
+                <div class="flex items-center gap-1.5 justify-start">
+                  <!-- 3 Dashed Tracing Boxes (54px x 54px) -->
                   <div
                     v-for="bIdx in 3"
                     :key="'trace-' + bIdx"
-                    class="w-[50px] h-[50px] border border-slate-400 bg-white relative shrink-0"
+                    class="w-[54px] h-[54px] border border-slate-400 bg-white relative shrink-0"
                   >
                     <svg class="w-full h-full" viewBox="0 0 109 109">
                       <!-- Crosshairs Guidelines (+) -->
@@ -444,7 +447,7 @@ const handleResetFilter = () => {
                           :d="d"
                           fill="none"
                           stroke="#94a3b8"
-                          stroke-width="4.5"
+                          stroke-width="4.8"
                           stroke-linecap="round"
                           stroke-linejoin="round"
                           stroke-dasharray="3,3"
@@ -465,11 +468,11 @@ const handleResetFilter = () => {
                     </svg>
                   </div>
 
-                  <!-- 5 Blank Practice Boxes with Crosshairs (50px x 50px) -->
+                  <!-- 5 Blank Practice Boxes with Crosshairs (54px x 54px) -->
                   <div
                     v-for="bIdx in 5"
                     :key="'blank-' + bIdx"
-                    class="w-[50px] h-[50px] border border-slate-400 bg-white relative shrink-0"
+                    class="w-[54px] h-[54px] border border-slate-400 bg-white relative shrink-0"
                   >
                     <svg class="w-full h-full" viewBox="0 0 109 109">
                       <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#cbd5e1" stroke-dasharray="2,2" stroke-width="0.8" />
@@ -479,8 +482,8 @@ const handleResetFilter = () => {
                 </div>
 
                 <!-- Bottom Row: Context Examples with filled parentheses -->
-                <div class="pt-0.5 mt-0.5 border-t border-slate-200 text-[9.5px] text-slate-700 leading-none truncate font-japanese">
-                  <span class="font-bold text-slate-800 font-sans mr-1">Contoh:</span>
+                <div class="pt-1 mt-1 border-t border-slate-200 text-[10px] text-slate-700 leading-none truncate font-japanese">
+                  <span class="font-bold text-slate-800 font-sans mr-1.5">Contoh:</span>
                   <span v-for="(ex, eIdx) in item.examples" :key="eIdx" class="mr-3">
                     {{ ex }}
                   </span>
