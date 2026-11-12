@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Search, SkipForward } from '@lucide/vue';
+import { Search, SkipForward, Play } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { JapaneseWord } from '../../../../data/words';
 import { useQuizStore } from '../../../../stores/quizStore';
@@ -9,10 +9,12 @@ defineProps<{
   categories: string[];
   selectedCategory: string;
   totalWordsCount: number;
+  lessonNumber?: number;
 }>();
 
 const emit = defineEmits<{
   (e: 'selectCategory', cat: string): void;
+  (e: 'startQuiz'): void;
 }>();
 
 const quizStore = useQuizStore();
@@ -38,34 +40,48 @@ const getWordStatus = (char: string) => {
 
 <template>
   <section class="flex flex-col gap-4">
-    <!-- Category Filter Pills -->
-    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-      <button
-        type="button"
-        @click="emit('selectCategory', 'all')"
-        :class="[
-          'px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap',
-          selectedCategory === 'all'
-            ? 'bg-matcha text-white shadow-xs'
-            : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-gray-200 dark:border-slate-800'
-        ]"
-      >
-        Semua ({{ totalWordsCount }})
-      </button>
+    <!-- Top Controls: Category Filters + Inline Quiz CTA -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+        <button
+          type="button"
+          @click="emit('selectCategory', 'all')"
+          :class="[
+            'min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 active:scale-95',
+            selectedCategory === 'all'
+              ? 'bg-matcha text-white'
+              : 'bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 border border-gray-200 dark:border-slate-800'
+          ]"
+        >
+          Semua ({{ totalWordsCount }})
+        </button>
 
+        <button
+          v-for="cat in categories"
+          :key="cat"
+          type="button"
+          @click="emit('selectCategory', cat)"
+          :class="[
+            'min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap shrink-0 active:scale-95',
+            selectedCategory === cat
+              ? 'bg-matcha text-white'
+              : 'bg-white dark:bg-slate-850 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 border border-gray-200 dark:border-slate-800'
+          ]"
+        >
+          {{ cat }}
+        </button>
+      </div>
+
+      <!-- Inline Practice Vocab Button (No floating overlap on mobile) -->
       <button
-        v-for="cat in categories"
-        :key="cat"
+        v-if="totalWordsCount > 0"
         type="button"
-        @click="emit('selectCategory', cat)"
-        :class="[
-          'px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer whitespace-nowrap',
-          selectedCategory === cat
-            ? 'bg-matcha text-white shadow-xs'
-            : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 border border-gray-200 dark:border-slate-700'
-        ]"
+        @click="emit('startQuiz')"
+        class="w-full sm:w-auto min-h-[44px] sm:min-h-[38px] px-4 py-2 rounded-xl bg-matcha hover:bg-emerald-600 text-white font-black text-xs transition flex items-center justify-center gap-2 cursor-pointer shrink-0 active:scale-95"
       >
-        {{ cat }}
+        <Play class="w-3.5 h-3.5 fill-current shrink-0" />
+        <span>Latihan Kotoba{{ lessonNumber ? ` Bab ${lessonNumber}` : '' }} ({{ totalWordsCount }})</span>
       </button>
     </div>
 
@@ -74,33 +90,33 @@ const getWordStatus = (char: string) => {
       <p class="text-sm font-bold">Tidak ada kosakata yang cocok.</p>
     </div>
 
-    <!-- Vocab Cards Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+    <!-- Vocab Cards Grid (3-step responsive: 1 col phone -> 2 cols sm/md -> 3 cols xl) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
       <div
         v-for="(w, wIdx) in words"
         :key="wIdx"
         :class="[
-          'border rounded-2xl p-3.5 shadow-2xs flex flex-col justify-between gap-2 transition',
+          'border rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between gap-2.5 transition-colors',
           quizStore.isWordSkipped?.(w.character)
             ? 'bg-slate-50/70 dark:bg-slate-850/60 border-dashed border-slate-300 dark:border-slate-700 opacity-75'
-            : 'bg-white dark:bg-slate-850/90 border-gray-200/90 dark:border-slate-800 hover:border-matcha/40'
+            : 'bg-white dark:bg-slate-850 border-gray-200 dark:border-slate-800 hover:border-matcha/50'
         ]"
       >
-        <div class="flex items-start justify-between gap-2">
-          <div class="flex flex-col">
-            <span class="text-base sm:text-lg font-black font-jp text-slate-900 dark:text-slate-100">
+        <div class="flex items-start justify-between gap-2 min-w-0">
+          <div class="flex flex-col min-w-0">
+            <span class="text-base sm:text-lg font-black font-jp text-slate-900 dark:text-slate-100 break-words">
               {{ w.character }}
             </span>
-            <span v-if="w.kana !== w.character" class="text-xs text-slate-500 dark:text-slate-400 font-jp">
+            <span v-if="w.kana !== w.character" class="text-xs text-slate-500 dark:text-slate-400 font-jp break-words">
               {{ w.kana }}
             </span>
-            <span class="text-[11px] font-mono text-slate-400 dark:text-slate-500">
+            <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 break-words">
               {{ Array.isArray(w.romaji) ? w.romaji[0] : w.romaji }}
             </span>
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <span 
-              :class="['px-1.5 py-0.5 rounded-md text-[9px] font-black border uppercase tracking-wider flex items-center gap-1', getWordStatus(w.character).class]"
+              :class="['px-1.5 py-0.5 rounded-md text-[10px] font-black border uppercase tracking-wider flex items-center gap-1', getWordStatus(w.character).class]"
             >
               <SkipForward v-if="getWordStatus(w.character).isSkipped" class="w-2.5 h-2.5 stroke-[2.5]" />
               <span>{{ getWordStatus(w.character).label }}</span>
@@ -109,11 +125,11 @@ const getWordStatus = (char: string) => {
           </div>
         </div>
 
-        <div class="pt-2 border-t border-gray-100 dark:border-slate-800/60 flex items-center justify-between gap-2">
-          <span class="text-xs font-semibold text-indigo-800 dark:text-indigo-200 truncate">
+        <div class="pt-2.5 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-1.5">
+          <span class="text-xs sm:text-[13px] font-semibold text-indigo-800 dark:text-indigo-200 leading-snug break-words">
             {{ w.meaning }}
           </span>
-          <div class="flex items-center gap-1 flex-shrink-0">
+          <div v-if="w.sub_category || w.category_word" class="flex items-center flex-wrap gap-1">
             <span v-if="w.sub_category" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-matcha/10 text-matcha-dark dark:text-matcha border border-matcha/20">
               {{ w.sub_category }}
             </span>

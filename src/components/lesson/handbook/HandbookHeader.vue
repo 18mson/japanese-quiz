@@ -5,6 +5,7 @@ import {
   BookOpen, 
   ChevronLeft, 
   ChevronRight, 
+  ChevronDown,
   Search, 
   X, 
   Sun, 
@@ -57,20 +58,20 @@ defineExpose({
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 px-4 py-2.5 h-[59px] min-h-[59px] flex items-center justify-between gap-1.5 sm:gap-3 shadow-xs flex-shrink-0">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 px-2.5 sm:px-4 h-[60px] min-h-[60px] flex items-center justify-between gap-1.5 sm:gap-3 flex-shrink-0">
     <!-- Left: Back Button & Breadcrumb -->
     <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
       <button
         type="button"
         @click="emit('exit')"
-        class="px-2.5 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-gray-200/90 dark:border-slate-700/80 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 shrink-0"
+        class="h-10 min-w-[40px] sm:h-9 sm:min-w-0 px-2.5 sm:px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
         title="Kembali ke Beranda"
       >
         <ArrowLeft class="w-4 h-4 text-torii" />
         <span class="hidden sm:inline font-extrabold">Kembali</span>
       </button>
 
-      <div class="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+      <div class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
         <BookOpen class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
         <span>Buku Materi</span>
         <span class="text-slate-300 dark:text-slate-600">/</span>
@@ -78,20 +79,20 @@ defineExpose({
       </div>
     </div>
 
-    <!-- Center: Chapter Selector Stepper & Trigger (Persis di tengah) -->
+    <!-- Center: Chapter Selector Stepper & Trigger (Flex on mobile to prevent collisions, centered on sm+) -->
     <div 
       :class="[
-        'flex items-center gap-1 sm:gap-2 shrink-0 z-10 transition-all duration-150',
+        'flex items-center gap-1 sm:gap-2 shrink-0 z-10 transition-opacity duration-150 sm:absolute sm:left-1/2 sm:-translate-x-1/2 sm:top-1/2 sm:-translate-y-1/2',
         isMobileSearchOpen 
           ? 'opacity-0 pointer-events-none' 
-          : 'opacity-100 absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2'
+          : 'opacity-100'
       ]"
     >
       <button
         type="button"
         @click="emit('prevLesson')"
         :disabled="currentLessonNumber <= 1"
-        class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200/90 dark:border-slate-700/70 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer shadow-2xs active:scale-95"
+        class="w-9 h-10 sm:w-8 sm:h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95"
         title="Bab Sebelumnya"
       >
         <ChevronLeft class="w-4 h-4" />
@@ -103,25 +104,25 @@ defineExpose({
         type="button"
         @click="emit('toggleChapterDropdown')"
         :class="[
-          'px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl border font-black text-xs sm:text-sm flex items-center gap-1 sm:gap-1.5 transition cursor-pointer shadow-2xs active:scale-95',
+          'h-10 sm:h-9 px-2.5 sm:px-3 rounded-xl border font-black text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer active:scale-95',
           isChapterDropdownOpen
-            ? 'bg-indigo-600 text-white border-indigo-600 dark:border-indigo-500 shadow-md shadow-indigo-600/30'
+            ? 'bg-indigo-600 text-white border-indigo-600 dark:border-indigo-500'
             : (isCurrentLessonCompleted
-                ? 'bg-emerald-50/90 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700/70 text-emerald-800 dark:text-emerald-200 ring-1 ring-emerald-400/30'
-                : 'bg-indigo-50/90 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-200')
+                ? 'bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700/70 text-emerald-800 dark:text-emerald-200'
+                : 'bg-indigo-50 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-200')
         ]"
       >
         <CheckCircle2 v-if="isCurrentLessonCompleted" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
         <span :class="['font-jp font-bold', isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-700 dark:text-emerald-300' : 'text-torii')]">第{{ currentLessonNumber }}課</span>
         <span class="hidden sm:inline" :class="isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-900 dark:text-emerald-100' : 'text-slate-800 dark:text-slate-100')">· Bab {{ currentLessonNumber }}</span>
-        <span :class="['text-[10px] transition-transform duration-200', isChapterDropdownOpen ? 'text-white rotate-180' : 'text-indigo-500 dark:text-indigo-400']">▼</span>
+        <ChevronDown :class="['w-3.5 h-3.5 transition-transform duration-200 shrink-0', isChapterDropdownOpen ? 'text-white rotate-180' : 'text-indigo-500 dark:text-indigo-400']" />
       </button>
 
       <button
         type="button"
         @click="emit('nextLesson')"
         :disabled="currentLessonNumber >= 25"
-        class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200/90 dark:border-slate-700/70 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer shadow-2xs active:scale-95"
+        class="w-9 h-10 sm:w-8 sm:h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95"
         title="Bab Berikutnya"
       >
         <ChevronRight class="w-4 h-4" />
@@ -129,12 +130,12 @@ defineExpose({
     </div>
 
     <!-- Right: Search Input Bar & Theme Switcher -->
-    <div class="flex items-center gap-1 sm:gap-2 shrink-0 ml-auto z-10">
+    <div class="flex items-center gap-1.5 sm:gap-2 shrink-0 sm:ml-auto z-10">
       <!-- Mobile Search Overlay (Melebar dan fokus aktif saat diklik) -->
       <Transition name="expand-search">
         <div
           v-if="isMobileSearchOpen"
-          class="sm:hidden absolute inset-x-2 top-2 bottom-2 z-20 bg-white dark:bg-slate-900 flex items-center gap-2 px-2.5 rounded-xl border border-indigo-400 dark:border-indigo-500 shadow-lg"
+          class="sm:hidden absolute inset-x-2.5 top-2 bottom-2 z-20 bg-white dark:bg-slate-900 flex items-center gap-2 px-3 rounded-xl border border-indigo-400 dark:border-indigo-500 shadow-lg"
         >
           <Search class="w-4 h-4 text-indigo-600 dark:text-indigo-400 shrink-0" />
           <input
@@ -142,14 +143,14 @@ defineExpose({
             :value="searchQuery"
             @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
             type="text"
-            placeholder="Cari materi bab..."
-            class="w-full bg-transparent text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden"
+            placeholder="Cari pola, partikel, kosakata..."
+            class="w-full bg-transparent text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden"
             @keydown.esc="emit('toggleMobileSearch')"
           />
           <button
             type="button"
             @click="emit('toggleMobileSearch')"
-            class="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer shrink-0 active:scale-95"
+            class="w-9 h-9 rounded-lg text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center justify-center cursor-pointer shrink-0 active:scale-95"
             title="Tutup Pencarian"
           >
             <X class="w-4 h-4" />
@@ -157,15 +158,15 @@ defineExpose({
         </div>
       </Transition>
 
-      <!-- Mobile Search Button (Hanya tombol saat normal) -->
+      <!-- Mobile Search Button -->
       <button
         type="button"
         @click="emit('toggleMobileSearch')"
-        class="sm:hidden px-2.5 py-1.5 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-750 border border-gray-200/90 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer shadow-2xs active:scale-90 shrink-0"
-        :class="{ 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800': searchQuery }"
+        class="sm:hidden w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-750 border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-90 shrink-0"
+        :class="{ 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700': searchQuery }"
         title="Cari Materi"
       >
-        <Search class="w-3.5 h-3.5" />
+        <Search class="w-4 h-4" />
       </button>
 
       <!-- Desktop Search Bar (Persisten) -->
@@ -175,7 +176,7 @@ defineExpose({
           @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
           type="text"
           placeholder="Cari materi..."
-          class="w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 focus:border-indigo-500 rounded-xl px-2.5 pl-8 py-1.5 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden transition shadow-inner"
+          class="w-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 focus:border-indigo-500 rounded-xl px-2.5 pl-8 py-1.5 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-hidden transition"
         />
         <Search class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
         <button
@@ -188,15 +189,15 @@ defineExpose({
         </button>
       </div>
 
-      <!-- Mobile Single Theme Toggle (Terganti bergantian saat di-click) -->
+      <!-- Mobile Single Theme Toggle -->
       <button
         type="button"
         @click="cycleTheme"
-        class="sm:hidden px-2.5 py-1.5 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-750 border border-gray-200/90 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer shadow-2xs active:scale-90 shrink-0"
+        class="sm:hidden w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-750 border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-90 shrink-0"
         :title="`Tema: ${settingsStore.isDarkMode ? 'Dark' : 'Light'} (Klik untuk berganti)`"
       >
-        <Moon v-if="settingsStore.isDarkMode" class="w-3.5 h-3.5 text-indigo-400" />
-        <Sun v-else class="w-3.5 h-3.5 text-amber-500" />
+        <Moon v-if="settingsStore.isDarkMode" class="w-4 h-4 text-indigo-400" />
+        <Sun v-else class="w-4 h-4 text-amber-500" />
       </button>
 
       <!-- Desktop Segmented Theme Switcher (Auto / Dark / Light) with Sliding Pill Indicator -->

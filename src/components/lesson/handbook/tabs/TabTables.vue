@@ -19,25 +19,25 @@ defineProps<{
       v-else
       v-for="(tbl, tIdx) in tables"
       :key="tIdx"
-      class="bg-white dark:bg-slate-850/90 border border-gray-200/90 dark:border-slate-800 rounded-3xl p-4 sm:p-6 shadow-xs dark:shadow-md flex flex-col gap-3"
+      class="bg-white dark:bg-slate-850 border border-gray-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 flex flex-col gap-3"
     >
       <div>
         <h3 class="text-base font-black text-cyan-700 dark:text-cyan-300">{{ tbl.title }}</h3>
-        <p v-if="tbl.description" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{{ tbl.description }}</p>
+        <p v-if="tbl.description" class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">{{ tbl.description }}</p>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800">
-        <table class="w-full text-left text-xs">
-          <thead class="bg-gray-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-gray-200 dark:border-slate-800">
+      <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-slate-800">
+        <table class="w-full text-left text-xs sm:text-[13px]">
+          <thead class="bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 uppercase text-[10px] tracking-wider border-b border-gray-200 dark:border-slate-800">
             <tr>
-              <th v-for="col in tbl.columns" :key="col.key" class="p-3">
+              <th v-for="col in tbl.columns" :key="col.key" class="px-3 py-2.5 whitespace-nowrap">
                 {{ col.label }}
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100 dark:divide-slate-800/60 font-medium">
-            <tr v-for="(row, rIdx) in tbl.rows" :key="rIdx" class="hover:bg-gray-50/80 dark:hover:bg-slate-850/50">
-              <td v-for="col in tbl.columns" :key="col.key" class="p-3 text-slate-800 dark:text-slate-200">
+          <tbody class="divide-y divide-gray-100 dark:divide-slate-800/70 font-medium">
+            <tr v-for="(row, rIdx) in tbl.rows" :key="rIdx" class="hover:bg-slate-50/80 dark:hover:bg-slate-900/40">
+              <td v-for="col in tbl.columns" :key="col.key" class="px-3 py-2.5 text-slate-800 dark:text-slate-200">
                 {{ row[col.key] }}
               </td>
             </tr>

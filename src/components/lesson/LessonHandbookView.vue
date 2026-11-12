@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
-import { Layers, Compass, Languages, Table2, Sparkles, Play } from '@lucide/vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { Layers, Compass, Languages, Table2, Sparkles } from '@lucide/vue';
 import { 
   lessonGrammarBookData, 
   getLessonChapterData, 
@@ -63,23 +63,6 @@ const toggleMobileSearch = () => {
     searchQuery.value = '';
   }
 };
-
-// Active FAB color matching currently active category
-const activeFabColorClass = computed(() => {
-  switch (activeTab.value) {
-    case 'particles':
-      return 'bg-torii border-torii-light/40 shadow-torii/40';
-    case 'vocab':
-      return 'bg-matcha border-matcha-light/40 shadow-matcha/40';
-    case 'phrases':
-      return 'bg-amber-600 border-amber-400/40 shadow-amber-600/40';
-    case 'tables':
-      return 'bg-cyan-600 border-cyan-400/40 shadow-cyan-600/40';
-    case 'bunkei':
-    default:
-      return 'bg-indigo-600 border-indigo-400/40 shadow-indigo-600/40';
-  }
-});
 
 // Active Chapter Data
 const currentChapter = computed<LessonGrammarChapter>(() => {
@@ -171,10 +154,8 @@ const filteredPhrases = computed(() => {
   });
 });
 
-// Sidebar & Mobile Navigation State
+// Scroll Container State
 const scrollContainerRef = ref<HTMLElement | null>(null);
-const isScrolledToBottom = ref(false);
-const isMobileFilterListOpen = ref(false);
 
 const availableTabs = computed<HandbookTabItem[]>(() => {
   const tabs: HandbookTabItem[] = [
@@ -237,31 +218,6 @@ const activeTabInfo = computed<HandbookTabItem>(() => {
   return availableTabs.value.find(t => t.id === activeTab.value) || availableTabs.value[0];
 });
 
-const handleScroll = () => {
-  const el = scrollContainerRef.value;
-  let scrollTop = 0;
-  let scrollHeight = 0;
-  let clientHeight = 0;
-
-  if (el && el.scrollHeight > el.clientHeight) {
-    scrollTop = el.scrollTop;
-    scrollHeight = el.scrollHeight;
-    clientHeight = el.clientHeight;
-  } else if (typeof window !== 'undefined') {
-    scrollTop = window.scrollY || document.documentElement.scrollTop;
-    scrollHeight = document.documentElement.scrollHeight;
-    clientHeight = window.innerHeight;
-  }
-
-  const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
-  
-  if (scrollHeight > clientHeight + 80) {
-    isScrolledToBottom.value = distanceFromBottom <= 140;
-  } else {
-    isScrolledToBottom.value = false;
-  }
-};
-
 const scrollToTop = () => {
   scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
   if (typeof window !== 'undefined') {
@@ -271,9 +227,7 @@ const scrollToTop = () => {
 
 const selectTab = (tabId: HandbookTabId) => {
   activeTab.value = tabId;
-  isMobileFilterListOpen.value = false;
   scrollToTop();
-  isScrolledToBottom.value = false;
 };
 
 // Navigation Handlers
@@ -284,7 +238,6 @@ const goToPreviousLesson = () => {
     searchQuery.value = '';
     selectedVocabCategory.value = 'all';
     scrollToTop();
-    isScrolledToBottom.value = false;
   }
 };
 
@@ -295,7 +248,6 @@ const goToNextLesson = () => {
     searchQuery.value = '';
     selectedVocabCategory.value = 'all';
     scrollToTop();
-    isScrolledToBottom.value = false;
   }
 };
 
@@ -305,7 +257,6 @@ const selectLesson = (num: number) => {
   searchQuery.value = '';
   selectedVocabCategory.value = 'all';
   scrollToTop();
-  isScrolledToBottom.value = false;
 };
 
 // Sync when props change
@@ -324,18 +275,12 @@ watch(currentLessonNumber, (newLesson) => {
 
 onMounted(() => {
   scrollContainerRef.value?.scrollTo({ top: 0, behavior: 'smooth' });
-  window.addEventListener('scroll', handleScroll, { passive: true });
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
 });
 </script>
 
 <template>
   <div 
     ref="scrollContainerRef"
-    @scroll="handleScroll"
     class="w-full h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col overflow-y-auto select-none transition-colors duration-200 relative"
   >
     <!-- TOP STICKY APP BAR / HEADER -->
@@ -364,8 +309,15 @@ onUnmounted(() => {
     <!-- HERO CHAPTER HEADER (FULL WIDTH) -->
     <HandbookHeroBanner :chapter="currentChapter" />
 
+    <!-- STICKY MOBILE HORIZONTAL TAB BAR (md:hidden) -->
+    <HandbookMobileNav
+      :tabs="availableTabs"
+      :active-tab="activeTab"
+      @select-tab="selectTab"
+    />
+
     <!-- BODY WRAPPER: DESKTOP SIDEBAR + MAIN CONTENT -->
-    <div class="w-full px-3 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-start gap-5 lg:gap-6">
+    <div class="w-full px-3 sm:px-6 lg:px-8 py-3 sm:py-4 flex flex-col md:flex-row items-start gap-5 lg:gap-6">
       
       <!-- DESKTOP SIDEBAR (md:flex) -->
       <HandbookSidebar
@@ -376,7 +328,7 @@ onUnmounted(() => {
       />
 
       <!-- MAIN BODY CONTENT -->
-      <main class="flex-1 min-w-0 w-full flex flex-col gap-6 pb-32 md:pb-16">
+      <main class="flex-1 min-w-0 w-full flex flex-col gap-5 sm:gap-6 pb-10 md:pb-16">
         <!-- Daily Grammar Rewind Card (Highlight Harian Materi Terpelajari) -->
         <DailyGrammarRewindCard 
           @jump-to-chapter="selectLesson" 
@@ -396,7 +348,9 @@ onUnmounted(() => {
           :categories="vocabCategories"
           :selected-category="selectedVocabCategory"
           :total-words-count="currentLessonWords.length"
+          :lesson-number="currentLessonNumber"
           @select-category="(cat) => selectedVocabCategory = cat"
+          @start-quiz="handleStartKotobaQuiz"
         />
         <TabPhrases 
           v-else-if="activeTab === 'phrases'" 
@@ -419,79 +373,10 @@ onUnmounted(() => {
         />
       </main>
     </div>
-
-    <!-- MOBILE NAVIGATION (Floating button, staggered popup, and bottom bar) -->
-    <HandbookMobileNav
-      :tabs="availableTabs"
-      :active-tab="activeTab"
-      :active-tab-info="activeTabInfo"
-      :active-fab-color-class="activeFabColorClass"
-      :is-open="isMobileFilterListOpen"
-      :is-scrolled-to-bottom="isScrolledToBottom"
-      @toggle-open="isMobileFilterListOpen = !isMobileFilterListOpen"
-      @close="isMobileFilterListOpen = false"
-      @select-tab="selectTab"
-    />
-
-    <!-- FLOATING ACTION BUTTON UNTUK LATIHAN KOTOBA PER BAB (Ketika Tab Kosakata Aktif) -->
-    <Transition name="fab-slide">
-      <div 
-        v-if="activeTab === 'vocab' && currentLessonWords.length > 0"
-        class="fixed left-4 z-40 sm:bottom-6 sm:right-6 sm:left-auto transition-all duration-300"
-        :class="[isScrolledToBottom ? 'bottom-16' : 'bottom-5']"
-      >
-        <button
-          type="button"
-          @click="handleStartKotobaQuiz"
-          class="group px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-matcha via-emerald-600 to-teal-700 text-white font-black text-xs sm:text-sm shadow-xl shadow-emerald-600/35 hover:shadow-emerald-600/50 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center gap-2 border border-white/20 select-none cursor-pointer"
-          :title="`Mulai latihan kuis kosakata Bab ${currentLessonNumber} (${currentLessonWords.length} Kata)`"
-        >
-          <!-- Play Icon -->
-          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0 transition-transform duration-300 group-hover:scale-110">
-            <Play class="w-3.5 h-3.5 fill-current text-white ml-0.5" />
-          </div>
-
-          <!-- Expanding Detail Text on Hover -->
-          <div class="kotoba-expand-text">
-            <span>Latihan Kotoba Bab {{ currentLessonNumber }}</span>
-          </div>
-
-          <!-- Word count badge (Always visible) -->
-          <span class="px-2 py-0.5 rounded-full bg-white/25 text-[10px] font-extrabold tracking-tight shrink-0 shadow-2xs">
-            {{ currentLessonWords.length }} Kata
-          </span>
-        </button>
-      </div>
-    </Transition>
   </div>
 </template>
 
 <style scoped>
-.kotoba-expand-text {
-  max-width: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: max-width 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease, margin 0.3s ease;
-  will-change: max-width, opacity;
-}
-
-.group:hover .kotoba-expand-text,
-.group:focus-visible .kotoba-expand-text {
-  max-width: 220px;
-  opacity: 1;
-  margin-right: 2px;
-}
-
-.fab-slide-enter-active,
-.fab-slide-leave-active {
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.fab-slide-enter-from,
-.fab-slide-leave-to {
-  opacity: 0;
-  transform: translateY(16px) scale(0.95);
-}
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }

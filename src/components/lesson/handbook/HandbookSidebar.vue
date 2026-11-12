@@ -14,22 +14,22 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <aside class="hidden md:flex flex-col w-60 lg:w-72 shrink-0 sticky top-[72px] z-20 bg-white dark:bg-slate-850/90 border border-gray-200/90 dark:border-slate-800 rounded-3xl p-3.5 shadow-xs dark:shadow-md gap-2.5">
+  <aside class="hidden md:flex flex-col w-60 lg:w-72 shrink-0 sticky top-[76px] z-20 bg-white dark:bg-slate-850 border border-gray-200 dark:border-slate-800 rounded-2xl p-3 gap-2">
     <div class="px-2 py-1 flex items-center justify-between">
       <span class="text-[11px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500">Kategori Materi</span>
-      <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-extrabold border border-indigo-200/60 dark:border-indigo-800/40">
+      <span class="text-[10px] px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-extrabold border border-indigo-200/60 dark:border-indigo-800/40">
         Bab {{ currentLessonNumber }}
       </span>
     </div>
 
-    <nav class="flex flex-col gap-1.5">
+    <nav class="flex flex-col gap-1">
       <button
         v-for="tab in tabs"
         :key="tab.id"
         type="button"
         @click="emit('selectTab', tab.id)"
         :class="[
-          'w-full text-left px-3 py-2.5 rounded-2xl font-bold text-xs transition flex items-center justify-between group cursor-pointer border',
+          'w-full text-left px-3 py-2.5 rounded-xl font-bold text-xs transition flex items-center justify-between group cursor-pointer border',
           activeTab === tab.id
             ? tab.activeClass
             : 'bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 border-transparent'
