@@ -12,6 +12,7 @@ const props = defineProps<{
 const lessonStore = useLessonStore();
 const theme = computed(() => getChapterTheme(props.chapter.lessonNumber));
 const imageLoadFailed = ref(false);
+const isSummaryExpanded = ref(false);
 
 const completionStats = computed(() => {
   return lessonStore.getChapterCompletedStats(props.chapter.lessonNumber);
@@ -19,6 +20,7 @@ const completionStats = computed(() => {
 
 watch(() => props.chapter.lessonNumber, () => {
   imageLoadFailed.value = false;
+  isSummaryExpanded.value = false;
 });
 
 const onImageError = () => {
@@ -27,7 +29,7 @@ const onImageError = () => {
 </script>
 
 <template>
-  <div class="w-full px-3 sm:px-6 lg:px-8 pt-3 sm:pt-4 pb-1 sm:pb-2">
+  <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-4 pb-1 sm:pb-2">
     <div 
       class="w-full bg-white dark:bg-slate-850 border rounded-2xl p-3.5 sm:p-6 relative overflow-hidden text-slate-800 dark:text-slate-100 transition-colors duration-200"
       :class="[
@@ -36,11 +38,11 @@ const onImageError = () => {
           : 'border-gray-200 dark:border-slate-800'
       ]"
     >
-      <!-- ================= THEMATIC BACKGROUND ILLUSTRATION LAYER ================= -->
-      <div class="absolute inset-y-0 right-0 w-full sm:w-2/3 md:w-1/2 lg:w-[46%] pointer-events-none select-none overflow-hidden z-0">
+      <!-- ================= THEMATIC BACKGROUND ILLUSTRATION LAYER (sm+ only for clean mobile contrast) ================= -->
+      <div class="hidden sm:block absolute inset-y-0 right-0 sm:w-2/3 md:w-1/2 lg:w-[46%] pointer-events-none select-none overflow-hidden z-0">
         <!-- Smooth Horizontal Gradient Overlays to preserve text readability -->
-        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/85 to-transparent sm:via-white/65 dark:hidden z-10 pointer-events-none"></div>
-        <div class="absolute inset-0 bg-gradient-to-r from-slate-850 via-slate-850/90 to-transparent sm:via-slate-850/65 hidden dark:block z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white via-white/65 to-transparent dark:hidden z-10 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-slate-850 via-slate-850/65 to-transparent hidden dark:block z-10 pointer-events-none"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-white/30 dark:from-slate-850/90 dark:via-transparent dark:to-slate-850/30 z-10 pointer-events-none"></div>
 
         <!-- Chapter Illustration Image -->
@@ -51,14 +53,14 @@ const onImageError = () => {
             :src="theme.illustrationUrl"
             :alt="theme.themeTitle"
             @error="onImageError"
-            class="w-full h-full object-cover object-center sm:object-right transition-all duration-700 opacity-20 sm:opacity-75 md:opacity-85 dark:opacity-15 dark:sm:opacity-40 dark:md:opacity-55 dark:mix-blend-luminosity"
+            class="w-full h-full object-cover object-right transition-all duration-700 opacity-75 md:opacity-85 dark:opacity-40 dark:md:opacity-55 dark:mix-blend-luminosity"
           />
           <div 
             v-else 
             :key="'fallback-' + chapter.lessonNumber"
-            class="w-full h-full flex items-center justify-end pr-6 sm:pr-12 opacity-15 dark:opacity-10 text-indigo-900 dark:text-indigo-200"
+            class="w-full h-full flex items-center justify-end pr-12 opacity-15 dark:opacity-10 text-indigo-900 dark:text-indigo-200"
           >
-            <div class="text-7xl sm:text-9xl font-black font-japanese select-none tracking-widest">
+            <div class="text-9xl font-black font-japanese select-none tracking-widest">
               {{ chapter.lessonNumber }}
             </div>
           </div>
@@ -76,7 +78,7 @@ const onImageError = () => {
       </div>
 
       <!-- ================= FOREGROUND CONTENT LAYER ================= -->
-      <div class="flex flex-col gap-1.5 sm:gap-2 relative z-20 max-w-xl md:max-w-2xl lg:max-w-3xl">
+      <div class="flex flex-col gap-1 sm:gap-2 relative z-20 max-w-xl md:max-w-2xl lg:max-w-3xl">
         <div class="flex items-center gap-2 flex-wrap">
           <span class="px-2 py-0.5 rounded-lg bg-torii/10 dark:bg-torii/20 text-torii dark:text-torii-light border border-torii/25 dark:border-torii/30 text-[11px] font-extrabold font-jp tracking-wider">
             第 {{ chapter.lessonNumber }} 課
@@ -98,21 +100,35 @@ const onImageError = () => {
             {{ completionStats.completed }}/{{ completionStats.total }} Selesai
           </span>
 
-          <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">Minna no Nihongo Shokyu I</span>
+          <span class="text-[11px] sm:text-xs font-bold text-indigo-600 dark:text-indigo-400">Minna no Nihongo I</span>
           <span class="text-[11px] font-semibold text-slate-400 dark:text-slate-500 hidden sm:inline">
             · {{ theme.themeTitle }}
           </span>
         </div>
 
-        <h1 class="text-lg sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-50 tracking-tight leading-snug">
+        <h1 class="text-[17px] sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-slate-50 tracking-tight leading-snug">
           {{ chapter.title }}
         </h1>
 
-        <p class="text-xs sm:text-sm font-semibold text-indigo-700 dark:text-indigo-300 leading-relaxed">
+        <p class="text-xs sm:text-sm font-semibold text-indigo-700 dark:text-indigo-300 leading-snug sm:leading-relaxed">
           {{ chapter.subTitle }}
         </p>
 
-        <p class="text-xs sm:text-[13px] text-slate-700 dark:text-slate-300 mt-0.5 leading-relaxed bg-slate-50/95 dark:bg-slate-900/90 p-2.5 sm:p-3 rounded-xl border border-slate-200/80 dark:border-slate-800 max-w-2xl">
+        <!-- Summary: Tap to expand on mobile, always full on sm+ -->
+        <button
+          type="button"
+          @click="isSummaryExpanded = !isSummaryExpanded"
+          class="sm:hidden text-left text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed bg-slate-50 dark:bg-slate-900/90 px-2.5 py-2 rounded-xl border border-slate-200/80 dark:border-slate-800 cursor-pointer"
+        >
+          <span :class="isSummaryExpanded ? '' : 'line-clamp-2'">
+            <strong class="text-slate-800 dark:text-slate-100">Ringkasan:</strong> {{ chapter.summary }}
+          </span>
+          <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mt-0.5 inline-block">
+            {{ isSummaryExpanded ? 'Sembunyikan' : 'Baca selengkapnya' }}
+          </span>
+        </button>
+
+        <p class="hidden sm:block text-[13px] text-slate-700 dark:text-slate-300 mt-0.5 leading-relaxed bg-slate-50/95 dark:bg-slate-900/90 p-3 rounded-xl border border-slate-200/80 dark:border-slate-800 max-w-2xl">
           <strong class="text-slate-900 dark:text-slate-100">Ringkasan:</strong> {{ chapter.summary }}
         </p>
       </div>

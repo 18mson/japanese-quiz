@@ -125,18 +125,13 @@ const getWordStatus = (char: string) => {
           </div>
         </div>
 
-        <div class="pt-2.5 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-1.5">
-          <span class="text-xs sm:text-[13px] font-semibold text-indigo-800 dark:text-indigo-200 leading-snug break-words">
+        <div class="pt-2.5 border-t border-gray-100 dark:border-slate-800 flex flex-col gap-1">
+          <span class="text-[13px] font-semibold text-indigo-800 dark:text-indigo-200 leading-snug break-words">
             {{ w.meaning }}
           </span>
-          <div v-if="w.sub_category || w.category_word" class="flex items-center flex-wrap gap-1">
-            <span v-if="w.sub_category" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-matcha/10 text-matcha-dark dark:text-matcha border border-matcha/20">
-              {{ w.sub_category }}
-            </span>
-            <span v-if="w.category_word" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-gray-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-gray-200 dark:border-slate-700/60">
-              {{ w.category_word }}
-            </span>
-          </div>
+          <span v-if="w.category_word || w.sub_category" class="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+            {{ [w.category_word, w.sub_category].filter(Boolean).join(' · ') }}
+          </span>
         </div>
       </div>
     </div>

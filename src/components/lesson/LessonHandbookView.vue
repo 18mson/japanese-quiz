@@ -21,7 +21,6 @@ import TabParticles from './handbook/tabs/TabParticles.vue';
 import TabVocab from './handbook/tabs/TabVocab.vue';
 import TabPhrases from './handbook/tabs/TabPhrases.vue';
 import TabTables from './handbook/tabs/TabTables.vue';
-import DailyGrammarRewindCard from '../daily/DailyGrammarRewindCard.vue';
 
 const props = defineProps<{
   initialLesson?: number;
@@ -281,7 +280,7 @@ onMounted(() => {
 <template>
   <div 
     ref="scrollContainerRef"
-    class="w-full h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 flex flex-col overflow-y-auto select-none transition-colors duration-200 relative"
+    class="w-full h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 overflow-y-auto overflow-x-hidden select-none transition-colors duration-200 relative"
   >
     <!-- TOP STICKY APP BAR / HEADER -->
     <HandbookHeader
@@ -317,7 +316,7 @@ onMounted(() => {
     />
 
     <!-- BODY WRAPPER: DESKTOP SIDEBAR + MAIN CONTENT -->
-    <div class="w-full px-3 sm:px-6 lg:px-8 py-3 sm:py-4 flex flex-col md:flex-row items-start gap-5 lg:gap-6">
+    <div class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-5 flex flex-col md:flex-row items-start gap-5 lg:gap-6">
       
       <!-- DESKTOP SIDEBAR (md:flex) -->
       <HandbookSidebar
@@ -328,11 +327,7 @@ onMounted(() => {
       />
 
       <!-- MAIN BODY CONTENT -->
-      <main class="flex-1 min-w-0 w-full flex flex-col gap-5 sm:gap-6 pb-10 md:pb-16">
-        <!-- Daily Grammar Rewind Card (Highlight Harian Materi Terpelajari) -->
-        <DailyGrammarRewindCard 
-          @jump-to-chapter="selectLesson" 
-        />
+      <main class="flex-1 min-w-0 w-full flex flex-col gap-4 sm:gap-6 pb-10 md:pb-16">
         <TabBunkei 
           v-if="activeTab === 'bunkei'" 
           :items="filteredBunkei" 

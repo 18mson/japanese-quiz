@@ -14,6 +14,17 @@ const emit = defineEmits<{
 
 const mobileNavRef = ref<HTMLElement | null>(null);
 
+const getShortLabel = (tab: HandbookTabItem): string => {
+  switch (tab.id) {
+    case 'bunkei': return 'Pola';
+    case 'particles': return 'Partikel';
+    case 'vocab': return 'Kosakata';
+    case 'phrases': return 'Ungkapan';
+    case 'tables': return 'Lampiran';
+    default: return tab.name;
+  }
+};
+
 watch(() => props.activeTab, () => {
   if (mobileNavRef.value) {
     const activeEl = mobileNavRef.value.querySelector('[data-active-tab="true"]');
@@ -38,14 +49,15 @@ watch(() => props.activeTab, () => {
       type="button"
       @click="emit('selectTab', tab.id)"
       :class="[
-        'min-h-[44px] px-3.5 py-2 rounded-xl font-bold text-xs transition-colors duration-150 flex items-center gap-2 cursor-pointer whitespace-nowrap shrink-0 border active:scale-95',
+        'min-h-[44px] px-3 py-2 rounded-xl font-bold text-xs transition-colors duration-150 flex items-center gap-1.5 cursor-pointer whitespace-nowrap shrink-0 border active:scale-95',
         activeTab === tab.id
           ? tab.activeClass
           : 'bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-300 border-gray-200 dark:border-slate-800 hover:bg-gray-100 dark:hover:bg-slate-800'
       ]"
     >
       <component :is="tab.icon" class="w-4 h-4 shrink-0" />
-      <span class="font-extrabold">{{ tab.name }}</span>
+      <span class="font-extrabold sm:hidden">{{ getShortLabel(tab) }}</span>
+      <span class="font-extrabold hidden sm:inline">{{ tab.name }}</span>
       <CheckCircle2
         v-if="tab.isCompleted"
         :class="[
