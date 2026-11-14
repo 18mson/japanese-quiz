@@ -227,6 +227,17 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     }
   }
 
+  // 6. Dukungan sinonim nama negara & entitas umum
+  // Contoh: "Amerika Serikat" -> "Amerika", "Korea Selatan" -> "Korea"
+  for (const cand of Array.from(results)) {
+    if (cand.includes('amerika serikat')) {
+      addWithVariants(cand.replace(/amerika serikat/g, 'amerika'));
+    }
+    if (cand.includes('korea selatan')) {
+      addWithVariants(cand.replace(/korea selatan/g, 'korea'));
+    }
+  }
+
   return Array.from(results).filter(Boolean);
 };
 
@@ -367,12 +378,14 @@ export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): bo
   });
 };
 
+export const JP_PUNCTUATION_REGEX = /[\s\u3000。、！？.,!?~～…⋯‥・\-—_–/\\()（）[\]【】［］「」『』"':;`]/g;
+
 export const checkIsJapaneseCorrect = (
   userInput: string,
   word: { character: string; kana?: string; romaji: string | string[]; category_word?: string }
 ): boolean => {
   if (!userInput || !word) return false;
-  const rawClean = userInput.trim().replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
+  const rawClean = userInput.trim().replace(JP_PUNCTUATION_REGEX, '');
   if (!rawClean) return false;
 
   // Hanya perbolehkan tulisan Jepang (Kanji, Hiragana, Katakana) - BUKAN dalam Romaji (huruf Latin)
@@ -380,8 +393,8 @@ export const checkIsJapaneseCorrect = (
     return false;
   }
 
-  const targetCharClean = word.character.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
-  const targetKanaClean = word.kana ? word.kana.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '') : '';
+  const targetCharClean = word.character.replace(JP_PUNCTUATION_REGEX, '');
+  const targetKanaClean = word.kana ? word.kana.replace(JP_PUNCTUATION_REGEX, '') : '';
   const inputAsHiragana = wanakana.toHiragana(rawClean);
 
   // Kumpulan semua kemungkinan varian penulisan yang valid
@@ -389,47 +402,62 @@ export const checkIsJapaneseCorrect = (
 
   const isNaAdjective = targetCharClean.endsWith('な') || (word as any).category_word === 'Kata Sifat-na';
 
+  // Helper untuk mendaftarkan target dan varian fonetik partikel 'wa' (は <-> わ)
+  const addTargetWithVariants = (target: string) => {
+    if (!target) return;
+    validTargets.add(target);
+    const hiraganaVer = wanakana.toHiragana(target);
+    validTargets.add(hiraganaVer);
+
+    // Toleransi partikel topik / pelafalan wa: 'は' <-> 'わ'
+    // Contoh: 'はちょっと' <-> 'わちょっと', 'こんにちは' <-> 'こんにちわ'
+    if (hiraganaVer.includes('は')) {
+      validTargets.add(hiraganaVer.replace(/は/g, 'わ'));
+    }
+    if (hiraganaVer.includes('わ')) {
+      validTargets.add(hiraganaVer.replace(/わ/g, 'は'));
+    }
+  };
+
   // 1. Variasi dari word.character (Kanji atau Kana)
   if (targetCharClean) {
-    validTargets.add(targetCharClean);
-    validTargets.add(wanakana.toHiragana(targetCharClean));
+    addTargetWithVariants(targetCharClean);
 
     // Jika kata sifat-na (misal: 大丈夫な, 元気な)
     if (isNaAdjective) {
       if (targetCharClean.endsWith('な')) {
         const charNoNa = targetCharClean.slice(0, -1);
-        validTargets.add(charNoNa);
-        validTargets.add(wanakana.toHiragana(charNoNa));
+        addTargetWithVariants(charNoNa);
       } else {
-        validTargets.add(targetCharClean + 'な');
-        validTargets.add(wanakana.toHiragana(targetCharClean + 'な'));
+        addTargetWithVariants(targetCharClean + 'な');
       }
     }
   }
 
   // 2. Variasi dari word.kana
   if (targetKanaClean) {
-    validTargets.add(targetKanaClean);
-    const kanaHiragana = wanakana.toHiragana(targetKanaClean);
-    validTargets.add(kanaHiragana);
+    addTargetWithVariants(targetKanaClean);
 
     // Variasi dengan dan tanpa 'な' untuk kata sifat-na
     if (isNaAdjective) {
-      if (kanaHiragana.endsWith('な')) {
-        const kanaNoNa = kanaHiragana.slice(0, -1);
-        validTargets.add(kanaNoNa);
-        if (targetKanaClean.endsWith('な')) {
-          validTargets.add(targetKanaClean.slice(0, -1));
-        }
+      if (targetKanaClean.endsWith('な')) {
+        const kanaNoNa = targetKanaClean.slice(0, -1);
+        addTargetWithVariants(kanaNoNa);
       } else {
-        validTargets.add(kanaHiragana + 'な');
-        validTargets.add(targetKanaClean + 'な');
+        addTargetWithVariants(targetKanaClean + 'な');
       }
     }
   }
 
-  // Cek apakah input (asli atau versi hiragana) cocok dengan salah satu target valid
-  if (validTargets.has(rawClean) || validTargets.has(inputAsHiragana)) {
+  // Cek apakah input (asli, versi hiragana, atau substitusi partikel は/わ) cocok
+  const inputVariants = [
+    rawClean,
+    inputAsHiragana,
+    inputAsHiragana.replace(/わ/g, 'は'),
+    inputAsHiragana.replace(/は/g, 'わ')
+  ];
+
+  if (inputVariants.some(v => validTargets.has(v))) {
     return true;
   }
 
@@ -443,7 +471,7 @@ export const checkIsJapaneseTypo = (
   if (!userInput || userInput.trim() === '') return false;
   if (checkIsJapaneseCorrect(userInput, word)) return false;
 
-  const rawClean = userInput.trim().replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』\"':;\`]/g, '');
+  const rawClean = userInput.trim().replace(JP_PUNCTUATION_REGEX, '');
   if (!rawClean) return false;
 
   // Jika input masih berupa huruf latin / romaji, jangan anggap sebagai typo tulisan Jepang
@@ -455,8 +483,9 @@ export const checkIsJapaneseTypo = (
 
   // Check kana typo (jarak Levenshtein 1 pada hiragana)
   if (word.kana) {
+    const cleanWordKana = word.kana.replace(JP_PUNCTUATION_REGEX, '');
     const inputHiragana = wanakana.toHiragana(rawClean);
-    const targetHiragana = wanakana.toHiragana(word.kana);
+    const targetHiragana = wanakana.toHiragana(cleanWordKana);
     const targetHiraganaWithNa = targetHiragana.endsWith('な') ? targetHiragana : targetHiragana + 'な';
     const targetHiraganaNoNa = targetHiragana.endsWith('な') ? targetHiragana.slice(0, -1) : targetHiragana;
 
@@ -467,6 +496,14 @@ export const checkIsJapaneseTypo = (
         return false;
       }
       return true;
+    }
+
+    // Toleransi partikel は vs わ pada pengecekan typo
+    if (targetHiragana.includes('は') && targetHiragana.length >= 3) {
+      const targetWithWa = targetHiragana.replace(/は/g, 'わ');
+      if (getLevenshteinDistance(inputHiragana, targetWithWa) === 1) {
+        return true;
+      }
     }
 
     // Cek Levenshtein jarak 1 ke varian berakhiran な untuk kata sifat-na

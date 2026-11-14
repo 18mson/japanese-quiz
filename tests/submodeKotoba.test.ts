@@ -82,6 +82,15 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('bapak sendiri', chichiMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('ayah', chichiMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('bapak', chichiMeaning), true);
+
+    // Kasus nama negara: Amerika Serikat / Amerika
+    assert.strictEqual(checkIsMeaningCorrect('amerika', 'Amerika Serikat'), true);
+    assert.strictEqual(checkIsMeaningCorrect('Amerika', 'Amerika Serikat'), true);
+    assert.strictEqual(checkIsMeaningCorrect('amerika serikat', 'Amerika Serikat'), true);
+    assert.strictEqual(checkIsMeaningCorrect('amerika', 'Amerika Serikat / Amerika'), true);
+    assert.strictEqual(checkIsMeaningCorrect('korea', 'Korea Selatan'), true);
+    assert.strictEqual(checkIsMeaningCorrect('tiongkok', 'Cina / Tiongkok / China'), true);
+    assert.strictEqual(checkIsMeaningCorrect('prancis', 'Perancis / Prancis'), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
@@ -154,6 +163,44 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan R
     assert.strictEqual(checkIsJapaneseCorrect('だいじょぶな', naItem), false);
     assert.strictEqual(checkIsJapaneseTypo('だいじょぶな', naItem), true);
   });
+
+  await t.test('menangani ungkapan bertanda tilde & ellipsis (～は ちょっと……) dengan input はちょっと maupun wachotto / わちょっと', () => {
+    const chottoItem = {
+      character: '～は ちょっと……',
+      kana: '～は ちょっと……',
+      romaji: ['~wa chotto...', '~wa tyotto...', 'wa chotto', 'wa chotto...', 'wachotto', 'ha chotto', 'hachotto'],
+      meaning: 'maaf ya, saya tidak bisa ~'
+    };
+
+    // Input kana murni tanpa tilde & ellipsis
+    assert.strictEqual(checkIsJapaneseCorrect('はちょっと', chottoItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('は ちょっと', chottoItem), true);
+
+    // Input hasil konversi IME dari ketikan romaji 'wachotto' (wanakana mengubah 'wa' -> 'わ')
+    assert.strictEqual(checkIsJapaneseCorrect('わちょっと', chottoItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('わ ちょっと', chottoItem), true);
+
+    // Input lengkap dengan tilde dan ellipsis
+    assert.strictEqual(checkIsJapaneseCorrect('～は ちょっと……', chottoItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('~は ちょっと...', chottoItem), true);
+
+    // Typo 1 huruf kana
+    assert.strictEqual(checkIsJapaneseCorrect('はちょっよ', chottoItem), false);
+    assert.strictEqual(checkIsJapaneseTypo('はちょっよ', chottoItem), true);
+  });
+
+  await t.test('menoleransi partikel topik wa (は <-> わ) pada salam seperti こんにちは (konnichiwa)', () => {
+    const konnichiwaItem = {
+      character: 'こんにちは',
+      kana: 'こんにちは',
+      romaji: ['konnichiwa'],
+      meaning: 'Halo / Selamat siang'
+    };
+
+    assert.strictEqual(checkIsJapaneseCorrect('こんにちは', konnichiwaItem), true);
+    // User mengetik konnichiwa di IME menghasilkan こんにちわ
+    assert.strictEqual(checkIsJapaneseCorrect('こんにちわ', konnichiwaItem), true);
+  });
 });
 
 test('Smart Intercept: Pencegahan Salah Format Mode Soal (checkIsWrongModeInput)', async (t) => {
@@ -207,6 +254,16 @@ test('Smart Intercept: Pencegahan Salah Format Mode Soal (checkIsWrongModeInput)
     // Arti salah total (bukan romaji/jepang kata tersebut)
     const resWrongMeaning = checkIsWrongModeInput('makan', 'words_meaning', wordItem);
     assert.strictEqual(resWrongMeaning.isWrongMode, false);
+
+    // Kasus kata yang romaji dan artinya mirip/identik: アメリカ (romaji: 'amerika', arti: 'Amerika Serikat / Amerika')
+    const amerikaWord = {
+      character: 'アメリカ',
+      kana: 'アメリカ',
+      romaji: 'amerika',
+      meaning: 'Amerika Serikat / Amerika'
+    };
+    const resAmerika = checkIsWrongModeInput('amerika', 'words_meaning', amerikaWord);
+    assert.strictEqual(resAmerika.isWrongMode, false);
   });
 
   await t.test('words: mencegat ketika user mengetik Arti di mode Romaji', () => {

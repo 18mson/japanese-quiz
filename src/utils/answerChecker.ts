@@ -50,7 +50,7 @@ export function foldKatakanaToHiragana(str: string): string {
  */
 export function cleanPunctuationAndSpaces(str: string): string {
   if (!str) return '';
-  return str.replace(/[\s\u3000。、！？.,!?~～\-—_–/\\()（）「」『』"':;`]/g, '');
+  return str.replace(/[\s\u3000。、！？.,!?~～…⋯‥・\-—_–/\\()（）[\]【】［］「」『』"':;`]/g, '');
 }
 
 export interface NormalizedResult {
