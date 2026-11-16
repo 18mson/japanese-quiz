@@ -36,8 +36,12 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     const soudesukaMeaning = 'O, begitu / Begitu ya';
     assert.strictEqual(checkIsMeaningCorrect('o, begitu', soudesukaMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('o begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('oh, begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('oh begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('oh begitu ya', soudesukaMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('begitu ya', soudesukaMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('begitu', soudesukaMeaning), true);
+    assert.strictEqual(checkIsMeaningTypo('oh begitu', soudesukaMeaning), false); // 100% benar, bukan typo!
 
     // Kasus tempat/bagian penjualan: コーナー
     const cornerMeaning = 'tempat/bagian penjualan, konter';

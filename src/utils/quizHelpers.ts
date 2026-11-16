@@ -238,6 +238,22 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     }
   }
 
+  // 7. Ekuivalensi kata seru percakapan Indonesia: 'o' <-> 'oh', 'ya' <-> 'iya'
+  // Contoh: "O, begitu" <-> "Oh, begitu", "o begitu" <-> "oh begitu"
+  for (const cand of Array.from(results)) {
+    if (/^o\b/i.test(cand)) {
+      addWithVariants(cand.replace(/^o\b/i, 'oh'));
+    } else if (/^oh\b/i.test(cand)) {
+      addWithVariants(cand.replace(/^oh\b/i, 'o'));
+    }
+
+    if (/^ya\b/i.test(cand)) {
+      addWithVariants(cand.replace(/^ya\b/i, 'iya'));
+    } else if (/^iya\b/i.test(cand)) {
+      addWithVariants(cand.replace(/^iya\b/i, 'ya'));
+    }
+  }
+
   return Array.from(results).filter(Boolean);
 };
 
@@ -344,6 +360,23 @@ export const checkIsMeaningCorrect = (userInput: string, targetMeaning: string):
 
   const cleanUserCommaToSpace = cleanUser.replace(/[,，、]/g, ' ').replace(/\s+/g, ' ').trim();
   if (cleanUserCommaToSpace && candidates.some(c => c === cleanUserCommaToSpace)) return true;
+
+  // Cek ekuivalensi kata seru langsung pada cleanUser: 'oh' <-> 'o', 'iya' <-> 'ya'
+  if (/^oh\b/i.test(cleanUser)) {
+    const userWithO = cleanUser.replace(/^oh\b/i, 'o');
+    if (candidates.some(c => c === userWithO)) return true;
+  } else if (/^o\b/i.test(cleanUser)) {
+    const userWithOh = cleanUser.replace(/^o\b/i, 'oh');
+    if (candidates.some(c => c === userWithOh)) return true;
+  }
+
+  if (/^iya\b/i.test(cleanUser)) {
+    const userWithYa = cleanUser.replace(/^iya\b/i, 'ya');
+    if (candidates.some(c => c === userWithYa)) return true;
+  } else if (/^ya\b/i.test(cleanUser)) {
+    const userWithIya = cleanUser.replace(/^ya\b/i, 'iya');
+    if (candidates.some(c => c === userWithIya)) return true;
+  }
 
   return false;
 };
