@@ -347,44 +347,68 @@ const questionStyle = computed(() => {
           </span>
         </div>
 
-        <!-- Jawaban arti yang benar (hanya jika salah atau typo) -->
-        <template v-if="!quizStore.isAnswerCorrect || isTypo">
-          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mt-1">Artinya yang benar:</span>
-          <div class="flex flex-col items-center justify-center bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-5 sm:px-8 py-2 sm:py-2.5 rounded-2xl w-auto max-w-full md:max-w-3xl lg:max-w-4xl text-center">
-            <span class="text-base sm:text-xl md:text-2xl font-bold text-indigo-700 dark:text-torii-light break-words">
-              {{ meaningDisplay.primary }}
-            </span>
-            <span v-if="meaningDisplay.secondary" class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-0.5">
-              {{ meaningDisplay.secondary }}
-            </span>
-          </div>
-        </template>
+        <!-- Jawaban arti yang benar (selalu tampil setelah dijawab) -->
+        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mt-1">Artinya yang benar:</span>
+        <div 
+          :class="[
+            'flex flex-col items-center justify-center bg-white dark:bg-slate-900 border-2 px-5 sm:px-8 py-2 sm:py-2.5 rounded-2xl w-auto max-w-full md:max-w-3xl lg:max-w-4xl text-center',
+            quizStore.isAnswerCorrect && !isTypo
+              ? 'border-emerald-300 dark:border-emerald-700/80 shadow-2xs'
+              : 'border-indigo-200 dark:border-slate-700'
+          ]"
+        >
+          <span 
+            :class="[
+              'text-base sm:text-xl md:text-2xl font-bold break-words',
+              quizStore.isAnswerCorrect && !isTypo
+                ? 'text-emerald-700 dark:text-emerald-400'
+                : 'text-indigo-700 dark:text-torii-light'
+            ]"
+          >
+            {{ meaningDisplay.primary }}
+          </span>
+          <span v-if="meaningDisplay.secondary" class="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 mt-0.5">
+            {{ meaningDisplay.secondary }}
+          </span>
+        </div>
       </template>
 
       <template v-else-if="quizStore.activeQuestionType === 'meaning_to_words'">
-        <template v-if="!quizStore.isAnswerCorrect || isTypo">
-          <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
-          <div class="inline-flex items-center gap-2 flex-wrap justify-center w-auto max-w-full md:max-w-3xl lg:max-w-4xl">
-            <span class="text-xl sm:text-2xl md:text-3xl font-black bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-slate-700 px-4 py-1.5 rounded-xl text-indigo-700 dark:text-torii-light font-jp">
-              {{ character }}
-            </span>
-            <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
-              （{{ currentKana }}）
-            </span>
-            <span class="text-sm sm:text-lg font-mono font-bold text-indigo-600 dark:text-torii-light inline-flex items-center flex-wrap justify-center">
-              <span class="text-slate-400 dark:text-slate-500 mx-1">/</span>
-              <template v-for="(rom, idx) in romajiList" :key="idx">
-                <span>{{ rom }}</span>
-                <span 
-                  v-if="idx < romajiList.length - 1" 
-                  class="mx-1.5 sm:mx-2 text-xs sm:text-sm font-normal font-sans text-slate-400 dark:text-slate-500 select-none tracking-normal not-italic lowercase"
-                >
-                  atau
-                </span>
-              </template>
-            </span>
-          </div>
-        </template>
+        <span class="text-xs sm:text-sm font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Jawaban yang benar:</span>
+        <div class="inline-flex items-center gap-2 flex-wrap justify-center w-auto max-w-full md:max-w-3xl lg:max-w-4xl">
+          <span 
+            :class="[
+              'text-xl sm:text-2xl md:text-3xl font-black bg-white dark:bg-slate-900 border-2 px-4 py-1.5 rounded-xl font-jp',
+              quizStore.isAnswerCorrect && !isTypo
+                ? 'border-emerald-300 dark:border-emerald-700/80 text-emerald-700 dark:text-emerald-400 shadow-2xs'
+                : 'border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-torii-light'
+            ]"
+          >
+            {{ character }}
+          </span>
+          <span v-if="currentKana && currentKana !== character" class="text-base sm:text-xl text-gray-500 dark:text-slate-400 font-jp">
+            （{{ currentKana }}）
+          </span>
+          <span 
+            :class="[
+              'text-sm sm:text-lg font-mono font-bold inline-flex items-center flex-wrap justify-center',
+              quizStore.isAnswerCorrect && !isTypo
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : 'text-indigo-600 dark:text-torii-light'
+            ]"
+          >
+            <span class="text-slate-400 dark:text-slate-500 mx-1">/</span>
+            <template v-for="(rom, idx) in romajiList" :key="idx">
+              <span>{{ rom }}</span>
+              <span 
+                v-if="idx < romajiList.length - 1" 
+                class="mx-1.5 sm:mx-2 text-xs sm:text-sm font-normal font-sans text-slate-400 dark:text-slate-500 select-none tracking-normal not-italic lowercase"
+              >
+                atau
+              </span>
+            </template>
+          </span>
+        </div>
       </template>
 
       <template v-else>
