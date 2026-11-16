@@ -84,25 +84,24 @@ quizStore.submitAnswer('anata');
 assert(quizStore.userAnswers[1].hintsUsed === 0, 'Streak 1: hintsUsed is 0');
 assert(quizStore.userAnswers[1].pointsEarned === 4, 'Streak 1: pointsEarned is 4');
 
-// Case 3: Word 2 (streak 2 / 2x strike) -> must be clicked first
+// Case 3: Word 2 (streak 2 / Proses) -> Kata 'Proses' jika ada 2 hints, hint paling kanan selalu terbuka
 quizStore.nextQuestion();
 quizStore.userStreaks['せんせい'] = 2;
 quizStore.initQuestionHints();
 
-assert(quizStore.showMeaningHint === false, 'Streak 2: Petunjuk arti tertutup / harus di-click dulu (showMeaningHint === false)');
-assert(quizStore.isMeaningHintAutoOpened === false, 'Streak 2: isMeaningHintAutoOpened === false');
+assert(quizStore.showMeaningHint === true, 'Streak 2 (Proses): Petunjuk arti langsung terbuka (showMeaningHint === true)');
+assert(quizStore.isMeaningHintAutoOpened === true, 'Streak 2 (Proses): isMeaningHintAutoOpened === true');
 
-// If user does not click hint and answers correctly
 quizStore.submitAnswer('sensei');
-assert(quizStore.userAnswers[2].hintsUsed === 0, 'Streak 2: hintsUsed is 0 when answer submitted without clicking hint');
-assert(quizStore.userAnswers[2].pointsEarned === 4, 'Streak 2: pointsEarned is 4');
+assert(quizStore.userAnswers[2].hintsUsed === 0, 'Streak 2: hintsUsed is 0 because auto-opened');
+assert(quizStore.userAnswers[2].pointsEarned === 4, 'Streak 2: pointsEarned is 4 (full points)');
 
-// Case 4: Word 3 (streak 3 / >= 2 strike) -> user clicks hint
+// Case 4: Word 3 (streak 3 / Kuasai) -> Petunjuk arti tertutup initially
 quizStore.nextQuestion();
 quizStore.userStreaks['がくせい'] = 3;
 quizStore.initQuestionHints();
 
-assert(quizStore.showMeaningHint === false, 'Streak 3: Petunjuk arti tertutup initially');
+assert(quizStore.showMeaningHint === false, 'Streak 3 (Kuasai): Petunjuk arti tertutup initially');
 
 // User manually opens hint
 quizStore.openMeaningHint();
@@ -112,6 +111,38 @@ assert(quizStore.isMeaningHintAutoOpened === false, 'Streak 3: isMeaningHintAuto
 quizStore.submitAnswer('gakusei');
 assert(quizStore.userAnswers[3].hintsUsed === 1, 'Streak 3: hintsUsed is 1 because hint was manually opened');
 assert(quizStore.userAnswers[3].pointsEarned === 3, 'Streak 3: pointsEarned is 3 (1 point deduction for manual hint)');
+
+// Case 5: Mode meaning_to_words (Indonesia -> Jepang)
+// Ada 2 hints: Dengar Pelafalan (kiri) dan Petunjuk Huruf (kanan).
+// Untuk kata 'Baru Mulai' atau 'Proses', hint paling kanan (Petunjuk Huruf) selalu terbuka otomatis!
+quizStore.selectedAnswer = null;
+quizStore.questions = [
+  { character: 'すてます', romaji: 'sutemasu', kana: 'すてます', meaning: 'membuang', type: 'word', questionType: 'meaning_to_words' }
+];
+quizStore.currentQuestionIndex = 0;
+quizStore.userStreaks['すてます'] = 1; // Proses
+quizStore.initQuestionHints();
+
+assert(quizStore.showReadingHint === true, 'meaning_to_words (Proses): Hint paling kanan (Petunjuk Huruf) selalu otomatis terbuka');
+assert(quizStore.isReadingHintAutoOpened === true, 'meaning_to_words (Proses): isReadingHintAutoOpened === true');
+
+quizStore.submitAnswer('すてます');
+const lastAnswer = quizStore.userAnswers[quizStore.userAnswers.length - 1];
+assert(lastAnswer?.hintsUsed === 0, 'meaning_to_words: hintsUsed is 0 when auto-opened');
+assert(lastAnswer?.pointsEarned === 4, 'meaning_to_words: full points 4');
+
+// Case 6: Mode words_meaning (Jepang -> Indonesia)
+// Hanya ada 1 hint (Reading Hint). Sesuai aturan "kecuali hanya ada 1 hints di konversi apapun", hint tetap tertutup!
+quizStore.selectedAnswer = null;
+quizStore.questions = [
+  { character: '病院', romaji: 'byouin', kana: 'びょういん', meaning: 'rumah sakit', type: 'word', questionType: 'words_meaning' }
+];
+quizStore.currentQuestionIndex = 0;
+quizStore.userStreaks['病院'] = 0; // Baru Mulai
+quizStore.initQuestionHints();
+
+assert(quizStore.showReadingHint === false, 'words_meaning: Hanya 1 hint, sehingga tetap tertutup (showReadingHint === false)');
+assert(quizStore.showMeaningHint === false, 'words_meaning: Petunjuk arti tidak ada (showMeaningHint === false)');
 
 console.log(`\nResults: ${passCount} passed, ${failCount} failed.`);
 if (failCount > 0) {

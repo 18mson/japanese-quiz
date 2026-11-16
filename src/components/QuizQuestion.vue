@@ -234,7 +234,7 @@ const questionStyle = computed(() => {
                 v-if="!showReadingHint"
                 type="button"
                 class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95 shadow-2xs"
-                @click="showReadingHint = true"
+                @click="quizStore.openReadingHint ? quizStore.openReadingHint() : (showReadingHint = true)"
               >
                 <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
                 <span>Petunjuk Huruf</span>
@@ -295,7 +295,7 @@ const questionStyle = computed(() => {
                 <button 
                   v-if="!showReadingHint"
                   class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-750 text-indigo-600 dark:text-torii-light rounded-full border border-gray-200 dark:border-slate-700 transition-all duration-200 cursor-pointer focus:outline-none flex items-center gap-1.5 active:scale-95"
-                  @click="showReadingHint = true"
+                  @click="quizStore.openReadingHint ? quizStore.openReadingHint() : (showReadingHint = true)"
                 >
                   <Lightbulb class="w-4 h-4 text-indigo-600 dark:text-torii shrink-0" />
                   <span>Reading Hint</span>

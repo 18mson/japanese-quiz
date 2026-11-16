@@ -68,6 +68,7 @@ export const useQuizStore = defineStore('quiz', () => {
   // ── Quiz Session State ──────────────────────────────────────
   const userInput = ref('');
   const showReadingHint = ref(false);
+  const isReadingHintAutoOpened = ref(false);
   const showMeaningHint = ref(false);
   const isMeaningHintAutoOpened = ref(false);
   const currentQuestionIndex = ref(0);
@@ -84,20 +85,50 @@ export const useQuizStore = defineStore('quiz', () => {
     isMeaningHintAutoOpened.value = false;
   };
 
+  const openReadingHint = () => {
+    showReadingHint.value = true;
+    isReadingHintAutoOpened.value = false;
+  };
+
   const initQuestionHints = () => {
     showReadingHint.value = false;
+    showMeaningHint.value = false;
+    isReadingHintAutoOpened.value = false;
     isMeaningHintAutoOpened.value = false;
 
     const current = currentQuestion.value;
-    if (current && questionType.value === 'words' && isTypingMode.value) {
-      const streak = masteryStore.getMasteryStreak(current.character);
-      if (streak < 2) {
-        showMeaningHint.value = true;
-        isMeaningHintAutoOpened.value = true;
-      } else {
-        showMeaningHint.value = false;
-      }
-    } else {
+    if (!current || !isTypingMode.value) return;
+
+    // Cek apakah kosakata berstatus 'Baru Mulai' (streak 0) atau 'Proses' (streak 1-2)
+    const streak = masteryStore.getMasteryStreak(current.character);
+    const isNewOrLearning = streak < 3;
+
+    if (!isNewOrLearning) {
+      // Kata sudah Kuasai / Mahkota (streak >= 3), semua petunjuk tetap tertutup
+      return;
+    }
+
+    const effectiveType = activeQuestionType.value;
+
+    if (effectiveType === 'meaning_to_words') {
+      // Di konversi Indonesia -> Jepang, terdapat 2 petunjuk visual:
+      // 1. Kiri: Dengar Pelafalan (audio speech)
+      // 2. Kanan: Petunjuk Huruf (Awal: す / S...)
+      // Karena ada 2 petunjuk, petunjuk paling kanan (Petunjuk Huruf) selalu otomatis terbuka
+      showReadingHint.value = true;
+      isReadingHintAutoOpened.value = true;
+    } else if (effectiveType === 'words') {
+      // Di konversi Jepang -> Romaji, terdapat 2 petunjuk visual:
+      // 1. Kiri: Reading Hint
+      // 2. Kanan: Petunjuk Arti
+      // Karena ada 2 petunjuk, petunjuk paling kanan (Petunjuk Arti) selalu otomatis terbuka
+      showMeaningHint.value = true;
+      isMeaningHintAutoOpened.value = true;
+    } else if (effectiveType === 'words_meaning') {
+      // Di konversi Jepang -> Indonesia:
+      // Hanya ada 1 petunjuk (Reading Hint), karena Petunjuk Arti disembunyikan.
+      // Sesuai aturan "kecuali hanya ada 1 hints di konversi apapun", petunjuk tetap tertutup!
+      showReadingHint.value = false;
       showMeaningHint.value = false;
     }
   };
@@ -184,6 +215,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userInput.value = '';
     showReadingHint.value = false;
     showMeaningHint.value = false;
+    isReadingHintAutoOpened.value = false;
     isMeaningHintAutoOpened.value = false;
     questions.value = [];
     startTime.value = Date.now();
@@ -366,7 +398,7 @@ export const useQuizStore = defineStore('quiz', () => {
 
       let hintsUsed = 0;
       if (showMeaningHint.value && !isMeaningHintAutoOpened.value) hintsUsed++;
-      if (showReadingHint.value) hintsUsed++;
+      if (showReadingHint.value && !isReadingHintAutoOpened.value) hintsUsed++;
 
       const isInitialRound = currentQuestionIndex.value < initialQuestionCount.value;
 
@@ -526,6 +558,7 @@ export const useQuizStore = defineStore('quiz', () => {
     userInput.value = '';
     showReadingHint.value = false;
     showMeaningHint.value = false;
+    isReadingHintAutoOpened.value = false;
     isMeaningHintAutoOpened.value = false;
     masteryStore.latestTierTransition = null;
 
@@ -660,6 +693,8 @@ export const useQuizStore = defineStore('quiz', () => {
     isTypingMode,
     userInput,
     showReadingHint,
+    isReadingHintAutoOpened,
+    openReadingHint,
     showMeaningHint,
     isMeaningHintAutoOpened,
     openMeaningHint,
