@@ -4,7 +4,8 @@ import { useQuizStore } from '../../stores/quizStore';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import { 
   type KanjiDetail, 
-  getKanjiDetail 
+  getKanjiDetail,
+  getRelatedKotobaForKanji 
 } from '../../services/kanjiInfoService';
 import KanjiAnimator from '../KanjiAnimator.vue';
 import SpeakerButton from '../SpeakerButton.vue';
@@ -21,7 +22,8 @@ import {
   Lightbulb,
   Layers,
   BookOpen,
-  Printer
+  Printer,
+  Table2
 } from '@lucide/vue';
 
 const props = withDefaults(
@@ -130,30 +132,11 @@ const confidenceBadge = computed(() => {
   }
 });
 
-// Gabungan kosakata terkait: dari kanjiInfo.words dan fallback ke item.examples
+// Gabungan kosakata terkait: dari kurikulum Minna no Nihongo, kanjiDetail.words dan item.examples
 const combinedWords = computed(() => {
-  const list: Array<{ jp: string; kana?: string; meaning: string }> = [];
-
-  if (kanjiDetail.value?.words && kanjiDetail.value.words.length > 0) {
-    for (const w of kanjiDetail.value.words) {
-      list.push({ jp: w.jp, kana: w.kana, meaning: w.meaning });
-    }
-  }
-
-  // Jika di kanjiInfo sedikit atau kosong, tambahkan dari item.examples jika belum ada
-  if (props.item?.examples && props.item.examples.length > 0) {
-    for (const ex of props.item.examples) {
-      // Format ex sering berupa "多い (Banyak)"
-      const match = ex.match(/^([^\(]+)(?:\((.+)\))?$/);
-      const jp = match ? match[1].trim() : ex;
-      const meaning = match && match[2] ? match[2].trim() : '';
-      if (!list.some(existing => existing.jp === jp)) {
-        list.push({ jp, meaning });
-      }
-    }
-  }
-
-  return list;
+  const char = props.item?.character;
+  if (!char) return [];
+  return getRelatedKotobaForKanji(char, kanjiDetail.value?.words);
 });
 
 // Shortcut keyboard
@@ -432,30 +415,67 @@ onUnmounted(() => {
             </p>
           </div>
 
-          <!-- 4. Kosakata Terkait di Minna no Nihongo -->
-          <div v-if="combinedWords.length > 0" class="space-y-2">
-            <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1">
-              <Sparkles class="w-3.5 h-3.5 text-amber-500" />
-              <span>Kosakata Terkait di Minna no Nihongo</span>
-            </h5>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div 
-                v-for="(w, wIdx) in combinedWords" 
-                :key="wIdx"
-                class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-2 shadow-2xs"
-              >
-                <div class="min-w-0">
-                  <div class="flex items-baseline gap-1.5">
-                    <span class="font-black font-jp text-sm text-slate-900 dark:text-white">{{ w.jp }}</span>
-                    <span v-if="w.kana" class="text-xs text-slate-500 dark:text-slate-400 font-jp">（{{ w.kana }}）</span>
-                  </div>
-                  <div class="text-xs text-emerald-700 dark:text-emerald-400 font-semibold truncate">
-                    {{ w.meaning }}
-                  </div>
-                </div>
+          <!-- 4. Kosakata Terkait di Minna no Nihongo (Tabel Kotoba & Bab) -->
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                <Table2 class="w-4 h-4 text-amber-500" />
+                <span>Kosakata Terkait di Minna no Nihongo</span>
+              </h5>
+              <span v-if="combinedWords.length > 0" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                {{ combinedWords.length }} Kotoba
+              </span>
+            </div>
 
-                <SpeakerButton :text="w.kana || w.jp" size="sm" class="shrink-0" />
+            <!-- Tabel Kotoba -->
+            <div v-if="combinedWords.length > 0" class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-700/80 bg-white dark:bg-slate-800/80 shadow-2xs">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[320px]">
+                  <thead>
+                    <tr class="bg-slate-50 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 select-none">
+                      <th scope="col" class="py-2.5 px-3 sm:px-4">Kotoba</th>
+                      <th scope="col" class="py-2.5 px-3 sm:px-4">Cara Baca</th>
+                      <th scope="col" class="py-2.5 px-3 sm:px-4">Arti Indonesia</th>
+                      <th scope="col" class="py-2.5 px-2.5 sm:px-3 text-center">Bab</th>
+                      <th scope="col" class="py-2.5 px-2 text-center w-10">Suara</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                    <tr 
+                      v-for="(w, wIdx) in combinedWords" 
+                      :key="wIdx"
+                      class="hover:bg-indigo-50/40 dark:hover:bg-slate-750 transition-colors"
+                    >
+                      <td class="py-2.5 px-3 sm:px-4 font-jp font-black text-sm sm:text-base text-slate-900 dark:text-white select-all">
+                        {{ w.jp }}
+                      </td>
+                      <td class="py-2.5 px-3 sm:px-4 font-jp text-slate-600 dark:text-slate-300 font-medium">
+                        {{ w.kana || '-' }}
+                      </td>
+                      <td class="py-2.5 px-3 sm:px-4 text-emerald-700 dark:text-emerald-400 font-semibold leading-snug">
+                        {{ w.meaning }}
+                      </td>
+                      <td class="py-2.5 px-2.5 sm:px-3 text-center whitespace-nowrap">
+                        <span 
+                          class="inline-block px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold"
+                          :class="w.lesson?.startsWith('Bab') 
+                            ? 'bg-indigo-50 text-indigo-700 dark:bg-torii/15 dark:text-torii-light border border-indigo-200 dark:border-torii/30' 
+                            : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700'"
+                        >
+                          {{ w.lesson || '-' }}
+                        </span>
+                      </td>
+                      <td class="py-2.5 px-2 text-center">
+                        <SpeakerButton :text="w.kana || w.jp" size="sm" class="shrink-0" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+            </div>
+
+            <div v-else class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
+              Belum ada catatan kosakata khusus untuk kanji ini di kurikulum Minna no Nihongo.
             </div>
           </div>
 

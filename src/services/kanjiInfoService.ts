@@ -8,6 +8,8 @@ import {
 } from '../lib/kanjiLocalDb';
 import { wordsData } from '../data/words';
 import { kanjiN5Data } from '../data/kanji';
+import { kanjiN4Data } from '../data/kanjiN4';
+import { KANJI_CATALOG_DATA } from '../data/kanjiCatalogData';
 
 const n5KanjiSet = new Set(kanjiN5Data.map(k => k.character));
 
@@ -103,9 +105,151 @@ function mapRowToDetail(row: any): KanjiDetail {
 }
 
 /**
- * Fallback data minimal langsung dari words.ts saat offline dan kanji belum ada di cache.
+ * Mengambil seluruh kosakata terkait untuk sebuah kanji dari kurikulum Minna no Nihongo (Bab 1-25),
+ * database N5/N4, dan kamus kata terkait.
+ */
+export function getRelatedKotobaForKanji(kanji: string, existingWords?: KanjiWordContext[]): KanjiWordContext[] {
+  if (!kanji) return [];
+
+  const results: KanjiWordContext[] = [];
+  const seenJp = new Set<string>();
+
+  // 1. Cek semua kosakata di wordsData (Minna no Nihongo)
+  for (const w of wordsData) {
+    if (w.character && w.character.includes(kanji)) {
+      if (!seenJp.has(w.character)) {
+        seenJp.add(w.character);
+        results.push({
+          jp: w.character,
+          kana: w.kana || '',
+          meaning: w.meaning || '',
+          lesson: w.lesson ? (w.lesson.startsWith('Pelajaran') ? w.lesson.replace('Pelajaran', 'Bab') : w.lesson) : undefined
+        });
+      }
+    }
+  }
+
+  // 2. Varian umum jika kanji ditulis kana di words.ts (misal 私 <-> わたし, 誰 <-> だれ, ご飯 <-> 飯)
+  const kanaAliases: Record<string, Array<{ jp: string; kana: string; meaning: string; lesson: string }>> = {
+    '私': [
+      { jp: '私', kana: 'わたし', meaning: 'saya', lesson: 'Bab 1' },
+      { jp: '私たち', kana: 'わたしたち', meaning: 'kami, kita', lesson: 'Bab 22' }
+    ],
+    '誰': [
+      { jp: '誰', kana: 'だれ', meaning: 'siapa', lesson: 'Bab 1' },
+      { jp: '誰か', kana: 'だれか', meaning: 'seseorang', lesson: 'Bab 13' }
+    ],
+    '鳥': [
+      { jp: '小鳥', kana: 'ことり', meaning: 'burung kecil', lesson: 'Bab 20' },
+      { jp: '白鳥', kana: 'はくちょう', meaning: 'angsa', lesson: 'N5' },
+      { jp: '鳥肉', kana: 'とりにく', meaning: 'daging ayam', lesson: 'Bab 12' }
+    ],
+    '力': [
+      { jp: '能力', kana: 'のうりょく', meaning: 'kemampuan, kapabilitas', lesson: 'Bab 9' },
+      { jp: '力', kana: 'ちから', meaning: 'tenaga, kekuatan', lesson: 'N4' }
+    ],
+    '飯': [
+      { jp: 'ご飯', kana: 'ごはん', meaning: 'nasi, makanan', lesson: 'Bab 6' },
+      { jp: '朝ご飯', kana: 'あさごはん', meaning: 'sarapan, makan pagi', lesson: 'Bab 6' },
+      { jp: '昼ご飯', kana: 'ひるごはん', meaning: 'makan siang', lesson: 'Bab 6' },
+      { jp: '晩ご飯', kana: 'ばんごはん', meaning: 'makan malam', lesson: 'Bab 6' }
+    ],
+    '色': [
+      { jp: '色', kana: 'いろ', meaning: 'warna', lesson: 'Bab 16' },
+      { jp: '色々', kana: 'いろいろ', meaning: 'bermacam-macam', lesson: 'Bab 11' }
+    ],
+    '声': [
+      { jp: '声', kana: 'こえ', meaning: 'suara', lesson: 'Bab 20' }
+    ],
+    '昨': [
+      { jp: '昨日', kana: 'きのう', meaning: 'kemarin', lesson: 'Bab 4' }
+    ],
+    '森': [
+      { jp: '森', kana: 'もり', meaning: 'hutan lebat', lesson: 'N5' }
+    ],
+    '林': [
+      { jp: '林', kana: 'はやし', meaning: 'hutan kecil', lesson: 'N5' }
+    ],
+    '工': [
+      { jp: '工場', kana: 'こうじょう', meaning: 'pabrik', lesson: 'Bab 10' }
+    ],
+    '光': [
+      { jp: '観光', kana: 'かんこう', meaning: 'pariwisata', lesson: 'Bab 24' },
+      { jp: '光', kana: 'ひかり', meaning: 'cahaya, sinar', lesson: 'N4' }
+    ]
+  };
+
+  if (kanaAliases[kanji]) {
+    for (const item of kanaAliases[kanji]) {
+      if (!seenJp.has(item.jp)) {
+        seenJp.add(item.jp);
+        results.push(item);
+      }
+    }
+  }
+
+  // 3. Tambahkan dari existingWords
+  if (Array.isArray(existingWords)) {
+    for (const ew of existingWords) {
+      if (ew && ew.jp && !seenJp.has(ew.jp)) {
+        seenJp.add(ew.jp);
+        results.push(ew);
+      }
+    }
+  }
+
+  // 4. Tambahkan dari kanjiN5Data
+  const n5 = kanjiN5Data.find(k => k.character === kanji);
+  if (n5?.examples) {
+    for (const ex of n5.examples) {
+      const match = ex.match(/^([^\s(]+)(?:\s*\(([^)]+)\))?/);
+      if (match) {
+        const jp = match[1];
+        const meaning = match[2] || '';
+        if (!seenJp.has(jp)) {
+          seenJp.add(jp);
+          results.push({ jp, kana: '', meaning, lesson: n5.lesson || 'N5' });
+        }
+      }
+    }
+  }
+
+  // 5. Tambahkan dari kanjiN4Data
+  const n4 = kanjiN4Data.find(k => k.character === kanji);
+  if (n4?.examples) {
+    for (const ex of n4.examples) {
+      const match = ex.match(/^([^\s(]+)(?:\s*\(([^)]+)\))?/);
+      if (match) {
+        const jp = match[1];
+        const meaning = match[2] || '';
+        if (!seenJp.has(jp)) {
+          seenJp.add(jp);
+          results.push({ jp, kana: '', meaning, lesson: 'N4' });
+        }
+      }
+    }
+  }
+
+  return results.sort((a, b) => {
+    const babA = parseInt((a.lesson || '').replace(/\D/g, ''), 10) || 999;
+    const babB = parseInt((b.lesson || '').replace(/\D/g, ''), 10) || 999;
+    if (babA !== babB) return babA - babB;
+    return a.jp.length - b.jp.length;
+  });
+}
+
+/**
+ * Fallback data minimal langsung dari katalog lokal saat offline dan kanji belum ada di cache.
  */
 export function getMinimalFallbackDetail(kanji: string, targetWord?: string): KanjiDetail {
+  if (KANJI_CATALOG_DATA[kanji]) {
+    const catalogItem = KANJI_CATALOG_DATA[kanji];
+    return {
+      ...catalogItem,
+      words: getRelatedKotobaForKanji(kanji, catalogItem.words)
+    };
+  }
+
   const matched = (targetWord ? wordsData.find(w => w.character === targetWord && w.character.includes(kanji)) : null)
     || wordsData.find(w => w.character && w.character.includes(kanji));
 
@@ -121,12 +265,12 @@ export function getMinimalFallbackDetail(kanji: string, targetWord?: string): Ka
     jlpt: normalizeModernJlptLevel(null, kanji),
     components: [],
     source: 'words.ts',
-    words: matched ? [{
+    words: getRelatedKotobaForKanji(kanji, matched ? [{
       jp: matched.character,
       kana: matched.kana,
       meaning: matched.meaning,
       lesson: matched.lesson ? `Bab ${matched.lesson}` : undefined
-    }] : [],
+    }] : []),
     updated_at: new Date().toISOString()
   };
 }
@@ -201,10 +345,17 @@ export async function getMultipleKanjiDetails(kanjiList: string[]): Promise<Reco
   const result: Record<string, KanjiDetail> = {};
   const missingFromMemory: string[] = [];
 
-  // 1. Cek L1 Memory
+  // 1. Cek L1 Memory & Katalog Terintegrasi
   for (const k of validKanji) {
     if (memoryCache.has(k)) {
       result[k] = memoryCache.get(k)!;
+    } else if (KANJI_CATALOG_DATA[k]) {
+      const detail: KanjiDetail = {
+        ...KANJI_CATALOG_DATA[k],
+        words: getRelatedKotobaForKanji(k, KANJI_CATALOG_DATA[k].words)
+      };
+      result[k] = detail;
+      memoryCache.set(k, detail);
     } else {
       missingFromMemory.push(k);
     }
@@ -331,10 +482,17 @@ export async function loadKanjiInfo(
   const result: Record<string, KanjiDetail> = {};
   const missingFromMemory: string[] = [];
 
-  // 1. Cek L1 Memory
+  // 1. Cek L1 Memory & Katalog Terintegrasi
   for (const k of kanjiList) {
     if (memoryCache.has(k)) {
       result[k] = memoryCache.get(k)!;
+    } else if (KANJI_CATALOG_DATA[k]) {
+      const detail: KanjiDetail = {
+        ...KANJI_CATALOG_DATA[k],
+        words: getRelatedKotobaForKanji(k, KANJI_CATALOG_DATA[k].words)
+      };
+      result[k] = detail;
+      memoryCache.set(k, detail);
     } else {
       missingFromMemory.push(k);
     }

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted, nextTick } from 'vue';
-import { X, BookOpen, Flag, Lightbulb, CheckCircle2, Layers } from '@lucide/vue';
+import { X, BookOpen, Flag, Lightbulb, CheckCircle2, Layers, Table2 } from '@lucide/vue';
+import SpeakerButton from './SpeakerButton.vue';
 import { 
   type KanjiDetail, 
   loadKanjiInfo, 
   extractKanjiFromWord, 
   reportKanjiExplanation,
-  getMinimalFallbackDetail 
+  getMinimalFallbackDetail,
+  getRelatedKotobaForKanji 
 } from '../services/kanjiInfoService';
 
 const props = withDefaults(defineProps<{
@@ -43,6 +45,12 @@ const currentKanjiDetail = computed<KanjiDetail | null>(() => {
   if (!activeKanji.value) return null;
   return kanjiDataMap.value[activeKanji.value] 
     || getMinimalFallbackDetail(activeKanji.value, props.targetWord);
+});
+
+// Daftar kosakata terkait yang dinamis & mencakup seluruh bab Minna no Nihongo
+const displayWords = computed(() => {
+  if (!activeKanji.value) return [];
+  return getRelatedKotobaForKanji(activeKanji.value, currentKanjiDetail.value?.words || []);
 });
 
 // Jenis pembentukan terjemahan Indonesia
@@ -417,29 +425,68 @@ onUnmounted(() => {
 
               <!-- 6. Tier BASIC: tanpa bagian Cara Mengingat & tanpa asal-usul -->
 
-              <!-- 5. Related Vocabulary in Project -->
-              <div v-if="currentKanjiDetail.words?.length" class="space-y-2">
-                <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Kosakata Terkait di Minna no Nihongo
-                </h5>
-                <ul class="divide-y divide-slate-100 dark:divide-slate-800 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 overflow-hidden text-xs">
-                  <li 
-                    v-for="(w, wIdx) in currentKanjiDetail.words" 
-                    :key="wIdx"
-                    class="p-2.5 flex items-center justify-between gap-2 flex-wrap"
-                  >
-                    <div class="flex items-baseline gap-2">
-                      <span class="font-bold font-jp text-sm text-slate-900 dark:text-white">{{ w.jp }}</span>
-                      <span class="text-slate-500 dark:text-slate-400 font-jp">（{{ w.kana }}）</span>
-                    </div>
-                    <div class="text-right flex items-center gap-2">
-                      <span class="text-slate-700 dark:text-slate-300 font-medium">{{ w.meaning }}</span>
-                      <span v-if="w.lesson" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300">
-                        {{ w.lesson }}
-                      </span>
-                    </div>
-                  </li>
-                </ul>
+              <!-- 5. TABEL KOSAKATA TERKAIT & BAB PELAJARAN -->
+              <div class="space-y-2.5 pt-1">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <h5 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Table2 class="w-4 h-4 text-indigo-600 dark:text-torii" />
+                    <span>Daftar Kotoba Terkait & Bab Pelajaran</span>
+                  </h5>
+                  <span v-if="displayWords.length > 0" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    {{ displayWords.length }} Kotoba
+                  </span>
+                </div>
+
+                <!-- Tabel Kotoba -->
+                <div v-if="displayWords.length > 0" class="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-750 bg-white dark:bg-slate-850 shadow-xs">
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs sm:text-sm min-w-[320px]">
+                      <thead>
+                        <tr class="bg-slate-50 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 select-none">
+                          <th scope="col" class="py-2.5 px-3 sm:px-4">Kotoba</th>
+                          <th scope="col" class="py-2.5 px-3 sm:px-4">Cara Baca</th>
+                          <th scope="col" class="py-2.5 px-3 sm:px-4">Arti Indonesia</th>
+                          <th scope="col" class="py-2.5 px-2.5 sm:px-3 text-center">Bab</th>
+                          <th scope="col" class="py-2.5 px-2 text-center w-10">Suara</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <tr 
+                          v-for="(w, wIdx) in displayWords" 
+                          :key="wIdx"
+                          class="hover:bg-indigo-50/40 dark:hover:bg-slate-800/60 transition-colors"
+                        >
+                          <td class="py-2.5 px-3 sm:px-4 font-jp font-black text-sm sm:text-base text-slate-900 dark:text-white select-all">
+                            {{ w.jp }}
+                          </td>
+                          <td class="py-2.5 px-3 sm:px-4 font-jp text-slate-600 dark:text-slate-300 font-medium">
+                            {{ w.kana || '-' }}
+                          </td>
+                          <td class="py-2.5 px-3 sm:px-4 text-slate-700 dark:text-slate-200 font-medium leading-snug">
+                            {{ w.meaning }}
+                          </td>
+                          <td class="py-2.5 px-2.5 sm:px-3 text-center whitespace-nowrap">
+                            <span 
+                              class="inline-block px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold"
+                              :class="w.lesson?.startsWith('Bab') 
+                                ? 'bg-indigo-50 text-indigo-700 dark:bg-torii/15 dark:text-torii-light border border-indigo-200 dark:border-torii/30' 
+                                : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700'"
+                            >
+                              {{ w.lesson || '-' }}
+                            </span>
+                          </td>
+                          <td class="py-2.5 px-2 text-center">
+                            <SpeakerButton :text="w.kana || w.jp" size="sm" class="shrink-0" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div v-else class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
+                  Belum ada catatan kosakata khusus untuk kanji ini di kurikulum Minna no Nihongo.
+                </div>
               </div>
 
               <!-- 6. Footer Note, Feedback & Report Button -->
