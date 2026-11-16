@@ -149,7 +149,8 @@ export const extractMeaningCandidates = (raw: string): string[] => {
         !inner.includes('sebagai') && 
         !inner.includes('sopan') && 
         !inner.includes('profesi') && 
-        inner.length < 40
+        !inner.includes('biasanya') && 
+        inner.length < 80
       ) {
         addWithVariants(inner);
         // Bila di dalam kurung terdapat pemisah /, ;, koma, atau 'atau' (misal: "sore/malam", "bunga/pohon")
@@ -239,6 +240,22 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     if (cand.includes('flu influenza')) {
       addWithVariants('flu');
       addWithVariants('influenza');
+    }
+    if (cand.includes('departemen')) {
+      addWithVariants(cand.replace(/departemen/g, 'department'));
+    } else if (cand.includes('department')) {
+      addWithVariants(cand.replace(/department/g, 'departemen'));
+    }
+    if (cand.includes('manager')) {
+      addWithVariants(cand.replace(/manager/g, 'manajer'));
+    } else if (cand.includes('manajer')) {
+      addWithVariants(cand.replace(/manajer/g, 'manager'));
+    }
+    if (cand.includes('presiden direktur')) {
+      addWithVariants('presdir');
+    }
+    if (cand.includes('direktur utama')) {
+      addWithVariants('dirut');
     }
   }
 

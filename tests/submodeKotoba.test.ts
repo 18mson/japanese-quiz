@@ -101,6 +101,28 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('influenza', 'flu / influenza'), true);
     assert.strictEqual(checkIsMeaningCorrect('flu', 'flu influenza'), true);
     assert.strictEqual(checkIsMeaningCorrect('influenza', 'flu influenza'), true);
+
+    // Kasus jabatan: 課長 (kachou), 部長 (buchou), 社長 (shachou)
+    const kachouMeaning = 'kepala seksi (manager / kepala departemen / supervisor)';
+    assert.strictEqual(checkIsMeaningCorrect('kepala seksi', kachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('manager', kachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('manajer', kachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('kepala departemen', kachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('kepala department', kachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('supervisor', kachouMeaning), true);
+
+    const buchouMeaning = 'kepala bagian (kepala divisi / general manager / manager)';
+    assert.strictEqual(checkIsMeaningCorrect('kepala bagian', buchouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('kepala divisi', buchouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('general manager', buchouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('manager', buchouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('manajer', buchouMeaning), true);
+
+    const shachouMeaning = 'direktur utama, presiden direktur (dirut)';
+    assert.strictEqual(checkIsMeaningCorrect('presiden direktur', shachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('direktur utama', shachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('dirut', shachouMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('presdir', shachouMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
