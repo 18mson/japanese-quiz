@@ -236,6 +236,10 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     if (cand.includes('korea selatan')) {
       addWithVariants(cand.replace(/korea selatan/g, 'korea'));
     }
+    if (cand.includes('flu influenza')) {
+      addWithVariants('flu');
+      addWithVariants('influenza');
+    }
   }
 
   // 7. Ekuivalensi kata seru percakapan Indonesia: 'o' <-> 'oh', 'ya' <-> 'iya'

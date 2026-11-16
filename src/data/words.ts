@@ -864,7 +864,7 @@ export const wordsData: JapaneseWord[] = [
   { character: 'ねんざ', kana: 'ねんざ', romaji: ['nenza'], meaning: 'keseleo / terkilir', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
   { character: '骨折', kana: 'こっせつ', romaji: ['kossetsu', 'kossetu'], meaning: 'patah tulang', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
   { character: '二日酔い', kana: 'ふつかよい', romaji: ['futsukayoi', 'hutukayoi'], meaning: 'mabuk sisa alkohol / hangover', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
-  { character: 'インフルエンザ', kana: 'インフルエンザ', romaji: ['infuruenza'], meaning: 'flu influenza', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
+  { character: 'インフルエンザ', kana: 'インフルエンザ', romaji: ['infuruenza'], meaning: 'flu / influenza', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
   { character: '盲腸', kana: 'もうちょう', romaji: ['mouchou', 'mocho'], meaning: 'usus buntu / apendisitis', type: 'word', lesson: 'Pelajaran 17', category_word: 'Kata Benda', sub_category: 'Tubuh & Kesehatan' },
   { character: 'できます', kana: 'できます', romaji: ['dekimasu'], meaning: 'dapat, bisa, mampu', type: 'word', lesson: 'Pelajaran 18', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
   { character: '洗います', kana: 'あらいます', romaji: ['araimasu'], meaning: 'mencuci', type: 'word', lesson: 'Pelajaran 18', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },

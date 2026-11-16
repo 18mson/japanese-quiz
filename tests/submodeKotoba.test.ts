@@ -95,6 +95,12 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('korea', 'Korea Selatan'), true);
     assert.strictEqual(checkIsMeaningCorrect('tiongkok', 'Cina / Tiongkok / China'), true);
     assert.strictEqual(checkIsMeaningCorrect('prancis', 'Perancis / Prancis'), true);
+
+    // Kasus kata penyakit: インフルエンザ (flu / influenza)
+    assert.strictEqual(checkIsMeaningCorrect('flu', 'flu / influenza'), true);
+    assert.strictEqual(checkIsMeaningCorrect('influenza', 'flu / influenza'), true);
+    assert.strictEqual(checkIsMeaningCorrect('flu', 'flu influenza'), true);
+    assert.strictEqual(checkIsMeaningCorrect('influenza', 'flu influenza'), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
