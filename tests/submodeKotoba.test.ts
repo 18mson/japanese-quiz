@@ -194,6 +194,28 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan R
     // Typo nyata pada kata sifat-na (misal kurang 'う')
     assert.strictEqual(checkIsJapaneseCorrect('だいじょぶな', naItem), false);
     assert.strictEqual(checkIsJapaneseTypo('だいじょぶな', naItem), true);
+    // Menangani kata kerja: noborimasu <-> noboru
+    const noboriItem = {
+      character: '登ります',
+      kana: 'のぼります',
+      romaji: ['noborimasu'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('登ります', noboriItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のぼります', noboriItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('登る', noboriItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のぼる', noboriItem), true);
+
+    const noboruKamusItem = {
+      character: '登る',
+      kana: 'のぼる',
+      romaji: ['noboru'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('登る', noboruKamusItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のぼる', noboruKamusItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('登ります', noboruKamusItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のぼります', noboruKamusItem), true);
   });
 
   await t.test('menangani ungkapan bertanda tilde & ellipsis (～は ちょっと……) dengan input はちょっと maupun wachotto / わちょっと', () => {

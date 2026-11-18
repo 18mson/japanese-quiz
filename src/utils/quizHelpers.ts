@@ -434,6 +434,76 @@ export const checkIsMeaningTypo = (userInput: string, targetMeaning: string): bo
 
 export const JP_PUNCTUATION_REGEX = /[\s\u3000。、！？.,!?~～…⋯‥・\-—_–/\\()（）[\]【】［］「」『』"':;`]/g;
 
+/**
+ * Menghasilkan variasi konjugasi kata kerja antara bentuk masu (ます形) dan bentuk kamus (辞書形)
+ * sehingga pengguna yang menjawab '登る'/'のぼる' untuk soal '登ります' (atau sebaliknya) tetap dinilai benar.
+ */
+export function getVerbInflectionVariants(verb: string): string[] {
+  if (!verb) return [];
+  const clean = verb.trim().replace(JP_PUNCTUATION_REGEX, '');
+  if (!clean || clean.length < 2) return [];
+
+  const variants = new Set<string>();
+
+  // 1. Masu-kei -> Jisho-kei (Bentuk Masu ke Bentuk Kamus)
+  if (clean.endsWith('ます')) {
+    const withoutMasu = clean.slice(0, -2);
+    // Group 3: 来ます -> 来る / くる
+    if (clean === '来ます') {
+      variants.add('来る');
+    } else if (clean === 'きます') {
+      variants.add('くる');
+    } else if (clean.endsWith('します')) {
+      variants.add(clean.slice(0, -3) + 'する');
+    }
+
+    // Group 1 Godan endings
+    if (withoutMasu.endsWith('い')) variants.add(withoutMasu.slice(0, -1) + 'う');
+    else if (withoutMasu.endsWith('き')) variants.add(withoutMasu.slice(0, -1) + 'く');
+    else if (withoutMasu.endsWith('ぎ')) variants.add(withoutMasu.slice(0, -1) + 'ぐ');
+    else if (withoutMasu.endsWith('し')) variants.add(withoutMasu.slice(0, -1) + 'す');
+    else if (withoutMasu.endsWith('ち')) variants.add(withoutMasu.slice(0, -1) + 'つ');
+    else if (withoutMasu.endsWith('に')) variants.add(withoutMasu.slice(0, -1) + 'ぬ');
+    else if (withoutMasu.endsWith('び')) variants.add(withoutMasu.slice(0, -1) + 'ぶ');
+    else if (withoutMasu.endsWith('み')) variants.add(withoutMasu.slice(0, -1) + 'む');
+    else if (withoutMasu.endsWith('り')) variants.add(withoutMasu.slice(0, -1) + 'る');
+
+    // Group 2 Ichidan ending (~ます -> ~る)
+    variants.add(withoutMasu + 'る');
+  } else {
+    // 2. Jisho-kei -> Masu-kei (Bentuk Kamus ke Bentuk Masu)
+    if (clean === '来る') {
+      variants.add('来ます');
+    } else if (clean === 'くる') {
+      variants.add('きます');
+    } else if (clean.endsWith('する')) {
+      variants.add(clean.slice(0, -2) + 'します');
+    } else if (clean.endsWith('う')) {
+      variants.add(clean.slice(0, -1) + 'います');
+    } else if (clean.endsWith('く')) {
+      variants.add(clean.slice(0, -1) + 'きます');
+    } else if (clean.endsWith('ぐ')) {
+      variants.add(clean.slice(0, -1) + 'ぎます');
+    } else if (clean.endsWith('す')) {
+      variants.add(clean.slice(0, -1) + 'します');
+    } else if (clean.endsWith('つ')) {
+      variants.add(clean.slice(0, -1) + 'ちます');
+    } else if (clean.endsWith('ぬ')) {
+      variants.add(clean.slice(0, -1) + 'にます');
+    } else if (clean.endsWith('ぶ')) {
+      variants.add(clean.slice(0, -1) + 'びます');
+    } else if (clean.endsWith('む')) {
+      variants.add(clean.slice(0, -1) + 'みます');
+    } else if (clean.endsWith('る')) {
+      // Godan (~ります) atau Ichidan (~ます)
+      variants.add(clean.slice(0, -1) + 'ります');
+      variants.add(clean.slice(0, -1) + 'ます');
+    }
+  }
+
+  return Array.from(variants);
+}
+
 export const checkIsJapaneseCorrect = (
   userInput: string,
   word: { character: string; kana?: string; romaji: string | string[]; category_word?: string }
@@ -455,6 +525,7 @@ export const checkIsJapaneseCorrect = (
   const validTargets = new Set<string>();
 
   const isNaAdjective = targetCharClean.endsWith('な') || (word as any).category_word === 'Kata Sifat-na';
+  const isVerb = (word as any).category_word === 'Kata Kerja' || targetCharClean.endsWith('ます') || targetKanaClean.endsWith('ます');
 
   // Helper untuk mendaftarkan target dan varian fonetik partikel 'wa' (は <-> わ)
   const addTargetWithVariants = (target: string) => {
@@ -486,6 +557,14 @@ export const checkIsJapaneseCorrect = (
         addTargetWithVariants(targetCharClean + 'な');
       }
     }
+
+    // Jika kata kerja (misal: 登ります <-> 登る)
+    if (isVerb) {
+      const charVariants = getVerbInflectionVariants(targetCharClean);
+      for (const v of charVariants) {
+        addTargetWithVariants(v);
+      }
+    }
   }
 
   // 2. Variasi dari word.kana
@@ -499,6 +578,14 @@ export const checkIsJapaneseCorrect = (
         addTargetWithVariants(kanaNoNa);
       } else {
         addTargetWithVariants(targetKanaClean + 'な');
+      }
+    }
+
+    // Jika kata kerja pada kana (misal: のぼります <-> のぼる)
+    if (isVerb) {
+      const kanaVariants = getVerbInflectionVariants(targetKanaClean);
+      for (const v of kanaVariants) {
+        addTargetWithVariants(v);
       }
     }
   }
