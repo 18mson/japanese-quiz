@@ -216,6 +216,66 @@ test('Sub-mode meaning_to_words: Evaluasi Jawaban Jepang (Kanji & Kana - Bukan R
     assert.strictEqual(checkIsJapaneseCorrect('のぼる', noboruKamusItem), true);
     assert.strictEqual(checkIsJapaneseCorrect('登ります', noboruKamusItem), true);
     assert.strictEqual(checkIsJapaneseCorrect('のぼります', noboruKamusItem), true);
+
+    // Kata kerja Ichidan: 食べます <-> 食べる
+    const tabeItem = {
+      character: '食べます',
+      kana: 'たべます',
+      romaji: ['tabemasu'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('食べる', tabeItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('たべる', tabeItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('食べます', tabeItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('たべます', tabeItem), true);
+
+    // Kata kerja Suru (Group 3): 運転します <-> 運転する
+    const untenItem = {
+      character: '運転します',
+      kana: 'うんてんします',
+      romaji: ['untenshimasu'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('運転する', untenItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('うんてんする', untenItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('運転します', untenItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('うんてんします', untenItem), true);
+
+    // Kata kerja Godan mu -> mimasu: 飲みます <-> 飲む
+    const nomiItem = {
+      character: '飲みます',
+      kana: 'のみます',
+      romaji: ['nomimasu'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('飲む', nomiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のむ', nomiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('飲みます', nomiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('のみます', nomiItem), true);
+
+    // Kata kerja Godan u -> imasu: 洗います <-> 洗う
+    const araiItem = {
+      character: '洗います',
+      kana: 'あらいます',
+      romaji: ['araimasu'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('洗う', araiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('あらう', araiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('洗います', araiItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('あらいます', araiItem), true);
+
+    // Kata kerja yang di dataset berupa bentuk kamus: 走る <-> 走ります
+    const hashiruItem = {
+      character: '走る',
+      kana: 'はしる',
+      romaji: ['hashiru'],
+      category_word: 'Kata Kerja'
+    };
+    assert.strictEqual(checkIsJapaneseCorrect('走ります', hashiruItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('はしります', hashiruItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('走る', hashiruItem), true);
+    assert.strictEqual(checkIsJapaneseCorrect('はしる', hashiruItem), true);
   });
 
   await t.test('menangani ungkapan bertanda tilde & ellipsis (～は ちょっと……) dengan input はちょっと maupun wachotto / わちょっと', () => {
