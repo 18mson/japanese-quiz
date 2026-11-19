@@ -158,7 +158,7 @@ export const wordsData: JapaneseWord[] = [
   { character: '晩', kana: 'ばん', romaji: ['ban'], meaning: 'malam', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Waktu & Tanggal' },
   { character: '試験', kana: 'しけん', romaji: ['shiken'], meaning: 'ujian', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Kegiatan & Konsep' },
   { character: '会議', kana: 'かいぎ', romaji: ['kaigi'], meaning: 'rapat', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Kegiatan & Konsep' },
-  { character: '映画', kana: 'えいが', romaji: ['eiga'], meaning: 'film', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Hobi & Hiburan' },
+  { character: '映画', kana: 'えいが', romaji: ['eiga'], meaning: 'film (bioskop / movie)', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Hobi & Hiburan' },
   { character: '毎日', kana: 'まいにち', romaji: ['mainichi'], meaning: 'setiap hari', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Keterangan', sub_category: 'Waktu & Tanggal' },
   { character: '月曜日', kana: 'げつようび', romaji: ['getsuyoubi', 'getsuyobi'], meaning: 'hari Senin', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Waktu & Tanggal' },
   { character: '火曜日', kana: 'かようび', romaji: ['kayoubi', 'kayobi'], meaning: 'hari Selasa', type: 'word', lesson: 'Pelajaran 4', category_word: 'Kata Benda', sub_category: 'Waktu & Tanggal' },
