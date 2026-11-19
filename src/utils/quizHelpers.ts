@@ -164,9 +164,29 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     }
   }
 
-  // 4. Split by primary delimiters: /, ;, \n, or ' atau '
+  // 4. Split by primary delimiters: /, ;, \n, or ' atau ' (HANYA di luar tanda kurung)
   const primaryChunks = (str: string) => {
-    return str.split(/[/;\n]| atau /i).map(s => s.trim()).filter(Boolean);
+    const chunks: string[] = [];
+    let current = '';
+    let parenDepth = 0;
+    for (let i = 0; i < str.length; i++) {
+      const ch = str[i];
+      if (ch === '(' || ch === '（' || ch === '[' || ch === '【') parenDepth++;
+      else if (ch === ')' || ch === '）' || ch === ']' || ch === '】') parenDepth = Math.max(0, parenDepth - 1);
+
+      if (parenDepth === 0 && (ch === '/' || ch === ';' || ch === '\n')) {
+        if (current.trim()) chunks.push(current.trim());
+        current = '';
+      } else if (parenDepth === 0 && str.slice(i, i + 6).toLowerCase() === ' atau ') {
+        if (current.trim()) chunks.push(current.trim());
+        current = '';
+        i += 5; // skip ' atau '
+      } else {
+        current += ch;
+      }
+    }
+    if (current.trim()) chunks.push(current.trim());
+    return chunks;
   };
 
   const chunks1 = primaryChunks(raw);
@@ -194,18 +214,25 @@ export const extractMeaningCandidates = (raw: string): string[] => {
       }
     }
 
-    // Jika chunk berakhiran keterangan tanda kurung (misal: "bapak, ayah (sendiri)"),
-    // distribusikan keterangan kurung ke item sebelum koma: "bapak sendiri"
+    // Jika chunk berakhiran keterangan tanda kurung (misal: "memainkan (alat musik petik/piano)"),
+    // distribusikan keterangan kurung ke item sebelum kurung
     const trailingParenMatch = chunk.match(/^(.*?)\s*[\(\（\[\【](.*?)[\)\）\]\】]\s*$/);
     if (trailingParenMatch) {
-      const beforeParen = trailingParenMatch[1];
+      const beforeParen = trailingParenMatch[1].trim();
       const parenText = cleanBase(trailingParenMatch[2]);
-      if (beforeParen.includes(',') && parenText && !parenText.includes(':')) {
-        const items = beforeParen.split(',').map(s => s.trim()).filter(Boolean);
-        for (const item of items) {
-          const itemClean = cleanBase(item);
-          if (itemClean && itemClean.length >= 2) {
-            addWithVariants(`${itemClean} ${parenText}`);
+      if (parenText && !parenText.includes(':')) {
+        const innerSubs = parenText.split(/[/,;\n]| atau /i).map(s => cleanBase(s)).filter(Boolean);
+        const beforeItems = beforeParen.includes(',') 
+          ? beforeParen.split(',').map(s => cleanBase(s)).filter(Boolean)
+          : [cleanBase(beforeParen)].filter(Boolean);
+
+        for (const bItem of beforeItems) {
+          if (!bItem || bItem.length < 2) continue;
+          for (const iSub of innerSubs) {
+            addWithVariants(`${bItem} ${iSub}`);
+            if (iSub.includes('alat musik petik')) {
+              addWithVariants(`${bItem} alat musik`);
+            }
           }
         }
       }
@@ -256,6 +283,18 @@ export const extractMeaningCandidates = (raw: string): string[] => {
     }
     if (cand.includes('direktur utama')) {
       addWithVariants('dirut');
+    }
+    if (cand.includes('mencuci pakaian')) {
+      addWithVariants('mencuci baju');
+      addWithVariants('cuci pakaian');
+      addWithVariants('cuci baju');
+      addWithVariants('mencuci');
+      addWithVariants('cuci');
+    }
+    if (cand.includes('memainkan alat musik')) {
+      addWithVariants('main alat musik');
+      addWithVariants('bermain musik');
+      addWithVariants('main musik');
     }
   }
 

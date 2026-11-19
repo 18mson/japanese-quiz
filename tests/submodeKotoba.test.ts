@@ -123,6 +123,22 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('direktur utama', shachouMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('dirut', shachouMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('presdir', shachouMeaning), true);
+
+    // Kasus kata kerja musik & mencuci: 弾きます (hikimasu) & 洗濯します (sentakushimasu)
+    const hikimasuMeaning = 'memainkan (alat musik petik/piano)';
+    assert.strictEqual(checkIsMeaningCorrect('memainkan alat musik', hikimasuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('memainkan', hikimasuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('memainkan piano', hikimasuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('bermain musik', hikimasuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('memainkan alat musik petik', hikimasuMeaning), true);
+
+    const sentakuMeaning = 'mencuci pakaian';
+    assert.strictEqual(checkIsMeaningCorrect('mencuci pakaian', sentakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('mencuci baju', sentakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('cuci baju', sentakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('cuci pakaian', sentakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('mencuci', sentakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('cuci', sentakuMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
