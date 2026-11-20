@@ -915,7 +915,7 @@ export const wordsData: JapaneseWord[] = [
   { character: 'たたく', kana: 'たたく', romaji: ['tataku'], meaning: 'memukul, mengetuk', type: 'word', lesson: 'Pelajaran 18', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
   { character: 'ビートルズ', kana: 'ビートルズ', romaji: ['bi-toruzu', 'biitoruzu'], meaning: 'The Beatles', type: 'word', lesson: 'Pelajaran 18', category_word: 'Kata Benda', sub_category: 'Hobi & Hiburan' },
   { character: '登ります', kana: 'のぼります', romaji: ['noborimasu'], meaning: 'mendaki, naik [やまに～]', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
-  { character: '泊まります', kana: 'とまります', romaji: ['tomarimasu'], meaning: 'menginap di hotel [ホテルに～]', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
+  { character: '泊まります', kana: 'とまります', romaji: ['tomarimasu'], meaning: 'menginap, bermalam [ホテルに～]', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
   { character: '掃除します', kana: 'そうじします', romaji: ['soujishimasu', 'sojishimasu'], meaning: 'membersihkan', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
   { character: '洗濯します', kana: 'せんたくします', romaji: ['sentakushimasu', 'sentakusimasu'], meaning: 'mencuci pakaian', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },
   { character: 'なります', kana: 'なります', romaji: ['narimasu'], meaning: 'menjadi', type: 'word', lesson: 'Pelajaran 19', category_word: 'Kata Kerja', sub_category: 'Aktivitas & Rutinitas' },

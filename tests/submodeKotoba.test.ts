@@ -139,6 +139,13 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('cuci pakaian', sentakuMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('mencuci', sentakuMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('cuci', sentakuMeaning), true);
+
+    // Kasus kata kerja menginap: 泊まります (tomarimasu)
+    const tomaruMeaning = 'menginap, bermalam [ホテルに～]';
+    assert.strictEqual(checkIsMeaningCorrect('menginap', tomaruMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('nginap', tomaruMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('bermalam', tomaruMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('menginap di hotel', tomaruMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {

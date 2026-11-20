@@ -296,6 +296,12 @@ export const extractMeaningCandidates = (raw: string): string[] => {
       addWithVariants('bermain musik');
       addWithVariants('main musik');
     }
+    if (cand.includes('menginap')) {
+      addWithVariants('nginap');
+      addWithVariants('bermalam');
+      addWithVariants('menginap di hotel');
+      addWithVariants('menginap hotel');
+    }
   }
 
   // 7. Ekuivalensi kata seru percakapan Indonesia: 'o' <-> 'oh', 'ya' <-> 'iya'
