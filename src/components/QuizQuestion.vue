@@ -5,6 +5,7 @@ import { Lightbulb, BookOpen, RotateCcw, Volume2 } from '@lucide/vue';
 import { useTextToSpeech } from '../composables/useTextToSpeech';
 import { decomposeWordToKanjiUnits, type KanjiFuriganaUnit } from '../utils/furiganaParser';
 import { parseMeaningParts } from '../utils/quizHelpers';
+import { wordsData } from '../data/words';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('./KanjiInfoPopup.vue'));
 
@@ -62,6 +63,46 @@ const currentMeaning = computed(() => {
 
 const meaningDisplay = computed(() => {
   return parseMeaningParts(currentMeaning.value);
+});
+
+const categoryDisplay = computed(() => {
+  const current = quizStore.currentQuestion as any;
+  if (!current) return '';
+  let rawCat = current.category_word;
+  const char = current.character || '';
+  const kana = current.kana || '';
+
+  if (!rawCat && char) {
+    const found = wordsData.find(w => w.character === char || (kana && w.kana === kana));
+    if (found) rawCat = found.category_word;
+  }
+  if (!rawCat) return '';
+
+  if (rawCat === 'Kata Kerja') {
+    if (char.endsWith('ます') || kana.endsWith('ます')) {
+      return 'Kata Kerja (Bentuk ~masu)';
+    } else {
+      return 'Kata Kerja (Bentuk Kamus)';
+    }
+  }
+  return rawCat;
+});
+
+const categoryBadgeClass = computed(() => {
+  const cat = categoryDisplay.value;
+  if (cat.startsWith('Kata Kerja')) {
+    return 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950/60 dark:text-indigo-300 dark:border-indigo-800';
+  }
+  if (cat.startsWith('Kata Benda')) {
+    return 'bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800';
+  }
+  if (cat.startsWith('Kata Sifat')) {
+    return 'bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800';
+  }
+  if (cat.startsWith('Kata Keterangan')) {
+    return 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/60 dark:text-purple-300 dark:border-purple-800';
+  }
+  return 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700';
 });
 
 const firstCharKana = computed(() => {
@@ -214,6 +255,16 @@ const questionStyle = computed(() => {
               >
                 {{ meaningDisplay.secondary }}
               </span>
+
+              <!-- Badge Kelas Kata / Bentuk Kata (Pembeda Kata Kerja ~masu, Bentuk Kamus, Kata Benda, dll) -->
+              <div v-if="categoryDisplay" class="mt-2.5 flex items-center justify-center">
+                <span 
+                  class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-bold tracking-wide border shadow-2xs select-none transition-all"
+                  :class="categoryBadgeClass"
+                >
+                  {{ categoryDisplay }}
+                </span>
+              </div>
             </div>
 
             <!-- Hints for Meaning to Words Mode -->

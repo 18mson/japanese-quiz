@@ -146,6 +146,28 @@ test('Sub-mode words_meaning: Evaluasi Arti Bahasa Indonesia', async (t) => {
     assert.strictEqual(checkIsMeaningCorrect('nginap', tomaruMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('bermalam', tomaruMeaning), true);
     assert.strictEqual(checkIsMeaningCorrect('menginap di hotel', tomaruMeaning), true);
+
+    // Kasus pembeda kata kerja vs kata benda: 終わります vs 終わり, 休みます vs 休み
+    const owarimasuMeaning = 'selesai, berakhir';
+    assert.strictEqual(checkIsMeaningCorrect('selesai', owarimasuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('berakhir', owarimasuMeaning), true);
+
+    const owariMeaning = 'akhir, tamat (selesai / penghabisan)';
+    assert.strictEqual(checkIsMeaningCorrect('akhir', owariMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('tamat', owariMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('selesai', owariMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('penghabisan', owariMeaning), true);
+
+    const yasumiMeaning = 'hari libur, libur, istirahat (liburan)';
+    assert.strictEqual(checkIsMeaningCorrect('hari libur', yasumiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('libur', yasumiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('istirahat', yasumiMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('liburan', yasumiMeaning), true);
+
+    const chikakuMeaning = 'tempat dekat, area sekitar, dekat';
+    assert.strictEqual(checkIsMeaningCorrect('tempat dekat', chikakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('area sekitar', chikakuMeaning), true);
+    assert.strictEqual(checkIsMeaningCorrect('dekat', chikakuMeaning), true);
   });
 
   await t.test('toleransi typo pada arti bahasa Indonesia (Levenshtein)', () => {
