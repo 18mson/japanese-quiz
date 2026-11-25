@@ -2206,6 +2206,44 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
     ],
     "culturalNotes": [
       "Di stasiun Jepang, pengambilan uang di ATM dan pembelian tiket kereta menggunakan mesin otomatis (券売機 / kenbaiki) yang mengharuskan memasukkan uang terlebih dahulu sebelum menekan tombol tujuan."
+    ],
+    "tables": [
+      {
+        "title": "Ringkasan Cara Menyambung Kalimat (Kata Kerja, Kata Sifat, & Kata Benda)",
+        "description": "Pola penyambungan antarklausa dari Bab 16 (練習 A) untuk merangkai tindakan, ciri, atau kondisi.",
+        "columns": [
+          { "key": "jenis", "label": "Kelas Kata" },
+          { "key": "aturan", "label": "Aturan Sambung" },
+          { "key": "contoh", "label": "Contoh Kalimat" }
+        ],
+        "rows": [
+          {
+            "jenis": "Kata Kerja (Urutan)",
+            "aturan": "KK Bentuk て + KK",
+            "contoh": "朝 ジョギングを して、シャワーを 浴びて、会社へ 行きます。"
+          },
+          {
+            "jenis": "Kata Kerja (Setelah Selesai)",
+            "aturan": "KK Bentuk てから + KK",
+            "contoh": "仕事が 終わってから、飲みに行きます。"
+          },
+          {
+            "jenis": "Kata Sifat-i",
+            "aturan": "Buang い + くて (いい -> よくて)",
+            "contoh": "この パソコンは 軽くて、便利です。 / 頭が よくて、おもしろいです。"
+          },
+          {
+            "jenis": "Kata Sifat-na",
+            "aturan": "KS-na (tanpa な) + で",
+            "contoh": "ミラーさんは ハンサムで、親切です。"
+          },
+          {
+            "jenis": "Kata Benda",
+            "aturan": "KB + で",
+            "contoh": "カリナさんは インドネシア人で、富士大学の 留学生です。"
+          }
+        ]
+      }
     ]
   },
   {
@@ -2288,6 +2326,7 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
     "tables": [
       {
         "title": "Rangkuman Konjugasi Bentuk ない (Nai-form)",
+        "description": "Daftar perubahan kata kerja dari Bentuk ます ke Bentuk ない sesuai tabel 練習 A Bab 17.",
         "columns": [
           {
             "key": "grup",
@@ -2306,22 +2345,22 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
           {
             "grup": "Grup I",
             "perubahan": "Suku kata i-dan menjadi a-dan + ない",
-            "contoh": "書きます -> 書かない, 読みます -> 読まない"
+            "contoh": "行きます -> 行かない, 急ぎます -> 急がない, 飲みます -> 飲まない, 帰ります -> 帰らない"
           },
           {
-            "grup": "Grup I (Vokal i)",
-            "perubahan": "い menjadi わない",
+            "grup": "Grup I (Vokal い)",
+            "perubahan": "い menjadi わない (bukan あない)",
             "contoh": "吸います -> 吸わない, 会います -> 会わない"
           },
           {
             "grup": "Grup II",
-            "perubahan": "ます dibuang, ganti ない",
-            "contoh": "食べます -> 食べない, 忘れます -> 忘れない"
+            "perubahan": "ます dibuang, tambah ない",
+            "contoh": "食べます -> 食べない, います -> いない, 起きます -> 起きない, 見ます -> 見ない, 借ります -> 借りない"
           },
           {
             "grup": "Grup III",
             "perubahan": "Irregular khusus",
-            "contoh": "します -> しない, 来ます -> こない (konai)"
+            "contoh": "します -> しない, 心配します -> 心配しない, 来ます -> こない (konai)"
           },
           {
             "grup": "Khusus",
@@ -2408,6 +2447,32 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
     ],
     "culturalNotes": [
       "Di Jepang, tradisi menyapa 'Itadakimasu' (いただきます) sebelum makan adalah wujud syukur kepada alam dan juru masak yang telah menyiapkan hidangan."
+    ],
+    "tables": [
+      {
+        "title": "Rangkuman Konjugasi Bentuk Kamus (辞書形 / Jishokei)",
+        "description": "Daftar perubahan kata kerja dari Bentuk ます ke Bentuk Kamus (辞書形) sesuai tabel 練習 A Bab 18.",
+        "columns": [
+          { "key": "grup", "label": "Golongan" },
+          { "key": "masu", "label": "Bentuk ます" },
+          { "key": "rumus", "label": "Perubahan Akhiran" },
+          { "key": "kamus", "label": "Bentuk Kamus (辞書形)" }
+        ],
+        "rows": [
+          { "grup": "Grup I", "masu": "かいます", "rumus": "い -> う", "kamus": "かう" },
+          { "grup": "Grup I", "masu": "かきます", "rumus": "き -> く", "kamus": "かく" },
+          { "grup": "Grup I", "masu": "およぎます", "rumus": "ぎ -> ぐ", "kamus": "およぐ" },
+          { "grup": "Grup I", "masu": "はなします", "rumus": "し -> す", "kamus": "はなす" },
+          { "grup": "Grup I", "masu": "たちます", "rumus": "ち -> つ", "kamus": "たつ" },
+          { "grup": "Grup I", "masu": "よびます", "rumus": "び -> ぶ", "kamus": "よぶ" },
+          { "grup": "Grup I", "masu": "よみます", "rumus": "み -> む", "kamus": "よむ" },
+          { "grup": "Grup I", "masu": "はいります", "rumus": "り -> る", "kamus": "はいる" },
+          { "grup": "Grup II", "masu": "ねます / たべます", "rumus": "ます -> る", "kamus": "ねる / たべる" },
+          { "grup": "Grup II", "masu": "おきます / みます / かります", "rumus": "ます -> る", "kamus": "おきる / みる / かりる" },
+          { "grup": "Grup III", "masu": "きます", "rumus": "Khusus (Irregular)", "kamus": "くる (kuru)" },
+          { "grup": "Grup III", "masu": "します / うんてんします", "rumus": "Khusus (Irregular)", "kamus": "する / うんてんする" }
+        ]
+      }
     ]
   },
   {
@@ -2486,6 +2551,41 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
     ],
     "culturalNotes": [
       "Olahraga Sumo (相撲) adalah olahraga tradisional bernilai ritual kuno di Jepang yang dihelat dalam 6 turnamen besar (basho) per tahun."
+    ],
+    "tables": [
+      {
+        "title": "Rangkuman Konjugasi Bentuk た (Ta-form)",
+        "description": "Perubahan kata kerja dari Bentuk ます ke Bentuk た (lampau biasa) sesuai tabel 練習 A Bab 19. Polanya identik dengan Bentuk て (cukup ganti て->た, で->だ).",
+        "columns": [
+          { "key": "grup", "label": "Golongan" },
+          { "key": "akhiran", "label": "Akhiran Sebelum ます" },
+          { "key": "perubahan", "label": "Perubahan Bentuk た" },
+          { "key": "contoh", "label": "Contoh (ます形 -> た形)" }
+        ],
+        "rows": [
+          { "grup": "Grup I", "akhiran": "い, ち, り", "perubahan": "～った", "contoh": "かいます -> かった, まちます -> まった, とまります -> とまった" },
+          { "grup": "Grup I", "akhiran": "み, び, に", "perubahan": "～んだ", "contoh": "のみます -> のんだ, よびます -> よんだ" },
+          { "grup": "Grup I", "akhiran": "き", "perubahan": "～いた", "contoh": "かきます -> かいた (*Pengecualian: いきます -> いった)" },
+          { "grup": "Grup I", "akhiran": "ぎ", "perubahan": "～いだ", "contoh": "いそぎます -> いそいだ" },
+          { "grup": "Grup I", "akhiran": "し", "perubahan": "～した", "contoh": "はなします -> はなした" },
+          { "grup": "Grup II", "akhiran": "e-dan / vokal tunggal", "perubahan": "ます diganti た", "contoh": "たべます -> たべた, おきます -> おきた, みます -> みた, できます -> できた" },
+          { "grup": "Grup III", "akhiran": "きます / します", "perubahan": "きた / した", "contoh": "きます -> きた, します -> した, せんたくします -> せんたくした" }
+        ]
+      },
+      {
+        "title": "Perubahan Menjadi Kondisi Baru (～くなります / ～になります)",
+        "description": "Aturan penyambungan kata sifat dan kata benda dengan kata kerja なります.",
+        "columns": [
+          { "key": "kelas", "label": "Kelas Kata" },
+          { "key": "rumus", "label": "Rumus Sambung" },
+          { "key": "contoh", "label": "Contoh" }
+        ],
+        "rows": [
+          { "kelas": "Kata Sifat-i", "rumus": "Buang い + く なります", "contoh": "たかい -> たかく なります (いい -> よく なります)" },
+          { "kelas": "Kata Sifat-na", "rumus": "KS-na (tanpa な) + に なります", "contoh": "きれい[な] -> きれいに なります" },
+          { "kelas": "Kata Benda", "rumus": "KB + に なります", "contoh": "10さい -> 10さいに なります / 医者に なります" }
+        ]
+      }
     ]
   },
   {
@@ -2549,6 +2649,85 @@ export const lessonGrammarBookData: LessonGrammarChapter[] = [
     ],
     "culturalNotes": [
       "Jangan pernah menggunakan ragam biasa (Futsuukei) kepada atasan, guru, orang yang baru dikenal, atau orang yang lebih tua karena dianggap sangat tidak sopan."
+    ],
+    "tables": [
+      {
+        "title": "Perbandingan Bentuk Sopan (丁寧形) dan Bentuk Biasa (普通形)",
+        "description": "Tabel konversi lengkap untuk Kata Kerja, Kata Sifat-i, Kata Sifat-na, dan Kata Benda dalam 4 bentuk waktu (Positif, Negatif, Lampau, Lampau Negatif) sesuai 練習 A Bab 20.",
+        "columns": [
+          { "key": "kelas", "label": "Kelas Kata & Waktu" },
+          { "key": "sopan", "label": "Bentuk Sopan (丁寧形)" },
+          { "key": "biasa", "label": "Bentuk Biasa (普通形)" }
+        ],
+        "rows": [
+          { "kelas": "KK · Non-Lampau (+)", "sopan": "かきます", "biasa": "かく (Bentuk Kamus)" },
+          { "kelas": "KK · Non-Lampau (-)", "sopan": "かきません", "biasa": "かかない (Bentuk ない)" },
+          { "kelas": "KK · Lampau (+)", "sopan": "かきました", "biasa": "かいた (Bentuk た)" },
+          { "kelas": "KK · Lampau (-)", "sopan": "かきませんでした", "biasa": "かなかった" },
+          { "kelas": "KK Khusus (あります) · (+)", "sopan": "あります", "biasa": "ある" },
+          { "kelas": "KK Khusus (あります) · (-)", "sopan": "ありません", "biasa": "*ない" },
+          { "kelas": "KK Khusus (あります) · Lampau (+)", "sopan": "ありました", "biasa": "あった" },
+          { "kelas": "KK Khusus (あります) · Lampau (-)", "sopan": "ありませんでした", "biasa": "*なかった" },
+          { "kelas": "KS-i · Non-Lampau (+)", "sopan": "おおきいです", "biasa": "おおきい" },
+          { "kelas": "KS-i · Non-Lampau (-)", "sopan": "おおきくないです", "biasa": "おおきくない" },
+          { "kelas": "KS-i · Lampau (+)", "sopan": "おおきかったです", "biasa": "おおきかった" },
+          { "kelas": "KS-i · Lampau (-)", "sopan": "おおきくなかったです", "biasa": "おおきくなかった" },
+          { "kelas": "KS-na · Non-Lampau (+)", "sopan": "きれいです", "biasa": "きれいだ" },
+          { "kelas": "KS-na · Non-Lampau (-)", "sopan": "きれいじゃ ありません", "biasa": "きれいじゃ ない" },
+          { "kelas": "KS-na · Lampau (+)", "sopan": "きれいでした", "biasa": "きれいだった" },
+          { "kelas": "KS-na · Lampau (-)", "sopan": "きれいじゃ ありませんでした", "biasa": "きれいじゃ なかった" },
+          { "kelas": "KB · Non-Lampau (+)", "sopan": "あめです", "biasa": "あめだ" },
+          { "kelas": "KB · Non-Lampau (-)", "sopan": "あめじゃ ありません", "biasa": "あめじゃ ない" },
+          { "kelas": "KB · Lampau (+)", "sopan": "あめでした", "biasa": "あめだった" },
+          { "kelas": "KB · Lampau (-)", "sopan": "あめじゃ ありませんでした", "biasa": "あめじゃ なかった" }
+        ]
+      },
+      {
+        "title": "Matriks Latihan 4 Bentuk Biasa (問題 3 Bab 20)",
+        "description": "Ringkasan perubahan kata-kata kunci dari bentuk sopan ke keempat variasi bentuk biasa.",
+        "columns": [
+          { "key": "sopan", "label": "Bentuk Sopan" },
+          { "key": "kamus", "label": "Positif (辞書形/普通)" },
+          { "key": "nai", "label": "Negatif (ない形)" },
+          { "key": "ta", "label": "Lampau (た形)" },
+          { "key": "nakatta", "label": "Lampau Negatif" }
+        ],
+        "rows": [
+          { "sopan": "行きます", "kamus": "行く", "nai": "行かない", "ta": "行った", "nakatta": "行かなかった" },
+          { "sopan": "泳ぎます", "kamus": "泳ぐ", "nai": "泳がない", "ta": "泳いだ", "nakatta": "泳がなかった" },
+          { "sopan": "貸します", "kamus": "貸す", "nai": "貸さない", "ta": "貸した", "nakatta": "貸さなかった" },
+          { "sopan": "待ちます", "kamus": "待つ", "nai": "待たない", "ta": "待った", "nakatta": "待たなかった" },
+          { "sopan": "遊びます", "kamus": "遊ぶ", "nai": "遊ばない", "ta": "遊んだ", "nakatta": "遊ばなかった" },
+          { "sopan": "飲みます", "kamus": "飲む", "nai": "飲まない", "ta": "飲んだ", "nakatta": "飲まなかった" },
+          { "sopan": "あります", "kamus": "ある", "nai": "*ない", "ta": "あった", "nakatta": "*なかった" },
+          { "sopan": "買います", "kamus": "買う", "nai": "買わない", "ta": "買った", "nakatta": "買わなかった" },
+          { "sopan": "寝ます", "kamus": "寝る", "nai": "寝ない", "ta": "寝た", "nakatta": "寝なかった" },
+          { "sopan": "借ります", "kamus": "借りる", "nai": "借りない", "ta": "借りた", "nakatta": "借りなかった" },
+          { "sopan": "します", "kamus": "する", "nai": "しない", "ta": "した", "nakatta": "しなかった" },
+          { "sopan": "来ます", "kamus": "来る", "nai": "来ない", "ta": "来た", "nakatta": "来なかった" },
+          { "sopan": "寒いです", "kamus": "寒い", "nai": "寒くない", "ta": "寒かった", "nakatta": "寒くなかった" },
+          { "sopan": "いいです", "kamus": "いい", "nai": "よくない", "ta": "よかった", "nakatta": "よくなかった" },
+          { "sopan": "暇です", "kamus": "暇だ", "nai": "暇じゃない", "ta": "暇だった", "nakatta": "暇じゃなかった" },
+          { "sopan": "天気です", "kamus": "天気だ", "nai": "天気じゃない", "ta": "天気だった", "nakatta": "天気じゃなかった" }
+        ]
+      },
+      {
+        "title": "Padanan Kosakata Ragam Santai vs Sopan",
+        "description": "Kosakata dan ungkapan akrab yang dipakai pada ragam biasa di Bab 20.",
+        "columns": [
+          { "key": "sopan", "label": "Ragam Sopan (丁寧)" },
+          { "key": "santai", "label": "Ragam Santai (普通)" },
+          { "key": "arti", "label": "Arti" }
+        ],
+        "rows": [
+          { "sopan": "はい", "santai": "うん", "arti": "Ya" },
+          { "sopan": "いいえ", "santai": "ううん", "arti": "Tidak / bukan" },
+          { "sopan": "こちら / そちら / あちら / どちら", "santai": "こっち / そっち / あっち / どっち", "arti": "Sini / situ / sana / mana" },
+          { "sopan": "わたし / あなた", "santai": "ぼく / きみ", "arti": "Aku / kamu (umum dipakai pria ke sebaya/adik)" },
+          { "sopan": "～ですが", "santai": "～けど", "arti": "...tetapi..." },
+          { "sopan": "～ますか / ～ですか", "santai": "Intonasi naik (contoh: 行く？ / 暇？)", "arti": "Kalimat tanya santai (tanpa か)" }
+        ]
+      }
     ]
   },
   {
