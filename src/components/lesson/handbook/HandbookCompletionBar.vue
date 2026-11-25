@@ -138,13 +138,13 @@ const handleNextAction = () => {
           type="button"
           @click="handleNextAction"
           :class="[
-            'w-full sm:w-auto px-5 py-2.5 sm:py-3 rounded-2xl font-black text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer shadow-md active:scale-95 border select-none',
+            'w-full sm:w-auto min-h-[44px] px-5 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm transition-colors duration-200 flex items-center justify-center gap-2 cursor-pointer active:scale-95 border select-none focus-visible:ring-2 focus-visible:ring-indigo-500',
             isChapterFullyCompleted
-              ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 text-white border-emerald-400/40 shadow-emerald-600/25 ring-2 ring-emerald-500/20'
-              : 'bg-indigo-600 hover:bg-indigo-700 text-white border-indigo-500 shadow-indigo-600/25'
+              ? 'bg-emerald-700 hover:bg-emerald-800 text-white border-emerald-600'
+              : 'bg-indigo-700 hover:bg-indigo-800 text-white border-indigo-600'
           ]"
         >
-          <Trophy v-if="isChapterFullyCompleted" class="w-4 h-4 text-amber-300 fill-amber-300 shrink-0" />
+          <Trophy v-if="isChapterFullyCompleted" class="w-4 h-4 text-amber-300 fill-amber-300 shrink-0" aria-hidden="true" />
           
           <span>
             <template v-if="isChapterFullyCompleted">

@@ -56,16 +56,14 @@ const handleClick = (e: MouseEvent) => {
     @click="handleClick"
     title="Hentikan Suara"
     :class="[
-      'relative inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none',
-      'bg-indigo-100 dark:bg-torii/25 border border-indigo-500 dark:border-torii text-indigo-700 dark:text-torii-light ring-2 ring-indigo-400/50 dark:ring-torii/50 shadow-md shadow-indigo-500/20 dark:shadow-torii/20 active:scale-95',
-      size === 'sm' ? 'w-6 h-6 p-1' : 'w-8 h-8 p-1.5',
+      'relative inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+      'bg-indigo-100 dark:bg-torii/25 border border-indigo-600 dark:border-torii text-indigo-800 dark:text-torii-light ring-2 ring-indigo-400/40 dark:ring-torii/40 active:scale-95',
+      size === 'sm' ? 'w-9 h-9 p-1.5' : 'w-10 h-10 p-2',
       customClass
     ]"
     aria-label="Hentikan suara"
   >
-    <!-- Ripple animation ring -->
-    <span class="absolute -inset-0.5 rounded-xl bg-indigo-400/30 dark:bg-torii/30 animate-ping pointer-events-none"></span>
-    <Volume2 :class="[size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4', 'animate-pulse text-indigo-700 dark:text-torii-light relative z-10']" />
+    <Volume2 :class="[size === 'sm' ? 'w-4 h-4' : 'w-4 h-4', 'text-indigo-700 dark:text-torii-light relative z-10']" aria-hidden="true" />
   </button>
 
   <!-- Idle State -->
@@ -75,13 +73,13 @@ const handleClick = (e: MouseEvent) => {
     @click="handleClick"
     title="Dengarkan Pengucapan"
     :class="[
-      'inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none',
-      'bg-indigo-50 hover:bg-indigo-100 active:bg-indigo-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-600 hover:text-indigo-700 dark:text-slate-300 dark:hover:text-torii-light border border-indigo-200 dark:border-slate-700 shadow-xs active:scale-95',
-      size === 'sm' ? 'w-6 h-6 p-1' : 'w-8 h-8 p-1.5',
+      'inline-flex items-center justify-center rounded-xl transition cursor-pointer flex-shrink-0 select-none focus-visible:ring-2 focus-visible:ring-indigo-500',
+      'bg-slate-100 hover:bg-indigo-50 active:bg-indigo-100 dark:bg-slate-800 dark:hover:bg-slate-750 text-indigo-700 hover:text-indigo-800 dark:text-slate-200 dark:hover:text-torii-light border border-slate-200 dark:border-slate-700 active:scale-95',
+      size === 'sm' ? 'w-9 h-9 p-1.5' : 'w-10 h-10 p-2',
       customClass
     ]"
     aria-label="Dengarkan pengucapan"
   >
-    <Volume2 :class="size === 'sm' ? 'w-3.5 h-3.5' : 'w-4 h-4'" />
+    <Volume2 :class="size === 'sm' ? 'w-4 h-4' : 'w-4 h-4'" aria-hidden="true" />
   </button>
 </template>

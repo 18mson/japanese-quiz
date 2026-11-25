@@ -64,18 +64,19 @@ defineExpose({
       <button
         type="button"
         @click="emit('exit')"
-        class="h-10 min-w-[40px] sm:h-9 sm:min-w-0 px-2.5 sm:px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 border border-gray-200 dark:border-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shrink-0"
+        class="h-11 min-w-[44px] sm:h-9 sm:min-w-0 px-2.5 sm:px-3 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-100 border border-gray-200 dark:border-slate-700 font-bold text-xs transition flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shrink-0 focus-visible:ring-2 focus-visible:ring-indigo-500"
         title="Kembali ke Beranda"
+        aria-label="Kembali ke Beranda"
       >
-        <ArrowLeft class="w-4 h-4 text-torii" />
-        <span class="hidden sm:inline font-extrabold">Kembali</span>
+        <ArrowLeft class="w-4 h-4 text-torii" aria-hidden="true" />
+        <span class="hidden sm:inline font-bold">Kembali</span>
       </button>
 
-      <div class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
-        <BookOpen class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" />
+      <div class="hidden lg:flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-300">
+        <BookOpen class="w-3.5 h-3.5 text-indigo-700 dark:text-indigo-300" aria-hidden="true" />
         <span>Buku Materi</span>
-        <span class="text-slate-300 dark:text-slate-600">/</span>
-        <span class="text-indigo-700 dark:text-indigo-300">Minna no Nihongo</span>
+        <span class="text-slate-400 dark:text-slate-500">/</span>
+        <span class="text-indigo-800 dark:text-indigo-200">Minna no Nihongo</span>
       </div>
     </div>
 
@@ -92,10 +93,11 @@ defineExpose({
         type="button"
         @click="emit('prevLesson')"
         :disabled="currentLessonNumber <= 1"
-        class="w-9 h-10 sm:w-8 sm:h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95"
+        class="w-10 h-11 sm:w-9 sm:h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-500"
         title="Bab Sebelumnya"
+        aria-label="Bab Sebelumnya"
       >
-        <ChevronLeft class="w-4 h-4" />
+        <ChevronLeft class="w-4 h-4" aria-hidden="true" />
       </button>
 
       <!-- Chapter Button Trigger -->
@@ -103,29 +105,32 @@ defineExpose({
         id="chapter-dropdown-trigger"
         type="button"
         @click="emit('toggleChapterDropdown')"
+        :aria-expanded="isChapterDropdownOpen"
+        aria-label="Pilih Bab Pelajaran"
         :class="[
-          'h-10 sm:h-9 px-2.5 sm:px-3 rounded-xl border font-black text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer active:scale-95',
+          'h-11 sm:h-9 px-2.5 sm:px-3 rounded-xl border font-bold text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-500',
           isChapterDropdownOpen
-            ? 'bg-indigo-600 text-white border-indigo-600 dark:border-indigo-500'
+            ? 'bg-indigo-700 text-white border-indigo-700 dark:border-indigo-500'
             : (isCurrentLessonCompleted
                 ? 'bg-emerald-50 dark:bg-emerald-950/50 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700/70 text-emerald-800 dark:text-emerald-200'
-                : 'bg-indigo-50 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-200')
+                : 'bg-indigo-50 dark:bg-slate-800 hover:bg-indigo-100 dark:hover:bg-slate-750 border-indigo-200 dark:border-slate-700 text-indigo-800 dark:text-indigo-200')
         ]"
       >
-        <CheckCircle2 v-if="isCurrentLessonCompleted" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+        <CheckCircle2 v-if="isCurrentLessonCompleted" class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" aria-hidden="true" />
         <span :class="['font-jp font-bold', isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-700 dark:text-emerald-300' : 'text-torii')]">第{{ currentLessonNumber }}課</span>
         <span class="hidden sm:inline" :class="isChapterDropdownOpen ? 'text-white' : (isCurrentLessonCompleted ? 'text-emerald-900 dark:text-emerald-100' : 'text-slate-800 dark:text-slate-100')">· Bab {{ currentLessonNumber }}</span>
-        <ChevronDown :class="['w-3.5 h-3.5 transition-transform duration-200 shrink-0', isChapterDropdownOpen ? 'text-white rotate-180' : 'text-indigo-500 dark:text-indigo-400']" />
+        <ChevronDown :class="['w-3.5 h-3.5 transition-transform duration-200 shrink-0', isChapterDropdownOpen ? 'text-white rotate-180' : 'text-indigo-600 dark:text-indigo-300']" aria-hidden="true" />
       </button>
 
       <button
         type="button"
         @click="emit('nextLesson')"
         :disabled="currentLessonNumber >= 25"
-        class="w-9 h-10 sm:w-8 sm:h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95"
+        class="w-10 h-11 sm:w-9 sm:h-9 rounded-xl bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-750 disabled:opacity-30 disabled:cursor-not-allowed border border-gray-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 flex items-center justify-center transition cursor-pointer active:scale-95 focus-visible:ring-2 focus-visible:ring-indigo-500"
         title="Bab Berikutnya"
+        aria-label="Bab Berikutnya"
       >
-        <ChevronRight class="w-4 h-4" />
+        <ChevronRight class="w-4 h-4" aria-hidden="true" />
       </button>
     </div>
 

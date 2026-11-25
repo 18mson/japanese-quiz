@@ -40,7 +40,7 @@ watch(() => props.activeTab, () => {
   <nav
     ref="mobileNavRef"
     aria-label="Kategori Materi"
-    class="sticky top-[60px] z-30 md:hidden w-full bg-slate-50/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-gray-200 dark:border-slate-800 px-3 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar"
+    class="sticky top-[60px] z-30 md:hidden w-full bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 px-3 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar"
   >
     <button
       v-for="tab in tabs"

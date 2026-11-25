@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted } from 'vue';
 import { BookOpen, X, CheckCircle2 } from '@lucide/vue';
 import { lessonGrammarBookData } from '../../../data/lessonGrammarBook';
 import { useLessonStore } from '../../../stores/lessonStore';
 
-defineProps<{
+const props = defineProps<{
   isOpen: boolean;
   currentLessonNumber: number;
 }>();
@@ -14,6 +15,20 @@ const emit = defineEmits<{
 }>();
 
 const lessonStore = useLessonStore();
+
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && props.isOpen) {
+    emit('close');
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <template>
@@ -21,20 +36,24 @@ const lessonStore = useLessonStore();
   <Transition name="dropdown-slide">
     <div
       v-if="isOpen"
-      class="fixed top-[59px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-4 shadow-2xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Pilih Bab Pelajaran"
+      class="fixed top-[59px] left-1/2 -translate-x-1/2 w-[calc(100vw-16px)] sm:w-[500px] max-w-lg bg-white dark:bg-slate-900 border border-gray-200/90 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 shadow-xl z-50 flex flex-col max-h-[calc(100vh-76px)] sm:max-h-[520px] text-slate-900 dark:text-slate-100"
     >
       <div class="flex items-center justify-between pb-2.5 border-b border-gray-200/80 dark:border-slate-800 mb-2.5">
         <div class="flex items-center gap-2">
-          <BookOpen class="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
-          <h3 class="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100">Pilih Bab Pelajaran (1 - 25)</h3>
+          <BookOpen class="w-4 h-4 text-indigo-700 dark:text-indigo-300" aria-hidden="true" />
+          <h3 class="font-bold text-sm text-slate-900 dark:text-slate-100">Pilih Bab Pelajaran (1 - 25)</h3>
         </div>
         <button
           type="button"
           @click="emit('close')"
-          class="w-7 h-7 rounded-lg bg-gray-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 flex items-center justify-center cursor-pointer active:scale-95 transition"
+          class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer active:scale-95 transition focus-visible:ring-2 focus-visible:ring-indigo-500"
           title="Tutup"
+          aria-label="Tutup daftar bab"
         >
-          <X class="w-4 h-4" />
+          <X class="w-4 h-4" aria-hidden="true" />
         </button>
       </div>
 

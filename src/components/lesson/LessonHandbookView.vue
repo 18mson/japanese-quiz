@@ -157,6 +157,7 @@ const filteredPhrases = computed(() => {
 const scrollContainerRef = ref<HTMLElement | null>(null);
 
 const availableTabs = computed<HandbookTabItem[]>(() => {
+  const activeTabStyle = 'bg-indigo-700 text-white border-indigo-700 dark:bg-indigo-600 dark:border-indigo-500 shadow-xs';
   const tabs: HandbookTabItem[] = [
     {
       id: 'bunkei',
@@ -164,7 +165,7 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       jpName: '文型 · Rumus Kalimat',
       icon: Layers,
       count: currentChapter.value.bunkei?.length || 0,
-      activeClass: 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 border-indigo-600 dark:border-indigo-500',
+      activeClass: activeTabStyle,
       color: 'indigo',
       isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'bunkei')
     },
@@ -174,8 +175,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       jpName: '助詞 · Tata Bahasa',
       icon: Compass,
       count: currentChapter.value.particles?.length || 0,
-      activeClass: 'bg-torii text-white shadow-md shadow-torii/30 border-torii dark:border-torii',
-      color: 'torii',
+      activeClass: activeTabStyle,
+      color: 'indigo',
       isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'particles')
     },
     {
@@ -184,8 +185,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       jpName: '単語 · Kosakata Resmi',
       icon: Languages,
       count: currentLessonWords.value.length,
-      activeClass: 'bg-matcha text-white shadow-md shadow-matcha/30 border-matcha dark:border-matcha',
-      color: 'matcha',
+      activeClass: activeTabStyle,
+      color: 'indigo',
       isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'vocab')
     },
     {
@@ -194,8 +195,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       jpName: '会話 · Kaiwa & Frasa',
       icon: Sparkles,
       count: situationalPhrases.value.length,
-      activeClass: 'bg-amber-600 text-white shadow-md shadow-amber-600/30 border-amber-600 dark:border-amber-500',
-      color: 'amber',
+      activeClass: activeTabStyle,
+      color: 'indigo',
       isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'phrases')
     },
     {
@@ -204,8 +205,8 @@ const availableTabs = computed<HandbookTabItem[]>(() => {
       jpName: '付録 · Tabel Ringkasan',
       icon: Table2,
       count: currentChapter.value.tables?.length || 0,
-      activeClass: 'bg-cyan-600 text-white shadow-md shadow-cyan-600/30 border-cyan-600 dark:border-cyan-500',
-      color: 'cyan',
+      activeClass: activeTabStyle,
+      color: 'indigo',
       isCompleted: lessonStore.isCategoryCompleted(currentLessonNumber.value, 'tables')
     }
   ];
@@ -280,7 +281,7 @@ onMounted(() => {
 <template>
   <div 
     ref="scrollContainerRef"
-    class="w-full h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 overflow-y-auto overflow-x-hidden select-none transition-colors duration-200 relative"
+    class="w-full h-full bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 overflow-y-auto overflow-x-hidden transition-colors duration-200 relative"
   >
     <!-- TOP STICKY APP BAR / HEADER -->
     <HandbookHeader
