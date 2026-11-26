@@ -249,7 +249,14 @@ const filteredVerbs = computed(() => {
               <!-- Bentuk Nai -->
               <td class="px-3 py-2.5">
                 <span class="font-bold text-rose-800 dark:text-rose-200 font-jp text-xs sm:text-sm bg-rose-50 dark:bg-rose-950/40 px-2 py-1 rounded-lg border border-rose-200 dark:border-rose-800/40 inline-block">
-                  {{ v.nai }}
+                  {{ v.nai.startsWith('－') ? 'ない' : v.nai }}
+                </span>
+                <span
+                  v-if="v.nai.startsWith('－')"
+                  class="ml-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700/50 text-[10px] font-bold text-amber-700 dark:text-amber-300 align-middle"
+                  title="Kata tidak beraturan (irregular): bentuk negatif kasual ある bukan あらない, melainkan langsung ない."
+                >
+                  ⚠ tidak beraturan
                 </span>
               </td>
 
