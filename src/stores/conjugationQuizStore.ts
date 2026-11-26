@@ -4,16 +4,17 @@ import { ref, computed } from 'vue';
 import { toRomaji, toHiragana } from 'wanakana';
 import { konjugasiKataKerjaData, type VerbItem } from '../data/referenceData';
 import { ADJECTIVE_ITEMS, type AdjectiveItem, type AdjectiveForms } from '../services/adjectiveConjugationService';
+import { wordsData } from '../data/words';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
 import type { VerbGroupKey } from '../utils/conjugationExplanation';
 
-export type ConjugationSubMode = 'verb' | 'adjective' | 'mixed';
-export type VerbTargetForm = 'te' | 'kamus' | 'nai' | 'ta' | 'random';
-export type AdjectiveTargetForm = 'presentNegative' | 'pastPositive' | 'pastNegative' | 'teForm' | 'random';
+export type ConjugationSubMode = 'verb' | 'adjective' | 'casual' | 'mixed';
+export type VerbTargetForm = 'te' | 'kamus' | 'nai' | 'ta' | 'nakatta' | 'random';
+export type AdjectiveTargetForm = 'presentPositive' | 'presentNegative' | 'pastPositive' | 'pastNegative' | 'teForm' | 'random';
 
 export interface ConjugationQuestion {
   id: string;
-  category: 'verb' | 'adjective';
+  category: 'verb' | 'adjective' | 'noun';
   baseWord: string;         // e.g. 食べます / 静か
   baseReading?: string;     // e.g. たべます / しずか
   meaning: string;          // e.g. makan / tenang
@@ -80,11 +81,12 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
    * Menghasilkan soal kata kerja
    */
   function createVerbQuestion(verb: VerbItem & { group?: VerbGroupKey }, formKey?: VerbTargetForm): ConjugationQuestion {
-    const forms: Array<{ key: 'te' | 'kamus' | 'nai' | 'ta'; label: string }> = [
+    const forms: Array<{ key: 'te' | 'kamus' | 'nai' | 'ta' | 'nakatta'; label: string }> = [
       { key: 'te', label: 'Bentuk -Te (て形)' },
       { key: 'kamus', label: 'Bentuk Kamus (辞書形)' },
       { key: 'nai', label: 'Bentuk -Nai (ない形)' },
-      { key: 'ta', label: 'Bentuk -Ta (た形)' }
+      { key: 'ta', label: 'Bentuk -Ta (た形)' },
+      { key: 'nakatta', label: 'Bentuk -Nakatta (なかった形)' }
     ];
 
     let chosen = forms[0];
@@ -94,14 +96,22 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
       chosen = forms[Math.floor(Math.random() * forms.length)];
     }
 
-    const rawCorrect = (verb as any)[chosen.key] as string;
+    const cleanNai = verb.nai.replace(/[\s－-]/g, '');
+    const nakattaForm = cleanNai.endsWith('い') ? `${cleanNai.slice(0, -1)}かった` : `${cleanNai}かった`;
+
+    const getFormValue = (k: 'te' | 'kamus' | 'nai' | 'ta' | 'nakatta') => {
+      if (k === 'nakatta') return nakattaForm;
+      return ((verb as any)[k] as string).replace(/[\s－-]/g, '');
+    };
+
+    const rawCorrect = chosen.key === 'nakatta' ? nakattaForm : ((verb as any)[chosen.key] as string);
     // Bersihkan spasi atau tanda hubung jika ada (misal: "あわ ない" -> "あわない", "－ない" -> "ない")
-    const cleanCorrect = rawCorrect.replace(/[\s－-]/g, '');
+    const cleanCorrect = getFormValue(chosen.key);
 
     // Buat distraktor dari bentuk lain kata yang sama
     const distractorCandidates = forms
       .filter(f => f.key !== chosen.key)
-      .map(f => ((verb as any)[f.key] as string).replace(/[\s－-]/g, ''));
+      .map(f => getFormValue(f.key));
 
     // Distraktor tambahan jika kurang dari 3
     while (distractorCandidates.length < 3) {
@@ -214,6 +224,137 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
   }
 
   /**
+   * Menghasilkan soal perubahan ke Bentuk Kasual / Biasa (普通形 - Bab 20)
+   * Mencakup Kata Kerja, Kata Sifat-i, Kata Sifat-na, dan Kata Benda
+   */
+  const nounPool = computed(() =>
+    wordsData.filter(
+      w =>
+        w.category_word === 'Kata Benda' &&
+        w.character &&
+        w.kana &&
+        !w.character.includes('～') &&
+        !w.character.includes('~') &&
+        !/[a-zA-Z0-9]/.test(w.character)
+    )
+  );
+
+  function createCasualQuestion(kind?: 'verb' | 'adjective' | 'noun'): ConjugationQuestion {
+    const pickedKind = kind || (['verb', 'adjective', 'noun'][Math.floor(Math.random() * 3)] as 'verb' | 'adjective' | 'noun');
+
+    if (pickedKind === 'verb') {
+      const verb = allVerbs.value[Math.floor(Math.random() * allVerbs.value.length)];
+      const casualVariants: Array<{
+        key: 'kamus' | 'nai' | 'ta' | 'nakatta';
+        politeSuffix: string;
+        label: string;
+      }> = [
+        { key: 'kamus', politeSuffix: 'ます', label: 'Bentuk Kasual Positif (辞書形)' },
+        { key: 'nai', politeSuffix: 'ません', label: 'Bentuk Kasual Negatif (ない形)' },
+        { key: 'ta', politeSuffix: 'ました', label: 'Bentuk Kasual Lampau (た形)' },
+        { key: 'nakatta', politeSuffix: 'ませんでした', label: 'Bentuk Kasual Negatif Lampau (なかった形)' }
+      ];
+      const v = casualVariants[Math.floor(Math.random() * casualVariants.length)];
+      const q = createVerbQuestion(verb, v.key);
+      const baseNoBracket = verb.masu.split('[')[0];
+      const readNoBracket = (verb.masu_reading || verb.masu).replace(/\s+/g, '').split('[')[0];
+      const politeWord = baseNoBracket.endsWith('ます') ? `${baseNoBracket.slice(0, -2)}${v.politeSuffix}` : baseNoBracket;
+      const politeReading = readNoBracket.endsWith('ます') ? `${readNoBracket.slice(0, -2)}${v.politeSuffix}` : readNoBracket;
+
+      return {
+        ...q,
+        baseWord: politeWord,
+        baseReading: politeReading,
+        targetFormLabel: v.label,
+        formulaTip: `Bab 20 (普通形) • ${verb.group === 'kelompok_1' ? 'Kelompok I' : verb.group === 'kelompok_2' ? 'Kelompok II' : 'Kelompok III'}`
+      };
+    }
+
+    if (pickedKind === 'adjective') {
+      const adj = ADJECTIVE_ITEMS[Math.floor(Math.random() * ADJECTIVE_ITEMS.length)];
+      const adjCasualForms: Array<{ key: keyof AdjectiveForms; polite: string; label: string }> =
+        adj.type === 'i'
+          ? [
+              { key: 'presentPositive', polite: `${adj.kanji}です`, label: 'Bentuk Kasual Positif' },
+              { key: 'presentNegative', polite: `${adj.forms.presentNegative}です`, label: 'Bentuk Kasual Negatif' },
+              { key: 'pastPositive', polite: `${adj.forms.pastPositive}です`, label: 'Bentuk Kasual Lampau' },
+              { key: 'pastNegative', polite: `${adj.forms.pastNegative}です`, label: 'Bentuk Kasual Negatif Lampau' }
+            ]
+          : [
+              { key: 'presentPositive', polite: `${adj.kanji}です`, label: 'Bentuk Kasual Positif (〜だ)' },
+              { key: 'presentNegative', polite: `${adj.kanji}じゃありません`, label: 'Bentuk Kasual Negatif (〜じゃない)' },
+              { key: 'pastPositive', polite: `${adj.kanji}でした`, label: 'Bentuk Kasual Lampau (〜だった)' },
+              { key: 'pastNegative', polite: `${adj.kanji}じゃありませんでした`, label: 'Bentuk Kasual Negatif Lampau (〜じゃなかった)' }
+            ];
+
+      const picked = adjCasualForms[Math.floor(Math.random() * adjCasualForms.length)];
+      // Khusus Kata Sifat-na positif kasual: stem + だ
+      if (adj.type === 'na' && picked.key === 'presentPositive') {
+        const stemKanji = adj.kanji.endsWith('な') ? adj.kanji.slice(0, -1) : adj.kanji;
+        const stemKana = adj.kana.endsWith('な') ? adj.kana.slice(0, -1) : adj.kana;
+        const correct = `${stemKanji}だ`;
+        const kanaForm = `${stemKana}だ`;
+        return {
+          id: `cq_adj_${adj.kanji}_pos_${Math.random().toString(36).substring(2, 7)}`,
+          category: 'adjective',
+          baseWord: picked.polite,
+          baseReading: `${stemKana}です`,
+          meaning: adj.meaning,
+          targetFormKey: 'presentPositive',
+          targetFormLabel: picked.label,
+          correctAnswer: correct,
+          correctReading: kanaForm,
+          acceptedAnswers: [correct, kanaForm, toRomaji(kanaForm)],
+          options: shuffle([correct, `${stemKanji}じゃない`, `${stemKanji}だった`, `${stemKanji}じゃなかった`]),
+          formulaTip: 'Bab 20 (普通形) • Kata Sifat-na (な形容詞)',
+          adjType: 'na'
+        };
+      }
+
+      const q = createAdjectiveQuestion(adj, picked.key);
+      const readingSuffix = picked.polite.replace(adj.kanji, '');
+      return {
+        ...q,
+        baseWord: picked.polite,
+        baseReading: `${adj.kana}${readingSuffix}`,
+        targetFormLabel: picked.label,
+        formulaTip: `Bab 20 (普通形) • ${adj.type === 'i' ? 'Kata Sifat-i' : 'Kata Sifat-na'}`
+      };
+    }
+
+    // Kata Benda (Noun)
+    const noun = nounPool.value[Math.floor(Math.random() * nounPool.value.length)];
+    const nounForms: Array<{
+      key: 'presentPositive' | 'presentNegative' | 'pastPositive' | 'pastNegative';
+      politeSuffix: string;
+      casualSuffix: string;
+      label: string;
+    }> = [
+      { key: 'presentPositive', politeSuffix: 'です', casualSuffix: 'だ', label: 'Bentuk Kasual Positif (〜だ)' },
+      { key: 'presentNegative', politeSuffix: 'じゃありません', casualSuffix: 'じゃない', label: 'Bentuk Kasual Negatif (〜じゃない)' },
+      { key: 'pastPositive', politeSuffix: 'でした', casualSuffix: 'だった', label: 'Bentuk Kasual Lampau (〜だった)' },
+      { key: 'pastNegative', politeSuffix: 'じゃありませんでした', casualSuffix: 'じゃなかった', label: 'Bentuk Kasual Negatif Lampau (〜じゃなかった)' }
+    ];
+    const nf = nounForms[Math.floor(Math.random() * nounForms.length)];
+    const correct = `${noun.character}${nf.casualSuffix}`;
+    const kanaCorrect = `${noun.kana}${nf.casualSuffix}`;
+    return {
+      id: `cq_noun_${noun.character}_${nf.key}_${Math.random().toString(36).substring(2, 7)}`,
+      category: 'noun',
+      baseWord: `${noun.character}${nf.politeSuffix}`,
+      baseReading: `${noun.kana}${nf.politeSuffix}`,
+      meaning: noun.meaning,
+      targetFormKey: nf.key,
+      targetFormLabel: nf.label,
+      correctAnswer: correct,
+      correctReading: kanaCorrect,
+      acceptedAnswers: [correct, kanaCorrect, toRomaji(kanaCorrect)],
+      options: shuffle(nounForms.map(f => `${noun.character}${f.casualSuffix}`)),
+      formulaTip: 'Bab 20 (普通形) • Kata Benda (名詞)'
+    };
+  }
+
+  /**
    * Inisialisasi sesi kuis konjugasi
    */
   function initSession(mode: ConjugationSubMode = 'verb', formFilter = 'random', count = 10) {
@@ -238,14 +379,23 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
       for (const a of shuffledAdjs.slice(0, count)) {
         generated.push(createAdjectiveQuestion(a, formFilter as AdjectiveTargetForm));
       }
+    } else if (mode === 'casual') {
+      const kinds: Array<'verb' | 'adjective' | 'noun'> = ['verb', 'verb', 'adjective', 'noun'];
+      for (let i = 0; i < count; i++) {
+        generated.push(createCasualQuestion(kinds[i % kinds.length]));
+      }
     } else {
-      // Mixed: separuh kata kerja, separuh kata sifat
-      const halfCount = Math.ceil(count / 2);
-      const shuffledVerbs = shuffle(allVerbs.value).slice(0, halfCount);
-      const shuffledAdjs = shuffle(ADJECTIVE_ITEMS).slice(0, count - halfCount);
+      // Mixed: Kata Kerja, Kata Sifat, dan Bentuk Kasual (Bab 20)
+      const thirdCount = Math.max(1, Math.floor(count / 3));
+      const shuffledVerbs = shuffle(allVerbs.value).slice(0, thirdCount);
+      const shuffledAdjs = shuffle(ADJECTIVE_ITEMS).slice(0, thirdCount);
+      const casualCount = count - shuffledVerbs.length - shuffledAdjs.length;
 
       shuffledVerbs.forEach(v => generated.push(createVerbQuestion(v, 'random')));
       shuffledAdjs.forEach(a => generated.push(createAdjectiveQuestion(a, 'random')));
+      for (let i = 0; i < casualCount; i++) {
+        generated.push(createCasualQuestion());
+      }
     }
 
     questions.value = shuffle(generated);

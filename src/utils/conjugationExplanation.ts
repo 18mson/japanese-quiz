@@ -48,7 +48,7 @@ function getMasuStem(reading: string): string {
   const clean = (reading || '').replace(/\s+/g, '');
   // Tangani bentuk seperti "あります[おまつりが～]" -> ambil sebelum '[' jika ada
   const base = clean.split('[')[0];
-  return base.endsWith('ます') ? base.slice(0, -2) : base;
+  return base.replace(/(ませんでした|ません|ました|ます)$/, '');
 }
 
 function buildVerbExplanation(params: {
@@ -79,7 +79,8 @@ function buildVerbExplanation(params: {
     te: 'Minna no Nihongo Bab 14',
     nai: 'Minna no Nihongo Bab 17',
     kamus: 'Minna no Nihongo Bab 18',
-    ta: 'Minna no Nihongo Bab 19'
+    ta: 'Minna no Nihongo Bab 19',
+    nakatta: 'Minna no Nihongo Bab 20'
   };
   const lessonRef = lessonMap[params.targetFormKey] || `Minna no Nihongo Bab ${params.lesson || ''}`.trim();
 
@@ -248,7 +249,61 @@ function buildVerbExplanation(params: {
     };
   }
 
-  // 4. BENTUK -TA (た形)
+  // 4. BENTUK -NAKATTA (なかった形 - Negatif Lampau Kasual, Bab 20)
+  if (params.targetFormKey === 'nakatta') {
+    let matchedKey = '';
+    let specificRule = '';
+    let stepByStep = '';
+    let specialNote: string | undefined;
+
+    if (params.group === 'kelompok_3') {
+      matchedKey = isKimasu ? 'k3_kimasu' : 'k3_shimasu';
+      specificRule = isKimasu ? 'きませんでした → こなかった' : '～しませんでした → ～しなかった';
+      stepByStep = `${reading} → ${isKimasu ? 'こなかった' : `${prefix}しなかった`}`;
+    } else if (params.group === 'kelompok_2') {
+      matchedKey = 'k2';
+      specificRule = 'Ubah ke Bentuk -Nai, ganti い menjadi かった (～ます → ～なかった)';
+      stepByStep = `${reading} → ${stem}ない → ${params.correctAnswer}`;
+    } else if (isArimasu) {
+      matchedKey = 'k1_arimasu';
+      specificRule = 'Pengecualian: ありませんでした → なかった';
+      stepByStep = `ありませんでした → ない → なかった`;
+      specialNote = 'Karena bentuk -Nai dari あります adalah ない (bukan あらない), maka bentuk negatif lampau kasualnya adalah なかった (bukan あらなかった).';
+    } else if (lastChar === 'い') {
+      matchedKey = 'k1_i';
+      specificRule = 'Ubah い → わ + なかった (dari Bentuk -Nai ～わない)';
+      stepByStep = `${reading} → ${prefix}わない → ${params.correctAnswer}`;
+      specialNote = 'Bentuk -Nakatta selalu dibentuk dari Bentuk -Nai dengan mengganti い di akhir menjadi かった.';
+    } else {
+      matchedKey = 'k1_regular';
+      const mapped = I_TO_A_MAP[lastChar];
+      specificRule = mapped
+        ? `Ubah ${lastChar} → ${mapped.aKana} + なかった (dari Bentuk -Nai)`
+        : 'Bentuk -Nai lalu ganti い menjadi かった';
+      stepByStep = mapped
+        ? `${reading} → ${prefix}${mapped.aKana}ない → ${params.correctAnswer}`
+        : `${reading} → ${params.correctAnswer}`;
+    }
+
+    return {
+      groupLabel,
+      specificRule,
+      stepByStep,
+      specialNote: specialNote || 'Cara cepat: buat Bentuk -Nai dulu, lalu ganti huruf い paling belakang menjadi かった (seperti Kata Sifat-i).',
+      lessonRef,
+      tableTitle: 'Rumus Bentuk Negatif Lampau Kasual (なかった形)',
+      tableRows: [
+        { group: 'Kel. I (Umum)', rule: 'Bentuk -Nai (ganti い → かった)', example: 'かかない → かかなかった', isMatched: matchedKey === 'k1_regular' },
+        { group: 'Kel. I (Akhiran い)', rule: 'います → わなかった', example: 'あいませんでした → あわなかった', isMatched: matchedKey === 'k1_i' },
+        { group: 'Kel. I (Pengecualian)', rule: 'ありませんでした → なかった', example: 'ありませんでした → なかった', isMatched: matchedKey === 'k1_arimasu' },
+        { group: 'Kel. II (Ichidan)', rule: 'Buang ます + なかった', example: 'たべませんでした → たべなかった', isMatched: matchedKey === 'k2' },
+        { group: 'Kel. III (します)', rule: 'しませんでした → しなかった', example: 'べんきょうしませんでした → べんきょうしなかった', isMatched: matchedKey === 'k3_shimasu' },
+        { group: 'Kel. III (来ます)', rule: 'きませんでした → こなかった', example: '来ませんでした → 来なかった (こなかった)', isMatched: matchedKey === 'k3_kimasu' }
+      ]
+    };
+  }
+
+  // 5. BENTUK -TA (た形)
   let matchedKey = '';
   let specificRule = '';
   let stepByStep = '';
@@ -328,6 +383,15 @@ function buildAdjectiveExplanation(params: {
     iExample: string;
     naExample: string;
   }> = {
+    presentPositive: {
+      iRule: 'Hapus です (tetap berakhiran い)',
+      naRule: 'Ganti です menjadi だ',
+      iiRule: 'Hapus です → いい (tetap いい)',
+      lessonRef: 'Minna no Nihongo Bab 20',
+      tableTitle: 'Rumus Bentuk Kasual Positif Kata Sifat',
+      iExample: 'たかいです → たかい',
+      naExample: 'ひまです → ひまだ'
+    },
     presentNegative: {
       iRule: 'Buang い di akhir, tambahkan くない',
       naRule: 'Tambahkan じゃない (atau ではない)',
@@ -372,11 +436,17 @@ function buildAdjectiveExplanation(params: {
     ? (isIi ? 'よ' : params.baseWord.slice(0, -1))
     : params.baseWord;
 
-  const suffix = params.adjType === 'i'
-    ? (params.targetFormKey === 'presentNegative' ? 'くない' : params.targetFormKey === 'pastPositive' ? 'かった' : params.targetFormKey === 'pastNegative' ? 'くなかった' : 'くて')
-    : (params.targetFormKey === 'presentNegative' ? 'じゃない' : params.targetFormKey === 'pastPositive' ? 'だった' : params.targetFormKey === 'pastNegative' ? 'じゃなかった' : 'で');
-
-  const stepByStep = `${params.baseWord} → ${stem} + ${suffix} = ${params.correctAnswer}`;
+  let stepByStep = '';
+  if (params.targetFormKey === 'presentPositive') {
+    stepByStep = params.adjType === 'i'
+      ? `${params.baseWord}です → ${params.correctAnswer} (hapus です)`
+      : `${params.baseWord}です → ${params.baseWord} + だ = ${params.correctAnswer}`;
+  } else {
+    const suffix = params.adjType === 'i'
+      ? (params.targetFormKey === 'presentNegative' ? 'くない' : params.targetFormKey === 'pastPositive' ? 'かった' : params.targetFormKey === 'pastNegative' ? 'くなかった' : 'くて')
+      : (params.targetFormKey === 'presentNegative' ? 'じゃない' : params.targetFormKey === 'pastPositive' ? 'だった' : params.targetFormKey === 'pastNegative' ? 'じゃなかった' : 'で');
+    stepByStep = `${params.baseWord} → ${stem} + ${suffix} = ${params.correctAnswer}`;
+  }
   const specialNote = isIi
     ? 'Kata sifat いい (bagus/baik) selalu berubah memakai bentuk asalnya よい saat dikonjugasikan, sehingga menjadi よくない / よかった / よくなかった / よくて.'
     : params.adjType === 'na'
@@ -398,8 +468,37 @@ function buildAdjectiveExplanation(params: {
   };
 }
 
+function buildNounExplanation(params: {
+  baseWord: string;
+  targetFormKey: string;
+  correctAnswer: string;
+}): ConjugationExplanation {
+  const specs: Record<string, { rule: string; suffix: string; example: string }> = {
+    presentPositive: { rule: 'Ganti です menjadi だ', suffix: 'だ', example: 'あめです → あめだ' },
+    presentNegative: { rule: 'Ganti じゃありません / ではありません menjadi じゃない', suffix: 'じゃない', example: 'あめじゃありません → あめじゃない' },
+    pastPositive: { rule: 'Ganti でした menjadi だった', suffix: 'だった', example: 'あめでした → あめだった' },
+    pastNegative: { rule: 'Ganti じゃありませんでした menjadi じゃなかった', suffix: 'じゃなかった', example: 'あめじゃありませんでした → あめじゃなかった' }
+  };
+  const spec = specs[params.targetFormKey] || specs.presentPositive;
+
+  return {
+    groupLabel: 'Kata Benda (名詞)',
+    specificRule: spec.rule,
+    stepByStep: `${params.baseWord} + ${spec.suffix} = ${params.correctAnswer}`,
+    specialNote: 'Pola perubahan bentuk kasual (普通形) untuk Kata Benda sama persis dengan Kata Sifat-na!',
+    lessonRef: 'Minna no Nihongo Bab 20',
+    tableTitle: 'Rumus Bentuk Biasa / Kasual Kata Benda (Bab 20)',
+    tableRows: [
+      { group: 'Positif Non-Lampau', rule: 'KB + です → KB + だ', example: 'あめです → あめだ', isMatched: params.targetFormKey === 'presentPositive' },
+      { group: 'Negatif Non-Lampau', rule: 'KB + じゃありません → KB + じゃない', example: 'あめじゃありません → あめじゃない', isMatched: params.targetFormKey === 'presentNegative' },
+      { group: 'Positif Lampau', rule: 'KB + でした → KB + だった', example: 'あめでした → あめだった', isMatched: params.targetFormKey === 'pastPositive' },
+      { group: 'Negatif Lampau', rule: 'KB + じゃありませんでした → KB + じゃなかった', example: 'あめじゃありませんでした → あめじゃなかった', isMatched: params.targetFormKey === 'pastNegative' }
+    ]
+  };
+}
+
 export function buildConjugationExplanation(params: {
-  category: 'verb' | 'adjective';
+  category: 'verb' | 'adjective' | 'noun';
   baseWord: string;
   baseReading?: string;
   targetFormKey: string;
@@ -416,6 +515,13 @@ export function buildConjugationExplanation(params: {
       correctAnswer: params.correctAnswer,
       group: params.verbGroup || 'kelompok_1',
       lesson: params.lesson
+    });
+  }
+  if (params.category === 'noun') {
+    return buildNounExplanation({
+      baseWord: params.baseWord,
+      targetFormKey: params.targetFormKey,
+      correctAnswer: params.correctAnswer
     });
   }
   return buildAdjectiveExplanation({

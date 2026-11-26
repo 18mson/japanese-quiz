@@ -146,7 +146,7 @@ function handleKeyDown(e: KeyboardEvent) {
           <X class="w-4 h-4" />
         </button>
         <span class="px-2.5 py-1 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 font-bold border border-amber-500/20 shadow-2xs">
-          {{ currentQ?.category === 'verb' ? 'Kata Kerja' : 'Kata Sifat' }}
+          {{ currentQ?.category === 'verb' ? 'Kata Kerja' : (currentQ?.category === 'noun' ? 'Kata Benda' : 'Kata Sifat') }}
         </span>
         <span class="font-mono text-slate-500 dark:text-slate-400 font-bold">
           Soal {{ conjugationStore.currentIndex + 1 }} / {{ conjugationStore.totalQuestions }}

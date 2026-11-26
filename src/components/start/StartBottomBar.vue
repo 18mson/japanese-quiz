@@ -259,7 +259,7 @@ const handleSubClick = (subKey: string) => {
           Partikel N5 • {{ characterType === 'batch1' ? 'Bab 1–10' : (characterType === 'batch2' ? 'Bab 11–25' : 'Semua Bab (Bab 1–25)') }}
         </span>
         <span v-else-if="activeModeId === 'conjugation'" class="text-amber-600 dark:text-amber-400 font-bold">
-          Konjugasi N5 • {{ characterType === 'adjective' ? 'Kata Sifat (i & na)' : (characterType === 'mixed' ? 'Campuran (Kata Kerja & Sifat)' : 'Kata Kerja (Golongan 1, 2, 3)') }}
+          Konjugasi N5 • {{ characterType === 'adjective' ? 'Kata Sifat (i & na)' : (characterType === 'casual' ? 'Bentuk Kasual / 普通形 (Bab 20)' : (characterType === 'mixed' ? 'Campuran (KK, KS & Kasual)' : 'Kata Kerja (Golongan 1, 2, 3)')) }}
         </span>
         <span v-else-if="activeModeId === 'lainnya' && characterType === 'angka'" class="text-emerald-600 dark:text-emerald-400 font-bold">
           Level Angka N5 (1–10.000) • Arah Acak (Angka ⇄ かな)

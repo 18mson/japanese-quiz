@@ -630,10 +630,10 @@ watch(characterTypes, (newVal) => {
               </button>
             </div>
 
-            <!-- Konjugasi Sub-Menu Selector inside Card (Kata Kerja, Kata Sifat, Campuran) -->
+            <!-- Konjugasi Sub-Menu Selector inside Card (Kata Kerja, Kata Sifat, Kasual, Campuran) -->
             <div 
               v-else-if="activeMode.id === 'conjugation'"
-              class="grid grid-cols-3 gap-1 sm:gap-1.5 w-full animate-fadeIn pt-1"
+              class="grid grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-1.5 w-full animate-fadeIn pt-1"
             >
               <button
                 v-for="sub in activeMode.subTypes"

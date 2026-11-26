@@ -66,8 +66,8 @@ test('2. Sub-types availability per category', () => {
   assert.ok(conjugation, 'Conjugation must exist');
   assert.deepStrictEqual(
     conjugation.subTypes?.map(s => s.key),
-    ['verb', 'adjective', 'mixed'],
-    'Conjugation must have verb, adjective, mixed'
+    ['verb', 'adjective', 'casual', 'mixed'],
+    'Conjugation must have verb, adjective, casual, mixed'
   );
 
   const onlineGame = modesList.find(m => m.id === 'online_game')!;

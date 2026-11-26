@@ -126,13 +126,14 @@ export const modesList: QuizModeDef[] = [
   {
     id: 'conjugation',
     title: 'Konjugasi',
-    levelTag: 'Perubahan Bentuk (活用)',
+    levelTag: 'Perubahan Bentuk & Kasual (活用・普通形)',
     level: 'n5',
     defaultType: 'verb',
-    desc: 'Kuasai perubahan bentuk kata kerja (Te, Kamus, Nai, Ta) dan kata sifat (i & na).',
+    desc: 'Kuasai perubahan bentuk kata kerja (Te, Kamus, Nai, Ta, Nakatta), kata sifat (i & na), serta bentuk kasual Bab 20.',
     subTypes: [
       { key: 'verb', label: 'Kata Kerja' },
       { key: 'adjective', label: 'Kata Sifat' },
+      { key: 'casual', label: 'Kasual' },
       { key: 'mixed', label: 'Campuran' },
     ],
     icon: RefreshCw,
