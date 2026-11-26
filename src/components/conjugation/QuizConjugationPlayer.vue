@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, computed, onMounted, onUnmounted, nextTick, defineAsyncComponent } from 'vue';
 import * as wanakana from 'wanakana';
 import { useConjugationQuizStore } from '../../stores/conjugationQuizStore';
 import { useQuizStore } from '../../stores/quizStore';
 import { useTextToSpeech } from '../../composables/useTextToSpeech';
+import { decomposeWordToKanjiUnits, type KanjiFuriganaUnit } from '../../utils/furiganaParser';
 import SpeakerButton from '../SpeakerButton.vue';
 import QuizActionNavbar from '../common/QuizActionNavbar.vue';
 import { Check, X, Sparkles, RefreshCw, Send, Keyboard } from '@lucide/vue';
+
+const KanjiInfoPopup = defineAsyncComponent(() => import('../KanjiInfoPopup.vue'));
 
 const emit = defineEmits<{
   (e: 'exit'): void;
@@ -20,9 +23,24 @@ const isAnswered = ref(false);
 const isCurrentCorrect = ref(false);
 const typedInput = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
+const showKanjiPopup = ref(false);
+const selectedKanjiForPopup = ref('');
 
 const currentQ = computed(() => conjugationStore.currentQuestion);
 const isLastQuestion = computed(() => conjugationStore.currentIndex >= conjugationStore.totalQuestions - 1);
+
+const kanjiUnits = computed<KanjiFuriganaUnit[]>(() => {
+  const word = currentQ.value?.baseWord;
+  if (!word) return [];
+  return decomposeWordToKanjiUnits(word, currentQ.value?.baseReading || '');
+});
+
+const hasAnyKanji = computed(() => kanjiUnits.value.some(u => u.isKanji));
+
+function handleKanjiClick(kanjiChar: string) {
+  selectedKanjiForPopup.value = kanjiChar;
+  showKanjiPopup.value = true;
+}
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown);
@@ -102,6 +120,7 @@ function proceedToNext() {
 }
 
 function handleKeyDown(e: KeyboardEvent) {
+  if (showKanjiPopup.value) return;
   if (isAnswered.value) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -177,13 +196,35 @@ function handleKeyDown(e: KeyboardEvent) {
         <SpeakerButton v-if="currentQ?.baseWord" :text="currentQ.baseReading || currentQ.baseWord" size="sm" />
       </div>
 
-      <!-- Source Word Display -->
-      <div class="py-2 sm:py-4 flex flex-col items-center justify-center text-center gap-1 select-none">
-        <span v-if="currentQ?.baseReading" class="text-[11px] sm:text-xs font-jp font-semibold text-slate-400 dark:text-slate-500">
-          {{ currentQ.baseReading }}
-        </span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black font-jp text-slate-800 dark:text-slate-100 tracking-wide">
-          {{ currentQ?.baseWord }}
+      <!-- Source Word Display (dengan Furigana per Kanji & klik untuk Bedah Kanji) -->
+      <div class="py-2 sm:py-4 flex flex-col items-center justify-center text-center gap-1.5 select-none">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-black font-jp text-slate-800 dark:text-slate-100 tracking-wide inline-flex items-end justify-center flex-wrap">
+          <template v-for="(unit, idx) in kanjiUnits" :key="idx">
+            <button
+              v-if="unit.isKanji"
+              type="button"
+              class="inline-flex flex-col items-center justify-end align-bottom border border-transparent hover:border-amber-400/90 dark:hover:border-amber-400/70 hover:bg-amber-50/70 dark:hover:bg-amber-500/15 rounded-lg transition-all select-none m-0 px-0.5 py-0 cursor-pointer active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+              @click="handleKanjiClick(unit.text)"
+              :title="`Bedah Kanji: ${unit.text}`"
+              :aria-label="`Bedah Kanji ${unit.text}`"
+            >
+              <span
+                v-if="hasAnyKanji"
+                class="text-[0.38em] sm:text-[0.4em] font-bold tracking-tight select-none pointer-events-none text-amber-600 dark:text-amber-300 leading-none mb-1 h-[1.15em] flex items-center justify-center"
+              >{{ unit.reading || '　' }}</span>
+              <span class="leading-none select-none">{{ unit.text }}</span>
+            </button>
+            <span
+              v-else
+              class="inline-flex flex-col items-center justify-end align-bottom border border-transparent m-0 p-0 pointer-events-none"
+            >
+              <span
+                v-if="hasAnyKanji"
+                class="text-[0.38em] sm:text-[0.4em] invisible leading-none mb-1 h-[1.15em] select-none pointer-events-none"
+              >　</span>
+              <span class="leading-none select-none">{{ unit.text }}</span>
+            </span>
+          </template>
         </h2>
         <p class="text-sm sm:text-base font-semibold text-slate-600 dark:text-slate-300 mt-1">
           "{{ currentQ?.meaning }}"
@@ -266,6 +307,14 @@ function handleKeyDown(e: KeyboardEvent) {
       :status="isCurrentCorrect ? 'correct' : 'wrong'"
       :is-last="isLastQuestion"
       @proceed="proceedToNext"
+    />
+
+    <!-- Modal Bedah Kanji saat Kanji diklik -->
+    <KanjiInfoPopup
+      :is-open="showKanjiPopup"
+      :target-word="currentQ?.baseWord || ''"
+      :initial-kanji="selectedKanjiForPopup"
+      @close="showKanjiPopup = false"
     />
   </div>
 </template>
