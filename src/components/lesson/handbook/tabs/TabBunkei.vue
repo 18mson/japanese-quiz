@@ -2,7 +2,7 @@
 import { Search, Lightbulb } from '@lucide/vue';
 import SpeakerButton from '../../../SpeakerButton.vue';
 import type { BunkeiItem } from '../../../../data/lessonGrammarBook';
-import { parseFormulaTokens, getBunkeiTitle } from '../utils';
+import { getBunkeiTitle } from '../utils';
 
 defineProps<{
   items: BunkeiItem[];
@@ -32,26 +32,12 @@ defineProps<{
         </h2>
       </div>
 
-      <!-- Formula Visual Block (Clean left-accent bar, no nested box clutter) -->
+      <!-- Formula Visual Block (Clean left-accent bar, unified continuous formula) -->
       <div class="pl-4 pr-3 py-3 rounded-r-xl bg-slate-50 dark:bg-slate-900/80 border-l-4 border-indigo-600 dark:border-indigo-400 flex flex-col gap-1.5">
         <span class="text-xs font-bold text-indigo-800 dark:text-indigo-300">Rumus Struktur</span>
-        <div class="text-sm sm:text-[15px] font-mono font-semibold text-slate-900 dark:text-slate-100 flex flex-wrap items-center gap-x-2 gap-y-1.5 leading-relaxed">
-          <template v-for="(seg, sIdx) in parseFormulaTokens(item.formula)" :key="sIdx">
-            <span 
-              v-if="seg.isPlus" 
-              class="text-indigo-600 dark:text-indigo-400 font-black text-sm select-none"
-              aria-label="ditambah"
-            >
-              +
-            </span>
-            <code 
-              v-else 
-              class="px-2 py-0.5 rounded-md bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-200/90 dark:border-slate-700 font-semibold break-words"
-            >
-              {{ seg.text }}
-            </code>
-          </template>
-        </div>
+        <code class="text-sm sm:text-[15px] font-mono font-semibold text-slate-900 dark:text-slate-100 bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 px-3 py-2 rounded-lg leading-relaxed break-words w-fit max-w-full">
+          {{ item.formula }}
+        </code>
       </div>
 
       <!-- Explanation (Comfortable editorial line length & line height) -->
