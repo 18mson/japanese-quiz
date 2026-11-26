@@ -150,8 +150,8 @@ function handleKeyDown(e: KeyboardEvent) {
             <RefreshCw class="w-3.5 h-3.5" />
           </span>
           <div class="flex flex-col">
-            <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Ubah ke Bentuk</span>
-            <span class="text-xs sm:text-sm font-black text-amber-700 dark:text-amber-300">
+            <span class="text-[11px] uppercase font-bold text-slate-400 tracking-wider">Ubah ke Bentuk</span>
+            <span class="text-sm sm:text-base font-black text-amber-700 dark:text-amber-300">
               {{ currentQ?.targetFormLabel }}
             </span>
           </div>
@@ -162,7 +162,7 @@ function handleKeyDown(e: KeyboardEvent) {
 
       <!-- Source Word Display -->
       <div class="py-2 sm:py-4 flex flex-col items-center justify-center text-center gap-1 select-none">
-        <span v-if="currentQ?.baseReading" class="text-xs sm:text-sm font-jp font-semibold text-slate-400 dark:text-slate-500">
+        <span v-if="currentQ?.baseReading" class="text-[11px] sm:text-xs font-jp font-semibold text-slate-400 dark:text-slate-500">
           {{ currentQ.baseReading }}
         </span>
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-black font-jp text-slate-800 dark:text-slate-100 tracking-wide">
@@ -189,7 +189,7 @@ function handleKeyDown(e: KeyboardEvent) {
             {{ currentQ.correctAnswer }}
           </span>
         </div>
-        <p class="text-[11px] opacity-80 flex items-center gap-1">
+        <p class="text-xs opacity-80 flex items-center gap-1">
           <span>💡 {{ currentQ.formulaTip }}</span>
         </p>
       </div>
@@ -231,7 +231,7 @@ function handleKeyDown(e: KeyboardEvent) {
       </form>
 
       <!-- Tip Bantuan Input -->
-      <div v-if="!isAnswered" class="flex items-center justify-center gap-1.5 text-slate-400 dark:text-slate-500 text-[11px]">
+      <div v-if="!isAnswered" class="flex items-center justify-center gap-1.5 text-slate-400 dark:text-slate-500 text-xs">
         <Keyboard class="w-3.5 h-3.5" />
         <span>Ketik dalam Romaji (misal: <em>tabete</em>) atau Kana / Kanji langsung</span>
       </div>
