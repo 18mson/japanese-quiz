@@ -1,12 +1,74 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { KonjugasiKataKerjaData, VerbItem } from '../../types/reference';
-import { BookOpen, Search, Info, X } from '@lucide/vue';
+import { BookOpen, Search, Info, X, Volume2 } from '@lucide/vue';
 import SpeakerButton from '../SpeakerButton.vue';
+import { useTextToSpeech } from '../../composables/useTextToSpeech';
 
 const props = defineProps<{
   data: KonjugasiKataKerjaData;
 }>();
+
+const { speak, stop, isCurrentTextSpeaking } = useTextToSpeech();
+
+function toggleSpeak(text: string) {
+  if (!text) return;
+  if (isCurrentTextSpeaking(text)) {
+    stop();
+  } else {
+    speak(text);
+  }
+}
+
+interface ConjugationCell {
+  key: string;
+  text: string;
+  colorClass: string;
+  activeClass: string;
+  ringClass: string;
+  isIrregularNai?: boolean;
+}
+
+function getConjugationCells(v: VerbItem): ConjugationCell[] {
+  return [
+    {
+      key: 'te',
+      text: v.te,
+      colorClass: 'text-cyan-800 dark:text-cyan-200 hover:bg-cyan-50 dark:hover:bg-cyan-950/40',
+      activeClass: 'bg-cyan-100 dark:bg-cyan-900/40 text-cyan-800 dark:text-cyan-200',
+      ringClass: 'focus-visible:ring-cyan-500'
+    },
+    {
+      key: 'kamus',
+      text: v.kamus,
+      colorClass: 'text-indigo-800 dark:text-indigo-200 hover:bg-indigo-50 dark:hover:bg-indigo-950/40',
+      activeClass: 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-200',
+      ringClass: 'focus-visible:ring-indigo-500'
+    },
+    {
+      key: 'nai',
+      text: formatNai(v.nai),
+      colorClass: 'text-rose-700 dark:text-rose-200 hover:bg-rose-50 dark:hover:bg-rose-950/40',
+      activeClass: 'bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-200',
+      ringClass: 'focus-visible:ring-rose-500',
+      isIrregularNai: v.nai.startsWith('－')
+    },
+    {
+      key: 'ta',
+      text: v.ta,
+      colorClass: 'text-amber-800 dark:text-amber-200 hover:bg-amber-50 dark:hover:bg-amber-950/40',
+      activeClass: 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200',
+      ringClass: 'focus-visible:ring-amber-500'
+    },
+    {
+      key: 'nakatta',
+      text: getNakatta(v.nai),
+      colorClass: 'text-orange-700 dark:text-orange-200 hover:bg-orange-50 dark:hover:bg-orange-950/40',
+      activeClass: 'bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-200',
+      ringClass: 'focus-visible:ring-orange-500'
+    }
+  ];
+}
 
 const selectedGroup = ref<'all' | 'kelompok_1' | 'kelompok_2' | 'kelompok_3'>('all');
 const searchQuery = ref('');
@@ -261,38 +323,39 @@ const filteredVerbs = computed(() => {
                 </div>
               </td>
 
-              <!-- Bentuk Te -->
-              <td class="px-3.5 py-3 font-jp font-semibold text-sm sm:text-[15px] text-cyan-800 dark:text-cyan-200 whitespace-nowrap">
-                {{ v.te }}
-              </td>
-
-              <!-- Bentuk Kamus -->
-              <td class="px-3.5 py-3 font-jp font-semibold text-sm sm:text-[15px] text-indigo-800 dark:text-indigo-200 whitespace-nowrap">
-                {{ v.kamus }}
-              </td>
-
-              <!-- Bentuk Nai -->
-              <td class="px-3.5 py-3 whitespace-nowrap">
-                <span class="font-jp font-semibold text-sm sm:text-[15px] text-rose-700 dark:text-rose-200">
-                  {{ formatNai(v.nai) }}
-                </span>
+              <!-- Bentuk Te, Kamus, Nai, Ta, Nakatta (klik untuk dengarkan pelafalan) -->
+              <td
+                v-for="cell in getConjugationCells(v)"
+                :key="cell.key"
+                class="px-3.5 py-3 whitespace-nowrap"
+              >
+                <button
+                  type="button"
+                  @click="toggleSpeak(cell.text)"
+                  :aria-label="`Dengarkan ${cell.text}`"
+                  :title="`Dengarkan pelafalan: ${cell.text}`"
+                  :class="[
+                    'group/cell inline-flex items-center gap-1.5 px-2 py-1 -mx-2 -my-1 rounded-lg font-jp font-semibold text-sm sm:text-[15px] transition cursor-pointer focus-visible:outline-none focus-visible:ring-2',
+                    cell.ringClass,
+                    isCurrentTextSpeaking(cell.text) ? cell.activeClass : cell.colorClass
+                  ]"
+                >
+                  <span>{{ cell.text }}</span>
+                  <Volume2
+                    :class="[
+                      'w-3.5 h-3.5 shrink-0 transition-opacity',
+                      isCurrentTextSpeaking(cell.text) ? 'opacity-100 animate-pulse' : 'opacity-35 group-hover/cell:opacity-100'
+                    ]"
+                    aria-hidden="true"
+                  />
+                </button>
                 <span
-                  v-if="v.nai.startsWith('－')"
+                  v-if="cell.isIrregularNai"
                   class="ml-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-50 dark:bg-amber-900/35 border border-amber-200 dark:border-amber-700/50 text-[11px] font-bold text-amber-800 dark:text-amber-300 align-middle"
                   title="Kata tidak beraturan (irregular): bentuk negatif kasual ある bukan あらない, melainkan langsung ない."
                 >
                   ⚠ tidak beraturan
                 </span>
-              </td>
-
-              <!-- Bentuk Ta -->
-              <td class="px-3.5 py-3 font-jp font-semibold text-sm sm:text-[15px] text-amber-800 dark:text-amber-200 whitespace-nowrap">
-                {{ v.ta }}
-              </td>
-
-              <!-- Bentuk Nakatta (Negatif Lampau) -->
-              <td class="px-3.5 py-3 font-jp font-semibold text-sm sm:text-[15px] text-orange-700 dark:text-orange-200 whitespace-nowrap">
-                {{ getNakatta(v.nai) }}
               </td>
 
               <!-- Arti -->
