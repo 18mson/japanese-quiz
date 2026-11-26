@@ -3,6 +3,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import * as wanakana from 'wanakana';
 import { useConjugationQuizStore } from '../../stores/conjugationQuizStore';
 import { useQuizStore } from '../../stores/quizStore';
+import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import SpeakerButton from '../SpeakerButton.vue';
 import QuizActionNavbar from '../common/QuizActionNavbar.vue';
 import { Check, X, Sparkles, RefreshCw, Send, Keyboard } from '@lucide/vue';
@@ -13,6 +14,7 @@ const emit = defineEmits<{
 
 const conjugationStore = useConjugationQuizStore();
 const quizStore = useQuizStore();
+const { speak } = useTextToSpeech();
 
 const isAnswered = ref(false);
 const isCurrentCorrect = ref(false);
@@ -41,6 +43,12 @@ function handleInput(e: Event) {
   target.value = converted;
 }
 
+function playCorrectAudio() {
+  if (!currentQ.value) return;
+  const text = currentQ.value.correctReading || currentQ.value.correctAnswer;
+  if (text) speak(text);
+}
+
 function handleTypedSubmit() {
   if (isAnswered.value || !typedInput.value.trim() || !currentQ.value) return;
   const val = typedInput.value.trim();
@@ -48,6 +56,15 @@ function handleTypedSubmit() {
 
   const result = conjugationStore.checkAnswer(val);
   isCurrentCorrect.value = result.isCorrect;
+
+  if (!result.isCorrect) {
+    // Beri jeda singkat agar efek suara salah selesai sebelum pelafalan jawaban benar diputar
+    setTimeout(() => {
+      if (isAnswered.value && !isCurrentCorrect.value) {
+        playCorrectAudio();
+      }
+    }, 160);
+  }
 }
 
 function proceedToNext() {
@@ -157,7 +174,7 @@ function handleKeyDown(e: KeyboardEvent) {
           </div>
         </div>
 
-        <SpeakerButton v-if="currentQ?.baseWord" :text="currentQ.baseWord" size="sm" />
+        <SpeakerButton v-if="currentQ?.baseWord" :text="currentQ.baseReading || currentQ.baseWord" size="sm" />
       </div>
 
       <!-- Source Word Display -->
@@ -179,15 +196,21 @@ function handleKeyDown(e: KeyboardEvent) {
         class="p-3.5 sm:p-4 rounded-2xl flex flex-col gap-1.5 text-xs sm:text-sm animate-fadeIn"
         :class="isCurrentCorrect ? 'bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-500/20 text-emerald-900 dark:text-emerald-200' : 'bg-rose-50 dark:bg-rose-950/30 border border-rose-500/20 text-rose-900 dark:text-rose-200'"
       >
-        <div class="flex items-center justify-between font-bold">
+        <div class="flex items-center justify-between font-bold gap-2">
           <div class="flex items-center gap-1.5">
             <Check v-if="isCurrentCorrect" class="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <X v-else class="w-4 h-4 text-rose-600 dark:text-rose-400" />
             <span>{{ isCurrentCorrect ? 'Bagus Sekali!' : 'Jawaban yang Benar:' }}</span>
           </div>
-          <span class="text-base sm:text-lg font-black font-jp">
-            {{ currentQ.correctAnswer }}
-          </span>
+          <div class="flex items-center gap-2">
+            <span class="text-base sm:text-lg font-black font-jp">
+              {{ currentQ.correctAnswer }}
+            </span>
+            <SpeakerButton
+              :text="currentQ.correctReading || currentQ.correctAnswer"
+              size="sm"
+            />
+          </div>
         </div>
         <p class="text-xs opacity-80 flex items-center gap-1">
           <span>💡 {{ currentQ.formulaTip }}</span>
