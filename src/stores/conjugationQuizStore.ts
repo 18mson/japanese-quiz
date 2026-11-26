@@ -5,6 +5,7 @@ import { toRomaji, toHiragana } from 'wanakana';
 import { konjugasiKataKerjaData, type VerbItem } from '../data/referenceData';
 import { ADJECTIVE_ITEMS, type AdjectiveItem, type AdjectiveForms } from '../services/adjectiveConjugationService';
 import { playCorrectSound, playIncorrectSound } from '../utils/battleSoundManager';
+import type { VerbGroupKey } from '../utils/conjugationExplanation';
 
 export type ConjugationSubMode = 'verb' | 'adjective' | 'mixed';
 export type VerbTargetForm = 'te' | 'kamus' | 'nai' | 'ta' | 'random';
@@ -23,6 +24,9 @@ export interface ConjugationQuestion {
   acceptedAnswers: string[];// Variasi yang diterima (kanji, kana, romaji, alts)
   options: string[];        // 4 opsi pilihan ganda
   formulaTip: string;       // e.g. '~みます -> ~んで' / '~い -> ~くない'
+  verbGroup?: VerbGroupKey;
+  adjType?: 'i' | 'na';
+  lesson?: number;
 }
 
 export interface ConjugationAnswerRecord {
@@ -54,12 +58,12 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
     return Math.round((correctCount.value / userAnswers.value.length) * 100);
   });
 
-  // Semua kata kerja N5 dari referensi (154 kata kerja)
-  const allVerbs = computed<VerbItem[]>(() => {
+  // Semua kata kerja N5 dari referensi (154 kata kerja) beserta kelompoknya
+  const allVerbs = computed<Array<VerbItem & { group: VerbGroupKey }>>(() => {
     return [
-      ...konjugasiKataKerjaData.kelompok_1.verbs,
-      ...konjugasiKataKerjaData.kelompok_2.verbs,
-      ...konjugasiKataKerjaData.kelompok_3.verbs
+      ...konjugasiKataKerjaData.kelompok_1.verbs.map(v => ({ ...v, group: 'kelompok_1' as const })),
+      ...konjugasiKataKerjaData.kelompok_2.verbs.map(v => ({ ...v, group: 'kelompok_2' as const })),
+      ...konjugasiKataKerjaData.kelompok_3.verbs.map(v => ({ ...v, group: 'kelompok_3' as const }))
     ];
   });
 
@@ -75,7 +79,7 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
   /**
    * Menghasilkan soal kata kerja
    */
-  function createVerbQuestion(verb: VerbItem, formKey?: VerbTargetForm): ConjugationQuestion {
+  function createVerbQuestion(verb: VerbItem & { group?: VerbGroupKey }, formKey?: VerbTargetForm): ConjugationQuestion {
     const forms: Array<{ key: 'te' | 'kamus' | 'nai' | 'ta'; label: string }> = [
       { key: 'te', label: 'Bentuk -Te (て形)' },
       { key: 'kamus', label: 'Bentuk Kamus (辞書形)' },
@@ -133,7 +137,9 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
       correctReading: cleanCorrect,
       acceptedAnswers: accepted,
       options,
-      formulaTip: `Pelajaran ${verb.pelajaran} • Kata Kerja Minna no Nihongo`
+      formulaTip: `Pelajaran ${verb.pelajaran} • ${verb.group === 'kelompok_1' ? 'Kelompok I' : verb.group === 'kelompok_2' ? 'Kelompok II' : 'Kelompok III'}`,
+      verbGroup: verb.group,
+      lesson: verb.pelajaran
     };
   }
 
@@ -202,7 +208,8 @@ export const useConjugationQuizStore = defineStore('conjugationQuiz', () => {
       correctReading: correct,
       acceptedAnswers: accepted,
       options,
-      formulaTip: adj.type === 'i' ? 'Kata Sifat-i (い形容詞)' : 'Kata Sifat-na (な形容詞)'
+      formulaTip: adj.type === 'i' ? 'Kata Sifat-i (い形容詞)' : 'Kata Sifat-na (な形容詞)',
+      adjType: adj.type
     };
   }
 

@@ -7,9 +7,10 @@ import { useTextToSpeech } from '../../composables/useTextToSpeech';
 import { decomposeWordToKanjiUnits, type KanjiFuriganaUnit } from '../../utils/furiganaParser';
 import SpeakerButton from '../SpeakerButton.vue';
 import QuizActionNavbar from '../common/QuizActionNavbar.vue';
-import { Check, X, Sparkles, RefreshCw, Send, Keyboard } from '@lucide/vue';
+import { Check, X, Sparkles, RefreshCw, Send, Keyboard, BookOpen } from '@lucide/vue';
 
 const KanjiInfoPopup = defineAsyncComponent(() => import('../KanjiInfoPopup.vue'));
+const ConjugationFormulaModal = defineAsyncComponent(() => import('./ConjugationFormulaModal.vue'));
 
 const emit = defineEmits<{
   (e: 'exit'): void;
@@ -25,6 +26,7 @@ const typedInput = ref('');
 const inputRef = ref<HTMLInputElement | null>(null);
 const showKanjiPopup = ref(false);
 const selectedKanjiForPopup = ref('');
+const showFormulaModal = ref(false);
 
 const currentQ = computed(() => conjugationStore.currentQuestion);
 const isLastQuestion = computed(() => conjugationStore.currentIndex >= conjugationStore.totalQuestions - 1);
@@ -120,7 +122,7 @@ function proceedToNext() {
 }
 
 function handleKeyDown(e: KeyboardEvent) {
-  if (showKanjiPopup.value) return;
+  if (showKanjiPopup.value || showFormulaModal.value) return;
   if (isAnswered.value) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -256,6 +258,21 @@ function handleKeyDown(e: KeyboardEvent) {
         <p class="text-xs opacity-80 flex items-center gap-1">
           <span>💡 {{ currentQ.formulaTip }}</span>
         </p>
+
+        <!-- Tombol Penjelasan & Rumus saat jawaban salah -->
+        <div
+          v-if="!isCurrentCorrect"
+          class="pt-2 mt-1 border-t border-rose-500/15 flex items-center justify-end"
+        >
+          <button
+            type="button"
+            @click="showFormulaModal = true"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-white/80 hover:bg-white dark:bg-slate-900/80 dark:hover:bg-slate-900 text-rose-800 dark:text-amber-300 border border-rose-300/70 dark:border-amber-500/30 transition cursor-pointer active:scale-95"
+          >
+            <BookOpen class="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+            <span>Penjelasan & Rumus</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -315,6 +332,13 @@ function handleKeyDown(e: KeyboardEvent) {
       :target-word="currentQ?.baseWord || ''"
       :initial-kanji="selectedKanjiForPopup"
       @close="showKanjiPopup = false"
+    />
+
+    <!-- Modal Penjelasan & Rumus Konjugasi -->
+    <ConjugationFormulaModal
+      :is-open="showFormulaModal"
+      :question="currentQ"
+      @close="showFormulaModal = false"
     />
   </div>
 </template>
