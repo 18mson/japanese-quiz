@@ -75,9 +75,9 @@ const handleRowClick = (text: string) => {
       v-if="isExpanded" 
       class="px-4 sm:px-5 pb-4 pt-1 border-t border-gray-100 dark:border-slate-800/60 animate-fadeIn space-y-3"
     >
-      <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-slate-800/80 bg-gray-50/70 dark:bg-slate-950/60 shadow-inner">
+      <div class="max-h-[60vh] overflow-auto rounded-xl border border-gray-200 dark:border-slate-800/80 bg-gray-50/70 dark:bg-slate-950/60 shadow-inner">
         <table class="w-full text-left text-xs sm:text-sm">
-          <thead class="bg-gray-100/90 dark:bg-slate-900/90 text-gray-500 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
+          <thead class="bg-gray-100 dark:bg-slate-900 text-gray-500 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
             <tr>
               <th class="px-3 py-2 w-14 text-cyan-700 dark:text-slate-300 font-bold">Angka</th>
               <th class="px-3 py-2 text-amber-700 dark:text-amber-300 font-bold">Pengucapan</th>

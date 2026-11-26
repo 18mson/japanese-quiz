@@ -180,9 +180,9 @@ const searchMatchesDuration = computed(() => {
           </h4>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 text-cyan-700 dark:text-matcha font-bold">Hari (日)</th>
                 <th class="px-4 py-3 text-amber-700 dark:text-amber-300 font-bold">Pagi (朝)</th>
@@ -240,9 +240,9 @@ const searchMatchesDuration = computed(() => {
           </h4>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 text-violet-700 dark:text-torii font-bold">Minggu (週)</th>
                 <th class="px-4 py-3 text-emerald-700 dark:text-emerald-300 font-bold">Bulan (月)</th>
@@ -306,9 +306,9 @@ const searchMatchesDuration = computed(() => {
             <span class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">⚠️ 4 jam = よじかん</span>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs">
+          <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
             <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
+              <thead class="bg-gray-100 dark:bg-slate-950 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
                 <tr>
                   <th class="px-3 py-2.5 w-16">Nilai</th>
                   <th class="px-3 py-2.5">Pengucapan Jepang</th>
@@ -351,9 +351,9 @@ const searchMatchesDuration = computed(() => {
             <span class="text-[11px] text-gray-500 dark:text-slate-400">Pola 〜ふん / 〜ぷん</span>
           </div>
 
-          <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs">
+          <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
             <table class="w-full text-left text-xs sm:text-sm">
-              <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800">
+              <thead class="bg-gray-100 dark:bg-slate-950 text-gray-600 dark:text-slate-400 text-[11px] uppercase border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
                 <tr>
                   <th class="px-3 py-2.5 w-16">Nilai</th>
                   <th class="px-3 py-2.5">Pengucapan Jepang</th>
@@ -393,9 +393,9 @@ const searchMatchesDuration = computed(() => {
           <span class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">⚠️ 1 hari = いちにち, 2 hari = ふつか, 4 th = よねん</span>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/80 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-600 dark:text-slate-400 uppercase text-[11px] font-extrabold border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-3 py-3 text-gray-600 dark:text-slate-400 w-16 font-bold">Jangka</th>
                 <th class="px-3 py-3 text-cyan-700 dark:text-matcha font-bold">Hari (〜日間)</th>

@@ -251,9 +251,9 @@ const handleRowClick = (text: string) => {
         <button @click="searchQuery = ''" class="text-amber-600 dark:text-amber-400 hover:underline cursor-pointer font-medium">Reset pencarian</button>
       </div>
 
-      <div v-if="filteredUnits.length > 0" class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
+      <div v-if="filteredUnits.length > 0" class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
         <table class="w-full text-left text-xs sm:text-sm">
-          <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
+          <thead class="bg-gray-100 dark:bg-slate-950 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
             <tr>
               <th class="px-4 py-3 w-28 sm:w-36 text-cyan-700 dark:text-slate-300">Nilai Angka</th>
               <th class="px-4 py-3 text-amber-700 dark:text-amber-300">Bahasa Jepang (Hiragana)</th>
@@ -404,9 +404,9 @@ const handleRowClick = (text: string) => {
           </h4>
         </div>
 
-        <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 w-24 sm:w-32 text-indigo-700 dark:text-torii-light">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>
@@ -461,9 +461,9 @@ const handleRowClick = (text: string) => {
           </span>
         </div>
 
-        <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 w-28 sm:w-36 text-amber-700 dark:text-amber-300">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>
@@ -533,9 +533,9 @@ const handleRowClick = (text: string) => {
           </span>
         </div>
 
-        <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 w-28 sm:w-36 text-rose-700 dark:text-rose-300">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>
@@ -600,9 +600,9 @@ const handleRowClick = (text: string) => {
           </h4>
         </div>
 
-        <div class="rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 overflow-hidden shadow-xs dark:shadow-md">
+        <div class="max-h-[60vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 shadow-xs dark:shadow-md">
           <table class="w-full text-left text-xs sm:text-sm">
-            <thead class="bg-gray-100/90 dark:bg-slate-950/90 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800">
+            <thead class="bg-gray-100 dark:bg-slate-950 text-gray-500 dark:text-slate-400 text-[11px] font-extrabold uppercase tracking-wider border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
               <tr>
                 <th class="px-4 py-3 w-36 sm:w-44 text-violet-700 dark:text-emerald-300">Nilai</th>
                 <th class="px-4 py-3 text-gray-900 dark:text-white">Bahasa Jepang (Hiragana)</th>

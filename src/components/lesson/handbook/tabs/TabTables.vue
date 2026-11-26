@@ -26,9 +26,9 @@ defineProps<{
         <p v-if="tbl.description" class="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">{{ tbl.description }}</p>
       </div>
 
-      <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-slate-800">
+      <div class="max-h-[62vh] overflow-auto rounded-xl border border-gray-200 dark:border-slate-800">
         <table class="w-full text-left text-sm">
-          <thead class="bg-slate-100/80 dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs font-bold border-b border-gray-200 dark:border-slate-800">
+          <thead class="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-200 text-xs font-bold border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
             <tr>
               <th v-for="col in tbl.columns" :key="col.key" scope="col" class="px-4 py-3 whitespace-nowrap">
                 {{ col.label }}

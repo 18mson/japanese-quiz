@@ -226,7 +226,7 @@ const filteredVerbs = computed(() => {
         </span>
       </div>
 
-      <div class="overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-xs">
+      <div class="max-h-[62vh] overflow-auto rounded-2xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-xs">
         <table class="w-full text-left text-xs sm:text-sm border-collapse">
           <thead class="bg-slate-100 dark:bg-slate-950 text-gray-700 dark:text-slate-200 text-xs font-extrabold border-b border-gray-200 dark:border-slate-800 sticky top-0 z-10">
             <tr>
